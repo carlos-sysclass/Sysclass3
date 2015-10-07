@@ -52,7 +52,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     public function getLinks() {
         //$data = $this->getItemsAction();
         $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Institutions", "View")) {
+        if ($depinject->get("acl")->isUserAllowed(null, "Institution", "View")) {
 
             $itemsData = $this->model("institution")->addFilter(array(
                 'active'    => true

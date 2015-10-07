@@ -14,7 +14,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
     /* ILinkable */
     public function getLinks() {
         $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Departaments", "View")) {
+        if ($depinject->get("acl")->isUserAllowed(null, "Areas", "View")) {
             $itemsData = $this->model("courses/areas/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
