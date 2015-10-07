@@ -30,7 +30,8 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /* ILinkable */
     public function getLinks() {
         $count = Event::count(); // FAKE, PUT HERE DUE PAYMENTS
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Calendars", "Manage")) {
             return array(
                 'communication' => array(
                     array(

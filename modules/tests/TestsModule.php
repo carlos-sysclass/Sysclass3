@@ -34,8 +34,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Tests", "View")) {
             $itemsData = $this->model("tests")->addFilter(array(
                 'active'    => true
             ))->getItems();

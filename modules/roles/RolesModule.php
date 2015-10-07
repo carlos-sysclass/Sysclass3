@@ -22,11 +22,9 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
-
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Roles", "View")) {
             $count = AclRole::count("active = 1");
-
-            // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'users' => array(

@@ -15,8 +15,8 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /* ILinkable */
     public function getLinks()
     {
-        //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Lessons", "View")) {
             $itemsData = $this->model("lessons")->addFilter(array(
                 'active'    => true
             ))->getItems();

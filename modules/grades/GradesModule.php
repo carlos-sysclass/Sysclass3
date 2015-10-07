@@ -14,7 +14,8 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Grades", "View")) {
             $groupItems = $this->model("grades")->addFilter(array(
                 'active'    => true
             ))->getItems();

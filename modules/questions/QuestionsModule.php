@@ -12,8 +12,8 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
     protected $_modelRoute = "questions";
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Questions", "View")) {
             $itemsData = $this->model($this->_modelRoute)->addFilter(array(
                 'active'    => true
             ))->getItems();

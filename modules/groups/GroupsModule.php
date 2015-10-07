@@ -14,7 +14,8 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Groups", "View")) {
             $groupItems = $this->model("users/groups/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();

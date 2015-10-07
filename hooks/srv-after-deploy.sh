@@ -39,7 +39,7 @@ mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
 
 mkdir -p "$DIRNAME/../www/resources"
-chmod 777 "$DIRNAME/../www/resorces" -R
+chmod 777 "$DIRNAME/../www/resources" -R
 
 # INJECT VERSION INSIDE DATABASE
 #full_version=$1

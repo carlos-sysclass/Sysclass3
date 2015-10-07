@@ -71,8 +71,10 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
     /* ILinkable */
     public function getLinks() {
-        $data = $this->getItemsAction();
-        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Translations", "View")) {
+            $data = $this->getItemsAction();
+
             return array(
                 'administration' => array(
                     array(
@@ -83,7 +85,7 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
                     )
                 )
             );
-        //}
+        }
     }
 
     /* IBreadcrumbable */

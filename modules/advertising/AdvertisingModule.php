@@ -14,7 +14,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     public function getWidgets($widgetsIndexes = array()) {
 
         $widgetsContext = $this->getConfig("widgets");
-//        $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
+        //        $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
 
         $adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
@@ -68,8 +68,8 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
 
     /* ILinkable */
     public function getLinks() {
-
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Advertising", "View")) {
             $itemsData = $this->model($this->_modelRoute)->getItems();
             //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 

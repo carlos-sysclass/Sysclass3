@@ -26,8 +26,8 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        if ($this->getCurrentUser(true)->getType() == 'administrator') {
+        $depinject = Phalcon\DI::getDefault();
+        if ($depinject->get("acl")->isUserAllowed(null, "Courses", "View")) {
             $itemsData = $this->model("courses")->addFilter(array(
                 'active'    => true
             ))->getItems();

@@ -31,7 +31,10 @@ class DashboardModule extends SysclassModule implements IWidgetContainer
             $links = array();
             foreach($modulesOrder as $module_id) {
                 if (array_key_exists($module_id, $modules)) {
-                    $links = array_merge_recursive($links, $modules[$module_id]->getLinks());
+                    $mod_links = $modules[$module_id]->getLinks();
+                    if (is_array($mod_links)) {
+                        $links = array_merge_recursive($links, $mod_links);
+                    }
                 }
                 unset($modulesKeys[$module_id]);
             }
