@@ -103,6 +103,38 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
                 $self->putSectionTemplate("questions-list", "blocks/questions.list");
 
                 $self->putBlock('questions.select.dialog');
+                $self->putBlock('questions.create.dialog');
+
+                return true;
+            },
+            'questions.create.dialog' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("wysihtml5");
+                //$self->putComponent("select2");
+                $self->putComponent("bootstrap-switch");
+
+
+                $items = $this->model("courses/areas/collection")->addFilter(array(
+                    'active' => 1
+                ))->getItems();
+
+                $this->putitem("knowledge_areas", $items);
+
+                $items = $this->model("questions/types")->getItems();
+                $this->putItem("questions_types", $items);
+
+                $items =  $this->model("questions/difficulties")->getItems();
+                $this->putItem("questions_difficulties", $items);
+
+
+                //$block_context = $self->getConfig("blocks\\questions.select.dialog\\context");
+                //$self->putItem("questions_select_block_context", $block_context);
+
+                $self->putModuleScript("dialogs.questions.create");
+                $self->putModuleScript("views.form.questions");
+                //$self->setCache("dialogs.questions.select", $block_context);
+
+                $self->putSectionTemplate("dialogs", "dialogs/create");
 
                 return true;
             },
@@ -208,11 +240,22 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
             $itemModel = $this->model($modelRoute);
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Question created with success"),
-                    "success"
-                );
+                if ($_GET['object'] == "1") {
+                    $response = $this->createAdviseResponse(
+                        self::$t->translate("Question created with success"),
+                        "success"
+                    );
+
+                    return array_merge($itemModel->getItem($data['id']), $response);
+
+                } else {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $data['id'],
+                        self::$t->translate("Question created with success"),
+                        "success"
+                    );
+
+                }
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");

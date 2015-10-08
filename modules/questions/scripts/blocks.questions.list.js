@@ -150,7 +150,8 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             questionModule : null,
             events : {
                 "click .add-item-action" : "addItem",
-                "click .select-question" : "openDialog",
+                "click .create-question" : "openCreateDialog",
+                "click .select-question" : "openSelectDialog",
                 "click .show-tips" : "showTips"
             },
             initialize : function() {
@@ -160,14 +161,21 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
 
                 this.initializeSortable();
-
+                /*
+                if (!$SC.module("dialogs.questions.create").started) {
+                    $SC.module("dialogs.questions.create").start();
+                }
+                */
                 if (!$SC.module("dialogs.questions.select").started) {
                     $SC.module("dialogs.questions.select").start();
                 }
+                /*
+                this.questionCreateModule = $SC.module("dialogs.questions.create");
+                this.listenTo(this.questionCreateModule, "created.question", this.createQuestion.bind(this));
+                */
 
-                this.questionModule = $SC.module("dialogs.questions.select");
-
-                this.listenTo(this.questionModule, "select:item", this.selectQuestion.bind(this));
+                this.questionSelectModule = $SC.module("dialogs.questions.select");
+                this.listenTo(this.questionSelectModule, "select:item", this.selectQuestion.bind(this));
 
             },
             initializeSortable : function() {
@@ -239,7 +247,38 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
                 this.refreshScore();
             },
-            openDialog : function() {
+            openCreateDialog : function() {
+                if (app.module("dialogs.questions.create").started) {
+                    app.module("dialogs.questions.create").stop();
+                }
+                app.module("dialogs.questions.create").start();
+
+                //this.questionCreateModule = $SC.module("dialogs.questions.create");
+                this.listenToOnce(app.module("dialogs.questions.create"), "created.question", this.createQuestion.bind(this));
+
+                app.module("dialogs.questions.create").open();
+            },
+            createQuestion : function(model) {
+
+                var testQuestionModel = new mod.models.question({
+                    question_id : model.get("id"),
+                    question : model.toJSON(),
+                    active : 1
+                });
+
+                var exists = this.collection.where({
+                    question_id : model.get("id"),
+                    lesson_id : this.collection.lesson_id
+                });
+
+                if (_.size(exists) === 0) {
+                    this.collection.add(testQuestionModel);
+                    testQuestionModel.save(null, {silent: true});
+                } else {
+                    // already exists. Show message??
+                }
+            },
+            openSelectDialog : function() {
                 $SC.module("dialogs.questions.select").setFilter({
                     content_id : this.model.get("id")
                 });
@@ -336,11 +375,6 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 test_id = $(this).data("testId");
             }
 
-            console.warn({
-                test_id : test_id,
-                testModel : opt.testModel
-            });
-
             if (!_.isNull(test_id)) {
                 mod.createBlock(this, {
                     test_id : test_id,
@@ -391,7 +425,6 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                     model.set("lesson_id", this.lesson_id);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
-                    //console.warn(model);
                 });
             },
             model : mod.models.question,

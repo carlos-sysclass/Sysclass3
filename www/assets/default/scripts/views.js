@@ -5,7 +5,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     	} else if (formatTo == 'decimal2') {
     		return $.jformat.number(value, "#0.00");
     	} else if (formatTo == 'date' || formatTo == 'time' || formatTo == 'datetime' || formatTo == "isodate") {
-    		console.warn(value, formatTo, formatFrom);
     		if (value == 0) {
     			return "";
     		}
@@ -134,7 +133,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			// INJECT VALUES
 
 	    	for (idx in values) {
-	    		//console.warn(values[idx], idx);
 	    		if (
 	    			this.$(":input[data-update^='" + idx + "']").size() > 0 ||
 	    			this.$(":input[name='" + idx + "']").size() > 0
@@ -229,8 +227,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                 // CORRETING TIMEZONE DIFF
                                 //date.setTime(date.valueOf() + (date.getTimezoneOffset() * 60 * 1000));
 
-                                console.warn(date);
-
                                 //input.datepicker('setDate', date);
                                 input.val(datepicker('update');
 
@@ -270,8 +266,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                 if (input.filter("[value='" + itemValue +"']").size() > 0 || input.filter("[data-value-unchecked='" + itemValue +"']")) {
                                     var innerInput = input.filter("[value='" + itemValue +"']");
                                     var uncheck = false;
-									//console.warn("icheck", input, innerInput, values, itemValue, uncheck);
-
 
                                     if (innerInput.size() == 0) {
 
@@ -411,7 +405,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					});
 					// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
 					this.model.unset(prop, {silent: true});
-                    console.warn($el, $el.is("[data-update-single]"));
                     if ($el.is("[data-update-single]")) {
                         value = _.first(values);
 
@@ -442,8 +435,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				}
 
-				console.warn(prop, value);
-
 			    this.model.set(prop, value);
 
                 this.renderUiItems();
@@ -455,8 +446,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	    	self.trigger("before:save", this.model);
 
-	    	console.warn(this.model.get("abc"));
-
 	    	this.model.save(null, {
 	    		success : function(model, response, options) {
 	    			self.trigger("after:save", model);
@@ -467,7 +456,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	});
 
             self.trigger("complete:save", this.model);
-            console.warn(11);
 	    },
 	    setModel : function(model) {
 	    	this.model = model;
@@ -756,7 +744,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			*/
     	},
         refreshTable : function() {
-            //console.warn(this, this.oTable, , this.oTableApi, new $.fn.dataTable.Api( this.oTable ));
             this.oTable.api().ajax.reload();
         },
 		onRemoveItem : function(e) {

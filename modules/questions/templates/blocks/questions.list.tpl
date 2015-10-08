@@ -57,7 +57,7 @@
             <ul class="list-group ui-sortable margin-bottom-10 items-container">
             </ul>
 
-            <a class="btn btn-sm btn-link add-item-action" href="/module/questions/add">
+            <a class="btn btn-sm btn-link create-question" data-target="#questions-select-modal" data-toogle="modal">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create Question"}
             </a>

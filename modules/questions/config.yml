@@ -71,12 +71,12 @@ crud:
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
       template: form.tpl
-      scripts: ["views.form.questions"]
+      scripts: ["views.form.questions", "views.form.questions.add"]
       variables:
         page_subtitle: Create a new question
     'edit/:identifier':
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
       template: form.tpl
-      scripts: ["views.form.questions"]
+      scripts: ["views.form.questions", "views.form.questions.edit"]
       variables:
         page_subtitle: Edit your questions

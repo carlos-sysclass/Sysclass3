@@ -13,6 +13,7 @@ crud:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
+      #blocks: ["tests.create.dialog"]
       variables:
         page_subtitle: Manage your tests and exams
       context:
@@ -44,6 +45,7 @@ crud:
     'edit/:identifier':
       components: ["select2", "validation", "bootstrap-switch"]
       blocks:
+      #- "questions.create.dialog"
       - "questions.list"
       - "tests.execution.list.table":
           filter:

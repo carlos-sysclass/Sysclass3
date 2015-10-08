@@ -4,12 +4,14 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
     this.route = this.config['route'];
     this.modelPrefix = this.config['model-prefix'];
 
-    var baseItemModelClass = Backbone.DeepModel.extend({
+    this.baseItemModelClass = Backbone.DeepModel.extend({
         response_type : "object",
         save: function(key, val, options) {
             this.trigger("before:save", this);
             //this.trigger('change:' + changes[i], this, current[changes[i]], options);
             Backbone.DeepModel.prototype.save.apply(this);
+
+            this.trigger("after:save", this);
         },
         setResponseType : function(mode) {
             // MODE CAN BE // 
@@ -19,10 +21,12 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
             this.response_type = mode;
         },
         sync : function(method, model, options) {
-            console.info('models.scores/scoreModelClass::sync');
-
-            if (method == "update") {
-                options.url = model.urlRoot + "/" + model.get("id");
+            if (method == "update" || method == "create") {
+                if (method == "update") {
+                    options.url = model.urlRoot + "/" + model.get("id");
+                } else {
+                    options.url = model.urlRoot;
+                }
 
                 var params = [];
 
@@ -37,8 +41,6 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
                     options.url = options.url + "?" + params.join("&");
                 }
 
-                
-
                 //options.data = JSON.stringify(model._asNameValue());
 
                 return Backbone.sync(method, model, options);
@@ -49,18 +51,17 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
             if (method == "update" && this.mode) {
 
             }
-            console.warn(method, model, options);
             return Backbone.sync(method, model, options);
         }
     });
 
     //mod.addInitializer(function() {
         if (typeof this.modelPrefix == "undefined") {
-            this.itemModelClass = baseItemModelClass.extend({
+            this.itemModelClass = mod.baseItemModelClass.extend({
                 urlRoot : "/module/" + this.module_id + "/item/me"
             });
         } else {
-            this.itemModelClass = baseItemModelClass.extend({
+            this.itemModelClass = mod.baseItemModelClass.extend({
                 urlRoot : "/module/" + this.module_id + "/" + this.modelPrefix + "/item/me"
             });
         }

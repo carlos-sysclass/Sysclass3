@@ -10,8 +10,6 @@ $SC.module("views.profile", function(mod, app, Backbone, Marionette, $, _) {
         //var itemModelClass = $SC.module("crud.view.edit").itemModel;
         this.formView = $SC.module("crud.views.edit").getForm();
 
-        console.warn(this.formView.$el);
-
         this.formView.$(".profile-edit").on("click", function() {
             this.formView.$("[href='#tab_1-2']").click();
             //this.formView.$("[href='#tab_1-2']").click();

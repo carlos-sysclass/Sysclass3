@@ -130,6 +130,22 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     public function registerBlocks()
     {
         return array(
+            'tests.create.dialog' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                //$self->putComponent("select2");
+                $self->putComponent("bootstrap-switch");
+
+                //$block_context = $self->getConfig("blocks\\questions.select.dialog\\context");
+                //$self->putItem("questions_select_block_context", $block_context);
+
+                $self->putModuleScript("dialogs.tests.create");
+                //$self->setCache("dialogs.questions.select", $block_context);
+
+                $self->putSectionTemplate("dialogs", "dialogs/create");
+
+                return true;
+            },
             'tests.info.dialog' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
                 //$self->putComponent("jquery-file-upload-image");

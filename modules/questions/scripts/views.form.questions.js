@@ -2,6 +2,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
     // MODELS
 
     this.startWithParent = false;
+
     this.on("start", function(opt) {
 
         var questionChoiceModelClass = Backbone.Model.extend({});
@@ -15,7 +16,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                     this.multiple = opt.multiple;
                 }
                 this.listenTo(this, "change:answer", function(model,value,c,d) {
-                    //console.warn(a,b,c,d,e,this);
                     var correct = this.where({answer : true});
 
                     if (value) {
@@ -148,8 +148,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
                 var data = this.model.get(this.sub_type + ".options");
 
-                console.warn(data, this.sub_type);
-
                 this.collection = new questionChoicesCollectionClass(data, {multiple : (this.sub_type == "multiple_choice")});
                 this.listenTo(this.collection, "add", this.addOne.bind(this));
                 this.listenTo(this.collection, "reset", this.render.bind(this));
@@ -185,8 +183,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                     /* helper : 'original',  */
                     update : function( event, ui ) {
                         var order = $(this).sortable("toArray", {attribute : "data-order"});
-
-                        console.warn(order);
 
                         for(var i = 0; i < self.collection.size(); i++) {
                             self.collection.at(order[i]).set("index", i);
@@ -250,13 +246,13 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 console.info('views.form.questions/questionDetailViewClass::initialize');
 
                 this.parentView = opt.form;
+
                 this.listenTo(this.model, "sync", this.updateChild.bind(this));
                 this.listenTo(this.model, "change:type_id", this.render.bind(this));
                 //this.listenTo(this.model, "before:save", this.updateChildModel.bind(this));
             },
             /*
             request : function(a,b,c,d,e) {
-                console.warn(this,a,b,c,d,e);
                 a.set("a", true);
             },
             */
@@ -270,8 +266,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 var type_id = model.get("type_id");
                 var values = model.pick("options", "answer", "explanation", "answers_explanation", "settings");
                 model.set(type_id, values);
-
-                console.warn(model.toJSON());
 
                 if (!_.has(this.subviews, type_id)) {
                     if (_.has(subviewsClass, type_id)) {
@@ -308,20 +302,21 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             form : formView
         });
     });
+    /*
     $SC.module("crud.views.add").on("start", function() {
-        console.warn(this);
         if (!mod._isInitialized) {
             mod.start({
                 module: this
             });
         }
     });
+    
     $SC.module("crud.views.edit").on("start", function() {
-        console.warn(this);
         if (!mod._isInitialized) {
             mod.start({
                 module: this
             });
         }
     });
+    */
 });
