@@ -31,7 +31,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     public function getLinks() {
         $count = Event::count(); // FAKE, PUT HERE DUE PAYMENTS
         $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Calendars", "Manage")) {
+        if ($depinject->get("acl")->isUserAllowed(null, "Calendar", "Edit")) {
             return array(
                 'communication' => array(
                     array(
@@ -151,6 +151,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
      * [ add a description ]
      *
      * @url GET /manage
+     * @allow(resource=calendar, action=edit)
      */
 
     public function managePage($route)

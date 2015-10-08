@@ -1,6 +1,7 @@
 <?php
 use Phalcon\DI,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Users\UsersGroups,
     Sysclass\Services\L10n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
 /**
@@ -416,7 +417,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
         } else {
             $editItem = \Sysclass\Models\Users\User::findFirstById($id);
 
-            return $editItem->toFullArray(array('Avatars'));
+            return $editItem->toFullArray(array('Avatars', 'UserGroups'));
         }
         return $editItem;
     }
@@ -453,6 +454,18 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
             }
 
             if ($userModel->save()) {
+                if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+                    //UsersGroups::find("user_id = {$userModel->id}")->delete();
+                    
+                    foreach($data['usergroups'] as $group) {
+                        $userGroup = new UsersGroups();
+                        $userGroup->user_id = $userModel->id;
+                        $userGroup->group_id = $group['id'];
+                        $userGroup->save();
+                    }
+                }
+
+
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $userModel->id,
                     self::$t->translate("User created with success"),
@@ -522,6 +535,17 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                 }
 
                 if ($userModel->save()) {
+                    if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+                        UsersGroups::find("user_id = {$userModel->id}")->delete();
+                        
+                        foreach($data['usergroups'] as $group) {
+                            $userGroup = new UsersGroups();
+                            $userGroup->user_id = $userModel->id;
+                            $userGroup->group_id = $group['id'];
+                            $userGroup->save();
+                        }
+                    }
+
                     if ($_GET['redirect'] == "1") {
                         $response = $this->createRedirectResponse(
                             null,
@@ -531,7 +555,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                     } else {
                         $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
                     }
-                    return array_merge($response, $userModel->toFullArray());
+                    return array_merge($response, $userModel->toFullArray('UserGroups'));
                 } else {
                     $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
                     return array_merge($response, $userModel->toFullArray());
@@ -555,16 +579,17 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
         if ($userModel = $this->getCurrentUser(true)) {
             $data = $this->getHttpData(func_get_args());
 
-            if ($userModel->id == $id || $userModel->getType() == "administrator") {
-                if ($userModel->id == $id) {
-                } else {
-                    $userModel = new \Sysclass\Models\Users\User();
+            $depinject = Phalcon\DI::getDefault();
+
+            if ($userModel->id == $id || $depinject->get("acl")->isUserAllowed(null, "Users", "Edit")) {
+                if ($userModel->id != $id) {
+                    $userModel = User::findFirstById($id);
                 }
-                
-                $userModel->assign($data);
+
+                $userModel->viewed_license = $data['viewed_license'];
 
                 // CHECK FOR PASSWORD CHANGING
-                if ($userModel->save()) {
+                if ($userModel->update()) {
                     if ($userModel->viewed_license == 1) {
                         return $this->createRedirectResponse(
                             "/dashboard",
@@ -581,6 +606,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                         );
                     }
                 } else {
+
                     $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
                     return array_merge($response, $userModel->toFullArray());
                 }

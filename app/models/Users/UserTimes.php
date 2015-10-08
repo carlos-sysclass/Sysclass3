@@ -8,6 +8,6 @@ class UserTimes extends Model
 {
     public function initialize()
     {
-        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
+        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => false));
     }
 }

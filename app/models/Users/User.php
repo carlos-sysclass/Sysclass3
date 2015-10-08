@@ -40,7 +40,7 @@ class User extends Model
             "user_id", "group_id",
             "Sysclass\Models\Users\Group",
             "id",
-            array('alias' => 'UserGroups', 'reusable' => true)
+            array('alias' => 'UserGroups')
         );
 
     }

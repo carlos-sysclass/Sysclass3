@@ -37,11 +37,10 @@
 							<input name="email" value="" type="text" placeholder="{translateToken value='Email'}" class="form-control" data-rule-required="true" data-rule-email="true" />
 						</div>
 					</div>
-					<!--
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Primary Group"}</label>
-							<select class="select2-me form-control input-block-level" name="group_id" data-placeholder="{translateToken value='Primary Group'}">
+							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="id">
 								<option value="-1">{translateToken value="Select a group"}</option>
 								{foreach $T_GROUPS as $group}
 									<option value="{$group.id}">{$group.name}</option>
@@ -49,7 +48,6 @@
 							</select>
 						</div>
 					</div>
-					-->
 				</div>
 				<div class="row">
 					<div class="col-md-6">
@@ -70,17 +68,18 @@
 		                </div>
 					</div>
 				</div>
+				{has_permission resource="Users" action="change-password" assign="allowed"}
+
+				{if $T_MODULE_CONTEXT_NAME == "add" || ($T_MODULE_CONTEXT_NAME == "edit" && $allowed)}
 				<h5 class="form-section margin-bottom-10">{translateToken value="Log in details"}</h5>
-				<div class="row">
-					{if $T_MODULE_CONTEXT_NAME == "add"}
-						{include file="./profile/login_and_password.tpl"}
-					{elseif $T_MODULE_CONTEXT_NAME == "edit"}
-						{has_permission resource="Users" action="change-password" assign="allowed"}
-						{if $allowed}
+					<div class="row">
+						{if $T_MODULE_CONTEXT_NAME == "add"}
+							{include file="./profile/login_and_password.tpl"}
+						{elseif $T_MODULE_CONTEXT_NAME == "edit"}
 							{include file="./profile/password.tpl" T_CHECK_OLD=false}
 						{/if}
-					{/if}
-				</div>
+					</div>
+				{/if}
 				<h5 class="form-section margin-bottom-10">{translateToken value="Behavior"}</h5>
 				<div class="row">
 					<div class="col-md-6 col-sm-6">

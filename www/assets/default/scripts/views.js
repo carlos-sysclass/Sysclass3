@@ -187,16 +187,27 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                		}
 		                	}
 		                } else if (input.hasClass("select2-me") && input.is("select")) {
-		                    input.select2("val", values[idx]);
+		                	if (
+		                		!_.isUndefined(input.data("format-attr"))
+		                		&& _.isObject(_.first(values[idx]))
+		                	) {
+		                		var attr = "id";
 
+		                		input.select2("val", _.pluck(values[idx], attr));
+		                	} else {
+			                    input.select2("val", values[idx]);
+							}
 		                } else if (input.hasClass("select2-me") && input.is("[type='hidden']")) {
-							//input.select2("data", values[idx]);
-							//input.select2("data", {id : values[idx]});
-							//console.warn(values[idx]);
+		                	if (
+		                		!_.isUndefined(input.data("format-attr"))
+		                		&& _.isObject(_.first(values[idx]))
+		                	) {
+		                		var attr = "id";
 
-                            input.select2("val", values[idx]);
-
-
+		                		input.select2("val", _.pluck(values[idx], attr));
+		                	} else {
+			                    input.select2("val", values[idx]);
+							}
 						} else if (input.hasClass("wysihtml5")) {
 							var wysihtml5 = $(this).data('wysihtml5');
 							wysihtml5.editor.setValue(values[idx]);
@@ -418,6 +429,21 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				if ($el.is("[data-format-from]")) {
 					value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 				}
+
+				if ($el.is("[data-format-attr]")) {
+					if (_.isArray(value)) {
+						var attr = $el.data("format-attr");
+
+						for(i in value) {
+							var currentValue = value[i];
+							value[i] = {};
+							value[i][attr] = currentValue;
+						}
+					}
+				}
+
+				console.warn(prop, value);
+
 			    this.model.set(prop, value);
 
                 this.renderUiItems();
