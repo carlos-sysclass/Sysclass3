@@ -4,21 +4,22 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			return $.jformat.number(value, "#0.0");
     	} else if (formatTo == 'decimal2') {
     		return $.jformat.number(value, "#0.00");
-    	} else if (formatTo == 'date' || formatTo == 'time' || formatTo == 'datetime') {
+    	} else if (formatTo == 'date' || formatTo == 'time' || formatTo == 'datetime' || formatTo == "isodate") {
+    		console.warn(value, formatTo, formatFrom);
     		if (value == 0) {
     			return "";
     		}
 	    	if (formatFrom == 'unix-timestamp') {
 	    		value = moment.unix(value);
 	    	} else {
-                console.warn(value);
 	    		value = moment(value);
-                console.warn(value.format("L"));
 	    	}
 	    	if (formatTo == 'time') {
 	    		return value.format("hh:mm:ss");
 	    	} else if (formatTo == 'datetime') {
 	    		return value.format("L hh:mm");
+	    	} else if (formatTo == "isodate") {
+				return value.format("YYYY-MM-DD");
 	    	} else { // DEFAULTS TO date
 	    		return value.format("L");
 	    	}
@@ -200,6 +201,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 							var wysihtml5 = $(this).data('wysihtml5');
 							wysihtml5.editor.setValue(values[idx]);
 		                } else  {
+		                	
 							if (input.is("[data-format]")) {
 								input.val(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
 			    			} else {
@@ -257,7 +259,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                 if (input.filter("[value='" + itemValue +"']").size() > 0 || input.filter("[data-value-unchecked='" + itemValue +"']")) {
                                     var innerInput = input.filter("[value='" + itemValue +"']");
                                     var uncheck = false;
-//console.warn("icheck", input, innerInput, values, itemValue, uncheck);
+									//console.warn("icheck", input, innerInput, values, itemValue, uncheck);
 
 
                                     if (innerInput.size() == 0) {
@@ -416,7 +418,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				if ($el.is("[data-format-from]")) {
 					value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 				}
-
 			    this.model.set(prop, value);
 
                 this.renderUiItems();
@@ -428,6 +429,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	    	self.trigger("before:save", this.model);
 
+	    	console.warn(this.model.get("abc"));
+
 	    	this.model.save(null, {
 	    		success : function(model, response, options) {
 	    			self.trigger("after:save", model);
@@ -438,6 +441,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	});
 
             self.trigger("complete:save", this.model);
+            console.warn(11);
 	    },
 	    setModel : function(model) {
 	    	this.model = model;

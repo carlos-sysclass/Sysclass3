@@ -59,7 +59,7 @@
 
 									<ul class="list-inline">
 										<li class="tooltips" data-original-title="{translateToken value="Your Location"}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
-										<li><i class="icon-calendar"></i> <span data-update="birthday" data-format="date" >{$T_EDIT_USER.birthday}</span></li>
+										<li><i class="icon-calendar"></i> <span data-update="birthday" data-format="date" data-format-from="isodate" >{$T_EDIT_USER.birthday}</span></li>
 										<!--
 										{if $T_EDIT_USER.polo_id}
 											<li class="tooltips" data-original-title="{translateToken value="Your Proctoring Center"}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>

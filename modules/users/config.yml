@@ -61,6 +61,7 @@ crud:
     profile:
       components: ["select2","validation","datepicker","pwstrength"]
       stylesheets: ["css/pages/profile"]
+      scripts: ["views.profile"]
       override-route: "edit"
       template: profile.tpl
       variables:

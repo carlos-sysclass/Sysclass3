@@ -522,8 +522,15 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                 }
 
                 if ($userModel->save()) {
-                    $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
-
+                    if ($_GET['redirect'] == "1") {
+                        $response = $this->createRedirectResponse(
+                            null,
+                            self::$t->translate("User updated with success"),
+                            "success"
+                        );    
+                    } else {
+                        $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
+                    }
                     return array_merge($response, $userModel->toFullArray());
                 } else {
                     $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
