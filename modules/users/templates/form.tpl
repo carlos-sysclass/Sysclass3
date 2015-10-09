@@ -103,34 +103,6 @@
 		                </div>
 		            </div>
 		        </div>
-				<div class="row">
-					<div class="col-md-12">
-
-		            </div>
-		        </div>
-				<!--
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Name"}</label>
-							<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Login"}</label>
-							<div class="input-group">
-
-								<input name="login" value="" type="text" placeholder="Login" class="form-control" data-rule-required="true" data-rule-login="true" data-rule-check-duplicate="true" />
-								<span class="input-group-btn">
-									<a href="javascript:;" class="btn blue" id="username1_checker">
-									<i class="fa fa-check"></i> Check </a>
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				-->
 				<div class="clearfix"></div>
 
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}

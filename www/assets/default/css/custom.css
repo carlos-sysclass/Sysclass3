@@ -1214,3 +1214,6 @@ button.calendar-news-item {
     max-height: 600px;
 }
 
+.input-icon i {
+    margin: 9px 2px 4px 10px;
+}
