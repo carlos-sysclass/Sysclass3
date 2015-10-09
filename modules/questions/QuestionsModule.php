@@ -114,17 +114,17 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
                 $self->putComponent("bootstrap-switch");
 
 
-                $items = $this->model("courses/areas/collection")->addFilter(array(
+                $items = $self->model("courses/areas/collection")->addFilter(array(
                     'active' => 1
                 ))->getItems();
 
-                $this->putitem("knowledge_areas", $items);
+                $self->putitem("knowledge_areas", $items);
 
-                $items = $this->model("questions/types")->getItems();
-                $this->putItem("questions_types", $items);
+                $items = $self->model("questions/types")->getItems();
+                $self->putItem("questions_types", $items);
 
-                $items =  $this->model("questions/difficulties")->getItems();
-                $this->putItem("questions_difficulties", $items);
+                $items =  $self->model("questions/difficulties")->getItems();
+                $self->putItem("questions_difficulties", $items);
 
 
                 //$block_context = $self->getConfig("blocks\\questions.select.dialog\\context");
