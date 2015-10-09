@@ -145,6 +145,118 @@ class LoginController extends AbstractSysclassController
 		*/
 
 	}
+	/**
+	 * [Add a description]
+	 *
+	 * @url GET /signup
+	 */
+	public function signupPage()
+	{
+		$di = DI::getDefault();
+
+		try {
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
+			$user = $di->get("authentication")->checkAccess();
+			$this->redirect("/dashboard");
+		} catch (AuthenticationException $e) {
+			/*
+			switch($e->getCode()) {
+				case AuthenticationException :: NO_USER_LOGGED_IN : {
+					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
+		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message_type = 'info';
+					break;
+				}
+			}
+			*/
+		}
+
+
+		$session = $di->get("session");
+		$request_uri = $session->get("requested_uri");
+
+		if ($request_uri) {
+			$session->set("requested_uri", $request_uri);
+		}
+
+		/*
+		if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
+		    try {
+		        $user = MagesterUserFactory :: factory($_COOKIE['cookie_login']);
+		        $user->login($_COOKIE['cookie_password'], true);
+		        if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
+		            //sC_redirect("index.php?ctg=agreement");
+		            $this->redirect("agreement");
+		        } else {
+		            // Check if the mobile version of SysClass is required - if so set a session variable accordingly
+		            //sC_setMobile();
+		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
+		            //LoginRedirect($user->user['user_type']);
+		            $this->redirect("/dashboard/" . $user->user['user_types_ID']);
+		        }
+		        exit;
+		    } catch (MagesterUserException $e) {}
+		}
+		*/
+		// CLEAR SESSION, IF THE USER IS OPENING THE LOGIN PAGE, AFTER CHECKING THE "REMEMBER" COOKIE
+		isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
+
+		// CREATE LOGIC AND CALL VIEW.
+		// SET THEME (WEB SITE FRONT-END, MOBILE FRONT-END, OR ADMIN).
+		$this->putCss("css/pages/login");
+		$this->putCss("css/bigvideo/bigvideo");
+
+		$this->putCss("plugins/uniform/css/uniform.default");
+		$this->putScript("plugins/uniform/jquery.uniform.min");
+
+		$this->putScript("plugins/modernizr/modernizr");
+		$this->putScript("plugins/imagesloaded/imagesloaded");
+		$this->putScript("plugins/bigvideo/bigvideo");
+
+		//$this->putScript("plugins/videoBG/jquery.videoBG");
+		$this->putScript("scripts/pages/login");
+
+		if ($reset) {
+			$this->putItem("open_login_section", "reset");
+		}
+		$this->putItem("requested_uri", $request_uri);
+
+
+		$this->putComponent("select2");
+		//$this->putCss("plugins/select2/select2_metro");
+		//$this->putScript("plugins/select2/select2");
+
+
+
+		parent::display('pages/auth/signup.tpl');
+
+
+
+	    /*
+	    } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
+	        $login = $_GET['login'];
+	        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
+	            $message = _INVALIDUSER;
+	            $message_type = 'failure';
+	        } else {
+	            $user = sC_getTableData("users", "email, name", "login='".$login."'");
+	            if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
+	                $password = mb_substr(md5($login.time()), 0, 8);
+	                $password_encrypted = MagesterUser::createPassword($password);
+	                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
+	                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
+	                $message = _EMAILWITHPASSWORDSENT;
+	                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
+	            } else {
+	                $message = _INVALIDUSER;
+	                $message_type = 'failure';
+	            }
+	        }
+	    }
+		}
+		*/
+
+	}
 
 	/**
 	 * [Add a description]
@@ -446,17 +558,6 @@ class LoginController extends AbstractSysclassController
 		}
 		*/
 	}
-	/**
-	 * [Add a description]
-	 *
-	 * @url GET /signup
-	 */
-	public function signupPage()
-	{
 
-		$message = self::$t->translate("The system doesn't provides this function yet.Please came back in a while.");
-		$message_type = 'warning';
-		$this->redirect("/login", $message, $message_type);
-	}
 
 }
