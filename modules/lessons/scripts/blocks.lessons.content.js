@@ -887,7 +887,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             events : function() {
                 var events = baseLessonChildContentTimelineViewClass.prototype.events.apply(this);
-                events["click .select-question"] = "openDialog";
+                events["click .select-question"] = "openSelectDialog";
+                events["click .create-question"] = "openCreateDialog";
                 return events;
             },
             render : function() {
@@ -902,7 +903,25 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 return this;
             },
-            openDialog : function() {
+            openCreateDialog : function() {
+                if (app.module("dialogs.questions.create").started) {
+                    app.module("dialogs.questions.create").stop();
+                }
+                app.module("dialogs.questions.create").start();
+
+                //this.questionCreateModule = $SC.module("dialogs.questions.create");
+                this.listenToOnce(app.module("dialogs.questions.create"), "created.question", this.createQuestion.bind(this));
+
+                app.module("dialogs.questions.create").open();
+            },
+            createQuestion : function(model) {
+                console.warn(model);
+
+                //app.module("dialogs.questions.select").close();
+                this.model.get("exercise").add(model);
+                //this.model.addQuestion(model);
+            },
+            openSelectDialog : function() {
                 $SC.module("dialogs.questions.select").setFilter({
                     content_id : this.model.get("id")
                 });

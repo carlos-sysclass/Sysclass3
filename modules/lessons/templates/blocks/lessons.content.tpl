@@ -144,11 +144,13 @@
                         <li><a href="#">Separated link </a></li>
                     </ul>
                 </div>
+                href="/module/questions/add"
                 -->
-                <a class="btn btn-sm btn-primary" href="/module/questions/add" >
+                <a class="btn btn-sm btn-primary create-question" data-target="#questions-create-modal" data-toogle="modal">  
                     <i class="fa fa-plus"></i>
                     {translateToken value="Add a new Question"}
                 </a>
+
 
                 <a class="btn btn-sm btn-warning select-question" data-target="#questions-select-modal" data-toogle="modal" >
                     <i class="fa fa-database"></i>
@@ -183,14 +185,80 @@
 </script>
 
 <script type="text/template" id="exercise-question-timeline-item">
+<li class="list-file-item list-question-item">
+    <!--
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+        <i class="fa fa-arrows"></i>
+    </a>
+    -->
+
+    <span class="<% if (model.active == "0") { %>text-danger<% } else { %>text-primary<% } %>"
+    >
+        <%= model.title %>
+    </span>
+
+    <span class="btn btn-sm btn-circle btn-default disabled">
+        <!-- <i class="fa fa-question"></i> -->
+        <%= model.type %>
+    </span>
+    <% if (model.difficulty == "Easy") { %>
+        <span class="btn btn-sm btn-circle green disabled">
+            <%= model.difficulty %>
+        </span>
+    <% } else if (model.difficulty == "Normal") { %>
+        <span class="btn btn-sm btn-circle yellow disabled">
+            <%= model.difficulty %>
+        </span>
+    <% } else if (model.difficulty == "Hard") { %>
+        <span class="btn btn-sm btn-circle red disabled">
+            <%= model.difficulty %>
+        </span>
+    <% } else if (model.difficulty == "Very Hard") { %>
+        <span class="btn btn-sm btn-circle dark disabled">
+            <%= model.difficulty %>
+        </span>
+    <% } %>
+
+    <div class="list-file-item-options">
+        <% if (!_.isUndefined(model.id)) { %>
+            <!--
+            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0">
+            -->
+        <% } %>
+        <a class="btn btn-sm btn-danger delete-question-action" href="javascript: void(0);"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value="Are you sure?"}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+        >
+            <i class="fa fa-trash"></i>
+        </a>
+    </div>
+</li>
+</script>
+<script type="text/template" id="exercise-question-timeline-item2">
     <li class="list-file-item list-question-item">
         <span class="btn btn-sm">
             <%= model.title %>
         </span>
         <div class="list-file-item-options">
+            <!--
             <a class="btn btn-sm btn-primary" href="/module/questions/edit/<%= model.question_id %>" >
                 <i class="fa fa-edit"></i>
             </a>
+            -->
+
+            <a class="btn btn-sm btn-info info-question-item" >
+                <i class="fa fa-info-circle"></i>
+            </a>
+
 
             <a class="btn btn-sm btn-danger delete-question-item" href="javascript: void(0);" data-question-id="<%= model.question_id %>"
                 data-toggle="confirmation"
