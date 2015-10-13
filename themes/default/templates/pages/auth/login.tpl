@@ -78,7 +78,7 @@
 				</p>
 			</div>
 			{/if}
-			{if $T_CONFIGURATION.enable_public_signup}
+			{if $T_CONFIGURATION.signup_enable}
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}

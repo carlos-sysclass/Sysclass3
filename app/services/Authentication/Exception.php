@@ -11,6 +11,8 @@ class Exception extends \Phalcon\Exception
     const NO_USER_LOGGED_IN = 905;
     const CANT_LOGOUT_RIGHT_NOW = 906;
     const USER_ACCOUNT_IS_LOCKED = 907;
+    const USER_PUBLIC_SIGNUP_IS_FORBIDEN = 908;
+    const USER_DATA_IS_INVALID_OR_INCOMPLETE = 909;
     /*
     const INVALID_LOGIN = 401;
     const USER_NOT_EXISTS = 402;
