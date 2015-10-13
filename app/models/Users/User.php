@@ -70,4 +70,55 @@ class User extends Model
 
         return $dashboards;
     }
+
+    public function createNewLogin() {
+        // SANITIZE DATA
+        $depinject = \Phalcon\DI::getDefault();
+        $stringHelper = $depinject->get("stringsHelper");
+        
+        $name = $this->name;
+        $surname = $this->surname;
+
+        $name       = trim($stringHelper->clearAccents($name));
+        $surname    = trim($stringHelper->clearAccents($surname));
+
+        if (strlen($name) > 0 && (strlen($surname) > 0)) {
+            $firstname = explode(' ', $name);
+            $firstname = $firstname[0];
+
+            $lastname = explode(' ', $surname);
+
+            if (strlen($lastname[count($lastname) - 1]) > 0) {
+                $lastname = $lastname[count($lastname) - 1];
+            } elseif (strlen($lastname[count($lastname) - 2]) > 0) {
+                $lastname = $lastname[count($lastname) - 2];
+            } elseif (strlen($lastname[count($lastname) - 3]) > 0) {
+                $lastname = $lastname[count($lastname) - 3];
+            } else {
+                return false;
+            }
+        }
+        $login = strtolower($firstname) . '.' .  strtolower($lastname);
+
+        // CHECK LOGIN EXISTENCE AND ADD SEQUENCIAL NUMBERS IF NECESSARY
+        $originalLogin = $login;
+        $exists = -1;
+        $i = 1;
+        while ($exists <> 0) {
+            $exists = self::count(array(
+                'conditions' => "login = ?0",
+                'bind' => array($login)
+                //'bind' => array('admin')
+            ));
+
+            $login = $originalLogin . mt_rand(0, 1000);
+        }
+        return $this->login = $login;
+
+    }
+
+    public function createRandomPass($len = 8) {
+        return substr(md5(rand().rand()), 0, $len);
+    }
+
 }

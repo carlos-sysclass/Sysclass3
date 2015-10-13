@@ -11,12 +11,15 @@ class Configuration extends Component
     public function __construct() {
         if (is_null(self::$cfg)) {
             // LOAD CONFIGURATION
+            /*
             $configRS = Settings::find(array(
                 "cache" => array(
                     "key"      => "settings-configuration",
                     "lifetime" => 600
                 )
             ));
+            */
+            $configRS = Settings::find();
 
             $configRS->setHydrateMode(Resultset::HYDRATE_ARRAYS);
             self::$cfg = array();
@@ -33,6 +36,10 @@ class Configuration extends Component
                 return (bool) $value;
                 break;
             }
+            case "int" : {
+                return !is_numeric($value) ? null : (int) $value;
+                break;
+            }            
             default : {
                 return $value;
             }

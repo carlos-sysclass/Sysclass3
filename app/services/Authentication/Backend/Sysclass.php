@@ -23,6 +23,39 @@ class Sysclass extends Component implements IAuthentication
         }
         return false;
     }
+    public function signup($info, $options = null)
+    {
+        if ($info instanceof User) {
+            $user = $info;
+        } else {
+            $user = new User();
+            $user->assign($info);
+        }
+
+        if (empty($user->login)) {
+            $user->login = $user->createNewLogin();
+        }
+
+        if (empty($user->passwd)) {
+            $password = $user->createRandomPass();
+            // ENCRYPT PASS
+            $user->password = $this->hashPassword($password, $user);
+        }
+
+        $user->viewed_license = 0;
+
+        if ($this->configuration->get("signup_must_approve")) {
+            $user->pending = 1;
+        } else {
+            $user->pending = 0;
+        }
+
+        if (!$user->save()) {
+            throw new AuthenticationException("USER_DATA_IS_INVALID_OR_INCOMPLETE", AuthenticationException::USER_DATA_IS_INVALID_OR_INCOMPLETE);
+        }
+
+        return $user;
+    }
 
     public function checkPassword($password, User $user = null)
     {

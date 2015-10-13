@@ -6,6 +6,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\Users\UserTimes;
 
 class Adapter extends Component implements IAuthentication, EventsAwareInterface
@@ -22,7 +23,14 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
     public function getDefaultBackend() {
         // TODO: GET FROM CONFIGURATION
-        return $this->configuration->get("default_auth_backend");
+        $default_backend = ucfirst(strtolower($this->configuration->get("default_auth_backend")));
+
+        $class = "Sysclass\\Services\\Authentication\\Backend\\" . $default_backend;
+        if (class_exists($class)) {
+            return new $class();
+        }
+
+        return false;
     }
 
     public function getBackend($info) {
@@ -39,10 +47,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
                 return new $class();
             } else {
                 // TRY DEFAULT BACKEND
-                $class = "Sysclass\\Services\\Authentication\\Backend\\" . ucfirst(strtolower($this->getDefaultBackend()));
-                if (class_exists($class)) {
-                    return new $class();
-                }
+                return $this->getDefaultBackend();
             }
         }
         return false;
@@ -186,6 +191,57 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
         $this->_eventsManager->fire("authentication:afterLock", $this, $user);
 
         return $user;
+    }
+
+    public function signup($info, $options = null)
+    {
+        $this->_eventsManager->fire("authentication:beforeSignup", $this);
+
+        // LOGIN PROCESS
+        // 1.1 Create the new login and a temporary pass
+        // 1.2 Save the user
+        // 1.3 Put him in default groups
+
+        $backend = $this->getDefaultBackend();
+
+        if ($this->configuration->get("signup_enable") != "1") {
+            throw new AuthenticationException("USER_PUBLIC_SIGNUP_IS_FORBIDEN", AuthenticationException::USER_PUBLIC_SIGNUP_IS_FORBIDEN);
+        }
+
+        if ($backend) {
+            try {
+                // 1.1 Create the new login and a temporary pass
+                if (!array_key_exists('disableBackends', $options) || $options['disableBackends'] == FALSE) {
+                    if (($user = $backend->signup($info, $options)) === FALSE) {
+                    }
+                }
+            } catch (AuthenticationException $e) {
+                // JUST BY-PASS THE EXCEPTION
+                throw new AuthenticationException($e->getMessage(), $e->getCode());
+            }
+
+            // CHECK FOR DEFAULT GROUP FOR USERS
+            $default_group_id = $this->configuration->get("signup_group_default");
+
+            //var_dump($default_group_id);
+            //exit;
+
+            if (is_numeric($default_group_id) && $default_group_id > 0) {
+                $userGroup = new UsersGroups();
+                $userGroup->user_id = $user->id;
+                $userGroup->group_id = $default_group_id;
+                $userGroup->save();
+            }
+
+            
+            //$this->_eventsManager->collectResponses(true);
+            $this->_eventsManager->fire("authentication:afterSignup", $this, $user);
+
+            return $user;
+
+        }
+        throw new AuthenticationException("error", AuthenticationException::NO_BACKEND_DISPONIBLE);
+        return false;
     }
 
 

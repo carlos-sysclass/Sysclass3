@@ -214,7 +214,7 @@ class LoginController extends AbstractSysclassController
 		$this->putScript("plugins/bigvideo/bigvideo");
 
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
-		$this->putScript("scripts/pages/login");
+		$this->putScript("scripts/pages/signup");
 
 		if ($reset) {
 			$this->putItem("open_login_section", "reset");
@@ -226,7 +226,8 @@ class LoginController extends AbstractSysclassController
 		//$this->putCss("plugins/select2/select2_metro");
 		//$this->putScript("plugins/select2/select2");
 
-
+        $languages = self::$t->getItems();
+        $this->putitem("languages", $languages);
 
 		parent::display('pages/auth/signup.tpl');
 
@@ -257,6 +258,62 @@ class LoginController extends AbstractSysclassController
 		*/
 
 	}
+	/**
+	 * [Add a description]
+	 *
+	 * @url POST /signup
+	 */
+	public function signupAction()
+	{
+		$di = DI::getDefault();
+
+		try {
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND REDIRECT IF SO
+			$user = $di->get("authentication")->checkAccess();
+			$this->redirect("/dashboard");
+		} catch (AuthenticationException $e) {
+			/*
+			switch($e->getCode()) {
+				case AuthenticationException :: NO_USER_LOGGED_IN : {
+					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
+		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message_type = 'info';
+					break;
+				}
+			}
+			*/
+		}
+
+
+        //$itemModel = $this->model("user/item");
+        // TODO CHECK IF CURRENT USER CAN DO THAT
+        $data = $this->getHttpData(func_get_args());
+
+        if ($user = $di->get("authentication")->signup($data)) {
+        	// SHOW SUCCESS MESSAGE
+        	if ($di->get("configuration")->get("signup_must_approve")) {
+        		$this->redirect(
+        			"/login", 
+        			self::$t->translate("Your registration has been received. You'll be notified by e-mail when your registration is accepted."),
+        			"info"
+        		);
+        	} else {
+        		$this->redirect(
+        			"/login", 
+        			self::$t->translate("Your registration has been received. Please check your e-mail for instructions."),
+        			"success"
+        		);
+        	}
+        } else {
+        	// SHOW ERROR MESSAGE
+    		$this->redirect(
+    			"/signup", 
+    			self::$t->translate("A problem ocurred when tried to save you data. Please try again."),
+    			"danger"
+    		);
+        }
+	}
+
 
 	/**
 	 * [Add a description]

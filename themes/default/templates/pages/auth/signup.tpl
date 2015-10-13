@@ -5,9 +5,13 @@
 			<img src="{Plico_GetResource file='img/logo.png'}" alt="" style="max-width: 100%" />
 		</div>
 		<!-- BEGIN LOGIN FORM -->
-		<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="/signup">
 			<h3 class="form-title">{translateToken value="Create a new account"}</h3>
 			<div class="form-body">
+				<div class="alert alert-danger hidden">
+					<button class="close" data-dismiss="alert"></button>
+					<span>{translateToken value="There's some errors"}</span>
+				</div>
 
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Name"}</label>
