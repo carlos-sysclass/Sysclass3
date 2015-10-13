@@ -27,25 +27,30 @@
 #echo $bamboo_vars_version
 
 #echo "FULL VERSION: $bamboo_vars_version.$bamboo_buildNumber"
-#
+
+if [ -z $bamboo_jira_version ]; then
+	base_version=$bamboo_vars_base_version
+else
+	base_version=$bamboo_jira_version
+fi
+
 #DUMP OUTS RELEASE
-echo "$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/RELEASE
+echo "$base_version.$bamboo_buildNumber" >> $bamboo_working_directory/RELEASE
 
 #mkdir -p $bamboo_working_directory/hooks/srv-variables.txt
 touch $bamboo_working_directory/hooks/variables.txt
 
 
-echo "base_version=$bamboo_vars_base_version" >> $bamboo_working_directory/hooks/variables.txt
+echo "base_version=$base_version" >> $bamboo_working_directory/hooks/variables.txt
 echo "build_number=$bamboo_buildNumber" >> $bamboo_working_directory/hooks/variables.txt
-echo "full_version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/hooks/variables.txt
+echo "full_version=$base_version.$bamboo_buildNumber" >> $bamboo_working_directory/hooks/variables.txt
 echo "branch=$bamboo_planRepository_branch" >> $bamboo_working_directory/hooks/variables.txt
 echo "repositoryUrl=$bamboo_planRepository_repositoryUrl" >> $bamboo_working_directory/hooks/variables.txt
 echo "revision=$bamboo_planRepository_revision" >> $bamboo_working_directory/hooks/variables.txt
 
-echo "project.version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_working_directory/build.properties
+echo "project.version=$base_version.$bamboo_buildNumber" >> $bamboo_working_directory/build.properties
 
 # GET RELEASE NOTES FROM JIRA (IF POSSIBLE)
-
 #bamboo_planRepository_1_branch=develop
 #bamboo_repository_revision_number=c4ebf91ebc4f36847e116295294a96d7ba73fef8
 #bamboo_repository_360449_previous_revision_number=e4640f99ced475ae886fd58c51c3e0d6c545c3c0
@@ -57,7 +62,6 @@ echo "project.version=$bamboo_vars_base_version.$bamboo_buildNumber" >> $bamboo_
 #bamboo_planRepository_name=wiseflex/sysclass3:develop
 #bamboo_buildNumber=2
 #bamboo_buildResultsUrl=http://tasks.plicoweb.com.br/bamboo/browse/SC-DEV-JOB1-2
-
 #bamboo_agentId=131073
 #bamboo_shortPlanKey=DEV
 #bamboo_repository_360449_branch_name=develop
