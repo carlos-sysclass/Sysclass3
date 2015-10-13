@@ -47,6 +47,12 @@ class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel 
         $data['instructor_id'] = json_decode($data['instructor_id'], true);
 
         if ($this->getUserFilter()) {
+
+            $this->model("classes/progress")
+                ->setUserFilter($this->getUserFilter())
+                ->recalculateProgress($item['id']);
+
+
             $progress = $this->model("classes/progress")->clear()->addFilter(array(
                 'user_id'       => $this->getUserFilter(),
                 'class_id'    => $item['id']

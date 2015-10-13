@@ -1201,7 +1201,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function() {
-				console.warn(jQuery.fn.easyPieChart);
+				//console.warn(jQuery.fn.easyPieChart);
 				if (jQuery.fn.easyPieChart) {
 
 					this.$(".lesson").easyPieChart({
