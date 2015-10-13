@@ -39,7 +39,6 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
                     ->addFilter(array(
                         'lesson_id'     => $item['id']
                     ))->getItems();
-
                 $data[$key]['progress'] = reset($progress);
             }
 
@@ -63,6 +62,11 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
             ))->getItems();
 
         if ($this->getUserFilter()) {
+
+            $this->model("lessons/progress")
+                ->setUserFilter($this->getUserFilter())
+                ->recalculateProgress($identifier);
+
             $progress = $this->model("lessons/progress")->clear()
                 ->setUserFilter($this->getUserFilter())
                 ->addFilter(array(

@@ -73,6 +73,10 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
         }
 
         if ($this->getUserFilter()) {
+            $this->model("courses/progress")
+                ->setUserFilter($this->getUserFilter())
+                ->recalculateProgress($item['id']);
+
             $progress = $this->model("courses/progress")->clear()->addFilter(array(
                 'user_id'       => $this->getUserFilter(),
                 'course_id'    => $item['id']
