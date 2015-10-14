@@ -31,15 +31,20 @@ crud:
         - mData: login
           label: Login
 
-        - mData: creation_time
-          sType: unix-moment-since
+        - mData: pending
+          sType: table-boolean
           sClass: text-center
-          label: User Since
+          label: Pending aproval
 
-        - mData: last_login
-          sType: table-datetime
+        - mData: viewed_license
+          sType: table-boolean
           sClass: text-center
-          label: Last Login
+          label: License Viewed
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
 
         - mData: options
           sType: table-options
