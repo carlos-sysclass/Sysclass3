@@ -117,6 +117,7 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$layoutManager->loadLayout($dashboard_id);
 
 			$topbarMenu = $layoutManager->getMenuBySection("topbar");
+
         	$this->putItem("topbar_menu", $topbarMenu);
 
         	parent::beforeDisplay();

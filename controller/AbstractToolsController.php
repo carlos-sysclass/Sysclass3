@@ -55,9 +55,13 @@ abstract class AbstractToolsController extends PhalconWrapperController
         // GET ALL MODULES, CHECK FOR IMenu Interface, CHECK FOR SECTION
         $modules = $this->getModules("ISectionMenu");
 
+        
+
+
         $menu_items = array();
         foreach($modules as $index => $module) {
             $menu_item = $module->getSectionMenu($section);
+
             if ($menu_item) {
                 $menu_items[$index] = $menu_item;
             }
@@ -77,19 +81,18 @@ abstract class AbstractToolsController extends PhalconWrapperController
                 if (array_key_exists($sortIndex, $data)) {
                     $dataArray[$sortIndex] = $data[$sortIndex];
                     unset($data[$sortIndex]);
-                } else {
-
-                //} else {
-                    //$dataArray[$sortIndex] = false;
                 }
             }
-        }
-        if (strlen($preserveUncontainedKey) > 0 && count($data) > 0) {
-            $dataArray[$preserveUncontainedKey] = array();
-            foreach($data as $key => $uncontained) {
-                $dataArray[$preserveUncontainedKey] = array_merge($dataArray[$preserveUncontainedKey], $uncontained);
-            }
-        }
+
+	        if (strlen($preserveUncontainedKey) > 0 && count($data) > 0) {
+	            $dataArray[$preserveUncontainedKey] = array();
+	            foreach($data as $key => $uncontained) {
+	                $dataArray[$preserveUncontainedKey] = array_merge($dataArray[$preserveUncontainedKey], $uncontained);
+	            }
+	        }
+    	} else {
+        	$dataArray = $data;
+    	}
         return $dataArray;
     }
 

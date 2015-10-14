@@ -12,6 +12,7 @@ return array(
     'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'PhpCollection' => array($vendorDir . '/phpcollection/phpcollection/src'),
+    'Phalcon' => array($vendorDir . '/phalcon/devtools/scripts'),
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
     'PHPParser' => array($vendorDir . '/nikic/php-parser/lib'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),

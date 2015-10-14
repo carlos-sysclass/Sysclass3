@@ -9,10 +9,50 @@
  * @todo think about move this module to PlicoLib
  */
 
-class DashboardModule extends SysclassModule implements IWidgetContainer
+class DashboardModule extends SysclassModule implements ISectionMenu, IWidgetContainer
 {
     protected $layout_id;
     protected $config;
+
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+
+        if ($section_id == "topbar") {
+
+            $currentUser = $this->getCurrentUser(true);
+            $dashboards = $currentUser->getDashboards();
+
+            $items = array();
+
+            foreach($dashboards as $dashboard) {
+                $items[] = array(
+                    'link'  => "/dashboard/" . $dashboard,
+                    'text'  => self::$t->translate(ucfirst($dashboard))
+                );
+            }
+
+//            $this->putModuleScript("models.translate");
+//            $this->putModuleScript("menu.translate");
+
+            $menuItem = array(
+                'icon'      => 'fa fa-dashboard',
+                'notif'     => count($items),
+                /*
+                'link'  => array(
+                    'link'  => $this->getBasePath() . "change",
+                    'text'  => self::$t->translate('Dashboard')
+                ),
+                */
+                'type'      => 'switch',
+                'items'     => $items,
+                'extended'  => false
+                //'template'  => "translate-menu"
+            );
+
+            return $menuItem;
+        }
+        return false;
+    }
 
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('dashboard.linkable.view', $widgetsIndexes)) {
