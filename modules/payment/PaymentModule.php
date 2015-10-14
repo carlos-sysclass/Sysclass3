@@ -7,8 +7,9 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class PaymentModule extends SysclassModule implements ISectionMenu
+class PaymentModule extends SysclassModule
 {
+    /*
     // CREATE FUNCTION HERE
     public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
@@ -22,19 +23,6 @@ class PaymentModule extends SysclassModule implements ISectionMenu
             //$messages = $this->getUnviewedMessages(array($currentFolder));
 
             //$items = array(1);
-            /*
-            foreach($messages as $msg) {
-                $items[] = array(
-                    'link'      => $this->getBasePath() . "view/" . $msg['id'],
-                    'values' => array(
-                        'photo'     => 'img/avatar2.jpg',
-                        'from'      => $msg['sender'],
-                        'time'      => $msg['timestamp'],
-                        'message'   => substr(strip_tags($msg['body']), 0, 50) . "..."
-                    )
-                );
-            }
-            */
             if ($total > 0) {
 
 
@@ -60,4 +48,5 @@ class PaymentModule extends SysclassModule implements ISectionMenu
         }
         return false;
     }
+    */
 }

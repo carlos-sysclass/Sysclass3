@@ -1,9 +1,9 @@
 {
     "require": {
-        "monolog/monolog": "1.12.*"
+        "monolog/monolog": "1.12.*",
+	"phalcon/devtools": "dev-master"
     },
     "require-dev": {
-
         "phpdocumentor/phpdocumentor": "2.*",
         "phing/phing": "2.*",
         "phploc/phploc": "*",

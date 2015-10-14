@@ -2,6 +2,7 @@
 class DashboardController extends AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
+    // 
 /*
     protected function startEnviroment($request) {
         // @todo put here the merge content from student.php administrator.php and professor.php
@@ -42,26 +43,17 @@ class DashboardController extends AbstractSysclassController
 	{
         $currentUser = $this->getCurrentUser(true);
 
-        //$currentUser
-
         $this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
-        // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
-        /*
-        if ($user_type != 0 && ($user_type == $currentUser->user['user_types_ID'] || $user_type == $currentUser->getType())) {
-        } else {
-            $user_type = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->user['user_types_ID'];
-        }
-        */
-        //$layout_index = $currentUser->user['user_types_ID'] == 0 ? $currentUser->getType() : $currentUser->getType() . "." . $currentUser->user['user_types_ID'];
 
+        // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
         $dashboardManager = $this->module("dashboard");
 
         $dashboards = $currentUser->getDashboards();
 
-        //var_dump($dashboards);
-        //exit;
-
-        if (in_array($currentUser->dashboard_id, $dashboards) && $dashboardManager->layoutExists($currentUser->dashboard_id)) {
+        if (in_array($dashboard_id, $dashboards) && $dashboardManager->layoutExists($dashboard_id)) {        
+            $currentUser->dashboard_id = $dashboard_id;
+            $currentUser->save();
+        } elseif (in_array($currentUser->dashboard_id, $dashboards) && $dashboardManager->layoutExists($currentUser->dashboard_id)) {
             $dashboard_id = $currentUser->dashboard_id;
         } else {
 

@@ -70,7 +70,17 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown {$item.type} hidden-xs">
+				<li class="dropdown hidden-xs">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						{if $item.icon}
+			      		<i class="{$item.icon}"></i>
+			      		{/if}
+			      		{$item.text}
+						{if $item.notif}
+			      		<span class="badge">{$item.notif}</span>
+			      		{/if}
+			      	</a>
+			      	<ul class="dropdown-menu {$item.type}">
 					{foreach $item.items as $subitem}
 						<li>
 							<a href="{$subitem.link}">{$subitem.text}</a>
