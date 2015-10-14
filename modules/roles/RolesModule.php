@@ -132,6 +132,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 //if (!$this->createClientContext("set-resources", array('entity_id' => $id))) {
                   //  $this->entryPointNotFoundError($this->getSystemUrl('home'));
                 //}
+                
 
                 //$roleModel = AclRole::findFirstById($id);
 
@@ -142,6 +143,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
 
                 // GET ALL THIS DATA FROM config.yml
                 $self->putComponent("data-tables");
+                $self->putComponent("bootstrap-switch");
                 $self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
                 //$self->putComponent("bootstrap-switch");

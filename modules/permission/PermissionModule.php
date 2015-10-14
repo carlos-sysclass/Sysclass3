@@ -321,9 +321,18 @@ class PermissionModule extends SysclassModule implements IBlockProvider
                 if (array_key_exists('block', $_GET)) {
                     $items[$key]['options'] = array(
                         'check'  => array(
-                            'icon'  => 'icon-check',
-                            'link'  => $baseLink . "block/" . $item['id'],
-                            'class' => 'btn-sm btn-danger'
+                            //'icon'  		=> 'icon-check',
+                            //'link'  		=> $baseLink . "block/" . $item['id'],
+                            //'text' 			=> self::$t->translate('Disabled'),
+                            //'class' 		=> 'btn-sm btn-danger',
+                            'type'			=> 'switch',
+                            //'state'			=> 'disabled',
+                            'attrs'			=> array(
+					        	'data-on-color' => "success",
+					        	'data-on-text' => self::$t->translate('YES'),
+					        	'data-off-color' =>"danger",
+					        	'data-off-text'	=> self::$t->translate('NO')
+                            )
                         )
                     );
                 } else {

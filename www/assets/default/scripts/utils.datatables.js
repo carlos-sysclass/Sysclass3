@@ -15,13 +15,17 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				"click .datatable-option-remove" : "removeItem",
 				"click .datatable-option-check" : "checkItem",
+				"switchChange.bootstrapSwitch .datatable-option-switch" : "switchItem",
 				"click .datatable-actionable" : "doAction"
 			},
         	initialize : function(opt) {
 		        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
+		        var view = this;
 		        var datatableOpt = {
 		        	"rowCallback": function( row, data ) {
 						mod.trigger("datatable:item:draw", row, data);
+
+						view.trigger("draw.datatables", row, data);
 		        	}
 		        };
 
@@ -36,6 +40,21 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
         	},
+        	switchItem: function(e, state) {
+				e.preventDefault();
+				console.warn(e);
+
+				var data = this.oTable._($(e.currentTarget).closest("tr"));
+				this.trigger("switchItem.datatables", _.first(data));
+				/*
+				if ($(e.currentTarget).hasClass("btn-danger")) {
+					$(e.currentTarget).removeClass("btn-danger").addClass("btn-success");
+				} else {
+					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
+				}
+				*/
+        	},
+
         	checkItem: function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
@@ -48,6 +67,10 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
 				}
         	},
+
+        	
+
+
         	setUrl : function(url) {
         		this.oTable.api().ajax.url(url).load();
         	},

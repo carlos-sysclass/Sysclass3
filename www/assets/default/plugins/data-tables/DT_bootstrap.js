@@ -1,5 +1,8 @@
 /* Set the defaults for DataTables initialisation */
-var dataTableOptionsTemplate = _.template($("#datatables-options-template").html());
+var dataTableOptionTemplates = {
+	'default' : _.template($("#datatables-option-default-template").html(), null, {variable : 'item'}),
+	'switch' : _.template($("#datatables-option-switch-template").html(), null, {variable : 'item'})
+};
 //console.log($("#datatables-options-template").html());
 //
 jQuery.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
@@ -224,7 +227,15 @@ $.extend( true, $.fn.dataTable.defaults, {
 				if (type == 'display') {
 					result = [];
 					for(i in data) {
-						result.push(dataTableOptionsTemplate({item: data[i], key : i}));
+						var type = 'default';
+
+						if (!_.isUndefined(data[i].type) && _.has(dataTableOptionTemplates, data[i].type)) {
+							type = data[i].type;
+						}
+
+						var template = dataTableOptionTemplates[type];
+
+						result.push(template(_.extend(data[i], {key : i})));	
 					}
 					return result.join("");
 				}

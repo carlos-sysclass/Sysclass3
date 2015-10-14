@@ -35,6 +35,7 @@ jQuery(document).ready(function() {
 
     $SC.addTable = function(name, obj) {
         this._tables[name] = obj;
+        this.trigger("added.table", name, obj);
         return obj;
     };
 

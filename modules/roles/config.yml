@@ -73,7 +73,7 @@ blocks:
       - mData: options
         sType: table-options
         sClass: text-center
-        label: Actions
+        label: Enabled
   'roles.users.dialog':
     context:
       #ajax_source: "/module/roles/items/users/datatable//"

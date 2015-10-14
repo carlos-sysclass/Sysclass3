@@ -51,33 +51,34 @@
 		<!-- END CONTAINER -->
 		{block name="underscore-templates"}
 		{* MAKE A WAY TO INJECT TOOLTIPS ON OPTIONS OBJECTS *}
-		<script type="text/template" id="datatables-options-template">
-				<a
-					class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
-					href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>javascript: void(0);<% } %>"
-					<% if (item.action != undefined) { %>data-action-url="<%= item.action %>"<% } %>
-					<% if (item.method != undefined) { %>data-action-method="<%= item.method %>"<% } %>
-					<% if (key == "remove") { %>
-	                    data-toggle="confirmation"
-	                    data-original-title="{translateToken value="Are you sure?"}"
-	                    data-placement="left"
-	                    data-singleton="true"
-	                    data-popout="true"
-	                    data-btn-ok-icon="fa fa-trash"
-	                    data-btn-ok-class="btn-sm btn-danger"
-	                    data-btn-cancel-icon="fa fa-times"
-	                    data-btn-cancel-class="btn-sm btn-warning"
-	                    data-btn-ok-label="{translateToken value="Yes"}"
-	                    data-btn-cancel-label="{translateToken value="No"}"
-					<% } else { %>
+		<script type="text/template" id="datatables-option-default-template">
+			<% console.warn(item); %>
+			<a
+				class="datatable-option-<%= item.key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
+				href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>javascript: void(0);<% } %>"
+				<% if (item.action != undefined) { %>data-action-url="<%= item.action %>"<% } %>
+				<% if (item.method != undefined) { %>data-action-method="<%= item.method %>"<% } %>
+				<% if (item.key == "remove") { %>
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+				<% } else { %>
 
-					<% } %>
-					<% if (item.attrs != undefined) { %>
-						<% _.each(item.attrs, function(value, tag) { %>
-							<%= tag %>="<%= value %>"
-						<% }); %>
-					<% } %>
-				>
+				<% } %>
+				<% if (item.attrs != undefined) { %>
+					<% _.each(item.attrs, function(value, tag) { %>
+						<%= tag %>="<%= value %>"
+					<% }); %>
+				<% } %>
+			>
 				<% if (item.icon != undefined) { %>
 					<i class="<%= item.icon %>"></i>
 				<% } %>
@@ -86,6 +87,25 @@
 				<% } %>
 			</a>
 		</script>
+		<script type="text/template" id="datatables-option-switch-template">
+	        <input 
+	        	name="datatable-switch-<%= item.key %>"
+	        	type="checkbox" 
+	        	class="form-control bootstrap-switch-me datatable-option-switch"
+	        	data-size="small"
+				<% if (item.attrs != undefined) { %>
+					<% _.each(item.attrs, function(value, tag) { %>
+						<%= tag %>="<%= value %>"
+					<% }); %>
+				<% } %>
+	        	value="1"
+	        	<% if (item.state == "enabled") { %>
+	        	checked="checked"
+	        	<% } %>
+	        	data-value-unchecked="0" />
+	       
+		</script>
+		<!--
 		<script type="text/template" id="datatables-options-template">
 			<a
 				class="datatable-option-<%= key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
@@ -104,6 +124,7 @@
 				<% } %>
 			</a>
 		</script>
+		-->
 
 		{/block}
 		<!-- BEGIN FOOTER -->
