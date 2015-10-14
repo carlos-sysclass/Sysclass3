@@ -2,7 +2,7 @@
 
 
 {block name="inner-content"}
-	<h3 class="form-section">Terms of Use ("Terms")</h3>
+	<h3 class="block form-section">Terms of Use ("Terms")</h3>
 	<div class="agreement-container form-group">
 	<p>Last updated: September 29, 2015</p>
 

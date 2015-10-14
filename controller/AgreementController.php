@@ -40,7 +40,7 @@ class AgreementController extends AbstractSysclassController
 	{
         $currentUser = $this->getCurrentUser(true);
 
-        $this->putComponent("validation", "bootstrap-switch");
+        $this->putComponent("validation", "icheck");
         $this->putScript("scripts/pages/agreement");
 
         $user_language = $currentUser->getLanguage()->code;
