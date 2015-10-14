@@ -36,7 +36,8 @@ class DashboardModule extends SysclassModule implements ISectionMenu, IWidgetCon
 
             $menuItem = array(
                 'icon'      => 'fa fa-dashboard',
-                'notif'     => count($items),
+                //'notif'     => count($items),
+                'text'      => self::$t->translate('Dashboard'),
                 /*
                 'link'  => array(
                     'link'  => $this->getBasePath() . "change",

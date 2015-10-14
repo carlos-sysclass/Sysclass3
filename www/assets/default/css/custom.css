@@ -1219,3 +1219,7 @@ button.calendar-news-item {
 .input-icon i {
     margin: 9px 2px 4px 10px;
 }
+
+.header .navbar-nav > li.dropdown .dropdown-toggle {
+  padding: 12px 10px 9px;
+}
