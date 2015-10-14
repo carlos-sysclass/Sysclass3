@@ -10,9 +10,24 @@
 		<h3 class="users-panel-username">{$user_details.name} {$user_details.surname}</h3>
 		<div class="row">
 			<div class="col-md-6 col-sm-12 col-xs-12 list-fixed-size">
+				{if $user_details.courses|@count == 0}
 				<h6 class="users-panel-username">
-					{translateToken value="COURSE"}: DEMO LESSON
+					{translateToken value="You don't enrolled in any course."} 
+					<a href="javascript: void(0);" class="btn btn-primary">Enroll now</a>
 				</h6>
+				{else}
+					{assign var="primary_course" value=$user_details.courses|@reset}
+					<h6 class="users-panel-username">
+						{translateToken value="COURSE"}: {$primary_course.name}
+
+						{if $user_details.courses|@count > 1}
+							{assign var="total_courses" value=$user_details.courses|@reset}
+							<small>
+								{translateToken value="and more %d"  param1="`$total_courses-1`"}
+							</small>
+						{/if}
+					</h6>
+				{/if}
 				<ul class="list-group border-bottom users-panel-links hidden-sm hidden-xs">
 					<!--
 					<li class="list-group-item">
@@ -33,10 +48,6 @@
 			        <thead>
 						{foreach $notifications as $key => $notif}
 			           	<tr>
-			           		<!--
-							<td></td>
-							<td {if !isset($notif.link) || !$notif.link}colspan="2"{/if}><strong class="text-{$notif.type}">{$notif.count}</strong> {$notif.text}</td>
-							-->
 							<td>
 								<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count}</strong></span>
 								{$notif.text}
