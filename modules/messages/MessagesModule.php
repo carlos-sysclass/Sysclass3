@@ -6,7 +6,7 @@
 use Sysclass\Models\Users\Group as UserGroup,
     Sysclass\Models\Messages\Group as MessageGroup,
     Sysclass\Models\Messages\Message,
-    Sysclass\Models\Messages\Receivers
+    Sysclass\Models\Messages\Receivers;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
