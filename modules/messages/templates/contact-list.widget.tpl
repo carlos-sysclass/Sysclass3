@@ -22,7 +22,8 @@
 		</li>
 		{foreach $T_DATA.data as $item}
 		<li>
-			<a href="{$item.link}" class="message-recipient-item" data-target="#message-contact-dialog">
+			
+			<a href="javascript: void(0);" class="message-recipient-item dialogs-messages-send-action" data-group-id="{$item.id}">
 				{if isset($item.icon)}
 					<span class="text-{$item.color}"><i class="icon-{$item.icon}"></i></span>
 				{/if}

@@ -253,8 +253,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                     // UPDATE inputField WITH  this.model.get(modelField)
                     var values = this.model.get(modelField);
 
-
-
                     if (input.is("[type='radio']") || input.is("[type='checkbox']")) {
                         if (values !== null) {
                             var valueArray = values;
@@ -283,6 +281,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                                         }
                                     } else if (input.hasClass("bootstrap-switch-me")) {
                                         innerInput.bootstrapSwitch('state', (itemValue == 1), true);
+
+
+
                                     } else {
                                         if (uncheck) {
                                             innerInput.removeAttr("checked");
@@ -301,6 +302,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
                             if (innerInput.hasClass("icheck-me")) {
                                 innerInput.iCheck("check");
+
+
                             } else {
                                 innerInput.attr("checked", "checked");
                                 if ($.uniform) {
@@ -309,7 +312,23 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                             }
                         }
                     } else {
-                        input.val(values);
+		                if (input.hasClass("select2-me")) {
+		                	if (
+		                		!_.isUndefined(input.data("format-attr"))
+		                		&& _.isObject(_.first(values))
+		                	) {
+		                		var attr = "id";
+
+		                		input.select2("val", _.pluck(values, attr));
+		                	} else {
+			                    input.select2("val", values);
+							}
+						} else if (input.hasClass("wysihtml5")) {
+							var wysihtml5 = $(input).data('wysihtml5');
+							wysihtml5.editor.setValue(values);
+						 } else {
+                        	input.val(values);
+                        }
                     }
                 }
             }.bind(this));

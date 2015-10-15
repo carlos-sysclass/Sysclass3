@@ -3,6 +3,9 @@
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Users\Group as UserGroup,
+    Sysclass\Models\Messages\Group as MessageGroup,
+    Sysclass\Models\Messages\Message;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -44,8 +47,36 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
                 return true;
 
+            },
+            'messages.send.dialog' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                $self->putComponent("wysihtml5");
+                $self->putComponent("select2");
+
+
+                $receiverGroups = UserGroup::findConnectBy(array(
+                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
+                    'connect_by' => 'behaviour_allow_messages'
+                ));
+                $self->putItem("receivers", $receiverGroups);
+
+
+                $messageGroupsRS = MessageGroup::find();
+                $messageGroups = array();
+                foreach($messageGroupsRS as $messageGroup) {
+                    $messageGroups[$messageGroup->id] = $messageGroup->name;
+                }
+                $self->putItem("message_groups", $messageGroups);
+
+
+                $self->putModuleScript("dialogs.messages.send");
+                $self->putSectionTemplate("dialogs", "dialogs/send");
+
+                return true;
             }
         );
+
     }
 
     // ISectionMenu
@@ -104,23 +135,25 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
             in_array($widgetsNames[2], $widgetsIndexes) ||
             in_array($widgetsNames[3], $widgetsIndexes)
         ) {
-            $this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
-            $this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
-            $this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
-            $this->putScript("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
+            //$this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
+            //$this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
+            //$this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
+            //$this->putScript("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
 
-            $this->putCss("plugins/bootstrap-fileupload/bootstrap-fileupload");
-            $this->putScript("plugins/bootstrap-fileupload/bootstrap-fileupload");
+            //$this->putCss("plugins/bootstrap-fileupload/bootstrap-fileupload");
+            //$this->putScript("plugins/bootstrap-fileupload/bootstrap-fileupload");
 
-            $this->putScript("plugins/jquery-validation/dist/jquery.validate.min");
-            $this->putScript("plugins/jquery-validation/dist/additional-methods.min");
+            //$this->putScript("plugins/jquery-validation/dist/jquery.validate.min");
+            //$this->putScript("plugins/jquery-validation/dist/additional-methods.min");
 
-            $this->putCss("plugins/bootstrap-toastr/toastr.min");
-            $this->putScript("plugins/bootstrap-toastr/toastr.min");
+            //$this->putCss("plugins/bootstrap-toastr/toastr.min");
+            //$this->putScript("plugins/bootstrap-toastr/toastr.min");
 
 
-            $this->putModuleScript("messages");
+            //$this->putModuleScript("messages");
 
+
+            $this->putBlock("messages.send.dialog");
 
             $groups = $this->getMessageGroups();
 
@@ -142,6 +175,56 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
         }
     }
 
+    /**
+     * [ add a description ]
+     *
+     * @url POST /item/me
+     */
+    public function addItemAction($id)
+    {
+        $request = $this->getMatchedUrl();
+
+        if ($userData = $this->getCurrentUser(true)) {
+            //$itemModel = $this->model("user/item");
+            // TODO CHECK IF CURRENT USER CAN DO THAT
+            $data = $this->getHttpData(func_get_args());
+            $itemModel = new Message();
+            $itemModel->assign($data);
+
+            $itemModel->user_id = $userData->id;
+
+            if ($itemModel->save()) {
+
+                if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
+                    //UsersGroups::find("user_id = {$userModel->id}")->delete();
+                    
+                    foreach($data['group_id'] as $group) {
+                        /*
+                        $userGroup = new UsersGroups();
+                        $userGroup->user_id = $userModel->id;
+                        $userGroup->group_id = $group['id'];
+                        $userGroup->save();
+                        */
+                    }
+                }
+
+                return $this->createAdviseResponse(
+                    self::$t->translate("Message created with success. You can follow thge message in your inbox."),
+                    "success"
+                );
+            } else {
+                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                return $response;
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+
+    /**
+     * [getMessageGroups description]
+     * @deprecated 3.0.14
+     */
     protected function getMessageGroups() {
         return $this->_getTableData(
             "mod_messages_groups",
@@ -151,6 +234,12 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
         );
     }
 
+    /**
+     * [getMessageReceivers description]
+     * @param  [type] $group_id [description]
+     * @return [type]           [description]
+     * @deprecated 3.0.14
+     */
     protected function getMessageReceivers($group_id = null) {
         if (!($user instanceof MagesterUser)) {
             $user = $this->getCurrentUser();
@@ -206,13 +295,27 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
     /**
      * Send Page Action
      *
+     * @url GET /inbox
+     */
+    public function inboxPage($recipient_id) {
+        $this->putCss("css/pages/inbox");
+        $this->putScript("scripts/inbox");
+
+        $this->putModuleScript("inbox");
+
+        $this->display("inbox.tpl");
+    }
+
+    /**
+     * Send Page Action
+     *
      * @url GET /send/:recipient_id
      * @url POST /send/:recipient_id
+     * @deprecated 3.0.14
      */
     public function sendPage($recipient_id) {
-        global $load_editor;
-        $load_editor = true;
         $current_user = $this -> getCurrentUser(true);
+        /*
         //$smarty -> assign("T_MODULE_CURRENT_USER" , $current_user ->getType());
         $form = new HTML_QuickForm("mod_messages_form", "post", $_SERVER['REQUEST_URI'], "", "id = 'mod_messages_form'");
 
@@ -229,9 +332,9 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
         $form -> addElement('file', 'attachment[0]', self::$t->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
         //$form -> addElement('file', 'attachment[1]', self::$t->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
         $form -> addElement('submit', 'submit_mail', _SEND);
-
+        */
         //$contactList = $this->getUserContactList();
-
+        /*
         if ($form -> isSubmitted() && $form -> validate()) {
             $values = $form -> exportValues();
 
@@ -239,13 +342,6 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
             if (is_numeric($values['recipients'])) {
                 $recipients = $userGroupsItemModel->getUsersInGroup($values['recipients']);
-                /*
-                $recipients = $this->_getTableData(
-                    "mod_messages_recipients qm, mod_messages_recipients_list qml, users u",
-                    "u.name, u.surname, u.login, u.email, qm.qm_group",
-                    sprintf("qm.id = qml.recipient_id AND qml.recipient_id = %d AND qml.user_id = u.id", $values['recipients'])
-                );
-                */
                 if (count($recipients) > 0) {
 
                     foreach ($recipients as $recipient) {
@@ -258,14 +354,6 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
                     }
                 }
             } else {
-                /*
-                $user_recipients[] = $values['email'];
-                $mail_recipients[] = array(
-                //                      'login' => $recipient['login'],
-                        'email' => $values['email'],
-                        'fullname'  => $values['name']
-                );
-                */
             }
 
             // ALWAYS SEND A E-MAIL
@@ -281,31 +369,6 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
                 $attachFile = array();
 
-                /*
-
-                if ($_FILES['attachment']['name'][0] != "") {
-                    if ($_FILES['attachment']['size'][0] ==0 || $_FILES['attachment']['size'][0] > G_MAXFILESIZE) {                                                           //If the directory could not be created, display an erro message
-                        $message      = self::$t->translate("Each file size must be smaller than %d bytes", G_MAXFILESIZE);
-                        $message_type = 'failure';
-                    }
-                    //Upload user avatar file
-
-                    $pm->sender_attachment_timestamp = time();
-
-                    var_dump(G_UPLOADPATH);
-                    exit;
-
-                    $user_dir = G_UPLOADPATH.$current_user->user['login'].'/message_attachments/Sent/'.$pm->sender_attachment_timestamp.'/';
-                    mkdir($user_dir,0755,true);
-                    $filesystem = new FileSystemTree($user_dir);
-                    $uploadedFile = $filesystem -> uploadFile('attachment', $user_dir, 0);
-
-                    $pm->sender_attachment_fileId =  $uploadedFile['id'];
-                    $pm->setAttachment($uploadedFile['path']);
-
-                    $attachFile[] = $uploadedFile['path'];
-                }
-                */
                 if (count($_POST['attachment'])) {
                     $user = $this->getCurrentUser();
 
@@ -406,7 +469,8 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
             );
             exit;
         }
-
+        */
+       /*
         $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);                  //Create a smarty renderer
         $renderer -> setRequiredTemplate (
              '{$html}{if $required}
@@ -419,8 +483,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
         $this->putItem('MOD_MESSAGES_FORM', $renderer -> toArray());
         $this->putItem("MESSAGE_MAIL" , $message);
         $this->putItem("MESSAGE_MAIL_TYPE" , $message_type);
-
-        //var_dump($renderer -> toArray());
+        */
 
         $this->display("send.form.tpl");
     }
@@ -429,6 +492,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
      * Attach File Action
      *
      * @url POST /attach_file
+     * @deprecated 3.0.14
      */
     public function attachFile($recipient_id) {
         if (count($_FILES) > 0) {
@@ -462,19 +526,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
 
 
-    /**
-     * Send Page Action
-     *
-     * @url GET /inbox
-     */
-    public function inboxPage($recipient_id) {
-        $this->putCss("css/pages/inbox");
-        $this->putScript("scripts/inbox");
 
-        $this->putModuleScript("inbox");
-
-        $this->display("inbox.tpl");
-    }
 
     /**
      * Send Page Action
