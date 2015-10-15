@@ -5,7 +5,8 @@
  */
 use Sysclass\Models\Users\Group as UserGroup,
     Sysclass\Models\Messages\Group as MessageGroup,
-    Sysclass\Models\Messages\Message;
+    Sysclass\Models\Messages\Message,
+    Sysclass\Models\Messages\Receivers
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -199,12 +200,10 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
                     //UsersGroups::find("user_id = {$userModel->id}")->delete();
                     
                     foreach($data['group_id'] as $group) {
-                        /*
-                        $userGroup = new UsersGroups();
-                        $userGroup->user_id = $userModel->id;
-                        $userGroup->group_id = $group['id'];
-                        $userGroup->save();
-                        */
+                        $receiverModel = new Receivers();
+                        $receiverModel->message_id = $itemModel->id;
+                        $receiverModel->group_id = $group['id'];
+                        $receiverModel->save();
                     }
                 }
 
