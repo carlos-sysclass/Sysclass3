@@ -1,14 +1,14 @@
 <?php
-namespace Sysclass\Models\Users;
+namespace Sysclass\Models\Messages;
 
-use Plico\Mvc\Model,
+use Phalcon\Mvc\Model,
     Phalcon\Mvc\Model\Relation;
 
-class Group extends Model
+class Message extends Model
 {
     public function initialize()
     {
-        $this->setSource("groups");
+        $this->setSource("mod_messages");
 
         $this->hasManyToMany(
             "id",
@@ -18,11 +18,9 @@ class Group extends Model
             "id",
             array('alias' => 'Roles', 'reusable' => true)
         );
+    }
 
-        $this->hasMany(
-            "behaviour_allow_messages", 
-            "Sysclass\\Models\\Messages\\Group",
-            "id",  array('alias' => 'MessageGroup')
-        );
+    public function beforeCreate() {
+        $this->timestamp = time();
     }
 }
