@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Enrollments\Course as Enrollment;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -129,13 +130,16 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
 
             $settings = $this->module("settings")->getSettings(true);
-            if (!@isset($settings['course_id'])) {
+
+            if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
                 // GET FIRST COURSE FORM USER LIST
-                $enrollments = $this->model("enrollment/course")->addFilter(array(
-                    'user_id' => $currentUser->id,
-                    'status_id' => 1
-                ))->getItems();
-                if (count($enrollments) == 0) {
+                $enrollment = Enrollment::findFirst(array(
+                    'conditions'    => 'user_id = ?0 AND status_id = 1',
+                    'bind' => array($currentUser->id)
+                    //'bind' => '123456'
+                ));
+
+                if (!is_object($enrollment)) {
                     // CHECK FOR CLASS-ONLY ENROLLMENTS
                 } else {
                     $this->db->Execute(sprintf(
@@ -147,7 +151,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
                         "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
                         $currentUser->id,
                         'course_id',
-                        $enrollments[0]['course_id']
+                        $enrollment->course_id
                     ));
                     if (@isset($settings['class_id'])) {
                         // GET THE FIRST CLASS FROM COURSE
@@ -157,11 +161,6 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
                 }
 
             }
-            /*
-            var_dump($settings);
-            exit;
-            */
-            //$self->putModuleSectionTemplate("dialogs", "dialogs/questions.select");
 
 			return array(
 				'courses.overview' => array(
@@ -270,18 +269,36 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
         if ($currentUser = $this->getCurrentUser(true)) {
 
             if ($model ==  "users") {
-                $modelRoute = "enrollment/course";
-                //$optionsRoute = "edit-instructor";
-                //
                 $filter = filter_var($filter, FILTER_DEFAULT);
 
                 if (!is_array($filter)) {
                     $filter = json_decode($filter, true);
                 }
 
-                $itemsCollection = $this->model($modelRoute);
-                $itemsData = $itemsCollection->addFilter($filter)->getItems();
+                $index = 0;
+                foreach($filter as $key => $item) {
+                    $modelFilters[] = "{$key} = ?{$index}";
+                    $filterData[$index] = $item;
+                    $index++;
+                }
 
+                $modelRS = Enrollment::find(array(
+                    'conditions'    => implode(" AND ", $modelFilters),
+                    'bind' => $filterData
+                ));
+
+                $itemsData = $modelRS->toArray();
+                /*
+                //var_dump($modelRS->toArray());
+                //exit;
+
+                $modelRoute = "enrollment/course";
+                //$optionsRoute = "edit-instructor";
+                //
+
+                $itemsCollection = $this->debug()->model($modelRoute);
+                $itemsData = $itemsCollection->addFilter($filter)->getItems();
+                */
             } elseif ($model ==  "me") {
                 $modelRoute = "courses";
                 $optionsRoute = "edit";
