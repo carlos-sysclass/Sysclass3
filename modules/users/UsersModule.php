@@ -328,7 +328,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 			//var_dump(array_keys($modules));
 			//exit;
 
-            $userDetails = $currentUser->toFullArray(array('Avatars'));
+            $userDetails = $currentUser->toFullArray(array('Avatars', 'Courses'));
 
 			//$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
 			//$userDetails = array_merge($currentUser->toArray(), $userDetails);
@@ -354,7 +354,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
 					'id'        => 'users-panel',
 					'type'      => 'users',
 					//'title' 	=> 'User Overview',
-					'template'	=> $this->template("overview.widget"),
+					'template'	=> $this->template("widgets/overview"),
 					'panel'		=> true,
 					'data'      => $data
 					//'box'       => 'blue'
