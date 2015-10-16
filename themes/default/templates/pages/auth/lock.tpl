@@ -20,7 +20,6 @@
         <span class="email">{$T_LOGGED_USER.email}</span>
         <span class="locked">Locked</span>
         <!-- <form class="form-inline" action="index.html"> -->
-        {$T_LOGIN_FORM.javascript}
             <form class="login-form" action="/login" method="post">
               <input type="hidden" name="login" value="{$T_LOGGED_USER.login}"/>
 

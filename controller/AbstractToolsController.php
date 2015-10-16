@@ -27,9 +27,9 @@ abstract class AbstractToolsController extends PhalconWrapperController
     }
 
     protected function loadConfig($use_cache = true) {
-        $cached = $this->getCache("dashboard/{$this->layout_id}");
+        //$cached = $this->getCache("dashboard/{$this->layout_id}");
 
-        if (is_null($cached) || $use_cache == false) {
+        //if (is_null($cached) || $use_cache == false) {
 
             $defaultconfig = yaml_parse_file(__DIR__ . "/../config/default.yml");
 
@@ -37,10 +37,10 @@ abstract class AbstractToolsController extends PhalconWrapperController
 
             $this->config = array_replace_recursive($defaultconfig, $config);
 
-            $this->setCache("dashboard/{$this->layout_id}", $this->config);
-        } else {
-            $this->config = $cached;
-        }
+        //    $this->setCache("dashboard/{$this->layout_id}", $this->config);
+        //} else {
+        //    $this->config = $cached;
+        //}
         return $this->config;
     }
 

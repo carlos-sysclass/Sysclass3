@@ -1,12 +1,6 @@
 {
     "require": {
-        "monolog/monolog": "1.12.*",
-	"phalcon/devtools": "dev-master"
-    },
-    "require-dev": {
-        "phpdocumentor/phpdocumentor": "2.*",
-        "phing/phing": "2.*",
-        "phploc/phploc": "*",
-        "sebastian/phpcpd": "*"
+        "phalcon/incubator": "dev-master",
+        "smarty/smarty": "3.1.13"
     }
 }

@@ -19,8 +19,7 @@ class SettingsModule extends SysclassModule
         $this->legalValues = array(
             'course_id',
             'class_id',
-            'lesson_id',
-            'teste_id'
+            'lesson_id'
         );
 
         $this->defaults = array(

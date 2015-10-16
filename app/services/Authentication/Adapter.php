@@ -270,7 +270,7 @@ class Adapter extends Component implements IAuthentication, EventsAwareInterface
 
     public function checkAccess($info = null)
     {
-        $this->_eventsManager->fire("authentication:beforeCheckAccess", $this, $user);
+        $this->_eventsManager->fire("authentication:beforeCheckAccess", $this, $info);
 
         if ($this->session->has('session_index')) {
 

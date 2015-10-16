@@ -6,13 +6,13 @@
 // SMARTY WILL MAINTAINED FOR NOW*
 // 
 
-error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING);
+
 ini_set("display_errors", "1");
+//error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
 
 
-use Phalcon\Loader,
-    Phalcon\DI\FactoryDefault,
-    Phalcon\Mvc\Application;
+use Phalcon\Mvc\Application;
     //Phalcon\Mvc\Micro as Application;
 
 
@@ -25,54 +25,17 @@ if ($_SERVER['HTTP_HOST'] == 'local.beta.sysclass.com') {
 
 }
 
-
 try {
-
-    // Creates the autoloader
-    $loader = new Loader();
-
-    // Register some namespaces
-    $loader->registerDirs(
-        array(
-            __DIR__ . "/../controller/",
-            PLICOLIB_PATH . "/controller/",
-            PLICOLIB_PATH . "/inc/",
-            PLICOLIB_PATH . "/"
-        )
-    );
-
-    $loader->registerNamespaces(
-        array(
-           "Sysclass\Controllers" => __DIR__ . "/../controller/", 
-           "Sysclass\Modules" => __DIR__ . "/../modules/", 
-           "Sysclass\Models" => __DIR__ . "/../app/models/",
-           "Sysclass\Services" => __DIR__ . "/../app/services/",
-           "Plico" => __DIR__ . "/../app/plico/", // TODO: Move code to plicolib itself
-           "Sysclass" => __DIR__ . "/../app/sysclass/"
-        )
-    );
-    // Register autoloader
-    $loader->register();
-
-    $plico = PlicoLib::instance(__DIR__ . "/../");
-
-    $di = new FactoryDefault();
-    $eventsManager = new Phalcon\Events\Manager();
-    $di->set("eventManager", $eventsManager);
-
-
-    require_once("../app/bootstrap/services.php");
-
-
-    // GENERATE ROUTES BASED ON MODELS
-
-    //require_once("../app/routes.php");
+    require_once("../app/bootstrap/bootstrap.php");
 
     // Handle the request
     $application = new Application($di);
 
-    echo $application->handle();
+    $application->useImplicitView(false);
+
+    var_dump($application->handle()->getContent());
 
 } catch (\Exception $e) {
     var_dump($e);
+    exit;
 }

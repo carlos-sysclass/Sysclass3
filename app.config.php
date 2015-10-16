@@ -388,7 +388,6 @@ $plicoLib->concat(
 	'resources/css',
 	array(
 		//<!-- BEGIN GLOBAL MANDATORY STYLES -->
-
 		'plugins/font-awesome/css/font-awesome',
 		'plugins/font-awesome-more/css/font-awesome-ext',
 		'plugins/font-awesome-more/css/font-awesome-corp',

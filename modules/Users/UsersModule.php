@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Users;
 use Phalcon\DI,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UsersGroups,
-    Sysclass\Services\L10n\Timezones,
+    Sysclass\Services\I18n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 /**

@@ -63,11 +63,7 @@
     </div>
 {/if}
 
-{$T_SCRIPTS}
-
-{*foreach item="script" from=$T_SCRIPTS*}
-<!--    <script src="{Plico_GetResource file=$script}"></script> -->
-{*/foreach*}
+<script type="text/javascript" src="/{$T_SCRIPT_TARGET}"></script>
 
 <!-- END CORE PLUGINS -->
 
@@ -78,7 +74,7 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 
 
-{foreach item="script" from=$T_MODULE_SCRIPTS}
+{foreach $T_MODULE_SCRIPTS as $script}
     <script src="{$script}"></script>
 {/foreach}
 <!-- END JAVASCRIPTS -->

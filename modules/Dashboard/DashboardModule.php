@@ -128,9 +128,8 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         // LOAD MENUS
         $modules = array();
         // GET ALL MODULES, CHECK FOR IMenu Interface, CHECK FOR SECTION
-        $modules = $this->getModules("IWidgetContainer");
-
-
+        $modules = $this->getModules("\IWidgetContainer");
+        
         $widgetsIndexes = array();
         foreach($this->layoutSpec['widgets'] as $column_id => $columnWidgets) {
             $widgetsIndexes = array_merge($widgetsIndexes, $columnWidgets);
@@ -141,6 +140,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         // GET WIDGET BY COLUMN
         $this->clearWidgets();
         foreach($modules as $index => $module) {
+
             $mod_widgets = $module->getWidgets($widgetsIndexes);
             if ($mod_widgets) {
                 $this->widgets = array_merge($this->widgets, $mod_widgets);
@@ -157,7 +157,6 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         $widgetStruct = array();
         foreach($this->layoutSpec['widgets'] as $column_id => $columnWidgets) {
             foreach($columnWidgets as $widgetID) {
-
                 if (array_key_exists($widgetID, $widgetKeys)) {
                     $widgetRealID = $widgetID;
                     unset($widgetKeys[$widgetRealID]);
@@ -178,6 +177,8 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 }
             }
         }
+
+
 
         return $widgetStruct;
     }

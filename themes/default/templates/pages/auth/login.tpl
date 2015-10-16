@@ -18,17 +18,17 @@
 
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">{$T_LOGIN_FORM.login.label}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
 				<div class="input-icon">
 					<i class="icon-user"></i>
 					<input type="text" id="login" name="login" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control" data-rule-required="true">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">{$T_LOGIN_FORM.password.label}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Password"}</label>
 				<div class="input-icon">
 					<i class="icon-lock"></i>
-					<input type="password" id="password" name="password" placeholder="Password" autocomplete="off" class="form-control placeholder-no-fix">
+					<input type="password" id="password" name="password" placeholder="{translateToken value="Password"}" autocomplete="off" class="form-control placeholder-no-fix">
 				</div>
 			</div>
 			<div class="form-actions">
@@ -104,11 +104,11 @@
 			<p>{translateToken value="Enter your e-mail address below to reset your password."}</p>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">
-					{$T_RESET_PASSWORD_FORM.login_or_pwd.label}
+					{translateToken value="Email"}
 				</label>
 				<div class="input-icon">
 					<i class="fa fa-envelope"></i>
-					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" id="email" />
+					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="{translateToken value="Email"}" name="email" id="email" />
 				</div>
 			</div>
 			<div class="form-actions">

@@ -14,18 +14,20 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	protected static $current_user = null;
 	protected static $logged_user = null;
 
-	public static $t = null;
+	//public static $t = null;
 	public static $cfg = null;
 	public static $syscfg = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
 	{
-		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
+		//parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
 		// LOAD TRANSLATE MODEL
+		// 
+		/*
 		if (is_null(self::$t)) {
-			self::$t = $this->model("translate");
+			self::$t = $this->translator;
 		}
-
+		*/
 		if (is_null(self::$cfg)) {
 			$di = DI::getDefault();
 			self::$cfg = $di->get("configuration")->asArray();
@@ -36,7 +38,6 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
 	public function authorize()
 	{
-		$smarty = $this->getSmarty();
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		$di = DI::getDefault();
 		try {
@@ -46,8 +47,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			self::$current_user = $user;
 			self::$logged_user = $user->toArray();
 
-		    $smarty->assign("T_CURRENT_USER", self::$current_user);
-		    $smarty->assign("T_LOGGED_USER", self::$logged_user);
+		    $this->putItem("CURRENT_USER", self::$current_user);
+		    $this->putItem("LOGGED_USER", self::$logged_user);
 		    $GLOBALS["currentUser"] = self::$current_user;
 
 
@@ -101,11 +102,11 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
 		$this->putItem("configuration", self::$cfg);
-		$this->putItem("sysconfig", self::$syscfg);
+		$this->putItem("sysconfig", $this->sysconfig);
 
-		if ($this->getCurrentUser()) {
+		if ($user = $this->getCurrentUser(true)) {
 
-			$userSettings = $this->module("settings")->getSettings(true);
+			$userSettings = $user->getSettings()->toArray();
 
 			$this->putItem("SETTINGS_", $userSettings);
 
@@ -120,7 +121,10 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
         	$this->putItem("topbar_menu", $topbarMenu);
 
-        	parent::beforeDisplay();
+
+        	//print_r($topbarMenu);
+
+        	
 
         	/*
 			if (unserialize(self::$current_user -> user['additional_accounts'])) {
@@ -174,11 +178,14 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$this->putItem("small_user_avatar", $small_user_avatar);
 			$this->putItem("big_user_avatar", $big_user_avatar);
 			*/
+			parent::beforeDisplay();
 		} else {
 			parent::beforeDisplay();
 		}
 
 	}
+
+
 
 	/**
 	 * @deprecated

@@ -81,7 +81,7 @@ class DashboardController extends \AbstractSysclassController
         $widgets = $dashboardManager->getPageWidgets();
 
         foreach($widgets as $key => $widget) {
-            call_user_func_array(array($this, "addWidget"), $widget);
+            $this->addWidget($widget[0], $widget[1], $widget[2]);
         }
 
         $this->putItem("page_layout", $pageLayout);

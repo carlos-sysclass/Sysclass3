@@ -17,7 +17,7 @@
 		<!-- BEGIN TOP NAVIGATION MENU -->
 		<ul class="nav navbar-nav pull-right">
 			{foreach $T_TOPBAR_MENU as $key => $item}
-				{if $item.template && (isset($T_SECTION_TPL[$item.template]) &&  ($T_SECTION_TPL[$item.template]|@count > 0))}
+				{if isset($item.template) && (isset($T_SECTION_TPL[$item.template]) &&  ($T_SECTION_TPL[$item.template]|@count > 0))}
 					{foreach $T_SECTION_TPL[$item.template] as $template}
 						{include file=$template T_MENU_ITEM=$item T_MENU_INDEX=$key}
 					{/foreach}
@@ -76,7 +76,7 @@
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
 			      		{$item.text}
-						{if $item.notif}
+						{if isset($item.notif)}
 			      		<span class="badge">{$item.notif}</span>
 			      		{/if}
 			      	</a>
@@ -89,7 +89,6 @@
 				    </ul>
 				</li>
 		        {/if}
-		   </li>
 		   {/foreach}
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
@@ -121,30 +120,6 @@
 		   -->
 		   <!-- END CALENDAR DROPDOWN -->
 		   <!-- BEGIN ACCESS  DROPDOWN -->
-		   {if $T_ADDITIONAL_ACCOUNTS|@count > 0}
-		   <!--
-		   <li class="dropdown" id="header_notification_bar">
-		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-		         data-close-others="true">
-		         <i class="icon-user"></i>
-		      </a>
-		      <ul class="dropdown-menu extended notification">
-		         <li>
-		            <ul class="dropdown-menu-list scroller" style="height: 214px;">
-						{foreach $T_ADDITIONAL_ACCOUNTS as $key => $item}
-			               	<li>
-			                  <a href="javascript: changeAccount('{$item.login}');">
-			                     <span class="label label-sm label-icon label-{$T_USER_TYPES_ICONS[$item.user_type].color}"><i class="icon-{$T_USER_TYPES_ICONS[$item.user_type].icon}"></i></span>
-			                     #filter:login-{$item.login}#
-			                  </a>
-			               	</li>
-		               	{/foreach}
-		            </ul>
-		         </li>
-		      </ul>
-		   </li>
-		   -->
-		   {/if}
 		   <!-- END CALENDAR DROPDOWN -->
 
 		   <!-- BEGIN TODO DROPDOWN -->

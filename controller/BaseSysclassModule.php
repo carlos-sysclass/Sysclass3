@@ -7,17 +7,19 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     protected $clientContext;
 
-    public function __construct() {
-
-    }
     public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="", $urlMatch = null)
     {
-        $plico = PlicoLib::instance();
-        $class_name = get_class($this);
-        $this->module_id = $plico->CamelDiscasefying(str_replace("Module", "", $class_name));
-        $this->module_folder = $plico->get("path/modules") . $this->module_id;
 
-        $baseUrl = $plico->get('module/base_path') . "/" . $this->module_id;
+        //$plico = PlicoLib::instance();
+        $reflect = new ReflectionClass($this);
+        $class_name = $reflect->getShortName();
+
+        $this->module_id = str_replace("Module", "", $class_name);
+
+        $this->module_folder = $this->environment["path/modules"] . $this->module_id;
+
+        $baseUrl = $this->environment['module/base_path'] . "/" . $this->module_id;
+
         if (is_null($url)) {
             $url = $baseUrl;
         }
@@ -44,7 +46,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
             $this->module_id = $module_id;
         }
 
-        $this->module_folder = $plico->get("path/modules") . $this->module_id;
+        $this->module_folder = $this->environment["path/modules"] . $this->module_id;
 
         $this->module_request = str_replace($this->getBasePath(), "", $this->context['urlMatch']);
 

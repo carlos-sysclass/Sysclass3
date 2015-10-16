@@ -1,4 +1,5 @@
 <?php
+use Phalcon\DI;
 /**
 * Smarty plugin: sC_template_printBackButton function
 */
@@ -19,6 +20,6 @@ function smarty_function_translateToken($params, &$smarty)
         $vars = $params;
     }
 
-    $controller = PlicoLib::handler();
-    return $controller::$t->translate($token, $vars, $language_id);
+    $di = DI::getDefault();
+    return $di->get("translate")->translate($token, $vars, $language_id);
 }
