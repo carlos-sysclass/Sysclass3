@@ -1,20 +1,18 @@
 <?php
+namespace Sysclass\Modules\Users;
+
 use Phalcon\DI,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Services\L10n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
+
 /**
- * Module Class File
- * @filesource
+ * @RoutePrefix("/module/users")
  */
-/**
- * [NOT PROVIDED YET]
- * @package Sysclass\Modules
- * @todo think about move this module to PlicoLib
- */
-class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, IBreadcrumbable, IActionable, IPermissionChecker, IWidgetContainer
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer
 {
+
 
     /* ILinkable */
     public function getLinks() {

@@ -1,9 +1,11 @@
 <?php
+namespace Sysclass\Controllers;
+
 use Phalcon\DI,
 	Sysclass\Models\Users\User,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
-class LoginController extends AbstractSysclassController
+class LoginController extends \AbstractSysclassController
 {
 	public function authorize()
 	{
@@ -42,13 +44,22 @@ class LoginController extends AbstractSysclassController
 		return $form;
 	}
 	*/
-	/**
+
+	/*
 	 * Create login and reset password forms
-	 *
+	 * 
 	 * @url GET /
 	 * @url GET /login
 	 * @url GET /login/:reset
 	 */
+	
+    /**
+     * * Create login and reset password forms
+     * @Get("/")
+     * @Get("/login")
+     * @Get("/login/{reset}")
+     * 
+     */
 	public function loginPage($reset)
 	{
 		$di = DI::getDefault();

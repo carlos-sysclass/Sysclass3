@@ -1,5 +1,7 @@
 <?php
-class DashboardController extends AbstractSysclassController
+namespace Sysclass\Controllers;
+
+class DashboardController extends \AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
     // 
@@ -32,13 +34,13 @@ class DashboardController extends AbstractSysclassController
         return $ctg;
     }
     */
-	/**
-	 * Create login and reset password forms
-	 *
-	 * @url GET /dashboard
-     * @url GET /dashboard/:dashboard_id
-     * @url GET /dashboard/:dashboard_id/:clear
-	 */
+    /**
+     * * Create login and reset password forms
+     * @Get("/dashboard")
+     * @Get("/dashboard/{dashboard_id}")
+     * @Get("/dashboard/{dashboard_id}/{clear}")
+     * 
+     */
 	public function dashboardPage($dashboard_id, $clear)
 	{
         $currentUser = $this->getCurrentUser(true);

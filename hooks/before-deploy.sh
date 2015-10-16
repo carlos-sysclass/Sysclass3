@@ -22,8 +22,9 @@
 # build variables and pass the context to phing								   #
 # ---------------------------------------------------------------------------- #
  
-
-#source srv-variables.txt
+# SERTTING TO LOWERCASE
+bamboo_deploy_environment=`echo $bamboo_deploy_environment | tr '[:upper:]' '[:lower:]'`
+echo "environment=$bamboo_deploy_environment" >> $bamboo_working_directory/variables.txt
 
 #deploy_version=$bamboo_vars_full_version
 #enviroment=$bamboo_deploy_environment

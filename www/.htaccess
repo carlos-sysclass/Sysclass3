@@ -1,9 +1,19 @@
-DirectoryIndex index2.php
+DirectoryIndex index3.php
+
+#<IfModule mod_rewrite.c>
+#        RewriteEngine on
+#        RewriteCond %{REQUEST_FILENAME} !-f
+#        RewriteCond %{REQUEST_FILENAME} !-d
+#        RewriteCond %{REQUEST_FILENAME} !-l
+#        RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+#        RewriteRule .* index2.php?4aa57e556ab54270c97d9f0250211324=%{REQUEST_URI}&%{QUERY_STRING} [L]
+#</IfModule>
+
 <IfModule mod_rewrite.c>
-        RewriteEngine on
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteCond %{REQUEST_FILENAME} !-l
-        RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
-        RewriteRule .* index2.php?4aa57e556ab54270c97d9f0250211324=%{REQUEST_URI}&%{QUERY_STRING} [L]
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+    RewriteRule ^((?s).*)$ index3.php?_url=/$1 [QSA,L]
 </IfModule>

@@ -190,4 +190,54 @@ abstract class PhalconWrapperController extends PageController
 		}
 		return $result;
 	}
+
+	public function module($module, $noCached=FALSE)
+	{
+		if (!$noCached && array_key_exists($module, self::$resourceCache["module"])) {
+			return self::$resourceCache["module"][$module];
+		}
+		
+		$class_name = sprintf(
+			'Sysclass\\Modules\\%1$s\\%1$sModule',
+			ucfirst($module)
+		);
+
+		if (class_exists($class_name)) {
+			//debug_print_backtrace();
+			$class = new $class_name();
+
+			self::$resourceCache["module"][$module] = $class;
+
+			if (method_exists($class_name, "init")) {
+				self::$resourceCache["module"][$module]->init();
+			}
+			return self::$resourceCache["module"][$module];
+		}
+
+		//$module_parts = explode("/", $module);
+		//array_push($module_parts, "module");
+
+		//array_walk($module_parts, function(&$n) {
+  		//	$n = ucfirst($n);
+		//});
+
+		//$class_name = implode("", $module_parts);
+		/*
+		$plicolib = PlicoLib::instance();
+		$class_name = $plicolib->camelCasefying($module, "_", false) . "Module";
+
+		if (class_exists($class_name)) {
+			self::$moduleCache[$module] = new $class_name;
+
+			if (method_exists($class_name, "init")) {
+				self::$moduleCache[$module]->init();
+			}
+			return self::$moduleCache[$module];
+		} else {
+			return false;
+		}
+		*/
+	}
+
+
 }

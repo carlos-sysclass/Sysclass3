@@ -1,4 +1,6 @@
 <?php
+namespace Sysclass\Modules\Dashboard;
+
 /**
  * Module Class File
  * @filesource
@@ -9,7 +11,7 @@
  * @todo think about move this module to PlicoLib
  */
 
-class DashboardModule extends SysclassModule implements ISectionMenu, IWidgetContainer
+class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidgetContainer
 {
     protected $layout_id;
     protected $config;

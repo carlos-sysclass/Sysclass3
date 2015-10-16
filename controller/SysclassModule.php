@@ -41,11 +41,9 @@ abstract class SysclassModule extends BaseSysclassModule
         $this->createContext($this->module_id);
     }
 
-    // CRUD FUNCIONS
     /**
      * [ add a description ]
-     *
-     * @url GET /view
+     * @Get("/view")
      */
     public function viewPage()
     {
