@@ -3,17 +3,81 @@ namespace Sysclass\Services\Authentication;
 
 use Phalcon\Mvc\User\Component,
     Phalcon\Events\EventsAwareInterface,
+    Phalcon\Events\Event,
+    Phalcon\Mvc\Dispatcher,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\Users\UserTimes;
 
-class Adapter extends Component implements IAuthentication, EventsAwareInterface
+class Adapter extends Component implements IAuthentication /* , EventsAwareInterface */
 {
+    /*
     public function setEventsManager(\Phalcon\Events\ManagerInterface $eventsManager)
     {
         $this->_eventsManager = $eventsManager;
+    }
+    */
+    public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
+
+        // INJECT HERE SESSION AUTHORIZATION CODE
+        try {
+            // OLD CHECK STYLE
+            $user = $this->authentication->checkAccess();
+        } catch (AuthenticationException $e) {
+                var_dump($e->getCode());
+                exit;
+
+            switch($e->getCode()) {
+                case AuthenticationException :: MAINTENANCE_MODE : {
+                    $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+                    //$message_type = 'warning';
+                    $this->flash->warning($message);
+                    break;
+                }
+                case AuthenticationException :: LOCKED_DOWN : {
+                    $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+                    //$message_type = 'warning';
+                    $this->flash->warning($message);
+                    break;
+                }
+                case AuthenticationException :: NO_USER_LOGGED_IN : {
+                    $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
+                    //$message_type = 'info';
+                    $this->flash->notice($message);
+                    break;
+                }
+                case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
+                    $url = "/lock";
+                    $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
+                    $message_type = 'info';
+                    $this->flash->notice($message);
+                    break;
+                }
+                default : {
+                    $message = $this->translate->translate($e->getMessage());
+                    $this->flash->error($message);
+                    //$message_type = 'danger';
+                    break;
+                }
+            }
+            // TODO:  CHECK IF THE REQUEST WASN'T A JSON REQUEST
+            //$this->redirect($url, $message, $message_type);
+
+            $dispatcher->forward(
+                array(
+                    'controller' => 'login',
+                    'action'     => 'login'
+                )
+            );
+            return false;
+            //
+        }
+        return TRUE;
+
+        var_dump($event, $dispatcher);
+        exit;
     }
 
     public function getEventsManager()

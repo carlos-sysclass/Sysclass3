@@ -78,7 +78,14 @@ class DashboardController extends \AbstractSysclassController
 
         $pageLayout = $dashboardManager->loadLayout($dashboard_id, ($clear == "clear"));
 
+        //var_dump($pageLayout);
+
+
         $widgets = $dashboardManager->getPageWidgets();
+
+        //var_dump($widgets);
+        //exit;
+
 
         foreach($widgets as $key => $widget) {
             $this->addWidget($widget[0], $widget[1], $widget[2]);

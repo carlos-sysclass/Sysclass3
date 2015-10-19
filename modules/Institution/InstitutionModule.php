@@ -3,12 +3,16 @@
  * Module Class File
  * @filesource
  */
+namespace Sysclass\Modules\Institution;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-
-class InstitutionModule extends SysclassModule implements IWidgetContainer, ILinkable, IBreadcrumbable, IBlockProvider
+use Sysclass\Models\Organizations\Organization;
+/**
+ * @RoutePrefix("/module/institution")
+ */
+class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \ILinkable, \IBreadcrumbable, \IBlockProvider
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -50,14 +54,14 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     }
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Institution", "View")) {
+        //$data = $this->getItemsRequest();
+        
+        if ($this->acl->isUserAllowed(null, "Institution", "View")) {
 
-            $itemsData = $this->model("institution")->addFilter(array(
+            $items = $this->model("institution")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+            //$items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
             return array(
                 'administration' => array(
@@ -81,7 +85,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             ),
             array(
                 'icon'  => 'fa fa-university',
-                'link'  => $this->getBasePath() . "view",
+                'link'  => $this->getBasePath() . "edit/1",
                 'text'  => self::$t->translate("Organizations")
             )
         );
@@ -96,7 +100,7 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
                 $breadcrumbs[] = array('text'   => self::$t->translate("New Organization"));
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit Organization"));
                 break;
             }
@@ -104,44 +108,28 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
         return $breadcrumbs;
     }
 
-    /* IActionable */
-    /*
-    public function getActions() {
-        $request = $this->getMatchedUrl();
-
-        $actions = array(
-            'view'  => array(
-                array(
-                    'text'      => self::$t->translate('New Institution'),
-                    'link'      => $this->getBasePath() . "add",
-                    'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
-                )
-            )
-        );
-
-        return $actions[$request];
-    }
-    */
     /**
      * [ add a description ]
      *
-     * @url GET /item/me/:id
+     * @Get("/item/me/{id}")
      */
-    public function getItemAction($id) {
+    /*
+    public function getItemRequest($id) {
 
         $editItem = $this->model("institution")->getItem($id);
+        Organization::
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
 
         //$editItem['logo'] = $this->model("dropbox")->getItem($editItem['logo_id']);
         return $editItem;
     }
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/me
      */
-    public function addItemAction($id)
+    public function addItemRequest($id)
     {
         return $this->invalidRequestError(self::$t->translate("There's no multi-organization support yet!"), "error");
 
@@ -179,9 +167,10 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url PUT /item/me/:id
+     * @Put("/item/me/{id}")
      */
-    public function setItemAction($id)
+    /*
+    public function setItemRequest($id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -204,14 +193,14 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
             return $this->notAuthenticatedError();
         }
     }
-
+    */
 
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/me/:id
+     * @Delete("/item/me/{id}")
      */
-    public function deleteItemAction($id)
+    public function deleteItemRequest($id)
     {
         return $this->invalidRequestError(self::$t->translate("You can't delete the last institution in the system!"), "error");
 
@@ -235,10 +224,10 @@ class InstitutionModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * Get all news visible to the current user
      *
-     * @url GET /items/me
-     * @url GET /items/me/:type
+     * @Get("/items/me")
+     * @Get("/items/me/{type}")
      */
-    public function getItemsAction($type)
+    public function getItemsRequest($type)
     {
         $currentUser    = $this->getCurrentUser(true);
         $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);

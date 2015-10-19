@@ -19,3 +19,6 @@ require(__DIR__ . "/utils.php");
 
 // VIEW RELATED
 require(__DIR__ . "/views.php");
+
+// BACKWARD COMPATIBILITY CODE, TO BE DEPRECATED..
+require(__DIR__ . "/compat.php");

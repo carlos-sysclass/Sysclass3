@@ -47,11 +47,11 @@ crud:
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
       blocks: ["address.book"]
-      scripts: ["views.courses.edit"]
+      #scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
         page_subtitle: Create a new Organization
-    'edit/:id':
+    'edit/{id}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
       blocks: ["dropbox.upload", "address.book"]
       template: form.tpl

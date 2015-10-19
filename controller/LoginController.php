@@ -12,38 +12,6 @@ class LoginController extends \AbstractSysclassController
 		// Always authorize login page
 		return TRUE;
 	}
-	/*
-	protected function createLoginForm() {
-		//$postTarget = "/login?debug=10";
-		//		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
-
-		$form = new HTML_QuickForm("login_form", "post", $_SERVER['REQUEST_URI'], "", "class = 'login-form'", true);
-		$form->removeAttribute('name');
-		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
-		$form->addElement('text', 'login', self::$t->translate("Login"), 'class = "form-control placeholder-no-fix" ');
-		//$form->addRule('login', _THEFIELD.' "'._LOGIN.'" '._ISMANDATORY, 'required', null, 'client');
-		//$form->addRule('login', _INVALIDLOGIN, 'checkParameter', 'login');
-		$form->addElement('password', 'password', self::$t->translate("Password"), 'class = "form-control placeholder-no-fix" tabindex = "0"');
-		//$form->addRule('password', _THEFIELD.' "'._PASSWORD.'" '._ISMANDATORY, 'required', null, 'client');
-		$form->addElement('checkbox', 'remember', self::$t->translate("Remember me"), 1, 'class = "inputCheckbox"');
-		$form->addElement('submit', 'submit_login', self::$t->translate("Click to access"));
-
-		return $form;
-	}
-
-	protected function createResetPasswordForm() {
-		$postTarget = "/login/reset";
-		$form = new HTML_QuickForm("reset_password_form", "post", $postTarget, "", "class = 'forget-form'", true);
-		$form->removeAttribute('name');
-		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
-		$form->addElement('text', 'login_or_pwd', self::$t->translate("_LOGINOREMAIL"), 'class = "form-control placeholder-no-fix"');
-		//$form->addRule('login_or_pwd', _THEFIELD.' '._ISMANDATORY, 'required', null, 'client');
-		//$form->addRule('login_or_pwd', _INVALIDFIELDDATA, 'checkParameter', 'text');
-		$form->addElement('submit', 'submit_reset_password', self::$t->translate("Send"), 'class="flatButton"');
-
-		return $form;
-	}
-	*/
 
     /**
      * * Create login and reset password forms
@@ -100,7 +68,7 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
-	 * @url GET /signup
+	 * @Get("/signup")
 	 */
 	public function signupPage()
 	{
@@ -213,9 +181,9 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
-	 * @url POST /signup
+	 * @Post("/signup")
 	 */
-	public function signupAction()
+	public function signupRequest()
 	{
 		$di = DI::getDefault();
 
@@ -359,10 +327,10 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
-	 * @url GET /logout
-	 * @url POST /logout
+	 * @Get("/logout")
+	 * @Post("/logout")
 	 */
-	public function logoutAction()
+	public function logoutRequest()
 	{
 		$di = DI::getDefault();
 
@@ -384,7 +352,7 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
-	 * @url GET /autologin/:hash
+	 * @Get("/autologin/{hash}")
 	 */
 	public function autologinPage($hash)
 	{
@@ -451,7 +419,7 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
-	 * @url GET /lock
+	 * @Get("/lock")
 	 */
 	public function lockPage($reset)
 	{
@@ -516,9 +484,9 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
-	 * @url POST /login/reset
+	 * @Get("/login/reset")
 	 */
-	public function loginResetAction()
+	public function loginResetRequest()
 	{
 
 		$message = self::$t->translate("The system doesn't provides this function yet.Please came back in a while.");

@@ -1,7 +1,9 @@
 <?php
 use 
     Phalcon\Session\Adapter\Files as Session,
-    Sysclass\Services\I18n\Translator;
+    Sysclass\Services\I18n\Translator,
+    Phalcon\Flash\Direct as FlashDirect,
+    Phalcon\Flash\Session as FlashSession;
 
 $di->setShared("url", function() use ($di) {
     $url = new Phalcon\Mvc\Url();
@@ -30,7 +32,8 @@ if (!$session->isStarted()) {
 $di->setShared('session', $session);
 
 $di->setShared('translate', function () use ($di) {
-    $translator = new Translator();
+
+    $translator = new Translator(!$di->get("request")->isAjax());
     $user = $di->get("user");
 
     if ($user) {
@@ -42,6 +45,9 @@ $di->setShared('translate', function () use ($di) {
             return $translator;
         }
     }
+
+
+
     // TRY TO GET FROM A COOKIE OR FROM HTTP ACCEPTED LANGUAGE
     $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
     $language_code = Locale::getPrimaryLanguage($locale);
@@ -50,4 +56,33 @@ $di->setShared('translate', function () use ($di) {
     $translator->setSource($language_code);
     
     return $translator;
+});
+
+
+
+
+// Register the flash service with custom CSS classes
+$di->set('flashSession', function () {
+    $flash = new flashSession(
+        array(
+            'error'   => 'alert alert-danger',
+            'success' => 'alert alert-success',
+            'notice'  => 'alert alert-info',
+            'warning' => 'alert alert-warning'
+        )
+    );
+
+    return $flash;
+});
+$di->set('flash', function () {
+    $flash = new FlashDirect(
+        array(
+            'error'   => 'alert alert-danger',
+            'success' => 'alert alert-success',
+            'notice'  => 'alert alert-info',
+            'warning' => 'alert alert-warning'
+        )
+    );
+
+    return $flash;
 });

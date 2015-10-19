@@ -195,11 +195,6 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min')
 ));
 $plicoLib->add("resources/components", array(
-	'name'	=> 'data-tables',
-	'css'	=> array('plugins/data-tables/DT_bootstrap'),
-	'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap')
-));
-$plicoLib->add("resources/components", array(
 	'name'	=> 'datepicker',
 	'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
 	'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
@@ -209,24 +204,11 @@ $plicoLib->add("resources/components", array(
 	'css'	=> array('plugins/bootstrap-timepicker/compiled/timepicker'),
 	'js'	=> array('plugins/bootstrap-timepicker/js/bootstrap-timepicker')
 ));
-$plicoLib->add("resources/components", array(
-	'name'	=> 'wysihtml5',
-	'css'	=> array('plugins/bootstrap-wysihtml5/bootstrap-wysihtml5', 'plugins/bootstrap-wysihtml5/wysiwyg-color'),
-	'js'	=> array('plugins/bootstrap-wysihtml5/wysihtml5-0.3.0', 'plugins/bootstrap-wysihtml5/bootstrap-wysihtml5')
-));
+
 $plicoLib->add("resources/components", array(
 	'name'	=> 'fuelux-tree',
 	'css'	=> array('plugins/fuelux/css/tree-sysclass'),
 	'js'	=> array('plugins/fuelux/js/tree.min')
-));
-$plicoLib->add("resources/components", array(
-	'name'	=> 'select2',
-	'css'	=> array('plugins/select2/select2_metro'),
-	'js'	=> array('plugins/select2/select2')
-));
-$plicoLib->add("resources/components", array(
-	'name'	=> 'pwstrength',
-	'js'	=> array('plugins/jquery.pwstrength.bootstrap/src/pwstrength')
 ));
 
 $plicoLib->add("resources/components", array(
@@ -239,12 +221,6 @@ $plicoLib->add("resources/components", array(
 	'name'	=> 'jquery-multi-select',
 	'css'	=> array('css/jquery-multi-select/multi-select'),
 	'js'	=> array('plugins/jquery-multi-select/jquery.multi-select')
-));
-
-$plicoLib->add("resources/components", array(
-	'name'	=> 'bootstrap-switch',
-	'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
-	'js'	=> array('plugins/bootstrap-switch/js/bootstrap-switch')
 ));
 
 $plicoLib->add("resources/components", array(
@@ -286,30 +262,6 @@ $plicoLib->add("resources/components", array(
 		'plugins/jquery-file-upload/js/jquery.fileupload-audio',
 		'plugins/jquery-file-upload/js/jquery.fileupload-video',
 		'plugins/jquery-file-upload/js/jquery.fileupload-validate',
-		'plugins/jquery-file-upload/js/jquery.fileupload-ui'
-	)
-));
-
-$plicoLib->add("resources/components", array(
-	'name'	=> 'jquery-file-upload-image',
-	'css'	=> array(
-		'plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min',
-		'plugins/jquery-file-upload/css/jquery.fileupload',
-		'plugins/jquery-file-upload/css/jquery.fileupload-ui'
-	),
-	'js'	=> array(
-		'plugins/jquery-file-upload/js/vendor/jquery.ui.widget',
-		//'plugins/jquery-file-upload/js/vendor/tmpl.min',
-		'plugins/jquery-file-upload/js/vendor/load-image.min',
-		'plugins/jquery-file-upload/js/vendor/canvas-to-blob.min',
-		'plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min',
-		'plugins/jquery-file-upload/js/jquery.iframe-transport',
-		'plugins/jquery-file-upload/js/jquery.fileupload',
-		'plugins/jquery-file-upload/js/jquery.fileupload-process',
-		'plugins/jquery-file-upload/js/jquery.fileupload-image',
-		//'plugins/jquery-file-upload/js/jquery.fileupload-audio',
-		//'plugins/jquery-file-upload/js/jquery.fileupload-video',
-		//'plugins/jquery-file-upload/js/jquery.fileupload-validate',
 		'plugins/jquery-file-upload/js/jquery.fileupload-ui'
 	)
 ));

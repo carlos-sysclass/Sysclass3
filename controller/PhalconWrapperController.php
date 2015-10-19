@@ -17,6 +17,7 @@ use Phalcon\DI,
 abstract class PhalconWrapperController extends Controller
 {
 	public static $t = null;
+	protected static $db;
 
     public function initialize()
     {
@@ -24,9 +25,6 @@ abstract class PhalconWrapperController extends Controller
 			self::$t = $this->translate;
 		}
 
-    }
-
-	public function beforeExecuteRoute() {
 		$styleSheets = $this->environment["resources/css"];
 
 		foreach($styleSheets as $css) {
@@ -38,6 +36,11 @@ abstract class PhalconWrapperController extends Controller
 		foreach($scripts as $script) {
 			$this->putScript($script);
 		}
+
+    }
+
+	public function beforeExecuteRoute() {
+
 	}
 
 
@@ -79,6 +82,9 @@ abstract class PhalconWrapperController extends Controller
 
 	public function module($module, $noCached=FALSE)
 	{
+		$module = strtolower($module);
+
+		//var_dump($module, self::$resourceCache["module"]);
 		if (!$noCached && array_key_exists($module, self::$resourceCache["module"])) {
 			return self::$resourceCache["module"][$module];
 		}
@@ -98,7 +104,87 @@ abstract class PhalconWrapperController extends Controller
 				self::$resourceCache["module"][$module]->init();
 			}
 			return self::$resourceCache["module"][$module];
+		} else {
+			return false;
 		}
+	}
+
+	protected function getResourceClassName($type, $resource)
+	{
+		if (!in_array($type, array_keys(self::$resourceCache))) {
+			throw new Exception("Please provide a valid resource type.");
+		}
+		$resource = str_replace("_", "/", $resource);
+		$resource_parts = explode("/", $resource);
+		if (count($resource_parts) == 1) {
+			//array_push($resource_parts, reset($resource_parts));
+		}
+		array_push($resource_parts, $type);
+
+		array_walk($resource_parts, function(&$n) {
+  			$n = ucfirst($n);
+		});
+
+		return implode("", $resource_parts);
+
+	}
+
+	protected function resourceExists($type, $resource, $noCached=FALSE)
+	{
+		if (!in_array($type, array_keys(self::$resourceCache))) {
+			throw new Exception("Please provide a valid resource type.");
+		}
+		if (!$noCached && array_key_exists($resource, self::$resourceCache[$type])) {
+			return true;
+		}
+
+		$class_name = $this->getResourceClassName($type, $resource);
+
+		return class_exists($class_name);
+	}
+
+	public function model($model, $noCached=FALSE)
+	{
+		if (!$noCached && array_key_exists($model, self::$resourceCache["model"])) {
+			return self::$resourceCache["model"][$model];
+		}
+
+		if ($this->resourceExists("model", $model)) {
+			$class_name = $this->getResourceClassName("model", $model);
+			//debug_print_backtrace();
+			$class = new $class_name();
+
+			self::$resourceCache["model"][$model] = $class;
+
+			if (method_exists($class_name, "init")) {
+				self::$resourceCache["model"][$model]->init();
+			}
+			return self::$resourceCache["model"][$model];
+		}
+		// MAYBE RETURN HERE A SIMPLE MODEL, CREATING A METHOD TO PARAMETRIZING THE METHOD CREATION
+		return false;
+	}
+
+	public function helper($helper, $noCached=FALSE)
+	{
+		if (!$noCached && array_key_exists($helper, self::$resourceCache["helper"])) {
+			return self::$resourceCache["helper"][$helper];
+		}
+
+		if ($this->resourceExists("helper", $helper)) {
+			$class_name = $this->getResourceClassName("helper", $helper);
+			//debug_print_backtrace();
+			$class = new $class_name();
+
+			self::$resourceCache["helper"][$helper] = $class;
+
+			if (method_exists($class_name, "init")) {
+				self::$resourceCache["helper"][$helper]->init();
+			}
+			return self::$resourceCache["helper"][$helper];
+		}
+		// MAYBE RETURN HERE A SIMPLE MODEL, CREATING A METHOD TO PARAMETRIZING THE METHOD CREATION
+		return false;
 	}
 
 	public function getModules($interface = null) {
@@ -131,8 +217,104 @@ abstract class PhalconWrapperController extends Controller
 		return $modules;
 	}
 	// CacheManager
+	protected function getSessionToken()
+	{
+		@session_start();
+		if (array_key_exists('token', $_SESSION)) {
+			return $_SESSION['token'];
+		}
+		return null;
+	}
+
+	protected function hasCache($name)
+	{
+		$token = $this->getSessionToken();
+		if (array_key_exists($token, $_SESSION) && is_array($_SESSION[$token]) && array_key_exists($name, $_SESSION[$token])) {
+			return true;
+		}
+		return false;
+
+	}
+
+	protected function getCache($name)
+	{
+		if ($this->hasCache($name)) {
+			$token = $this->getSessionToken();
+			return $_SESSION[$token][$name];
+		}
+		return NULL;
+
+	}
+
+	public function setCache($name, $value)
+	{
+		// TODO MANAGE CACHE EXPIRATION
+		$token = $this->getSessionToken();
+		if (!array_key_exists($token, $_SESSION) || !is_array($_SESSION[$token])) {
+			$_SESSION[$token] = array();
+		}
+		$_SESSION[$token][$name] = $value;
+
+		return $value;
+
+	}
+
 	// DatabaseManager
+	public static function db() {
+
+		if (is_null(self::$db)) {
+			
+			$plico = PLicoLib::instance();
+			$DB_DSN = $plico->get('db_dsn');
+			$charset = $plico->get("db/charset");
+
+			$GLOBALS['ADODB_FETCH_MODE'] = ADODB_FETCH_ASSOC;
+			self::$db = &ADONewConnection($DB_DSN);
+			if (!is_null($charset)) {
+				switch(self::$db->databaseType) {
+					case "mysql" :{
+						mysql_set_charset($charset, self::$db->_connectionID);
+						break;
+					}
+					case "postgres7" :{
+						pg_set_client_encoding(self::$db->_connectionID, $charset);
+					}
+				}
+			}
+		}
+		return self::$db;
+
+	}
+
 	// RequestManager
+	protected function createResponse($code, $message, $type, $intent, $callback = null)
+	{
+		http_response_code($code);
+		$error = array(
+			"_response_" => array(
+				"code" 		=> $code,
+				"message"	=> $message,
+				"type"		=> $type,
+				"intent"	=> $intent,
+				"data"		=> $callback
+			)
+		);
+		return $error;
+	}
+
+	protected function createRedirectResponse($location, $message = null, $type = null, $code = 200) {
+		if (!is_null($message)) {
+			$this->putMessage($message, $type);
+		}
+		return $this->createResponse($code, $message, $type, "redirect", $location);
+	}
+
+	protected function notAuthenticatedError()
+	{
+		return $this->createResponse(403, "You don't have access to this resource", "error", "advise");
+	}
+
+
 	public function redirect($location = null, $message="", $message_type="", $code = 301)
 	{
 		if (!empty($message)) {
@@ -152,9 +334,26 @@ abstract class PhalconWrapperController extends Controller
 		exit;
 	}
 
+	protected function createAdviseResponse($message, $type)
+	{
+		return $this->createResponse(200, $message, $type, "advise");
+	}
+
+	protected function invalidRequestError($message = "", $type = "warning") {
+		if (empty($message)) {
+			$message = self::$t->translate("There's a problem with your request. Please try again.");
+		}
+		return $this->createResponse(200, $message, $type, "advise");
+	}
+
+
 	public function getHttpData($args)
 	{
-		return $this->request->get();
+		if ($this->request->isAjax()) {
+			return $this->request->getJsonRawBody(true);
+		} else {
+			return $this->request->get();
+		}
 
 	}
 	// SessionManager
@@ -164,6 +363,10 @@ abstract class PhalconWrapperController extends Controller
 	public function getContext($key) {
 		return $this->context[$key];
 	}
+	public function getMatchedUrl() {
+		return $this->getContext('urlMatch');
+	}
+
 
 	// ViewableContentManager
 	protected static $tmplData = array();
@@ -184,10 +387,11 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function display($template=NULL)
 	{
-		if ($this->beforeDisplay() === FALSE) {
+		if ($this->beforeDisplay() === FALSE && is_null($template)) {
+			//var_dump($template);
 			$template = $this->template;
 		}
-
+		
 		//$smarty = $this->getSmarty();
 		$params = array();
 
@@ -197,45 +401,34 @@ abstract class PhalconWrapperController extends Controller
 			$this->view->setVar("T_" . strtoupper($key), $item);
 		}
 
-
-		echo $this->view->render($template);
-		exit;
-
-		if (is_null($template)) {
-			var_dump($this->view->render($this->template, $params, true));
+ 		if (is_null($template)) {
+			$this->view->render($this->template);
 
 			//$this->getSmarty()->display($this->template);
 		} else {
-			var_dump($this->view->render($template, $params, true));
+			$this->view->render($template);
 			//$this->getSmarty()->display($template);
 		}
 
-        var_dump($template);
-		var_dump(1);
-		exit;
-		var_dump($a);
-
 		$this->afterDisplay();
+
+		$this->response->setContent($this->view->getContent());
+
+		//$this->response->send();
 
 		return TRUE;
 
 	}
 
-	protected function getMessage() {
-		if (!isset($_SESSION)) {
-			session_start();
-		}
-		if (array_key_exists('message', $_SESSION)) {
-			$message = $_SESSION['message'];
-			unset($_SESSION['message']);
-			return $message;
-		}
-		return false;
-	}
 
 
 	protected function beforeDisplay()
 	{
+
+		if ($this->translate->inTranslationMode()) {
+			$this->putBlock("translate.page.editor");
+		}
+		
 		$depInject = DI::getDefault();
 		$assets = $depInject->get("assets");
 
@@ -245,7 +438,6 @@ abstract class PhalconWrapperController extends Controller
 
         //$leftbarMenu = $layoutManager->getMenuBySection("leftbar");
         //$this->putItem("leftbar_menu", $leftbarMenu);
-
 		$this->onThemeRequest();
 
 		if ($this->supress_scripts) {
@@ -385,7 +577,43 @@ abstract class PhalconWrapperController extends Controller
 			'logout_url'	=> $this->getBasePath() . "logout.html"
 		));
 		*/
+	
+		return true;
 	}
+
+	protected function afterDisplay()
+	{
+		if ($this->translate->inTranslationMode()) {
+			// INJECT SCRIPT FOR 
+			//var_dump($this->translate->getTranslatedTokens());
+			//exit;
+		}
+	}
+
+	protected function getMessage() {
+		if (!isset($_SESSION)) {
+			session_start();
+		}
+		if (array_key_exists('message', $_SESSION)) {
+			$message = $_SESSION['message'];
+			unset($_SESSION['message']);
+			return $message;
+		}
+		return false;
+	}
+
+	protected function putMessage($message, $message_type = 'info') {
+		if (!isset($_SESSION)) {
+			session_start();
+		}
+		$_SESSION['message']		= array(
+			'message'	=> $message,
+			'type'		=> $message_type
+		);
+
+	}
+
+
 
 
 	// PageController
@@ -428,6 +656,14 @@ abstract class PhalconWrapperController extends Controller
 
 	}
 
+	public function putModuleScript($script)
+	{
+		self::$_moduleScripts[$script] = $script . ".js";
+		return $this;
+
+	}
+
+
 	public function addWidget($type, $data, $weight=12) {
 		$this->widgets[] = array(
 			'type'		=> $type,
@@ -462,6 +698,47 @@ abstract class PhalconWrapperController extends Controller
 
 		return false;
     }
+
+	public function putComponent() {
+		//if (func_num_args() > 1) {
+		$names = func_get_args();
+		//} else {
+		//	$names = array($name);
+		//}
+
+		//$plico = PlicoLib::instance();
+		$components = $this->environment['resources/components'];
+		//$components = $plico->getArray("resources/components");
+
+		foreach ($names as $name) {
+			$inject = false;
+			if (array_key_exists($name, $components)) {
+				$inject = $components[$name];
+			}
+
+			if ($inject) {
+				if (array_key_exists('css', $inject)) {
+					foreach ($inject['css'] as $stylesheet) {
+						$this->putCss($stylesheet);
+					}
+				}
+				if (array_key_exists('js', $inject)) {
+					foreach ($inject['js'] as $script) {
+						$this->putScript($script);
+					}
+				}
+			}
+		}
+	}
+
+	public function putSectionTemplate($key, $tpl) {
+		if (!array_key_exists($key, self::$_sections_tpl)) {
+			self::$_sections_tpl[$key] = array();
+		}
+		self::$_sections_tpl[$key][$tpl] = $tpl . ".tpl";
+		return $this;
+	}
+
 
 
 

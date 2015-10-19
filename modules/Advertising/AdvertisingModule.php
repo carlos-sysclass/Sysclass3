@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Advertising;
 /**
  * Module Class File
  * @filesource
@@ -7,14 +8,17 @@
  * Manage and control the advertising system strategy
  * @package Sysclass\Modules
  */
-class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILinkable, IBreadcrumbable, IBlockProvider
+/**
+ * @RoutePrefix("/module/advertising")
+ */
+class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \ILinkable, \IBreadcrumbable, \IBlockProvider
 {
     protected $_modelRoute = "advertising";
     /* IWidgetContainer */
     public function getWidgets($widgetsIndexes = array()) {
 
         $widgetsContext = $this->getConfig("widgets");
-        //        $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
+        // $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
 
         $adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
@@ -68,8 +72,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
 
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Advertising", "View")) {
+        if ($this->acl->isUserAllowed(null, "Advertising", "View")) {
             $itemsData = $this->model($this->_modelRoute)->getItems();
             //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 
@@ -158,7 +161,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {
@@ -180,7 +183,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:identifier
+     * @Get("/edit/{identifier}")
      */
     public function editPage($identifier)
     {
@@ -202,7 +205,8 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url GET /item/:model/:identifier
+     * @url GET 
+     * @Get("/item/{model}/{identifier}")
      */
     public function getItemAction($model = "me", $identifier = null)
     {
@@ -214,9 +218,9 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url POST /item/:model
+     * @Post("/item/{model}")
      */
-    public function addItemAction($model, $type)
+    public function addItemAction($model)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -278,6 +282,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
      * [ add a description ]
      *
      * @url PUT /item/:model/:id
+     * @Put("/item/{model}/{id}")
      */
     public function setItemAction($model, $id)
     {
@@ -316,7 +321,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/:model/:id
+     * @Delete("/item/{model}/{id}")
      */
     public function deleteItemAction($model, $id)
     {
@@ -351,9 +356,9 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url GET /items/:model
-     * @url GET /items/:model/:type
-     * @url GET /items/:model/:type/:filter
+     * @Get("/item/{model}")
+     * @Get("/item/{model}/{type}")
+     * @Get("/item/{model}/{type}/{filter}")
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
@@ -441,7 +446,7 @@ class AdvertisingModule extends SysclassModule implements IWidgetContainer, ILin
     /**
      * [ add a description ]
      *
-     * @url PUT /items/content/set-order/:advertising_id
+     * @Put("/items/content/set-order/{advertising_id}")
      */
     public function setContentOrderAction($advertising_id)
     {

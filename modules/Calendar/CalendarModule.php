@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+namespace Sysclass\Modules\Calendar;
 
 use Sysclass\Models\Calendar\Sources as CalendarSource,
     Sysclass\Models\Calendar\Event;
@@ -10,8 +11,10 @@ use Sysclass\Models\Calendar\Sources as CalendarSource,
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-
-class CalendarModule extends SysclassModule implements ISummarizable, IWidgetContainer, ILinkable, IBreadcrumbable, IActionable
+/**
+ * @RoutePrefix("/module/calendar")
+ */
+class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidgetContainer, \ILinkable, \IBreadcrumbable, \IActionable
 {
     public function getSummary() {
         $data = Event::count(); // FAKE, PUT HERE DUE PAYMENTS
@@ -29,9 +32,9 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
 
     /* ILinkable */
     public function getLinks() {
-        $count = Event::count(); // FAKE, PUT HERE DUE PAYMENTS
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Calendar", "Edit")) {
+        if ($this->acl->isUserAllowed(null, "Calendar", "Edit")) {
+            $count = Event::count();
+
             return array(
                 'communication' => array(
                     array(
@@ -150,7 +153,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
-     * @url GET /manage
+     * @Get("/manage")
      * @allow(resource=calendar, action=edit)
      */
 
@@ -170,7 +173,7 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
-     * @url GET /event-source/add
+     * @Get("/event-source/add")
      */
 
     public function addEventSourcePage()
@@ -186,10 +189,10 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
-     * @url GET /items/event-sources
+     * @Get("/items/event-sources")
      */
 
-    public function eventSourcesAction() {
+    public function eventSourcesRequest() {
         return CalendarSource::find()->toArray();
 
     }
@@ -197,9 +200,9 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
-     * @url GET /items/calendar
+     * @Get("/items/calendar")
      */
-    public function calendarListAction()
+    public function calendarListRequest()
     {
         $currentUser    = $this->getCurrentUser();
 
@@ -247,9 +250,9 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
-     * @url GET /items/me/:filter
+     * @Get("/items/me/{filter}")
      */
-    public function getItemsAction($filter)
+    public function getItemsRequest($filter)
     {
         $currentUser    = $this->getCurrentUser(true);
 
@@ -308,10 +311,10 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * Get the event according to the id
      *
-     * @url GET /item/me/:id
+     * @Get("/item/me/{id}")
     */
 
-    public function getItemAction($id)
+    public function getItemRequest($id)
     {
          $editItem = $this->model("events/collection")->getItem($id);
          return $editItem;
@@ -320,9 +323,10 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * Insert a event model
      *
-     * @url POST /item/me
+     * @Post("/item/me")
      */
-    public function addItemAction($id)
+    /*
+    public function addItemRequest($id)
     {
 
         if ($userModel = $this->getCurrentUser(true))
@@ -355,13 +359,15 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             return $this->notAuthenticatedError();
         }
     }
-
+    */
+    public function beforeModelCreate($evt, $model, $data) {
+    }
     /**
      * Insert a event model
      *
-     * @url PUT /item/me/:id
+     * @Put("/item/me/{id}")
      */
-    public function setItemAction($id)
+    public function setItemRequest($id)
     {
 
         if ($userModel = $this->getCurrentUser(true))
@@ -398,9 +404,9 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/me/:id
+     * @Delete("/item/me/{id}")
      */
-    public function deleteItemAction($id)
+    public function deleteItemRequest($id)
     {
         if ($userData = $this->getCurrentUser()) {
             $eventModel = Event::findFirstById($id);

@@ -3,12 +3,15 @@
  * Module Class File
  * @filesource
  */
+namespace Sysclass\Modules\Dropbox;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-
-class DropboxModule extends SysclassModule implements IBlockProvider /* implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider */
+/**
+ * @RoutePrefix("/module/dropbox")
+ */
+class DropboxModule extends \SysclassModule implements \IBlockProvider
 {
 
     public function registerBlocks() {
@@ -28,13 +31,13 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             }
         );
     }
-
     /**
      * [add a description]
      *
      * @url GET /item/:model/:id
      */
-    public function getItemAction($model = "me", $id)
+    /*
+    public function getItemRequest($model = "me", $id)
     {
         if ($model == "me") {
             $itemModel = $this->model("dropbox");
@@ -42,13 +45,14 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
         }
         return $this->invalidRequestError();
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url PUT /item/:model/:id
      */
-    public function setItemAction($model, $id)
+    /*
+    public function setItemRequest($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -74,13 +78,15 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url DELETE /item/:model/:id
+     * @allow(resource=dropbox, action=delete)
      */
-    public function deleteItemAction($model = "me", $id)
+    /*
+    public function deleteItemRequest($model = "me", $id)
     {
         if ($userData = $this->getCurrentUser()) {
            if ($model == "me") {
@@ -106,15 +112,18 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [add a description]
      *
-     * @url POST /upload/
-     * @url POST /upload/:type
+     * @Post("/upload")
+     * @Post("/upload/{type}")
+     * @allow(resource=dropbox, action=edit)
      */
-    public function receiveFilesAction($type = "default")
+    public function receiveFilesRequest($type = "default")
     {
+        $this->response->setContentType('application/json', 'UTF-8');
+
         $param_name = array_key_exists("name", $_GET) ? $_GET['name'] : "files";
 
         if (!array_key_exists($param_name, $_FILES)) {
@@ -130,6 +139,7 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
 
         $upload_dir = $filewrapper->getPublicPath($type);
         $upload_url = $filewrapper->getPublicUrl($type);
+
 
         $helper->setOption('upload_dir', $upload_dir . "/");
         $helper->setOption('upload_url', $upload_url . "/");
@@ -181,13 +191,15 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
 
                 $error = $filedata['error'];
             }
-            return array_merge($filedata, $this->invalidRequestError($error, "warning"));
+            $this->response->setJsonContent(array_merge($filedata, $this->invalidRequestError($error, "warning")));
+            return false;
         } else {
 
             foreach($result[$param_name] as $fileObject) {
                 $filedata = (array) $fileObject;
                 //$filedata['lesson_id'] = $id;
                 $filedata['upload_type'] = $type;
+                $filedata['filename'] = $filedata['name'];
 
                 // CHECK FOR FILE EXISTENCE
                 if (!is_null($content_range)) {
@@ -197,7 +209,10 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                         'upload_type'   => $filedata['upload_type']
                     ))->getItems();
 
+
+
                     if (count($exists) > 0) {
+
                         $this->model("dropbox")->setItem($filedata, $exists[0]['id']);
                         $filedata['id'] = $exists[0]['id'];
                     } else {
@@ -212,6 +227,7 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                 $file_result[$param_name][] = $filedata;
             }
         }
+        $this->response->setJsonContent($file_result);
 
         return $file_result;
     }
@@ -220,8 +236,9 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
      * [add a description]
      *
      * @url DELETE /upload/:lesson_id/:file_id
+     * @Delete("/upload/{lesson_id}/{file_id}")
      */
-    public function removeFilesAction($lesson_id, $file_id)
+    public function removeFilesRequest($lesson_id, $file_id)
     {
         if ($userData = $this->getCurrentUser()) {
             $itemModel = $this->model("lessons/files");

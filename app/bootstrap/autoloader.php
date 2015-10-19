@@ -10,10 +10,12 @@ $loader = new Loader();
 // Register some namespaces
 $loader->registerDirs(
     array(
-        __DIR__ . "/../../controller/",
-        PLICOLIB_PATH . "/controller/",
-        PLICOLIB_PATH . "/inc/",
-        PLICOLIB_PATH . "/"
+        __DIR__ . "/../../controller/", // CAN BE REMOVED AFTER ALL UPDATE
+        __DIR__ . "/../../model/", // CAN BE REMOVED AFTER ALL UPDATE
+        __DIR__ . "/../../helper/", // CAN BE REMOVED AFTER ALL UPDATE
+        PLICOLIB_PATH . "/controller/", // CAN BE REMOVED AFTER ALL UPDATE
+        PLICOLIB_PATH . "/inc/", // CAN BE REMOVED AFTER ALL UPDATE
+        PLICOLIB_PATH . "/" // CAN BE REMOVED AFTER ALL UPDATE
     )
 );
 

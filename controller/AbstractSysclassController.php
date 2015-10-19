@@ -215,8 +215,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		if (is_null($who)) {
 			$who = 'default';
 		}
-		$plico = PlicoLib::instance();
-		$urls = $plico->getArray('urls');
+		
+		$urls = $this->environment['urls']->toArray();
 		if (array_key_exists($who, $urls)) {
 			return $urls[$who];
 		}

@@ -14,10 +14,22 @@ class Translator extends Component
     protected $languages;
     protected $base_tokens;
 
-    public function __construct() {
+    protected $session_tokens = array();
+
+    public function __construct($clearCache = false) {
         // GET ALL LANGUAGES CACHE
         $this->languages = Language::find("active = 1");
         $this->base_tokens = Tokens::find("language_code = '{$this->getSystemLanguageCode()}'");
+
+        if ($this->inTranslationMode()) {
+            $this->cache->delete("session_tokens");
+        } elseif ($this->cache-> exists("session_tokens")) {
+            $this->session_tokens = $this->cache->get("session_tokens");
+        }
+    }
+
+    public function getLastSessionToken() {
+        return $this->session_tokens;
     }
 
     
@@ -86,12 +98,6 @@ class Translator extends Component
     public function translate($token, $vars = null, $language_code = null)
     {
         /** @todo CHECK FOR TRANSLATION MODE */
-        if (array_key_exists('_translate', $_GET)) {
-            $translateMode = true;
-        } else {
-            $translateMode = false;
-        }
-
         // FIRST CHECK ON TRANSLATION HASH TABLE
         //$controller = PlicoLib::handler();
 
@@ -112,14 +118,15 @@ class Translator extends Component
         });
 
         if (count($exists) > 0) {
-            $token = $exists[0]->text;
+            $translated = $exists[0]->text;
         } else {
             //REGISTER TOKEN HERE, TO TRANSLATE LATER
+            $translated = $token;
             $tokenModel = new Tokens();
             $tokenModel->assign(array(
                 'language_code' => $this->getSystemLanguageCode(),
                 'token' => $token,
-                'text'  => $token
+                'text'  => $translated
             ));
             $tokenModel->save();
         }
@@ -129,11 +136,14 @@ class Translator extends Component
             if (!is_array($vars)) {
                 $vars = array($vars);
             }
-            return vsprintf($token, $vars);
+            $translated = vsprintf($token, $vars);
         }
-        return $token;
-    }
+        $this->session_tokens[$token] = $translated;
 
+        $this->cache->save("session_tokens", $this->session_tokens);
+
+        return $translated;
+    }
 
     /**
      * [translateTokens description]
@@ -175,6 +185,16 @@ class Translator extends Component
         }
     }
 
+    public function inTranslationMode() {
+        if (array_key_exists('_translate', $_GET)) {
+            return $translateMode = true;
+        } else {
+            return $translateMode = false;
+        }
+    }
+    public function getTranslatedTokens() {
+        return $this->session_tokens;
+    }
     /*
     public function init()
     {

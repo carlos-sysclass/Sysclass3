@@ -1,7 +1,5 @@
 <?php
-//use Phalcon\Mvc\View as View;
-use Phalcon\Mvc\View\Simple as View;
-//use Phalcon\Mvc\View\SmartyView as View;
+use Plico\Mvc\View\Sysclass as View;
 use Phalcon\Mvc\View\Engine\Smarty as SmartyEngine;
 
 $di->set('view', function() use ($environment) {
@@ -11,7 +9,7 @@ $di->set('view', function() use ($environment) {
     $view->setViewsDir(REAL_PATH . '/themes/default/templates/');
 
     $view->registerEngines(
-        array('.tpl' => function($view, $di) {
+        array('.tpl' => function($view, $di) use ($environment) {
 
             $smarty = new SmartyEngine($view, $di);
 
@@ -22,7 +20,7 @@ $di->set('view', function() use ($environment) {
                 'cache_lifetime'    => 120,
                 //'template_dir'      => $view->getViewsDir(),
                 //'compile_dir'       => __DIR__ . "/../../cache/view/smarty/compiled",
-                'error_reporting'   => error_reporting() ^ E_NOTICE,
+                'error_reporting'   => ($environment->run->debug) ? error_reporting() ^ E_NOTICE : error_reporting(),
                 'escape_html'       => true,
                 //'_file_perms'       => 0666,
                 //'_dir_perms'        => 0777,

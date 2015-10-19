@@ -3,7 +3,9 @@ namespace Sysclass\Modules\Users;
 
 use Phalcon\DI,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Users\Group,
     Sysclass\Models\Users\UsersGroups,
+    Sysclass\Models\I18n\Language,
     Sysclass\Services\I18n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException;
 
@@ -13,26 +15,18 @@ use Phalcon\DI,
 class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer
 {
 
-
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Users", "View")) {
-            $items = $this->model("users/collection")->addFilter(array(
-                'active'    => true
-            ))->getItems();
+        if ($this->acl->isUserAllowed(null, "Users", "View")) {
 
-            $groupItems = $this->model("users/groups/collection")->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+            $total_itens = User::count("active = 1");
 
             return array(
                 'users' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $total_itens,
                         'text'  => self::$t->translate('Users'),
-                        'icon'  => 'icon-user',
+                        'icon'  => 'fa fa-user',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -131,184 +125,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         return $actions[$request];
     }
 
-	const PERMISSION_IN_LESSON 		= "PERMISSION_IN_LESSON";
-	const PERMISSION_IN_COURSE 		= "PERMISSION_IN_COURSE";
-	const PERMISSION_SPECIFIC_TYPE 	= "PERMISSION_SPECIFIC_TYPE";
-
-	public static $permissions = null;
-
-	/* IPermissionChecker */
-	public function getName() {
-		return self::$t->translate("Users");
-	}
-	public function getPermissions($index = null) {
-		if (is_null(self::$permissions)) {
-			self::$permissions = array(
-				self::PERMISSION_IN_LESSON => array(
-					'name'	=> "All students enrolled in a lesson",
-					'token'	=> "All students enrolled in the lesson '%s'"
-				),
-				self::PERMISSION_IN_COURSE => array(
-					'name'	=> "All students enrolled in a course",
-					'token'	=> "All students enrolled in the course '%s'"
-				),
-				self::PERMISSION_SPECIFIC_TYPE => array(
-					'name'	=> "All users from specific type",
-					'token'	=> "All users of type '%s'"
-				)
-			);
-		}
-		if (!array_key_exists($index, self::$permissions)) {
-			return self::$permissions;
-		} else {
-			return self::$permissions[$index];
-		}
-	}
-
-    /**
-     * [getConditionText description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-	public function getConditionText($condition_id, $data) {
-
-		$condition = $this->getPermissions($condition_id);
-
-		switch($condition_id) {
-			case self::PERMISSION_IN_LESSON : {
-				$lessonObject = $this->model("course/lessons")->getItem($data);
-				return self::$t->translate($condition['token'], $lessonObject->lesson['name']);
-			}
-			case self::PERMISSION_IN_COURSE : {
-				$course = $this->model("course/item")->getItem($data);
-				return self::$t->translate($condition['token'], $course['name']);
-			}
-			case self::PERMISSION_SPECIFIC_TYPE : {
-				$roles = MagesterUser::GetRoles(true);
-				return self::$t->translate($condition['token'], $roles[$data]);
-			}
-			default : {
-				return "Permission Unknown";
-			}
-		}
-	}
-
-    /**
-     * [checkCondition description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-	public function checkCondition($condition_id, $data) {
-		$entity = $this->getCurrentUser();
-		return $this->checkConditionByEntityId($entity['id'], $condition_id, $data);
-	}
-
-    /**
-     * [checkConditionByEntityId description]
-     * @param  [type] $entity_id    [description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-	public function checkConditionByEntityId($entity_id, $condition_id, $data) {
-		$userModel = $this->model("users");
-		$userObject = $userModel->getItem($entity_id);
-
-		switch($condition_id) {
-			case self::PERMISSION_IN_LESSON : {
-				// CHECK IF
-				$checkIDs = explode(";", $data);
-				if ($userObject->getType() == 'administrator') {
-					return true;
-				}
-				$userLessons = $userObject->getUserLessons(array("return_objects" => false));
-				$userLessonsId = array_keys($userLessons);
-
-				foreach($checkIDs as $lesson_id) {
-					if (!in_array($lesson_id, $userLessonsId)) {
-						return false;
-					}
-				}
-				return true;
-			}
-			case self::PERMISSION_IN_COURSE : {
-				// CHECK IF
-				$checkIDs = explode(";", $data);
-				if ($userObject->getType() == 'administrator') {
-					return true;
-				}
-				$userCourses = $userObject->getUserCourses(array("return_objects" => false));
-				$userCoursesId = array_keys($userCourses);
-
-				foreach($checkIDs as $course_id) {
-					if (!in_array($course_id, $userCoursesId)) {
-						return false;
-					}
-				}
-				return true;
-			}
-			case self::PERMISSION_SPECIFIC_TYPE : {
-				// CHECK IF
-				$userType = $userObject->user['user_types_ID'] != 0 ? $userObject->user['user_types_ID'] : $userObject->getType();
-
-				if ($userType == $data) {
-					return true;
-				}
-				return false;
-			}
-
-			default : {
-				return true;
-			}
-		}
-	}
-
-    /**
-     * [getPermissionForm description]
-     * @param  [type] $condition_id [description]
-     * @param  array  $data         [description]
-     * @return [type]               [description]
-     */
-	public function getPermissionForm($condition_id, $data = array()) {
-		if (array_key_exists($condition_id, $this->getPermissions())) {
-			$this->putItem("data", $data);
-			return $this->fetch("permission/" . $condition_id . ".tpl");
-		} else {
-			return false;
-		}
-	}
-
-    /**
-     * [parseFormData description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-	public function parseFormData($condition_id, $data) {
-		switch($condition_id) {
-			case self::PERMISSION_IN_LESSON : {
-				// CHECK IF
-				$lesson_ids = explode(";", $data['lesson_id']);
-				return implode(";", $lesson_ids);
-			}
-			case self::PERMISSION_IN_COURSE : {
-				// CHECK IF
-				$course_ids = explode(";", $data['course_id']);
-				return implode(";", $course_ids);
-			}
-			case self::PERMISSION_SPECIFIC_TYPE : {
-				// CHECK IF
-				$user_type = explode(";", $data['user_type']);
-				return implode(";", $user_type);
-			}
-			default : {
-				return json_encode($data);
-			}
-		}
-	}
-
 	/* IWidgetContainer */
     /**
      * [getWidgets description]
@@ -365,17 +181,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage($id)
     {
-        $languages = self::$t->getItems();
-        $this->putitem("languages", $languages);
+        $languages = Language::find("active = 1");
+        $this->putitem("languages", $languages->toArray());
 
-        $groups =  $this->model("users/groups/collection")->addFilter(array(
-            'active' => true
-        ))->getItems();
-        $this->putItem("groups", $groups);
+        $groups = Group::find("active = 1");
+        $this->putItem("groups", $groups->toArray());
 
         parent::addPage();
     }
@@ -383,18 +197,16 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @Get("/edit/{id}")
      * @allow(resource=users, action=edit)
      */
     public function editPage($id)
     {
-        $languages = self::$t->getItems();
-        $this->putitem("languages", $languages);
+        $languages = Language::find("active = 1");
+        $this->putitem("languages", $languages->toArray());
 
-        $groups =  $this->model("users/groups/collection")->addFilter(array(
-            'active' => true
-        ))->getItems();
-        $this->putItem("groups", $groups);
+        $groups = Group::find("active = 1");
+        $this->putItem("groups", $groups->toArray());
 
         parent::editPage($id);
     }
@@ -403,9 +215,10 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url GET /item/me/:id
+     * @Get("/item/me/{id}")
     */
-    public function getItemAction($id) {
+    /*
+    public function getItemRequest($id) {
         $request = $this->getMatchedUrl();
 
         // TODO: CHECK PERMISSIONS
@@ -419,13 +232,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
         return $editItem;
     }
+    */
 
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
+     * @Post("/item/me")
      */
-    public function addItemAction($id)
+    /*
+    public function addItemRequest($id)
     {
         $request = $this->getMatchedUrl();
 
@@ -436,20 +251,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             $userModel = new User();
             $userModel->assign($data);
 
-            if (
-                array_key_exists('new-password', $data) &&
-                !empty($data['new-password'])
-            ) {
-                // CHECK PASSWORD
-                $di = DI::getDefault();
-
-                // DEFINE AUTHENTICATION BACKEND
-                $userModel->password = $di->get("authentication")->hashPassword($data['new-password'], $userModel);
-            }
-
-            if (is_null($userModel->backend)) {
-                $userModel->backend = $di->get("authentication")->getDefaultBackend();
-            }
+            $di = DI::getDefault();
 
             if ($userModel->save()) {
                 if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
@@ -477,13 +279,54 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
+    */
+   
+    public function beforeModelCreate($evt, $model, $data) {
+        if (
+            array_key_exists('new-password', $data) &&
+            !empty($data['new-password'])
+        ) {
+            // CHECK PASSWORD
+            $di = DI::getDefault();
+
+            // DEFINE AUTHENTICATION BACKEND
+            $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+        }
+
+        if (is_null($userModel->backend)) {
+            $model->backend = strtolower($this->configuration->get("default_auth_backend"));
+        }
+
+        return true;
+    }
+
+    public function afterModelCreate($evt, $model, $data) {
+        if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+            foreach($data['usergroups'] as $group) {
+                $userGroup = new UsersGroups();
+                $userGroup->user_id = $model->id;
+                $userGroup->group_id = $group['id'];
+                $userGroup->save();
+            }
+        }
+
+        return true;
+    }
+
+
+    public function beforeModelUpdate($evt, $model, $data) {
+    }
+    /*
+    public function beforeModelDelete($evt, $model) {
+    }
+    */
 
     /**
      * [ add a description ]
      *
-     * @url PUT /item/me/:id
+     * @Put("/item/me/{id}")
      */
-    public function setItemAction($id)
+    public function setItemRequest($id)
     {
         //$request = $this->getMatchedUrl();
         $ACL = Phalcon\DI::getDefault()->get("acl");
@@ -569,10 +412,10 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url PUT /item/agreement/:id
+     * @Put("/item/agreement/{id}")
      * @todo MOVE TO AGREEMENT CONTROLLER
      */
-    public function setAgreementAction($id)
+    public function setAgreementRequest($id)
     {
         if ($userModel = $this->getCurrentUser(true)) {
             $data = $this->getHttpData(func_get_args());
@@ -620,9 +463,10 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/me/:id
+     * @Delete("/item/me/{id}")
      */
-    public function deleteItemAction($id)
+    /*
+    public function deleteItemRequest($id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -639,13 +483,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
+    */
     /**
      * [ add a description ]
-     *
-     * @url GET /items/me
-     * @url GET /items/me/:type
+     * 
+     * @Get("/items/me")
+     * @Get("/items/me/{type}")
      */
-    public function getItemsAction($type)
+    /*
+    public function getItemsRequest($type)
     {
 
         $currentUser    = $this->getCurrentUser(true);
@@ -689,8 +535,18 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         )
                     );
                 }
-
             }
+            $this->response->setContentType('application/json', 'UTF-8');
+            $this->response->setJsonContent(array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            ));
+            //$this->view->disable();
+            //return $response;
+
+            
             return array(
                 'sEcho'                 => 1,
                 'iTotalRecords'         => count($items),
@@ -700,11 +556,22 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
         return array_values($items);
     }
+    */
+    protected function getDatatableItemOptions() {
+        // TODO: THINK ABOUT MOVING THIS TO config.yml
+        return array(
+            'check'  => array(
+                'icon'  => 'icon-check',
+                'link'  => $baseLink . 'block/%id$s',
+                'class' => 'btn-sm btn-danger'
+            )
+        );
+    }
 
 	/**
 	 * [ add a description ]
 	 *
-	 * @url GET /profile
+     * @Get("/profile")
 	 */
 	public function profilePage()
 	{
@@ -785,12 +652,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 /**
      * [ add a description ]
      *
-     * @url GET /check-login
+     * @Get("/check-login")
      */
-    public function checkLoginAction()
+    public function checkLoginRequest()
     {
         if ($currentUser    = $this->getCurrentUser(true)) {
             $login = $_GET['login'];
+
             /*
             $exists = User::count(array(
                 "login = ?0 AND login <> ?1",
@@ -801,6 +669,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 "login = ?0",
                 "bind" => array($login)
             ));
+
+            $this->response->setContentType('application/json', 'UTF-8');
+            $this->response->setJsonContent($exists == 0);
 
             return $exists == 0;
         } else {
@@ -817,7 +688,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	 * @url POST /profile/personal
      * @deprecated 3.0.0.34
 	 */
-	public function profilePersonalSaveAction()
+	public function profilePersonalSaveRequest()
 	{
 		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
 		exit;
@@ -868,7 +739,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	 * @url POST /profile/password
      * @deprecated 3.0.0.34
 	 */
-	public function profilePasswordSaveAction()
+	public function profilePasswordSaveRequest()
 	{
 		//$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
 		//exit;
@@ -912,7 +783,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      * @url GET /combo/items/:type
      * @deprecated 3.0.0.0
      */
-    public function comboItensAction($type) {
+    public function comboItensRequest($type) {
         $q = $_GET['q'];
 
         switch ($type) {
@@ -964,6 +835,186 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         //}
     }
     */
+   
+
+  
+    const PERMISSION_IN_LESSON      = "PERMISSION_IN_LESSON";
+    const PERMISSION_IN_COURSE      = "PERMISSION_IN_COURSE";
+    const PERMISSION_SPECIFIC_TYPE  = "PERMISSION_SPECIFIC_TYPE";
+
+    public static $permissions = null;
+
+    /* IPermissionChecker */
+    public function getName() {
+        return self::$t->translate("Users");
+    }
+    public function getPermissions($index = null) {
+        if (is_null(self::$permissions)) {
+            self::$permissions = array(
+                self::PERMISSION_IN_LESSON => array(
+                    'name'  => "All students enrolled in a lesson",
+                    'token' => "All students enrolled in the lesson '%s'"
+                ),
+                self::PERMISSION_IN_COURSE => array(
+                    'name'  => "All students enrolled in a course",
+                    'token' => "All students enrolled in the course '%s'"
+                ),
+                self::PERMISSION_SPECIFIC_TYPE => array(
+                    'name'  => "All users from specific type",
+                    'token' => "All users of type '%s'"
+                )
+            );
+        }
+        if (!array_key_exists($index, self::$permissions)) {
+            return self::$permissions;
+        } else {
+            return self::$permissions[$index];
+        }
+    }
+
+    /**
+     * [getConditionText description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
+    public function getConditionText($condition_id, $data) {
+
+        $condition = $this->getPermissions($condition_id);
+
+        switch($condition_id) {
+            case self::PERMISSION_IN_LESSON : {
+                $lessonObject = $this->model("course/lessons")->getItem($data);
+                return self::$t->translate($condition['token'], $lessonObject->lesson['name']);
+            }
+            case self::PERMISSION_IN_COURSE : {
+                $course = $this->model("course/item")->getItem($data);
+                return self::$t->translate($condition['token'], $course['name']);
+            }
+            case self::PERMISSION_SPECIFIC_TYPE : {
+                $roles = MagesterUser::GetRoles(true);
+                return self::$t->translate($condition['token'], $roles[$data]);
+            }
+            default : {
+                return "Permission Unknown";
+            }
+        }
+    }
+
+    /**
+     * [checkCondition description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
+    public function checkCondition($condition_id, $data) {
+        $entity = $this->getCurrentUser();
+        return $this->checkConditionByEntityId($entity['id'], $condition_id, $data);
+    }
+
+    /**
+     * [checkConditionByEntityId description]
+     * @param  [type] $entity_id    [description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
+    public function checkConditionByEntityId($entity_id, $condition_id, $data) {
+        $userModel = $this->model("users");
+        $userObject = $userModel->getItem($entity_id);
+
+        switch($condition_id) {
+            case self::PERMISSION_IN_LESSON : {
+                // CHECK IF
+                $checkIDs = explode(";", $data);
+                if ($userObject->getType() == 'administrator') {
+                    return true;
+                }
+                $userLessons = $userObject->getUserLessons(array("return_objects" => false));
+                $userLessonsId = array_keys($userLessons);
+
+                foreach($checkIDs as $lesson_id) {
+                    if (!in_array($lesson_id, $userLessonsId)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            case self::PERMISSION_IN_COURSE : {
+                // CHECK IF
+                $checkIDs = explode(";", $data);
+                if ($userObject->getType() == 'administrator') {
+                    return true;
+                }
+                $userCourses = $userObject->getUserCourses(array("return_objects" => false));
+                $userCoursesId = array_keys($userCourses);
+
+                foreach($checkIDs as $course_id) {
+                    if (!in_array($course_id, $userCoursesId)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            case self::PERMISSION_SPECIFIC_TYPE : {
+                // CHECK IF
+                $userType = $userObject->user['user_types_ID'] != 0 ? $userObject->user['user_types_ID'] : $userObject->getType();
+
+                if ($userType == $data) {
+                    return true;
+                }
+                return false;
+            }
+
+            default : {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * [getPermissionForm description]
+     * @param  [type] $condition_id [description]
+     * @param  array  $data         [description]
+     * @return [type]               [description]
+     */
+    public function getPermissionForm($condition_id, $data = array()) {
+        if (array_key_exists($condition_id, $this->getPermissions())) {
+            $this->putItem("data", $data);
+            return $this->fetch("permission/" . $condition_id . ".tpl");
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * [parseFormData description]
+     * @param  [type] $condition_id [description]
+     * @param  [type] $data         [description]
+     * @return [type]               [description]
+     */
+    public function parseFormData($condition_id, $data) {
+        switch($condition_id) {
+            case self::PERMISSION_IN_LESSON : {
+                // CHECK IF
+                $lesson_ids = explode(";", $data['lesson_id']);
+                return implode(";", $lesson_ids);
+            }
+            case self::PERMISSION_IN_COURSE : {
+                // CHECK IF
+                $course_ids = explode(";", $data['course_id']);
+                return implode(";", $course_ids);
+            }
+            case self::PERMISSION_SPECIFIC_TYPE : {
+                // CHECK IF
+                $user_type = explode(";", $data['user_type']);
+                return implode(";", $user_type);
+            }
+            default : {
+                return json_encode($data);
+            }
+        }
+    }
 
 
 }

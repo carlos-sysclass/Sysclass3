@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 {foreach $T_MODULE_CONTEXT.datatable_fields as $field}
-                    <th class="{$field.sClass} {$field.sType}">
+                    <th class="{$field.sClass} {if isset($field.sType)}{$field.sType}{/if}">
                         {if !isset($field.label)}
                             {$field.mData}
                         {else}
@@ -20,12 +20,15 @@
 <script>
 _lazy_init_functions.push(function() {
     // START DATATABLE HERE
+    "{ dasdasdasdasdas }";
     var tableViewClass = $SC.module("utils.datatables").tableViewClass;
     var tableView = new tableViewClass({
         el : "#view-{$T_MODULE_ID}",
         datatable : {
             "sAjaxSource": "{$T_MODULE_CONTEXT.ajax_source}",
-            "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode}
+            "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode nofilter}
+
+
         }
     });
 });

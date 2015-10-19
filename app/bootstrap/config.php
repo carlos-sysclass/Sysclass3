@@ -48,7 +48,7 @@ $di->setShared('environment', function() use ($di) {
 		'path/files'			=> $appRootDir . 'files',
 		'path/files/public'		=> $appRootDir . 'files',
 		'path/files/private'	=> $appRootDir . 'files-private',
-		'module/base_path'		=> 'module',
+		'module/base_path'		=> '/module',
 		"timestamp/format"		=> "d/m/Y \à\s H:i",
 		//'controller'			=> array(),
 		'mail/send/isSMTP'		=> FALSE,
@@ -155,7 +155,10 @@ $di->setShared('environment', function() use ($di) {
 		'scripts/utils.strophe',
 		'scripts/portlets'
 	);
-
+	$config['urls'] = array(
+		'default'	=> '/dashboard',
+		'home'		=> '/dashboard'
+	);
 
 	//$config['http/secure'] = $config['https'] == 'https';
 	$config['http/host'] = $config['http_host'];
@@ -163,6 +166,83 @@ $di->setShared('environment', function() use ($di) {
 
 	$config['bing/client_id'] = 'SysClass';
 	$config['bing/client_secret'] = 'vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=';
+
+	$config['resources/components'] = array(
+		'select2' => array(
+			'name'	=> 'select2',
+			'css'	=> array('plugins/select2/select2_metro'),
+			'js'	=> array('plugins/select2/select2')
+		),
+		'data-tables' => array(
+			'name'	=> 'data-tables',
+			'css'	=> array('plugins/data-tables/DT_bootstrap'),
+			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap')
+		),
+		'bootstrap-switch' => array(
+			'name'	=> 'bootstrap-switch',
+			'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
+			'js'	=> array('plugins/bootstrap-switch/js/bootstrap-switch')
+		),
+		'pwstrength' => array(
+			'name'	=> 'pwstrength',
+			'js'	=> array('plugins/jquery.pwstrength.bootstrap/src/pwstrength')
+		),
+		'wysihtml5' => array(
+			'name'	=> 'wysihtml5',
+			'css'	=> array('plugins/bootstrap-wysihtml5/bootstrap-wysihtml5', 'plugins/bootstrap-wysihtml5/wysiwyg-color'),
+			'js'	=> array('plugins/bootstrap-wysihtml5/wysihtml5-0.3.0', 'plugins/bootstrap-wysihtml5/bootstrap-wysihtml5')
+		),
+		"validation" => array(
+			'name'	=> 'validation',
+			'js'	=> array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min')
+		),
+		"jquery-file-upload-image" => array(
+			'name'	=> 'jquery-file-upload-image',
+			'css'	=> array(
+				'plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min',
+				'plugins/jquery-file-upload/css/jquery.fileupload',
+				'plugins/jquery-file-upload/css/jquery.fileupload-ui'
+			),
+			'js'	=> array(
+				'plugins/jquery-file-upload/js/vendor/jquery.ui.widget',
+				//'plugins/jquery-file-upload/js/vendor/tmpl.min',
+				'plugins/jquery-file-upload/js/vendor/load-image.min',
+				'plugins/jquery-file-upload/js/vendor/canvas-to-blob.min',
+				'plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min',
+				'plugins/jquery-file-upload/js/jquery.iframe-transport',
+				'plugins/jquery-file-upload/js/jquery.fileupload',
+				'plugins/jquery-file-upload/js/jquery.fileupload-process',
+				'plugins/jquery-file-upload/js/jquery.fileupload-image',
+				//'plugins/jquery-file-upload/js/jquery.fileupload-audio',
+				//'plugins/jquery-file-upload/js/jquery.fileupload-video',
+				//'plugins/jquery-file-upload/js/jquery.fileupload-validate',
+				'plugins/jquery-file-upload/js/jquery.fileupload-ui'
+			)
+		),
+		'bootstrap-confirmation' => array(
+			'name'	=> 'bootstrap-confirmation',
+			'js'	=> array(
+				'plugins/bootstrap-confirmation/bootstrap-confirmation'
+			)
+		)
+	);
+
+	// MOVE TO module config.yml!!!
+	$config['models/map'] = array(
+		'courses'	=> '\Sysclass\Models\Courses\Course',
+		'dropbox' => '\Sysclass\Models\Dropbox\File',
+		'institution' => '\Sysclass\Models\Organizations\Organization',
+		'users' => array(
+			'class' => '\Sysclass\Models\Users\User',
+            'exportMethod'  => array(
+                'toFullArray',
+                array('Avatars', 'UserGroups')
+            ),
+            'findMethod'  => 'findFirstById'
+		),
+		
+		
+	);
 
     $configAdapter2 = new Config($config);
 

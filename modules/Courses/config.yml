@@ -42,7 +42,7 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Create a new course
-    'edit/:id':
+    'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       blocks: ["roadmap.classes", "roadmap.grouping", "users.list.table"]
       #blocks: ["roadmap.classes"]

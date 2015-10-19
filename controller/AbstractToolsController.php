@@ -1,6 +1,7 @@
 <?php
 abstract class AbstractToolsController extends PhalconWrapperController
 {
+	protected $config;
 
     // CREATE FUNCTION HERE
     public function loadLayout($layout_id = 'default', $use_cache = true) {
@@ -11,7 +12,7 @@ abstract class AbstractToolsController extends PhalconWrapperController
         if (@$this->config['dashboard']['merge_resource_with_modules']) {
             $modules = $this->getModules();
 
-            $modules_keys = array_keys($modules);
+            $modules_keys = array_map('strtolower', array_keys($modules));
             foreach($this->config['dashboard']['resources'] as $index => $resource) {
                 $this->config['dashboard']['resources'][$index] = array_unique(array_merge($resource, $modules_keys));
             }

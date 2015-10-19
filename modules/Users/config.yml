@@ -57,7 +57,7 @@ crud:
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new User
-    'edit/:id':
+    'edit/{id}':
       components: ["select2","validation", "bootstrap-switch","pwstrength"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]

@@ -14,7 +14,7 @@ namespace Sysclass\Modules\Dashboard;
 class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidgetContainer
 {
     protected $layout_id;
-    protected $config;
+    public $config;
 
     /* ISectionMenu */
     public function getSectionMenu($section_id) {
@@ -32,9 +32,6 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                     'text'  => self::$t->translate(ucfirst($dashboard))
                 );
             }
-
-//            $this->putModuleScript("models.translate");
-//            $this->putModuleScript("menu.translate");
 
             $menuItem = array(
                 'icon'      => 'fa fa-dashboard',
@@ -73,6 +70,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
 
             $links = array();
             foreach($modulesOrder as $module_id) {
+                $module_id = ucfirst($module_id);
                 if (array_key_exists($module_id, $modules)) {
                     $mod_links = $modules[$module_id]->getLinks();
                     if (is_array($mod_links)) {
@@ -129,7 +127,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         $modules = array();
         // GET ALL MODULES, CHECK FOR IMenu Interface, CHECK FOR SECTION
         $modules = $this->getModules("\IWidgetContainer");
-        
+
         $widgetsIndexes = array();
         foreach($this->layoutSpec['widgets'] as $column_id => $columnWidgets) {
             $widgetsIndexes = array_merge($widgetsIndexes, $columnWidgets);
@@ -140,8 +138,9 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         // GET WIDGET BY COLUMN
         $this->clearWidgets();
         foreach($modules as $index => $module) {
-
+            //var_dump($index);
             $mod_widgets = $module->getWidgets($widgetsIndexes);
+            //var_dump($mod_widgets);
             if ($mod_widgets) {
                 $this->widgets = array_merge($this->widgets, $mod_widgets);
             }

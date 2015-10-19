@@ -3,11 +3,17 @@
  * Module Class File
  * @filesource
  */
+namespace Sysclass\Modules\Translate;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class TranslateModule extends SysclassModule implements IBlockProvider, ISectionMenu, ILinkable, IBreadcrumbable, IActionable
+use Sysclass\Models\I18n\Language;
+
+/**
+ * @RoutePrefix("/module/translate")
+ */
+class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISectionMenu, \ILinkable, \IBreadcrumbable, \IActionable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -19,6 +25,11 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
                 return true;
 
+            },
+            'translate.page.editor' => function($data, $self) {
+                $self->putModuleScript("translate.page.editor");
+
+                return true;
             }
         );
     }
@@ -33,14 +44,16 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
             $currentUser = $this->getCurrentUser();
 
-            $items = self::$t->getItems();
+            $languageRS = Language::find();
 
-            $userLanguageCode =  self::$t->getUserLanguageCode();
 
-            foreach($items as $key => &$value) {
-                if ($value['code'] == $userLanguageCode) {
-                    $value['selected'] = true;
-                    break;
+            $userLanguageCode =  self::$t->getSource();
+            $items = array();
+
+            foreach($languageRS as $key => $value) {
+                $items[$key] = $value->toArray();
+                if ($value->code == $userLanguageCode) {
+                    $items[$key]['selected'] = true;
                 }
             }
 
@@ -158,6 +171,25 @@ class TranslateModule extends SysclassModule implements IBlockProvider, ISection
 
         return $actions[$request];
     }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/session_tokens")
+     */
+    public function getSessionTokensRequest()
+    {
+        $this->response->setContentType('application/json', 'UTF-8');
+        $session_tokens = $this->translate->getTranslatedTokens();
+
+        $this->response->setJsonContent(array(
+            'srclang' => $this->translate->getSource(),
+            'tokens' => $session_tokens
+        ));
+    }
+
+    
 
 
     /**

@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Messages;
 /**
  * Module Class File
  * @filesource
@@ -11,7 +12,10 @@ use Sysclass\Models\Users\Group as UserGroup,
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class MessagesModule extends SysclassModule implements ISummarizable, IBlockProvider, ISectionMenu, IWidgetContainer
+/**
+ * @RoutePrefix("/module/messages")
+ */
+class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockProvider, \ISectionMenu, \IWidgetContainer
 {
     // ISummarizable
     public function getSummary() {
@@ -156,19 +160,23 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
 
             $this->putBlock("messages.send.dialog");
 
-            $groups = $this->getMessageGroups();
+            //$groups = $this->getMessageGroups();
 
             $recipients = $this->getMessageReceivers();
 
-            foreach($groups as $group) {
-                $widgets[$widgetsNames[$group['id']]] = array(
+
+            $groupsRS = MessageGroup::find();
+
+
+            foreach($groupsRS as $group) {
+                $widgets[$widgetsNames[$group->id]] = array(
                     //'title'     => self::$t->translate($group['name']),
-                    'header'    => self::$t->translate($group['name']),
+                    'header'    => self::$t->translate($group->name),
                     'template'  => $this->template("contact-list.widget"),
-                    'icon'      => $group['icon'],
+                    'icon'      => $group->icon,
                     'panel'     => 'dark-blue messages-panel',
                     'body'      => false,
-                    'data'      => $recipients[$group['id']]
+                    'data'      => $recipients[$group->id]
                 );
             }
 
@@ -224,6 +232,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
      * [getMessageGroups description]
      * @deprecated 3.0.14
      */
+    /*
     protected function getMessageGroups() {
         return $this->_getTableData(
             "mod_messages_groups",
@@ -232,7 +241,7 @@ class MessagesModule extends SysclassModule implements ISummarizable, IBlockProv
             "id ASC"
         );
     }
-
+    */
     /**
      * [getMessageReceivers description]
      * @param  [type] $group_id [description]

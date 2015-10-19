@@ -33,7 +33,7 @@ try {
 
     $application->useImplicitView(false);
 
-    var_dump($application->handle()->getContent());
+    echo $application->handle()->getContent();
 
 } catch (\Exception $e) {
     var_dump($e);

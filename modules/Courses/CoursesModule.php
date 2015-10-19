@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Courses;
 /**
  * Module Class File
  * @filesource
@@ -8,8 +9,10 @@ use Sysclass\Models\Enrollments\Course as Enrollment;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-
-class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IWidgetContainer, IPermissionable
+/**
+ * @RoutePrefix("/module/courses")
+ */
+class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IWidgetContainer, \IPermissionable
 {
     /* ISummarizable */
     public function getSummary() {
@@ -27,12 +30,12 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
 
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Courses", "View")) {
+
+        if ($this->acl->isUserAllowed(null, "Courses", "View")) {
             $itemsData = $this->model("courses")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+            //$items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'content' => array(
@@ -239,7 +242,7 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @Get("/edit/{id}")
      */
     public function editPage($id)
     {

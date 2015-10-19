@@ -23,13 +23,15 @@ $di->setShared("acl", function() use ($di, $eventsManager) {
     // GET CURRENT USER
     $user = $di->get("user");
 
-    // CREATE THE ACL
-    $acl = Sysclass\Acl\Adapter::getDefault($user);
-    // Bind the eventsManager to the ACL component
-    $acl->setEventsManager($eventsManager);
-
-    return $acl;
-
+    if ($user) {
+        // CREATE THE ACL
+        $acl = Sysclass\Acl\Adapter::getDefault($user);
+        // Bind the eventsManager to the ACL component
+        $acl->setEventsManager($eventsManager);
+    
+        return $acl;
+    }
+    return false;
 });
 
 $di->set('crypt', function () {
