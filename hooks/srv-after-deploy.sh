@@ -35,6 +35,10 @@ DIRNAME=`dirname $(readlink -f $0)`
 mkdir -p "$DIRNAME/../cache/metadata"
 chmod 777 "$DIRNAME/../cache/metadata" -R
 
+mkdir -p "$DIRNAME/../cache/view/smarty/cache"
+mkdir -p "$DIRNAME/../cache/view/smarty/compiled"
+chmod 777 "$DIRNAME/../cache/view/smarty/c*" -R
+
 mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
 
