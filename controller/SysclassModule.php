@@ -131,8 +131,8 @@ abstract class SysclassModule extends BaseSysclassModule
                 'toArray',
                 array()
             ),
-            'listMethod'  => 'find',
-            'findMethod'  => 'findFirstById'
+            'findMethod'  => 'findFirstById',
+            'listMethod'  => 'find'
         );
 
         if (array_key_exists($this->module_id, $this->environment['models/map'])) {
@@ -392,7 +392,10 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = $item->toArray();
+                    $items[$key] = call_user_func_array(
+                        array($item, $this->model_info['exportMethod'][0]),
+                        $this->model_info['exportMethod'][1]
+                    );
                     $items[$key]['options'] = array();
                     if ($editAllowed) {
                         $items[$key]['options']['edit']  = array(
@@ -429,9 +432,19 @@ abstract class SysclassModule extends BaseSysclassModule
                     'aaData'                => array_values($items)
                 ));
                 return true;
-            }
-            $this->response->setJsonContent(array_values($result->toArray()));
+            } else {
+                $items = array();
 
+                foreach($resultRS as $key => $item) {
+                    // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                    $items[$key] = call_user_func_array(
+                        array($item, $this->model_info['exportMethod'][0]),
+                        $this->model_info['exportMethod'][1]
+                    );
+                }
+                
+                $this->response->setJsonContent($items);
+            }
         } else {
             $this->response->setJsonContent(
                 $this->notAuthenticatedError()

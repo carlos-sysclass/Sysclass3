@@ -1,15 +1,19 @@
 <?php
-use Sysclass\Models\Announcements\Announcement;
+namespace Sysclass\Modules\News;
 
 /**
  * Module Class File
  * @filesource
  */
+use Sysclass\Modules\Announcements\Announcement;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class NewsModule extends SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, */ IBreadcrumbable, IActionable, ISectionMenu
+/**
+ * @RoutePrefix("/module/news")
+ */
+class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, */ \IBreadcrumbable, \IActionable, \ISectionMenu
 {
 	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {

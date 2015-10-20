@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Advisor;
 /**
  * Module Class File
  * @filesource
@@ -7,7 +8,10 @@
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class AdvisorModule extends SysclassModule implements /* ISummarizable, */IWidgetContainer, IBlockProvider
+/**
+ * @RoutePrefix("/module/advisor")
+ */
+class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWidgetContainer, \IBlockProvider
 {
     // ISummarizable
     public function getSummary()

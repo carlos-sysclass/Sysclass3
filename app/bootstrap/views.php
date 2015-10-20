@@ -2,9 +2,11 @@
 use Plico\Mvc\View\Sysclass as View;
 use Phalcon\Mvc\View\Engine\Smarty as SmartyEngine;
 
-$di->set('view', function() use ($environment) {
+$di->set('view', function() use ($environment, $di) {
 
     $view = new View;
+
+    $view->setDI($di);
 
     $view->setViewsDir(REAL_PATH . '/themes/default/templates/');
 

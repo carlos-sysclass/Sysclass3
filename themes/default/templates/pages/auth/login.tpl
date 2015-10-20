@@ -9,11 +9,21 @@
 
 		<input type="hidden" name="requested_uri" value="{$T_REQUESTED_URI}" />
 			<h3 class="form-title">{translateToken value="Login to your account"}</h3>
+
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 				<div class="alert alert-{$T_MESSAGE.type}">
 					<button class="close" data-dismiss="alert"></button>
 					<span>{$T_MESSAGE.message}</span>
 				</div>
+			{/if}
+
+			{if isset($messages) && $messages|@count > 0}
+				{foreach $messages as $type => $message}
+				<div class="alert alert-{$type}">
+					<button class="close" data-dismiss="alert"></button>
+					<span>{$message}</span>
+				</div>
+				{/foreach}
 			{/if}
 
 			<div class="form-group">

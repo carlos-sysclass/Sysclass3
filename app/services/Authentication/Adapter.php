@@ -20,64 +20,68 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
     }
     */
     public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
+        // ALWAYS AUTHORIZE LOGIN CONTROLLER
+        if ($this->dispatcher -> getControllerName() == "login_controller") {
+            return true;
+        }
+        
+        //$this->dispatcher-> getControllerName()
+
 
         // INJECT HERE SESSION AUTHORIZATION CODE
         try {
             // OLD CHECK STYLE
             $user = $this->authentication->checkAccess();
+
+
         } catch (AuthenticationException $e) {
-                var_dump($e->getCode());
-                exit;
+                //var_dump($e->getCode());
+                //exit;
 
             switch($e->getCode()) {
                 case AuthenticationException :: MAINTENANCE_MODE : {
                     $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
-                    //$message_type = 'warning';
-                    $this->flash->warning($message);
+                    $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: LOCKED_DOWN : {
                     $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
-                    //$message_type = 'warning';
-                    $this->flash->warning($message);
+                    $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: NO_USER_LOGGED_IN : {
                     $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
-                    //$message_type = 'info';
-                    $this->flash->notice($message);
+                    $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
                     $url = "/lock";
                     $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
                     $message_type = 'info';
-                    $this->flash->notice($message);
                     break;
                 }
                 default : {
                     $message = $this->translate->translate($e->getMessage());
-                    $this->flash->error($message);
-                    //$message_type = 'danger';
+                    $message_type = 'danger';
                     break;
                 }
             }
+
+            $this->flashSession->message($message_type, $message);
             // TODO:  CHECK IF THE REQUEST WASN'T A JSON REQUEST
             //$this->redirect($url, $message, $message_type);
 
             $dispatcher->forward(
                 array(
-                    'controller' => 'login',
-                    'action'     => 'login'
+                    'namespace'     => 'Sysclass\Controllers',
+                    'controller'    => 'login_controller',
+                    'action'        => 'loginpage'
                 )
             );
             return false;
             //
         }
         return TRUE;
-
-        var_dump($event, $dispatcher);
-        exit;
     }
 
     public function getEventsManager()

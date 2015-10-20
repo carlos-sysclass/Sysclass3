@@ -252,6 +252,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
      *
      * @Get("/items/me/{filter}")
      */
+    /*
     public function getItemsRequest($filter)
     {
         $currentUser    = $this->getCurrentUser(true);
@@ -289,25 +290,11 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             //$evtArray['allDay'] = true;
             //$evtArray['editable'] = true;
             $items[] = $evtArray;
-            /*array
-            (
-                'id'            => $evt->id,
-                //'title'         => substr(str_replace("\n", " ", strip_tags($evt->title)), 0, 25),
-                'title'         => str_replace("\n", " ", strip_tags($evt->title)),
-                'description'   => $evt->description,
-                'start'         => $evt->start,
-                'end'           => $evt->end,
-                'allDay'        => true,
-                //'color'         => $evt->type->color,
-                'editable'      => true,
-                'className'     => $evt->source->class_name
-            );
-            */
         }
 
         return $items;
     }
-
+    */
     /**
      * Get the event according to the id
      *

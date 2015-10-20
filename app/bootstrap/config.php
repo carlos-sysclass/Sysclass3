@@ -224,11 +224,23 @@ $di->setShared('environment', function() use ($di) {
 			'js'	=> array(
 				'plugins/bootstrap-confirmation/bootstrap-confirmation'
 			)
+		),
+		'fullcalendar' => array(
+			'name'	=> 'fullcalendar',
+			'css'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar'),
+			'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar')
 		)
 	);
 
 	// MOVE TO module config.yml!!!
 	$config['models/map'] = array(
+		'calendar'	=> array(
+			'class' => '\Sysclass\Models\Calendar\Event',
+            'exportMethod'  => array(
+                'toFullArray',
+                array()
+            ),
+		),
 		'courses'	=> '\Sysclass\Models\Courses\Course',
 		'dropbox' => '\Sysclass\Models\Dropbox\File',
 		'institution' => '\Sysclass\Models\Organizations\Organization',

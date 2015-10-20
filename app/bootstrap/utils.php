@@ -62,19 +62,23 @@ $di->setShared('translate', function () use ($di) {
 
 
 // Register the flash service with custom CSS classes
-$di->set('flashSession', function () {
-    $flash = new flashSession(
+$di->setShared('flashSession', function () {
+    $flash = new flashSession(/*
         array(
             'error'   => 'alert alert-danger',
             'success' => 'alert alert-success',
             'notice'  => 'alert alert-info',
             'warning' => 'alert alert-warning'
         )
-    );
+    */);
+
+    $flash
+        ->setImplicitFlush(false)
+        ->setAutomaticHtml(true);
 
     return $flash;
 });
-$di->set('flash', function () {
+$di->setShared('flash', function () {
     $flash = new FlashDirect(
         array(
             'error'   => 'alert alert-danger',
@@ -83,6 +87,11 @@ $di->set('flash', function () {
             'warning' => 'alert alert-warning'
         )
     );
+
+    $flash
+        ->setImplicitFlush(false)
+        ->setAutomaticHtml(true);
+
 
     return $flash;
 });

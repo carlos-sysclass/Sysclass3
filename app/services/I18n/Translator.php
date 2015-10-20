@@ -13,6 +13,8 @@ class Translator extends Component
     protected $source_lang;
     protected $languages;
     protected $base_tokens;
+    protected $source_tokens;
+    protected $source_tokens_index;
 
     protected $session_tokens = array();
 
@@ -69,6 +71,15 @@ class Translator extends Component
             'hydration' => Resultset::HYDRATE_ARRAYS*/
         ));
 
+        //var_dump($this->source_tokens->toArray());
+
+        //$source_tokens = $this->source_tokens->toArray();
+
+        $this->source_tokens_index = array();
+
+        foreach($this->source_tokens as $item) {
+            $this->source_tokens_index[$item->text] = $item->token;
+        }
     }
 
     public function getDisponibleLanguagesCodes()
@@ -110,15 +121,20 @@ class Translator extends Component
         //$language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $translateModel->getUserLanguageCode() : $language_code;
         $language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $this->getSource() : $language_code;
 
+
+        $exists = array_search($token, $this->source_tokens_index);
+
+        /*
         $exists = $this->source_tokens->filter(function($item) use ($token) {
             //if ($item['token'] === $token) {
             if ($item->token === $token) {
                 return $item;
             }
         });
+        */
 
-        if (count($exists) > 0) {
-            $translated = $exists[0]->text;
+        if ($exists !== FALSE) {
+            $translated = $exists;
         } else {
             //REGISTER TOKEN HERE, TO TRANSLATE LATER
             $translated = $token;

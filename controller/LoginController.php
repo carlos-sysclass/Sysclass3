@@ -57,7 +57,7 @@ class LoginController extends \AbstractSysclassController
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/login");
 
-		if ($reset) {
+		if ($reset == "reset") {
 			$this->putItem("open_login_section", "reset");
 		} else {
 			$this->putItem("open_login_section", "login");
@@ -136,9 +136,6 @@ class LoginController extends \AbstractSysclassController
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/signup");
 
-		if ($reset) {
-			$this->putItem("open_login_section", "reset");
-		}
 		$this->putItem("requested_uri", $request_uri);
 
 

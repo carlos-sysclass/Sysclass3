@@ -112,6 +112,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
+        
 		if (in_array('courses.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 
 			// TODO MOVE TO YOUR OWN COMPONENT
@@ -123,7 +124,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             $this->putComponent("easy-pie-chart");
 
 			$this->putScript("plugins/holder");
-
+            
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			//$this->putModuleScript("models.courses");
@@ -133,7 +134,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 
 
             $settings = $this->module("settings")->getSettings(true);
-
+            
             if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
                 // GET FIRST COURSE FORM USER LIST
                 $enrollment = Enrollment::findFirst(array(
@@ -164,7 +165,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                 }
 
             }
-
+            
 			return array(
 				'courses.overview' => array(
 					'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
@@ -177,36 +178,8 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 					)
 				)
 			);
+
 		}
-        /*
-        if (in_array("courses.administration", $widgetsIndexes)) {
-            // TODO MOVE TO YOUR OWN COMPONENT
-            $this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
-            $this->putComponent("fuelux-tree");
-            $this->putComponent("jquery-nestable");
-
-            $this->putScript("plugins/holder");
-
-            //$this->putScript("plugins/videojs/vjs.youtube");
-
-            $this->putModuleScript("models.courses");
-            $this->putModuleScript("widget.courses");
-
-
-            return array(
-                'courses.administration' => array(
-                    'type'      => 'courses', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-                    'id'        => 'courses-widget',
-                    'template'  => $this->template("overview.widget"),
-                    'box'       => 'dark-blue tabbable tabbable-left',
-                    'tools'     => array(
-                        'search'        => true,
-                        'fullscreen'    => true
-                    )
-                )
-            );
-        }
-        */
 
 		return false;
 	}

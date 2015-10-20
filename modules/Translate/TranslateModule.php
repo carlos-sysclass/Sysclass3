@@ -84,8 +84,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
 
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Translate", "View")) {
+        if ($this->acl->isUserAllowed(null, "Translate", "View")) {
             $data = $this->getItemsAction();
 
             return array(
