@@ -50,3 +50,4 @@ echo "base_version=$base_version" >> RELEASE
 echo "full_version=$full_version" >> RELEASE
 echo "build_number=$build_number" >> RELEASE
 echo "branch=$branch" >> RELEASE
+echo "environment=$environment" >> RELEASE
