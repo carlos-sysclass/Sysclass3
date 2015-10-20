@@ -85,7 +85,7 @@ class Translator extends Component
     public function getDisponibleLanguagesCodes()
     {
         // TODO Include code to get default user language
-        return array_column($this->languages->toArray(), 'code');
+        return \array_column($this->languages->toArray(), 'code');
         /*
         $cacheHash = __METHOD__;
 
@@ -96,7 +96,7 @@ class Translator extends Component
             $this->clearCache($cacheHash);
         }
         $languages = $this->getItems();
-        $langcodes = array_column($languages, "code");
+        $langcodes = \array_column($languages, "code");
 
         if ($this->cacheable()) {
             // TODO CACHE RESULTS HERE
@@ -182,7 +182,7 @@ class Translator extends Component
             // VALIDATE TOKEN
             $bingTranslateModel = $this->model("bing/translate");
             if (is_string($source_column)) {
-                $translateTokens = array_column($tokens, $source_column);
+                $translateTokens = \array_column($tokens, $source_column);
             } else {
                 $translateTokens = array_values($tokens);
             }

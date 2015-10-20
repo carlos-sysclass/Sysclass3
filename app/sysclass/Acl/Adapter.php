@@ -71,7 +71,7 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
         foreach($resources as $resource => $operations) {
 
             $resource = $stringHelper->stripChars($resource);
-            $operationsSingle = array_column($operations, "name");
+            $operationsSingle = \array_column($operations, "name");
 
             $filter = new \Phalcon\Filter();
 

@@ -54,7 +54,7 @@ class TranslateModel extends ModelManager
             $this->clearCache($cacheHash);
         }
         $languages = $this->getItems();
-        $langcodes = array_column($languages, "code");
+        $langcodes = \array_column($languages, "code");
 
         if ($this->cacheable()) {
             // TODO CACHE RESULTS HERE

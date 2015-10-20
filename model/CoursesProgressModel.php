@@ -29,7 +29,7 @@ class CoursesProgressModel extends AbstractSysclassModel implements ISyncronizab
                 'course_id'  => $course_id
             ))->getItems();
 
-        $progressItens = array_column($contents, 'progress');
+        $progressItens = \array_column($contents, 'progress');
 
         $factorSum = 0;
         foreach($progressItens as $item) {
