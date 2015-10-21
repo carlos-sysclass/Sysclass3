@@ -25,9 +25,11 @@ _lazy_init_functions.push(function() {
         el : "#view-{$T_MODULE_ID}",
         datatable : {
             "sAjaxSource": "{$T_MODULE_CONTEXT.ajax_source}",
-            "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode}
+            "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode nofilter}
         }
     });
+
+    $SC.addTable("view-{$T_MODULE_ID}", tableView);
 });
 </script>
 {/if}

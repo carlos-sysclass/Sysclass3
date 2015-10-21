@@ -680,15 +680,29 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                             'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary'
                         ),
+                        /*
                         'block'  => array(
                             'icon'  => 'icon-lock',
                             'link'  => $baseLink . "block/" . $item['id'],
                             'class' => 'btn-sm btn-info'
                         ),
-                        'remove'    => array(
-                            'icon'  => 'icon-remove',
-                            'class' => 'btn-sm btn-danger'
-                        )
+                        */
+                    );
+                    if ($item['pending'] == 1) {
+                        $items[$key]['options']['aprove'] = array(
+                            'icon'  => 'fa fa-lock',
+                            //'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                            'attrs' => array(
+                                'data-datatable-action' => "aprove",
+                                'data-original-title' => 'Aprove User'
+                            )
+                        );
+                    }
+
+                    $items[$key]['options']['remove'] = array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'
                     );
                 }
 
