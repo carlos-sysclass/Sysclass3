@@ -52,7 +52,6 @@
 		{block name="underscore-templates"}
 		{* MAKE A WAY TO INJECT TOOLTIPS ON OPTIONS OBJECTS *}
 		<script type="text/template" id="datatables-option-default-template">
-			<% console.warn(item); %>
 			<a
 				class="datatable-option-<%= item.key %> btn <% if (item.class != undefined) { %><%= item.class %><% } else { %>btn-default<% } %>"
 				href="<% if (item.link != undefined) { %><%= item.link %><% } else { %>javascript: void(0);<% } %>"

@@ -1,7 +1,7 @@
 $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $, _) {
 
     mod.on("start", function(opt) {
-        var baseDatatableViewClass = app.module("views").baseDatatableViewClass;
+        //var baseDatatableViewClass = app.module("views").baseDatatableViewClass;
         //var roleResourceDialogViewClass = baseDatatableViewClass.extend({
         var roleResourceDialogViewClass = Backbone.View.extend({
             initialize: function() {
@@ -36,6 +36,7 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 				});
 
             	this.listenTo(table, "draw.datatables", function(row, data) {
+            		//console.warn('DRAW', row, data);
 					var exists = this.collection.findWhere({resource_id: data['id']});
 
 					var innerInput = $(row).find(".datatable-option-switch");
@@ -47,11 +48,19 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 					}
 				}.bind(this));
 
-				this.listenTo(table, "switchItem.datatables", function(data,a,b,c) {
-					
+				this.listenTo(table, "switchItem.datatables", function(data) {
 					var resourceSwitchModelClass = Backbone.Model.extend({
 						urlRoot : "/module/roles/item/resources/toggle"
 					});
+
+					var exists = this.collection.findWhere({resource_id: data['id']});
+
+					if (typeof exists != "undefined") {
+						this.collection.remove(exists);
+					} else {
+						this.collection.add({resource_id: data['id']});
+					}
+					//console.warn('SWITCH', data, exists, this.collection.toJSON());
 
 					var resourceSwitchModel = new resourceSwitchModelClass();
 					resourceSwitchModel.set("role_id", this.model.get("id"));
