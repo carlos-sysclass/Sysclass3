@@ -46,6 +46,7 @@
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
 							</a>
 						</div>
+						<!--
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 
 							<ul class="nav navbar-nav navbar-right">
@@ -61,6 +62,7 @@
 								</li>
 							</ul>
 						</div>
+						-->
 					</div>
 
 					<div class="tabbable-custom">
