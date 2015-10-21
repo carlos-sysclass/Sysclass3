@@ -586,7 +586,7 @@ class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, I
                     $userModel = User::findFirstById($id);
                 }
 
-                $userModel->viewed_license = $data['viewed_license'];
+                $userModel->viewed_license = is_array($data['viewed_license']) ? reset($data['viewed_license']) : $data['viewed_license'];
 
                 // CHECK FOR PASSWORD CHANGING
                 if ($userModel->update()) {
