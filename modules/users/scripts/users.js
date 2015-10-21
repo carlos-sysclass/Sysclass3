@@ -2,7 +2,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	// 
 	mod.models = {
-		course_stats : Backbone.Model.extend({
+		course_stats : Backbone.DeepModel.extend({
 			urlRoot : "/module/courses/stats/me"
 		})
 	}
@@ -73,9 +73,16 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			//window.setTimeout(1500, this.$(".user-course-details").unblock());
 	    },
 	    injectCourseDetails : function() {
-	    	this.$(".total_classes").html(this.statsModel.get("classes"));
-	    	this.$(".total_lessons").html(this.statsModel.get("lessons"));
-	    	this.$(".progress-text").html(this.statsModel.get("progress"));
+	    	this.$(".total_classes").html(this.statsModel.get("total_classes"));
+	    	this.$(".total_lessons").html(this.statsModel.get("total_lessons"));
+
+	    	this.$(".progress-text").html(
+    			app.module("views").formatValue(
+					this.statsModel.get("progress.course"),
+					'decimal-custom',
+					'0.[00]%'
+    			)
+	    	);
 
 	    	this.$(".user-course-details").unblock();
 	    }
