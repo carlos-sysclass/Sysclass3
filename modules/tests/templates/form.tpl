@@ -225,7 +225,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions'}">
 			                                <i class="fa fa-question"></i>
 			                            </span>
-			                            {translateToken value="Shuffle question's alternatives?"}
+			                            {translateToken value="Shuffle questions alternatives?"}
 			                        </label>
 
 			                        <input type="checkbox" name="randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
