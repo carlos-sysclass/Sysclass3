@@ -20,3 +20,4 @@ www/resources
 /logs/*
 /hooks/data/*
 RELEASE
+/vendor/*
