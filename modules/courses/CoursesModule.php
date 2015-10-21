@@ -9,7 +9,7 @@ use Sysclass\Models\Enrollments\Course as Enrollment;
  * @package Sysclass\Modules
  */
 
-class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IWidgetContainer, IPermissionable
+class CoursesModule extends SysclassModule implements /* ISummarizable, */ILinkable, IBreadcrumbable, IActionable, IWidgetContainer, IPermissionable
 {
     /* ISummarizable */
     public function getSummary() {
@@ -447,6 +447,21 @@ class CoursesModule extends SysclassModule implements ISummarizable, ILinkable, 
             return $this->notAuthenticatedError();
         }
     }
+
+    /**
+     * [ add a description ]
+     *
+     * @url GET /stats/me/:identifier
+     */
+    public function getCourseStatsRequest($identifier)
+    {
+        return array(
+            'classes'   =>  $identifier,
+            'lessons'   =>  10,
+            'progress'   => '57%'
+        );
+    }
+
 
 
     /**

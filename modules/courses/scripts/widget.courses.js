@@ -1401,6 +1401,15 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					});
 				}
 
+				this.listenTo(this.model, "change:course_id", function() {
+					// create a view to show a list off courses to select
+					// IF THERE'S ONLY A COURSE, AUTO SELECT
+					this.courseModel.set("id", this.model.get("course_id"), {silent : true});
+					this.courseModel.fetch();
+
+					this.coursesCollection.fetch();
+				}.bind(this));
+
 				if (this.model.get("course_id")) {
 					// create a view to show a list off courses to select
 					// IF THERE'S ONLY A COURSE, AUTO SELECT
