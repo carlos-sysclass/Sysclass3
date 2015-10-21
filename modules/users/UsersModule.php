@@ -13,9 +13,25 @@ use Phalcon\DI,
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class UsersModule extends SysclassModule implements ILinkable, IBlockProvider, IBreadcrumbable, IActionable, IPermissionChecker, IWidgetContainer
+class UsersModule extends SysclassModule implements ISummarizable, ILinkable, IBlockProvider, IBreadcrumbable, IActionable, IPermissionChecker, IWidgetContainer
 {
+    public function getSummary() {
 
+        $user = $this->getCurrentUser(true);
+
+
+        return array(
+            'type'  => 'success',
+            'count' => '<i class="fa fa-mortar-board"></i>',
+            'text'  => "ID : " . str_pad($user->id, 11, "0", STR_PAD_LEFT)
+            /*
+            'link'  => array(
+                'text'  => '35%',
+                'link'  => $this->getBasePath() . 'all'
+            )
+            */
+        );
+    }
     /* ILinkable */
     public function getLinks() {
         $depinject = Phalcon\DI::getDefault();
