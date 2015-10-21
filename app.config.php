@@ -180,7 +180,7 @@ $plicoLib->add("resources/components", array(
 */
 $plicoLib->add("resources/components", array(
 	'name'	=> 'modal',
-	'css'	=> array('plugins/bootstrap-modal/css/bootstrap-modal-bs3patch', 'plugins/bootstrap-modal/css/bootstrap-modal'),
+	//'css'	=> array('plugins/bootstrap-modal/css/bootstrap-modal-bs3patch', 'plugins/bootstrap-modal/css/bootstrap-modal'),
 	'js'	=> array('plugins/bootstrap-modal/js/bootstrap-modalmanager', 'plugins/bootstrap-modal/js/bootstrap-modal')
 ));
 

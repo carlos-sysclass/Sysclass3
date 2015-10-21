@@ -154,7 +154,7 @@
 
                 <a class="btn btn-sm btn-warning select-question" data-target="#questions-select-modal" data-toogle="modal" >
                     <i class="fa fa-database"></i>
-                    {translateToken value="Question's Database"}
+                    {translateToken value="Questions Database"}
                 </a>
                 <a class="btn btn-sm btn-danger delete-content" href="javascript: void(0);"
                     data-toggle="confirmation"
