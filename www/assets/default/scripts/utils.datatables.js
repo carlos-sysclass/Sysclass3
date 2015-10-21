@@ -42,7 +42,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	},
         	switchItem: function(e, state) {
 				e.preventDefault();
-				console.warn(e);
+				//console.warn(e);
 
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 				this.trigger("switchItem.datatables", _.first(data));
