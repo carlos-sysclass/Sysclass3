@@ -738,6 +738,10 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $filestream = $this->model("dropbox")->getFileContents($fileInfo);
         $parsed = $this->parseWebVTTFile($filestream);
 
+        if (count($parsed) == 0) {
+            return false;
+        }
+
         $parsedFilestream = $this->makeWebVTTFile($parsed, array("index", "from", "to", "text"));
 
         // CREATE FILE
