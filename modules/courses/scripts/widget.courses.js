@@ -1241,10 +1241,17 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			renderCourse : function(factor) {
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				//percent = 30;
-				var percent = factor * 100;
-				this.$(".course span").html(percent);
+				this.$(".course span").html(
+					app.module("views").formatValue(
+						factor,
+						'decimal-custom',
+						'0.[0]%'
+					)
+				);
 
 				if (jQuery.fn.easyPieChart) {
+					var percent = factor * 100;
+
 					this.$(".course").data('easyPieChart').update(percent);
 				}
 			},
@@ -1252,20 +1259,32 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
 			renderClass : function(factor) {
-				var percent = factor * 100;
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				this.$(".class span").html(percent);
+				this.$(".class span").html(
+					app.module("views").formatValue(
+						factor,
+						'decimal-custom',
+						'0.[0]%'
+					)
+				);
 
 				if (jQuery.fn.easyPieChart) {
+					var percent = factor * 100;
+
 					this.$(".class").data('easyPieChart').update(percent);
 				}
 			},
 			renderLesson : function(factor) {
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-				var percent = factor * 100;
-				this.$(".lesson span").html(percent);
+				this.$(".lesson span").html(app.module("views").formatValue(
+						factor,
+						'decimal-custom',
+						'0.[0]%'
+				));
 
 				if (jQuery.fn.easyPieChart) {
+					var percent = factor * 100;
+
 					this.$(".lesson").data('easyPieChart').update(percent);
 				}
 			}

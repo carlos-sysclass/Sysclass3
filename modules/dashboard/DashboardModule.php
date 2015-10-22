@@ -22,35 +22,38 @@ class DashboardModule extends SysclassModule implements ISectionMenu, IWidgetCon
             $currentUser = $this->getCurrentUser(true);
             $dashboards = $currentUser->getDashboards();
 
-            $items = array();
+            if ($dashboards > 1) {
 
-            foreach($dashboards as $dashboard) {
-                $items[] = array(
-                    'link'  => "/dashboard/" . $dashboard,
-                    'text'  => self::$t->translate(ucfirst($dashboard))
+                $items = array();
+
+                foreach($dashboards as $dashboard) {
+                    $items[] = array(
+                        'link'  => "/dashboard/" . $dashboard,
+                        'text'  => self::$t->translate(ucfirst($dashboard))
+                    );
+                }
+
+    //            $this->putModuleScript("models.translate");
+    //            $this->putModuleScript("menu.translate");
+
+                $menuItem = array(
+                    'icon'      => 'fa fa-dashboard',
+                    //'notif'     => count($items),
+                    'text'      => self::$t->translate('Dashboard'),
+                    /*
+                    'link'  => array(
+                        'link'  => $this->getBasePath() . "change",
+                        'text'  => self::$t->translate('Dashboard')
+                    ),
+                    */
+                    'type'      => 'switch',
+                    'items'     => $items,
+                    'extended'  => false
+                    //'template'  => "translate-menu"
                 );
+
+                return $menuItem;
             }
-
-//            $this->putModuleScript("models.translate");
-//            $this->putModuleScript("menu.translate");
-
-            $menuItem = array(
-                'icon'      => 'fa fa-dashboard',
-                //'notif'     => count($items),
-                'text'      => self::$t->translate('Dashboard'),
-                /*
-                'link'  => array(
-                    'link'  => $this->getBasePath() . "change",
-                    'text'  => self::$t->translate('Dashboard')
-                ),
-                */
-                'type'      => 'switch',
-                'items'     => $items,
-                'extended'  => false
-                //'template'  => "translate-menu"
-            );
-
-            return $menuItem;
         }
         return false;
     }
