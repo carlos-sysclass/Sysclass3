@@ -144,6 +144,8 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
             }
             case 'subtitle' :{
                 $helper->setOption('accept_file_content_types', '/text\/vtt/i');
+
+                // AFTER UPDLOAD, PARSE AND 
                 break;
             }
             case 'image' :{
@@ -207,11 +209,20 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                     $filedata['id'] = $this->model("dropbox")->addItem($filedata);
                 }
 
+                switch($type) {
+                    case 'subtitle' :{
+                        $filedata = $this->module("lessons")->normatizeSubtitleFile($filedata);
+                        break;
+                    }
+                }
+
                 $filedata = $this->model("dropbox")->getItem($filedata['id']);
 
                 $file_result[$param_name][] = $filedata;
             }
         }
+
+
 
         return $file_result;
     }
