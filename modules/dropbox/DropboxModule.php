@@ -143,7 +143,9 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                 break;
             }
             case 'subtitle' :{
-                $helper->setOption('accept_file_content_types', '/text\/vtt/i');
+                $helper->setOption('accept_file_content_types', '/(text\/vtt|application\/x-subrip)/i');
+
+                // AFTER UPDLOAD, PARSE AND 
                 break;
             }
             case 'image' :{
@@ -207,11 +209,28 @@ class DropboxModule extends SysclassModule implements IBlockProvider /* implemen
                     $filedata['id'] = $this->model("dropbox")->addItem($filedata);
                 }
 
+                switch($type) {
+                    case 'subtitle' :{
+                        $result = $this->module("lessons")->normatizeSubtitleFile($filedata);
+
+                        if (!$result) {
+                            $this->model("dropbox")->deleteItem($filedata['id']);
+                            return $this->invalidRequestError(
+                                self::$t->translate("The file appear to be empty or in a invalid format."),
+                                "warning"
+                            );
+                        }
+                        break;
+                    }
+                }
+
                 $filedata = $this->model("dropbox")->getItem($filedata['id']);
 
                 $file_result[$param_name][] = $filedata;
             }
         }
+
+
 
         return $file_result;
     }
