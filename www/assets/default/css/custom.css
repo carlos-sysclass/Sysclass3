@@ -1165,7 +1165,31 @@ UI Loading
 }
 
 .header .navbar-nav > li.dropdown.user .dropdown-toggle {
-    padding: 10px 4px 12px 9px;
+    padding: 10px 1px 12px 5px;
+}
+
+.vertical-align {
+	display: inline-block;
+	float: left;
+	position: relative;
+}
+
+.vertical-align img {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.header .navbar-nav > li.dropdown.user .dropdown-toggle .avatar-img {
+    height: 40px;
+    top: -9px;
+    width: 40px;
+    margin-right: 5px
 }
 
 .input-icon i.checkunique-error {
