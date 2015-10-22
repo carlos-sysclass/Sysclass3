@@ -185,7 +185,10 @@
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 			<li class="dropdown user">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-					<img alt="" src="{$T_CURRENT_USER.avatars[0].url}" width="29" class="hidden-xs" />
+					<div class="avatar-img vertical-align">
+						<img alt="" src="{$T_CURRENT_USER.avatars[0].url}" />
+					</div>
+					
 					<span class="username">{$T_CURRENT_USER.name}</span>
 					<i class="icon-angle-down"></i>
 				</a>
