@@ -1247,3 +1247,15 @@ button.calendar-news-item {
 .header .navbar-nav > li.dropdown .dropdown-toggle {
   padding: 12px 10px 9px;
 }
+
+.modal-title small {
+    color: #666;
+    font-size: 70%;
+    font-weight: 300;
+    letter-spacing: 0;
+}
+
+#lesson-exercises-dialog .modal-body {
+    max-height: 400px;
+    overflow-y: scroll;
+}

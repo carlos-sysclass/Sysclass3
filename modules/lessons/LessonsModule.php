@@ -130,7 +130,13 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
                 return true;
-            }/*,
+            },
+            'lessons.dialogs.exercises' => function($data, $self) {
+                $self->putModuleScript("dialogs.exercises");
+                $self->putSectionTemplate("dialogs", "dialogs/exercises");
+            }
+
+            /*,
             'lessons.content.text' => function($data, $self) {
                 $items = $self::$t->getItems();
 

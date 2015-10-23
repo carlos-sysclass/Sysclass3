@@ -720,6 +720,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				app.userSettings.set("lesson_id", this.model.get("id"));
 			}
 		});
+
 		var classTestsTabViewItemClass = baseClassChildTabViewItemClass.extend({
 			events : {
 				"click .lesson-change-action" : "setLessonId",
@@ -830,13 +831,13 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					model : this.model,
                 	portlet : this.$el
 				});
-
+				/*
 				this.lessonExercisesTabView 	= new lessonExercisesTabViewClass({
 					el : this.$("#tab_lesson_exercises"),
 					model : this.model,
                 	portlet : this.$el
 				});
-
+				*/
 				this.lessonExercisesTabView 	= new lessonExercisesTabViewClass({
 					el : this.$("#tab_lesson_exercises"),
 					model : this.model,
@@ -909,7 +910,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						this.$el.empty().append(
 							this.template(this.videoModel.toJSON())
 						);
-						console.warn(this.videoModel.toJSON());
+						//console.warn(this.videoModel.toJSON());
 
 						//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 						videojs(videoDomID, {
@@ -1059,15 +1060,33 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		*/
 		var lessonExercisesTabViewItemClass = parent.blockViewItemClass.extend({
 			events : {
-				"click .open-exercise-action" : "openExercise"
+				"click .open-exercise-action" : "openDialog"
 			},
 			tagName : "tr",
+			dialogExercisesModule : app.module("dialogs.exercises"),
 			//nofoundTemplate : _.template($("#tab_lesson_exercises-nofound-template").html()),
 			template : _.template($("#tab_lesson_exercises-item-template").html(), null, {variable : 'model'}),
 			//childViewClass : lessonExercisesTabViewItemQuestionClass,
 			openExercise : function(e) {
 				this.parent.loadExerciseDetails(this.model);
 			},
+            openDialog : function() {
+                if (!this.dialogExercisesModule.started) {
+                    this.dialogExercisesModule.start();
+
+                    //this.listenTo(this.dialogExercisesModule, "action:do-test", this.doTest.bind(this));
+                }
+
+                //this.dialogExercisesModule
+                //
+                console.warn(this.model.toJSON(), this.parent.model.toJSON());
+
+                this.dialogExercisesModule.setInfo({
+                	model : this.model
+                });
+
+                this.dialogExercisesModule.open();
+            },
 			/*
 			onBeforeRender : function() {
 				this.collection = new mod.collections.questions(this.model.get("exercise"));
@@ -1102,6 +1121,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection = contentsCollection.getExercises();
 			},
 			loadExerciseDetails : function(model) {
+				/*
 				var self = this;
 
 				this.$(".exercises-container").html(
@@ -1119,36 +1139,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}.bind(this));
 
 				app.module("ui").refresh(this.$(".exercises-container"));
+				*/
 			}
 		});
 
-		/* TESTS AND EXERCISES UTILITY VIEWS */
-		var lessonExercisesQuestionItemClass = Backbone.View.extend({
-			tagName : "li",
-			templates : {
-				"combine" : _.template($("#tab_lesson_exercises-question-combine-template").html(), null, {variable: "model"}),
-				"true_or_false" : _.template($("#tab_lesson_exercises-question-true_or_false-template").html(), null, {variable: "model"}),
-				"simple_choice" : _.template($("#tab_lesson_exercises-question-simple_choice-template").html(), null, {variable: "model"}),
-				"multiple_choice" : _.template($("#tab_lesson_exercises-question-multiple_choice-template").html(), null, {variable: "model"}),
-				"fill_blanks" : _.template($("#tab_lesson_exercises-question-fill_blanks-template").html(), null, {variable: "model"}),
-				"free_text" : _.template($("#tab_lesson_exercises-question-free_text-template").html(), null, {variable: "model"})
-			},
-	        initialize: function(opt) {
-	            this.model_index = opt.model_index;
-	        },
-			render : function() {
-				if (_.has(this.templates, this.model.get("type_id"))) {
-					var template = this.templates[this.model.get("type_id")];
-		            this.$el.html(
-		                template(_.extend(this.model.toJSON(), {
-		                    model_index : this.model_index
-		                }))
-		            );
-
-				}
-	            return this;
-			}
-		});
 
 		/*
 		var classDropboxTabViewClass = Backbone.View.extend({
@@ -1639,7 +1633,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	});
 
 	this.models = {
-		questions : Backbone.DeepModel.extend({}),
 		content_progress : Backbone.DeepModel.extend({
 			urlRoot : "/module/roadmap/item/content-progress",
 			setAsViewed : function(model, factor) {
