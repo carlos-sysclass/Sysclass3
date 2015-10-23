@@ -235,24 +235,26 @@ $di->setShared('environment', function() use ($di) {
 	// MOVE TO module config.yml!!!
 	$config['models/map'] = array(
 		'areas'	=> array(
-			'class' => "\Sysclass\Models\Courses\Departament",
+			'class' => "Sysclass\Models\Courses\Departament",
             'exportMethod'  => array(
                 'toFullArray',
                 array('Coordinator')
             )
         ),
 		'calendar'	=> array(
-			'class' => '\Sysclass\Models\Calendar\Event',
+			'class' => 'Sysclass\Models\Calendar\Event',
             'exportMethod'  => array(
                 'toFullArray',
                 array()
             ),
 		),
-		'courses'	=> '\Sysclass\Models\Courses\Course',
-		'dropbox' => '\Sysclass\Models\Dropbox\File',
-		'institution' => '\Sysclass\Models\Organizations\Organization',
+		'courses'	=> 'Sysclass\Models\Courses\Course',
+		'dropbox' => 'Sysclass\Models\Dropbox\File',
+		'institution' => 'Sysclass\Models\Organizations\Organization',
+		'permission'	=> 'Sysclass\Models\Acl\Resource',
+		'roles'	=> 'Sysclass\Models\Acl\Role',
 		'users' => array(
-			'class' => '\Sysclass\Models\Users\User',
+			'class' => 'Sysclass\Models\Users\User',
             'exportMethod'  => array(
                 'toFullArray',
                 array('Avatars', 'UserGroups')

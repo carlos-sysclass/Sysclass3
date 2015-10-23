@@ -19,7 +19,7 @@
 
 <script>
 _before_init_functions.push(function() {
-    $SC.addResource("{$T_MODULE_ID}_context", {$T_MODULE_CONTEXT|@json_encode});
+    $SC.addResource("{$T_MODULE_ID}_context", {$T_MODULE_CONTEXT|@json_encode nofilter});
 });
 {if $FORCE_INIT}
     _lazy_init_functions.push(function() {
@@ -29,7 +29,7 @@ _before_init_functions.push(function() {
             el : "#view-{$T_MODULE_ID}",
             datatable : {
                 "sAjaxSource": "{$T_MODULE_CONTEXT.ajax_source}",
-                "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode}
+                "aoColumns": {$T_MODULE_CONTEXT.datatable_fields|@json_encode nofilter}
             }
         });
 

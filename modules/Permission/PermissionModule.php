@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Permission;
 /**
  * Module Class File
  * @filesource
@@ -8,8 +9,33 @@ use Sysclass\Models\Acl\Resource as AclResource;
  * Manage and control the system permission system
  * @package Sysclass\Modules
  */
-class PermissionModule extends SysclassModule implements IBlockProvider
+/**
+ * @RoutePrefix("/module/permission")
+ */
+class PermissionModule extends \SysclassModule implements \IBlockProvider
 {
+    protected function getDatatableItemOptions() {
+        // TODO: THINK ABOUT MOVING THIS TO config.yml
+        if ($this->request->hasQuery('block')) {
+        	return array(
+                'check'  => array(
+                    //'icon'  		=> 'icon-check',
+                    //'link'  		=> $baseLink . "block/" . $item['id'],
+                    //'text' 			=> self::$t->translate('Disabled'),
+                    //'class' 		=> 'btn-sm btn-danger',
+                    'type'			=> 'switch',
+                    //'state'			=> 'disabled',
+                    'attrs'			=> array(
+			        	'data-on-color' => "success",
+			        	'data-on-text' => self::$t->translate('YES'),
+			        	'data-off-color' =>"danger",
+			        	'data-off-text'	=> self::$t->translate('NO')
+                    )
+                )
+            );
+        }
+    }
+
 	const RULE_MATCH_ALL = 1;
 	const RULE_MATCH_ANY = 2;
 	const RULE_NOT_MATCH_ALL = 3;
@@ -299,6 +325,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
      * @url GET /items/me
      * @url GET /items/me/:type
      */
+    /*
     public function getItemsAction($type)
     {
 
@@ -364,5 +391,7 @@ class PermissionModule extends SysclassModule implements IBlockProvider
         }
         return array_values($items);
     }
+	*/
+
 }
 

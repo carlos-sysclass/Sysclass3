@@ -37,6 +37,21 @@ $di->set('dispatcher', function () use ($eventsManager, $di) {
     // Attach a listener for type "dispatch"
     // 
     $eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("authentication"));
+
+    $eventsManager->attach('dispatch:afterExecuteRoute', function ($event, $dispatcher) use ($di) {
+        // Possible controller class name
+        //$di->get("request")
+        
+        $response = $di->get("response");
+        if ($dispatcher->isFinished() && is_null($response->getContent())) {
+            $request = $di->get("request");
+            if ($request->isAjax()) {
+                $response->setContentType('application/json', 'UTF-8');    
+                $response->setJsonContent($dispatcher->getReturnedValue());
+            }
+        }
+    });
+
     /*
     $eventsManager->attach("dispatch:beforeDispatchLoop", function ($event, $dispatcher) {
         // Possible controller class name

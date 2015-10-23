@@ -1,4 +1,6 @@
 <?php
+namespace Sysclass\Modules\Roles;
+
 use Phalcon\DI,
     Sysclass\Models\Acl\Role as AclRole,
     Sysclass\Models\Acl\Resource as AclResource,
@@ -12,18 +14,15 @@ use Phalcon\DI,
  * @filesource
  */
 /**
- * [NOT PROVIDED YET]
- * @package Sysclass\Modules
- * @todo think about move this module to PlicoLib
+ * @RoutePrefix("/module/roles")
  */
-class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, IBreadcrumbable, IActionable
+class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable
 {
 
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Roles", "View")) {
+        //$data = $this->getItemsRequest();
+        if ($this->acl->isUserAllowed(null, "Roles", "View")) {
             $count = AclRole::count("active = 1");
 
             return array(
@@ -242,7 +241,8 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
      *
      * @url GET /item/me/:id
     */
-    public function getItemAction($id) {
+    /*
+    public function getItemRequest($id) {
         $request = $this->getMatchedUrl();
 
         // TODO: CHECK PERMISSIONS
@@ -256,13 +256,14 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
         }
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/me
      */
-    public function addItemAction($id)
+    /*
+    public function addItemRequest($id)
     {
         $request = $this->getMatchedUrl();
 
@@ -286,13 +287,14 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
-    public function setItemAction($id)
+    /*
+    public function setItemRequest($id)
     {
         $request = $this->getMatchedUrl();
 
@@ -316,13 +318,14 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
-    public function deleteItemAction($id)
+    /*
+    public function deleteItemRequest($id)
     {
         if ($userData = $this->getCurrentUser()) {
 
@@ -339,13 +342,15 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
             return $this->notAuthenticatedError();
         }
     }
+    */
     /**
      * [ add a description ]
      *
      * @url GET /items/me
      * @url GET /items/me/:type
      */
-    public function getItemsAction($type)
+    /*
+    public function getItemsRequest($type)
     {
 
         $currentUser    = $this->getCurrentUser(true);
@@ -406,13 +411,38 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
         }
         return array_values($items);
     }
-
+    */
+   
+    protected function getDatatableItemOptions() {
+        return array(
+            'edit'  => array(
+                'icon'  => 'fa fa-edit',
+                'link'  => 'javascript:void(0);',
+                'class' => 'btn-sm btn-primary datatable-actionable'
+            ),
+            'users'  => array(
+                'icon'  => 'fa fa-user',
+                'link'  => 'javascript:void(0);',
+                'class' => 'btn-sm btn-info datatable-actionable'
+            ),
+            'permission'  => array(
+                'icon'  => 'fa fa-lock',
+                'link'  => 'javascript:void(0);',
+                'class' => 'btn-sm btn-warning datatable-actionable'
+            ),
+            'remove'    => array(
+                'icon'  => 'icon-remove',
+                'link'  => 'javascript:void(0);',
+                'class' => 'btn-sm btn-danger'
+            )
+        );
+    }
     /**
      * [ add a description ]
      *
-     * @url POST /item/resources/toggle
+     * @Post("/item/resources/toggle")
      */
-    public function toggleRoleInResourceAction() {
+    public function toggleRoleInResourceRequest() {
         $data = $this->getHttpData(func_get_args());
 
         $index = 0;
@@ -449,10 +479,9 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     /**
      * [ add a description ]
      *
-     * @url PUT /item/users/:role_id/:user_id
+     * @Put("/item/users/{role_id}/{user_id}")
      */
-    public function createUserRoleItemAction($role_id, $user_id)
-    {
+    public function createUserRoleItemRequest($role_id, $user_id) {
         if ($userData = $this->getCurrentUser()) {
             $itemModel = new RolesUsers();
             $itemModel->assign(array(
@@ -471,12 +500,13 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
             return $this->notAuthenticatedError();
         }
     }
+
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/users/:role_id/:user_id
+     * @Delete("/item/users/{role_id}/{user_id}")
      */
-    public function deleteUserRoleItemAction($role_id, $user_id)
+    public function deleteUserRoleItemRequest($role_id, $user_id)
     {
         if ($userData = $this->getCurrentUser()) {
             $itemModel = RolesUsers::findFirst(array(
@@ -499,9 +529,9 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     /**
      * [ add a description ]
      *
-     * @url PUT /item/groups/:role_id/:user_id
+     * @Put("/item/groups/{role_id}/{user_id}")
      */
-    public function createGroupRoleItemAction($role_id, $user_id)
+    public function createGroupRoleItemRequest($role_id, $user_id)
     {
         if ($userData = $this->getCurrentUser()) {
             $itemModel = new RolesGroups();
@@ -524,9 +554,9 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/groups/:role_id/:user_id
+     * @Delete("/item/groups/{role_id}/{user_id}")
      */
-    public function deleteGroupRoleItemAction($role_id, $user_id)
+    public function deleteGroupRoleItemRequest($role_id, $user_id)
     {
         if ($userData = $this->getCurrentUser()) {
             $itemModel = RolesGroups::findFirst(array(
@@ -550,10 +580,10 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
     /**
      * [ add a description ]
      *
-     * @url GET /items/resources
-     * @url GET /items/resources/:type/:filter
+     * @Get("/items/resources")
+     * @Get("/items/resources/{type}/{filter}")
      */
-    public function getResourcesItemsAction($type, $filter)
+    public function getResourcesItemsRequest($type, $filter)
     {
         $filter = json_decode($filter, true);
         if (is_array($filter)) {
@@ -621,16 +651,17 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 'aaData'                => array_values($items)
             );
         }
+
         return array_values($items);
     }
 
     /**
      * [ add a description ]
      *
-     * @url GET /items/users
-     * @url GET /items/users/:type/:filter
+     * @Get("/items/users")
+     * @Get("/items/users/{type}/{filter}")
      */
-    public function getUsersItemsAction($type, $filter)
+    public function getUsersItemsRequest($type, $filter)
     {
         $filter = json_decode($filter, true);
         if (is_array($filter)) {
