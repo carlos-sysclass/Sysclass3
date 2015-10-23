@@ -23,12 +23,8 @@ crud:
         - mData: name
           label: Name
 
-        - mData: coordinator
+        - mData: coordinator.name
           label: Coordinator
-
-        - mData: courses_count
-          label: "# Courses"
-          sClass: text-center
 
         - mData: active
           sType: table-boolean

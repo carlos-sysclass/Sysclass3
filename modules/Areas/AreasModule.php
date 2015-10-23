@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Areas;
 /**
  * Module Class File
  * @filesource
@@ -8,17 +9,19 @@ use \Sysclass\Models\Users\User;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-
-class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+/**
+ * @RoutePrefix("/module/areas")
+ */
+class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable
 {
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Areas", "View")) {
+        //$depinject = Phalcon\DI::getDefault();
+        if ($this->acl->isUserAllowed(null, "Areas", "View")) {
             $itemsData = $this->model("courses/areas/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "area", 'permission_access_mode');
+            //$items = $this->module("permission")->checkRules($itemsData, "area", 'permission_access_mode');
 
             return array(
                 'content' => array(
@@ -176,62 +179,15 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
      * @url GET /items/:model/:type
      * @url GET /items/:model/:type/:filter
      */
+    /*
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
-        /*
-        if ($model ==  "instructor") {
-            $modelRoute = "users/collection";
-            $optionsRoute = "edit-instructor";
-
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->addFilter(array(
-                'can_be_instructor' => true
-            ))->getItems();
-        } elseif ($model ==  "seasons") {
-
-            $courses = filter_var($filter, FILTER_DEFAULT);
-
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
-            }
-            //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-            $itemsData = $this->model("course/seasons")->addFilter(array(
-                'active'    => 1,
-                'course_id' => $courses
-            ), array("operator" => "="))->getItems();
-
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-        } elseif ($model ==  "classes") {
-
-            $courses = filter_var($filter, FILTER_DEFAULT);
-
-            if (!is_array($courses)) {
-                $courses = json_decode($courses, true);
-            }
-            $modelRoute = "courses/classes/collection";
-            $itemsCollection = $this->model($modelRoute);
-
-            $itemsData = $itemsCollection->addFilter(array(
-                'active'    => 1
-            ), array("operator" => "="))->getItems();
-
-            //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
-
-        } else {
-            */
             $modelRoute = "courses/areas/collection";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
             $itemsData = $itemsCollection->getItems();
             $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
-        //}
-
-        //$currentUser    = $this->getCurrentUser(true);
-        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-
         if ($type === 'combo') {
             $q = $_GET['q'];
             $itemsData = $itemsCollection->filterCollection($itemsData, $q);
@@ -272,6 +228,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
 
         return array_values($itemsData);
     }
+    */
     /**
      * [ add a description ]
      *

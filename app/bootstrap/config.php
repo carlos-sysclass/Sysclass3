@@ -176,7 +176,7 @@ $di->setShared('environment', function() use ($di) {
 		'data-tables' => array(
 			'name'	=> 'data-tables',
 			'css'	=> array('plugins/data-tables/DT_bootstrap'),
-			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap')
+			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
 		'bootstrap-switch' => array(
 			'name'	=> 'bootstrap-switch',
@@ -234,6 +234,13 @@ $di->setShared('environment', function() use ($di) {
 
 	// MOVE TO module config.yml!!!
 	$config['models/map'] = array(
+		'areas'	=> array(
+			'class' => "\Sysclass\Models\Courses\Departament",
+            'exportMethod'  => array(
+                'toFullArray',
+                array('Coordinator')
+            )
+        ),
 		'calendar'	=> array(
 			'class' => '\Sysclass\Models\Calendar\Event',
             'exportMethod'  => array(
@@ -251,9 +258,7 @@ $di->setShared('environment', function() use ($di) {
                 array('Avatars', 'UserGroups')
             ),
             'findMethod'  => 'findFirstById'
-		),
-		
-		
+		)
 	);
 
     $configAdapter2 = new Config($config);
