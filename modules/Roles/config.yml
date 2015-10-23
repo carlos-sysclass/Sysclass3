@@ -47,7 +47,7 @@ crud:
           label: Actions
 
     add: false
-    'edit/:id': false
+    'edit/{id}': false
 blocks:
   'roles.resources.dialog':
     #components: ["validation", "select2", "wysihtml5", "datepicker", "timepicker"]

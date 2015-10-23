@@ -583,17 +583,35 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     */
     protected function getDatatableItemOptions() {
         // TODO: THINK ABOUT MOVING THIS TO config.yml
-        return array(
-            'check'  => array(
-                'icon'  => 'icon-check',
-                'link'  => $baseLink . 'block/%id$s',
-                'class' => 'btn-sm btn-danger'
-            )
-        );
+        if ($this->request->hasQuery('block')) {
+            return array(
+                /*
+                'check'  => array(
+                    'icon'  => 'icon-check',
+                    'link'  => $baseLink . 'block/%id$s',
+                    'class' => 'btn-sm btn-danger'
+                )
+                */
+                'check'  => array(
+                    //'icon'        => 'icon-check',
+                    //'link'        => $baseLink . "block/" . $item['id'],
+                    //'text'            => self::$t->translate('Disabled'),
+                    //'class'       => 'btn-sm btn-danger',
+                    'type'          => 'switch',
+                    //'state'           => 'disabled',
+                    'attrs'         => array(
+                        'data-on-color' => "success",
+                        'data-on-text' => self::$t->translate('YES'),
+                        'data-off-color' =>"danger",
+                        'data-off-text' => self::$t->translate('NO')
+                    )
+                )
+            );
+        }
     }
 
     protected function getDatatableSingleItemOptions($item) {
-        if ($item['pending'] == 1) {
+        if (!$this->request->hasQuery('block') && $item->pending == 1) {
             return array(
                 'aprove' => array(
                     'icon'  => 'fa fa-lock',

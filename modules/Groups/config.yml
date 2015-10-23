@@ -43,7 +43,7 @@ crud:
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new User
-    'edit/:id':
+    'edit/{id}':
       components: ["validation", "wysihtml5", "bootstrap-switch"]
       blocks: ["messages.group.allow", "users.list.table"]
       template: form.tpl

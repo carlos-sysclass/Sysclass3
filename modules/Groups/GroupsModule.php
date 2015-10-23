@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Groups;
 /**
  * Module Class File
  * @filesource
@@ -8,14 +9,16 @@
  * @package Sysclass\Modules
  * @todo think about move this module to PlicoLib
  */
-class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+/**
+ * @RoutePrefix("/module/groups")
+ */
+class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable
 {
 
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Groups", "View")) {
+
+        if ($this->acl->isUserAllowed(null, "Groups", "View")) {
             $groupItems = $this->model("users/groups/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
@@ -97,7 +100,7 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /**
      * [ add a description ]
      *
-     * @url GET /item/users/:group_id
+     * @Get("/item/users/{group_id}")
     */
     public function getUsersInGroup($group_id) {
         $data = $this->getHttpData(func_get_args());
@@ -112,7 +115,7 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
     /**
      * [ add a description ]
      *
-     * @url POST /item/users/switch
+     * @Post("/item/users/switch")
     */
     public function switchUserInGroup() {
         $data = $this->getHttpData(func_get_args());
@@ -136,30 +139,23 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         return array_merge($response, $info);
     }
 
-    /*
-    public function editPage($id)
-    {
-        parent::editPage($id);
-
-        $this->
-
-    }
-    */
     /**
      * [ add a description ]
      *
      * @url GET /item/me/:id
     */
+    /*
     public function getItemAction($id) {
         $editItem = $this->model("users/groups/collection")->getItem($id);
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/me
      */
+    /*
     public function addItemAction($id)
     {
         $request = $this->getMatchedUrl();
@@ -184,12 +180,13 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
+    /*
     public function setItemAction($id)
     {
         $itemModel = $this->model("user/groups/item");
@@ -207,13 +204,15 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         } else {
             return $this->notAuthenticatedError();
         }
-    }
+    }  
+    */
 
     /**
      * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
+    /*
     public function deleteItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -231,12 +230,14 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return $this->notAuthenticatedError();
         }
     }
+    */
     /**
      * [ add a description ]
      *
      * @url GET /items/me
      * @url GET /items/me/:type
      */
+    /*
     public function getItemsAction($type)
     {
         $currentUser    = $this->getCurrentUser(true);
@@ -253,20 +254,7 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
         $items = $itemsData;
 
         if ($type === 'combo') {
-        	/*
-            $q = $_GET['q'];
-
-            $items = $itemsCollection->filterCollection($items, $q);
-
-            foreach($items as $course) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
-                );
-            }
-            return $result;
-            */
+ 
         } elseif ($type === 'datatable') {
 
             $items = array_values($items);
@@ -293,5 +281,6 @@ class GroupsModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         return array_values($items);
     }
+    */
 
 }
