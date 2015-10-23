@@ -129,6 +129,8 @@ class CoursesModule extends SysclassModule implements /* ISummarizable, */ILinka
 
             $this->putBlock("tests.info.dialog");
 
+            $this->putBlock("lessons.dialogs.exercises");
+
 
             $settings = $this->module("settings")->getSettings(true);
 
