@@ -46,6 +46,7 @@
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
 							</a>
 						</div>
+						<!--
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 
 							<ul class="nav navbar-nav navbar-right">
@@ -61,6 +62,7 @@
 								</li>
 							</ul>
 						</div>
+						-->
 					</div>
 
 					<div class="tabbable-custom">
@@ -461,21 +463,21 @@
 	<div class="row" id="progress-content">
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
-				<div class="number course" data-percent="0"><span>0</span>%</div>
+				<div class="number course" data-percent="0"><span>0</span></div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Course"}</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
-				<div class="number class" data-percent="0"><span>0</span>%</div>
+				<div class="number class" data-percent="0"><span>0</span></div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Class"}</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
-				<div class="number lesson" data-percent="0"><span>0</span>%</div>
+				<div class="number lesson" data-percent="0"><span>0</span></div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Lesson"}</a>
 			</div>
 		</div>
@@ -775,97 +777,6 @@
 		</a>
 	</td>
 </script>
-
-<script type="text/template" id="tab_lesson_exercises-details-template">
-	<hr />
-	<ul class="list-group question-container">
-	</ul>
-	<div class="text-center">
-		<button class="btn btn-success" type="button">{translateToken value="Complete"}</button>
-	</div>
-</script>
-
-
-<script type="text/template" id="tab_lesson_exercises-question-combine-template">
-	<h5 class="section-title">
-		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
-		<i><%= model.question %></i>
-	</h5>
-	<div class="answer-container">
-        <div class="alert alert-warning" role="alert">
-            Not implemented yet!
-        </div>
-	</div>
-</script>
-<script type="text/template" id="tab_lesson_exercises-question-true_or_false-template">
-	<h5 class="section-title">
-		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
-		<i><%= model.question %></i>
-	</h5>
-	<div class="answer-container">
-		<div class="form-group">
-			<label class="control-label">{translateToken value="The answer is..."}</label>
-			<input type="checkbox" name="answer[<%= model.id %>]" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='TRUE'}" data-off-color="danger" data-off-text="{translateToken value='FALSE'}" checked="checked" value="1" data-value-unchecked="0">
-		</div>
-	</div>
-</script>
-<script type="text/template" id="tab_lesson_exercises-question-simple_choice-template">
-	<h5 class="section-title">
-		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
-		<i><%= model.question %></i>
-	</h5>
-	<div class="answer-container">
-		<ul class="list-group">
-		<% _.each(model.options, function(option, index) { %>
-			<li>
-				<label>
-					<input type="radio" name="answer[<%= model.id %>]" class="icheck-me" data-skin="square" data-color="green" value="<%= option.index %>"> <%= option.choice %>
-				</label>
-			</li>
-		<% }); %>
-		</ul>
-	</div>
-</script>
-<script type="text/template" id="tab_lesson_exercises-question-multiple_choice-template">
-	<h5 class="section-title">
-		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
-		<i><%= model.question %></i>
-	</h5>
-	<div class="answer-container">
-		<ul class="list-group">
-		<% _.each(model.options, function(option, index) { %>
-			<li>
-				<label>
-					<input type="checkbox" name="answer[<%= model.id %>]" class="icheck-me" data-skin="square" data-color="green" value="<%= option.index %>"> <%= option.choice %>
-				</label>
-			</li>
-		<% }); %>
-		</ul>
-	</div>
-</script>
-<script type="text/template" id="tab_lesson_exercises-question-fill_blanks-template">
-	<h5 class="section-title">
-		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
-		<i><%= model.question %></i>
-	</h5>
-	<div class="answer-container">
-        <div class="alert alert-warning" role="alert">
-            Not implemented yet!
-        </div>
-	</div>
-</script>
-<script type="text/template" id="tab_lesson_exercises-question-free_text-template">
-	<h5 class="section-title">
-		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
-		<i><%= model.question %></i>
-	</h5>
-	<div class="answer-container">
-        <div class="alert alert-warning" role="alert">
-            Not implemented yet!
-        </div>
-	</div>
-</script>
-
 
 <!--
 <script type="text/template" id="tab_roadmap-season-template">

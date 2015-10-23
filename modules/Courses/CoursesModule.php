@@ -4,6 +4,7 @@ namespace Sysclass\Modules\Courses;
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Courses\Course as Course;
 use Sysclass\Models\Enrollments\Course as Enrollment;
 /**
  * [NOT PROVIDED YET]
@@ -131,6 +132,8 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 			$this->putModuleScript("widget.courses");
 
             $this->putBlock("tests.info.dialog");
+
+            $this->putBlock("lessons.dialogs.exercises");
 
 
             $settings = $this->module("settings")->getSettings(true);
@@ -423,6 +426,59 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             return $this->notAuthenticatedError();
         }
     }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/stats/me/{identifier}")
+     */
+    public function getCourseStatsRequest($identifier)
+    {
+        $user = $this->getCurrentUser(true);
+        $enrollments = Enrollment::find(array(
+            'conditions'    => "user_id = ?0",
+            'bind' => array($user->id)
+        ));
+
+        $enrollmentCourse = $enrollments->filter(function($item) use ($identifier) {
+            if ($item->course_id == $identifier) {
+                return $item;
+            }
+        });
+
+        if (count($enrollmentCourse) > 0) {
+            $enrollmentCourse = reset($enrollmentCourse);
+
+            $classes = $enrollmentCourse->getCourse()->getCourseClasses();
+            
+            $lessons = array();
+            $total_lessons = 0;
+
+            foreach($classes as $classe) {
+                //$lessons[] = $classe->getLessons()->count();
+                $total_lessons = $classe->getLessons()->count();
+            }
+
+            return array(
+                "id" => $identifier,
+                //'total_courses' => $enrollments->count(),
+                'total_classes' => $classes->count(),
+                'total_lessons' => $total_lessons,
+                'progress' => array(
+                    // TRIGGER RECALCULATION ???
+                    'course' => floatval($enrollmentCourse->getCourseProgress()->factor),
+                    'classes' => -1,
+                    'lessons' => -1
+                )
+            );
+        } else {
+            // USER NOT ENROLLED IN REQUESTED COURSE
+            return $this->invalidRequestError();
+        }
+
+
+    }
+
 
 
     /**

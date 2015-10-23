@@ -1,9 +1,11 @@
 $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	mod.formatValue = function(value, formatTo, formatFrom) {
     	if (formatTo == 'decimal1') {
-			return $.jformat.number(value, "#0.0");
+			return numeral(value).format('0.0');
     	} else if (formatTo == 'decimal2') {
-    		return $.jformat.number(value, "#0.00");
+    		return numeral(value).format('0.00');
+    	} else if (formatTo == 'decimal-custom') {
+    		return numeral(value).format(formatFrom);
     	} else if (formatTo == 'date' || formatTo == 'time' || formatTo == 'datetime' || formatTo == "isodate") {
     		if (value == 0) {
     			return "";

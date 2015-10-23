@@ -14,7 +14,23 @@ use Phalcon\DI,
  */
 class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer
 {
+    public function getSummary() {
 
+        $user = $this->getCurrentUser(true);
+
+
+        return array(
+            'type'  => 'success',
+            'count' => '<i class="fa fa-mortar-board"></i>',
+            'text'  => "ID : " . str_pad($user->id, 11, "0", STR_PAD_LEFT)
+            /*
+            'link'  => array(
+                'text'  => '35%',
+                'link'  => $this->getBasePath() . 'all'
+            )
+            */
+        );
+    }
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Users", "View")) {
@@ -427,7 +443,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     $userModel = User::findFirstById($id);
                 }
 
-                $userModel->viewed_license = $data['viewed_license'];
+                $userModel->viewed_license = is_array($data['viewed_license']) ? reset($data['viewed_license']) : $data['viewed_license'];
 
                 // CHECK FOR PASSWORD CHANGING
                 if ($userModel->update()) {
@@ -524,15 +540,23 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                             'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary'
                         ),
-                        'block'  => array(
-                            'icon'  => 'icon-lock',
-                            'link'  => $baseLink . "block/" . $item['id'],
-                            'class' => 'btn-sm btn-info'
-                        ),
-                        'remove'    => array(
-                            'icon'  => 'icon-remove',
-                            'class' => 'btn-sm btn-danger'
-                        )
+
+                    );
+                    if ($item['pending'] == 1) {
+                        $items[$key]['options']['aprove'] = array(
+                            'icon'  => 'fa fa-lock',
+                            //'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                            'attrs' => array(
+                                'data-datatable-action' => "aprove",
+                                'data-original-title' => 'Aprove User'
+                            )
+                        );
+                    }
+
+                    $items[$key]['options']['remove'] = array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'
                     );
                 }
             }
@@ -567,6 +591,24 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             )
         );
     }
+
+    protected function getDatatableSingleItemOptions($item) {
+        if ($item['pending'] == 1) {
+            return array(
+                'aprove' => array(
+                    'icon'  => 'fa fa-lock',
+                    //'link'  => $baseLink . "block/" . $item['id'],
+                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-datatable-action' => "aprove",
+                        'data-original-title' => 'Aprove User'
+                    )
+                )
+            );
+        }
+        return false;
+    }
+
 
 	/**
 	 * [ add a description ]

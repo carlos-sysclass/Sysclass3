@@ -93,6 +93,39 @@ class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel
         return $fileinfo;
     }
 
+    public function updateFile($filestream, $template = null)
+    {
+        if (is_numeric($template)) {
+            $data = $this->getItem($template);
+        }
+        if (is_array($template)) {
+            $data = $template;
+            $pathinfo = pathinfo($data['name']);
+            $data['name']     = $data['name'];
+            //unset($data['id']);
+        } else {
+            $data = array(
+                'upload_type'   => 'default',
+                'name'          => 'file',
+                //'filename'      => $this->generateRandomFilename(),
+                 // TRY TO DETECT MIME-TYPE
+                'type'          => "text/plain"
+            );
+        }
+        /**
+         * For now, the backend is hard-coded, but will be a value from database
+         * @var string
+         */
+        $backend = "local";
+        $fileHelper = $this->getBackend($backend);
+        $fileinfo = $fileHelper->createFile($data, $filestream);
+
+        $id = $this->setItem($fileinfo, $data['id']);
+
+        return $fileinfo;
+    }
+
+
     public function copyFile($identifier, $dest = null)
     {
         if (is_array($identifier)) {

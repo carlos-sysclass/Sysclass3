@@ -12,8 +12,8 @@ crud:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
-      blocks: ["group.add"]
-      #scripts: ["models.users", "views.users.add"]
+      #blocks: ["group.add"]
+      scripts: ["view"]
       variables:
         page_subtitle: Manage your users
       context:

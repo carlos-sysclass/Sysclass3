@@ -42,7 +42,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	},
         	switchItem: function(e, state) {
 				e.preventDefault();
-				console.warn(e);
+				//console.warn(e);
 
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 				this.trigger("switchItem.datatables", _.first(data));
@@ -54,6 +54,28 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				*/
         	},
+			doAction : function(e) {
+				var item = $(e.currentTarget);
+				if (item.data("actionUrl")) {
+					var url = item.data("actionUrl");
+					var method = "GET";
+					if (item.data("actionMethod")) {
+						method = item.data("actionMethod");
+					}
+
+	                $.ajax(url, { method : method } );
+				} else {
+					var data = this.oTable._($(e.currentTarget).closest("tr"));
+					this.trigger("action.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), $(e.currentTarget).data("datatableAction"));
+
+
+					var item = $(e.currentTarget);
+					this.trigger("action.datatable", _.first(data), item);					
+
+					//var data = this.oTable._($(e.currentTarget).closest("tr"));
+					//mod.trigger("datatable:item:click", item, _.first(data));
+				}
+			},
 
         	checkItem: function(e) {
 				e.preventDefault();
@@ -148,21 +170,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				});
 			},
 			*/
-			doAction : function(e) {
-				var item = $(e.currentTarget);
-				if (item.data("actionUrl")) {
-					var url = item.data("actionUrl");
-					var method = "GET";
-					if (item.data("actionMethod")) {
-						method = item.data("actionMethod");
-					}
 
-	                $.ajax(url, { method : method } );
-				} else {
-					var data = this.oTable._($(e.currentTarget).closest("tr"));
-					mod.trigger("datatable:item:click", item, _.first(data));
-				}
-			}
         });
 	});
 });

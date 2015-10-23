@@ -31,4 +31,4 @@ dashboard:
     sortable: false
     resources:
         layout.sections.topbar: ["messages", "forum"]
-        users.overview.notification.order: ["courses", "kbase", "calendar", "advisor", "tests"]
+        users.overview.notification.order: ["users", "courses", "kbase", "calendar", "advisor", "tests"]

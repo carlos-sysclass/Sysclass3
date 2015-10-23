@@ -130,7 +130,13 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
                 return true;
-            }/*,
+            },
+            'lessons.dialogs.exercises' => function($data, $self) {
+                $self->putModuleScript("dialogs.exercises");
+                $self->putSectionTemplate("dialogs", "dialogs/exercises");
+            }
+
+            /*,
             'lessons.content.text' => function($data, $self) {
                 $items = $self::$t->getItems();
 
@@ -681,6 +687,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 //$fileInfo = $this->model("dropbox")->getItem(1453485);
                 if (count($fileInfo) > 0) {
                     $filestream = $this->model("dropbox")->getFileContents($fileInfo);
+
                     $parsed = $this->parseWebVTTFile($filestream);
 
                     //$tokens = array_column($parsed, "text");
@@ -732,6 +739,20 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             "parent_id" => null*/
         ))->getItems();
     }
+
+    public function normatizeSubtitleFile($fileInfo) {
+        $filestream = $this->model("dropbox")->getFileContents($fileInfo);
+        $parsed = $this->parseWebVTTFile($filestream);
+
+        if (count($parsed) == 0) {
+            return false;
+        }
+
+        $parsedFilestream = $this->makeWebVTTFile($parsed, array("index", "from", "to", "text"));
+
+        // CREATE FILE
+        return $this->model("dropbox")->updateFile($parsedFilestream, $fileInfo);
+    }
     /**
      * This function parse a WEBVTT File into a array
      * @todo  Must be moved to a proper helper
@@ -746,14 +767,20 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $lines = preg_split("/\r?\n^$\r?\n/m", $filestream);
             $lines = preg_split("/\r?\n\r?\n/m", $filestream);
 
+
             $filestruct = array();
 
             foreach ($lines as $line) {
-                if (preg_match('/(\d*)\r?\n*^(\d{2}:\d{2}[:.]\d{2,3}[.]?\d{0,3}) --> (\d{2}:\d{2}[:.]\d{2,3}[.]?\d{0,3})\r?\n(.*)/ms', $line, $match)) {
+                /*
+                echo $line;
+                echo '/(\d*)\r?\n*^(\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3}) --> (\d{2}:\d{2}[:,]\d{2,3}[,]?\d{0,3})\r?\n(.*)/ms';
+                echo "\n";
+                */
+                if (preg_match('/(\d*)\r?\n*^(\d{2}:\d{2}[:.,]\d{2,3}[.,]?\d{0,3}) --> (\d{2}:\d{2}[:.,]\d{2,3}[.,]?\d{0,3})\r?\n(.*)/ms', $line, $match)) {
                     $filestruct[] = array(
                         "index" => $match[1],
-                        "from"  => $match[2],
-                        "to"    => $match[3],
+                        "from"  => str_replace(",", ".", $match[2]),
+                        "to"    => str_replace(",", ".", $match[3]),
                         "text"  => $match[4]
                     );
                 }

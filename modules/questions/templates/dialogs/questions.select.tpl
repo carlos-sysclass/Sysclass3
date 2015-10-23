@@ -1,5 +1,5 @@
 <div id="questions-select-modal" class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-wide">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-database"></i>
-                    {translateToken value='Question\'s Database'}
+                    {translateToken value='Questions Database'}
                 </h4>
             </div>
             <div class="modal-body">
