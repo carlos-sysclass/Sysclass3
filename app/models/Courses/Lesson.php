@@ -11,14 +11,12 @@ class Lesson extends Model
 
 		$this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
     }
-
+    /*
     public static function findFirst($parameters=null)
     {
     	if (is_null($parameters)) {
     		$parameters['conditions'] = "type"
     	}
-        var_dump($parameters);
-        exit;
         return parent::findFirst($parameters);
     }
 
@@ -29,4 +27,5 @@ class Lesson extends Model
         exit;
         return parent::find($parameters);
     }
+    */
 }
