@@ -17,18 +17,15 @@ crud:
         page_subtitle: Manage your Classes
       context:
         datatable_fields:
-        - mData: class_id
+        - mData: id
           sClass: text-center
           label: "#"
 
-        - mData: class.name
+        - mData: name
           label: Name
 
-        - mData: course.name
+        - mData: description
           label: Course
-
-        #- mData: class.instructors.0.name
-        #  label: Instructor
 
         - mData: active
           sType: table-boolean
@@ -44,7 +41,7 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Create a new class
-    'edit/:id':
+    'edit/{id}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       blocks: ["classes.lessons.edit"]
       #blocks: ["permission.add", ]

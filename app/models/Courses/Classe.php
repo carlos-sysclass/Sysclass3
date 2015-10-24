@@ -11,4 +11,5 @@ class Classe extends Model
 
         $this->hasMany("id", "Sysclass\\Models\\Courses\\Lesson", "class_id",  array('alias' => 'Lessons'));
     }
+
 }

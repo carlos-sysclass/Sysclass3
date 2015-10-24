@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Courses;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class CourseClasses extends Model
 {
@@ -10,7 +10,7 @@ class CourseClasses extends Model
         $this->setSource("mod_roadmap_courses_to_classes");
         
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
-        $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Class", "id",  array('alias' => 'Class'));
+        $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
     }
 }

@@ -46,16 +46,16 @@ crud:
           sClass: text-center
           label: "#"
 
-        - mData: area
+        - mData: departament.name
           label: Knowlegde Area
 
         - mData: title
           label: Title
 
-        - mData: type
+        - mData: type.name
           label: Type
 
-        - mData: difficulty
+        - mData: difficulty.name
           label: Difficulty
 
         - mData: active
@@ -74,7 +74,7 @@ crud:
       scripts: ["views.form.questions", "views.form.questions.add"]
       variables:
         page_subtitle: Create a new question
-    'edit/:identifier':
+    'edit/{identifier}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
       template: form.tpl
       scripts: ["views.form.questions", "views.form.questions.edit"]

@@ -376,17 +376,16 @@ abstract class SysclassModule extends BaseSysclassModule
                 array($this->model_info['class'], $this->model_info['listMethod']), $args
             );
 
-            $globalOptions = $this->getDatatableItemOptions($item);
+            
 
             if ($type === 'datatable') {
                 //$items = array_values($items);
                 $baseLink = $this->getBasePath();
 
-                /**
-                 * @todo Call a controller / module method to get the options, or load from config
-                 */
-                $editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
-                $deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
+                $globalOptions = $this->getDatatableItemOptions($item);
+
+                //$editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
+                //$deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
 
                 $items = array();
 
@@ -397,12 +396,10 @@ abstract class SysclassModule extends BaseSysclassModule
                         $this->model_info['exportMethod'][1]
                     );
                     $items[$key]['options'] = array();
-                    if ($editAllowed) {
-                        $items[$key]['options']['edit']  = array(
-                            'icon'  => 'icon-edit',
-                            'link'  => $baseLink . "edit/" . $item->id,
-                            'class' => 'btn-sm btn-primary'
-                        );
+
+                    $options = $this->getDatatableSingleItemOptions($item);
+                    if (is_array($options)) {
+                        $items[$key]['options'] = array_merge($items[$key]['options'], $options);
                     }
 
                     if (is_array($globalOptions)) {
@@ -411,18 +408,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
                             $items[$key]['options'][$index] = $option;
                         }
-                    }
-
-                    $options = $this->getDatatableSingleItemOptions($item);
-                    if (is_array($options)) {
-                        $items[$key]['options'] = array_merge($items[$key]['options'], $options);
-                    }
-                    
-                    if ($deleteAllowed) {
-                        $items[$key]['options']['remove']  = array(
-                            'icon'  => 'icon-remove',
-                            'class' => 'btn-sm btn-danger'
-                        );
                     }
                 }
                 $this->response->setJsonContent(array(
@@ -459,7 +444,25 @@ abstract class SysclassModule extends BaseSysclassModule
      * @return [array|null] [description]
      */
     protected function getDatatableItemOptions() {
-        return null;
+        $editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
+        $deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
+
+        $options = array();
+
+        if ($editAllowed) {
+            $options['edit']  = array(
+                'icon'  => 'icon-edit',
+                'link'  => $baseLink . 'edit/%id$s',
+                'class' => 'btn-sm btn-primary'
+            );
+        }
+        if ($deleteAllowed) {
+            $options['remove']  = array(
+                'icon'  => 'icon-remove',
+                'class' => 'btn-sm btn-danger'
+            );
+        }
+        return $options;
     }
 
     /**

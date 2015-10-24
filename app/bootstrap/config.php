@@ -248,11 +248,25 @@ $di->setShared('environment', function() use ($di) {
                 array()
             ),
 		),
+		'classes' => array(
+			'class' => 'Sysclass\Models\Courses\Classe'/*,
+            'exportMethod'  => array(
+                'toFullArray',
+                array('Course', 'Classe')
+            ),*/
+        ),
 		'courses' => 'Sysclass\Models\Courses\Course',
 		'dropbox' => 'Sysclass\Models\Dropbox\File',
 		'groups' => 'Sysclass\Models\Users\Group',
 		'institution' => 'Sysclass\Models\Organizations\Organization',
 		'permission'	=> 'Sysclass\Models\Acl\Resource',
+		'questions' => array(
+			'class' => 'Sysclass\Models\Courses\Questions\Question',
+            'exportMethod'  => array(
+                'toFullArray',
+                array('Departament', 'Type', 'Difficulty')
+            )
+        ),
 		'roles'	=> 'Sysclass\Models\Acl\Role',
 		'users' => array(
 			'class' => 'Sysclass\Models\Users\User',

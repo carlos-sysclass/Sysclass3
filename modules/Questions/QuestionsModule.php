@@ -1,19 +1,28 @@
 <?php
+namespace Sysclass\Modules\Questions;
 /**
  * Module Class File
  * @filesource
  */
+
+use Sysclass\Models\Courses\Departament,
+    Sysclass\Models\Courses\Questions\Type as QuestionType,
+    Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable , IBlockProvider
+/**
+ * @RoutePrefix("/module/questions")
+ */
+class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable , \IBlockProvider
 {
     protected $_modelRoute = "questions";
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Questions", "View")) {
+        if ($this->acl->isUserAllowed(null, "Questions", "View")) {
+
             $itemsData = $this->model($this->_modelRoute)->addFilter(array(
                 'active'    => true
             ))->getItems();
@@ -157,7 +166,6 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
         );
     }
 
-
     /**
      * [ add a description ]
      *
@@ -184,21 +192,18 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:identifier
+     * @Get("/edit/{identifier}")
      */
     public function editPage($identifier)
     {
-        $items = $this->model("courses/areas/collection")->addFilter(array(
-            'active' => 1
-        ))->getItems();
+        $items = Departament::find("active = 1");
+        $this->putitem("knowledge_areas", $items->toArray());
 
-        $this->putitem("knowledge_areas", $items);
+        $items = QuestionType::find();
+        $this->putItem("questions_types", $items->toArray());
 
-        $items = $this->model("questions/types")->getItems();
-        $this->putItem("questions_types", $items);
-
-        $items =  $this->model("questions/difficulties")->getItems();
-        $this->putItem("questions_difficulties", $items);
+        $items = QuestionDifficulty::find();
+        $this->putItem("questions_difficulties", $items->toArray());
 
 
         parent::editPage($identifier);
@@ -209,6 +214,7 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
      *
      * @url GET /item/:model/:id
      */
+    /*
     public function getItemAction($model, $id) {
         if ($model == "me") {
             $modelRoute = $this->_modelRoute;
@@ -220,12 +226,13 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
 
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/:model
      */
+    /*
     public function addItemAction($model)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -264,12 +271,13 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url PUT /item/:model/:id
      */
+    /*
     public function setItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -298,12 +306,13 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url DELETE /item/:model/:id
      */
+    /*
     public function deleteItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -321,7 +330,7 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
@@ -356,20 +365,6 @@ class QuestionsModule extends SysclassModule implements ILinkable, IBreadcrumbab
         $items = $itemsData;
 
         if ($type === 'combo') {
-        	/*
-            $q = $_GET['q'];
-
-            $items = $itemsCollection->filterCollection($items, $q);
-
-            foreach($items as $course) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($course['id']),
-                    'name'  => $course['name']
-                );
-            }
-            return $result;
-            */
         } elseif ($type === 'datatable') {
 
             $items = array_values($items);
