@@ -1,40 +1,35 @@
 <?php
+namespace Sysclass\Modules\Grades;
 /**
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Courses\Grades\Grade;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable
+/**
+ * @RoutePrefix("/module/grades")
+ */
+class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable
 {
-    protected $_modelRoute = "grades";
+    //protected $_modelRoute = "grades";
 
     /* ILinkable */
     public function getLinks() {
-        //$data = $this->getItemsAction();
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Grades", "View")) {
-            $groupItems = $this->model("grades")->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+        if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
+
+            $count = Grade::count("active = 1");
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($groupItems),
+                        'count' => $count,
                         'text'  => self::$t->translate('Grades Rules'),
                         'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view'
-                    )/*,
-                    array(
-                        'count' => count($groupItems),
-                        'text'  => self::$t->translate('Grades Groups'),
-                        'icon'  => 'fa fa-cogs',
-                        'link'  => $this->getBasePath() . 'view-group'
-                    )*/
+                    )
                 )
             );
         }
@@ -58,7 +53,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
                     'link'  => $this->getBasePath() . "view",
                     'text'  => self::$t->translate("Grades Rules")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                //$breadcrumbs[] = array('text'   => self::$t->translate("View"));
                 break;
             }
             case "add" : {
@@ -157,16 +152,18 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      *
      * @url GET /item/me/:id
     */
+   /*
     public function getItemAction($id) {
         $editItem = $this->model($this->_modelRoute)->getItem($id);
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/:model
      */
+    /*
     public function addItemAction($model)
     {
         $matchedurl = $this->getMatchedUrl();
@@ -198,12 +195,13 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url PUT /item/:model/:identifier
      */
+    /*
     public function setItemAction($model, $identifier)
     {
 
@@ -230,12 +228,13 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url DELETE /item/me/:id
      */
+    /*
     public function deleteItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -266,7 +265,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
@@ -274,6 +273,7 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
      * @url GET /items/:model/:type
      * @url GET /items/:model/:type/:filter
      */
+    /*
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
         // DEFAULT OPTIONS ROUTE
@@ -320,20 +320,6 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
                     $itemsData[$key]['options'][$index] = $optItem;
                 }
-                /*
-
-                $itemsData[$key]['options'] = array(
-                    'edit'  => array(
-                        'icon'  => 'icon-edit',
-                        'link'  => $this->getBasePath() . $stringsHelper->vksprintf($optionsRoute, $item['id']),
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'remove'    => array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    )
-                );
-                */
             }
             return array(
                 'sEcho'                 => 1,
@@ -345,10 +331,8 @@ class GradesModule extends SysclassModule implements ILinkable, IBreadcrumbable,
 
         return array_values($itemsData);
     }
-
-
-
-
+    */
+    
     /**
      * [ add a description ]
      *

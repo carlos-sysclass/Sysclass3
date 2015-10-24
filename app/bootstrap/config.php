@@ -257,6 +257,7 @@ $di->setShared('environment', function() use ($di) {
         ),
 		'courses' => 'Sysclass\Models\Courses\Course',
 		'dropbox' => 'Sysclass\Models\Dropbox\File',
+		'grades' => 'Sysclass\Models\Courses\Grades\Grade',
 		'groups' => 'Sysclass\Models\Users\Group',
 		'institution' => 'Sysclass\Models\Organizations\Organization',
 		'permission'	=> 'Sysclass\Models\Acl\Resource',

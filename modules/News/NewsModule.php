@@ -5,7 +5,7 @@ namespace Sysclass\Modules\News;
  * Module Class File
  * @filesource
  */
-use Sysclass\Modules\Announcements\Announcement;
+use Sysclass\Models\Announcements\Announcement;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
