@@ -42,7 +42,7 @@ mkdir -p "$DIRNAME/../cache/view/smarty/compiled"
 chmod 777 "$DIRNAME/../cache/view/smarty/compiled" -R
 
 
-mkdir -p "$DIRNAME/../"
+mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
 
 mkdir -p "$DIRNAME/../www/resources"
