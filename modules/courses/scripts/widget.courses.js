@@ -1074,11 +1074,15 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
                 if (!this.dialogExercisesModule.started) {
                     this.dialogExercisesModule.start();
 
-                    //this.listenTo(this.dialogExercisesModule, "action:do-test", this.doTest.bind(this));
+                    this.listenTo(
+                    	this.dialogExercisesModule.getView(),
+                    	"complete:save",
+                    	function() {
+                    		this.dialogExercisesModule.close();
+                    	}.bind(this)
+                    );
                 }
-
-                //this.dialogExercisesModule
-                //
+                
                 console.warn(this.model.toJSON(), this.parent.model.toJSON());
 
                 this.dialogExercisesModule.setInfo({

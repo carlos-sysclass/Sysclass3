@@ -770,10 +770,21 @@
 <script type="text/template" id="tab_lesson_exercises-item-template">
 	<td class="text-center"><%= model.model_index+1 %></th>
 	<td class="text-center"><%= _.size(model.exercise) %></td>
-	<td class="text-center"><span class="label label-danger">{translateToken value="Pending"}</span></td>
 	<td class="text-center">
+		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+			<span class="label label-success">{translateToken value="Done"}</span>
+		<% } else { %>
+			<span class="label label-danger">{translateToken value="Pending"}</span>
+		<% } %>
+	</td>
+	<td class="text-center">
+
 		<a href="javascript:void(0);" class="btn btn-xs btn-primary open-exercise-action">
-			{translateToken value="Do now!"}
+			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+				{translateToken value="Do it again!"}
+			<% } else { %>
+				{translateToken value="Do now!"}
+			<% } %>
 		</a>
 	</td>
 </script>
