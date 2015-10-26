@@ -13,7 +13,10 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
             questions : Backbone.DeepModel.extend({})
         };
 
-        var exercisesDialogViewClass = Backbone.View.extend({
+        var baseFormClass = app.module("views").baseFormClass;
+
+        var exercisesDialogViewClass = baseFormClass.extend({
+            renderType : "byView",
             events : {
                 "click [data-action-trigger]" : "triggerAction"
             },
@@ -22,6 +25,14 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
             //template : _.template($("#tests_info_modal-template").html(), null, {variable : "model"}),
             initialize : function() {
                 // CREATE DIALOG
+                baseFormClass.prototype.initialize.apply(this);
+
+                this.on("complete:save", function() {
+                    mod.close();
+                    mod.trigger("")
+                });
+
+
                 this.$el.modal({
                     show : false,
                     backdrop : "static",
@@ -30,33 +41,49 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
                 mod.started = true;
             },
             setModel : function(model) {
-                /*
-                if (this.model) {
-                    this.stopListening(this.model);
-                }
-                */
-                this.model = model;
-                this.render();
+                model.urlRoot = "/module/lessons/item/exercise";
+                
+                baseFormClass.prototype.setModel.apply(this, arguments);
+                //baseFormClass.prototype.setModel.apply(this, [model]);
             },
             render : function() {
                 var self = this;
+
+                // GENERATE A REVERSE INDEX FOR QUESTIONS
+                // 
+                var answer_index = [];
+                var answers = [];
 
                 this.$(".question-container").empty();
 
                 _.each(this.model.get("exercise"), function(data, index) {
                     var innermodel = new mod.models.questions(data);
 
+                    innermodel.set("answer_index", index);
+
                     var questionView = new lessonExercisesQuestionItemClass({
                         model : innermodel,
                         model_index : index
                     });
                     this.$(".question-container").append(questionView.render().el);
+
+                    answer_index.push(innermodel.get("id"));
+                    answers.push("");
                 }.bind(this));
+
+                this.model.unset("answer_index");
+                this.model.set("answer_index", answer_index);
+
+                this.model.unset("answers");
+                this.model.set("answers", answers);
 
                 app.module("ui").refresh(this.$(".exercises-container"));
 
+                baseFormClass.prototype.render.apply(this);
+
                 //app.module("ui").refresh(this.$(".modal-content"));
             },
+            /*
             triggerAction : function(e) {
                 var trigger = $(e.currentTarget).data("actionTrigger");
 
@@ -64,6 +91,7 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
                     mod.trigger("action:do-test", this.model);
                 }
             }
+            */
         });
 
         /* TESTS AND EXERCISES UTILITY VIEWS */
@@ -110,6 +138,11 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
         this.dialogView = new exercisesDialogViewClass({
             el : "#lesson-exercises-dialog"
         });
+
+        mod.getView = function() {
+            return this.dialogView;
+        }
+
 
         mod.open = function() {
             mod.dialogView.$el.modal('show');

@@ -59,7 +59,7 @@ crud:
       variables:
         page_subtitle: Details about your tests
     'execute':
-      components: ["select2", "validation", "bootstrap-switch", "icheck"]
+      components: ["select2", "validation", "bootstrap-switch", "icheck", "wysihtml5"]
       scripts : ["tests.execute"]
       template: execute.tpl
       variables:
