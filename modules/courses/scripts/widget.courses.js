@@ -1147,7 +1147,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
-
 		/*
 		var classDropboxTabViewClass = Backbone.View.extend({
 			//portlet: $('#courses-widget'),
