@@ -1,4 +1,3 @@
-<div class="form-body">
 	<div class="form-group">
 		<label class="control-label">{translateToken value="First Name"}</label>
 		<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
@@ -89,4 +88,3 @@
 		<a href="#" class="btn default">Cancel</a>
 	</div>
 -->
-</div>
