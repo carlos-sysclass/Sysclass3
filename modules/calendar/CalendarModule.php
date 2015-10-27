@@ -22,7 +22,9 @@ class CalendarModule extends SysclassModule implements ISummarizable, IWidgetCon
             'text'  => self::$t->translate('Calendar Events'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . 'all',
+                'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
+
+
             )
         );
     }
