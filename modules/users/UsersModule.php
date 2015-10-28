@@ -753,6 +753,7 @@ class UsersModule extends SysclassModule implements ISummarizable, ILinkable, IB
 		$this->putComponent("select2");
 		$this->putComponent("datepicker");
 		$this->putComponent("pwstrength");
+        
         */
 		// GET SUMMARY
 		$summaryModules = $this->getModules("ISummarizable");

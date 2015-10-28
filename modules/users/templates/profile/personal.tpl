@@ -18,7 +18,7 @@
 		<label class="control-label">{translateToken value="Birthday"}</label>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="icon-calendar"></i></span>
-			<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" readonly class="form-control date-picker">
+			<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 		</div>
 	</div>
 	<div class="form-group">
