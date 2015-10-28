@@ -3,6 +3,7 @@
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Courses\Contents\Exercise;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -584,6 +585,41 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
     /**
      * [ add a description ]
      *
+     * @url PUT /item/exercise/:id
+     */
+    public function setExerciseAnswersRequest() {
+        if ($user = $this->getCurrentUser(true)) {
+            $messages = array(
+                'success' => "Answers saved with success",
+                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+            );
+
+            $data = $this->getHttpData(func_get_args());
+
+            foreach($data['answer_index'] as $index => $question_id) {
+                if (array_key_exists($index, $data['answers']) && !is_null($data['answers'][$index])) {
+                    $answers[$question_id] = $data['answers'][$index];
+                } else {
+                    $answers[$question_id] = null;
+                }
+            }
+
+            $exerciseModel = Exercise::findFirstById($data['id']);
+
+            if ($exerciseModel->setAnswers($answers, $user->id)) {
+                return $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }     
+    }
+
+    /**
+     * [ add a description ]
+     *
      * @url PUT /item/:model/:id
      */
     public function setItemAction($model, $id)
@@ -603,8 +639,6 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'success' => "Lesson content updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
-            } elseif ($model == "question-content") {
-
             }
 
             if ($itemModel->setItem($data, $id) !== false) {

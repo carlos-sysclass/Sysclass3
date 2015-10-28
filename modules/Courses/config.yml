@@ -24,10 +24,6 @@ crud:
         - mData: name
           label: Name
 
-        - mData: price
-          sType: table-currency
-          label: Price
-
         - mData: active
           sType: table-boolean
           sClass: text-center

@@ -22,10 +22,12 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         return array(
             'type'  => 'primary',
             'count' => $data,
-            'text'  => self::$t->translate('Calendar Events'),
+            'text'  => self::$t->translate('Events'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . 'all',
+                'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
+
+
             )
         );
     }
@@ -39,7 +41,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
                 'communication' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Calendar Events'),
+                        'text'  => self::$t->translate('Events'),
                         'icon'  => 'fa fa-calendar',
                         'link'  => $this->getBasePath() . 'manage'
                     )

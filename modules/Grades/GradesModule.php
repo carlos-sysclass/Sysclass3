@@ -26,7 +26,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 'content' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Grades Rules'),
+                        'text'  => self::$t->translate('Grades'),
                         'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -51,7 +51,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-briefcase',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Grades Rules")
+                    'text'  => self::$t->translate("Grades")
                 );
                 //$breadcrumbs[] = array('text'   => self::$t->translate("View"));
                 break;
@@ -60,7 +60,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-briefcase',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Grades Rules")
+                    'text'  => self::$t->translate("Grades")
                 );
                 $breadcrumbs[] = array('text'   => self::$t->translate("New Grade Rule"));
                 break;
@@ -69,7 +69,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-briefcase',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Grades Rules")
+                    'text'  => self::$t->translate("Grades")
                 );
                 $breadcrumbs[] = array('text'   => self::$t->translate("Edit Grade Rule"));
                 break;

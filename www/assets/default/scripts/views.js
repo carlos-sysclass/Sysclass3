@@ -52,9 +52,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseClass::initialize');
 
 	    	var self = this;
+
 	    	if (this.model) {
 	    		this.listenToOnce(this.model, "sync", this.render.bind(this));
 	    	}
+
+	    	//this.bindViewEvents();
 	    	// HANDLE SPECIAL bootstrap-switchs CHANGE EVENTS
 	    	// CREATE A DELEGATED EVENT, BECAUSE THE ITEM SOMETIMES IS NOT IN THE DOM YET
 
@@ -76,6 +79,16 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	});
 	    	// HANDLE SPECIAL icheck CHANGE EVENTS
 	    	//this.$('.icheck-me').each(function() {
+	    	this.$el.delegate("[type='radio'].icheck-me", "ifChecked", function(e) {
+				self.update(e);
+    		});
+
+    		this.$el.delegate("[type='checkbox'].icheck-me", "ifChanged", function(e) {
+				self.update(e);
+    		});
+
+
+			/*	    	
     		this.$("[type='radio'].icheck-me").on("ifChecked", function(e) {
 				self.update(e);
     		});
@@ -83,8 +96,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     		this.$("[type='checkbox'].icheck-me").on("ifChanged", function(e) {
 				self.update(e);
     		});
-
+			*/
 	    	//});
+	    },
+	    bindViewEvents : function() {
+			
 	    },
 	    handleAction : function(action) {
 	    	console.info('views/baseClass::handleAction');
@@ -479,6 +495,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             self.trigger("complete:save", this.model);
 	    },
 	    setModel : function(model) {
+	    	console.warn(this, model);
 	    	this.model = model;
 	    	this.render(model);
 	    }

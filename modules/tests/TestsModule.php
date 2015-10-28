@@ -27,7 +27,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             'text'  => self::$t->translate('Scheduled Tests'),
             'link'  => array(
                 'text'  => self::$t->translate('View'),
-                'link'  => $this->getBasePath() . 'all'
+                'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
             )
         );
     }

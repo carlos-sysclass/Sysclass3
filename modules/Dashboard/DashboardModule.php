@@ -18,13 +18,54 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
 
     /* ISectionMenu */
     public function getSectionMenu($section_id) {
-
         if ($section_id == "topbar") {
-
             $currentUser = $this->getCurrentUser(true);
-            $dashboards = $currentUser->getDashboards();
 
-            if ($dashboards > 1) {
+            $modules = $this->getModules("ILinkable");
+            $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
+
+            $modulesOrder = $this->getResource('dashboard.linkable.order');
+            /**
+             * @todo Get the data fomr system settings (NOT FROM dashboard setting)
+             */
+            $modulesOrder = array("institution", "translate", "areas", "courses", "classes", "lessons", "tests", "questions", "grades", "users", "groups", "roles", "advertising", "calendar");
+
+            $links = array();
+
+            foreach($modulesOrder as $module_id) {
+                $module_id = ucfirst($module_id);
+                if (array_key_exists($module_id, $modules)) {
+                    $mod_links = $modules[$module_id]->getLinks();
+                    if (is_array($mod_links)) {
+                        $links = array_merge_recursive($links, $mod_links);
+                    }
+                }
+                unset($modulesKeys[$module_id]);
+            }
+            
+//["administration", "content", "users", "communication", "not_classified"]
+            //var_dump($links);
+            //exit;
+            //$links = $this->sortModules("dashboard.linkable.groups.order", $links, "not_classified");
+
+            $groupLabels = array(
+                "content"           => self::$t->translate('Content'),
+                "administration"    => self::$t->translate('Administation'),
+                "communication"     => self::$t->translate('Communication'),
+                "users"             => self::$t->translate('Users'),
+                "not_classified"    => self::$t->translate('Not Classified')
+            );
+
+            foreach($links as $groupKey => $item) {
+                if (array_key_exists($groupKey, $groupLabels)) {
+                    $links[$groupLabels[$groupKey]] = $item;
+                    unset($links[$groupKey]);
+                }
+            }\
+
+            // ADD ENVIROMENT SELECTION
+            $dashboards = $currentUser->getDashboards();
+            if (count($dashboards) > 1) {
 
                 $items = array();
 
@@ -35,27 +76,20 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                     );
                 }
 
-    //            $this->putModuleScript("models.translate");
-    //            $this->putModuleScript("menu.translate");
-
-                $menuItem = array(
-                    'icon'      => 'fa fa-dashboard',
-                    //'notif'     => count($items),
-                    'text'      => self::$t->translate('Dashboard'),
-                    /*
-                    'link'  => array(
-                        'link'  => $this->getBasePath() . "change",
-                        'text'  => self::$t->translate('Dashboard')
-                    ),
-                    */
-                    'type'      => 'switch',
-                    'items'     => $items,
-                    'extended'  => false
-                    //'template'  => "translate-menu"
-                );
-
-                return $menuItem;
+                $links[self::$t->translate('Environment')] = $items;
             }
+
+            $menuItem = array(
+                'icon'      => 'fa fa-bars',
+                //'notif'     => count($items),
+                'text'      => self::$t->translate('Menu'),
+                'type'      => 'mega',
+                'items'     => $links,
+                'extended'  => false
+                //'template'  => "translate-menu"
+            );
+
+            return $menuItem;
         }
         return false;
     }

@@ -103,6 +103,7 @@
 </div>
 
 <script type="text/template" id="period-edit-item">
+    <% console.warn(data) %>
     <div class="panel-heading">
         <% if (!_.isEmpty(data.id)) { %>
         <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
@@ -112,6 +113,7 @@
         <a class="btn btn-sm btn-default tooltips toogle-visible-item" data-original-title="{translateToken value="Expand / Collpase"}">
             <i class="fa fa-angle-up"></i>
         </a>
+        <% if (!_.isEmpty(data.id)) { %>
         <a href="javascript:void(0);" class="editable-me <% if (data.active == "0") { %>text-danger<% } %>"
             data-type="text"
             data-name="name"
@@ -121,6 +123,9 @@
         >
             <%= data.name %>
         </a>
+        <% } else { %>
+            <%= data.name %>
+        <% } %>
         <!--
         <% if (typeof data.max_classes == 'undefined' || data.max_classes <= 0) { %>
             <span class="size-counter"><%= _.size(data.classes) %></span> {translateToken value="total classes"}

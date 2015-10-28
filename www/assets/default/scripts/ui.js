@@ -209,7 +209,15 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                 autoclose: true,
                 todayHighlight: true,
                 toggleActive: true
-            })/*
+            });
+
+
+            if ($.fn.mask) {
+                $('.date-picker', context).not("[readonly]").mask('00/00/0000', {selectOnFocus: true});
+            }
+
+
+            /*
 			.on('changeDate', function(e) {
 				$(this).datepicker('hide');
 			})*/;
@@ -431,6 +439,19 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         }
     };
 
+    this.handleJqueryMask = function(context) {
+        if ($.fn.mask) {
+            if ($("[data-mask-type]", context).size() > 0) {
+                $("[data-mask-type]", context).each(function() {
+                    console.warn($(this).data("mask-type"), $(this).data("maskType"));
+                    if ($(this).data("maskType") == "date") {
+                        $(this).mask('00/00/0000', {selectOnFocus: true});
+                    }
+                });
+            }
+        }
+    }
+
     this.handleActions = function (context) {
         var self = this;
 
@@ -451,6 +472,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		this.handleiCheck(context);
 		this.handleSelect2(context);
         this.handleJqueryFileUpload(context);
+        this.handleJqueryMask(context);
         this.handleBootstrapConfirmation(context);
         this.handleBootstrapEditable(context);
         this.handleDatepickers(context);

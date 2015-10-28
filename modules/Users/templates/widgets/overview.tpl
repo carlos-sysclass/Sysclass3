@@ -37,7 +37,7 @@
 									<!--
 									<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 									-->
-									<a class="btn btn-xs btn-{$notif.type}" href="javascript:void(0);">{$notif.link.text}</a>
+									<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 								{/if}
 							</td>
 			           	</tr>

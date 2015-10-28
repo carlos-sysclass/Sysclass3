@@ -50,29 +50,6 @@
 											</li>
 										{/foreach}
 									</ul>
-								</div>
-								<div class="col-md-9 profile-info">
-									<h1><span data-update="name">{$T_EDIT_USER.name}</span> <span data-update="surname"> {$T_EDIT_USER.surname}</span></h1>
-									<p data-update="short_description">{$T_EDIT_USER.short_description}</p>
-
-									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
-
-									<ul class="list-inline">
-										<li class="tooltips" data-original-title="{translateToken value="Your Location"}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
-										<li><i class="icon-calendar"></i> <span data-update="birthday" data-format="date" data-format-from="isodate" >{$T_EDIT_USER.birthday}</span></li>
-										<!--
-										{if $T_EDIT_USER.polo_id}
-											<li class="tooltips" data-original-title="{translateToken value="Your Proctoring Center"}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>
-										{/if}
-
-										<li><i class="icon-star"></i> Top Seller</li>
-										<li><i class="icon-heart"></i> BASE Jumping</li>
-										-->
-									</ul>
-								</div>
-							</div>
-							<div class="row profile-account">
-								<div class="col-md-3">
 									<ul class="ver-inline-menu tabbable margin-bottom-10">
 										<li class="active">
 											<a data-toggle="tab" href="#tab_1-1">
@@ -91,24 +68,38 @@
 										-->
 									</ul>
 								</div>
+								<div class="col-md-9 profile-info">
+									<h1><span data-update="name">{$T_EDIT_USER.name}</span> <span data-update="surname"> {$T_EDIT_USER.surname}</span></h1>
+									<p data-update="short_description">{$T_EDIT_USER.short_description}</p>
 
-								<div class="col-md-9">
-									<div class="tab-content">
+									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
+
+									<div class="tab-content margin-top-20">
 										<div id="tab_1-1" class="tab-pane active">
-											{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
+											<div class="form-body">
+												{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
+											</div>
 										</div>
 
 										{*include file="`$T_MODULE_TPLPATH`/profile/address.tpl"*}
 
 										<div id="tab_1-2" class="tab-pane">
-											{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
+											<div class="form-body">
+												{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
+											</div>
 										</div>
 										<div id="tab_1-3" class="tab-pane">
-											{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
+											<div class="form-body">
+												{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
+											</div>
 										 </div>
+										<!--
 										<div id="tab_1-4" class="tab-pane">
+											<div class="form-body">
 											{*include file="`$T_MODULE_TPLPATH`/profile/courses.tpl"*}
+											</div>
 										</div>
+										-->
 										<!--
 										<div id="tab_5-4" class="tab-pane">
 											<form action="#" class="">
@@ -167,9 +158,34 @@
 										</div>
 										-->
 									</div>
+
+									<!--
+									<ul class="list-inline">
+										<li class="tooltips" data-original-title="{translateToken value="Your Location"}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
+										<li><i class="icon-calendar"></i> <span data-update="birthday" data-format="date" data-format-from="isodate" >{$T_EDIT_USER.birthday}</span></li>
+										
+										{if $T_EDIT_USER.polo_id}
+											<li class="tooltips" data-original-title="{translateToken value="Your Proctoring Center"}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>
+										{/if}
+
+										<li><i class="icon-star"></i> Top Seller</li>
+										<li><i class="icon-heart"></i> BASE Jumping</li>
+										
+									</ul>
+									-->
 								</div>
-								<!--end col-md-9-->
 							</div>
+							<!--
+							<div class="row profile-account">
+								<div class="col-md-3">
+
+								</div>
+
+								<div class="col-md-9">
+
+								</div>
+							</div>
+							-->
 						<!-- </div> -->
 						<!--end tab-pane-->
 						<!--

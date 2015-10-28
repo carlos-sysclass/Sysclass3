@@ -284,7 +284,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 
                 $itemsCollection = $this->model($modelRoute);
                 $itemsData = $itemsCollection->getItems();
-                $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+                //$itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             } else {
                 return $this->invalidRequestError();
             }

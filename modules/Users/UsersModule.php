@@ -648,6 +648,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->putComponent("select2");
 		$this->putComponent("datepicker");
 		$this->putComponent("pwstrength");
+        
         */
 		// GET SUMMARY
 		$summaryModules = $this->getModules("ISummarizable");

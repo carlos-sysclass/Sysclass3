@@ -153,7 +153,8 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                 break;
             }
             case 'subtitle' :{
-                $helper->setOption('accept_file_content_types', '/(text\/vtt|application\/x-subrip)/i');
+                $helper->setOption('accept_file_types', '/(\.|\/)(vtt|srt)$/i');
+                //$helper->setOption('accept_file_content_types', '/(text\/vtt|application\/x-subrip)/i');
 
                 // AFTER UPDLOAD, PARSE AND 
                 break;
