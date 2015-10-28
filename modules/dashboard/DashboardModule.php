@@ -22,7 +22,7 @@ class DashboardModule extends SysclassModule implements ISectionMenu, IWidgetCon
             $currentUser = $this->getCurrentUser(true);
             $dashboards = $currentUser->getDashboards();
 
-            if ($dashboards > 1) {
+            if (count($dashboards) > 1) {
 
                 $items = array();
 
@@ -39,7 +39,7 @@ class DashboardModule extends SysclassModule implements ISectionMenu, IWidgetCon
                 $menuItem = array(
                     'icon'      => 'fa fa-dashboard',
                     //'notif'     => count($items),
-                    'text'      => self::$t->translate('Dashboard'),
+                    'text'      => self::$t->translate('Environment'),
                     /*
                     'link'  => array(
                         'link'  => $this->getBasePath() . "change",

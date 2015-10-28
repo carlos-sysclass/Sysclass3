@@ -114,7 +114,7 @@
 		            </ul>
 		         </li>
 		         <li class="external">
-		            <a href="#">See all calendar events <i class="m-icon-swapright"></i></a>
+		            <a href="#">See all events <i class="m-icon-swapright"></i></a>
 		         </li>
 		      </ul>
 		   </li>

@@ -30,7 +30,7 @@ class RolesModule extends SysclassModule implements IBlockProvider, ILinkable, I
                 'users' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Users Roles'),
+                        'text'  => self::$t->translate('Roles'),
                         'icon'  => 'icon-group',
                         'link'  => $this->getBasePath() . 'view'
                     )
