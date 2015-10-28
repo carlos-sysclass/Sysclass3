@@ -24,7 +24,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
                 'content' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Department'),
+                        'text'  => self::$t->translate('Departments'),
                         'icon'  => 'fa fa-cubes',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -44,7 +44,7 @@ class AreasModule extends SysclassModule implements ILinkable, IBreadcrumbable, 
             array(
                 'icon'  => 'fa fa-cubes',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Department")
+                'text'  => self::$t->translate("Departments")
             )
         );
 

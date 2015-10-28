@@ -20,7 +20,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">{translateToken value="Departament"}</label>
+                                        <label class="control-label">{translateToken value="Department"}</label>
                                         <select class="select2-me form-control" name="area_id" data-rule-required="true" data-rule-min="1">
                                             <option value="">{translateToken value="Please Select"}</option>
                                             {foreach $T_KNOWLEDGE_AREAS as $id => $area}
