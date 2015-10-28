@@ -1259,3 +1259,25 @@ button.calendar-news-item {
     max-height: 400px;
     overflow-y: scroll;
 }
+
+
+.navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > h3 {
+	font-size: 17px;
+}
+
+.dropdown-menu .mega-menu-content li > a {
+	color: #646464;
+}
+.dropdown-menu .mega-menu-content li > a > i{
+	color: #888;
+}
+
+.header .navbar-nav > li.dropdown.mega-menu-dropdown > a {
+    color: #ddd;
+    font-size: 13px;
+    padding: 10px 4px 12px 4px;
+}
+
+.header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {
+    font-size: 16px;
+}
