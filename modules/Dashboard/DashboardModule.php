@@ -61,7 +61,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                     $links[$groupLabels[$groupKey]] = $item;
                     unset($links[$groupKey]);
                 }
-            }\
+            }
 
             // ADD ENVIROMENT SELECTION
             $dashboards = $currentUser->getDashboards();

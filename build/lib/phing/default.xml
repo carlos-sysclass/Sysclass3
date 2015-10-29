@@ -85,6 +85,7 @@ ftp-htaccess targets, for instance.
         <property name="tests.dir" value="${project.dir}\tests"/>
 
         <echo message="Assigning build directories to properties" level="debug"/>
+        <property name="build.lib.dir" value="${build.dir}/lib"/>
         <property name="build.api.dir" value="${build.dir}/api"/>
         <property name="build.codebrowser.dir" value="${build.dir}/code-browser"/>
         <property name="build.dist.dir" value="${build.dir}/dist"/>
@@ -241,11 +242,17 @@ ftp-htaccess targets, for instance.
 
     <target name="phploc" depends="init" description="Measure project size using PHPLOC">
         <exec executable="phploc" logoutput="true" checkreturn="true" level="debug">
-            <arg value="--log-csv"/>
-            <arg value="${build.logs.dir}/phploc.csv"/>
+            <arg value="--log-xml"/>
+            <arg value="${build.logs.dir}/phploc.xml"/>
             <arg path="${src.dir}"/>
         </exec>
+        <xslt file="${build.logs.dir}/phploc.xml" tofile="${build.dist.dir}/phploc.html" style="${build.lib.dir}/phploc/table.xslt" overwrite="true" />
     </target>
+
+    <target name="xslt" depends="init" description="Generate API documentation">
+
+    </target>
+
 
     <target name="pdepend" depends="init" description="Calculate software metrics using PHP_Depend">
         <phpdepend>
@@ -322,6 +329,9 @@ ftp-htaccess targets, for instance.
         </phpdoc2>
 
     </target>
+
+
+
 
     <target name="phpcb" depends="init" description="Aggregate tool output with PHP_CodeBrowser">
         <exec executable="phpcb" logoutput="true" checkreturn="true" level="debug">
