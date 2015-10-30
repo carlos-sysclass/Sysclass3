@@ -23,3 +23,7 @@ crud:
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new Event Source
+models:
+  me:
+    class: Sysclass\Models\Calendar\Event
+    exportMethod: ["toFullArray", []]

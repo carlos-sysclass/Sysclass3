@@ -47,3 +47,7 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Edit your knowlegde area
+models:
+  me:
+    class: Sysclass\Models\Courses\Departament
+    exportMethod: ["toFullArray", ["Coordinator"]]

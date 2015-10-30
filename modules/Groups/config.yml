@@ -50,4 +50,5 @@ crud:
       scripts: ["views.groups.edit"]
       variables:
         page_subtitle: Config and edit group info
-
+models:
+  me: Sysclass\Models\Users\Group

@@ -85,6 +85,10 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         if (is_null($path)) {
             return $this->context['*config*'];
         }
+        if (!array_key_exists('*config*', $this->context)) {
+            $this->loadConfigFile();
+        }
+
         $data = $this->context['*config*'];
 
         $keys = explode("\\", $path);

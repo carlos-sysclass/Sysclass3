@@ -233,12 +233,14 @@ $di->setShared('environment', function() use ($di) {
 	);
 
 	// MOVE TO module config.yml!!!
+	// 
+	/*
 	$config['models/map'] = array(
 		'areas'	=> array(
 			'class' => "Sysclass\Models\Courses\Departament",
             'exportMethod'  => array(
                 'toFullArray',
-                array('Coordinator')
+                array('')
             )
         ),
 		'calendar'	=> array(
@@ -247,38 +249,9 @@ $di->setShared('environment', function() use ($di) {
                 'toFullArray',
                 array()
             ),
-		),
-		'classes' => array(
-			'class' => 'Sysclass\Models\Courses\Classe'/*,
-            'exportMethod'  => array(
-                'toFullArray',
-                array('Course', 'Classe')
-            ),*/
-        ),
-		'courses' => 'Sysclass\Models\Courses\Course',
-		'dropbox' => 'Sysclass\Models\Dropbox\File',
-		'grades' => 'Sysclass\Models\Courses\Grades\Grade',
-		'groups' => 'Sysclass\Models\Users\Group',
-		'institution' => 'Sysclass\Models\Organizations\Organization',
-		'permission'	=> 'Sysclass\Models\Acl\Resource',
-		'questions' => array(
-			'class' => 'Sysclass\Models\Courses\Questions\Question',
-            'exportMethod'  => array(
-                'toFullArray',
-                array('Departament', 'Type', 'Difficulty')
-            )
-        ),
-		'roles'	=> 'Sysclass\Models\Acl\Role',
-		'users' => array(
-			'class' => 'Sysclass\Models\Users\User',
-            'exportMethod'  => array(
-                'toFullArray',
-                array('Avatars', 'UserGroups')
-            ),
-            'findMethod'  => 'findFirstById'
 		)
 	);
-
+	*/
     $configAdapter2 = new Config($config);
 
     $configAdapter->merge($configAdapter2);

@@ -80,3 +80,7 @@ crud:
       scripts: ["views.form.questions", "views.form.questions.edit"]
       variables:
         page_subtitle: Edit your questions
+models:
+  me:
+    class: Sysclass\Models\Courses\Questions\Question
+    exportMethod: ["toFullArray", ["Departament", "Type", "Difficulty"]]

@@ -57,3 +57,5 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Edit your Organization
+models:
+  me: Sysclass\Models\Organizations\Organization

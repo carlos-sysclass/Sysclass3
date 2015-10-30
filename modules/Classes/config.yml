@@ -49,3 +49,5 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Edit your class info
+models:
+  me: Sysclass\Models\Courses\Classe

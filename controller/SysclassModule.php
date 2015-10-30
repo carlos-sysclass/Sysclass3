@@ -51,13 +51,12 @@ abstract class SysclassModule extends BaseSysclassModule
         //$this->module_request = str_replace($this->getBasePath(), "", $this->context['module_request']);
         $this->context['module_request']    = $this->module_request;
 
-        // LOAD MODEL INFO
-        $this->model_info = $this->getModelInfo();
-
         $this->eventsManager->attach("module-{$this->module_id}", $this);
 
         $this->loadConfigFile();
 
+        // LOAD MODEL INFO
+        $this->model_info = $this->loadModelInfo();
     }
 
 
@@ -114,18 +113,21 @@ abstract class SysclassModule extends BaseSysclassModule
         }
     }
 
-    protected function getModelData() {
+    protected function getModelData($model) {
         $args = func_get_args();
 
-        if (is_array($this->model_info)) {
+        array_shift($args);
+
+        if (array_key_exists($model, $this->model_info)) {
+            $model_info = $this->model_info[$model];
             return call_user_func_array(
-                array($this->model_info['class'], $this->model_info['findMethod']), $args
+                array($model_info['class'], $model_info['findMethod']), $args
             );
         }
         return false;
     }
 
-    protected function getModelInfo() {
+    protected function loadModelInfo() {
         $default = array(
             'exportMethod'  => array(
                 'toArray',
@@ -135,6 +137,26 @@ abstract class SysclassModule extends BaseSysclassModule
             'listMethod'  => 'find'
         );
 
+        $models = $this->getConfig('models');
+
+        if ($models) {
+            foreach($models as $key => $class_info) {
+                if (is_string($class_info)) {
+                    $class_info = array(
+                        'class' => $class_info
+                    );
+                    $class_info = array_merge($default, $class_info);
+                } else {
+                    $class_info = array_merge($default, $class_info);
+                }
+                $result[$key] = $class_info;
+            }
+
+            return $result;
+        }
+        /** 
+         * REMOVE AFTER MIGRATION ALL DATA TO config.yml
+         */
         if (array_key_exists($this->module_id, $this->environment['models/map'])) {
             $class_info = $this->environment['models/map'][$this->module_id];
 
@@ -151,28 +173,29 @@ abstract class SysclassModule extends BaseSysclassModule
         } else {
             return false;
         }
+
     }
 
 
     /**
      * [ add a description ]
      *
-     * @Get("/item/me/{id}")
+     * @Get("/item/{model}/{id}")
     */
-    public function getItemRequest($id) {
+    public function getItemRequest($model, $id) {
 
-        $editItem = $this->getModelData($id);
+        $editItem = $this->getModelData($model, $id);
 
         $this->response->setContentType('application/json', 'UTF-8');
 
         if (is_object($editItem)) {
+            $model_info = $this->model_info[$model];
             $this->response->setJsonContent(call_user_func_array(
-                array($editItem, $this->model_info['exportMethod'][0]),
-                $this->model_info['exportMethod'][1]
+                array($editItem, $model_info['exportMethod'][0]),
+                $model_info['exportMethod'][1]
             ));
             return true;   
         } else {
-            
             $this->response->setJsonContent(
                 $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning")
             );
@@ -184,17 +207,29 @@ abstract class SysclassModule extends BaseSysclassModule
     /**
      * [ add a description ]
      *
-     * @Post("/item/me")
+     * @Post("/item/{model}")
      */
-    public function addItemRequest($id)
+    public function addItemRequest($model)
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
         if ($this->acl->isUserAllowed(null, $this->module_id, "create")) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
+            // 
             $data = $this->request->getJsonRawBody(true);
+
+            if (!array_key_exists($model, $this->model_info)) {
+                $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
+
+                $response = $this->invalidRequestError(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $this->response->setJsonContent(
+                    array_merge($response, $data)
+                );
+                return true;
+            }
+            $model_info = $this->model_info[$model];
             
-            $model_class = $this->model_info['class'];
+            $model_class = $model_info['class'];
             $itemModel = new $model_class();
             $itemModel->assign($data);
 
@@ -244,14 +279,25 @@ abstract class SysclassModule extends BaseSysclassModule
     /**
      * [ add a description ]
      *
-     * @Put("/item/me/{id}")
+     * @Put("/item/{model}/{id}")
      */
-    public function setItemRequest($id)
+    public function setItemRequest($model, $id)
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
         if ($allowed = $this->acl->isUserAllowed(null, $this->module_id, "edit")) {
             $data = $this->request->getJsonRawBody(true);
+
+            if (!array_key_exists($model, $this->model_info)) {
+                $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
+
+                $response = $this->invalidRequestError(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $this->response->setJsonContent(
+                    array_merge($response, $data)
+                );
+                return true;
+            }
+            $model_info = $this->model_info[$model];
 
             $model_class = $this->model_info['class'];
             $itemModel = new $model_class();
@@ -297,13 +343,13 @@ abstract class SysclassModule extends BaseSysclassModule
     /**
      * [ add a description ]
      *
-     * @Delete("/item/me/{id}")
+     * @Delete("/item/{model}/{id}")
      */
     public function deleteItemRequest($id)
     {
         if ($this->acl->isUserAllowed(null, $this->module_id, "delete")) {
 
-            $itemModel = $this->getModelData($id);
+            $itemModel = $this->getModelData($model, $id);
 
             if ($itemModel) {
 

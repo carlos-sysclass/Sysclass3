@@ -96,3 +96,5 @@ crud:
     #  template: form-group.tpl
     #  variables:
     #    page_subtitle: Config and edit the grade group
+models:
+  me: Sysclass\Models\Courses\Grades\Grade

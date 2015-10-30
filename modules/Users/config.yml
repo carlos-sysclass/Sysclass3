@@ -106,4 +106,8 @@ blocks:
           sClass: text-center
           label: Actions
 
-
+models:
+  me:
+    class: Sysclass\Models\Users\User
+    exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    findMethod: findFirstById

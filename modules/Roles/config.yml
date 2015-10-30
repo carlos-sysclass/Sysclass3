@@ -94,5 +94,6 @@ blocks:
         sType: table-options
         sClass: text-center
         label: Actions
-
+models:
+  me: Sysclass\Models\Acl\Role
 
