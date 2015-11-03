@@ -46,5 +46,28 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Edit your course info
+
+blocks:
+  courses.list.table:
+    context:
+      block_id: "courses"
+      ajax_source: "/module/courses/items/me/datatable?block"
+      datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
 models:
   me: Sysclass\Models\Courses\Course

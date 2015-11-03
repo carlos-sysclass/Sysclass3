@@ -59,8 +59,9 @@ crud:
         page_subtitle: Create a new User
     'edit/{id}':
       components: ["select2","validation", "bootstrap-switch","pwstrength"]
+      blocks: ["enroll.user.block"]
       template: form.tpl
-      #scripts: ["models.users", "views.users.add"]
+      scripts: ["edit"]
       variables:
         page_subtitle: Config and edit user info
     profile:

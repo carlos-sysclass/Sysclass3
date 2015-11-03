@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Enrollments;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Course extends Model
 {
@@ -19,5 +19,12 @@ class Course extends Model
             array('alias' => 'CourseProgress')
         );
 
+    }
+
+    public function beforeValidationOnCreate() {
+        if (is_null($this->token)) {
+            $random = new \Phalcon\Security\Random();
+            $this->token = $random->uuid();
+        }
     }
 }

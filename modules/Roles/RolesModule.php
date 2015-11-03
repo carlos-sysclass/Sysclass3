@@ -580,11 +580,14 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /**
      * [ add a description ]
      *
-     * @Get("/items/resources")
-     * @Get("/items/resources/{type}/{filter}")
+     * @Get "/items/resources"
+     * @Get "/items/resources/{type}/{filter}"
      */
+    /*
     public function getResourcesItemsRequest($type, $filter)
     {
+        var_dump(1);
+        exit;
         $filter = json_decode($filter, true);
         if (is_array($filter)) {
             $index = 0;
@@ -654,12 +657,12 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
         return array_values($items);
     }
-
+    */
     /**
      * [ add a description ]
      *
-     * @Get("/items/users")
-     * @Get("/items/users/{type}/{filter}")
+     * @Get("/datasource/users")
+     * @Get("/datasource/users/{type}/{filter}")
      */
     public function getUsersItemsRequest($type, $filter)
     {

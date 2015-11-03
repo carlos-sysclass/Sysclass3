@@ -13,7 +13,7 @@ use Sysclass\Models\Enrollments\Course as Enrollment;
 /**
  * @RoutePrefix("/module/courses")
  */
-class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IWidgetContainer, \IPermissionable
+class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
 {
     /* ISummarizable */
     public function getSummary() {
@@ -110,6 +110,24 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 
         return $actions[$request];
     }
+    /* IBlockProvider */
+    public function registerBlocks() {
+        return array(
+            'courses.list.table' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("data-tables");
+                $self->putScript("scripts/utils.datatables");
+
+                $block_context = $self->getConfig("blocks\\courses.list.table\context");
+                $self->putItem("courses_block_context", $block_context);
+
+                $self->putSectionTemplate("courses", "blocks/table");
+
+                return true;
+
+            }
+        );
+    }
 
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
@@ -186,13 +204,6 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 
 		return false;
 	}
-    /* IPermissionable */
-    public function getResources() {
-        return array(
-
-
-        );
-    }
 
     /**
      * [ add a description ]
@@ -243,6 +254,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      * @url GET /items/:model/:type
      * @url GET /items/:model/:type/:filter
      */
+    /*
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
         if ($currentUser = $this->getCurrentUser(true)) {
@@ -267,17 +279,6 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                 ));
 
                 $itemsData = $modelRS->toArray();
-                /*
-                //var_dump($modelRS->toArray());
-                //exit;
-
-                $modelRoute = "enrollment/course";
-                //$optionsRoute = "edit-instructor";
-                //
-
-                $itemsCollection = $this->debug()->model($modelRoute);
-                $itemsData = $itemsCollection->addFilter($filter)->getItems();
-                */
             } elseif ($model ==  "me") {
                 $modelRoute = "courses";
                 $optionsRoute = "edit";
@@ -333,6 +334,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             return array_values($itemsData);
         }
     }
+    */
     /**
      * [ add a description ]
      *

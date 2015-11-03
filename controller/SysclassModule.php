@@ -251,13 +251,22 @@ abstract class SysclassModule extends BaseSysclassModule
             if ($itemModel->save()) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
                 
-                $this->response->setJsonContent(
-                    $this->createRedirectResponse(
-                        $this->getBasePath() . "edit/" . $itemModel->id,
-                        self::$t->translate("User created with success"),
-                        "success"
-                    )
-                );
+                if ($this->request->hasQuery('object')) {
+                    $this->response->setJsonContent(
+                        $this->createAdviseResponse(
+                            self::$t->translate("Entity created with success"),
+                            "success"
+                        )
+                    );
+                } else {
+                    $this->response->setJsonContent(
+                        $this->createRedirectResponse(
+                            $this->getBasePath() . "edit/" . $itemModel->id,
+                            self::$t->translate("User created with success"),
+                            "success"
+                        )
+                    );
+                }
                 return true;
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelCreate", $itemModel, $data);
@@ -345,7 +354,7 @@ abstract class SysclassModule extends BaseSysclassModule
      *
      * @Delete("/item/{model}/{id}")
      */
-    public function deleteItemRequest($id)
+    public function deleteItemRequest($model, $id)
     {
         if ($this->acl->isUserAllowed(null, $this->module_id, "delete")) {
 
@@ -363,6 +372,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $response = $this->invalidRequestError("", "warning");
                 }
             } else {
+                
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                 $response = $this->invalidRequestError("", "warning");
             }
@@ -401,9 +411,27 @@ abstract class SysclassModule extends BaseSysclassModule
                     $filter = json_decode($filter, true);
                 }
 
+                $options = array();
+
+                foreach($filter as $key => $item) {
+                    if (strpos($key, "_") === 0) {
+                        $options[$key] = $item;
+                        unset($filter[$key]);
+                    }
+                }
+
                 $index = 0;
                 foreach($filter as $key => $item) {
-                    $modelFilters[] = "{$key} = ?{$index}";
+                    if (strpos($key, "_") === 0) {
+                        $opt[$key] = $item;
+                        unset($filter[$key]);
+                    }
+                    if (@$options['_exclude'] === TRUE) {
+                        $modelFilters[] = "{$key} <> ?{$index}";
+                    } else {
+                        $modelFilters[] = "{$key} = ?{$index}";
+                    }
+                    
                     $filterData[$index] = $item;
                     $index++;
                 }

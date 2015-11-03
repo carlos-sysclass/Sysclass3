@@ -96,4 +96,8 @@ blocks:
         label: Actions
 models:
   me: Sysclass\Models\Acl\Role
+  resources: 
+    class: Sysclass\Models\Acl\RolesResources
+    exportMethod: ["toFullArray", []]
+
 
