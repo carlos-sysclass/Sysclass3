@@ -2,9 +2,9 @@
 # GENERAL DEFINITIONS #
 #######################
 blocks:
-  enroll.list.table:
+  enroll.user.block:
     context:
-      block_id: "enroll"
+      block_id: "enroll_users"
       #ajax_source: "/module/enroll/items/me/datatable?block"
       datatable_fields:
         - mData: id

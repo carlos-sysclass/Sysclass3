@@ -35,9 +35,11 @@ $eventsManager->attach('db', function ($event, $connection) use ($logger) {
 
 // Set a models manager
 $di->set('modelsManager', function ()  use ($eventsManager) {
-    $ModelsManager = new Plico\Mvc\Model\Manager();
+    $modelsManager = new Plico\Mvc\Model\Manager();
 
-    return $ModelsManager;
+    $modelsManager->setEventsManager($eventsManager);
+
+    return $modelsManager;
 });
 $di->set('modelsCache', function () {
 

@@ -111,10 +111,10 @@
 				    {/foreach}
 				{/if}
 			</div>
-			{if (isset($T_SECTION_TPL['courses']) &&  ($T_SECTION_TPL['courses']|@count > 0))}
+			{if (isset($T_SECTION_TPL['enroll']) &&  ($T_SECTION_TPL['enroll']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-				    {foreach $T_SECTION_TPL['courses'] as $template}
-				        {include file=$template T_MODULE_CONTEXT=$T_COURSES_BLOCK_CONTEXT T_MODULE_ID=$T_COURSES_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+				    {foreach $T_SECTION_TPL['enroll'] as $template}
+				        {include file=$template}
 				    {/foreach}
 				</div>
 			{/if}

@@ -20,4 +20,11 @@ class Course extends Model
         );
 
     }
+
+    public function beforeValidationOnCreate() {
+        if (is_null($this->token)) {
+            $random = new \Phalcon\Security\Random();
+            $this->token = $random->uuid();
+        }
+    }
 }

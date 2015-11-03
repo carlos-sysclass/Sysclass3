@@ -59,7 +59,7 @@ crud:
         page_subtitle: Create a new User
     'edit/{id}':
       components: ["select2","validation", "bootstrap-switch","pwstrength"]
-      blocks: ["enroll.list.table"]
+      blocks: ["enroll.user.block"]
       template: form.tpl
       scripts: ["edit"]
       variables:

@@ -19,23 +19,29 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider
     /* IBlockProvider */
     public function registerBlocks() {
         return array(
-            'enroll.list.table' => function($data, $self) {
+            'enroll.user.block' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                $self->putComponent("data-tables", "select2");
                 $self->putScript("scripts/utils.datatables");
 
-                $block_context = $self->getConfig("blocks\\enroll.list.table\context");
-                $self->putItem("courses_block_context", $block_context);
+                $self->putModuleScript("user.block");
 
-                $self->putSectionTemplate("courses", "blocks/table");
+                $block_context = $self->getConfig("blocks\\enroll.user.block\context");
+                $self->putItem("enroll_user_block_context", $block_context);
+
+
+
+                $self->putSectionTemplate("enroll", "blocks/enroll.user");
 
                 return true;
 
             }
         );
     }
-
+    /*
     protected function getDatatableItemOptions() {
+
         if ($this->request->hasQuery('block')) {
             return array(
                 'check'  => array(
@@ -57,4 +63,5 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider
             return parent::getDatatableItemOptions();
         }
     }
+    */
 }

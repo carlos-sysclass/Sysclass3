@@ -154,7 +154,7 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
             	//data-url="/module/roles/items/users"
 
             	this.select2Obj.select2("destroy");
-				this.select2Obj.data("url", "/module/roles/items/users/combo/" + JSON.stringify({
+				this.select2Obj.data("url", "/module/roles/datasource/users/combo/" + JSON.stringify({
 					role_id : this.model.get("id"),
 					exclude : true
 				}));
