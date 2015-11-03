@@ -16,7 +16,7 @@
 						{/if}
 					</a>
 				{else}
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-delay="1000" data-close-others="true">
 						<span>{translateToken value="Actions"}</span> <i class="icon-angle-down"></i>
 					</button>
 					<ul class="dropdown-menu pull-right" role="menu">

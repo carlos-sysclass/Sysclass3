@@ -22,7 +22,7 @@
 			{foreach $T_TOPBAR_MENU as $key => $item}
 				{if $item.type == "mega"}
 				<li class="dropdown mega-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
+					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-close-others="true">
 						{if $item.icon}
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
@@ -135,7 +135,7 @@
 					{/foreach}
     			{elseif $item.extended}
     			<li class="dropdown hidden-xs">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 			      		<i class="icon-{$item.icon}"></i>
 			      		<span class="badge">{$item.notif}</span>
 			      	</a>
@@ -183,7 +183,7 @@
 		      	</li>
 				{else}
 				<li class="dropdown hidden-xs">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 						{if $item.icon}
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
@@ -205,8 +205,7 @@
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
-		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-		         data-close-others="true">
+		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 		      <i class="icon-calendar"></i>
 		      <span class="badge">1</span>
 		      </a>
@@ -237,7 +236,7 @@
 		   <!-- BEGIN TODO DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_task_bar">
-		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+		      <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 		      <i class="icon-tasks"></i>
 		      <span class="badge">5</span>
 		      </a>
@@ -271,7 +270,7 @@
 		   <!-- END TODO DROPDOWN -->
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 			<li class="dropdown user">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 					<div class="avatar-img vertical-align">
 						<img alt="" src="{$T_CURRENT_USER.avatars[0].url}" />
 					</div>
