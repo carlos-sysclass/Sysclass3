@@ -376,18 +376,20 @@ abstract class SysclassModule extends BaseSysclassModule
     /**
      * [ add a description ]
      * 
-     * @Get("/items/me")
-     * @Get("/items/me/{type}")
-     * @Get("/items/me/{type}/{filter}")
+     * @Get("/items/{model}")
+     * @Get("/items/{model}/{type}")
+     * @Get("/items/{model}/{type}/{filter}")
      */
-    public function getItemsRequest($type, $filter)
+    public function getItemsRequest($model, $type, $filter)
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
             $currentUser    = $this->getCurrentUser(true);
 
-            $model_class = $this->model_info['class'];
+            $model_info = $this->model_info[$model];
+
+            $model_class = $model_info['class'];
             $itemModel = new $model_class();
             
             //$args = $this->getparamentrs();
@@ -419,7 +421,7 @@ abstract class SysclassModule extends BaseSysclassModule
              * @todo Get parameters to filter, if possibile, the info
              */
             $resultRS = call_user_func_array(
-                array($this->model_info['class'], $this->model_info['listMethod']), $args
+                array($model_info['class'], $model_info['listMethod']), $args
             );
 
             
@@ -438,8 +440,8 @@ abstract class SysclassModule extends BaseSysclassModule
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                     $items[$key] = call_user_func_array(
-                        array($item, $this->model_info['exportMethod'][0]),
-                        $this->model_info['exportMethod'][1]
+                        array($item, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
                     );
                     $items[$key]['options'] = array();
 
@@ -469,8 +471,8 @@ abstract class SysclassModule extends BaseSysclassModule
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                     $items[$key] = call_user_func_array(
-                        array($item, $this->model_info['exportMethod'][0]),
-                        $this->model_info['exportMethod'][1]
+                        array($item, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
                     );
                 }
                 
