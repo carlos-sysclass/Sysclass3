@@ -85,6 +85,7 @@ ftp-htaccess targets, for instance.
         <property name="tests.dir" value="${project.dir}\tests"/>
 
         <echo message="Assigning build directories to properties" level="debug"/>
+        <property name="build.lib.dir" value="${build.dir}/lib"/>
         <property name="build.api.dir" value="${build.dir}/api"/>
         <property name="build.codebrowser.dir" value="${build.dir}/code-browser"/>
         <property name="build.dist.dir" value="${build.dir}/dist"/>
@@ -182,6 +183,7 @@ ftp-htaccess targets, for instance.
         <echo message="Deleting build directories" level="debug"/>
         <delete dir="${build.api.dir}"/>
         <delete dir="${build.codebrowser.dir}"/>
+        <mkdir dir="${build.dist.dir}"/>
         <delete dir="${build.logs.dir}"/>
         <delete dir="${build.pdepend.dir}"/>
 
@@ -223,11 +225,27 @@ ftp-htaccess targets, for instance.
         <delete dir="${build.dist.temp.dir}"/>
     </target>
 
+    <target name="phploc" depends="init" description="Measure project size using PHPLOC">
+        <exec executable="phploc" logoutput="true" checkreturn="true" level="debug">
+            <arg value="--log-xml"/>
+            <arg value="${build.logs.dir}/phploc.xml"/>
+            <arg path="${src.dir}"/>
+        </exec>
+        <xslt file="${build.logs.dir}/phploc.xml" tofile="${build.dist.dir}/phploc.html" style="${build.lib.dir}/phploc/table.xslt" overwrite="true" />
+    </target>
+
     <target name="lint" depends="init" description="Check files for syntax errors">
         <phplint haltonfailure="true" cachefile="${build.logs.dir}/cachefile.txt">
             <fileset refid="php.files"/>
         </phplint>
     </target>
+
+
+
+
+
+
+
 
     <target name="phpunit" depends="init" description="Run unit tests">
         <!--<phpunit printsummary="true" haltonfailure="true" bootstrap="${tests.dir}\bootstrap.php">-->
@@ -237,14 +255,6 @@ ftp-htaccess targets, for instance.
                 <fileset refid="test.files"/>
             </batchtest>
         </phpunit>
-    </target>
-
-    <target name="phploc" depends="init" description="Measure project size using PHPLOC">
-        <exec executable="phploc" logoutput="true" checkreturn="true" level="debug">
-            <arg value="--log-csv"/>
-            <arg value="${build.logs.dir}/phploc.csv"/>
-            <arg path="${src.dir}"/>
-        </exec>
     </target>
 
     <target name="pdepend" depends="init" description="Calculate software metrics using PHP_Depend">
@@ -322,6 +332,9 @@ ftp-htaccess targets, for instance.
         </phpdoc2>
 
     </target>
+
+
+
 
     <target name="phpcb" depends="init" description="Aggregate tool output with PHP_CodeBrowser">
         <exec executable="phpcb" logoutput="true" checkreturn="true" level="debug">
