@@ -29,7 +29,7 @@
 						{foreach $notifications as $key => $notif}
 			           	<tr>
 							<td>
-								<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count}</strong></span>
+								<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count nofilter}</strong></span>
 								{$notif.text}
 							</td>
 							<td align="right">

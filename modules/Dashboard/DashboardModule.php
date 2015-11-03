@@ -89,6 +89,8 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 //'template'  => "translate-menu"
             );
 
+            //var_dump($menuItem);
+
             return $menuItem;
         }
         return false;
