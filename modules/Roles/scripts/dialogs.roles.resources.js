@@ -48,7 +48,7 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 					}
 				}.bind(this));
 
-				this.listenTo(table, "switchItem.datatables", function(data) {
+				this.listenTo(table, "switchItem.datatables", function(el, data, state) {
 					var resourceSwitchModelClass = Backbone.Model.extend({
 						urlRoot : "/module/roles/item/resources/toggle"
 					});

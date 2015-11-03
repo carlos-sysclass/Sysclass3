@@ -1,0 +1,30 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+blocks:
+  enroll.list.table:
+    context:
+      block_id: "enroll"
+      #ajax_source: "/module/enroll/items/me/datatable?block"
+      datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: course.name
+          label: Name
+
+        - mData: course.active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+models:
+  me: 
+    class: Sysclass\Models\Enrollments\Course
+    exportMethod: ["toFullArray", ["User", "Course"]]
+

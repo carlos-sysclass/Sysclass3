@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Enrollments;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Course extends Model
 {

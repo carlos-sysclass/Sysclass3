@@ -162,7 +162,7 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
 
 				this.tableView
 					.putVar('role_id', this.model.get("id"))
-					.setUrl("/module/roles/items/users/datatable/" + JSON.stringify({
+					.setUrl("/module/roles/datasource/users/datatable/" + JSON.stringify({
 						role_id : this.model.get("id")
 					}) + "?block");
 

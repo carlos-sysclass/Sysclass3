@@ -14,6 +14,7 @@ use Phalcon\DI,
  */
 class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer
 {
+    /*
     public function getSummary() {
 
         $user = $this->getCurrentUser(true);
@@ -23,17 +24,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             'type'  => 'success',
             'count' => '<i class="fa fa-mortar-board"></i>',
             'text'  => "ID : " . str_pad($user->id, 11, "0", STR_PAD_LEFT)
-            /*
-            'link'  => array(
-                'text'  => '35%',
-                'link'  => $this->getBasePath() . 'all'
-            )
-            */
         );
     }
+    */
+   
     /* ILinkable */
     public function getLinks() {
-        if ($this->acl->isUserAllowed(null, "Users", "View")) {
+        if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
 
             $total_itens = User::count("active = 1");
 
@@ -60,7 +57,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
                 $block_context = $self->getConfig("blocks\\users.list.table\context");
                 $self->putItem("users_block_context", $block_context);
-
 
                 $self->putSectionTemplate("users", "blocks/table");
 
@@ -228,6 +224,90 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     }
 
 
+
+    public function beforeModelCreate($evt, $model, $data) {
+        if (
+            array_key_exists('new-password', $data) &&
+            !empty($data['new-password'])
+        ) {
+            // CHECK PASSWORD
+            $di = DI::getDefault();
+
+            // DEFINE AUTHENTICATION BACKEND
+            $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+        }
+
+        if (is_null($userModel->backend)) {
+            $model->backend = strtolower($this->configuration->get("default_auth_backend"));
+        }
+
+        return true;
+    }
+
+    public function afterModelCreate($evt, $model, $data) {
+        if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+            foreach($data['usergroups'] as $group) {
+                $userGroup = new UsersGroups();
+                $userGroup->user_id = $model->id;
+                $userGroup->group_id = $group['id'];
+                $userGroup->save();
+            }
+        }
+
+        return true;
+    }
+
+
+    public function beforeModelUpdate($evt, $model, $data) {
+    }
+
+    protected function getDatatableItemOptions() {
+        if ($this->request->hasQuery('block')) {
+            return array(
+                /*
+                'check'  => array(
+                    'icon'  => 'icon-check',
+                    'link'  => $baseLink . 'block/%id$s',
+                    'class' => 'btn-sm btn-danger'
+                )
+                */
+                'check'  => array(
+                    //'icon'        => 'icon-check',
+                    //'link'        => $baseLink . "block/" . $item['id'],
+                    //'text'            => self::$t->translate('Disabled'),
+                    //'class'       => 'btn-sm btn-danger',
+                    'type'          => 'switch',
+                    //'state'           => 'disabled',
+                    'attrs'         => array(
+                        'data-on-color' => "success",
+                        'data-on-text' => self::$t->translate('YES'),
+                        'data-off-color' =>"danger",
+                        'data-off-text' => self::$t->translate('NO')
+                    )
+                )
+            );
+        } else {
+            return parent::getDatatableItemOptions();
+        }
+    }
+
+    protected function getDatatableSingleItemOptions($item) {
+        if (!$this->request->hasQuery('block') && $item->pending == 1) {
+            return array(
+                'aprove' => array(
+                    'icon'  => 'fa fa-lock',
+                    //'link'  => $baseLink . "block/" . $item['id'],
+                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-datatable-action' => "aprove",
+                        'data-original-title' => 'Aprove User'
+                    )
+                )
+            );
+        }
+        return false;
+    }
+
     /**
      * [ add a description ]
      *
@@ -297,41 +377,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     }
     */
    
-    public function beforeModelCreate($evt, $model, $data) {
-        if (
-            array_key_exists('new-password', $data) &&
-            !empty($data['new-password'])
-        ) {
-            // CHECK PASSWORD
-            $di = DI::getDefault();
 
-            // DEFINE AUTHENTICATION BACKEND
-            $model->password = $this->authentication->hashPassword($data['new-password'], $model);
-        }
-
-        if (is_null($userModel->backend)) {
-            $model->backend = strtolower($this->configuration->get("default_auth_backend"));
-        }
-
-        return true;
-    }
-
-    public function afterModelCreate($evt, $model, $data) {
-        if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
-            foreach($data['usergroups'] as $group) {
-                $userGroup = new UsersGroups();
-                $userGroup->user_id = $model->id;
-                $userGroup->group_id = $group['id'];
-                $userGroup->save();
-            }
-        }
-
-        return true;
-    }
-
-
-    public function beforeModelUpdate($evt, $model, $data) {
-    }
     /*
     public function beforeModelDelete($evt, $model) {
     }
@@ -581,52 +627,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         return array_values($items);
     }
     */
-    protected function getDatatableItemOptions() {
-        // TODO: THINK ABOUT MOVING THIS TO config.yml
-        if ($this->request->hasQuery('block')) {
-            return array(
-                /*
-                'check'  => array(
-                    'icon'  => 'icon-check',
-                    'link'  => $baseLink . 'block/%id$s',
-                    'class' => 'btn-sm btn-danger'
-                )
-                */
-                'check'  => array(
-                    //'icon'        => 'icon-check',
-                    //'link'        => $baseLink . "block/" . $item['id'],
-                    //'text'            => self::$t->translate('Disabled'),
-                    //'class'       => 'btn-sm btn-danger',
-                    'type'          => 'switch',
-                    //'state'           => 'disabled',
-                    'attrs'         => array(
-                        'data-on-color' => "success",
-                        'data-on-text' => self::$t->translate('YES'),
-                        'data-off-color' =>"danger",
-                        'data-off-text' => self::$t->translate('NO')
-                    )
-                )
-            );
-        }
-    }
-
-    protected function getDatatableSingleItemOptions($item) {
-        if (!$this->request->hasQuery('block') && $item->pending == 1) {
-            return array(
-                'aprove' => array(
-                    'icon'  => 'fa fa-lock',
-                    //'link'  => $baseLink . "block/" . $item['id'],
-                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
-                    'attrs' => array(
-                        'data-datatable-action' => "aprove",
-                        'data-original-title' => 'Aprove User'
-                    )
-                )
-            );
-        }
-        return false;
-    }
-
 
 	/**
 	 * [ add a description ]
