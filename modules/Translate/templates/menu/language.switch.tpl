@@ -3,7 +3,7 @@
 <li class="mega-menu-dropdown dropdown language">
     {foreach $item.items as $subitem}
         {if $item.type == 'language' && isset($subitem.selected) && $subitem.selected}
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true" aria-expanded="true">
                 <img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/>
                 <span class="username">
                      {$subitem.country_code|@strtoupper}
