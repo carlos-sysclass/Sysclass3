@@ -47,7 +47,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             $languageRS = Language::find();
 
 
-            $userLanguageCode =  self::$t->getSource();
+            $userLanguageCode =  $this->translate->getSource();
             $items = array();
 
             foreach($languageRS as $key => $value) {
@@ -59,7 +59,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
 
             $items[] = array(
                 'link'  => $this->getBasePath() . "view/token",
-                'text'  => self::$t->translate("Review translation")
+                'text'  => $this->translate->translate("Review translation")
             );
 
             $this->putSectionTemplate("translate-menu", "menu/language.switch");
@@ -69,7 +69,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'notif'     => count($items),
                 'link'  => array(
                     'link'  => $this->getBasePath() . "change",
-                    'text'  => self::$t->translate('Languages')
+                    'text'  => $this->translate->translate('Languages')
                 ),
                 'type'      => 'language',
                 'items'     => $items,
@@ -91,7 +91,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'administration' => array(
                     array(
                         'count' => count($data),
-                        'text'  => self::$t->translate('Languages'),
+                        'text'  => $this->translate->translate('Languages'),
                         'icon'  => 'fa fa-language',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -106,31 +106,31 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'icon-globe',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Languages")
+                'text'  => $this->translate->translate("Languages")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text' => self::$t->translate("View"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text' => self::$t->translate("New Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("New Language"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text' => self::$t->translate("Edit Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("Edit Language"));
                 break;
             }
             case "view/token" : {
-                $breadcrumbs[] = array('text' => self::$t->translate("View Translations"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("View Translations"));
             }
         }
         return $breadcrumbs;
@@ -143,7 +143,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         $actions = array(
             'view'  => array(
                 array(
-                    'text'  => self::$t->translate('Add Language'),
+                    'text'  => $this->translate->translate('Add Language'),
                     'link'  => $this->getBasePath() . "add",
                     'icon'  => 'icon-plus'
                 ),
@@ -151,14 +151,14 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                     'separator' => true
                 ),
                 array(
-                    'text'  => self::$t->translate("Review translation"),
+                    'text'  => $this->translate->translate("Review translation"),
                     'link'  => $this->getBasePath() . "view/token",
                     'icon'  => 'icon-reorder'
                 )
             ),
             'view/token'  => array(
                 array(
-                    'text'  => self::$t->translate('Add Language'),
+                    'text'  => $this->translate->translate('Add Language'),
                     'link'  => $this->getBasePath() . "add",
                     'class' => 'btn-primary',
                     'icon'  => 'icon-plus'
@@ -198,7 +198,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
      */
     public function changeLanguageAction($language_code)
     {
-        if (self::$t->setUserLanguageCode($language_code)) {
+        if ($this->translate->setUserLanguageCode($language_code)) {
             // REDIRECT USER BY JAVASCRIPT.
             return $this->createRedirectResponse(null);
         }
@@ -217,8 +217,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
 
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Languages'));
-            $this->putItem("page_subtitle", self::$t->translate('View system languages'));
+            $this->putItem("page_title", $this->translate->translate('Languages'));
+            $this->putItem("page_subtitle", $this->translate->translate('View system languages'));
 
             $this->putComponent("select2");
             $this->putComponent("data-tables");
@@ -227,13 +227,13 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             $this->putModuleScript("views.translate.view");
             $this->putBlock("translate.edit.dialog");
 
-            $languages = self::$t->getItems();
+            $languages = $this->translate->getItems();
 
             $this->putItem("languages", $languages);
 
             $this->putData(array(
-                'user_language'     => self::$t->getUserLanguageCode(),
-                'system_language'   => self::$t->getSystemLanguageCode()
+                'user_language'     => $this->translate->getUserLanguageCode(),
+                'system_language'   => $this->translate->getSystemLanguageCode()
             ));
 
             $this->display("view.tpl");
@@ -262,8 +262,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         $this->putModuleScript("models.translate");
         $this->putModuleScript("views.translate.add");
 
-        $this->putItem("page_title", self::$t->translate('Languages'));
-        $this->putItem("page_subtitle", self::$t->translate('View system languages'));
+        $this->putItem("page_title", $this->translate->translate('Languages'));
+        $this->putItem("page_subtitle", $this->translate->translate('View system languages'));
 
         //return array_values($news);
         $this->display("form.tpl");
@@ -297,8 +297,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         $this->putModuleScript("models.translate");
         $this->putModuleScript("views.translate.edit", array('id' => $id));
 
-        $this->putItem("page_title", self::$t->translate('Languages'));
-        $this->putItem("page_subtitle", self::$t->translate('View system languages'));
+        $this->putItem("page_title", $this->translate->translate('Languages'));
+        $this->putItem("page_subtitle", $this->translate->translate('View system languages'));
 
         $this->putItem("form_action", $_SERVER['REQUEST_URI']);
         //$this->putItem("entity", $editItem);
@@ -334,12 +334,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Language saved with success"),
+                    $this->translate->translate("Language saved with success"),
                     "success"
                 );
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("It was not possible to complete your request. Invalid data."), "error");
+                return $this->invalidRequestError($this->translate->translate("It was not possible to complete your request. Invalid data."), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -358,11 +358,11 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
 
             $itemModel = $this->model("translate");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Language updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Language updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("It was not possible to complete your request. Invalid data."), "error");
+                return $this->invalidRequestError($this->translate->translate("It was not possible to complete your request. Invalid data."), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -382,8 +382,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
 
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", self::$t->translate('Translations'));
-            $this->putItem("page_subtitle", self::$t->translate('Review translated terms'));
+            $this->putItem("page_title", $this->translate->translate('Translations'));
+            $this->putItem("page_subtitle", $this->translate->translate('Review translated terms'));
 
             //$this->putComponent("bootbox");
 
@@ -396,13 +396,13 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             $this->putModuleScript("views.translate.view.token");
             $this->putBlock("translate.edit.dialog");
 
-            $languages = self::$t->getItems();
+            $languages = $this->translate->getItems();
 
             $this->putItem("languages", $languages);
 
             $this->putData(array(
-                'user_language'     => self::$t->getUserLanguageCode(),
-                'system_language'   => self::$t->getSystemLanguageCode()
+                'user_language'     => $this->translate->getUserLanguageCode(),
+                'system_language'   => $this->translate->getSystemLanguageCode()
             ));
 
             $this->display("view.token.tpl");
@@ -433,7 +433,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         }
 
         $tokens = array();
-        $systemLang = self::$t->getSystemLanguageCode();
+        $systemLang = $this->translate->getSystemLanguageCode();
         //echo "<pre>";
         foreach($files as $file) {
             $matches = array();
@@ -543,7 +543,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 $translateTokensModel->addToken($data, $force);
 
             }
-            $response = $this->createAdviseResponse(self::$t->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
 
             $response['data'] = $translatedTerms;
             return $response;
@@ -567,7 +567,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             //var_dump($data);
             $this->model("translate/tokens")->addToken($data, true);
 
-            return $this->createAdviseResponse(self::$t->translate("Translation saved!"), "success");
+            return $this->createAdviseResponse($this->translate->translate("Translation saved!"), "success");
 
         }
         return $this->invalidRequestError();

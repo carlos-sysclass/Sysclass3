@@ -263,7 +263,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 if ($_GET['redirect'] == 0) {
                     if ($messages['success']) {
-                        $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                        $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                     } else {
                         $response = array();
                     }
@@ -273,13 +273,13 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 } else {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate($messages['success']),
+                        $this->translate->translate($messages['success']),
                         "success"
                     );
                 }
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -334,7 +334,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
 
             if ($itemModel->setItem($data, $identifier) !== FALSE) {
                 if ($messages['success']) {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 } else {
                     $response = array();
                 }
@@ -343,7 +343,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -385,11 +385,11 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             }
 
             if ($itemModel->deleteItem($identifier) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -416,7 +416,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 return array_merge(
                     $data,
                     $this->createAdviseResponse(
-                        self::$t->translate("Season created with success"),
+                        $this->translate->translate("Season created with success"),
                         "success"
                     )
                 );
@@ -448,11 +448,11 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("Class added to course with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Class added to course with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("Class removed from course with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("Class removed from course with success"), "error");
         }
         return array_merge($response, $info);
     }
@@ -502,9 +502,9 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->setOrder($course_id, $data['position'], $data['period_id'])) {
-                return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
             } else {
-                return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+                return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
             }
         } else {
             return $this->notAuthenticatedError();

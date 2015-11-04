@@ -28,7 +28,11 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
             /**
              * @todo Get the data fomr system settings (NOT FROM dashboard setting)
              */
-            $modulesOrder = array("institution", "translate", "areas", "courses", "classes", "lessons", "tests", "questions", "grades", "users", "groups", "roles", "advertising", "calendar");
+            $modulesOrder = 
+                array("Settings", "Institution", "Translate", "Areas", "Courses", "Classes", "Lessons", "Tests", "Questions", "Grades", "Users", "Groups", "Roles", "Advertising", "Calendar");
+
+            $modulesOrder = array_unique(array_merge($modulesOrder, $modulesKeys));
+
 
             $links = array();
 
@@ -43,17 +47,17 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 unset($modulesKeys[$module_id]);
             }
             
-//["administration", "content", "users", "communication", "not_classified"]
+            //["administration", "content", "users", "communication", "not_classified"]
             //var_dump($links);
             //exit;
             //$links = $this->sortModules("dashboard.linkable.groups.order", $links, "not_classified");
 
             $groupLabels = array(
-                "content"           => self::$t->translate('Content'),
-                "administration"    => self::$t->translate('Administation'),
-                "communication"     => self::$t->translate('Communication'),
-                "users"             => self::$t->translate('Users'),
-                "not_classified"    => self::$t->translate('Not Classified')
+                "content"           => $this->translate->translate('Content'),
+                "administration"    => $this->translate->translate('Administation'),
+                "communication"     => $this->translate->translate('Communication'),
+                "users"             => $this->translate->translate('Users'),
+                "not_classified"    => $this->translate->translate('Not Classified')
             );
 
             foreach($links as $groupKey => $item) {
@@ -72,17 +76,17 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 foreach($dashboards as $dashboard) {
                     $items[] = array(
                         'link'  => "/dashboard/" . $dashboard,
-                        'text'  => self::$t->translate(ucfirst($dashboard))
+                        'text'  => $this->translate->translate(ucfirst($dashboard))
                     );
                 }
 
-                $links[self::$t->translate('Environment')] = $items;
+                $links[$this->translate->translate('Environment')] = $items;
             }
 
             $menuItem = array(
                 'icon'      => 'fa fa-bars',
                 //'notif'     => count($items),
-                'text'      => self::$t->translate('Menu'),
+                'text'      => $this->translate->translate('Menu'),
                 'type'      => 'mega',
                 'items'     => $links,
                 'extended'  => false
@@ -102,13 +106,17 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
             $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
 
             $groupLabels = array(
-                "content"           => self::$t->translate('Content'),
-                "administration"    => self::$t->translate('Administation'),
-                "communication"     => self::$t->translate('Communication'),
-                "users"             => self::$t->translate('Users'),
-                "not_classified"    => self::$t->translate('Not Classified')
+                "content"           => $this->translate->translate('Content'),
+                "administration"    => $this->translate->translate('Administation'),
+                "communication"     => $this->translate->translate('Communication'),
+                "users"             => $this->translate->translate('Users'),
+                "not_classified"    => $this->translate->translate('Not Classified')
             );
-            $modulesOrder = $this->getResource('dashboard.linkable.order');
+
+            $modulesOrder = 
+                array("Settings", "Institution", "Translate", "Areas", "Courses", "Classes", "Lessons", "Tests", "Questions", "Grades", "Users", "Groups", "Roles", "Advertising", "Calendar");
+
+            $modulesOrder = array_unique(array_merge($modulesOrder, $modulesKeys));
 
             $links = array();
             foreach($modulesOrder as $module_id) {
@@ -122,13 +130,13 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 unset($modulesKeys[$module_id]);
             }
 
-            $links = $this->sortModules("dashboard.linkable.groups.order", $links, "not_classified");
+            //$links = $this->sortModules("dashboard.linkable.groups.order", $links, "not_classified");
 
             foreach($links as $group_id => $group) {
                 if (array_key_exists($group_id, $groupLabels)) {
                     $groups[$group_id] = $groupLabels[$group_id];
                 } else {
-                    $groups[$group_id] = self::$t->translate($group_id);
+                    $groups[$group_id] = $this->translate->translate($group_id);
                 }
             }
 

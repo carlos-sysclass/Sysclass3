@@ -10,8 +10,8 @@ class ErrorController extends AbstractSysclassController
 
 		$this->putItem("error", "401");
 		$this->putItem("error_class", "404");
-		$this->putItem("error_title", self::$t->translate('Oops!  You can\'t access this resource.'));
-		$this->putItem("error_message", self::$t->translate('You might want to try to...'));
+		$this->putItem("error_title", $this->translate->translate('Oops!  You can\'t access this resource.'));
+		$this->putItem("error_message", $this->translate->translate('You might want to try to...'));
 
 		parent::display('pages/error/main.tpl');
 	}
@@ -35,8 +35,8 @@ class ErrorController extends AbstractSysclassController
 
 		$this->putItem("error", "500");
 		$this->putItem("error_class", "500");
-		$this->putItem("error_title", self::$t->translate('Oops! But the system halted!'));
-		$this->putItem("error_message", self::$t->translate('We can not find the page you\'re looking for.'));
+		$this->putItem("error_title", $this->translate->translate('Oops! But the system halted!'));
+		$this->putItem("error_message", $this->translate->translate('We can not find the page you\'re looking for.'));
 
 		parent::display('pages/error/main.tpl');
 	}
@@ -48,8 +48,8 @@ class ErrorController extends AbstractSysclassController
 
 		$this->putItem("error", "503");
 		$this->putItem("error_class", "500");
-		$this->putItem("error_title", self::$t->translate('Oops!  Under Development.'));
-		$this->putItem("error_message", self::$t->translate('We can not find the page you\'re looking for.'));
+		$this->putItem("error_title", $this->translate->translate('Oops!  Under Development.'));
+		$this->putItem("error_message", $this->translate->translate('We can not find the page you\'re looking for.'));
 
 		parent::display('pages/error/main.tpl');
 	}

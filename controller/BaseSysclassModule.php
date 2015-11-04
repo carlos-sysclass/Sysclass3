@@ -157,7 +157,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->putItem("module_id", $this->module_id);
 
         foreach($config['variables'] as $name => $value) {
-            $this->putItem($name, self::$t->translate($value));
+            $this->putItem($name, $this->translate->translate($value));
         }
 
         $this->putItem("module_context_name", $page);
@@ -174,7 +174,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         }
         $config = $this->getConfig("crud\\routes\\" . $override_route);
 
-        if ($config === FALSE) {
+        if ($config === FALSE || is_null($config)) {
             return false;
         }
 

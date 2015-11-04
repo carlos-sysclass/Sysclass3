@@ -24,9 +24,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         return array(
             'type'  => 'primary',
             'count' => $data[0],
-            'text'  => self::$t->translate('Scheduled Tests'),
+            'text'  => $this->translate->translate('Scheduled Tests'),
             'link'  => array(
-                'text'  => self::$t->translate('View'),
+                'text'  => $this->translate->translate('View'),
                 'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
             )
         );
@@ -45,7 +45,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 'content' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Tests'),
+                        'text'  => $this->translate->translate('Tests'),
                         'icon'  => 'fa fa-list-ol ',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -66,32 +66,32 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 array(
                     'icon'  => 'fa fa-home',
                     'link'  => $this->getSystemUrl('home'),
-                    'text'  => self::$t->translate("Home")
+                    'text'  => $this->translate->translate("Home")
                 ),
                 array(
                     'icon'  => 'icon-bookmark',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Tests")
+                    'text'  => $this->translate->translate("Tests")
                 )
             );
 
             switch($request) {
                 case "view" : {
-                    $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                     break;
                 }
                 case "add" : {
-                    $breadcrumbs[] = array('text'   => self::$t->translate("New Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("New Test"));
                     break;
                 }
                 case "edit/:identifier" : {
-                    $breadcrumbs[] = array('text'   => self::$t->translate("Edit Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
                     break;
                 }
                 case "execute/:identifier/:execution_id" : {
                     // TODO A WAY TO INJECT DATA INTO BREADCRUMB FROM HERE (string substitution FROM variables in the route)
-                    $breadcrumbs[] = array('text'   => self::$t->translate("Edit Test"));
-                    $breadcrumbs[] = array('text'   => self::$t->translate("View Execution"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("View Execution"));
                     break;
                 }
             }
@@ -106,7 +106,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Test'),
+                    'text'      => $this->translate->translate('New Test'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -356,7 +356,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             } else {
                 $this->redirect(
                     '/module/tests/open/' . $identifier,
-                    self::$t->translate("You can not run this test more often"),
+                    $this->translate->translate("You can not run this test more often"),
                     "warning"
                 );
                 //$this->openPage();
@@ -502,7 +502,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $data['language_code'] = self::$t->getUserLanguageCode();
+                $data['language_code'] = $this->translate->getUserLanguageCode();
 
                 $_GET['redirect'] = "0";
             } elseif ($model == "execution") {
@@ -527,9 +527,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] === "0") {
                     if ($advise) {
-                        $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                        $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                     } else {
-                        $response = $this->createNonAdviseResponse(self::$t->translate($messages['success']), "success");
+                        $response = $this->createNonAdviseResponse($this->translate->translate($messages['success']), "success");
                     }
 
                     $data = $itemModel->getItem($data['id']);
@@ -538,7 +538,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 } else {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate($messages['success']),
+                        $this->translate->translate($messages['success']),
                         "success"
                     );
                 }
@@ -546,7 +546,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 if ($model == "execution") {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "open/" . $data['test_id'],
-                        self::$t->translate($messages['try_limit']),
+                        $this->translate->translate($messages['try_limit']),
                         "warning"
                     );
                 }
@@ -604,21 +604,21 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 if ($model == "execution" && $data['complete'] == 1) {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
-                        self::$t->translate("Test completed with success"),
+                        $this->translate->translate("Test completed with success"),
                         "success"
                     );
                 }
                if ($advise) {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 } else {
-                    $response = $this->createNonAdviseResponse(self::$t->translate($messages['success']), "success");
+                    $response = $this->createNonAdviseResponse($this->translate->translate($messages['success']), "success");
                 }
 
                 $data = $itemModel->getItem($identifier);
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -652,11 +652,11 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->deleteItem($identifier) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -873,7 +873,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                 $executionModel->calculateUserScore($execution_id);
 
                 $response = $this->createAdviseResponse(
-                    self::$t->translate("Score recalculated with sucess"),
+                    $this->translate->translate("Score recalculated with sucess"),
                     "success"
                 );
 
@@ -918,9 +918,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
         $data = $this->getHttpData(func_get_args());
 
         if ($itemsCollection->setOrder($lesson_id, $data['position'])) {
-            return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
         } else {
-            return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
 

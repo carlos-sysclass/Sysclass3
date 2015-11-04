@@ -27,7 +27,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 				'news.latest' => array(
 					'type'      => 'news', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
 					'id'        => 'news-widget',
-					'title'     => self::$t->translate('Announcements'),
+					'title'     => $this->translate->translate('Announcements'),
 					'template'  => $this->template("news.widget"),
 					'icon'      => 'bell',
 					'box'       => 'dark-blue tabbable',
@@ -50,9 +50,9 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 		return array(
 			'type'  => 'primary',
 			'count' => count($data),
-			'text'  => self::$t->translate('Announcements'),
+			'text'  => $this->translate->translate('Announcements'),
 			'link'  => array(
-				'text'  => self::$t->translate('View'),
+				'text'  => $this->translate->translate('View'),
 				'link'  => $this->getBasePath() . 'view'
 			)
 		);
@@ -88,14 +88,14 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
             $menuItem = array(
                 'icon'      => 'bell',
                 'notif'     => $total,
-                'text'      => self::$t->translate('You have %s Announcements', $total),
+                'text'      => $this->translate->translate('You have %s Announcements', $total),
                 'external'  => array(
                     'link'  => $this->getBasePath(),
-                    'text'  => self::$t->translate('See my statement')
+                    'text'  => $this->translate->translate('See my statement')
                 ),
                 'link'  => array(
                     'link'  => $this->getBasePath(),
-                    'text'  => self::$t->translate('News')
+                    'text'  => $this->translate->translate('News')
                 ),
                 'type'      => 'notification',
                 'items'     => $items,
@@ -115,7 +115,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 				'communication' => array(
 					array(
 						'count' => count($data),
-						'text'  => self::$t->translate('Announcements'),
+						'text'  => $this->translate->translate('Announcements'),
 						'icon'  => 'icon-bell',
 						'link'  => $this->getBasePath() . 'view'
 					)
@@ -130,27 +130,27 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			array(
 				'icon'	=> 'icon-home',
 				'link'	=> $this->getSystemUrl('home'),
-				'text'	=> self::$t->translate("Home")
+				'text'	=> $this->translate->translate("Home")
 			),
 			array(
 				'icon'	=> 'icon-bell',
 				'link'	=> $this->getBasePath() . "view",
-				'text'	=> self::$t->translate("Announcements")
+				'text'	=> $this->translate->translate("Announcements")
 			)
 		);
 
 		$request = $this->getMatchedUrl();
 		switch($request) {
 			case "view" : {
-				$breadcrumbs[] = array('text'	=> self::$t->translate("View"));
+				$breadcrumbs[] = array('text'	=> $this->translate->translate("View"));
 				break;
 			}
 			case "add" : {
-				$breadcrumbs[] = array('text'	=> self::$t->translate("New Annoucement"));
+				$breadcrumbs[] = array('text'	=> $this->translate->translate("New Annoucement"));
 				break;
 			}
 			case "edit/:id" : {
-				$breadcrumbs[] = array('text'	=> self::$t->translate("Edit Annoucement"));
+				$breadcrumbs[] = array('text'	=> $this->translate->translate("Edit Annoucement"));
 				break;
 			}
 		}
@@ -164,7 +164,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 		$actions = array(
 			'view'	=> array(
 				array(
-					'text'      => self::$t->translate('New Annoucement'),
+					'text'      => $this->translate->translate('New Annoucement'),
 					'link'      => $this->getBasePath() . "add",
 					'class'		=> "btn-primary",
 					'icon'      => 'icon-plus'
@@ -211,7 +211,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
 				return $this->createRedirectResponse(
 					$this->getBasePath() . "edit/" . $data['id'],
-					self::$t->translate("News saved with success"),
+					$this->translate->translate("News saved with success"),
 					"success"
 				);
 			} else {
@@ -234,7 +234,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 
 			$itemModel = $this->model("news");
 			if ($itemModel->setItem($data, $id) !== FALSE) {
-				$response = $this->createAdviseResponse(self::$t->translate("News updated with success"), "success");
+				$response = $this->createAdviseResponse($this->translate->translate("News updated with success"), "success");
 				return array_merge($response, $data);
 			} else {
 				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -257,7 +257,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 
 			$itemModel = $this->model("news");
 			if ($itemModel->deleteItem($id) !== FALSE) {
-				$response = $this->createAdviseResponse(self::$t->translate("News removed with success"), "success");
+				$response = $this->createAdviseResponse($this->translate->translate("News removed with success"), "success");
 				return $response;
 			} else {
 				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

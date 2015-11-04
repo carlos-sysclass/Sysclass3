@@ -18,9 +18,9 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         return array(
             'type'  => 'primary',
             'count' => $data[0],
-            'text'  => self::$t->translate('Questions Answered'),
+            'text'  => $this->translate->translate('Questions Answered'),
             'link'  => array(
-                'text'  => self::$t->translate('View'),
+                'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . 'all'
             )
         );
@@ -39,7 +39,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         		'tutoria.widget' => array(
                     'type'      => 'tutoria', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                     'id'        => 'tutoria-widget',
-       				'title' 	=> self::$t->translate('Questions & Answers'),
+       				'title' 	=> $this->translate->translate('Questions & Answers'),
        				'template'	=> $this->template("tutoria.widget"),
                     'icon'      => 'book',
                     'box'       => 'dark-blue tabbable',
@@ -65,7 +65,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
                 'communication' => array(
                     array(
                         'count' => count($itemsData),
-                        'text'  => self::$t->translate('Tutoria'),
+                        'text'  => $this->translate->translate('Tutoria'),
                         'icon'  => 'fa fa-book ',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -80,27 +80,27 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-book',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Tutoria")
+                'text'  => $this->translate->translate("Tutoria")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Tutoria"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Tutoria"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Tutoria"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Tutoria"));
                 break;
             }
         }
@@ -114,7 +114,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Tutoria'),
+                    'text'      => $this->translate->translate('New Tutoria'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -173,19 +173,19 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
                 if ($redirect) {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate("Your question has been successfully registered!"),
+                        $this->translate->translate("Your question has been successfully registered!"),
                         "success"
                     );
                 } else {
                     $modelData = $itemModel->getItem($data['id']);
                     $data = array_merge($data, $modelData);
 
-                    $response = $this->createAdviseResponse(self::$t->translate("Your question has been successfully registered!"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Your question has been successfully registered!"), "success");
                     return array_merge($response, $data);
 
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate("Your question has been successfully registered!"),
+                        $this->translate->translate("Your question has been successfully registered!"),
                         "success"
                     );
 
@@ -222,11 +222,11 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
                 $modelData = $this->model($modelRoute)->getItem($id);
                 $data = array_merge($data, $modelData);
 
-                $response = $this->createAdviseResponse(self::$t->translate("Item updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -245,11 +245,11 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
 
             $itemModel = $this->model($this->_modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Item removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -483,7 +483,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
             if ($status) {
                 return $this->createResponse(200, '', "success", "advise");
             } else {
-                return $this->createResponse(200, self::$t->translate("An error ocurred when trying to register your question!"), "danger", "advise");
+                return $this->createResponse(200, $this->translate->translate("An error ocurred when trying to register your question!"), "danger", "advise");
             }
         }
     }

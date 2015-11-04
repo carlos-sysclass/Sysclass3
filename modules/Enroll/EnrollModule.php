@@ -47,15 +47,15 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider
                 'check'  => array(
                     //'icon'        => 'icon-check',
                     //'link'        => $baseLink . "block/" . $item['id'],
-                    //'text'            => self::$t->translate('Disabled'),
+                    //'text'            => $this->translate->translate('Disabled'),
                     //'class'       => 'btn-sm btn-danger',
                     'type'          => 'switch',
                     //'state'           => 'disabled',
                     'attrs'         => array(
                         'data-on-color' => "success",
-                        'data-on-text' => self::$t->translate('YES'),
+                        'data-on-text' => $this->translate->translate('YES'),
                         'data-off-color' =>"danger",
-                        'data-off-text' => self::$t->translate('NO')
+                        'data-off-text' => $this->translate->translate('NO')
                     )
                 )
             );

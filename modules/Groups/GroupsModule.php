@@ -28,7 +28,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 'users' => array(
                     array(
                         'count' => count($groupItems),
-                        'text'  => self::$t->translate('Groups'),
+                        'text'  => $this->translate->translate('Groups'),
                         'icon'  => 'fa fa-users',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -43,7 +43,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -53,27 +53,27 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Groups")
+                    'text'  => $this->translate->translate("Users Groups")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Groups")
+                    'text'  => $this->translate->translate("Users Groups")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Group"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Group"));
                 break;
             }
             case "edit/:id" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Groups")
+                    'text'  => $this->translate->translate("Users Groups")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Group"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Group"));
                 break;
             }
         }
@@ -87,7 +87,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Group'),
+                    'text'      => $this->translate->translate('New Group'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -130,11 +130,11 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
         }
         return array_merge($response, $info);
     }
@@ -169,7 +169,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Group created with success"),
+                    $this->translate->translate("Group created with success"),
                     "success"
                 );
             } else {
@@ -195,11 +195,11 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Group updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -220,7 +220,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
             $itemModel = $this->model("user/groups/item");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Group removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

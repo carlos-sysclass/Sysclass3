@@ -67,7 +67,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
                 'administration' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Organization'),
+                        'text'  => $this->translate->translate('Organization'),
                         'icon'  => 'fa fa-university',
                         'link'  => $this->getBasePath() . 'edit/1'
                     )
@@ -81,27 +81,27 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-university',
                 'link'  => $this->getBasePath() . "edit/1",
-                'text'  => self::$t->translate("Organizations")
+                'text'  => $this->translate->translate("Organizations")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Organization"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Organization"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Organization"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Organization"));
                 break;
             }
         }
@@ -131,7 +131,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
      */
     public function addItemRequest($id)
     {
-        return $this->invalidRequestError(self::$t->translate("There's no multi-organization support yet!"), "error");
+        return $this->invalidRequestError($this->translate->translate("There's no multi-organization support yet!"), "error");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -153,7 +153,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Institution created with success"),
+                    $this->translate->translate("Institution created with success"),
                     "success"
                 );
             } else {
@@ -183,7 +183,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             }
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Organization updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Organization updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -202,7 +202,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
      */
     public function deleteItemRequest($id)
     {
-        return $this->invalidRequestError(self::$t->translate("You can't delete the last institution in the system!"), "error");
+        return $this->invalidRequestError($this->translate->translate("You can't delete the last institution in the system!"), "error");
 
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -210,7 +210,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             $itemModel = $this->model("institution");
             // TODO Create some  way to make check if this entity can be removed!
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Institution removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Institution removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

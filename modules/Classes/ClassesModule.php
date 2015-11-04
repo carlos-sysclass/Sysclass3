@@ -28,7 +28,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 'content' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Classes'),
+                        'text'  => $this->translate->translate('Classes'),
                         'icon'  => 'fa fa-folder',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -43,27 +43,27 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'icon-bookmark',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Classes")
+                'text'  => $this->translate->translate("Classes")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Class"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Class"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Class"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Class"));
                 break;
             }
         }
@@ -77,7 +77,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Class'),
+                    'text'      => $this->translate->translate('New Class'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -188,7 +188,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Class created with success"),
+                    $this->translate->translate("Class created with success"),
                     "success"
                 );
             } else {
@@ -213,11 +213,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $itemModel = $this->model("classes");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Class updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Class updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -237,11 +237,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $itemModel = $this->model("courses/classes/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Class removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Class removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -324,9 +324,9 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $data = $this->getHttpData(func_get_args());
 
         if ($itemsCollection->setOrder($class_id, $data['position'])) {
-            return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
         } else {
-            return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
 

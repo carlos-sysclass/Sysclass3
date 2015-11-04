@@ -29,7 +29,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'users' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Roles'),
+                        'text'  => $this->translate->translate('Roles'),
                         'icon'  => 'icon-group',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -44,7 +44,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -54,7 +54,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Roles")
+                    'text'  => $this->translate->translate("Roles")
                 );
                 return $breadcrumbs;
                 break;
@@ -63,11 +63,11 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Roles")
+                    'text'  => $this->translate->translate("Roles")
                 );
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-lock',
-                    'text'   => self::$t->translate("View Resources")
+                    'text'   => $this->translate->translate("View Resources")
                 );
                 return $breadcrumbs;
                 break;
@@ -82,7 +82,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Role'),
+                    'text'      => $this->translate->translate('New Role'),
                     'link'      => "javascript:void(0)",
                     'class'     => "btn-primary dialog-create-role-open-action",
                     'icon'      => 'icon-plus'
@@ -184,7 +184,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /*
     public function addPage($id)
     {
-        $languages = self::$t->getItems();
+        $languages = $this->translate->getItems();
         $this->putitem("languages", $languages);
 
 
@@ -200,7 +200,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /*
     public function editPage($id)
     {
-        $languages = self::$t->getItems();
+        $languages = $this->translate->getItems();
         $this->putitem("languages", $languages);
 
         $groups =  $this->model("users/groups/collection")->addFilter(array(
@@ -276,11 +276,11 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
             if ($userModel->save()) {
                 return $this->createAdviseResponse(
-                    self::$t->translate("Role created with success"),
+                    $this->translate->translate("Role created with success"),
                     "success"
                 );
             } else {
-                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 return array_merge($response, $userModel->toFullArray());
             }
         } else {
@@ -307,11 +307,11 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             $itemModel->assign($data);
 
             if ($itemModel->save()) {
-                $response = $this->createAdviseResponse(self::$t->translate("Role updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Role updated with success"), "success");
 
                 return array_merge($response, $itemModel->toArray());
             } else {
-                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "error");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "error");
                 return array_merge($response, $itemModel->toArray());
             }
         } else {
@@ -332,7 +332,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             $itemModel = AclRole::findFirstById($id);
 
             if ($itemModel->delete() !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Role removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Role removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -465,13 +465,13 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("Role added to resource with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Role added to resource with success"), "success");
 
         } else {
             $roleResources->getFirst()->delete();
 
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("Role removed from resource with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("Role removed from resource with success"), "error");
         }
         return array_merge($response, $info);
     }
@@ -490,7 +490,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->save() !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("User Included with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User Included with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -515,7 +515,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->delete() !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("User removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -541,7 +541,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->save() !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Group Included with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group Included with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -565,7 +565,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->delete() !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Group removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -711,7 +711,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     );
                 }
                 $results[] = array(
-                    'text'  => self::$t->translate("Users"),
+                    'text'  => $this->translate->translate("Users"),
                     'children'  => $usersItems
                 );
             }
@@ -724,7 +724,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     );
                 }
                 $results[] = array(
-                    'text'  => self::$t->translate("Groups"),
+                    'text'  => $this->translate->translate("Groups"),
                     'children'  => $groupItems
                 );
             }

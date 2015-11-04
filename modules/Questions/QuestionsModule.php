@@ -32,7 +32,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 'content' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Questions'),
+                        'text'  => $this->translate->translate('Questions'),
                         'icon'  => 'fa fa-question',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -47,27 +47,27 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-question',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Questions")
+                'text'  => $this->translate->translate("Questions")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Question"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Question"));
                 break;
             }
             case "edit/:identifier" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Question"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Question"));
                 break;
             }
         }
@@ -81,7 +81,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Question'),
+                    'text'      => $this->translate->translate('New Question'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -249,7 +249,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 if ($_GET['object'] == "1") {
                     $response = $this->createAdviseResponse(
-                        self::$t->translate("Question created with success"),
+                        $this->translate->translate("Question created with success"),
                         "success"
                     );
 
@@ -258,7 +258,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 } else {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate("Question created with success"),
+                        $this->translate->translate("Question created with success"),
                         "success"
                     );
 
@@ -296,11 +296,11 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 $modelData = $this->model($modelRoute)->getItem($id);
                 $data = array_merge($data, $modelData);
 
-                $response = $this->createAdviseResponse(self::$t->translate("Question updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Question updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -320,11 +320,11 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
 
             $itemModel = $this->model($this->_modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Question removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Question removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

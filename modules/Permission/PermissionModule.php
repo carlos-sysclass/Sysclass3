@@ -21,15 +21,15 @@ class PermissionModule extends \SysclassModule implements \IBlockProvider
                 'check'  => array(
                     //'icon'  		=> 'icon-check',
                     //'link'  		=> $baseLink . "block/" . $item['id'],
-                    //'text' 			=> self::$t->translate('Disabled'),
+                    //'text' 			=> $this->translate->translate('Disabled'),
                     //'class' 		=> 'btn-sm btn-danger',
                     'type'			=> 'switch',
                     //'state'			=> 'disabled',
                     'attrs'			=> array(
 			        	'data-on-color' => "success",
-			        	'data-on-text' => self::$t->translate('YES'),
+			        	'data-on-text' => $this->translate->translate('YES'),
 			        	'data-off-color' =>"danger",
-			        	'data-off-text'	=> self::$t->translate('NO')
+			        	'data-off-text'	=> $this->translate->translate('NO')
                     )
                 )
             );
@@ -241,7 +241,7 @@ class PermissionModule extends \SysclassModule implements \IBlockProvider
 				//unset($entity['condition_id']);
 				$permission['entity'] = $entity;
 
-				$response = $this->createAdviseResponse(self::$t->translate("Permission created with success"), "success");
+				$response = $this->createAdviseResponse($this->translate->translate("Permission created with success"), "success");
 				return array_merge($response, $permission);
 
 			} else {
@@ -262,7 +262,7 @@ class PermissionModule extends \SysclassModule implements \IBlockProvider
 	{
 		if ($userData = $this->getCurrentUser()) {
 			$this->model("permission/condition")->deleteItem($id);
-			return $this->createAdviseResponse(self::$t->translate("Permission removed with success"), "info");
+			return $this->createAdviseResponse($this->translate->translate("Permission removed with success"), "info");
 		} else {
 			return $this->notAuthenticatedError();
 		}
@@ -284,14 +284,14 @@ class PermissionModule extends \SysclassModule implements \IBlockProvider
 			if ($type) {
 				$params['ent.type'] = $type;
 			} else {
-				return $this->invalidRequestError(self::$t->translate('An error ocurred. Please try reloading the page'), "error");
+				return $this->invalidRequestError($this->translate->translate('An error ocurred. Please try reloading the page'), "error");
 			}
 
 			$entity_id = filter_input(INPUT_GET, 'entity_id', FILTER_DEFAULT);
 			if ($entity_id) {
 				$params['ent.entity_id'] = $entity_id;
 			} else {
-				return $this->invalidRequestError(self::$t->translate('An error ocurred. Please try reloading the page'), "error");
+				return $this->invalidRequestError($this->translate->translate('An error ocurred. Please try reloading the page'), "error");
 			}
 			/*
 			$filter = $permissionConditionModel->createFilter(
@@ -350,15 +350,15 @@ class PermissionModule extends \SysclassModule implements \IBlockProvider
                         'check'  => array(
                             //'icon'  		=> 'icon-check',
                             //'link'  		=> $baseLink . "block/" . $item['id'],
-                            //'text' 			=> self::$t->translate('Disabled'),
+                            //'text' 			=> $this->translate->translate('Disabled'),
                             //'class' 		=> 'btn-sm btn-danger',
                             'type'			=> 'switch',
                             //'state'			=> 'disabled',
                             'attrs'			=> array(
 					        	'data-on-color' => "success",
-					        	'data-on-text' => self::$t->translate('YES'),
+					        	'data-on-text' => $this->translate->translate('YES'),
 					        	'data-off-color' =>"danger",
-					        	'data-off-text'	=> self::$t->translate('NO')
+					        	'data-off-text'	=> $this->translate->translate('NO')
                             )
                         )
                     );

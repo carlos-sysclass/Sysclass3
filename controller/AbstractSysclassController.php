@@ -5,7 +5,7 @@ use Monolog\Handler\FirePHPHandler;
 use Monolog\Formatter\WildfireFormatter;
 */
 use Phalcon\DI,
-	Sysclass\Models\Settings,
+	Sysclass\Models\System\Settings,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 abstract class AbstractSysclassController extends AbstractDatabaseController
@@ -32,7 +32,6 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$di = DI::getDefault();
 			self::$cfg = $di->get("configuration")->asArray();
 			self::$syscfg = $di->get("sysconfig");
-
 		}
 	}
 
@@ -66,28 +65,28 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			//exit;
 			switch($e->getCode()) {
 				case AuthenticationException :: MAINTENANCE_MODE : {
-		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
-		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            $message_type = 'info';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$url = "/lock";
-		            $message = self::$t->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
 		            $message_type = 'info';
 		            break;
 				}
 				default : {
-		            $message = self::$t->translate($e->getMessage());
+		            $message = $this->translate->translate($e->getMessage());
 		            $message_type = 'danger';
 		            break;
 				}

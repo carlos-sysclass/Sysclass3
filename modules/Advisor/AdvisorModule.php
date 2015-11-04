@@ -21,9 +21,9 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
         return array(
             'type'  => 'primary',
             'count' => $data[0],
-            'text'  => self::$t->translate('Scheduled Meetings'),
+            'text'  => $this->translate->translate('Scheduled Meetings'),
             'link'  => array(
-                'text'  => self::$t->translate('View'),
+                'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . 'all'
             )
         );
@@ -45,7 +45,7 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 $widgets['advisor.chat'] = array(
                     'id'        => 'advisor-chat-widget',
        				'template'	=> $this->template("widgets/chat"),
-                    'header'     => self::$t->translate("Talk to us"),
+                    'header'     => $this->translate->translate("Talk to us"),
                     'body'      => false,
                     'icon'      => "fa fa-comment",
                     'panel'     => 'dark-blue'

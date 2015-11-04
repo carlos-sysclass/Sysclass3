@@ -29,14 +29,14 @@ class PaymentModule extends SysclassModule
                 $menuItem = array(
                     'icon'      => 'money',
                     'notif'     => $total,
-                    'text'      => self::$t->translate('You have %s due payment', $total),
+                    'text'      => $this->translate->translate('You have %s due payment', $total),
                     'external'  => array(
                         'link'  => $this->getBasePath(),
-                        'text'  => self::$t->translate('See my statement')
+                        'text'  => $this->translate->translate('See my statement')
                     ),
                     'link'  => array(
                         'link'  => $this->getBasePath(),
-                        'text'  => self::$t->translate('Payments')
+                        'text'  => $this->translate->translate('Payments')
                     ),
                     'type'      => 'notification',
                     'items'     => $items,

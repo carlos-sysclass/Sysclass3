@@ -27,7 +27,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
                 'users' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('User Types'),
+                        'text'  => $this->translate->translate('User Types'),
                         'icon'  => 'icon-group',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -43,7 +43,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -53,18 +53,18 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Types")
+                    'text'  => $this->translate->translate("Users Types")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "edit/:id" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users Types")
+                    'text'  => $this->translate->translate("Users Types")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit User Type"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit User Type"));
                 break;
             }
         }
@@ -99,7 +99,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("User Type created with success"),
+                    $this->translate->translate("User Type created with success"),
                     "success"
                 );
             } else {
@@ -124,11 +124,11 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("User Type updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User Type updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -147,7 +147,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
 
             $itemModel = $this->model("user/types/item");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("User Type removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User Type removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

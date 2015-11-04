@@ -27,7 +27,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 'content' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Departments'),
+                        'text'  => $this->translate->translate('Departments'),
                         'icon'  => 'fa fa-cubes',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -42,27 +42,27 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-cubes',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Departments")
+                'text'  => $this->translate->translate("Departments")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Department"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Department"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Department"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Department"));
                 break;
             }
         }
@@ -76,7 +76,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Department'),
+                    'text'      => $this->translate->translate('New Department'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -163,11 +163,11 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
         }
         return array_merge($response, $info);
     }
@@ -256,7 +256,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Department created with success"),
+                    $this->translate->translate("Department created with success"),
                     "success"
                 );
             } else {
@@ -280,11 +280,11 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Department updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Department updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -303,11 +303,11 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Department removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Department removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

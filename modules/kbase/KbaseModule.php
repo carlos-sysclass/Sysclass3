@@ -17,9 +17,9 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         return array(
             'type'  => 'primary',
             'count' => $data[0],
-            'text'  => self::$t->translate('Questions Answered'),
+            'text'  => $this->translate->translate('Questions Answered'),
             'link'  => array(
-                'text'  => self::$t->translate('View'),
+                'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . 'all'
             )
         );
@@ -38,7 +38,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         		'kbase.widget' => array(
                     'type'      => 'kbase', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                     'id'        => 'kbase-widget',
-       				'title' 	=> self::$t->translate('Questions & Answers'),
+       				'title' 	=> $this->translate->translate('Questions & Answers'),
        				'template'	=> $this->template("widgets/overview"),
                     'icon'      => 'book',
                     'box'       => 'dark-blue tabbable',
@@ -65,7 +65,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
                 'communication' => array(
                     array(
                         'count' => count($itemsData),
-                        'text'  => self::$t->translate('Knowledge Base'),
+                        'text'  => $this->translate->translate('Knowledge Base'),
                         'icon'  => 'fa fa-book ',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -80,27 +80,27 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-book',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Knowledge Base")
+                'text'  => $this->translate->translate("Knowledge Base")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "view" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New KB Item"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New KB Item"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit KB Item"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit KB Item"));
                 break;
             }
         }
@@ -114,7 +114,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New KB Item'),
+                    'text'      => $this->translate->translate('New KB Item'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -173,19 +173,19 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
                 if ($redirect) {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate("Your question has been successfully registered!"),
+                        $this->translate->translate("Your question has been successfully registered!"),
                         "success"
                     );
                 } else {
                     $modelData = $itemModel->getItem($data['id']);
                     $data = array_merge($data, $modelData);
 
-                    $response = $this->createAdviseResponse(self::$t->translate("Your question has been successfully registered!"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Your question has been successfully registered!"), "success");
                     return array_merge($response, $data);
 
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate("Your question has been successfully registered!"),
+                        $this->translate->translate("Your question has been successfully registered!"),
                         "success"
                     );
 
@@ -222,11 +222,11 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
                 $modelData = $this->model($modelRoute)->getItem($id);
                 $data = array_merge($data, $modelData);
 
-                $response = $this->createAdviseResponse(self::$t->translate("Item updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item updated with success"), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -245,11 +245,11 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
 
             $itemModel = $this->model($this->_modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("Item removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

@@ -80,7 +80,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 'communication' => array(
                     array(
                         'count' => count($itemsData),
-                        'text'  => self::$t->translate('Advertising'),
+                        'text'  => $this->translate->translate('Advertising'),
                         'icon'  => 'fa fa-money',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -96,22 +96,22 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-money',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Advertising")
+                'text'  => $this->translate->translate("Advertising")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch ($request) {
             case "view":
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             case "edit/:id":
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Advertising"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Advertising"));
                 break;
         }
         return $breadcrumbs;
@@ -126,7 +126,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Lesson'),
+                    'text'      => $this->translate->translate('New Lesson'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -166,8 +166,8 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     public function addPage()
     {
         $placements = array(
-            array('id' => 'ads.leftbar.banner', 'name' => self::$t->translate('Left Side')),
-            array('id' => 'ads.rightbar.banner', 'name' => self::$t->translate('Right Side'))
+            array('id' => 'ads.leftbar.banner', 'name' => $this->translate->translate('Left Side')),
+            array('id' => 'ads.rightbar.banner', 'name' => $this->translate->translate('Right Side'))
         );
         $this->putitem("placements", $placements);
 
@@ -188,8 +188,8 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     public function editPage($identifier)
     {
         $placements = array(
-            array('id' => 'ads.leftbar.banner', 'name' => self::$t->translate('Left Side')),
-            array('id' => 'ads.rightbar.banner', 'name' => self::$t->translate('Right Side'))
+            array('id' => 'ads.leftbar.banner', 'name' => $this->translate->translate('Left Side')),
+            array('id' => 'ads.rightbar.banner', 'name' => $this->translate->translate('Right Side'))
         );
         $this->putitem("placements", $placements);
 
@@ -238,7 +238,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $data['language_code'] = self::$t->getUserLanguageCode();
+                $data['language_code'] = $this->translate->getUserLanguageCode();
 
                 $_GET['redirect'] = "0";
             /*
@@ -260,12 +260,12 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] === "0") {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                     return array_merge($response, $data);
                 } else {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate($messages['success']),
+                        $this->translate->translate($messages['success']),
                         "success"
                     );
                 }
@@ -306,12 +306,12 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             }
 
             if ($itemModel->setItem($data, $id) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 $data = $itemModel->getItem($id);
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -343,11 +343,11 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->deleteItem($id) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -470,9 +470,9 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         $data = $this->getHttpData(func_get_args());
 
         if ($itemsCollection->setContentOrder($advertising_id, $data['position'])) {
-            return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
         } else {
-            return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
 }
