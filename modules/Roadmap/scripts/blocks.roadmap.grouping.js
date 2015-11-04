@@ -47,11 +47,11 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
             },
             model : mod.groupingModelClass,
             url: function() {
-                return "/module/roadmap/items/grouping/default/" + JSON.stringify({ course_id : this.course_id });
+                return "/module/roadmap/datasources/grouping/default/" + JSON.stringify({ course_id : this.course_id });
             },
             setOrder : function(order) {
                 $.ajax(
-                    "/module/roadmap/items/grouping/set-order/" + this.course_id,
+                    "/module/roadmap/datasources/grouping/set-order/" + this.course_id,
                     {
                         data: {
                             position: order

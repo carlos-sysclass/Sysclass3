@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Courses;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Course extends Model
 {
@@ -15,7 +15,7 @@ class Course extends Model
             "course_id", "class_id",
             "Sysclass\Models\Courses\Classe",
             "id",
-            array('alias' => 'CourseClasses')
+            array('alias' => 'Classes')
         );
     }
 }

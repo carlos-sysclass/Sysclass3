@@ -206,11 +206,11 @@ abstract class SysclassModule extends BaseSysclassModule
     /**
      * [ add a description ]
      *
-     * @Get("/item/{model}/{id}")
+     * @Get("/item/{model}/{identifier}")
     */
-    public function getItemRequest($model, $id) {
+    public function getItemRequest($model, $identifier) {
 
-        $editItem = $this->getModelData($model, $id);
+        $editItem = $this->getModelData($model, $identifier);
 
         $this->response->setContentType('application/json', 'UTF-8');
 
@@ -462,20 +462,33 @@ abstract class SysclassModule extends BaseSysclassModule
                         $opt[$key] = $item;
                         unset($filter[$key]);
                     }
-                    if (@$options['_exclude'] === TRUE) {
-                        $modelFilters[] = "{$key} <> ?{$index}";
+                    if (is_null($item)) {
+                        if (@$options['_exclude'] === TRUE) {
+                            $modelFilters[] = "{$key} IS NOT NULL";
+                        } else {
+                            $modelFilters[] = "{$key} IS NULL";
+                        }
                     } else {
-                        $modelFilters[] = "{$key} = ?{$index}";
+                        if (@$options['_exclude'] === TRUE) {
+                            $modelFilters[] = "{$key} <> ?{$index}";
+                        } else {
+                            $modelFilters[] = "{$key} = ?{$index}";
+                        }
+
+                        $filterData[$index] = $item;
+                        $index++;
                     }
+
                     
-                    $filterData[$index] = $item;
-                    $index++;
+                    
+                    
                 }
 
                 $args = array(
                     array(
                         'conditions'    => implode(" AND ", $modelFilters),
-                        'bind' => $filterData
+                        'bind' => $filterData,
+                        'args'  => $filter
                     )
                 );
             } else {

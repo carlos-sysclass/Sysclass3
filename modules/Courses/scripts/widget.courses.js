@@ -1118,7 +1118,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			nofoundTemplate : _.template($("#tab_lesson_exercises-nofound-template").html()),
 			childViewClass : lessonExercisesTabViewItemClass,
 			childContainer : "table tbody",
-			exerciseTemplate : _.template($("#tab_lesson_exercises-details-template").html(), null, {variable: "model"}),
+			//exerciseTemplate : _.template($("#tab_lesson_exercises-details-template").html(), null, {variable: "model"}),
 			onBeforeRender : function(e) {
 				console.info('portlet.courses/lessonExercisesTabViewClass::onBeforeRender');
 				var contentsCollection = new mod.collections.contents(this.model.get("contents"));

@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Roadmap;
 /**
  * Module Class File
  * @filesource
@@ -8,7 +9,10 @@ use Sysclass\Models\Enrollments\Course as EnrolledCourse;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-class RoadmapModule extends SysclassModule implements IBlockProvider
+/**
+ * @RoutePrefix("/module/roadmap")
+ */
+class RoadmapModule extends \SysclassModule implements \IBlockProvider
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -51,11 +55,11 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url GET /items/:model
-     * @url GET /items/:model/:type
-     * @url GET /items/:model/:type/:filter
+     * @Get("/datasources/{model}")
+     * @Get("/datasources/{model}/{type}")
+     * @Get("/datasources/{model}/{type}/{filter}")
      */
-    public function getItemsAction($model = "me", $type = "default", $filter = null)
+    public function getItemsRequest($model = "me", $type = "default", $filter = null)
     {
         if ($currentUser = $this->getCurrentUser(true)) {
             if ($model ==  "periods") {
@@ -181,11 +185,11 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url GET /item/:model/:identifier
-     */
-    public function getItemAction($model, $identifier)
+     * @Get("/item/{model}/{identifier}")
+    */
+    public function getItemRequest($model, $identifier)
     {
-        if ($userData = $this->getCurrentUser()) {
+        if ($userData = $this->getCurrentUser(true)) {
             if ($model ==  "courses") {
                 $modelRoute = "roadmap/courses";
             } elseif ($model ==  "classes") {
@@ -205,17 +209,17 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
             }
 
             $itemModel = $this->model($modelRoute);
-            $editItem = $itemModel->setUserFilter($userData['id'])->getItem($identifier);
+            $editItem = $itemModel->setUserFilter($userData->id)->getItem($identifier);
 
-            return $editItem;
+            $this->response->setJsonContent($editItem);
         }
     }
     /**
      * [ add a description ]
      *
-     * @url POST /item/:model
+     * @Post("/item/{model}")
      */
-    public function addItemAction($model)
+    public function addItemRequest($model)
     {
 
         if ($userData = $this->getCurrentUser()) {
@@ -238,7 +242,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping created with success",
+                    'success' => "Course Period created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model ==  "periods") {
@@ -289,12 +293,12 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url PUT /item/:model/:identifier
-     */
-    public function setItemAction($model, $identifier)
+     * @Put("/item/{model}/{id}")
+     */    
+    public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
+            $data = $this->request->getPut();
 
             if ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
@@ -353,9 +357,9 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/:model/:identifier
+     * @Delete("/item/{model}/{id}")
      */
-    public function deleteItemAction($model, $identifier)
+    public function deleteItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -377,7 +381,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping created with success",
+                    'success' => "Course Periods created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {
@@ -460,9 +464,9 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
     /**
      * [ add a description ]
      *
-     * @url PUT /items/:model/set-order/:course_id
+     * @Put("/datasources/{model}/set-order/{course_id}")
      */
-    public function setOrderAction($model, $course_id)
+    public function setOrderRequest($model, $course_id)
     {
         if ($userData = $this->getCurrentUser()) {
 
@@ -499,7 +503,7 @@ class RoadmapModule extends SysclassModule implements IBlockProvider
                 return $this->invalidRequestError();
             }
 
-            $data = $this->getHttpData(func_get_args());
+            $data = $this->request->getPut();
 
             if ($itemModel->setOrder($course_id, $data['position'], $data['period_id'])) {
                 return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");

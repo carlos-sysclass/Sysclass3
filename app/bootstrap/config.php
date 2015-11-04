@@ -229,7 +229,13 @@ $di->setShared('environment', function() use ($di) {
 			'name'	=> 'fullcalendar',
 			'css'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar'),
 			'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar')
+		),
+		'bootstrap-editable' => array(
+			'name'	=> 'bootstrap-editable',
+			'css'	=> array('plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable'),
+			'js'	=> array('plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable')
 		)
+
 	);
 
 	// MOVE TO module config.yml!!!

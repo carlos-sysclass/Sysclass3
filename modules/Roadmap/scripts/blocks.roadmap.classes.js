@@ -27,11 +27,11 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             },
             model : mod.classModelClass,
             url: function() {
-                return "/module/roadmap/items/classes/default/" + JSON.stringify({ course_id : this.course_id, period_id : this.period_id });
+                return "/module/roadmap/datasources/classes/default/" + JSON.stringify({ 'course_id' : this.course_id, 'period_id' : this.period_id });
             },
             setContentOrder : function(order) {
                 $.ajax(
-                    "/module/roadmap/items/classes/set-order/" + this.course_id,
+                    "/module/roadmap/datasources/classes/set-order/" + this.course_id,
                     {
                         data: {
                             position: order,
@@ -69,11 +69,11 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             },
             model : mod.periodModelClass,
             url: function() {
-                return "/module/roadmap/items/periods/default/" + JSON.stringify({ course_id : this.course_id });
+                return "/module/roadmap/datasources/periods/default/" + JSON.stringify({ course_id : this.course_id });
             },
             setContentOrder : function(order) {
                 $.ajax(
-                    "/module/roadmap/items/periods/set-order/" + this.course_id,
+                    "/module/roadmap/datasources/periods/set-order/" + this.course_id,
                     {
                         data: {
                             position: order
