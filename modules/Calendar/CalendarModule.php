@@ -22,9 +22,9 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         return array(
             'type'  => 'primary',
             'count' => $data,
-            'text'  => self::$t->translate('Events'),
+            'text'  => $this->translate->translate('Events'),
             'link'  => array(
-                'text'  => self::$t->translate('View'),
+                'text'  => $this->translate->translate('View'),
                 'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
 
 
@@ -41,7 +41,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
                 'communication' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Events'),
+                        'text'  => $this->translate->translate('Events'),
                         'icon'  => 'fa fa-calendar',
                         'link'  => $this->getBasePath() . 'manage'
                     )
@@ -65,7 +65,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $widgets['calendar'] = array(
                 'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'calendar-widget',
-                'title'     => self::$t->translate('Calendar'),
+                'title'     => $this->translate->translate('Calendar'),
                 'template'  => $this->template("calendar.block"),
                 'icon'      => 'calendar',
                 'box'       => 'dark-blue calendar'
@@ -81,7 +81,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $widgets['news.latest'] = array(
                 'type'      => 'news', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'news-widget',
-                'title'     => self::$t->translate('Announcements'),
+                'title'     => $this->translate->translate('Announcements'),
                 'template'  => $this->template("news.widget"),
                 'icon'      => 'bell',
                 'box'       => 'dark-blue tabbable',
@@ -106,24 +106,24 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-calendar',
                 'link'  => $this->getBasePath() . "manage",
-                'text'  => self::$t->translate("Calendar Events")
+                'text'  => $this->translate->translate("Calendar Events")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "event-source/add" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Event Source"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Event Source"));
                 break;
             }
             /*
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Annoucement"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Annoucement"));
                 break;
             }
             */
@@ -141,7 +141,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             'manage'  => array
             (
                 array(
-                    'text'      => self::$t->translate('New Event Source'),
+                    'text'      => $this->translate->translate('New Event Source'),
                     'link'      => $this->getBasePath() . "event-source/add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -327,7 +327,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $eventModel->user_id = $userModel->id;
 
             if ($eventModel->save()) {
-                $response = $this->createAdviseResponse(self::$t->translate("Event created with success"),
+                $response = $this->createAdviseResponse($this->translate->translate("Event created with success"),
                     "success"
                 );
 
@@ -338,7 +338,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(
-                    self::$t->translate("A problem ocurred when tried to save you data. Please try again."),
+                    $this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
                     "error"
                 );
             }
@@ -368,7 +368,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             //$eventModel->user_id = $userModel->id;
 
             if ($eventModel->save()) {
-                $response = $this->createAdviseResponse(self::$t->translate("Event updated with success"),
+                $response = $this->createAdviseResponse($this->translate->translate("Event updated with success"),
                     "success"
                 );
 
@@ -379,7 +379,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(
-                    self::$t->translate("A problem ocurred when tried to save you data. Please try again."),
+                    $this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
                     "error"
                 );
             }
@@ -401,12 +401,12 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $eventModel = Event::findFirstById($id);
 
             if ($eventModel->delete()) {
-                $response = $this->createAdviseResponse(self::$t->translate("Event removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(
-                    self::$t->translate("A problem ocurred when tried to save you data. Please try again."),
+                    $this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
                     "error"
                 );
             }

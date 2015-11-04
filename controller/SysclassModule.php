@@ -28,7 +28,6 @@ abstract class SysclassModule extends BaseSysclassModule
         $this->context['basePath'] = $baseUrl . "/";
 
         $route = $this->router->getMatchedRoute();
-
         $this->module_request = str_replace($this->context['basePath'], "", $route->getPattern());
 
         if (is_null($this->context)) {
@@ -62,6 +61,34 @@ abstract class SysclassModule extends BaseSysclassModule
 
     protected $clientContext;
 
+     // THIS ACTION RECEIVE ALL NOT MATCHED ROUTE FROM MODULE
+    public function handleDefaultRequest() {
+        // CHECK FOR MODEL TO LOAD
+        
+        if ($status = $this->createClientContext($this->module_request)) {
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+    /**
+     * Check if the request resource is avaliable to current user. The resource can overriden in config.yml
+     * @param  [type]  $route   [description]
+     * @param  [type]  $default [description]
+     * @return boolean          [description]
+     */
+    protected function isResourceAllowed($default = null) {
+        $resource = $this->getConfig("crud\\routes\\{$this->context['module_request']}\\acl\\resource");
+        if (is_null($resource)) {
+            if (is_null($default)) {
+                return false;
+            }
+            $resource = $default;
+        }
+        return $this->acl->isUserAllowed(null, $this->module_id, $resource);
+    }
+
 
     /**
      * [ add a description ]
@@ -70,7 +97,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
     public function viewPage()
     {
-        $depinject = Phalcon\DI::getDefault();
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
             $this->createClientContext("view");
             $this->display($this->template);
@@ -197,7 +223,7 @@ abstract class SysclassModule extends BaseSysclassModule
             return true;   
         } else {
             $this->response->setJsonContent(
-                $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning")
+                $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning")
             );
             return true;
         }
@@ -213,7 +239,7 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($this->acl->isUserAllowed(null, $this->module_id, "create")) {
+        if ($this->isResourceAllowed("create")) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
             // 
             $data = $this->request->getJsonRawBody(true);
@@ -221,7 +247,7 @@ abstract class SysclassModule extends BaseSysclassModule
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                $response = $this->invalidRequestError(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $data)
                 );
@@ -242,7 +268,7 @@ abstract class SysclassModule extends BaseSysclassModule
             /*
             if (in_array(false, $response, true)) {
                 // CANCEL SAVE
-                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $itemModel->toFullArray())
                 );
@@ -254,7 +280,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 if ($this->request->hasQuery('object')) {
                     $this->response->setJsonContent(
                         $this->createAdviseResponse(
-                            self::$t->translate("Entity created with success"),
+                            $this->translate->translate("Entity created with success"),
                             "success"
                         )
                     );
@@ -262,7 +288,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            self::$t->translate("User created with success"),
+                            $this->translate->translate("User created with success"),
                             "success"
                         )
                     );
@@ -271,10 +297,20 @@ abstract class SysclassModule extends BaseSysclassModule
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelCreate", $itemModel, $data);
 
-                $response = $this->invalidRequestError(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
-                $this->response->setJsonContent(
-                    array_merge($response, $itemModel->toFullArray())
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+
+                $itemData = call_user_func_array(
+                    array($itemModel, $model_info['exportMethod'][0]),
+                    $model_info['exportMethod'][1]
                 );
+
+                $this->response->setJsonContent(
+                    array_merge($response, $itemData)
+                );
+
+
+
+
                 return true;
             }
         } else {
@@ -300,7 +336,7 @@ abstract class SysclassModule extends BaseSysclassModule
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                $response = $this->invalidRequestError(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $data)
                 );
@@ -318,14 +354,14 @@ abstract class SysclassModule extends BaseSysclassModule
             if ($itemModel->save()) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
 
-                $response = $this->createAdviseResponse(self::$t->translate("Item updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item updated with success"), "success");
 
 
 
                 if ($_GET['redirect'] == "1") {
                     $response = $this->createRedirectResponse(
                         null,
-                        self::$t->translate("Item updated with success"),
+                        $this->translate->translate("Item updated with success"),
                         "success"
                     );
                 } elseif ($_GET['object'] == "1") {
@@ -338,7 +374,7 @@ abstract class SysclassModule extends BaseSysclassModule
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
-                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
             }
         } else {
             $response = $this->notAuthenticatedError();
@@ -366,7 +402,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
-                    $response = $this->createAdviseResponse(self::$t->translate("User removed with success"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                     $response = $this->invalidRequestError("", "warning");

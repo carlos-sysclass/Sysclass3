@@ -5,7 +5,7 @@ use Monolog\Handler\FirePHPHandler;
 use Monolog\Formatter\WildfireFormatter;
 */
 use Phalcon\DI,
-	Sysclass\Models\Settings,
+	Sysclass\Models\System\Settings,
 	Sysclass\Services\Authentication\Exception as AuthenticationException,
 	Phalcon\Mvc\Controller;
 
@@ -341,7 +341,7 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function invalidRequestError($message = "", $type = "warning") {
 		if (empty($message)) {
-			$message = self::$t->translate("There's a problem with your request. Please try again.");
+			$message = $this->translate->translate("There's a problem with your request. Please try again.");
 		}
 		return $this->createResponse(200, $message, $type, "advise");
 	}
@@ -443,7 +443,13 @@ abstract class PhalconWrapperController extends Controller
 		if ($this->supress_scripts) {
 			$this->clearScripts();
 		} else {
-			$styleSheets = $plico->getArray("resources/" . $this->theme . "/css");
+
+			//$styleSheets = $plico->getArray("resources/" . $this->theme . "/css");
+
+			$styleSheets = $this->environment['resources/css'];
+
+			//var_dump("resources/" . $this->theme . "/css", $styleSheets);
+			//exit;
 			foreach($styleSheets as $css) {
 				$this->putCss($css);
 			}
@@ -503,7 +509,11 @@ abstract class PhalconWrapperController extends Controller
 
 		$assets->useImplicitOutput(false);
 
+
+
 		$css = $this->resolvePaths(self::$_css);
+
+
 		$cssHeaderAssets = $assets->collection("cssHeader");
 
 		// UNCOMMENT TO PROVIDE CSS MINIFICATION (MUST ADJUST @import inside)
@@ -570,6 +580,7 @@ abstract class PhalconWrapperController extends Controller
 			'resource' => $resourcePath
 		)));
 
+		$this->putItem("configuration", $this->configuration->asArray());
 		// PROFILE EDIT
 		/*
 		$this->putData(array(
@@ -638,7 +649,9 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function onThemeRequest()
 	{
-		return PlicoLib::instance()->get('theme');
+		$this->theme = PlicoLib::instance()->get('theme');
+
+		return $this->theme;
 
 	}
 

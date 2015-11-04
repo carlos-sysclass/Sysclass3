@@ -68,11 +68,11 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
             }
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -102,11 +102,11 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -232,7 +232,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                         if (!$result) {
                             $this->model("dropbox")->deleteItem($filedata['id']);
                             return $this->invalidRequestError(
-                                self::$t->translate("The file appear to be empty or in a invalid format."),
+                                $this->translate->translate("The file appear to be empty or in a invalid format."),
                                 "warning"
                             );
                         }
@@ -269,11 +269,11 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
             ))->getItems();
 
             if (count($files) > 0 && $itemModel->deleteItem($file_id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("File removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("File removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

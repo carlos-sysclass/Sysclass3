@@ -28,7 +28,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
                     array
                     (
                         'count' => count($eventsItems),
-                        'text'  => self::$t->translate('Event'),
+                        'text'  => $this->translate->translate('Event'),
                         'icon'  => 'fa fa-thumb-tack',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -46,7 +46,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
             (
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -59,10 +59,10 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
                 (
                     'icon'  => 'fa fa-thumb-tack',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event")
+                    'text'  => $this->translate->translate("Event")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
 
                 break;
             }
@@ -72,10 +72,10 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
                 (
                     'icon'  => 'fa fa-thumb-tack',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event")
+                    'text'  => $this->translate->translate("Event")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Event"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Event"));
 
                 break;
             }
@@ -85,10 +85,10 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
                 (
                     'icon'  => 'fa fa-thumb-tack',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event")
+                    'text'  => $this->translate->translate("Event")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Event"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Event"));
 
                 break;
             }
@@ -107,7 +107,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
             'view'  => array
             (
                 array(
-                    'text'      => self::$t->translate('New Event'),
+                    'text'      => $this->translate->translate('New Event'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -180,7 +180,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
             {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $eventModel->id,
-                    self::$t->translate("Event created with success"),
+                    $this->translate->translate("Event created with success"),
                     "success"
                 );
             }
@@ -212,14 +212,14 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
 
             if ($eventModel->save() !== FALSE)
             {
-                $response = $this->createAdviseResponse(self::$t->translate("Event updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event updated with success"), "success");
 
                 return array_merge($response, $eventModel->toFullArray());
             }
             else
             {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         }
         else
@@ -242,7 +242,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
             $itemModel = $this->model("events/item");
             if ($itemModel->deleteItem($id) !== FALSE)
             {
-                $response = $this->createAdviseResponse(self::$t->translate("Event removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event removed with success"), "success");
                 return $response;
             }
             else

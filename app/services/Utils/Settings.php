@@ -3,7 +3,7 @@ namespace Sysclass\Services\Utils;
 
 use Phalcon\Mvc\Model\Resultset,
     Phalcon\Mvc\User\Component,
-    Sysclass\Models\Settings as SettingsModel;
+    Sysclass\Models\System\Settings as SettingsModel;
 
 class Settings extends Component
 {

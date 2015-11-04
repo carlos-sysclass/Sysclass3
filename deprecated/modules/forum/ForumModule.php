@@ -18,10 +18,10 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
     		$menuItem = array(
     			'icon' 		=> 'comments',
     			'notif' 	=> 20,
-    			'text'		=> self::$t->translate('You have %d new forum posts', 12),
+    			'text'		=> $this->translate->translate('You have %d new forum posts', 12),
     			'external'	=> array(
     				'link'	=> $this->getBasePath() . "/timeline",
-    				'text'	=> self::$t->translate('See all forums')
+    				'text'	=> $this->translate->translate('See all forums')
     			),
     			'type'		=> 'inbox',
     			'items'		=> array(

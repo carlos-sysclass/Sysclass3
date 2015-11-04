@@ -1,5 +1,5 @@
 <?php
-namespace Sysclass\Models;
+namespace Sysclass\Models\System;
 
 use Phalcon\Mvc\Model;
 

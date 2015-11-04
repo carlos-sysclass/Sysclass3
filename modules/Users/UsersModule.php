@@ -38,7 +38,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 'users' => array(
                     array(
                         'count' => $total_itens,
-                        'text'  => self::$t->translate('Users'),
+                        'text'  => $this->translate->translate('Users'),
                         'icon'  => 'fa fa-user',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -72,7 +72,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -82,7 +82,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users")
+                    'text'  => $this->translate->translate("Users")
                 );
                 return $breadcrumbs;
                 break;
@@ -91,9 +91,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users")
+                    'text'  => $this->translate->translate("Users")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New User"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New User"));
                 return $breadcrumbs;
                 break;
             }
@@ -101,9 +101,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Users")
+                    'text'  => $this->translate->translate("Users")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit User"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit User"));
                 return $breadcrumbs;
                 break;
             }
@@ -117,7 +117,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New User'),
+                    'text'      => $this->translate->translate('New User'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -274,15 +274,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 'check'  => array(
                     //'icon'        => 'icon-check',
                     //'link'        => $baseLink . "block/" . $item['id'],
-                    //'text'            => self::$t->translate('Disabled'),
+                    //'text'            => $this->translate->translate('Disabled'),
                     //'class'       => 'btn-sm btn-danger',
                     'type'          => 'switch',
                     //'state'           => 'disabled',
                     'attrs'         => array(
                         'data-on-color' => "success",
-                        'data-on-text' => self::$t->translate('YES'),
+                        'data-on-text' => $this->translate->translate('YES'),
                         'data-off-color' =>"danger",
-                        'data-off-text' => self::$t->translate('NO')
+                        'data-off-text' => $this->translate->translate('NO')
                     )
                 )
             );
@@ -364,11 +364,11 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $userModel->id,
-                    self::$t->translate("User created with success"),
+                    $this->translate->translate("User created with success"),
                     "success"
                 );
             } else {
-                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 return array_merge($response, $userModel->toFullArray());
             }
         } else {
@@ -452,19 +452,19 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     if ($_GET['redirect'] == "1") {
                         $response = $this->createRedirectResponse(
                             null,
-                            self::$t->translate("User updated with success"),
+                            $this->translate->translate("User updated with success"),
                             "success"
                         );    
                     } else {
-                        $response = $this->createAdviseResponse(self::$t->translate("User updated with success"), "success");
+                        $response = $this->createAdviseResponse($this->translate->translate("User updated with success"), "success");
                     }
                     return array_merge($response, $userModel->toFullArray('UserGroups'));
                 } else {
-                    $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {
-                return $this->invalidRequestError(self::$t->translate("You don't have the permission to update these info."), "error");
+                return $this->invalidRequestError($this->translate->translate("You don't have the permission to update these info."), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -496,13 +496,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     if ($userModel->viewed_license == 1) {
                         return $this->createRedirectResponse(
                             "/dashboard",
-                            self::$t->translate("You agreed within the license. Thanks for using Sysclass"),
+                            $this->translate->translate("You agreed within the license. Thanks for using Sysclass"),
                             "success"
                         );
                     } else {
                         $di = DI::getDefault();
                         $di->get("authentication")->logout($userModel);
-                        $message = self::$t->translate("You cannot access the system before you accepted ther terms of use.");
+                        $message = $this->translate->translate("You cannot access the system before you accepted ther terms of use.");
                         $message_type = 'warning';
                         return $this->createRedirectResponse(
                             "/login", $message, $message_type
@@ -510,11 +510,11 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     }
                 } else {
 
-                    $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {
-                return $this->invalidRequestError(self::$t->translate("You don't have the permission to update these info."), "error");
+                return $this->invalidRequestError($this->translate->translate("You don't have the permission to update these info."), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -535,7 +535,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
             $itemModel = $this->model("user/item");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate("User removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -635,7 +635,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	 */
 	public function profilePage()
 	{
-		//$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		//$this->redirect($this->getSystemUrl("home"), $this->translate->translate("The profile change is disabled on demo enviroment!"), "warning");
 		//exit;
 		$currentUser    = $this->getCurrentUser(true);
 
@@ -696,7 +696,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->putItem("FORM_ACTIONS", $form_actions);
         */
 
-        $languages = self::$t->getItems();
+        $languages = $this->translate->getItems();
         $this->putitem("languages", $languages);
 
         $timezones = Timezones::findAll();
@@ -751,7 +751,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	 */
 	public function profilePersonalSaveRequest()
 	{
-		$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		$this->redirect($this->getSystemUrl("home"), $this->translate->translate("The profile change is disabled on demo enviroment!"), "warning");
 		exit;
 		/*
 		["name"]=> string(8) "VINICIOS"
@@ -789,7 +789,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 		$this->redirect(
 			$this->getBasePath() . "profile",
-			self::$t->translate("Your personal info has been saved successfully!"),
+			$this->translate->translate("Your personal info has been saved successfully!"),
 			"success"
 		);
 		exit;
@@ -802,7 +802,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	 */
 	public function profilePasswordSaveRequest()
 	{
-		//$this->redirect($this->getSystemUrl("home"), self::$t->translate("The profile change is disabled on demo enviroment!"), "warning");
+		//$this->redirect($this->getSystemUrl("home"), $this->translate->translate("The profile change is disabled on demo enviroment!"), "warning");
 		//exit;
 
 		$currentUser = $this->getCurrentUser(true);
@@ -812,7 +812,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		if ($password != $currentUser->user['password']) {
 			$this->redirect(
 				$this->getBasePath() . "profile",
-				self::$t->translate("Your old password is incorrect!"),
+				$this->translate->translate("Your old password is incorrect!"),
 				"danger"
 			);
 			exit;
@@ -820,7 +820,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		if ($values['new-password'] !== $values['new-password-confirm']) {
 			$this->redirect(
 				$this->getBasePath() . "profile",
-				self::$t->translate("Your new password doesn't match!"),
+				$this->translate->translate("Your new password doesn't match!"),
 				"warning"
 			);
 			exit;
@@ -830,7 +830,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 		$this->redirect(
 			$this->getBasePath() . "profile",
-			self::$t->translate("Your password has been changed successfully!"),
+			$this->translate->translate("Your password has been changed successfully!"),
 			"success"
 		);
 		exit;
@@ -873,22 +873,22 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 'users' => array(
                     array(
                         //'count' => count($data),
-                        'text'  => self::$t->translate('My Profile'),
+                        'text'  => $this->translate->translate('My Profile'),
                         'link'  => $this->getBasePath() . 'profile'
                     ),
                     array(
                         //'count' => count($data),
-                        'text'  => self::$t->translate('Users'),
+                        'text'  => $this->translate->translate('Users'),
                         'link'  => $this->getBasePath() . 'view'
                     ),
                     array(
                         //'count' => count($data),
-                        'text'  => self::$t->translate('Users Types'),
+                        'text'  => $this->translate->translate('Users Types'),
                         'link'  => $this->getBasePath() . 'view/types'
                     ),
                     array(
                         //'count' => count($data),
-                        'text'  => self::$t->translate('Users Types'),
+                        'text'  => $this->translate->translate('Users Types'),
                         'link'  => $this->getBasePath() . 'view/groups'
                     )
                 )
@@ -907,7 +907,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
     /* IPermissionChecker */
     public function getName() {
-        return self::$t->translate("Users");
+        return $this->translate->translate("Users");
     }
     public function getPermissions($index = null) {
         if (is_null(self::$permissions)) {
@@ -946,15 +946,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         switch($condition_id) {
             case self::PERMISSION_IN_LESSON : {
                 $lessonObject = $this->model("course/lessons")->getItem($data);
-                return self::$t->translate($condition['token'], $lessonObject->lesson['name']);
+                return $this->translate->translate($condition['token'], $lessonObject->lesson['name']);
             }
             case self::PERMISSION_IN_COURSE : {
                 $course = $this->model("course/item")->getItem($data);
-                return self::$t->translate($condition['token'], $course['name']);
+                return $this->translate->translate($condition['token'], $course['name']);
             }
             case self::PERMISSION_SPECIFIC_TYPE : {
                 $roles = MagesterUser::GetRoles(true);
-                return self::$t->translate($condition['token'], $roles[$data]);
+                return $this->translate->translate($condition['token'], $roles[$data]);
             }
             default : {
                 return "Permission Unknown";

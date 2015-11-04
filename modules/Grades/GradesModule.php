@@ -26,7 +26,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 'content' => array(
                     array(
                         'count' => $count,
-                        'text'  => self::$t->translate('Grades'),
+                        'text'  => $this->translate->translate('Grades'),
                         'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -41,7 +41,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             array(
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -51,27 +51,27 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-briefcase',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Grades")
+                    'text'  => $this->translate->translate("Grades")
                 );
-                //$breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                //$breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-briefcase',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Grades")
+                    'text'  => $this->translate->translate("Grades")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Grade Rule"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Grade Rule"));
                 break;
             }
             case "edit/:id" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-briefcase',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Grades")
+                    'text'  => $this->translate->translate("Grades")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Grade Rule"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Grade Rule"));
                 break;
             }
             /*
@@ -79,27 +79,27 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view-group",
-                    'text'  => self::$t->translate("Grades Groups")
+                    'text'  => $this->translate->translate("Grades Groups")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
             case "add-group" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view-group",
-                    'text'  => self::$t->translate("Grades Groups")
+                    'text'  => $this->translate->translate("Grades Groups")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Grade Group"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Grade Group"));
                 break;
             }
             case "edit-group/:id" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view-group",
-                    'text'  => self::$t->translate("Grades Groups")
+                    'text'  => $this->translate->translate("Grades Groups")
                 );
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Grade Group"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Grade Group"));
                 break;
             }
             */
@@ -114,7 +114,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Grade Rule'),
+                    'text'      => $this->translate->translate('New Grade Rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -122,19 +122,19 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             )/*,
             'view-group'  => array(
                 array(
-                    'text'      => self::$t->translate('New Grade Group'),
+                    'text'      => $this->translate->translate('New Grade Group'),
                     'link'      => $this->getBasePath() . "add-group",
                     'class'     => "btn-default",
                     'icon'      => 'icon-plus'
                 ),
                 array(
-                    'text'      => self::$t->translate('View Grade Rules'),
+                    'text'      => $this->translate->translate('View Grade Rules'),
                     'link'      => $this->getBasePath() . "view",
                     'class'     => "btn-default",
                     'icon'      => 'icon-briefcase'
                 ),
                 array(
-                    'text'      => self::$t->translate('New Grade Rule'),
+                    'text'      => $this->translate->translate('New Grade Rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-default",
                     'icon'      => 'icon-briefcase'
@@ -184,7 +184,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . $optionsRoute . "/" . $data['id'],
-                    self::$t->translate($successMessage),
+                    $this->translate->translate($successMessage),
                     "success"
                 );
             } else {
@@ -217,12 +217,12 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->setItem($data, $identifier) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate($successMessage), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($successMessage), "success");
                 $data = $itemModel->getItem($identifier);
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -255,7 +255,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
             $itemModel = $this->model($modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse(self::$t->translate($successMessage ), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($successMessage ), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

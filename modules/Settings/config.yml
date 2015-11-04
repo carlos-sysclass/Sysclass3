@@ -1,0 +1,30 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: System Settings
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    manage:
+      override-route: "edit"
+      components: ["select2", "validation", "bootstrap-switch"]
+      #blocks: ["enroll.user.block"]
+      template: manage.tpl
+      #scripts: ["edit"]
+      variables:
+        page_subtitle: View and Edit system configuration
+      acl:
+        resource: Manage
+    "item/{model}":
+      acl:
+        resource: Manage
+
+models:
+  me:
+    class: Sysclass\Models\System\Settings
+    #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    #findMethod: findFirstById

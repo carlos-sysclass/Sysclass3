@@ -25,7 +25,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
                     array
                     (
                         'count' => count($eventTypesItems),
-                        'text'  => self::$t->translate('Event Type'),
+                        'text'  => $this->translate->translate('Event Type'),
                         'icon'  => 'fa fa-pencil-square-o',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -43,7 +43,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
             (
                 'icon'  => 'icon-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             )
         );
 
@@ -56,10 +56,10 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
                 (
                     'icon'  => 'icon-event_types',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event Types")
+                    'text'  => $this->translate->translate("Event Types")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
 
                 break;
             }
@@ -69,10 +69,10 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
                 (
                     'icon'  => 'icon-event_types',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event Types")
+                    'text'  => $this->translate->translate("Event Types")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Event Type"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Event Type"));
 
                 break;
             }
@@ -82,10 +82,10 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
                 (
                     'icon'  => 'icon-event_types',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => self::$t->translate("Event Types")
+                    'text'  => $this->translate->translate("Event Types")
                 );
 
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Event Type"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Event Type"));
 
                 break;
             }
@@ -104,7 +104,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
             'view'  => array
             (
                 array(
-                    'text'      => self::$t->translate('New Event Type'),
+                    'text'      => $this->translate->translate('New Event Type'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -161,7 +161,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
             {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    self::$t->translate("Event Type created with success"),
+                    $this->translate->translate("Event Type created with success"),
                     "success"
                 );
             }
@@ -192,13 +192,13 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
 
             if ($itemModel->setItem($data, $id) !== FALSE)
             {
-                $response = $this->createAdviseResponse(self::$t->translate("Event Type updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event Type updated with success"), "success");
                 return array_merge($response, $data);
             }
             else
             {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
             }
         }
         else
@@ -221,7 +221,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
             $itemModel = $this->model("event/types/item");
             if ($itemModel->deleteItem($id) !== FALSE)
             {
-                $response = $this->createAdviseResponse(self::$t->translate("Event Type removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event Type removed with success"), "success");
                 return $response;
             }
             else

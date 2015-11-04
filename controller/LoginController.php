@@ -3,6 +3,7 @@ namespace Sysclass\Controllers;
 
 use Phalcon\DI,
 	Sysclass\Models\Users\User,
+	Sysclass\Models\I18n\Language,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class LoginController extends \AbstractSysclassController
@@ -63,6 +64,7 @@ class LoginController extends \AbstractSysclassController
 			$this->putItem("open_login_section", "login");
 		}
 		$this->putItem("requested_uri", $request_uri);
+
 		parent::display('pages/auth/login.tpl');
 	}
 	/**
@@ -83,7 +85,7 @@ class LoginController extends \AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
 					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            //$message_type = 'info';
 					break;
 				}
@@ -143,8 +145,8 @@ class LoginController extends \AbstractSysclassController
 		//$this->putCss("plugins/select2/select2_metro");
 		//$this->putScript("plugins/select2/select2");
 
-        $languages = self::$t->getItems();
-        $this->putitem("languages", $languages);
+        $languages = Language::find("active = 1");
+        $this->putitem("languages", $languages->toArray());
 
 		parent::display('pages/auth/signup.tpl');
 
@@ -193,7 +195,7 @@ class LoginController extends \AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
 					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            //$message_type = 'info';
 					break;
 				}
@@ -211,13 +213,13 @@ class LoginController extends \AbstractSysclassController
         	if ($di->get("configuration")->get("signup_must_approve")) {
         		$this->redirect(
         			"/login", 
-        			self::$t->translate("Your registration has been received. You'll be notified by e-mail when your registration is accepted."),
+        			$this->translate->translate("Your registration has been received. You'll be notified by e-mail when your registration is accepted."),
         			"info"
         		);
         	} else {
         		$this->redirect(
         			"/login", 
-        			self::$t->translate("Your registration has been received. Please check your e-mail for instructions."),
+        			$this->translate->translate("Your registration has been received. Please check your e-mail for instructions."),
         			"success"
         		);
         	}
@@ -225,7 +227,7 @@ class LoginController extends \AbstractSysclassController
         	// SHOW ERROR MESSAGE
     		$this->redirect(
     			"/signup", 
-    			self::$t->translate("A problem ocurred when tried to save you data. Please try again."),
+    			$this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
     			"danger"
     		);
         }
@@ -262,35 +264,35 @@ class LoginController extends \AbstractSysclassController
 			$url = null;
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 
 				case AuthenticationException :: MAINTENANCE_MODE : {
 
-		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-		            $message = self::$t->translate("Username and password are incorrect. Please make sure you typed correctly.");
+		            $message = $this->translate->translate("Username and password are incorrect. Please make sure you typed correctly.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$url = "/lock";
-		            $message = self::$t->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
 		            $message_type = 'info';
 		            break;
 				}
 				default : {
-		            $message = self::$t->translate($e->getMessage());
+		            $message = $this->translate->translate($e->getMessage());
 		            $message_type = 'danger';
 		            break;
 				}
@@ -337,7 +339,7 @@ class LoginController extends \AbstractSysclassController
 
 			$di->get("authentication")->logout($user);
 
-		    $message = self::$t->translate("You have been logout sucessfully. Thanks for using Sysclass.");
+		    $message = $this->translate->translate("You have been logout sucessfully. Thanks for using Sysclass.");
 		    $message_type = 'warning';
 
 			$this->redirect("/login", $message, $message_type);
@@ -382,28 +384,28 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
-			            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-			            $message = self::$t->translate("The system can't locate this account. Please use the form below.");
+			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
 			            $message_type = 'warning';
 						break;
 					}
 					case AuthenticationException :: LOCKED_DOWN : {
-			            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 			            $message_type = 'warning';
 						break;
 					}
 					default : {
-			            $message = self::$t->translate($e->getMessage());
+			            $message = $this->translate->translate($e->getMessage());
 			            $message_type = 'danger';
 			            break;
 					}
@@ -430,22 +432,22 @@ class LoginController extends \AbstractSysclassController
 			$url = "/login";
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: MAINTENANCE_MODE : {
-		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
-		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            $message_type = 'info';
 		            break;
 				}
@@ -456,7 +458,7 @@ class LoginController extends \AbstractSysclassController
 		            $user = $di->get("authentication")->getSessionUser();
 				}
 				default : {
-		            $message = self::$t->translate($e->getMessage());
+		            $message = $this->translate->translate($e->getMessage());
 		            $message_type = 'danger';
 		            break;
 				}
@@ -486,7 +488,7 @@ class LoginController extends \AbstractSysclassController
 	public function loginResetRequest()
 	{
 
-		$message = self::$t->translate("The system doesn't provides this function yet.Please came back in a while.");
+		$message = $this->translate->translate("The system doesn't provides this function yet.Please came back in a while.");
 		$message_type = 'warning';
 		$this->redirect("/login", $message, $message_type);
 		/*
@@ -499,7 +501,7 @@ class LoginController extends \AbstractSysclassController
 		            if ($this->_checkParameter($input, 'email')) { //The user entered an email address
 		                $result = sC_getTableData("users", "login", "email='".$input."'"); //Get the user stored login
 		                if (sizeof($result) > 1) {
-		                    $message = self::$t->translate("There is more than one user with the same data given. Please try to use e-mail or login.");
+		                    $message = $this->translate->translate("There is more than one user with the same data given. Please try to use e-mail or login.");
 		                    $message_type = 'warning';
 		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
 							$this->redirect("login/reset", $message, $message_type);
@@ -514,7 +516,7 @@ class LoginController extends \AbstractSysclassController
 		                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode(_LDAPUSERMUSTCONTACTADMIN.$GLOBALS['configuration']['system_email']).'&message_type=failure');
 		            } else {
 		                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
-		                $message = self::$t->translate("Within minutes, you will receive an email with instructions to set your new password.");
+		                $message = $this->translate->translate("Within minutes, you will receive an email with instructions to set your new password.");
 		                $message_type = 'success';
 		                if ($_SESSION['login_mode'] != 1) {
 		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='..'&message_type='.);

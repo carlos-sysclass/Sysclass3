@@ -27,7 +27,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                 'content' => array(
                     array(
                         'count' => count($items),
-                        'text'  => self::$t->translate('Lessons'),
+                        'text'  => $this->translate->translate('Lessons'),
                         'icon'  => 'fa fa-file',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -43,25 +43,25 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             array(
                 'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
-                'text'  => self::$t->translate("Home")
+                'text'  => $this->translate->translate("Home")
             ),
             array(
                 'icon'  => 'fa fa-file',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => self::$t->translate("Lesson")
+                'text'  => $this->translate->translate("Lesson")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch ($request) {
             case "view":
-                $breadcrumbs[] = array('text'   => self::$t->translate("View"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             case "add":
-                $breadcrumbs[] = array('text'   => self::$t->translate("New Lesson"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Lesson"));
                 break;
             case "edit/:id":
-                $breadcrumbs[] = array('text'   => self::$t->translate("Edit Lesson"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Lesson"));
                 break;
         }
         return $breadcrumbs;
@@ -75,7 +75,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => self::$t->translate('New Lesson'),
+                    'text'      => $this->translate->translate('New Lesson'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -110,9 +110,9 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
 
 
-                $languages = $self::$t->getItems();
+                $languages = $$this->translate->getItems();
 
-                $userLanguageCode = $self::$t->getUserLanguageCode();
+                $userLanguageCode = $$this->translate->getUserLanguageCode();
 
 
 
@@ -139,9 +139,9 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
             /*,
             'lessons.content.text' => function($data, $self) {
-                $items = $self::$t->getItems();
+                $items = $$this->translate->getItems();
 
-                $userLanguageCode =  $self::$t->getUserLanguageCode();
+                $userLanguageCode =  $$this->translate->getUserLanguageCode();
 
                 $self->putItem("lessons_content_text_user_language", $userLanguageCode);
                 $self->putItem("lessons_content_text_languages", $items);
@@ -256,11 +256,11 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse(self::$t->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse(self::$t->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
         }
         return array_merge($response, $info);
     }
@@ -395,9 +395,9 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $data = $this->getHttpData(func_get_args());
 
         if ($itemsCollection->setContentOrder($lesson_id, $data['position'])) {
-            return $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
         } else {
-            return $this->invalidRequestError(self::$t->translate($messages['success']), "success");
+            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
 
@@ -478,11 +478,11 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             ))->getItems();
 
             if (count($files) > 0 && $itemModel->deleteItem($file_id) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate("File removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("File removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -547,7 +547,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $data['language_code'] = self::$t->getUserLanguageCode();
+                $data['language_code'] = $this->translate->getUserLanguageCode();
 
                 $_GET['redirect'] = "0";
             } elseif ($model == "question-content") {
@@ -564,12 +564,12 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data['login'] = $userData['login'];
             if (($data['id'] = $itemModel->addItem($data)) !== false) {
                 if ($_GET['redirect'] === "0") {
-                    $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                     return array_merge($response, $data);
                 } else {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        self::$t->translate($messages['success']),
+                        $this->translate->translate($messages['success']),
                         "success"
                     );
                 }
@@ -607,10 +607,10 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $exerciseModel = Exercise::findFirstById($data['id']);
 
             if ($exerciseModel->setAnswers($answers, $user->id)) {
-                return $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                return $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -642,12 +642,12 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             }
 
             if ($itemModel->setItem($data, $id) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 $data = $itemModel->getItem($id);
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -679,11 +679,11 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->deleteItem($id) !== false) {
-                $response = $this->createAdviseResponse(self::$t->translate($messages['success']), "success");
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError(self::$t->translate($messages['error']), "error");
+                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -707,7 +707,7 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
         $lang_codes = $translateModel->getDisponibleLanguagesCodes();
 
         if (!is_array($http_data) && !in_array($http_data['to'], $lang_codes)) {
-            return $this->invalidRequestError(self::$t->translate(""));
+            return $this->invalidRequestError($this->translate->translate(""));
         }
         if (!in_array($http_data['from'], $lang_codes)) {
             $http_data['from'] = $translateModel->getUserLanguageCode();
@@ -744,15 +744,15 @@ class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable
 
                     $contentData['id'] = $itemModel->addItem($contentData);
 
-                    $response = $this->createAdviseResponse(self::$t->translate("File translated with success"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("File translated with success"), "success");
                     return array_merge($response, $contentData);
 
                 }
                 exit;
             }
-            return $this->invalidRequestError(self::$t->translate("The system can't translate this content. Please try again"), "info");
+            return $this->invalidRequestError($this->translate->translate("The system can't translate this content. Please try again"), "info");
         } else {
-            return $this->invalidRequestError(self::$t->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
+            return $this->invalidRequestError($this->translate->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
         }
 
 

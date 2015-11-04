@@ -19,7 +19,7 @@ class AgreementController extends \AbstractSysclassController
         $user_language = $currentUser->getLanguage()->code;
 
         if (!parent::template_exists("pages/agreement/{$user_language}.tpl")) {
-            $user_language = self::$t->getSystemLanguageCode();
+            $user_language = $this->translate->getSystemLanguageCode();
         } else {
             //parent::display('pages/agreement/default.tpl');
         }

@@ -1,6 +1,7 @@
 <?php
 use Phalcon\Mvc\Router\Annotations as Router,
-	Phalcon\Mvc\Dispatcher as MvcDispatcher;
+	Phalcon\Mvc\Dispatcher as MvcDispatcher,
+    Phalcon\Mvc\Dispatcher\Exception as MvcDispatcherException;
 
 $di->set('router', function () use ($environment) {
 	// Create the router without default routes
@@ -64,26 +65,24 @@ $di->set('dispatcher', function () use ($eventsManager, $di) {
         }
     });
     */
-    /*
-    $eventsManager->attach("dispatch:beforeExecuteRoute", function ($event, $dispatcher) use ($di) {
-        // Possible controller class name
-        // HANDLE POSSIBLE CASE OF DISPATCHING MODULES
-                    var_dump($dispatcher-> getHandlerClass());
-                    var_dump($dispatcher-> getActionName());
-                    var_dump($dispatcher->  getParams());
+   /*
+    $eventsManager->attach("dispatch:beforeException", function ($event, $dispatcher) use ($di) {
+        $exceptionObject = $event-> getData();
+        var_dump($event);
+        if (!$dispatcher->wasForwarded() && $exceptionObject instanceof MvcDispatcherException) {
+            $forward = array(
+                "namespace" => 'Sysclass\Modules',
+                "controller" => sprintf('%1$s\%1$sModule', ucfirst($dispatcher-> getActionName())),
+                "action" => "noAnnotationRouteFound"
+            );
 
-                        $reader = new Phalcon\Annotations\Adapter\Memory();
-                        // Reflect the annotations in the class Example
-                        $reflector = $reader->get($dispatcher-> getHandlerClass());
-                        // Read the annotations in the class' docblock
-                        $annotations = $reflector->getMethodsAnnotations();
+            $dispatcher->setNamespaceName($forward['namespace']);
+            $dispatcher->setControllerName($forward['controller']);
+            $dispatcher->setActionName($forward['action']);
+            $dispatcher->setParams($dispatcher->getParams());
 
-                        var_dump($annotations['getItemRequest']);
-
-
-                    
-                    var_dump($di->get('router')->getMatchedRoute());
-            exit;
+            $dispatcher->dispatch();
+        }
     });
     */
     $dispatcher = new MvcDispatcher();

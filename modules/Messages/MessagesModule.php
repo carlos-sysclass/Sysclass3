@@ -26,9 +26,9 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
             'type'  => 'primary',
             //'count' => count($data),
             'count' => $total,
-            'text'  => self::$t->translate('Messages'),
+            'text'  => $this->translate->translate('Messages'),
             'link'  => array(
-                'text'  => self::$t->translate('View'),
+                'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . 'inbox'
             )
         );
@@ -112,14 +112,14 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
     		$menuItem = array(
     			'icon' 		=> 'envelope',
     			'notif' 	=> $total,
-    			'text'		=> self::$t->translate('You have %s new messages', $total),
+    			'text'		=> $this->translate->translate('You have %s new messages', $total),
     			'external'	=> array(
     				'link'	=> $this->getBasePath() . "inbox",
-    				'text'	=> self::$t->translate('See all messages')
+    				'text'	=> $this->translate->translate('See all messages')
     			),
                 'link'  => array(
                     'link'  => $this->getBasePath() . "inbox",
-                    'text'  => self::$t->translate('Messages')
+                    'text'  => $this->translate->translate('Messages')
                 ),
     			'type'		=> 'inbox',
     			'items'		=> $items,
@@ -170,8 +170,8 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
 
             foreach($groupsRS as $group) {
                 $widgets[$widgetsNames[$group->id]] = array(
-                    //'title'     => self::$t->translate($group['name']),
-                    'header'    => self::$t->translate($group->name),
+                    //'title'     => $this->translate->translate($group['name']),
+                    'header'    => $this->translate->translate($group->name),
                     'template'  => $this->template("contact-list.widget"),
                     'icon'      => $group->icon,
                     'panel'     => 'dark-blue messages-panel',
@@ -216,11 +216,11 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
                 }
 
                 return $this->createAdviseResponse(
-                    self::$t->translate("Message created with success. You can follow thge message in your inbox."),
+                    $this->translate->translate("Message created with success. You can follow thge message in your inbox."),
                     "success"
                 );
             } else {
-                $response = $this->createAdviseResponse(self::$t->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 return $response;
             }
         } else {
@@ -279,7 +279,7 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
             //} else {
                 $item           = array();
                 $item['id']     = $recp['recipient_id'];
-                $item['text']   = self::$t->translate($recp['title']);
+                $item['text']   = $this->translate->translate($recp['title']);
 
                 //if ($recp['qm_type'] == 'link') {
                 //    $item['href'] = $recp['link'];
@@ -332,13 +332,13 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
         //$form -> addElement('hidden', 'email', $_GET['email']);
         //$form -> addElement('hidden', 'name', $_GET['name']);
 
-        $form -> addElement('text', 'subject', self::$t->translate("Subject"), 'class = "form-control placeholder-no-fix"');
-        $form -> addElement('textarea', 'body', self::$t->translate("Message Body"), 'class = "wysihtml5 form-control placeholder-no-fix"');
+        $form -> addElement('text', 'subject', $this->translate->translate("Subject"), 'class = "form-control placeholder-no-fix"');
+        $form -> addElement('textarea', 'body', $this->translate->translate("Message Body"), 'class = "wysihtml5 form-control placeholder-no-fix"');
         //$form -> addElement('checkbox', 'email', _SENDASEMAILALSO, null, 'class = "inputCheckBox"');
         //$form -> addRule('subject',   _THEFIELD.' "'._SUBJECT.'" '._ISMANDATORY,   'required', null, 'client');
         //$form -> addRule('recipients',   _THEFIELD.' "'._RECIPIENTS.'" '._ISMANDATORY,   'required', null, 'client');
-        $form -> addElement('file', 'attachment[0]', self::$t->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
-        //$form -> addElement('file', 'attachment[1]', self::$t->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
+        $form -> addElement('file', 'attachment[0]', $this->translate->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
+        //$form -> addElement('file', 'attachment[1]', $this->translate->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
         $form -> addElement('submit', 'submit_mail', _SEND);
         */
         //$contactList = $this->getUserContactList();
@@ -370,7 +370,7 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
             //$list = implode(",",$mail_recipients);
 
             if (count($user_recipients) == 0) {
-                $message      = self::$t->translate("No recipients defined");
+                $message      = $this->translate->translate("No recipients defined");
                 $message_type = 'failure';
             } else {
                 $pm = new sC_PersonalMessage($current_user->user['login'], $user_recipients, $values['subject'], $values['body'], true);
@@ -438,7 +438,7 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
 
                     foreach ($mail_recipients as $key => $mail) {
                         // PREPEND USER NAME MESSAGE
-                        $email_body = self::$t->translate(
+                        $email_body = $this->translate->translate(
                             sprintf("Mensagem de: %s <strong>(%s)</strong> &lt;%s&gt;", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
                                 "\n<br />" .
                                 "Matriculado nos seguintes cursos/disciplinas:\n<br />" .
@@ -463,7 +463,7 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
                 }
 
                 if ($result && $pm -> send($values['email'])) { // DO NOT SEND EMAIL
-                    $message      = self::$t->translate("Your message was successfully sent.");
+                    $message      = $this->translate->translate("Your message was successfully sent.");
                     $message_type = 'success';
                 } else {
                     $message      = $pm -> errorMessage;

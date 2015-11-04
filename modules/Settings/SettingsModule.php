@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Settings;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Users\Settings;
+use Sysclass\Models\System\Settings as SystemSettings, 
+    Sysclass\Models\Users\Settings;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -13,12 +14,32 @@ use Sysclass\Models\Users\Settings;
 /**
  * @RoutePrefix("/module/settings")
  */
-class SettingsModule extends \SysclassModule
+class SettingsModule extends \SysclassModule implements \ILinkable
 {
     protected $legalValues = array();
     protected $defaults = array();
 
-    public function initialize() {
+    /* ILinkable */
+    public function getLinks() {
+        //$data = $this->getItemsRequest();
+        
+        if ($this->acl->isUserAllowed(null, $this->module_id, "Manage")) {
+            return array(
+                'administration' => array(
+                    array(
+                        //'count' => count($items),
+                        'text'  => $this->translate->translate('System Settings'),
+                        'icon'  => 'fa fa-code-fork',
+                        'link'  => $this->getBasePath() . 'manage'
+                    )
+                )
+            );
+        }
+    }
+
+
+    
+    public function init() {
         parent::init();
 
         $this->legalValues = array(
@@ -146,6 +167,130 @@ class SettingsModule extends \SysclassModule
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Returns a JSON string object to the browser when hitting the root of the domain
+     *
+     * @Get("/manage")
+     * @allow(resource=settings, action=manage)
+     */
+    public function managePage() {
+        // THE ANNOUTATION PERMISSION IS NOT NOW WORKING NOW.
+        if ($this->isResourceAllowed()) {
+
+            $settingsRS = SystemSettings::find(
+                array(
+                    'conditions' => 'changeable = 1',
+                    'order' => '[group] ASC, label ASC, name ASC'
+                )
+            );
+
+            $settings = $settingsRS->toArray();
+
+            $groups = array_unique(array_column($settings, "group"));
+            
+            $this->putData(array(
+                "system_settings_groups" => $groups,
+                "system_settings" => $settings
+            ));
+            
+            return $this->handleDefaultRequest();
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+    /**
+     * Returns a JSON string object to the browser when hitting the root of the domain
+     *
+     * @Get("/item/me")
+     */
+    public function globalSettingsRequest() {
+        $settingsRS = SystemSettings::find(
+            array(
+                'conditions' => 'changeable = 1',
+                'order' => '-[group] DESC, label ASC, name ASC'
+            )
+        );
+
+        $settings = array();
+        foreach($settingsRS as $set) {
+            $settings[$set->name] = $set->value;
+        }
+
+        return $settings;
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Post("/item/{model}")
+     */
+    public function addItemRequest($model)
+    {
+        $this->response->setContentType('application/json', 'UTF-8');
+
+        if ($this->isResourceAllowed()) {
+            // TODO CHECK IF CURRENT USER CAN DO THAT
+            
+            $data = $this->request->getJsonRawBody(true);
+
+            if (!array_key_exists($model, $this->model_info)) {
+                $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
+
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $this->response->setJsonContent(
+                    array_merge($response, $data)
+                );
+                return true;
+            }
+            $model_info = $this->model_info[$model];
+            
+            $model_class = $model_info['class'];
+
+            //$this->eventsManager->collectResponses(true);
+            $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
+
+            foreach($data as $key => $value) {
+                $itemModel = $model_class::findFirst(array(
+                    'conditions' => "name = ?0 AND changeable = 1",
+                    'bind' => array($key)
+                ));
+
+                if ($itemModel) {
+                    $itemModel->value = (string) $value;
+
+                    $itemModel->update();
+                }
+            }
+            
+
+            $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
+                
+            if ($this->request->hasQuery('object')) {
+                $this->response->setJsonContent(
+                    $this->createAdviseResponse(
+                        $this->translate->translate("System settings saved with success!"),
+                        "success"
+                    )
+                );
+            } else {
+                $this->response->setJsonContent(
+                    $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $itemModel->id,
+                        $this->translate->translate("System settings saved with success!"),
+                        "success"
+                    )
+                );
+            }
+            return true;
+        } else {
+            $this->response->setJsonContent(
+                $this->notAuthenticatedError()
+            );
+            return true;
         }
     }
 
