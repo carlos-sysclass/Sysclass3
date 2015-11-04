@@ -27,3 +27,4 @@ models:
   me:
     class: Sysclass\Models\Calendar\Event
     exportMethod: ["toFullArray", []]
+  "event-sources": Sysclass\Models\Calendar\Sources

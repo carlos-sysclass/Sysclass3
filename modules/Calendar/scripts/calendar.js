@@ -2,13 +2,12 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	mod.addInitializer(function() {
 
-		this.collection = new Backbone.Collection;
-		this.collection.url = "/module/calendar/data";
+		//this.collection = new Backbone.Collection;
+		//this.collection.url = "/module/calendar/data";
 
 	  	// VIEWS
 	  	var viewClass = Backbone.View.extend({
-		    el: $('#calendar'),
-		    portlet: $('#calendar-widget'),
+		    //portlet: $('#calendar-widget'),
 		    calendarDialog : $('#calendar-dialog'),
 		    calendarCreateDialog : $('#calendar-create-dialog'),
 		    calOptions : {},
@@ -20,7 +19,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 				var h = {};
 
 	            if (App.isRTL()) {
-	                if (this.portlet.width() <= 720) {
+	                if (this.$el.width() <= 720) {
 	                    h = {
 	                        right: 'title, prev, next',
 	                        center: '',
@@ -34,7 +33,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    };
 	                }
 	            } else {
-	                 if (this.portlet.width() <= 720) {
+	                 if (this.$el.width() <= 720) {
 	                    h = {
 	                        left: 'title, prev, next',
 	                        center: '',
@@ -44,7 +43,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    h = {
 	                        left: 'title',
 	                        center: '',
-	                        right: 'prev,next,today,month,agendaWeek'
+	                        right: 'prev,next,today,month,agendaWeek,timelineView'
 	                    };
 	                }
 	            }
@@ -53,11 +52,9 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	            { //re-initialize the calendar
 	                header: h,
 	                slotMinutes: 15,
-	                selectable: false,
 	                editable: false,
-	                droppable: false,
                     eventSources: [
-                        '/module/calendar/items/calendar'
+                        '/module/calendar/datasource/calendar'
 	                ],
                     eventDataTransform : function( eventData ) {
                         if (/^-?[\d.]+(?:e-?\d+)?$/.test(eventData.id)) {
@@ -66,12 +63,14 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                         }
                         return eventData;
                     },
-                    /*
 	                eventClick : function(event, jsEvent, view)
 	                {
+	                	console.warn(event);
+	                	mod.view.calendarDialog.find(".event-title").html(event.title);
 	                	mod.view.calendarDialog.find(".event-description").html(event.description);
 	                	mod.view.calendarDialog.modal('show');
 	                },
+	                /*
 	                dayClick: function(date, jsEvent, view)
 	                {
 	                	mod.view.calendarCreateDialog.find("#date").val(date.toISOString().slice(0, 10));
@@ -80,76 +79,51 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
                     */
 	            };
 
+
+	            this.$(":input[name='event_type']").change(function(e,a,b,c,d) {
+	            	var data = e.added;
+	            	this.$(".fc-event").show();
+	            	if (!_.isEmpty(data.id)) {
+	            		var class_name = data.id;
+						console.warn(this.$(".fc-event").filter("." + class_name));
+
+						this.$(".fc-event").not("." + class_name).hide();
+	            	}
+
+	            }.bind(this));
+
 		        this.render();
 		    },
 		    render: function() {
-				this.$el.fullCalendar('destroy'); // destroy the calendar
-                if (this.portlet.width() <= 720) {
-                    this.$el.addClass("mobile");
+				this.$("#calendar").fullCalendar('destroy'); // destroy the calendar
+                if (this.$el.width() <= 720) {
+                    this.$("#calendar").addClass("mobile");
                 } else {
-                    this.$el.removeClass("mobile");
+                    this.$("#calendar").removeClass("mobile");
                 }
-		        this.$el.fullCalendar(this.calOptions);
+                //console.warn(this.calOptions);
+		        this.$("#calendar").fullCalendar(this.calOptions);
 		    }
 	  	});
 
-		this.view = new viewClass();
+		this.view = new viewClass({
+			el: '#calendar-widget'
+		});
+
+		mod.view.$(".portlet-sidebar .close").on("click", function() {
+			mod.view.$(".portlet-sidebar").hide();
+		});
+
+		mod.onFilter = function() {
+			mod.view.$(".portlet-sidebar").toggle();
+		}
+
+		
+
 		this.searchBy = "title";
-        $('.fc-button-prev').click
-        (
-        	function()
-        	{
-        		$('#calendar').fullCalendar('removeEventSource');
-            	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
-        		$('#calendar').fullCalendar('removeEvents');
-
-	         	var listOptions;
-		        var i;
-
-		        listOptions = document.getElementById("event-to-filter").options;
-
-			    $(".select2-chosen").html("All");
-	     		//$("#event-to-filter").val("0");
-
-	     		for(i = 0; i < listOptions.length; i++)
-        		{
-        			listOptions[i].selected = false;
-
-				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
-					$('#calendar').fullCalendar('removeEvents');
-				}
-
-        		listOptions[0].selected = true;
-			}
-		);
-
-		$('.fc-button-next').click
-		(
-			function()
-			{
-				$('#calendar').fullCalendar('removeEventSource');
-            	//$('#calendar').fullCalendar('removeEventSource', '/module/events/data/0');
-        		$('#calendar').fullCalendar('removeEvents');
-
-				var listOptions;
-		        var i;
-
-		        listOptions = document.getElementById("event-to-filter").options;
-
-			    $(".select2-chosen").html("All");
-	     		//$("#event-to-filter").val("0");
-
-	     		for(i = 0; i < listOptions.length; i++)
-        		{
-        			listOptions[i].selected = false;
-
-				    $('#calendar').fullCalendar('removeEventSource', '/module/events/data/' + i);
-					$('#calendar').fullCalendar('removeEvents');
-				}
-
-        		listOptions[0].selected = true;
-			}
-		);
+        $('.fc-prev-button, .fc-next-button, .fc-today-button').click(function() {
+			this.$(":input[name='event_type']").val();
+		});
         /*
         jQuery("#event-to-filter").change
         (

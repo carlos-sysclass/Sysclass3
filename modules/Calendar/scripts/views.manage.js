@@ -200,7 +200,7 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                     googleCalendarApiKey: 'AIzaSyAFwmTQ7O_yp6ZsFTWkejI9S7l0RqYQkTo',
                     eventSources : [
                         {
-                            url: "/module/calendar/items/calendar",
+                            url: "/module/calendar/datasource/calendar",
                         },
                         {
                             googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',

@@ -13,9 +13,6 @@
    {/if}
    {if isset($T_DATA.tools)}
    <div class="tools">
-      {if isset($T_DATA.tools.filter)}
-         <a class="filter glyphicon glyphicon-filter" href="javascript:void(0);"></a>
-      {/if}
       {if isset($T_DATA.tools.search)}
          <a class="search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-trigger="manual" data-inject-selector="{$T_DATA.id}-search-form" href="javascript:;"></a>
 
@@ -43,6 +40,10 @@
                   </div>
                </form> 
          </div>
+      {/if}
+      {if isset($T_DATA.tools.filter)}
+         <a class="filter glyphicon glyphicon-filter" href="javascript:void(0);">
+         </a>
       {/if}
       {if isset($T_DATA.tools.collapse)}
       <a class="collapse" href="javascript:;"></a>

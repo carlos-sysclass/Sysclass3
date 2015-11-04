@@ -53,22 +53,34 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
     public function getWidgets($widgetsIndexes = array())
     {
         $this->putComponent("select2");
+        $this->putComponent("wysihtml5");
 
         //$this->putModuleScript("widget.news");
 
         if (in_array('calendar', $widgetsIndexes))
         {
             $this->putComponent("fullcalendar");
-        	//$this->putScript("scripts/calendar");
+        	//$this->putScript("scripts/fullcalendar.timelineview");
             $this->putModuleScript("calendar");
+
+            $sources = CalendarSource::find();
+
+            $this->putItem("calendar_sources", $sources->toArray());
+
 
             $widgets['calendar'] = array(
                 'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'calendar-widget',
                 'title'     => $this->translate->translate('Calendar'),
-                'template'  => $this->template("calendar.block"),
+                'template'  => $this->template("widgets/calendar"),
                 'icon'      => 'calendar',
-                'box'       => 'dark-blue calendar'
+                'box'       => 'dark-blue calendar', 
+                'tools'     => array(
+                    'filter'        => true
+                    //'reload'      => 'javascript:void(0);',
+                    //'collapse'      => true,
+                    //'fullscreen'    => true
+                )
             );
         }
 
@@ -181,7 +193,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
     public function addEventSourcePage()
     {
         // MUST SHOW ALL AVALIABLE CALENDARS TYPES
-        $this->createClientContext("event-source/add");
+        //$this->createClientContext("event-source/add");
         if (!$this->createClientContext("event-source/add")) {
             $this->entryPointNotFoundError($this->getSystemUrl('home'));
         }
@@ -191,25 +203,15 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
     /**
      * [ add a description ]
      *
-     * @Get("/items/event-sources")
-     */
-
-    public function eventSourcesRequest() {
-        return CalendarSource::find()->toArray();
-
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/items/calendar")
+     * @Get("/datasource/calendar")
+     * @allow(resource=calendar, action=view)
      */
     public function calendarListRequest()
     {
         $currentUser    = $this->getCurrentUser();
 
-        $start = date_create_from_format("Y-m-d", $_GET['start']);
-        $end = date_create_from_format("Y-m-d", $_GET['end']);
+        $start = date_create_from_format("Y-m-d", $this->request->getQuery('start'));
+        $end = date_create_from_format("Y-m-d", $this->request->getQuery('end'));
 
         $eventRS = Event::find(array(
             'conditions' => 'start BETWEEN ?0 AND ?1 OR [end] BETWEEN ?0 AND ?1',
@@ -220,6 +222,8 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
 
         $items = array();
 
+        $editable = $this->acl->isUserAllowed(null, "calendar", "Edit");
+
         foreach($eventRS as $evt)
         {
             $evtArray = $evt->toFullArray();
@@ -227,7 +231,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
 
             $evtArray['className'] = $evt->calendarSource->class_name;
             $evtArray['allDay'] = true;
-            $evtArray['editable'] = true;
+            $evtArray['editable'] = $editable;
             //$evtArray['start'] = "2015-09-19";
             $items[] = $evtArray;
             /*array
