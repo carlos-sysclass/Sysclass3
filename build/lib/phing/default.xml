@@ -232,6 +232,7 @@ ftp-htaccess targets, for instance.
             <arg path="${src.dir}"/>
         </exec>
         <xslt file="${build.logs.dir}/phploc.xml" tofile="${build.dist.dir}/phploc.html" style="${build.lib.dir}/phploc/table.xslt" overwrite="true" />
+        <copy file="${build.logs.dir}/phploc.xml" tofile="${build.dist.dir}/phploc.xml" overwrite="true" />
     </target>
 
     <target name="lint" depends="init" description="Check files for syntax errors">
