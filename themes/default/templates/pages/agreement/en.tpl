@@ -1,6 +1,5 @@
 {extends file="layout/agreement.tpl"}
 
-
 {block name="inner-content"}
 	<h3 class="block form-section">Terms of Use ("Terms")</h3>
 	<div class="agreement-container form-group">

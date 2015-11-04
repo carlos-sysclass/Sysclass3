@@ -1281,3 +1281,18 @@ button.calendar-news-item {
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {
     font-size: 16px;
 }
+
+.portlet-sidebar {
+    background: #f8f8f8 none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 36px;
+    z-index: 101;
+}
+
+.fc-toolbar .fc-right {
+    position: relative;
+    right: 25px;
+}

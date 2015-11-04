@@ -4,7 +4,6 @@
 <script src="/assets/default/plugins/respond.min.js"></script>
 <script src="/assets/default/plugins/excanvas.min.js"></script>
 <![endif]-->
-
 <ul id="tlyPageGuide">
     <li class="tlypageguide_left hidden-xs" data-tourtarget="#users-panel">
         <div>

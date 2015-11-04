@@ -1,18 +1,24 @@
-<div id="calendar"></div>
-
-<div id="event-filter" style="margin-top: 10px; margin-left: 2px;">
-	<form id="form-filter-events" role="form" class="form-validate">
+<div class="row">
+	<div class="col-md-2 portlet-sidebar">
+		<h4 class="section-title">{translateToken value="Filter Options"}
+			<a href="javascript:void(0);" class="close btn-xs pull-right">
+				<i class="fa fa-times"></i>
+			</a>
+		</h4>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Filter Event Type"}</label>
-			<select id="event-to-filter" class="select2-me form-control" name="event_type" data-url="/module/event_types/items/me/combo">
-				<option value="0">{translateToken value="All"}</option>
-				{foreach $T_EVENT_TYPES as $id => $name}
-					<option value="{$id}">{$name}</option>
+			<label class="control-label">{translateToken value="Event Source"}</label>
+			<select class="select2-me form-control" name="event_type">
+				<option value="">{translateToken value="All"}</option>
+				{foreach $T_CALENDAR_SOURCES as $source}
+					<option value="{$source.class_name}">{$source.name}</option>
 				{/foreach}
-
 			</select>
 		</div>
-	</form>
+	</div>
+	<div class="col-md-12">
+		<div id="calendar"></div>
+	</div>
+
 </div>
 
 <div class="modal fade" id="calendar-dialog" tabindex="-1" role="basic" aria-hidden="true" data-animation="false">
@@ -20,7 +26,9 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h4 class="modal-title event-title">{translateToken value="Event Details"}</h4>
+				<h4 class="modal-title">
+					<i class="fa fa-calendar"></i>
+					{translateToken value="Event Details"}: <small class="event-title"></small></h4>
 			</div>
 			<div class="modal-body">
 				<div class="event-description"></div>
