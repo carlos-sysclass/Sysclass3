@@ -696,8 +696,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->putItem("FORM_ACTIONS", $form_actions);
         */
 
-        $languages = $this->translate->getItems();
-        $this->putitem("languages", $languages);
+        $languages = Language::find();
+        $this->putitem("languages", $languages->toArray());
 
         $timezones = Timezones::findAll();
         $this->putitem("timezones", $timezones);
