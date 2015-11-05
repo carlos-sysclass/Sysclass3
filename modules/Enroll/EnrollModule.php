@@ -30,8 +30,6 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider
                 $block_context = $self->getConfig("blocks\\enroll.user.block\context");
                 $self->putItem("enroll_user_block_context", $block_context);
 
-
-
                 $self->putSectionTemplate("enroll", "blocks/enroll.user");
 
                 return true;

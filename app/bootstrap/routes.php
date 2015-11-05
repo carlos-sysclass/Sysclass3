@@ -9,10 +9,11 @@ $di->set('router', function () use ($environment) {
 
 	$router->setControllerSuffix("");
 
+    $router->addResource("Sysclass\Controllers\ApiController", "/api");
 	$router->addResource("Sysclass\Controllers\LoginController");
 	$router->addResource("Sysclass\Controllers\DashboardController");
 	$router->addResource("Sysclass\Controllers\AgreementController");
-
+    
     $moduledir = $environment["path/modules"];
 
     $modulesList = scandir($moduledir);
