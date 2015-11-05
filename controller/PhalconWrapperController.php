@@ -21,9 +21,9 @@ abstract class PhalconWrapperController extends Controller
 
     public function initialize()
     {
-		if (is_null(self::$t)) {
-			self::$t = $this->translate;
-		}
+		//if (is_null(self::$t)) {
+		//	self::$t = $this->translate;
+		//}
 
 		$styleSheets = $this->environment["resources/css"];
 

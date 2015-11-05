@@ -54,7 +54,8 @@ $di->setShared('translate', function () use ($di) {
     //$languageModel = Sysclass\Models\I18n\Language::findFirstByCode($language_code);
 
     $translator->setSource($language_code);
-    
+
+ 
     return $translator;
 });
 

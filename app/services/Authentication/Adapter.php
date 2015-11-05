@@ -9,6 +9,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UsersGroups,
+    Sysclass\Models\Users\UserApiTokens,
     Sysclass\Models\Users\UserTimes;
 
 class Adapter extends Component implements IAuthentication /* , EventsAwareInterface */
@@ -19,14 +20,15 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
         $this->_eventsManager = $eventsManager;
     }
     */
+    protected $userTime = null;
+    protected $userToken = null;
+
+
     public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
         // ALWAYS AUTHORIZE LOGIN CONTROLLER
-        if ($this->dispatcher -> getControllerName() == "login_controller") {
+        if (in_array($this->dispatcher->getControllerName(), array("login_controller", "api_controller"))) {
             return true;
         }
-        
-        //$this->dispatcher-> getControllerName()
-
 
         // INJECT HERE SESSION AUTHORIZATION CODE
         try {
@@ -58,6 +60,28 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
                     $url = "/lock";
                     $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
                     $message_type = 'info';
+                    break;
+                }
+                case AuthenticationException :: API_TOKEN_TIMEOUT : {
+                    $message = $this->translate->translate("Your token has expired. Please generate a new one");
+                    $message_type = 'info';
+                    $this->response->setJsonContent(array(
+                        'error'         => true,
+                        'message'       => $message,
+                        'message_type'  => $message_type,
+                    ));
+                    return false;
+                    break;
+                }
+                case AuthenticationException :: API_TOKEN_NOT_FOUND : {
+                    $message = $this->translate->translate("Token invalid. Please generate a new one");
+                    $message_type = 'danger';
+                    $this->response->setJsonContent(array(
+                        'error'         => true,
+                        'message'       => $message,
+                        'message_type'  => $message_type,
+                    ));
+                    return false;
                     break;
                 }
                 default : {
@@ -190,7 +214,11 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
             // 1.5 Check for account restrictions (like IP access, 2-way authetication)
             // TODO
             //
-            $this->registerSession($user);
+            if (array_key_exists('useSecretKey', $options) && $options['useSecretKey'] == TRUE) {
+                $user->token = $this->registerToken($user);
+            } else {
+                $this->registerSession($user);
+            }
 
             //$this->_eventsManager->collectResponses(true);
             $this->_eventsManager->fire("authentication:afterLogin", $this, $user);
@@ -369,10 +397,75 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
 
             $this->_eventsManager->fire("authentication:afterCheckAccess", $this, $user);
         } else {
+            // TRY WITHOUT SESSION, JUST TOKEN
+                        
+                        //exit;
+
+            if (is_null($info)) {
+                $info = array(
+                    'login' => $this->request->getServer('PHP_AUTH_USER'),
+                    'secret_key' => $this->request->getServer('PHP_AUTH_PW'),
+                    'token' => $this->request->getHeader('X-SC-HEADER')
+                );
+            }
+
+            if (
+                array_key_exists('token', $info) && 
+                !empty($info['login']) &&
+                !empty($info['secret_key'])
+            ) {
+                $userToken = UserApiTokens::findFirst(array(
+                    'conditions' => 'token = ?0 AND expired = 0',
+                    'bind' => array($info['token'])
+                ));
+
+                if ($userToken) {
+                    if (
+                        ((time() - $userToken->started) > $this->environment->api->token_timeout) ||
+                        ((time() - $userToken->ping) > $this->environment->api->ping_timeout)
+                    ) {
+                        $userToken->expired = 1;
+                        $userToken->save();
+
+                        throw new AuthenticationException("API_TOKEN_TIMEOUT", AuthenticationException::API_TOKEN_TIMEOUT);
+                    }
+
+                    $user = User::findFirst(array(
+                        'conditions' => 'id = ?0 AND login = ?1',
+                        'bind' => array($userToken->user_id, $info['login'])
+                    ));
+
+                    if (!$user) {
+                        throw new AuthenticationException("API_TOKEN_INVALID", AuthenticationException::API_TOKEN_INVALID);
+                    }
+
+                    $backend = $this->getBackend($user);
+
+                    if ($backend && $backend->checkSecretKey($info['secret_key'], $user)) {
+                        $userToken->ping = time();
+                        
+                        $userToken->expires = min(
+                            $userToken->started + $this->environment->api->token_timeout, 
+                            $userToken->ping + $this->environment->api->ping_timeout
+                        );
+
+                        $userToken->save();
+
+                        $this->userToken = $userToken;
+                        return $user;
+                    }
+                } else {
+                    throw new AuthenticationException("API_TOKEN_NOT_FOUND", AuthenticationException::API_TOKEN_NOT_FOUND);
+                }
+            }
             throw new AuthenticationException("NO_USER_LOGGED_IN", AuthenticationException::NO_USER_LOGGED_IN);
         }
 
         return false;
+    }
+
+    public function getUserToken() {
+        return $this->userToken;
     }
 
     protected function getSession() {
@@ -399,12 +492,37 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
 
     }
 
+    protected function registerToken(User $user) {
+        //$this->session()
+        $token = $this->security->computeHmac(
+            $user->login . "-" . microtime(true),
+            $user->api_secret_key . $this->environment->api->hash,
+            'sha256'
+        );
+
+        $userTimes = UserApiTokens::findFirstByToken($token);
+        if ($userTimes) {
+            $userTimes->delete();
+        }
+
+        $userTimes = new UserApiTokens();
+        $userTimes->token = $token;
+        $userTimes->user_id = $user->id;
+        $userTimes->started = time();
+        $userTimes->ping = time();
+        $userTimes->save();
+
+        //$this->session->set('session_index', $userTimes->id);
+
+        return $token;
+    }
+
     protected function registerSession(User $user) {
         //$this->session()
-        $token = $this->crypt->encrypt($user->password, '%31.1e#a&!$i86e$f!8jz');
+        $token = $this->crypt->encrypt($user->password, $this->environment->run->session_hash);
 
         $this->session->set('token', $token);
-
+                
         $userTimes = UserTimes::findFirstBySessionId($this->session->getId());
         if ($userTimes) {
             $userTimes->delete();

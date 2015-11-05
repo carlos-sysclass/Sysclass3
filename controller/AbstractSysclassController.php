@@ -37,6 +37,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
 	public function authorize()
 	{
+		var_dump(1);
+		exit;
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		$di = DI::getDefault();
 		try {
