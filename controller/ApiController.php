@@ -120,10 +120,8 @@ class ApiController extends \AbstractSysclassController
 		
 
 		try {
-			$user = $this->request->getServer('PHP_AUTH_USER');
-			$secret_key = $this->request->getServer('PHP_AUTH_PW');
-			$token = $this->request->getHeader('X-SC-HEADER');
-
+			/*
+			*/
 			//$user = $this->user;
 			$user = $this->authentication->checkAccess();
 
