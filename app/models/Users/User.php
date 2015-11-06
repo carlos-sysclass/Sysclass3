@@ -10,6 +10,8 @@ class User extends Model
     {
         $this->setSource("users");
 
+         //$this->skipAttributesOnCreate(array('active'));
+
         //$this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'group'));
         //
         $this->belongsTo("language_id", "Sysclass\\Models\\I18n\\Language", "id",  array('alias' => 'language'));
@@ -55,6 +57,8 @@ class User extends Model
         );
 
     }
+
+
 
     public function getType() {
         return $this->user_type;
