@@ -405,7 +405,7 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
                 $info = array(
                     'login' => $this->request->getServer('PHP_AUTH_USER'),
                     'secret_key' => $this->request->getServer('PHP_AUTH_PW'),
-                    'token' => $this->request->getHeader('X-SC-HEADER')
+                    'token' => $this->request->getHeader('X-SC-TOKEN')
                 );
             }
 
