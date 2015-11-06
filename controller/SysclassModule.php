@@ -259,21 +259,8 @@ abstract class SysclassModule extends BaseSysclassModule
             $itemModel = new $model_class();
             $itemModel->assign($data);
 
-            //$this->beforeModelCreate($itemModel, $data);
-            //
-            //$this->eventsManager->collectResponses(true);
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
 
-            //$response = $this->eventsManager->getResponses();
-            /*
-            if (in_array(false, $response, true)) {
-                // CANCEL SAVE
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
-                $this->response->setJsonContent(
-                    array_merge($response, $itemModel->toFullArray())
-                );
-            }
-            */
             if ($itemModel->save()) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
                 
@@ -307,9 +294,6 @@ abstract class SysclassModule extends BaseSysclassModule
                 $this->response->setJsonContent(
                     array_merge($response, $itemData)
                 );
-
-
-
 
                 return true;
             }
