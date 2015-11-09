@@ -1296,3 +1296,7 @@ button.calendar-news-item {
     position: relative;
     right: 25px;
 }
+
+.page-header-fixed .page-container {
+    margin-top: 24px;
+}
