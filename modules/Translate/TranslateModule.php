@@ -37,47 +37,49 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /* ISectionMenu */
     public function getSectionMenu($section_id) {
 
+        
         if ($section_id == "topbar") {
+            if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
+                $this->putModuleScript("models.translate");
+                $this->putModuleScript("menu.translate");
 
-            $this->putModuleScript("models.translate");
-            $this->putModuleScript("menu.translate");
+                $currentUser = $this->getCurrentUser();
 
-            $currentUser = $this->getCurrentUser();
-
-            $languageRS = Language::find();
+                $languageRS = Language::find();
 
 
-            $userLanguageCode =  $this->translate->getSource();
-            $items = array();
+                $userLanguageCode =  $this->translate->getSource();
+                $items = array();
 
-            foreach($languageRS as $key => $value) {
-                $items[$key] = $value->toArray();
-                if ($value->code == $userLanguageCode) {
-                    $items[$key]['selected'] = true;
+                foreach($languageRS as $key => $value) {
+                    $items[$key] = $value->toArray();
+                    if ($value->code == $userLanguageCode) {
+                        $items[$key]['selected'] = true;
+                    }
                 }
+
+                $items[] = array(
+                    'link'  => $this->getBasePath() . "view/token",
+                    'text'  => $this->translate->translate("Review translation")
+                );
+
+                $this->putSectionTemplate("translate-menu", "menu/language.switch");
+
+                $menuItem = array(
+                    'icon'      => 'globe',
+                    'notif'     => count($items),
+                    'link'  => array(
+                        'link'  => $this->getBasePath() . "change",
+                        'text'  => $this->translate->translate('Languages')
+                    ),
+                    'type'      => 'language',
+                    'items'     => $items,
+                    'extended'  => false,
+                    'template'  => "translate-menu"
+                );
+
+                return $menuItem;
             }
-
-            $items[] = array(
-                'link'  => $this->getBasePath() . "view/token",
-                'text'  => $this->translate->translate("Review translation")
-            );
-
-            $this->putSectionTemplate("translate-menu", "menu/language.switch");
-
-            $menuItem = array(
-                'icon'      => 'globe',
-                'notif'     => count($items),
-                'link'  => array(
-                    'link'  => $this->getBasePath() . "change",
-                    'text'  => $this->translate->translate('Languages')
-                ),
-                'type'      => 'language',
-                'items'     => $items,
-                'extended'  => false,
-                'template'  => "translate-menu"
-            );
-
-            return $menuItem;
         }
         return false;
     }
@@ -85,12 +87,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Translate", "View")) {
-            $data = $this->getItemsAction();
+            $count = Language::count();
 
             return array(
                 'administration' => array(
                     array(
-                        'count' => count($data),
+                        'count' => $count,
                         'text'  => $this->translate->translate('Languages'),
                         'icon'  => 'fa fa-language',
                         'link'  => $this->getBasePath() . 'view'
@@ -125,7 +127,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 $breadcrumbs[] = array('text' => $this->translate->translate("New Language"));
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array('text' => $this->translate->translate("Edit Language"));
                 break;
             }
@@ -194,7 +196,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * [ add a description ]
      *
-     * @url PUT /change/:language_code
+     * @Put("/change/{language_code}")
      */
     public function changeLanguageAction($language_code)
     {
@@ -211,6 +213,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
      *
      * @url GET /view
      */
+    /*
     public function viewPage()
     {
         $currentUser    = $this->getCurrentUser(true);
@@ -241,72 +244,66 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         //    $this->redirect($this->getSystemUrl('home'), "", 401);
         //}
     }
-
+    */
     /**
      * Add a new Language Translation
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {
-        $currentUser    = $this->getCurrentUser(true);
-
-        $this->putComponent("select2", "validation");
-
         $country_codes = $this->model("i18n/country")->getItems();
         $this->putItem("country_codes", $country_codes);
 
         $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
         $this->putItem("language_codes", $bingTranslationsCodes);
 
-        $this->putModuleScript("models.translate");
-        $this->putModuleScript("views.translate.add");
-
-        $this->putItem("page_title", $this->translate->translate('Languages'));
-        $this->putItem("page_subtitle", $this->translate->translate('View system languages'));
-
         //return array_values($news);
-        $this->display("form.tpl");
+        parent::addPage($id);
     }
 
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @Get("/edit/{id}")
      */
+    
     public function editPage($id)
     {
         $currentUser    = $this->getCurrentUser(true);
 
-        $editItem = $this->model("translate")->getItem($id);
+        //$editItem = $this->model("translate")->getItem($id);
         // TODO CHECK PERMISSION FOR OBJECT
 
-        $this->putComponent("select2", "validation");
+        //$this->putComponent("select2", "validation");
+        //his->putBlock("permission.add");
 
+        $this->putModuleScript("models.translate");
+        $this->putModuleScript("views.translate.edit", array('id' => $id));
+
+        
         $country_codes = $this->model("i18n/country")->getItems();
         $this->putItem("country_codes", $country_codes);
 
         $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
         $this->putItem("language_codes", $bingTranslationsCodes);
-
-        // TODO CREATE MODULE BLOCKS, WITH COMPONENT, CSS, JS, SCRIPTS AND TEMPLATES LISTS TO INSERT
-        // Ex:
+        
+        /*
+        if ($this->acl->isUserAllowed(null, $this->module_id, "Edit")) {
+            $this->createClientContext("edit", array('entity_id' => $id));
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }        
+        */
         // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-        $this->putBlock("permission.add");
-
-        $this->putModuleScript("models.translate");
-        $this->putModuleScript("views.translate.edit", array('id' => $id));
-
-        $this->putItem("page_title", $this->translate->translate('Languages'));
-        $this->putItem("page_subtitle", $this->translate->translate('View system languages'));
-
-        $this->putItem("form_action", $_SERVER['REQUEST_URI']);
+        //$this->putItem("form_action", $_SERVER['REQUEST_URI']);
         //$this->putItem("entity", $editItem);
 
         //return array_values($news);
-        $this->display("form.tpl");
+        parent::editPage($id);
     }
-
+    
     /**
      * Get all translation visible to the current user
      *
@@ -374,7 +371,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * [ add a description ]
      *
-     * @url GET /view/token
+     * @Get("/view/token")
      */
     public function viewTokensPage()
     {
@@ -396,12 +393,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
             $this->putModuleScript("views.translate.view.token");
             $this->putBlock("translate.edit.dialog");
 
-            $languages = $this->translate->getItems();
+            $languages = Language::find();
 
-            $this->putItem("languages", $languages);
+            $this->putItem("languages", $languages->toArray());
 
             $this->putData(array(
-                'user_language'     => $this->translate->getUserLanguageCode(),
+                'user_language'     => $this->translate->getSource(),
                 'system_language'   => $this->translate->getSystemLanguageCode()
             ));
 
@@ -414,7 +411,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * [ add a description ]
      *
-     * @url GET /refresh
+     * @Get("/refresh")
      */
     public function refreshTokensTable() {
         // GRAB ALL TEMPLATES PATHS AND
@@ -475,7 +472,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * Translate a simple term on desired backend
      *
-     * @url GET /tt/:from/:to/
+     * @Get("/tt/{from}/{to}")
      */
     public function doTranslateAction($from, $to) {
         // TODO CREATE MULTIPLE TRANSLATIONS BACKENDS
@@ -505,8 +502,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * Translate a simple term on desired backend
      *
-     * @url GET /ttall/:from/:to/
-     * @url GET /ttall/:from/:to/:force
+     * @Get("/ttall/{from}/{to}")
+     * @Get("/ttall/{from}/{to}/{force}")
      */
     public function doTranslateAllAction($from, $to, $force = true) {
         if ($force === 'false' || $force === "0") {
@@ -555,7 +552,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * Get all tokens processed by the system
      *
-     * @url POST /item/token
+     * @Post("/datasource/token")
      */
     public function insertTokenTranslationAction()
     {
@@ -576,10 +573,10 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * Get all languages provided by the system
      *
-     * @url GET /items/me
-     * @url GET /items/me/:datatable
+     * @Get("/datasources/me")
+     * @Get("/datasources/me/{datatable}")
      */
-    public function getItemsAction($datatable)
+    public function getItemsRequest($datatable)
     {
         //$currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
@@ -611,14 +608,19 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                     )
                 );
             }
-            return array(
+
+            $result = array(
                 'sEcho'                 => 1,
                 'iTotalRecords'         => count($itemsData),
                 'iTotalDisplayRecords'  => count($itemsData),
                 'aaData'                => array_values($itemsData)
             );
+
+            $this->response->setJsonContent($result);
+            return true;
         }
-        return array_values($itemsData);
+        $this->response->setJsonContent(array_values($itemsData));
+        return true;
     }
 
     // TODO MOVE THIS FUNCTION TO FRAMWORK (ALIAS TO {Plico_GetResource file=""})
@@ -626,10 +628,10 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     /**
      * Get all tokens processed by the system
      *
-     * @url GET /items/token
-     * @url GET /items/token/:datatable
+     * @Get("/datasources/token")
+     * @Get("/datasources/token/{datatable}")
      */
-    public function getItemsTokenAction($datatable)
+    public function getItemsTokenRequest($datatable)
     {
         //$currentUser    = $this->getCurrentUser(true);
         //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);

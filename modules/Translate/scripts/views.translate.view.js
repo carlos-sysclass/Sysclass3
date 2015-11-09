@@ -154,7 +154,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 		var translateView = new translateViewClass({
 			el : "#translate-view",
 			datatable : {
-				sAjaxSource	: "/module/translate/items/me/datatable",
+				sAjaxSource	: "/module/translate/datasources/me/datatable",
 				columns 	: [
 					{ "name": "code", "mData": "code", "sClass" : "text-center"},
 					{ "name": "country_code", "mData": "country_code", 'sType' : 'table-image'},
