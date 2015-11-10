@@ -14,7 +14,12 @@
           <span>{$T_MESSAGE.message}</span>
         </div>
       {/if}
-      <img class="page-lock-img" src="{Plico_RelativePath file=$T_BIG_USER_AVATAR.avatar}" width="{$T_BIG_USER_AVATAR.width}" alt="">
+      {if ({$T_LOGGED_USER.avatars[0].url})}
+        <img src="{$T_LOGGED_USER.avatars[0].url}" class="page-lock-img"alt="" />
+      {else}
+        <img src="{Plico_GetResource file='images/placeholder/avatar.png'}" class="page-lock-img"alt="" />
+      {/if}
+
       <div class="page-lock-info">
         <h1>{$T_LOGGED_USER.name} {$T_LOGGED_USER.surname}</h1>
         <span class="email">{$T_LOGGED_USER.email}</span>

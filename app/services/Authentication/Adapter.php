@@ -37,8 +37,6 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
 
 
         } catch (AuthenticationException $e) {
-                //var_dump($e->getCode());
-                //exit;
 
             switch($e->getCode()) {
                 case AuthenticationException :: MAINTENANCE_MODE : {
@@ -57,7 +55,7 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
                     break;
                 }
                 case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
-                    $url = "/lock";
+                    $action = "lockpage";
                     $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
                     $message_type = 'info';
                     break;
@@ -94,12 +92,13 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
             $this->flashSession->message($message_type, $message);
             // TODO:  CHECK IF THE REQUEST WASN'T A JSON REQUEST
             //$this->redirect($url, $message, $message_type);
+            //
 
             $dispatcher->forward(
                 array(
                     'namespace'     => 'Sysclass\Controllers',
                     'controller'    => 'login_controller',
-                    'action'        => 'loginpage'
+                    'action'        => !empty($action) ? $action : 'loginpage'
                 )
             );
             return false;
