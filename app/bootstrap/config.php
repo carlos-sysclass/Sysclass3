@@ -196,6 +196,15 @@ $di->setShared('environment', function() use ($di) {
 			'name'	=> 'validation',
 			'js'	=> array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min')
 		),
+		"jquery-mask" => array(
+			'name'	=> 'jquery-mask',
+			'js'	=> array('plugins/jquery-mask/jquery.mask')
+		),
+		"phone-field" => array(
+			'name'	=> 'phone-field',
+			'js'	=> array('scripts/ui.field.phone'),
+			'deps' 	=> array("validation", "jquery-mask") // DOES NOT WORKING YET!
+		),
 		"jquery-file-upload-image" => array(
 			'name'	=> 'jquery-file-upload-image',
 			'css'	=> array(

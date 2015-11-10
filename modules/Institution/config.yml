@@ -52,7 +52,7 @@ crud:
       variables:
         page_subtitle: Create a new Organization
     'edit/{id}':
-      components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image"]
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image", "jquery-mask", "phone-field"]
       blocks: ["dropbox.upload", "address.book"]
       template: form.tpl
       variables:

@@ -328,7 +328,7 @@ abstract class SysclassModule extends BaseSysclassModule
             }
             $model_info = $this->model_info[$model];
 
-            $model_class = $this->model_info['class'];
+            $model_class = $model_info['class'];
             $itemModel = new $model_class();
             $itemModel->assign($data);
             $itemModel->id = $id;
@@ -340,8 +340,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 $response = $this->createAdviseResponse($this->translate->translate("Item updated with success"), "success");
 
-
-
                 if ($_GET['redirect'] == "1") {
                     $response = $this->createRedirectResponse(
                         null,
@@ -350,8 +348,8 @@ abstract class SysclassModule extends BaseSysclassModule
                     );
                 } elseif ($_GET['object'] == "1") {
                     $itemData = call_user_func_array(
-                        array($itemModel, $this->model_info['exportMethod'][0]),
-                        $this->model_info['exportMethod'][1]
+                        array($itemModel, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
                     );
                     $response = array_merge($response, $itemData);
                 }

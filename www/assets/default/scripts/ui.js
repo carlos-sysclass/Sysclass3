@@ -466,6 +466,14 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     };
 
 	this.refresh = function(context) {
+        /**
+         * @todo CREATE A WAY TO CALL THE SUBMODULES FUNCTIONS IN A AGNOSTIC WAY
+         */
+        if (app.module("ui.field.phone").refresh) {
+            app.module("ui.field.phone").refresh(context);
+        }
+        //this.makeTypedFieldPhone(context);
+
 		this.handleBackstrech(context);
 		this.handleTooltips(context);
 		this.handleValidate(context);
@@ -488,8 +496,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
         return context;
 	};
-
-
 
 	this.handleAction = function(action) {
 		if (typeof action != 'undefined') {
