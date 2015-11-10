@@ -184,11 +184,6 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/bootbox/bootbox.min')
 ));
 
-$plicoLib->add("resources/components", array(
-	'name'	=> 'icheck',
-	'css'	=> array('plugins/icheck/skins/square/_all'),
-	'js'	=> array('plugins/icheck/icheck.min')
-));
 
 $plicoLib->add("resources/components", array(
 	'name'	=> 'validation',

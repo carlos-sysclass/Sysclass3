@@ -16,8 +16,22 @@ use Sysclass\Models\System\Settings as SystemSettings,
  */
 class SettingsModule extends \SysclassModule implements \ILinkable
 {
-    protected $legalValues = array();
-    protected $defaults = array();
+    protected $legalValues = array(
+        'course_id',
+        'class_id',
+        'lesson_id'
+    );
+    protected $defaults = array(
+        'course_id' => null,
+        'class_id' => null,
+        'lesson_id' => null,
+        'teste_execution_id' => null,
+        // @todo Create a hierachical method to get and save values
+        // THIS IS NOT SAVED ON POST SETTINGS, BECAUSE THESE VALUES ARE NOT ON $this->legalValues ARRAY
+        'js_date_fmt'   => 'mm/dd/yyyy',
+        'php_date_fmt'  => 'm/d/Y'
+    );
+
 
     /* ILinkable */
     public function getLinks() {
@@ -39,29 +53,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
 
 
     
-    public function init() {
-        parent::init();
-
-        $this->legalValues = array(
-            'course_id',
-            'class_id',
-            'lesson_id'
-        );
-
-        $this->defaults = array(
-            'course_id' => null,
-            'class_id' => null,
-            'lesson_id' => null,
-            'teste_execution_id' => null,
-            // @todo Create a hierachical method to get and save values
-            // THIS IS NOT SAVED ON POST SETTINGS, BECAUSE THESE VALUES ARE NOT ON $this->legalValues ARRAY
-            'js_date_fmt'   => 'mm/dd/yyyy',
-            'php_date_fmt'  => 'm/d/Y'
-        );
-
-        //$this->db = \DatabaseManager::db();
-
-    }
+    
     /**
      * Returns a JSON string object to the browser when hitting the root of the domain
      *
@@ -91,6 +83,9 @@ class SettingsModule extends \SysclassModule implements \ILinkable
             $values = array();
             foreach($this->legalValues as $id) {
                 //print_r($id);
+                //
+                //
+                //
                 if (array_key_exists($id, $putData)) {
                     $values[] = array(
                         'user_id'   => $user->id,

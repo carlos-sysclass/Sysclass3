@@ -210,6 +210,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
 			'js'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart')
 		),
+		'easy-pie-chart' => array(
+			'name'	=> 'icheck',
+			'css'	=> array('plugins/icheck/skins/square/_all'),
+			'js'	=> array('plugins/icheck/icheck.min')
+		),
 		"jquery-file-upload-image" => array(
 			'name'	=> 'jquery-file-upload-image',
 			'css'	=> array(

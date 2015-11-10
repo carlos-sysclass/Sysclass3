@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Lessons;
 /**
  * Module Class File
  * @filesource
@@ -8,16 +9,17 @@ use Sysclass\Models\Courses\Contents\Exercise;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-
-class LessonsModule extends SysclassModule implements ILinkable, IBreadcrumbable, IActionable, IBlockProvider
+/**
+ * @RoutePrefix("/module/lessons")
+ */
+class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
     private static $suitable_translate_contents = array("subtitle");
 
     /* ILinkable */
     public function getLinks()
     {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Lessons", "View")) {
+        if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
             $itemsData = $this->model("lessons")->addFilter(array(
                 'active'    => true
             ))->getItems();
