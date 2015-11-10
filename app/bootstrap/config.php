@@ -183,6 +183,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
 			'js'	=> array('plugins/bootstrap-switch/js/bootstrap-switch')
 		),
+		'datepicker' => array(
+			'name'	=> 'datepicker',
+			'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
+			'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
+		),
 		'pwstrength' => array(
 			'name'	=> 'pwstrength',
 			'js'	=> array('plugins/jquery.pwstrength.bootstrap/src/pwstrength')
@@ -205,12 +210,17 @@ $di->setShared('environment', function() use ($di) {
 			'js'	=> array('scripts/ui.field.phone'),
 			'deps' 	=> array("validation", "jquery-mask") // DOES NOT WORKING YET!
 		),
+		"date-field" => array(
+			'name'	=> 'date-field',
+			'js'	=> array('scripts/ui.field.phone'),
+			'deps' 	=> array("validation", "jquery-mask") // DOES NOT WORKING YET!
+		),
 		'easy-pie-chart' => array(
 			'name'	=> 'easy-pie-chart',
 			'css'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
 			'js'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart')
 		),
-		'easy-pie-chart' => array(
+		'icheck' => array(
 			'name'	=> 'icheck',
 			'css'	=> array('plugins/icheck/skins/square/_all'),
 			'js'	=> array('plugins/icheck/icheck.min')

@@ -184,16 +184,6 @@ $plicoLib->add("resources/components", array(
 	'js'	=> array('plugins/bootbox/bootbox.min')
 ));
 
-
-$plicoLib->add("resources/components", array(
-	'name'	=> 'validation',
-	'js'	=> array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min')
-));
-$plicoLib->add("resources/components", array(
-	'name'	=> 'datepicker',
-	'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
-	'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
-));
 $plicoLib->add("resources/components", array(
 	'name'	=> 'timepicker',
 	'css'	=> array('plugins/bootstrap-timepicker/compiled/timepicker'),
