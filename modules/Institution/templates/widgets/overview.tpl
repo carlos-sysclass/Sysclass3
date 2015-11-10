@@ -30,6 +30,14 @@
 			</a>
 		{/if}
 	</div>
+
+	<div class="col-md-6 col-sm-12 col-xs-12">
+		{if $context.phone}
+			<a href="tel://{$context.phone}" target="_blank" class="btn btn-link">
+				<span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
+			</a>
+		{/if}
+	</div>
 </div>
 
 

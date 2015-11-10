@@ -8,6 +8,17 @@
 		</select>
 	</div>
 	<div class="form-group">
+		<label class="control-label">{translateToken value="Phone Number"}</label>
+		<input name="phone" value="" type="text" placeholder="{translateToken value="Phone Number"}" 	class="form-control" 
+		data-type-field="phone" data-country-selector=":input[name='country_code']" 
+		/>
+		<!--
+		data-country-field="country_code" 
+		data-country-value="US" 
+		-->
+
+	</div>
+	<div class="form-group">
 		<label class="control-label">{translateToken value="Zipcode"}</label>
 		<input name="zip" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-zipcode="true" />
 	</div>

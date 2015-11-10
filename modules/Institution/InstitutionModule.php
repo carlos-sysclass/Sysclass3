@@ -164,11 +164,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
-    /**
-     * [ add a description ]
-     *
-     * @Put("/item/me/{id}")
-     */
+
     /*
     public function setItemRequest($id)
     {
