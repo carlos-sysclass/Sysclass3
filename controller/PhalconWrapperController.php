@@ -624,6 +624,19 @@ abstract class PhalconWrapperController extends Controller
 
 	}
 
+    public function translateHttpResource($file) {
+        $plico = PlicoLib::instance();
+        $templatedPath = $this->environment['default/resource'] . $file;
+
+        $themedPath = sprintf($templatedPath, $this->environment->view->theme);
+
+        if (file_exists($this->environment['path/app/www'] . $themedPath)) {
+            return $themedPath;
+        } else {
+            return sprintf($templatedPath, $this->environment['default/theme']);
+        }
+    }
+
 
 
 

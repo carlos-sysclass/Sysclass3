@@ -116,7 +116,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/backbone/marionette',
 		'plugins/backbone/backbone-deep-model',
 		'plugins/backbone/backbone-nested-attributes',
-		'plugins/jquery-ui/jquery-ui-1.10.3.custom.min',
+		'plugins/jquery-ui/jquery-ui-1.10.3.custom',
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/moment/moment.min',
 		'plugins/numeral/numeral',

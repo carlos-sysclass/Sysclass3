@@ -190,7 +190,7 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 		var translateView = new translateViewClass({
 			el : "#translate-token-view",
 			datatable : {
-				"sAjaxSource": "/module/translate/items/token/datatable"
+				"sAjaxSource": "/module/translate/datasources/token/datatable"
 			}
 		});
 

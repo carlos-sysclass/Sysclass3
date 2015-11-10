@@ -58,7 +58,7 @@
 											</a>
 											<span class="after"></span>
 										</li>
-										<li ><a data-toggle="tab" href="#tab_1-2"><i class="icon-picture"></i> Change Avatar</a></li>
+										<li ><a data-toggle="tab" href="#tab_1-2"><i class="icon-picture"></i> {translateToken value="Profile Picture"}</a></li>
 										<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
 										<!--
 										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Your Courses"}</a></li>

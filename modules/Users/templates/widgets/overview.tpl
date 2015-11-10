@@ -4,7 +4,13 @@
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
 	<div class="col-md-3 col-sm-5 col-xs-5" id="users-avatar">
-		<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
+
+		{if ({$user_details.avatars[0].url})}
+			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
+		{else}
+			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="100%" alt="">
+		{/if}
+	
 	</div>
 	<div class="col-md-9 col-sm-7 col-xs-7">
 		<div class="row">

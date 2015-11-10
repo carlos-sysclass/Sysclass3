@@ -15,120 +15,121 @@
 		<!-- END RESPONSIVE MENU TOGGLER -->
 
 		<!-- BEGIN TOP NAVIGATION MENU -->
+		{* $T_TOPBAR_MENU|@json_encode *}
 		<ul class="nav navbar-nav pull-right">
 
 
 
 			{foreach $T_TOPBAR_MENU as $key => $item}
 				{if $item.type == "mega"}
-				<li class="dropdown mega-menu-dropdown">
-					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-close-others="true">
-						{if $item.icon}
-			      		<i class="{$item.icon}"></i>
-			      		{/if}
-						{$item.text}
-					</a>
-					<ul class="dropdown-menu" style="min-width: 700px;">
-						<li>
-							<!-- Content container to add padding -->
-							<div class="mega-menu-content">
-								<div class="row">
-									{foreach $item.items as $subkey => $subitems}
-										<div class="col-md-3">
-											<ul class="mega-menu-submenu">
-												<li>
-													<h3>{$subkey}</h3>
-												</li>
-												{foreach $subitems as $subitem}
+					{if $item.items|count > 0 } 
+						<li class="dropdown mega-menu-dropdown">
+							<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle" data-close-others="true">
+								{if $item.icon}
+					      		<i class="{$item.icon}"></i>
+					      		{/if}
+								{$item.text}
+							</a>
+							<ul class="dropdown-menu" style="min-width: 700px;">
+								<li>
+									<!-- Content container to add padding -->
+									<div class="mega-menu-content">
+										<div class="row">
+											{foreach $item.items as $subkey => $subitems}
+												<div class="col-md-3">
+													<ul class="mega-menu-submenu">
+														<li>
+															<h3>{$subkey}</h3>
+														</li>
+														{foreach $subitems as $subitem}
+															<li>
+																<a href="{$subitem.link}">
+																	{if $subitem.icon}
+														      			<i class="{$subitem.icon}"></i>
+														      		{else}
+														      			<i class="fa fa-angle-right"></i>
+														      		{/if}
+																	{$subitem.text}
+																</a>
+															</li>
+														{/foreach}
+													</ul>
+												</div>
+											{/foreach}
+											<!--
+											<div class="col-md-4">
+												<ul class="mega-menu-submenu">
 													<li>
-														<a href="{$subitem.link}">
-															{if $subitem.icon}
-												      			<i class="{$subitem.icon}"></i>
-												      		{else}
-												      			<i class="fa fa-angle-right"></i>
-												      		{/if}
-															{$subitem.text}
-														</a>
+														<h3>More Layouts</h3>
 													</li>
-												{/foreach}
-											</ul>
+													<li>
+														<a href="layout_horizontal_menu2.html">
+														Horizontal Mega Menu 2 </a>
+													</li>
+													<li>
+														<a href="layout_search_on_header1.html">
+														Search Box On Header 1 </a>
+													</li>
+													<li>
+														<a href="layout_search_on_header2.html">
+														Search Box On Header 2 </a>
+													</li>
+													<li>
+														<a href="layout_sidebar_search_option1.html">
+														Sidebar Search Option 1 </a>
+													</li>
+													<li>
+														<a href="layout_sidebar_search_option2.html">
+														Sidebar Search Option 2 </a>
+													</li>
+													<li>
+														<a href="layout_sidebar_reversed.html">
+														Right Sidebar Page </a>
+													</li>
+													<li>
+														<a href="layout_sidebar_fixed.html">
+														Sidebar Fixed Page </a>
+													</li>
+												</ul>
+											</div>
+											<div class="col-md-4">
+												<ul class="mega-menu-submenu">
+													<li>
+														<h3>Even More!</h3>
+													</li>
+													<li>
+														<a href="layout_sidebar_closed.html">
+														Sidebar Closed Page </a>
+													</li>
+													<li>
+														<a href="layout_ajax.html">
+														Content Loading via Ajax </a>
+													</li>
+													<li>
+														<a href="layout_disabled_menu.html">
+														Disabled Menu Links </a>
+													</li>
+													<li>
+														<a href="layout_blank_page.html">
+														Blank Page </a>
+													</li>
+													<li>
+														<a href="layout_boxed_page.html">
+														Boxed Page </a>
+													</li>
+													<li>
+														<a href="layout_language_bar.html">
+														Language Switch Bar </a>
+													</li>
+												</ul>
+											</div>
+											-->
 										</div>
-									{/foreach}
-									<!--
-									<div class="col-md-4">
-										<ul class="mega-menu-submenu">
-											<li>
-												<h3>More Layouts</h3>
-											</li>
-											<li>
-												<a href="layout_horizontal_menu2.html">
-												Horizontal Mega Menu 2 </a>
-											</li>
-											<li>
-												<a href="layout_search_on_header1.html">
-												Search Box On Header 1 </a>
-											</li>
-											<li>
-												<a href="layout_search_on_header2.html">
-												Search Box On Header 2 </a>
-											</li>
-											<li>
-												<a href="layout_sidebar_search_option1.html">
-												Sidebar Search Option 1 </a>
-											</li>
-											<li>
-												<a href="layout_sidebar_search_option2.html">
-												Sidebar Search Option 2 </a>
-											</li>
-											<li>
-												<a href="layout_sidebar_reversed.html">
-												Right Sidebar Page </a>
-											</li>
-											<li>
-												<a href="layout_sidebar_fixed.html">
-												Sidebar Fixed Page </a>
-											</li>
-										</ul>
 									</div>
-									<div class="col-md-4">
-										<ul class="mega-menu-submenu">
-											<li>
-												<h3>Even More!</h3>
-											</li>
-											<li>
-												<a href="layout_sidebar_closed.html">
-												Sidebar Closed Page </a>
-											</li>
-											<li>
-												<a href="layout_ajax.html">
-												Content Loading via Ajax </a>
-											</li>
-											<li>
-												<a href="layout_disabled_menu.html">
-												Disabled Menu Links </a>
-											</li>
-											<li>
-												<a href="layout_blank_page.html">
-												Blank Page </a>
-											</li>
-											<li>
-												<a href="layout_boxed_page.html">
-												Boxed Page </a>
-											</li>
-											<li>
-												<a href="layout_language_bar.html">
-												Language Switch Bar </a>
-											</li>
-										</ul>
-									</div>
-									-->
-								</div>
-							</div>
+								</li>
+							</ul>
 						</li>
-					</ul>
-				</li>
-
-
+					{/if}
 				{elseif $item.template && (isset($T_SECTION_TPL[$item.template]) &&  ($T_SECTION_TPL[$item.template]|@count > 0))}
 					{foreach $T_SECTION_TPL[$item.template] as $template}
 						{include file=$template T_MENU_ITEM=$item T_MENU_INDEX=$key}
@@ -272,9 +273,12 @@
 			<li class="dropdown user">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 					<div class="avatar-img vertical-align">
-						<img alt="" src="{$T_CURRENT_USER.avatars[0].url}" />
+						{if ({$T_CURRENT_USER.avatars[0].url})}
+							<img src="{$T_CURRENT_USER.avatars[0].url}" alt="">
+						{else}
+							<img src="{Plico_GetResource file='images/placeholder/avatar.png'}" alt="">
+						{/if}
 					</div>
-					
 					<span class="username">{$T_CURRENT_USER.name}</span>
 					<i class="icon-angle-down"></i>
 				</a>
