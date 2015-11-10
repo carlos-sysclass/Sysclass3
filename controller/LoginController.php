@@ -470,13 +470,14 @@ class LoginController extends \AbstractSysclassController
 		}
 
 		if ($user) {
-			$this->putItem("LOGGED_USER", $user->toArray());
+			$this->putItem("LOGGED_USER", $user->toFullArray(array("Avatars")));
 
 			$this->putCss("css/pages/lock");
 			$this->putScript("scripts/lock");
 			parent::display('pages/auth/lock.tpl');
+		} else {
+			$this->redirect("/login");
 		}
-		$this->redirect("/login");
 
 	}
 
