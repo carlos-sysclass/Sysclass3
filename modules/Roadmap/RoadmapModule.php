@@ -168,15 +168,17 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
                         )
                     );
                 }
-                return array(
+                $this->response->setJsonContent(array(
                     'sEcho'                 => 1,
                     'iTotalRecords'         => count($itemsData),
                     'iTotalDisplayRecords'  => count($itemsData),
                     'aaData'                => array_values($itemsData)
-                );
+                ));
+                return true;
             }
 
-            return array_values($itemsData);
+            $this->response->setJsonContent(array_values($itemsData));
+            return true;
         } else {
 
         }

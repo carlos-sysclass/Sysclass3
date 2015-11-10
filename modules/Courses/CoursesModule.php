@@ -449,9 +449,10 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
         });
 
         if (count($enrollmentCourse) > 0) {
+
             $enrollmentCourse = reset($enrollmentCourse);
 
-            $classes = $enrollmentCourse->getCourse()->getCourseClasses();
+            $classes = $enrollmentCourse->getCourse()->getClasses();
             
             $lessons = array();
             $total_lessons = 0;
