@@ -65,11 +65,12 @@ $SC.module("ui.field.phone", function(mod, app, Backbone, Marionette, $, _){
 
             $("[data-type-field='phone']", context).each(function() {
                 $(this).attr({
-                    'data-rule-countryphone' : "true", // VALIDATION RULE
-                    'data-mask-countryphone' : "true" // VALIDATION RULE
+                    //'data-rule-countryphone' : "true", // VALIDATION RULE
+                    //'data-mask-countryphone' : "true" // VALIDATION RULE
                 });
 
                 if ($.fn.mask) {
+                    /*
                     var options =  {
                         onKeyPress: function(cep, e, field, options) {
                             var country = mod._getCountryFromInput(field);
@@ -91,6 +92,7 @@ $SC.module("ui.field.phone", function(mod, app, Backbone, Marionette, $, _){
                     $(this)
                         //.not("[readonly]")
                         .mask(mod._Masks['default'], options);
+                    */
                 }
             });
         }
