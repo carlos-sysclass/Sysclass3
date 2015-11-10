@@ -1205,12 +1205,14 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
+						lineCap : 'butt',
 						barColor: App.getLayoutColorCode('green')
 					});
 					this.$(".class").easyPieChart({
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
+						lineCap : 'butt',
 						barColor: App.getLayoutColorCode('yellow')
 					});
 					/*
@@ -1225,6 +1227,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						animate: 1000,
 						size: 75,
 						lineWidth: 3,
+						lineCap : 'butt',
 						barColor: App.getLayoutColorCode('red')
 					});
 
