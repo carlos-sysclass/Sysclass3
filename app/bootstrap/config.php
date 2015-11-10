@@ -205,6 +205,11 @@ $di->setShared('environment', function() use ($di) {
 			'js'	=> array('scripts/ui.field.phone'),
 			'deps' 	=> array("validation", "jquery-mask") // DOES NOT WORKING YET!
 		),
+		'easy-pie-chart' => array(
+			'name'	=> 'easy-pie-chart',
+			'css'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
+			'js'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart')
+		),
 		"jquery-file-upload-image" => array(
 			'name'	=> 'jquery-file-upload-image',
 			'css'	=> array(
