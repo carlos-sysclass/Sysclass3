@@ -13,7 +13,7 @@ use Sysclass\Models\I18n\Language;
 /**
  * @RoutePrefix("/module/translate")
  */
-class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISectionMenu, \ILinkable, \IBreadcrumbable, \IActionable
+class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISectionMenu, */\ILinkable, \IBreadcrumbable, \IActionable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -35,6 +35,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
     }
 
     /* ISectionMenu */
+    /*
     public function getSectionMenu($section_id) {
 
         
@@ -83,6 +84,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         }
         return false;
     }
+    */
 
     /* ILinkable */
     public function getLinks() {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.1.0 Use Sysclass\Models\Calendar\Event instead
+ */
 namespace Sysclass\Models\Announcements;
 
 use Phalcon\Mvc\Model;
