@@ -696,8 +696,59 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->putItem("FORM_ACTIONS", $form_actions);
         */
 
-        $languages = Language::find();
-        $this->putitem("languages", $languages->toArray());
+        /*
+        $this->putModuleScript("models.translate");
+        $this->putModuleScript("menu.translate");
+
+        $currentUser = $this->getCurrentUser();
+        */
+        //$this->putScript("menu.translate");
+
+        $languageRS = Language::find();
+
+        $userLanguageCode =  $this->translate->getSource();
+        $items = array();
+
+        foreach($languageRS as $key => $value) {
+            $items[$key] = $value->toArray();
+            if ($value->code == $userLanguageCode) {
+                $current = $value->toArray();
+            } else {
+                $items[$key] = $value->toArray();
+            }
+        }
+        /*
+        $items[] = array(
+            'link'  => $this->getBasePath() . "view/token",
+            'text'  => $this->translate->translate("Review translation")
+        );
+        */
+
+        //$this->putSectionTemplate("translate-menu", "menu/language.switch");
+        //
+        $menuItem = $current;
+        $menuItem['items'] = $items;
+        /*
+        $menuItem = array(
+            'icon'      => 'globe',
+            'notif'     => count($items),
+            'link'  => array(
+                'link'  => $this->getBasePath() . "change",
+                'text'  => $this->translate->translate('Languages')
+            ),
+            'type'      => 'language',
+            'items'     => $items,
+            'extended'  => false,
+            'template'  => "translate-menu"
+        );
+    
+        var_dump($menuItem);
+        exit;
+        */
+        $this->putItem("LANGUAGE_MENU", $menuItem);
+
+        //$languages = Language::find();
+        $this->putitem("languages", $languageRS->toArray());
 
         $timezones = Timezones::findAll();
         $this->putitem("timezones", $timezones);

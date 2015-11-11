@@ -13,7 +13,7 @@ use Sysclass\Models\Announcements\Announcement;
 /**
  * @RoutePrefix("/module/news")
  */
-class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, */ \IBreadcrumbable, \IActionable, \ISectionMenu
+class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, \ISectionMenu, */ \IBreadcrumbable, \IActionable
 {
 	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
@@ -57,9 +57,10 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			)
 		);
 	}
-
 	*/
+	
 	/* ISectionMenu */
+	/*
 	public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
 
@@ -106,8 +107,9 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
         }
         return false;
     }
-
+	*/
 	/* ILinkable */
+	/*
 	public function getLinks() {
 		$data = $this->getItemsAction();
 		//if ($this->getCurrentUser(true)->getType() == 'administrator') {
@@ -123,8 +125,9 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			);
 		//}
 	}
-
+	*/
 	/* IBreadcrumbable */
+	/*
 	public function getBreadcrumb() {
 		$breadcrumbs = array(
 			array(
@@ -156,8 +159,9 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 		}
 		return $breadcrumbs;
 	}
-
+	*/
 	/* IActionable */
+	/*
 	public function getActions() {
 		$request = $this->getMatchedUrl();
 
@@ -168,7 +172,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 					'link'      => $this->getBasePath() . "add",
 					'class'		=> "btn-primary",
 					'icon'      => 'icon-plus'
-				)/*,
+				),
 				array(
 					'separator'	=> true,
 				),
@@ -177,30 +181,33 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 					'link'      => $this->getBasePath() . "add",
 					//'class'		=> "btn-primary",
 					//'icon'      => 'icon-plus'
-				)*/
+				)
 			)
 		);
 
-
-
 		return $actions[$request];
 	}
+	*/
+
 	/**
 	 * Get all news visible to the current user
 	 *
 	 * @url GET /item/me/:id
 	 */
+	/*
 	public function getItemAction($id) {
 
 		$editItem = $this->model("news")->getItem($id);
 		// TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
 		return $editItem;
 	}
+	*/
 	/**
 	 * [ add a description ]
 	 *
 	 * @url POST /item/me
 	 */
+	/*
 	public function addItemAction($id)
 	{
 		if ($userData = $this->getCurrentUser()) {
@@ -222,11 +229,13 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			return $this->notAuthenticatedError();
 		}
 	}
+	*/
 	/**
 	 * [ add a description ]
 	 *
 	 * @url PUT /item/me/:id
 	 */
+	/*
 	public function setItemAction($id)
 	{
 		if ($userData = $this->getCurrentUser()) {
@@ -244,12 +253,13 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			return $this->notAuthenticatedError();
 		}
 	}
-
+	*/
 	/**
 	 * [ add a description ]
 	 *
 	 * @url DELETE /item/me/:id
 	 */
+	/*
 	public function deleteItemAction($id)
 	{
 		if ($userData = $this->getCurrentUser()) {
@@ -267,13 +277,14 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			return $this->notAuthenticatedError();
 		}
 	}
-
+	*/
 	/**
 	 * Get all news visible to the current user
 	 *
 	 * @url GET /items/me
 	 * @url GET /items/me/:datatable
 	 */
+	/*
 	public function getItemsAction($datatable)
 	{
 		$currentUser    = $this->getCurrentUser(true);
@@ -311,46 +322,37 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 		}
 		return array_values($news);
 	}
-
+	*/
 	/**
 	 * [ add a description ]
 	 *
 	 * @url GET /data
 	 * @deprecated 3.0.0.19 Use GET /items/me entry point
 	 */
+	/*
 	public function dataAction()
 	{
 		$currentUser    = $this->getCurrentUser(true);
 
-		# Carrega noticias da ultima licao selecionada
-		$news = news :: getNews(0, false) /*+ news :: getNews($_SESSION['s_lessons_ID'], false)*/;
+		
+		$news = news :: getNews(0, false);
 
-		# Filtra comunicado pela classe do aluno
+		
 		$userClasses = $this->_getTableDataFlat(
 			"users_to_courses",
 			"classe_id",
 			sprintf("users_LOGIN = '%s'", $currentUser->user['login'])
 		);
-		/*
-		$xentifyModule = $this->loadModule("xentify");
-		$user = $this->getCurrentUser();
-		*/
+
 		foreach ($news as $key => $noticia) {
 			if ( !in_array( $noticia['classe_id'], $userClasses['classe_id'] ) && $noticia['classe_id']!=0 ) {
 				unset($news[$key]);
 			//} elseif ($ajax && $noticia['classe_id']==0) {
 			//    unset($news[$key]);
 			}
-			/*
-			if (!$xentifyModule->isUserInScope($user, $noticia['xscope_id'], $noticia['xentify_id'])) {
-				unset($news[$key]);
-			}
-			*/
 		}
 		return array_values($news);
 	}
-
-
-
+	*/
 }
 
