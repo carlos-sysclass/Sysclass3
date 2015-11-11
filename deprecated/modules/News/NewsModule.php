@@ -13,7 +13,7 @@ use Sysclass\Models\Announcements\Announcement;
 /**
  * @RoutePrefix("/module/news")
  */
-class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, \ISectionMenu, */ \IBreadcrumbable, \IActionable, 
+class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, \ISectionMenu, */ \IBreadcrumbable, \IActionable
 {
 	/* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array()) {
