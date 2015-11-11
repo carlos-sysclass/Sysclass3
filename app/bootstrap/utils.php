@@ -34,27 +34,31 @@ $di->setShared('session', $session);
 $di->setShared('translate', function () use ($di) {
 
     $translator = new Translator(!$di->get("request")->isAjax());
-    $user = $di->get("user");
 
-    if ($user) {
-        $userlanguage = $user->getLanguage();
+    if ($di->get("session")->has("session_language")) {
+        $translator->setSource($di->get("session")->get("session_language"));
+        var_dump($di->get("session")->get("session_language"));
+        //exit;
+    } else {
+        $user = $di->get("user");
 
-        if ($userlanguage) {
-            $language_code = $userlanguage->code;
-            $translator->setSource($userlanguage->code);
-            return $translator;
+        if ($user) {
+            $userlanguage = $user->getLanguage();
+
+            if ($userlanguage) {
+                $language_code = $userlanguage->code;
+                $translator->setSource($userlanguage->code);
+                return $translator;
+            }
         }
+
+        // TRY TO GET FROM A COOKIE OR FROM HTTP ACCEPTED LANGUAGE
+        $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+        $language_code = Locale::getPrimaryLanguage($locale);
+        //$languageModel = Sysclass\Models\I18n\Language::findFirstByCode($language_code);
+
+        $translator->setSource($language_code);
     }
-
-
-
-    // TRY TO GET FROM A COOKIE OR FROM HTTP ACCEPTED LANGUAGE
-    $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
-    $language_code = Locale::getPrimaryLanguage($locale);
-    //$languageModel = Sysclass\Models\I18n\Language::findFirstByCode($language_code);
-
-    $translator->setSource($language_code);
-
  
     return $translator;
 });
