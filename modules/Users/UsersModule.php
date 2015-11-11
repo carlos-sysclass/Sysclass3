@@ -391,7 +391,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     public function setItemRequest($id)
     {
         //$request = $this->getMatchedUrl();
-        $ACL = Phalcon\DI::getDefault()->get("acl");
+        $ACL = \Phalcon\DI::getDefault()->get("acl");
         $allowed = $ACL->isUserAllowed(null, "users", "edit");
 
         if ($userModel = $this->getCurrentUser(true)) {
