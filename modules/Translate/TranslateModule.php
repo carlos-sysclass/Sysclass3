@@ -200,14 +200,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      *
      * @Put("/change/{language_code}")
      */
-    public function changeLanguageAction($language_code)
+    public function changeLanguageRequest($language_code)
     {
-        if ($this->translate->setUserLanguageCode($language_code)) {
-            // REDIRECT USER BY JAVASCRIPT.
-            return $this->createRedirectResponse(null);
-        }
-        // RETURN A INVALID REQUEST ERROR
-        return $this->invalidRequestError();
+       // REDIRECT USER BY JAVASCRIPT.
+        $this->session->set("session_language", $language_code);
+        $this->response->setJsonContent($this->createRedirectResponse(null));
+        return true;
     }
 
     /**

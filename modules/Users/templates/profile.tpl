@@ -69,7 +69,28 @@
 									</ul>
 								</div>
 								<div class="col-md-9 profile-info">
-									<h1><span data-update="name">{$T_EDIT_USER.name}</span> <span data-update="surname"> {$T_EDIT_USER.surname}</span></h1>
+									<h1>
+										<span data-update="name">{$T_EDIT_USER.name}</span>
+										<span data-update="surname"> {$T_EDIT_USER.surname}</span>
+										<div class="btn-group">
+											<button href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" data-close-others="true" aria-expanded="false">
+												<img alt="" src="{Plico_GetResource file="img/flags/`$T_LANGUAGE_MENU.country_code|strtolower`.png"}"/>
+									      		{$T_LANGUAGE_MENU.name}
+									      		<i class="fa fa-angle-down"></i>
+									      	</button>
+									      	<ul role="menu" class="dropdown-menu pull-right">
+												{foreach $T_LANGUAGE_MENU.items as $subitem}
+												<li>
+													<a href="{$subitem.link}" data-callback="change-language" data-language="{$subitem.code}">
+										                <img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/>
+														{$subitem.name}
+													</a>
+												</li>
+										    {/foreach}
+										    </ul>
+										</div>
+									</h1>
+
 									<p data-update="short_description">{$T_EDIT_USER.short_description}</p>
 
 									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>

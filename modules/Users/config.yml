@@ -65,9 +65,9 @@ crud:
       variables:
         page_subtitle: Config and edit user info
     profile:
-      components: ["select2","validation","datepicker","pwstrength"]
+      components: ["select2","validation","datepicker","pwstrength", "jquery-mask"]
       stylesheets: ["css/pages/profile"]
-      base_scripts: ["plugins/jquery-mask/jquery.mask"]
+      base_scripts: ["scripts/ui.menu.translate"]
       scripts: ["views.profile"]
       override-route: "edit"
       template: profile.tpl
