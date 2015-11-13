@@ -25,12 +25,82 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
 
                 $self->putModuleScript("blocks.dropbox.upload");
 
+                $self->putSectionTemplate("dialogs", "dialogs/image-crop");
                 $self->putSectionTemplate("foot", "blocks/dropbox.upload");
 
                 return true;
             }
         );
     }
+
+    public function beforeModelUpdate($evt, $model, $data) {
+        // CHECK IF CROP IS NEEDED
+        // 
+        $stream = $this->storage->getFilestream($model);
+
+
+        $image = new \Plico\Php\Image();
+
+        $croped = $image->resize($stream, $data['crop'], 150, 200);
+
+
+        $file_path = $this->storage->getFullFilePath($model);
+
+        // TODO: EXPLODES THE FILE NAME, SAVE AS JPEG, AND CHANGE THE EXTENSION ON name / filename and url fields
+        // TO SAVE
+        imagejpeg($croped, $this->storage->getFullFilePath($model), 90);
+        //imagejpeg($croped, null, 90);
+
+
+
+//        echo $this->storage->getFullFilePath($model);
+        exit;
+
+
+        /**
+         * CROP CODE
+         * 
+            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                $targ_w = $targ_h = 150;
+                $jpeg_quality = 90;
+
+                $src = './demos/demo_files/image5.jpg';
+
+                $img_r = imagecreatefromjpeg($src);
+
+                $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+
+                imagecopyresampled(
+                    $dst_r,
+                    $img_r,
+                    0,
+                    0,
+                    intval($_POST['x']),
+                    intval($_POST['y']),
+                    $targ_w,
+                    $targ_h,
+                    intval($_POST['w']),
+                    intval($_POST['h'])
+                );
+
+                header('Content-type: image/jpeg');
+                imagejpeg($dst_r,null,$jpeg_quality);
+
+                exit;
+            }
+         * 
+         */
+        exit;
+        print_r($model->toArray());
+        print_r($data);
+        if (array_key_exists("crop", $data)) {
+
+        }
+
+        return true;
+    }
+
     /**
      * [add a description]
      *

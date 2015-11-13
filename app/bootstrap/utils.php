@@ -37,7 +37,7 @@ $di->setShared('translate', function () use ($di) {
 
     if ($di->get("session")->has("session_language")) {
         $translator->setSource($di->get("session")->get("session_language"));
-        var_dump($di->get("session")->get("session_language"));
+        //var_dump($di->get("session")->get("session_language"));
         //exit;
     } else {
         $user = $di->get("user");
