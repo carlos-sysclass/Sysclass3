@@ -97,7 +97,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 return $breadcrumbs;
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",

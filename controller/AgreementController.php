@@ -9,8 +9,6 @@ class AgreementController extends \AbstractSysclassController
 	 */
 	public function agreementPage()
 	{
-        var_dump(1);
-        exit;
         $currentUser = $this->getCurrentUser(true);
 
         $this->putComponent("validation", "icheck");
