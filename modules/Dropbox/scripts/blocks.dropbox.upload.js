@@ -256,7 +256,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             });
 
             fileUploadItemView.on("file-upload:change", function(data) {
-                console.warn(data, updateField);
+                //console.warn(data, updateField);
                 if (updateField) {
                     $(self).find(":input[type='hidden']").val(data.id);
                     $(self).find(":input[type='hidden']").change();
@@ -266,7 +266,9 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 }
             });
 
-            dropboxItemModel.fetch();
+            if (!_.isUndefined(dropboxItemModel.get("id"))) {
+                dropboxItemModel.fetch();
+            }
         });
     });
 /*
