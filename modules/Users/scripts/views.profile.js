@@ -10,6 +10,8 @@ $SC.module("views.profile", function(mod, app, Backbone, Marionette, $, _) {
         //var itemModelClass = $SC.module("crud.view.edit").itemModel;
         this.formView = $SC.module("crud.views.edit").getForm();
 
+        this.itemModel = $SC.module("crud.views.edit").getModel();
+
         this.formView.$(".profile-edit").on("click", function() {
             this.formView.$("[href='#tab_1-2']").click();
             //this.formView.$("[href='#tab_1-2']").click();
@@ -18,6 +20,19 @@ $SC.module("views.profile", function(mod, app, Backbone, Marionette, $, _) {
         this.listenTo(this.formView, "before:save", function(model) {
             model.setResponseType("redirect");
         });
+
+        this.listenTo(app.module("blocks.dropbox.upload"), "uploadComplete.dropbox", function(model) {
+            //console.warn(model.get("url") + '?' + Math.random());
+
+            /**
+             * TODO: MAKE A WAY TO RELOAD THE PROFILE IMAGES
+             */
+
+            //this.formView.update();
+            this.formView.save();
+        }.bind(this));
+
+        
     });
     $SC.module("crud.views.edit").on("start", function() {
         mod.start();

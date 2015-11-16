@@ -34,9 +34,9 @@
 									<ul class="list-unstyled profile-nav" style="margin-bottom: 0px;">
 										<li>
 											{if ({$T_EDIT_USER.avatars[0].url})}
-												<img width="100%" src="{$T_EDIT_USER.avatars[0].url}" class="img-responsive" alt="" />
+												<img width="100%" src="{$T_EDIT_USER.avatars[0].url}" class="img-responsive user-profile-image" alt="" />
 											{else}
-												<img width="100%" src="{Plico_GetResource file='images/placeholder/avatar.png'}" class="img-responsive" alt="" />
+												<img width="100%" src="{Plico_GetResource file='images/placeholder/avatar.png'}" class="img-responsive user-profile-image" alt="" />
 											{/if}
 											<a href="#" class="profile-edit">edit</a>
 										</li>

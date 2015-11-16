@@ -163,7 +163,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             initialize: function(opt) {
                 console.info('blocks.dropbox.upload/fileUploadItemViewClass::initialize');
 
-                console.warn(this.$el);
+                //console.warn(this.$el);
 
                 this.initializeFileUpload();
 
@@ -176,7 +176,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.render();
             },
             initializeImageCropDialog : function() {
-                console.warn("CREATING");
+//                console.warn("CREATING");
                 this.imageCropDialog = new imageCropDialogViewClass();
             },
             initializeFileUpload : function() {
@@ -231,7 +231,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                                 file: file,
                                 opt : data
                             }).render();
-
+                            
                             if (self.$el.data("image-crop")) {
                                 //console.warn(self.model, data);
                                 self.imageCropDialog.setModel(
@@ -244,14 +244,18 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                                     //console.warn(model.toJSON());
                                     //model.save();
                                     viewObject.completeEvents();
+                                    
                                 });
                                 self.listenTo(self.imageCropDialog, "file-crop:cancel", function(model) {
                                     viewObject.completeEvents();
+                                    
                                 });
 
                             } else {
                                 viewObject.completeEvents();
+                                
                             }
+
                         });
                         self.jqXHR = null;
                     })
@@ -298,7 +302,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.listenTo(fileContentView, "file-content:save", function(model) {
                     model.save(null, {
                         success : function() {
-                            self.trigger("file-upload:change", model.toJSON());
+                            self.trigger("file-upload:change", model);
                         }
                     });
 
@@ -333,12 +337,15 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 el : $(this)
             });
 
-            fileUploadItemView.on("file-upload:change", function(data) {
+            fileUploadItemView.on("file-upload:change", function(model) {
                 //console.warn(data, updateField);
+                var data = model.toJSON();
                 if (updateField) {
                     $(self).find(":input[type='hidden']").val(data.id);
                     $(self).find(":input[type='hidden']").change();
                     $(self).data("fileId", data.id);
+
+                    mod.trigger("uploadComplete.dropbox", model);
                 } else {
                     //$(self).data("fileId", data.id);
                 }

@@ -43,11 +43,11 @@
         </div>
 
     <% } else { %>
-        <span class="preview">
+        <span class="preview-download">
             <% if (/^video\/.*$/.test(file.type)) { %>
                 <video src="<%= file.url %>" style="max-width: 40%;" controls="true"></video>
             <% } else if (/^image\/.*$/.test(file.type)) { %>
-                <img src="<%= file.url %>" style="max-height: 75px" />
+                <img src="<%= file.url %>" style="max-height: 75px" class="user-profile-image" />
             <% } else if (/^audio\/.*$/.test(file.type)) { %>
                 <audio src="<%= file.url %>" style="max-width: 40%;" controls="true"></audio>
             <% } else if (/.*\/pdf$/.test(file.type)) { %>

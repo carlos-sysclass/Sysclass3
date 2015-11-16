@@ -274,7 +274,11 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 					{if ({$T_CURRENT_USER.avatars[0].url})}
 						<div class="avatar-img vertical-align">
-							<img src="{$T_CURRENT_USER.avatars[0].url}" alt="">
+							{if ({$T_CURRENT_USER.avatars[0].url})}
+								<img src="{$T_CURRENT_USER.avatars[0].url}" alt="" class="user-profile-image">
+							{else}
+								<img width="100%" src="{Plico_GetResource file='images/placeholder/avatar.png'}" class="user-profile-image hidden" alt="" />
+							{/if}
 						</div>
 					{/if}
 					<span class="username">{$T_CURRENT_USER.name}</span>
