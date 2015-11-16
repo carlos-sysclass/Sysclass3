@@ -83,8 +83,10 @@ class Adapter extends Component implements IStorage
         return $this->backend->getFullFilePath($struct);
     }
 
-
-    public function getfilestream(File $struct) {
+    public function getFullFileUrl(File $struct) {
+        return $this->backend->getFullFileUrl($struct);
+    }
+    public function getFilestream(File $struct) {
         return $this->backend->getfilestream($struct);
     }
 

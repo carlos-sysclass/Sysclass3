@@ -11,7 +11,8 @@
                 </h4>
             </div>
             <div class="modal-body" align="center">
-                <img src="" class="crop-container imag-responsive" />
+                <p>You can crop your picture, if you wish</p>
+                <img src="" class="crop-container img-responsive" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default save-action" data-dismiss="modal">Save</button>

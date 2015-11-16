@@ -50,8 +50,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                         */
                     }.bind(this)
                 }, function() {
-
-                    self.jCropApi = this;
+                   self.jCropApi = this;
                 });
             },
             open : function() {
@@ -247,8 +246,8 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                                     
                                 });
                                 self.listenTo(self.imageCropDialog, "file-crop:cancel", function(model) {
-                                    viewObject.completeEvents();
                                     
+                                    viewObject.completeEvents();
                                 });
 
                             } else {

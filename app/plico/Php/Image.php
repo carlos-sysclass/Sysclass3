@@ -29,6 +29,23 @@ class Image extends Component
 
         return $dst_r;
     }
+    public function saveAsPng($resource, $file_path, $quality = 9) {
+        $file_info = pathinfo($file_path);
+        $full_path = $file_info['dirname'] . "/" . $file_info['filename'] . ".png";
+        $result = imagepng($resource, $full_path, $quality);
+
+        return ($result) ? $full_path : FALSE;
+    }
+
+    public function saveAsJpeg($resource, $file_path, $quality = 90) {
+        $file_info = pathinfo($file_path);
+        $full_path = $file_info['dirname'] . "/" . $file_info['filename'] . ".jpeg";
+
+        $result = imagejpeg($resource, $full_path, $quality);
+
+        return ($result) ? $full_path : FALSE;
+    }
+    
     /*
     public function __construct() {
     }
