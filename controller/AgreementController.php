@@ -9,8 +9,6 @@ class AgreementController extends \AbstractSysclassController
 	 */
 	public function agreementPage()
 	{
-        var_dump(1);
-        exit;
         $currentUser = $this->getCurrentUser(true);
 
         $this->putComponent("validation", "icheck");
@@ -18,11 +16,11 @@ class AgreementController extends \AbstractSysclassController
 
         $user_language = $currentUser->getLanguage()->code;
 
-        if (!parent::template_exists("pages/agreement/{$user_language}.tpl")) {
+        //if (!parent::template_exists("pages/agreement/{$user_language}.tpl")) {
             $user_language = $this->translate->getSystemLanguageCode();
-        } else {
+        //} else {
             //parent::display('pages/agreement/default.tpl');
-        }
+        //}
         parent::display("pages/agreement/{$user_language}.tpl");
         
 	}

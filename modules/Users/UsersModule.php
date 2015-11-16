@@ -97,7 +97,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 return $breadcrumbs;
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
@@ -482,9 +482,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         if ($userModel = $this->getCurrentUser(true)) {
             $data = $this->getHttpData(func_get_args());
 
-            $depinject = Phalcon\DI::getDefault();
+            //$depinject = Phalcon\DI::getDefault();
 
-            if ($userModel->id == $id || $depinject->get("acl")->isUserAllowed(null, "Users", "Edit")) {
+            if ($userModel->id == $id || $this->acl->isUserAllowed(null, "Users", "Edit")) {
                 if ($userModel->id != $id) {
                     $userModel = User::findFirstById($id);
                 }

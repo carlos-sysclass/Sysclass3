@@ -344,7 +344,9 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 }
             });
 
-            dropboxItemModel.fetch();
+            if (!_.isUndefined(dropboxItemModel.get("id"))) {
+                dropboxItemModel.fetch();
+            }
         });
     });
 /*
