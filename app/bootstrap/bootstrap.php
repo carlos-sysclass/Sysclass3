@@ -14,6 +14,9 @@ require(__DIR__ . "/models.php");
 //Authentication, AUthorization and all security related
 require(__DIR__ . "/security.php");
 
+// STORAGE SERVICES AND FILE SERVICES RELATED.
+require(__DIR__ . "/storage.php");
+
 // UTILITY SERVICES, LIKE string, url, escaper, and so on...
 require(__DIR__ . "/utils.php");
 

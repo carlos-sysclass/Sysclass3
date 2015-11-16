@@ -8,12 +8,12 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
         return mod.dialogView;
     };
     mod.open = function() {
-
         mod.dialogView.open();
     };
     mod.close = function() {
         mod.dialogView.close();
     };
+
     /*
     mod.setModel = function(model) {
         if (!_.isUndefined(mod.dialogView)) {

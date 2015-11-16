@@ -25,12 +25,44 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
 
                 $self->putModuleScript("blocks.dropbox.upload");
 
+                $self->putSectionTemplate("dialogs", "dialogs/image-crop");
                 $self->putSectionTemplate("foot", "blocks/dropbox.upload");
 
                 return true;
             }
         );
     }
+
+    public function beforeModelUpdate($evt, $model, $data) {
+        // CHECK IF CROP IS NEEDED
+        if (array_key_exists("crop", $data)) {
+            $stream = $this->storage->getFilestream($model);
+
+            $image = new \Plico\Php\Image();
+            $croped = $image->resize($stream, $data['crop'], 150, 200);
+
+            $file_path = $this->storage->getFullFilePath($model);
+            $file_full_path = $image->saveAsJpeg($croped, $file_path);
+
+            if ($file_full_path) {
+
+                $path_info = pathinfo($file_full_path);
+
+                $model->name = $path_info['basename'];
+                $model->filename = $path_info['basename'];
+                $model->type = "image/jpeg";
+
+                $model->size = filesize($file_full_path);
+
+                $model->url = $this->storage->getFullFileUrl($model);
+
+                $path_info = pathinfo($file_path);
+            }
+        }
+
+        return true;
+    }
+
     /**
      * [add a description]
      *

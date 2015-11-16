@@ -18,14 +18,16 @@ $di->setShared('environment', function() use ($di) {
     $environment = $di->get("sysconfig")->deploy->environment;
     $configAdapter = new ConfigIni(__DIR__ . "/../config/{$environment}.ini");
 
-	$plicoLibDir = realpath(PLICOLIB_PATH);
+	$plicoLibDir = realpath(PLICOLIB_PATH) . "/";
 
 	$appRootDir = REAL_PATH . "/";
 
 	$config = array(
 		'default/theme'			=> 'default',
 		'default/resource'		=> '/assets/%s/',
+		'path/app'				=> realpath($appRootDir) . "/",
 		'path/themes'			=> $appRootDir . "themes/",
+
 
 		# NOT USED YET
 		'client_name'			=> 'Sysclass',
@@ -43,10 +45,9 @@ $di->setShared('environment', function() use ($di) {
 		'path/template'			=> '%s/templates/',
 		'path/plugins'			=> '%s/plugins/',
 		'path/cache'			=> $plicoLibDir . 'cache/',
-		'path/app'				=> realpath($appRootDir) . "/",
 		'path/app/www'			=> $appRootDir . 'www',
-		'path/files'			=> $appRootDir . 'files',
 		'path/files/public'		=> $appRootDir . 'files',
+		'path/files'			=> $appRootDir . 'files',
 		'path/files/private'	=> $appRootDir . 'files-private',
 		'module/base_path'		=> '/module',
 		"timestamp/format"		=> "d/m/Y \à\s H:i",
@@ -247,6 +248,11 @@ $di->setShared('environment', function() use ($di) {
 				//'plugins/jquery-file-upload/js/jquery.fileupload-validate',
 				'plugins/jquery-file-upload/js/jquery.fileupload-ui'
 			)
+		),
+		'jquery-jcrop' => array(
+			'name'	=> 'jquery-jcrop',
+			'css'	=> array('plugins/jcrop/css/jquery.Jcrop'),
+			'js'	=> array('plugins/jcrop/js/jquery.color', 'plugins/jcrop/js/jquery.Jcrop')
 		),
 		'bootstrap-confirmation' => array(
 			'name'	=> 'bootstrap-confirmation',

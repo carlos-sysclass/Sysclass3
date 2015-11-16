@@ -20,6 +20,11 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
         return this.formView;
     };
 
+    mod.getModel = function() {
+        return this.itemModel;
+    };
+
+
     $SC.module("crud.models").on("start", function() {
         mod.start();
     });
