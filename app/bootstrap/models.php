@@ -24,8 +24,11 @@ $di->set('db', function () use ($environment, $eventsManager) {
     }
 });
 
-
-$logger = new FileLogger(__DIR__ . "/../../logs/database.log");
+if (CONSOLE_APP === TRUE) {
+    $logger = new FileLogger(REAL_PATH . "/logs/database-tasks.log");
+} else {
+    $logger = new FileLogger(REAL_PATH . "/logs/database.log");
+}
 // Listen all the database events
 $eventsManager->attach('db', function ($event, $connection) use ($logger) {
     if ($event->getType() == 'beforeQuery') {

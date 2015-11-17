@@ -2,6 +2,7 @@
 use 
 	Phalcon\Config,
     Phalcon\Config\Adapter\Ini as ConfigIni;
+    
 // GET DATA FROM SYSTEM RELEASE
 $di->setShared('sysconfig', function()  {
     $config = new ConfigIni(__DIR__ . "/../../RELEASE");

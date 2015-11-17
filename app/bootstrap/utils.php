@@ -2,6 +2,9 @@
 use 
     Phalcon\Session\Adapter\Files as Session,
     Sysclass\Services\I18n\Translator,
+    Sysclass\Services\Mail\Adapter as MailAdapter,
+    Sysclass\Services\Debug\Adapter as DebugAdapter,
+    Plico\Php\Helpers\Strings as stringsHelper,
     Phalcon\Flash\Direct as FlashDirect,
     Phalcon\Flash\Session as FlashSession;
 
@@ -19,7 +22,7 @@ $di->setShared("escaper", function() {
 });
 
 $di->setShared('stringsHelper', function () {
-    $strings = new \Plico\Php\Helpers\Strings();
+    $strings = new stringsHelper();
     // Set a global encryption key
     //$crypt->setKey();
     return $strings;
@@ -31,15 +34,48 @@ if (!$session->isStarted()) {
 }
 $di->setShared('session', $session);
 
-$di->setShared('translate', function () use ($di) {
 
-    $translator = new Translator(!$di->get("request")->isAjax());
 
-    if ($di->get("session")->has("session_language")) {
-        $translator->setSource($di->get("session")->get("session_language"));
-        //var_dump($di->get("session")->get("session_language"));
-        //exit;
-    } else {
+if (CONSOLE_APP !== TRUE) {
+    $di->setShared('translate', function () use ($di) {
+
+        $translator = new Translator(!$di->get("request")->isAjax());
+
+        if ($di->get("session")->has("session_language")) {
+            $translator->setSource($di->get("session")->get("session_language"));
+            //var_dump($di->get("session")->get("session_language"));
+            //exit;
+        } else {
+            $user = $di->get("user");
+
+            if ($user) {
+                $userlanguage = $user->getLanguage();
+
+                if ($userlanguage) {
+                    $language_code = $userlanguage->code;
+                    $translator->setSource($userlanguage->code);
+                    return $translator;
+                }
+            }
+
+            // TRY TO GET FROM A COOKIE OR FROM HTTP ACCEPTED LANGUAGE
+            $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+            $language_code = Locale::getPrimaryLanguage($locale);
+            //$languageModel = Sysclass\Models\I18n\Language::findFirstByCode($language_code);
+
+            $translator->setSource($language_code);
+        }
+     
+        return $translator;
+    });
+} else {
+    $di->setShared('translate', function () use ($di) {
+        $translator = new Translator();
+
+        $translator->setSource("en");
+
+        // TODO: MAKE A WAY THE SELECT THE USER 
+        /*
         $user = $di->get("user");
 
         if ($user) {
@@ -51,18 +87,30 @@ $di->setShared('translate', function () use ($di) {
                 return $translator;
             }
         }
+        */
 
-        // TRY TO GET FROM A COOKIE OR FROM HTTP ACCEPTED LANGUAGE
-        $locale = Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
-        $language_code = Locale::getPrimaryLanguage($locale);
-        //$languageModel = Sysclass\Models\I18n\Language::findFirstByCode($language_code);
+        return $translator;
+    });
+}
 
-        $translator->setSource($language_code);
-    }
- 
-    return $translator;
+$di->setShared('mail', function () {
+    require_once REAL_PATH . "/vendor/swiftmailer/swiftmailer/lib/swift_required.php";
+
+    $mail = new MailAdapter();
+
+    return $mail;
 });
 
+
+// GET DATA FROM SYSTEM RELEASE ENVIRONMENT DATABASE
+$di->setShared("debug", function() use ($di) {
+    $debug = new DebugAdapter();
+
+    return $debug;
+});
+
+
+//Kint::enabled(  )
 
 
 
