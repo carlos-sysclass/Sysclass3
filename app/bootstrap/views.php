@@ -25,7 +25,7 @@ use Phalcon\Mvc\View\Engine\Smarty as SmartyEngine;
                     'cache_lifetime'    => 120,
                     //'template_dir'      => $view->getViewsDir(),
                     //'compile_dir'       => __DIR__ . "/../../cache/view/smarty/compiled",
-                    'error_reporting'   => ($environment->run->debug) ? error_reporting() ^ E_NOTICE : error_reporting(),
+                    'error_reporting'   => ($environment->run->debug) ? error_reporting() ^ E_WARNING : error_reporting(),
                     'escape_html'       => true,
                     //'_file_perms'       => 0666,
                     //'_dir_perms'        => 0777,
@@ -65,14 +65,12 @@ use Phalcon\Mvc\View\Engine\Smarty as SmartyEngine;
             },
             '.email' => function ($view, $di) {
                 $volt = new VoltEngine($view, $di);
-
+                
                 $volt->setOptions(array(
                     'compiledPath' => __DIR__ . "/../../cache/view/volt/compiled/",
-                    'compileAlways'     => true, // performance decrease
+                    //'compileAlways'     => true, // performance decrease
                 ));
-
                 // Set some options here
-
                 return $volt;
             }
         ));

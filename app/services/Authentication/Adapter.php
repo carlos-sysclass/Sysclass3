@@ -176,7 +176,6 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
         // 1.6 Create session to handle user login status
 
         $backend = $this->getBackend($info);
-
         if ($backend) {
             // 1.1 Check for username/pass sent
 

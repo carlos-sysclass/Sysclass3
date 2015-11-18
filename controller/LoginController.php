@@ -32,13 +32,12 @@ class LoginController extends \AbstractSysclassController
 		} catch (AuthenticationException $e) {
 		}
 
+		//$session = $di->get("session");
+		//$request_uri = $session->get("requested_uri");
 
-		$session = $di->get("session");
-		$request_uri = $session->get("requested_uri");
-
-		if ($request_uri) {
-			$session->set("requested_uri", $request_uri);
-		}
+		//if ($request_uri) {
+		//	$session->set("requested_uri", $request_uri);
+		//}
 
 		// CLEAR SESSION, IF THE USER IS OPENING THE LOGIN PAGE, AFTER CHECKING THE "REMEMBER" COOKIE
 		isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
@@ -63,7 +62,10 @@ class LoginController extends \AbstractSysclassController
 		} else {
 			$this->putItem("open_login_section", "login");
 		}
-		$this->putItem("requested_uri", $request_uri);
+
+		if ($this->dispatcher->wasForwarded()) {
+			$this->putItem("requested_uri", $this->request-> getURI());
+		}
 
 		parent::display('pages/auth/login.tpl');
 	}
@@ -243,7 +245,7 @@ class LoginController extends \AbstractSysclassController
      */
 	public function login()
 	{
-		$data = $this->getHttpData(func_get_args());
+		$data = $this->request->getPost();
 
 		$di = DI::getDefault();
 
@@ -261,6 +263,7 @@ class LoginController extends \AbstractSysclassController
 
 			// IF THE USER IS AUTHENTICATED, GO TO AUTHORIZATION
 		} catch (AuthenticationException $e) {
+
 			$url = null;
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
@@ -314,9 +317,8 @@ class LoginController extends \AbstractSysclassController
 		/**
 		 * @todo Create a way check if the user came from a external service, and if this service needs a pament function.
 		 */
-
+		
 		if (!empty($data["requested_uri"])) {
-			$di->get("session")->remove("requested_uri");
 			$this->redirect($data["requested_uri"]);
 		} else {
 			$this->redirect("/dashboard/");

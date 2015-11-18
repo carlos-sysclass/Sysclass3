@@ -333,18 +333,35 @@ abstract class SysclassModule extends BaseSysclassModule
             $itemModel->assign($data);
             $itemModel->id = $id;
 
-            $this->eventsManager->fire("module-{$this->module_id}:beforeModelUpdate", $itemModel, $data);
+            $status = $this->eventsManager->fire("module-{$this->module_id}:beforeModelUpdate", $itemModel, $data);
+
+            $beforeMessages = $itemModel->getMessages();
 
             if ($itemModel->save()) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
 
-                $response = $this->createAdviseResponse($this->translate->translate("Item updated with success"), "success");
+                $afterMessages = $itemModel->getMessages();
+
+                $modelMessages = array_merge($beforeMessages, $afterMessages);
+
+                if (count($modelMessages) > 0) {
+                    foreach($modelMessages as $messageObject) {
+                        $message = $this->translate->translate($messageObject->getMessage());
+                        $type = $messageObject->getType();
+                        break;
+                    }
+                } else {
+                    $message = $this->translate->translate("Item updated with success");
+                    $type = "success";
+                }
+
+                $response = $this->createAdviseResponse($message, $type);
 
                 if ($_GET['redirect'] == "1") {
                     $response = $this->createRedirectResponse(
                         null,
-                        $this->translate->translate("Item updated with success"),
-                        "success"
+                        $message, 
+                        $type
                     );
                 } elseif ($_GET['object'] == "1") {
                     $itemData = call_user_func_array(

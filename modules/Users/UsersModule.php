@@ -2,6 +2,7 @@
 namespace Sysclass\Modules\Users;
 
 use Phalcon\DI,
+    Phalcon\Mvc\Model\Message,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\Group,
     Sysclass\Models\Users\UsersGroups,
@@ -259,6 +260,57 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 
     public function beforeModelUpdate($evt, $model, $data) {
+        if (
+            array_key_exists('new-password', $data) &&
+            array_key_exists('new-password-confirm', $data) &&
+            (!empty($data['new-password']) || !empty($data['new-password-confirm']))
+        ) {
+            if ($data['new-password'] === $data['new-password-confirm']) {
+                // CHECK PASSWORD
+                if ($this->acl->isUserAllowed(null, "users", "change-password")) {
+                    // DEFINE AUTHENTICATION BACKEND
+
+                    if (
+                        array_key_exists('old-password-confirm', $data) &&
+                        !empty($data['old-password'])
+                    ) {
+                        $continue = $this->authentication->checkPassword($data['old-password'], $model);
+                    } else {
+                        $continue = true;
+                    }
+
+                    $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+                }
+            } else {
+                $message = new Message(
+                    "User Password does not match",
+                    "password",
+                    "warning"
+                );
+                $model->appendMessage($message);
+            }
+        }
+
+        if (array_key_exists('avatar', $data) && is_array($data['avatar']) ) {
+            $userAvatarModel = new \Sysclass\Models\Users\UserAvatar();
+            $userAvatarModel->assign($data['avatar']);
+            $model->avatar = $userAvatarModel;
+        }
+
+        return true;
+    }
+
+    public function afterModelUpdate($evt, $model, $data) {
+        if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+            UsersGroups::find("user_id = {$userModel->id}")->delete();
+            
+            foreach($data['usergroups'] as $group) {
+                $userGroup = new UsersGroups();
+                $userGroup->user_id = $userModel->id;
+                $userGroup->group_id = $group['id'];
+                $userGroup->save();
+            }
+        }
     }
 
     protected function getDatatableItemOptions() {
@@ -388,6 +440,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      *
      * @Put("/item/me/{id}")
      */
+    /*
     public function setItemRequest($id)
     {
         //$request = $this->getMatchedUrl();
@@ -404,7 +457,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 }
                 //unset($data['password']);
                 $userModel->assign($data);
-
+                
                 // CHECK FOR PASSWORD CHANGING
                 if (
                     array_key_exists('new-password', $data) &&
@@ -436,7 +489,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     $userAvatarModel->assign($data['avatar']);
                     $userModel->avatar = $userAvatarModel;
                 }
-
+                
                 if ($userModel->save()) {
                     if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
                         UsersGroups::find("user_id = {$userModel->id}")->delete();
@@ -470,6 +523,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
+    */
 
     /**
      * [ add a description ]
