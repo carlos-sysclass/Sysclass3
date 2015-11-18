@@ -181,14 +181,14 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
 
             if (!array_key_exists('disableBackends', $options) || $options['disableBackends'] == FALSE) {
                 if (($user = $backend->login($info, $options)) === FALSE) {
-                    throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+                    throw new AuthenticationException("INVALID_USERNAME_OR_PASSWORD", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
                 }
             }
             if (!$user) {
                 if ($info instanceof User) {
                     $user = $info;
                 } else {
-                    throw new AuthenticationException("error", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+                    throw new AuthenticationException("INVALID_USERNAME_OR_PASSWORD", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
                 }
             }
             try {

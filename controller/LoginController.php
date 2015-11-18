@@ -84,14 +84,6 @@ class LoginController extends \AbstractSysclassController
 			$this->redirect("/dashboard");
 		} catch (AuthenticationException $e) {
 			/*
-			switch($e->getCode()) {
-				case AuthenticationException :: NO_USER_LOGGED_IN : {
-					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
-		            //$message_type = 'info';
-					break;
-				}
-			}
 			*/
 		}
 
@@ -301,9 +293,9 @@ class LoginController extends \AbstractSysclassController
 				}
 			}
 
-			if (!empty($data["requested_uri"])) {
-				$di->get("session")->set("requested_uri", $data["requested_uri"]);
-			}
+			//if (!empty($data["requested_uri"])) {
+			//	$di->get("session")->set("requested_uri", $data["requested_uri"]);
+			//}
 
 			$this->redirect($url, $message, $message_type);
 		}
