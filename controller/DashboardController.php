@@ -47,6 +47,7 @@ class DashboardController extends \AbstractSysclassController
 
         $this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
 
+        $this->putComponent("autobahn");
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
         $dashboardManager = $this->module("dashboard");
 

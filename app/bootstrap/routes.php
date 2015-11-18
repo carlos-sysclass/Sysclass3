@@ -3,7 +3,7 @@ use Phalcon\Mvc\Router\Annotations as Router,
 	Phalcon\Mvc\Dispatcher as MvcDispatcher,
     Phalcon\Mvc\Dispatcher\Exception as MvcDispatcherException;
 
-if (CONSOLE_APP !== TRUE) {
+if (APP_TYPE === "WEB") {
     $di->set('router', function () use ($environment) {
     	// Create the router without default routes
     	$router = new Router();
