@@ -10,6 +10,11 @@
         Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
         </div>
     </li>
+    <li class="tlypageguide_left" data-tourtarget="#ads-leftbar-banner">
+        <div>
+        This area is dedicated to general advertising or advertising and promotions of the school or company hosting the program.
+        </div>
+    </li>
     <li class="tlypageguide_left" data-tourtarget="#courses-widget">
         <div>
         This area contains all the information about the course and the instructors teaching it. In this area you find the entire educational content, as well as the video class, materials, tests and grades.
@@ -20,22 +25,24 @@
         The announcements related to the course such as, holidays, special activities, meeting with advisors, and all information related to the course and school.
         </div>
     </li>
+    <!--
     <li class="tlypageguide_left" data-tourtarget="#tutoria-widget">
         <div>
         In this area the students can ask questions to the instructors or advisors. Depending on how the course is setup, only the instructor or advisor can answer questions, or other students can be allowed answer each other.
         </div>
     </li>
+    -->
     <li class="tlypageguide_right" data-tourtarget="#institution-widget">
         <div>
         This area is dedicated to the university, school, training center, or private teacher. Here you will find the name of the school, homepage, Facebook page, contact information, and everything you need to know about the institution hosting the course.
         </div>
     </li>
-    <li class="tlypageguide_right" data-tourtarget="#advisor-widget">
+    <li class="tlypageguide_right" data-tourtarget="#advisor-chat-widget">
         <div>
         Here the student will find information about the instructor, advisor or coach. In this area you can also schedule meetings with your instructor or advisor, chat with him or her, and even have calls or videoconferences.
         </div>
     </li>
-    <li class="tlypageguide_right" data-tourtarget="#advertising-panel">
+    <li class="tlypageguide_right" data-tourtarget="#ads-rightbar-banner">
         <div>
         This area is dedicated to general advertising or advertising and promotions of the school or company hosting the program.
         </div>
