@@ -143,15 +143,17 @@ Profile Page
   padding:0 !important;
 }
 
+/*
 .profile-info li i {
   color:#b5c1c9;
   font-size:15px;
 }
-
+*/
+/*
 .profile-info li:hover i {
   color:#169ef4;
 }
-
+*/
 /*profile sales summary*/
 .sale-summary ul {
   margin-top:-12px;
