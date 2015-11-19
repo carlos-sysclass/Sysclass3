@@ -60,13 +60,18 @@ class SettingsModule extends \SysclassModule implements \ILinkable
      * @Get("/")
      */
     public function getRequest() {
-        $this->response->setContentType('application/json', 'UTF-8');
+        if ($user = $this->getCurrentUser(true)) {
+            $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($results = $this->getSettings(true)) {
-            $this->response->setJsonContent($results);
-            return $results;
-        } else {
-            $this->response->setJsonContent($this->notAuthenticatedError());
+            if ($results = $this->getSettings(true)) {
+                if (!is_null($user->websocket_key)) {
+                    $results['websocket_key'] = $user->websocket_key;
+                }
+                $this->response->setJsonContent($results);
+                return $results;
+            } else {
+                $this->response->setJsonContent($this->notAuthenticatedError());
+            }
         }
     }
     /**

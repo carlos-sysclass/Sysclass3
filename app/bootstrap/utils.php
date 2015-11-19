@@ -68,7 +68,7 @@ if (APP_TYPE === "WEB") {
      
         return $translator;
     });
-} elseif (APP_TYPE === "CONSOLE") {
+} elseif (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
     $di->setShared('translate', function () use ($di) {
         $translator = new Translator();
 

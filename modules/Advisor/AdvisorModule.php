@@ -38,9 +38,9 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
             if (in_array('advisor.chat', $widgetsIndexes)) {
                 // START CHART ON CLICK
                 //
-                $this->putBlock("chat.views");
-
                 $this->putModuleScript("widget.chat.advisor");
+
+                $this->putBlock("advisor.chat");
 
                 $widgets['advisor.chat'] = array(
                     'id'        => 'advisor-chat-widget',
@@ -74,6 +74,15 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 $self->putModuleScript("chat.views");
 
                 $self->putSectionTemplate("foot", "blocks/chat.views");
+
+                return true;
+
+            },
+            'advisor.chat' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("autobahn");
+                $self->putModuleScript("chat");
+                $self->putSectionTemplate("foot", "blocks/chat");
 
                 return true;
 

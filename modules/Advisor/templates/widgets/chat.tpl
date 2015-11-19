@@ -2,7 +2,7 @@
     <li class="active block-title">
         <a>
             <i class="{$T_DATA.icon}"></i>
-            {$T_DATA.header}
+            <span class="advidor-title">{$T_DATA.header}</span>
         </a>
     </li>
     <li class="active chat-loader" style="display: none;">
@@ -11,6 +11,12 @@
                 <span class="fa fa-circle-o-notch fa-lg fa-spin"></span>
             </i>
             Connecting
+        </a>
+    </li>
+    <li class="active block-error" style="display: none;">
+        <a>
+            <i class="{$T_DATA.icon}"></i>
+            <span class="advidor-title">{translateToken value="Chat not avaliable"}</span>
         </a>
     </li>
 
