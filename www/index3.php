@@ -25,6 +25,8 @@ if ($_SERVER['HTTP_HOST'] == 'local.beta.sysclass.com') {
 
 }
 
+define("APP_TYPE", "WEB");
+
 try {
     require_once("../app/bootstrap/bootstrap.php");
 

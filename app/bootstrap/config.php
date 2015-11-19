@@ -270,6 +270,14 @@ $di->setShared('environment', function() use ($di) {
 			'name'	=> 'bootstrap-editable',
 			'css'	=> array('plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable'),
 			'js'	=> array('plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable')
+		),
+		'autobahn' => array(
+			'name' => 'autobahn',
+			'js' => array('plugins/autobahn/autobahn1')
+		),
+		'websocket' => array(
+			'name' => 'websocket',
+			'js' => array('plugins/jquery-websocket/jquery.websocket')
 		)
 
 	);

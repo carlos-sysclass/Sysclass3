@@ -17,25 +17,46 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 		//this.advisorChatWidgetViewClass = parent.widgetViewClass.extend({
 		this.advisorChatWidgetViewClass = Backbone.View.extend({
 			collection : null,
-			chatModule : app.module("utils.strophe"),
+			chatModule : app.module("utils.chat"),
 			events : {
 				"click .start-chat-action" : "startChart"
 			},
 			initialize : function() {
 				// LISTEN TO chatModule to Execute interface
 				// 'support1@enterprise.sysclass.com');
-				this.listenToOnce(this.chatModule, "xmpp:connect:before", function(status) {
-					this.$(".block-title").hide();
+
+				this.listenTo(this.chatModule, "beforeConnection.chat", function(status) {
 					this.$(".chat-loader").show();
+					this.$(".block-error").hide();
+					this.$(".block-title").hide();
 				}.bind(this));
 
-				this.listenToOnce(this.chatModule, "xmpp:connect:after", function(status) {
-					if (status == Strophe.Status.CONNECTED) {
-						this.$(".chat-loader").hide();
-						this.$(".block-title").show();
-					}
+				this.listenTo(this.chatModule, "errorConnection.chat", function(status) {
+					this.$(".chat-loader").hide();
+					this.$(".block-error").show();
+					this.$(".block-title").hide();
+					this.$el.addClass("advisor-chat-error");
+					this.$(".start-chat-action").addClass("disabled").attr("disabled", "disabled");
 				}.bind(this));
 
+
+				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
+					//if (status == Strophe.Status.CONNECTED) {
+					this.$(".chat-loader").hide();
+					this.$(".block-error").hide();
+					this.$(".block-title").show();
+					this.$el.removeClass("advisor-chat-error");
+					this.$(".start-chat-action").removeClass("disabled").removeAttr("disabled", "disabled");
+					/*
+						this.$(".chat-loader").fadeOut(1500, function() {
+							this.$(".chat-loader").hide();
+							this.$(".block-title").show();
+						}.bind(this));
+					*/
+
+					//}
+				}.bind(this));
+				/*
 				this.listenToOnce(this.chatModule, "xmpp:startchat", function(status) {
 					this.$(".chat-loader").fadeOut(500, function() {
 						this.$(".block-title").show();
@@ -47,23 +68,17 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 					this.collection = collection;
 					this.startChart();
 				}.bind(this));
+				*/
+				if (!this.chatModule.started) {
+					this.chatModule.start();
+				}
 			},
 			startChart : function() {
 				if (!this.chatModule.started) {
 					this.chatModule.start();
 				}
-				if (!_.isNull(this.collection)) {
-					if (this.collection.size() > 0) {
 
-						// TODO: DO A LOOP TO CHECK NEXT online support USER.
-						var modelToChat = this.collection.at(0);
-						if (modelToChat.get("status") != "offline") {
-							this.chatModule.startChat(modelToChat.get("id"));
-						}
-					} else {
-						// Show Unavaliable Message
-					}
-				}
+				this.chatModule.createQueue("advisor", "Advisor");
 			}
 		});
 	});

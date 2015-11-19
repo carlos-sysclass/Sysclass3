@@ -16,12 +16,19 @@ class Sysclass extends Component implements IAuthentication
             $password = @isset($options['password']) ? $options['password'] : null;
             $secret_key = @isset($options['secret_key']) ? $options['secret_key'] : null;
         } else {
-            $user = User::findFirstByLogin($info['login']);
-            $password = $info['password'];
-            $secret_key = $info['secret_key'];
+            if (array_key_exists('login', $info)) {
+                $user = User::findFirstByLogin($info['login']);
+            } elseif (array_key_exists('id', $info)) {
+                $user = User::findFirstById($info['id']);
+            }
+            $password = @isset($info['password']) ? $info['password'] : null;
+            $secret_key = @isset($info['secret_key']) ? $info['secret_key'] : null;
+            $websocket_key = @isset($info['websocket_key']) ? $info['websocket_key'] : null;
         }
         
         if (array_key_exists('useSecretKey', $options) && $options['useSecretKey'] == TRUE && $this->checkSecretKey($secret_key, $user)) {
+            return $user;
+        } elseif (array_key_exists('useWebsocketKey', $options) && $options['useWebsocketKey'] == TRUE && $this->checkWebsocketKey($websocket_key, $user)) {
             return $user;
         } elseif ($this->checkPassword($password, $user)) {
             return $user;
@@ -38,6 +45,12 @@ class Sysclass extends Component implements IAuthentication
     {
         return (!is_null($secret_key) && $this->security->checkHash($secret_key, $user->api_secret_key));
     }
+
+    public function checkWebsocketKey($websocket_key, User $user = null)
+    {
+        return (!is_null($websocket_key) && $this->security->checkHash($websocket_key, $user->websocket_key));
+    }
+    
 
     public function signup($info, $options = null)
     {

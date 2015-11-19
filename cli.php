@@ -1,7 +1,5 @@
 <?php
-use Phalcon\Loader,
-	Phalcon\DI\FactoryDefault\CLI as CliDI,
-    Phalcon\CLI\Console as ConsoleApp;
+use Phalcon\CLI\Console as ConsoleApp;
 
 //@session_start();
 
@@ -29,7 +27,8 @@ if ($_SERVER['HTTP_HOST'] == 'local.beta.sysclass.com') {
 
 }
 
-define("CONSOLE_APP", true);
+define("APP_TYPE", "CONSOLE");
+
 
 try {
 

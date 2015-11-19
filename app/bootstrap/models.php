@@ -24,8 +24,10 @@ $di->set('db', function () use ($environment, $eventsManager) {
     }
 });
 
-if (CONSOLE_APP === TRUE) {
+if (APP_TYPE === "CONSOLE") {
     $logger = new FileLogger(REAL_PATH . "/logs/database-tasks.log");
+} elseif (APP_TYPE === "WEBSOCKET") {
+    $logger = new FileLogger(REAL_PATH . "/logs/database-websocket.log");
 } else {
     $logger = new FileLogger(REAL_PATH . "/logs/database.log");
 }

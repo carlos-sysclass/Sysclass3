@@ -36,7 +36,7 @@ $di->setShared('session', $session);
 
 
 
-if (CONSOLE_APP !== TRUE) {
+if (APP_TYPE === "WEB") {
     $di->setShared('translate', function () use ($di) {
 
         $translator = new Translator(!$di->get("request")->isAjax());
@@ -68,7 +68,7 @@ if (CONSOLE_APP !== TRUE) {
      
         return $translator;
     });
-} else {
+} elseif (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
     $di->setShared('translate', function () use ($di) {
         $translator = new Translator();
 

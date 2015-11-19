@@ -30,9 +30,18 @@ $loader->registerNamespaces(array(
     "Sysclass\Models" => __DIR__ . "/../models/",
     "Sysclass\Services" => __DIR__ . "/../services/",
     "Sysclass\Tasks" => __DIR__ . "/../tasks/",
+    "Sysclass\Websockets" => __DIR__ . "/../websockets/",
     "Plico" => __DIR__ . "/../plico/", // TODO: Move code to plicolib itself
     "Sysclass" => __DIR__ . "/../sysclass/",
     "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/'
+    /*
+    "Ratchet" => __DIR__ . '/../../vendor/cboden/ratchet/src/Ratchet/',
+    "React\EventLoop" => __DIR__ . '/../../vendor/react/event-loop/',
+    "React\Socket" => __DIR__ . '/../../vendor/react/socket/src/',
+    "React\Stream" => __DIR__ . '/../../vendor/react/stream/src/',
+    "Evenement" => __DIR__ . '/../../vendor/evenement/evenement/src/Evenement/',
+    */
+    
 ));
 
 $loader-> registerClasses(array(
@@ -50,7 +59,7 @@ $loader->register();
 
 $plico = PlicoLib::instance(__DIR__ . "/../");
 
-if (CONSOLE_APP === TRUE) {
+if (APP_TYPE === "CONSOLE") {
     $di = new CliDI();
 
     /*
