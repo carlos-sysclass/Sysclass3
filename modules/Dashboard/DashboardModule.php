@@ -140,6 +140,8 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 }
             }
 
+            $this->putCss("css/components");
+
             $groupColors = array(
                 "administration" => "yellow-gold",
                 "content" => "red-thunderbird",

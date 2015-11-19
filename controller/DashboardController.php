@@ -45,7 +45,7 @@ class DashboardController extends \AbstractSysclassController
 	{
         $currentUser = $this->getCurrentUser(true);
 
-        $this->putCss("css/components");
+        //$this->putCss("css/components");
         $this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
 
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
