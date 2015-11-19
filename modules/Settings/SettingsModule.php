@@ -62,7 +62,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
     public function getRequest() {
         if ($user = $this->getCurrentUser(true)) {
             $this->response->setContentType('application/json', 'UTF-8');
-
+            
             if ($results = $this->getSettings(true)) {
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;

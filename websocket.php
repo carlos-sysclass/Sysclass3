@@ -3,7 +3,7 @@ use Ratchet\Server\IoServer,
 	Ratchet\Http\HttpServer,
 	Ratchet\WebSocket\WsServer,
 	Ratchet\Wamp\WampServer,
-	Sysclass\Websockets\Chat;
+	Sysclass\Websockets\ChatWs;
 
 ini_set("display_errors", "1");
 //error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING);
@@ -22,7 +22,7 @@ try {
     require_once("app/bootstrap/bootstrap.php");
 
 
-    $app = new Chat();
+    $app = new ChatWs();
 	$app->setDI($di);
 
 	$loop   = React\EventLoop\Factory::create();

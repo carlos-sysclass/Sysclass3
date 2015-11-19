@@ -25,27 +25,34 @@ $SC.module("portlet.advisor.chat", function(mod, app, Backbone, Marionette, $, _
 				// LISTEN TO chatModule to Execute interface
 				// 'support1@enterprise.sysclass.com');
 
-				this.listenToOnce(this.chatModule, "beforeConnection.chat", function(status) {
-					this.$(".block-title").hide();
+				this.listenTo(this.chatModule, "beforeConnection.chat", function(status) {
 					this.$(".chat-loader").show();
+					this.$(".block-error").hide();
+					this.$(".block-title").hide();
 				}.bind(this));
 
-				this.listenToOnce(this.chatModule, "errorConnection.chat", function(status) {
-					this.$(".chat-loader").fadeOut(1500, function() {
-						this.$el.addClass("advisor-chat-error");
-						this.$(".block-error").show();
-						this.$(".start-chat-action").addClass("disabled").attr("disabled", "disabled");
-					}.bind(this));
+				this.listenTo(this.chatModule, "errorConnection.chat", function(status) {
+					this.$(".chat-loader").hide();
+					this.$(".block-error").show();
+					this.$(".block-title").hide();
+					this.$el.addClass("advisor-chat-error");
+					this.$(".start-chat-action").addClass("disabled").attr("disabled", "disabled");
 				}.bind(this));
 
 
-				this.listenToOnce(this.chatModule, "afterConnection.chat", function(status) {
+				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
 					//if (status == Strophe.Status.CONNECTED) {
+					this.$(".chat-loader").hide();
+					this.$(".block-error").hide();
+					this.$(".block-title").show();
+					this.$el.removeClass("advisor-chat-error");
+					this.$(".start-chat-action").removeClass("disabled").removeAttr("disabled", "disabled");
+					/*
 						this.$(".chat-loader").fadeOut(1500, function() {
 							this.$(".chat-loader").hide();
 							this.$(".block-title").show();
 						}.bind(this));
-
+					*/
 
 					//}
 				}.bind(this));

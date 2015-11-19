@@ -4,10 +4,11 @@ namespace Sysclass\Websockets;
 use Phalcon\Mvc\User\Component,
     Ratchet\Wamp\WampServerInterface,
     Ratchet\ConnectionInterface,
-    Sysclass\Models\Chat\Queue,
+    Sysclass\Models\Chat\Chat,
+    Sysclass\Models\Chat\Message,
     Sysclass\Models\Users\UserTimes;
 
-class Chat extends Component implements WampServerInterface
+class ChatWs extends Component implements WampServerInterface
 {
     protected $clients;
     protected $token;
@@ -53,6 +54,7 @@ class Chat extends Component implements WampServerInterface
     
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
         // In this application if clients send data it's because the user hacked around in console
+        var_dump($topic->getId());
         switch($topic->getId()) {
             case "authentication" : {
                 if ($userTimes = UserTimes::findFirstBySessionId($params[1])) {
@@ -68,7 +70,6 @@ class Chat extends Component implements WampServerInterface
                             'sha256'
                         );
                         */
-                        
                         $this->users[$conn->wrappedConn->WAMP->sessionId] = array(
                             'id' => $user->id,
                             'login' => $user->login,
@@ -76,6 +77,7 @@ class Chat extends Component implements WampServerInterface
                             'surname' => $user->surname
                         );
 
+                        /*
                         $lastQueue = Queue::findFirst(array(
                             'conditions' => 'requester_id = ?0 AND closed = 0',
                             'bind' => array($user->id),
@@ -84,6 +86,7 @@ class Chat extends Component implements WampServerInterface
                         if ($lastQueue) {
                            var_dump($lastQueue->toArray());
                         }
+                        */
                         //$this->token = $conn->wrappedConn->WAMP->sessionId;
                         $userTimes->websocket_token = $conn->wrappedConn->WAMP->sessionId;
                         //$userTimes->websocket_token = $conn->wrappedConn->WAMP->sessionId;
@@ -107,11 +110,14 @@ class Chat extends Component implements WampServerInterface
                     $conn->close();
                     return true;
                 }
-                $lastQueue = Queue::findFirst(array(
-                    'conditions' => 'requester_id = ?0 AND closed = 0',
-                    'bind' => array($user->id),
+                $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+
+                $lastQueue = Chat::findFirst(array(
+                    'conditions' => "requester_id = ?0 AND closed = 0 AND type = ?1",
+                    'bind' => array($user['id'], 'queue'),
                     'order' => 'ping DESC'
                 ));
+
                 if ($lastQueue) {
                    var_dump($lastQueue->toArray());
                 }
@@ -129,17 +135,18 @@ class Chat extends Component implements WampServerInterface
                     $conn->close();
                     return true;
                 }
+
+                $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+
                 $queue = $params[0];
                 $new_topic = $queue . "-" . \Phalcon\Text::random(RANDOM_HEXDEC, 16);
 
                 $started = time();
                 $subject = $this->translate->translate($params[1]);
 
-                $queueModel = new Queue();
-
-                $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
-
+                $queueModel = new Chat();
                 $queueModel->websocket_token = $conn->wrappedConn->WAMP->sessionId;
+                $queueModel->type = "queue";
                 $queueModel->subject = $subject;
                 $queueModel->topic = $new_topic;
                 $queueModel->requester_id = $user['id'];
@@ -147,10 +154,6 @@ class Chat extends Component implements WampServerInterface
                 $queueModel->ping = $started;
 
                 $queueModel->save();
-
-                var_dump($queueModel->getMessages());
-
-                //$new_topic = "GLOBALCHAT";
 
                 $conn->callResult($id, array(
                     'topic' => $new_topic,
@@ -170,14 +173,24 @@ class Chat extends Component implements WampServerInterface
             $conn->close();
             return true;
         }
+        $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
         $event['origin'] = $conn->wrappedConn->WAMP->sessionId;
-        $event['from'] = $this->users[$conn->wrappedConn->WAMP->sessionId];
+        $event['from'] = $user;
 
-        $queueModel = Queue::findFirstByWebsocketToken($conn->wrappedConn->WAMP->sessionId);
+        $queueModel = Chat::findFirst(array(
+            'conditions' => 'websocket_token = ?0 AND topic = ?1',
+            'bind' => array($conn->wrappedConn->WAMP->sessionId, $topic->getId())
+        ));
         $queueModel->ping = time();
         $queueModel->save();
 
         // SAVE THE MESSAGE ON QUEUE
+        $messageModel = new Message();
+        $messageModel->chat_id = $queueModel->id;
+        $messageModel->message = $event['message'];
+        $messageModel->sent = time();
+        $messageModel->user_id = $user['id'];
+        $messageModel->save();
 
         $topic->broadcast($event, $exclude, $eligible);
     }

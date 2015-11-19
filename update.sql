@@ -16,3 +16,19 @@ CREATE TABLE `mod_chat_queue` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`requester_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `mod_chat_queue` 
+ADD COLUMN `type` VARCHAR(30) NULL AFTER `websocket_token`;
+
+ALTER TABLE `mod_chat_queue` RENAME TO  `mod_chat` ;
+
+CREATE TABLE `mod_chat_messages` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `chat_id` mediumint(8) unsigned NOT NULL,
+  `message` text,
+  `user_id` mediumint(8) unsigned NOT NULL,
+  `sent` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`chat_id`) REFERENCES `mod_chat` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

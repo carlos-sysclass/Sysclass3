@@ -196,6 +196,13 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     this._conn = null;
     this._token = null;
 
+    this._wsUri = 'ws://' + window.location.hostname +':8080';
+
+    this._options = {
+        maxRetries : 10,
+        tryCount : 0,
+    }
+
     this.models = {
         chat : Backbone.Model.extend({}),
         message : Backbone.Model.extend({})
@@ -204,7 +211,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     mod.initialize = function() {
         this.on("afterConnection.chat", this.onChatConnected.bind(this));
         this.on("startQueue.chat", this.startQueueView.bind(this));
-        this.startConnection();
+        this.on("errorConnection.chat", this.startRetryMode.bind(this));
+        this.trigger();
+        this.startRetryMode();
     }
 
     mod.onChatConnected = function(result) {
@@ -221,11 +230,50 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         }
         if (_.isNull(this._conn)) {
             this.trigger("beforeConnection.chat");
+            /*
+            ab.launch({
+                wsuri: 'ws://localhost:8080',
+                // authentication info
+                appkey: null, // authenticate as anonymous
+                appsecret: null,
+                appextra: null,
+                // additional session configuration
+                sessionConfig: {maxRetries: 10, retryDelay : 1000}
+            },
+            // session open handler
+            function (sess) {
+                console.warn('WebSocket connection open');
+                this._conn = sess;
+                var websocket_key = app.userSettings.get("websocket_key");
+                var session_key = $.cookie("SESSIONID");
+
+                this._conn
+                    .call("authentication", websocket_key, session_key)
+                    .then(function (result) {
+                        this.trigger("afterConnection.chat", result);
+                    }.bind(this), function (error) {
+                        this.trigger("errorConnection.chat", error);
+                        console.warn("error", error);
+
+                    }.bind(this));
+              //main(sess);
+            }.bind(this),
+            // session close handler
+            function (code, reason, detail) {
+              sess = null;
+              this.trigger("errorConnection.chat");
+              console.warn(code, reason, detail);
+            }.bind(this));
+            */
+            
             this._conn = new ab.Session(
-                'ws://localhost:8080',
+                this._wsUri,
                 function() {
+                    console.warn('WebSocket connection open');
                     var websocket_key = app.userSettings.get("websocket_key");
                     var session_key = $.cookie("SESSIONID");
+
+                    this._options.tryCount = 0;
 
                     this._conn
                         .call("authentication", websocket_key, session_key)
@@ -238,14 +286,24 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                         }.bind(this));
 
                 }.bind(this),
-                function() {
+                function(code, reason, detail) {
                     console.warn('WebSocket connection closed');
-                },
-                {'skipSubprotocolCheck': true}
+                    this._conn = null;
+                    this.trigger("errorConnection.chat");
+                }.bind(this),
+                {'skipSubprotocolCheck': true, retryDelay : 1000}
             );
             
         }
         return this._conn;
+    }
+
+    mod.startRetryMode = function() {
+        this._options.tryCount++;
+        if (this._options.tryCount <= this._options.maxRetries) {
+            console.warn('WebSocket connection Try #' + this._options.tryCount);
+            mod.startConnection();
+        }
     }
 
     this.createQueue = function(topic, title) {

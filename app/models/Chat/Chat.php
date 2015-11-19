@@ -3,11 +3,11 @@ namespace Sysclass\Models\Chat;
 
 use Phalcon\Mvc\Model;
 
-class Queue extends Model
+class Chat extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_chat_queue");
+        $this->setSource("mod_chat");
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => false));
     }
