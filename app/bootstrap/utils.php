@@ -41,11 +41,11 @@ if (APP_TYPE === "WEB") {
 
         $translator = new Translator(!$di->get("request")->isAjax());
 
-        if ($di->get("session")->has("session_language")) {
-            $translator->setSource($di->get("session")->get("session_language"));
+        //if ($di->get("session")->has("session_language")) {
+        //    $translator->setSource($di->get("session")->get("session_language"));
             //var_dump($di->get("session")->get("session_language"));
             //exit;
-        } else {
+        //} else {
             $user = $di->get("user");
 
             if ($user) {
@@ -64,7 +64,7 @@ if (APP_TYPE === "WEB") {
             //$languageModel = Sysclass\Models\I18n\Language::findFirstByCode($language_code);
 
             $translator->setSource($language_code);
-        }
+        //}
      
         return $translator;
     });

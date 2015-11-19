@@ -72,6 +72,7 @@
 									<h1>
 										<span data-update="name">{$T_EDIT_USER.name}</span>
 										<span data-update="surname"> {$T_EDIT_USER.surname}</span>
+										<!--
 										<div class="btn-group">
 											<button href="#" class="dropdown-toggle btn btn-default tooltips" data-toggle="dropdown" data-close-others="true" aria-expanded="false" data-original-title="Click here to change your session language" data-placement="bottom">
 												<img alt="" src="{Plico_GetResource file="img/flags/`$T_LANGUAGE_MENU.country_code|strtolower`.png"}"/>
@@ -89,6 +90,7 @@
 										    {/foreach}
 										    </ul>
 										</div>
+										-->
 									</h1>
 
 									<p data-update="short_description">{$T_EDIT_USER.short_description}</p>

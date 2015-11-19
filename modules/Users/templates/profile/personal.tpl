@@ -25,7 +25,7 @@
 		<label class="control-label">{translateToken value="Language"}</label>
 		<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 		{foreach $T_LANGUAGES as $key => $value}
-			<option value="{$key}" {if $value.id == $T_EDIT_USER.language_id}selected="selected"{/if}>{$value.name}</option>
+			<option value="{$value.id}">{$value.name}</option>
 		{/foreach}
 		</select>
 	</div>
