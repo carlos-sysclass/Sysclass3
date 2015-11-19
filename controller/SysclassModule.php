@@ -9,8 +9,14 @@ abstract class SysclassModule extends BaseSysclassModule
 
     protected $context;
 
+    protected $_args;
+
     public function init() {
         $this->beforeExecuteRoute();
+    }
+
+    protected function setArgs(array $args) {
+        $this->_args = $args;
     }
 
     public function beforeExecuteRoute() {
@@ -314,7 +320,12 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($allowed = $this->acl->isUserAllowed(null, $this->module_id, "edit")) {
+        $this->setArgs(array(
+            'model' => $model,
+            'id' => $id
+        ));
+
+        if ($allowed = $this->isUserAllowed("edit")) {
             $data = $this->request->getJsonRawBody(true);
 
             if (!array_key_exists($model, $this->model_info)) {
@@ -600,5 +611,9 @@ abstract class SysclassModule extends BaseSysclassModule
         return null;
     }
 
+
+    protected function isUserAllowed($action, $args) {
+        return $this->acl->isUserAllowed(null, $this->module_id, $action);
+    }
 
 }

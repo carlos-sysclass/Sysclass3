@@ -360,6 +360,19 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         return false;
     }
 
+    protected function isUserAllowed($action, $args) {
+        $allowed = parent::isUserAllowed($action);
+        if (!$allowed) {
+            switch($action) {
+                case "edit" : {
+                    // ALLOW IF THE USER IS UPDATING HIMSELF
+                    return $this->_args['id'] == $this->getCurrentUser(true)->id;
+                }
+            }
+        }
+        return $allowed;
+    }
+
     /**
      * [ add a description ]
      *
