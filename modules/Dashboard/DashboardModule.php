@@ -140,6 +140,13 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 }
             }
 
+            $groupColors = array(
+                "administration" => "yellow-gold",
+                "content" => "red-thunderbird",
+                "users" => "blue-steel",
+                "communication" => "green-seagreen"
+            );
+
             return array(
                 'dashboard.linkable.view' => array(
                     'type'      => 'control-panel', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
@@ -157,6 +164,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                     ),
                     'data'      => array(
                         'groups'    => $groups,
+                        'colors'    => $groupColors,
                         'links'     => $links
                     )
                 )

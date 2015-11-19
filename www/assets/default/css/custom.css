@@ -1314,3 +1314,13 @@ button.calendar-news-item {
 .advisor-chat-error .ver-inline-menu li.active i {
     background-color: #c89f23 !important;
 }
+
+.dashboard-stat .visual > i {
+	color: #fff;
+    opacity: 0.1;
+}
+
+.dashboard-stat .more {
+    font-weight: 600 !important;
+    opacity: 1 !important;
+}

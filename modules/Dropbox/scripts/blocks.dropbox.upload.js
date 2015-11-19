@@ -39,7 +39,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 }
 
                 this.$(".crop-container").Jcrop({
-                    aspectRatio: (3/4),
+                    aspectRatio: 1,
                     onSelect: function (c) {
                         this.model.set("crop", c);
                         /*

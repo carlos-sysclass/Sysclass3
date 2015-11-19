@@ -39,7 +39,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
             $stream = $this->storage->getFilestream($model);
 
             $image = new \Plico\Php\Image();
-            $croped = $image->resize($stream, $data['crop'], 150, 200);
+            $croped = $image->resize($stream, $data['crop'], 150, 150);
 
             $file_path = $this->storage->getFullFilePath($model);
             $file_full_path = $image->saveAsJpeg($croped, $file_path);
