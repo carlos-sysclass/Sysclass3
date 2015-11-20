@@ -235,6 +235,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                 //$filedata['lesson_id'] = $id;
                 $filedata['upload_type'] = $type;
                 $filedata['filename'] = $filedata['name'];
+                $filedata['owner_id'] = $this->user->id;
 
                 // CHECK FOR FILE EXISTENCE
                 if (!is_null($content_range)) {
@@ -287,8 +288,8 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
     /**
      * [add a description]
      *
-     * @url DELETE /upload/:lesson_id/:file_id
      * @Delete("/upload/{lesson_id}/{file_id}")
+     * @deprecated
      */
     public function removeFilesRequest($lesson_id, $file_id)
     {
@@ -310,6 +311,22 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
         } else {
             return $this->notAuthenticatedError();
         }
+    }
+
+    protected function isUserAllowed($action, $args) {
+        $allowed = parent::isUserAllowed($action);
+        if ($allowed) {
+            switch($action) {
+                case "edit" :
+                case "delete" : {
+                    // Check if the user is the owner of the file.
+                    if (is_object($this->_args['object'])) {
+                        return is_null($this->_args['object']->owner_id) || $this->_args['object']->owner_id == $this->user->id;
+                    }
+                }
+            }
+        }
+        return $allowed;
     }
 
 }

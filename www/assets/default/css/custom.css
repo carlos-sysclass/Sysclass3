@@ -1309,7 +1309,7 @@ button.calendar-news-item {
 .advisor-chat-error .ver-inline-menu li.active a {
   color: #fff;
   background-color: #dfba49;
-  border-color: #dbb233;
+  border-color: #c89f23;
 }
 .advisor-chat-error .ver-inline-menu li.active i {
     background-color: #c89f23 !important;
@@ -1324,3 +1324,4 @@ button.calendar-news-item {
     font-weight: 600 !important;
     opacity: 1 !important;
 }
+

@@ -337,49 +337,60 @@ abstract class SysclassModule extends BaseSysclassModule
                 );
                 return true;
             }
-            $model_info = $this->model_info[$model];
 
-            $model_class = $model_info['class'];
-            $itemModel = new $model_class();
-            $itemModel->assign($data);
-            $itemModel->id = $id;
+            $itemModel = $this->getModelData($model, $id);
 
-            $status = $this->eventsManager->fire("module-{$this->module_id}:beforeModelUpdate", $itemModel, $data);
+            if ($itemModel) {
 
-            $beforeMessages = $itemModel->getMessages();
 
-            if ($itemModel->save()) {
-                $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
+                $model_info = $this->model_info[$model];
 
-                $afterMessages = $itemModel->getMessages();
+                $model_class = $model_info['class'];
+                $itemModel = new $model_class();
+                $itemModel->assign($data);
+                $itemModel->id = $id;
 
-                $modelMessages = array_merge($beforeMessages, $afterMessages);
+                $status = $this->eventsManager->fire("module-{$this->module_id}:beforeModelUpdate", $itemModel, $data);
 
-                if (count($modelMessages) > 0) {
-                    foreach($modelMessages as $messageObject) {
-                        $message = $this->translate->translate($messageObject->getMessage());
-                        $type = $messageObject->getType();
-                        break;
+                $beforeMessages = $itemModel->getMessages();
+
+                if ($itemModel->save()) {
+                    $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
+
+                    $afterMessages = $itemModel->getMessages();
+
+                    $modelMessages = array_merge($beforeMessages, $afterMessages);
+
+                    if (count($modelMessages) > 0) {
+                        foreach($modelMessages as $messageObject) {
+                            $message = $this->translate->translate($messageObject->getMessage());
+                            $type = $messageObject->getType();
+                            break;
+                        }
+                    } else {
+                        $message = $this->translate->translate("Item updated with success");
+                        $type = "success";
+                    }
+
+                    $response = $this->createAdviseResponse($message, $type);
+
+                    if ($_GET['redirect'] == "1") {
+                        $response = $this->createRedirectResponse(
+                            null,
+                            $message, 
+                            $type
+                        );
+                    } elseif ($_GET['object'] == "1") {
+                        $itemData = call_user_func_array(
+                            array($itemModel, $model_info['exportMethod'][0]),
+                            $model_info['exportMethod'][1]
+                        );
+                        $response = array_merge($response, $itemData);
                     }
                 } else {
-                    $message = $this->translate->translate("Item updated with success");
-                    $type = "success";
-                }
+                    $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
-                $response = $this->createAdviseResponse($message, $type);
-
-                if ($_GET['redirect'] == "1") {
-                    $response = $this->createRedirectResponse(
-                        null,
-                        $message, 
-                        $type
-                    );
-                } elseif ($_GET['object'] == "1") {
-                    $itemData = call_user_func_array(
-                        array($itemModel, $model_info['exportMethod'][0]),
-                        $model_info['exportMethod'][1]
-                    );
-                    $response = array_merge($response, $itemData);
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                 }
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
@@ -402,9 +413,15 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function deleteItemRequest($model, $id)
     {
-        if ($this->acl->isUserAllowed(null, $this->module_id, "delete")) {
+        $itemModel = $this->getModelData($model, $id);
 
-            $itemModel = $this->getModelData($model, $id);
+        $this->setArgs(array(
+            'model' => $model,
+            'id' => $id,
+            'object' => $itemModel
+        ));
+
+        if ($allowed = $this->isUserAllowed("delete")) {
 
             if ($itemModel) {
 
