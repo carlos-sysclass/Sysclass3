@@ -633,4 +633,20 @@ abstract class SysclassModule extends BaseSysclassModule
         return $this->acl->isUserAllowed(null, $this->module_id, $action);
     }
 
+    /* 
+        TODO: THINK ABOUT MOVE ALL OPERATIONS TO THE MODELS ITSELF!!!
+
+        LIST OF MODULE EVENTS 
+        beforeModelCreate
+        afterModelCreate
+        errorModelCreate
+        errorModelDoesNotExists
+        beforeModelUpdate
+        afterModelUpdate
+        errorModelUpdate
+        beforeModelDelete
+        afterModelDelete
+        errorModelDelete
+        
+    */
 }
