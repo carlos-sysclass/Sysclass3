@@ -3,7 +3,9 @@ use
 	Phalcon\DI,
     Phalcon\Loader,
     Phalcon\DI\FactoryDefault as WebDI,
-    Phalcon\DI\FactoryDefault\CLI as CliDI;
+    Phalcon\DI\FactoryDefault\CLI as CliDI,
+    Phalcon\Logger,
+    Phalcon\Logger\Adapter\File as FileLogger;
 
 
 $eventsManager = new Phalcon\Events\Manager();
@@ -81,4 +83,30 @@ if (APP_TYPE === "CONSOLE") {
 $di->set("eventManager", $eventsManager);
 DI::setDefault($di);
 
+/*
+//$eventsManager->attach(null, new Sysclass\Services\Events\Listener());
+$logger = new FileLogger(REAL_PATH . "/logs/events.log",
+    array(
+        'mode' => 'w'
+    )
+);
 
+$listener = function($event, $source) use ($logger) {
+    $logger->log(get_class($source) . "::" . $event->getType(), Logger::INFO);
+};
+
+$eventsManager->attach("dispatch", $listener);
+$eventsManager->attach("loader", $listener);
+$eventsManager->attach("acl", $listener);
+$eventsManager->attach("console", $listener);
+$eventsManager->attach("cli", $listener);
+$eventsManager->attach("db", $listener);
+$eventsManager->attach("application", $listener);
+$eventsManager->attach("collection", $listener);
+$eventsManager->attach("micro", $listener);
+$eventsManager->attach("model", $listener);
+$eventsManager->attach("view", $listener);
+$eventsManager->attach("collectionManager", $listener);
+$eventsManager->attach("modelsManager", $listener);
+$eventsManager->attach("volt", $listener);
+*/
