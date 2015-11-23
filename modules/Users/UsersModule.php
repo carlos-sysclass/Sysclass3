@@ -704,6 +704,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	{
 		//$this->redirect($this->getSystemUrl("home"), $this->translate->translate("The profile change is disabled on demo enviroment!"), "warning");
 		//exit;
+        //echo $this->translate->translate("Select...");
+        
 		$currentUser    = $this->getCurrentUser(true);
 
 

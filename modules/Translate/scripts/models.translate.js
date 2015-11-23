@@ -11,7 +11,7 @@ $SC.module("models.translate", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		this.translateEditTokenModelClass = Backbone.Model.extend({
-			urlRoot : "/module/translate/item/token"
+			urlRoot : "/module/translate/datasource/token"
 		});
 
 		this.translateAllTokensModelClass = this.translateEditTokenModelClass.extend({
