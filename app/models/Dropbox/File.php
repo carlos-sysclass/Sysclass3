@@ -10,4 +10,9 @@ class File extends Model
     {
         $this->setSource("mod_dropbox");
     }
+
+    public function getFileStream() {
+    	// GET THE FILE FROM BACKEND
+    	
+    }
 }

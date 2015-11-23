@@ -35,6 +35,16 @@ DIRNAME=`dirname $(readlink -f $0)`
 mkdir -p "$DIRNAME/../cache/metadata"
 chmod 777 "$DIRNAME/../cache/metadata" -R
 
+mkdir -p "$DIRNAME/../cache/view/volt/compiled"
+chmod 777 "$DIRNAME/../cache/view/volt/compiled" -R
+
+mkdir -p "$DIRNAME/../cache/view/smarty/cache"
+chmod 777 "$DIRNAME/../cache/view/smarty/cache" -R
+
+mkdir -p "$DIRNAME/../cache/view/smarty/compiled"
+chmod 777 "$DIRNAME/../cache/view/smarty/compiled" -R
+
+
 mkdir -p "$DIRNAME/../logs"
 chmod 777 "$DIRNAME/../logs" -R
 
@@ -50,3 +60,4 @@ echo "base_version=$base_version" >> RELEASE
 echo "full_version=$full_version" >> RELEASE
 echo "build_number=$build_number" >> RELEASE
 echo "branch=$branch" >> RELEASE
+echo "environment=$environment" >> RELEASE

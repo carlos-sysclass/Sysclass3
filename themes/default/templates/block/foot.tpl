@@ -4,11 +4,15 @@
 <script src="/assets/default/plugins/respond.min.js"></script>
 <script src="/assets/default/plugins/excanvas.min.js"></script>
 <![endif]-->
-
 <ul id="tlyPageGuide">
     <li class="tlypageguide_left hidden-xs" data-tourtarget="#users-panel">
         <div>
         Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
+        </div>
+    </li>
+    <li class="tlypageguide_left" data-tourtarget="#ads-leftbar-banner">
+        <div>
+        This area is dedicated to general advertising or advertising and promotions of the school or company hosting the program.
         </div>
     </li>
     <li class="tlypageguide_left" data-tourtarget="#courses-widget">
@@ -21,22 +25,24 @@
         The announcements related to the course such as, holidays, special activities, meeting with advisors, and all information related to the course and school.
         </div>
     </li>
+    <!--
     <li class="tlypageguide_left" data-tourtarget="#tutoria-widget">
         <div>
         In this area the students can ask questions to the instructors or advisors. Depending on how the course is setup, only the instructor or advisor can answer questions, or other students can be allowed answer each other.
         </div>
     </li>
+    -->
     <li class="tlypageguide_right" data-tourtarget="#institution-widget">
         <div>
         This area is dedicated to the university, school, training center, or private teacher. Here you will find the name of the school, homepage, Facebook page, contact information, and everything you need to know about the institution hosting the course.
         </div>
     </li>
-    <li class="tlypageguide_right" data-tourtarget="#advisor-widget">
+    <li class="tlypageguide_right" data-tourtarget="#advisor-chat-widget">
         <div>
         Here the student will find information about the instructor, advisor or coach. In this area you can also schedule meetings with your instructor or advisor, chat with him or her, and even have calls or videoconferences.
         </div>
     </li>
-    <li class="tlypageguide_right" data-tourtarget="#advertising-panel">
+    <li class="tlypageguide_right" data-tourtarget="#ads-rightbar-banner">
         <div>
         This area is dedicated to general advertising or advertising and promotions of the school or company hosting the program.
         </div>
@@ -63,11 +69,7 @@
     </div>
 {/if}
 
-{$T_SCRIPTS}
-
-{*foreach item="script" from=$T_SCRIPTS*}
-<!--    <script src="{Plico_GetResource file=$script}"></script> -->
-{*/foreach*}
+<script type="text/javascript" src="/{$T_SCRIPT_TARGET}"></script>
 
 <!-- END CORE PLUGINS -->
 
@@ -78,7 +80,7 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 
 
-{foreach item="script" from=$T_MODULE_SCRIPTS}
+{foreach $T_MODULE_SCRIPTS as $script}
     <script src="{$script}"></script>
 {/foreach}
 <!-- END JAVASCRIPTS -->

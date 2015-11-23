@@ -1,0 +1,251 @@
+REVIEW
+
+		- BUGS
+			- Acertar cadastro de horários nas turmas
+			- Corrigir problemas com JS na edição dos dados financeiros dos alunos. 
+			
+		- Melhorias
+			- Incluir data de expiração para testes.
+			- Incluir Aviso de envio de boleto para os alunos e para o financeiro.
+		
+		- Itens a Revisar
+
+			- Suporte SysClass
+				- Módulos para registro/controle das informações de suporte. (técnico e pedagógico)
+					- Help Desk?
+					- Chat?
+					- Email?
+	
+			- Manutenção Servidores
+				- Servidores Externos
+					- Softlayer / Orbit (Planet)
+				- Servidor Interno
+					- Desenvolvimento
+					- Backpus
+					- Homologação
+
+			- Informações sobre Cursos
+				- Cadastro de IES (Instituição de Ensino)
+[ ini ]				- Mesclar módulo de polos com o módulo de IES!!!
+					- Os polos são colocados abaixo das instituições de ensino, como uma forma de separar vários alunos. 
+					- FAJAR, FATI, TÉCNICO, etc...
+					- Separação de Bases entre IES (física ou lógica)
+						- Informações de Pagamento
+							- Métodos de pagamento disponíveis e customizações
+							- Histórico Financeiro
+							- Critérios de desconto e acreścimos 
+
+				- Cadastro de Nível (ou Núcleo, ou Grupo de Cursos)
+					- Ensino Básico, Fundamental, Superior, Extensão, Técnico, etc..
+					- Incluir aqui as modalidades permitidas (presencial, web), 
+						com possível cadastro de modalidades (que conterá as características dos cursos que diferem quanto a sua execução)
+					
+				- Cadastro de Curso
+[ ini ]				- Informações Gerais
+[ ini ]				- Instituições e Polos que disponibilizam
+					- Informações de pagamento
+						- Métodos de pagamento disponíveis e customizações
+						- Histórico Financeiro
+						- Critérios de desconto e acreścimos 
+[ ini ] 					- Eliminar tabelas "users_to_classes", substituir por users_to_courses
+				
+				- Cadastro de Matriz Curricular (diagramar assim que possível)
+					- Todas as permissões de acesso devem ser personalizadas em cascata.
+						- Um usuário tem acesso a uma uma matriz na turma, em várias turmas, ou a matriz curricular completa, ou ainda ao curso todo.
+						- Acessos ao professor, webtutor, coordenador e aluno.
+					 
+					- Cadastro de Matriz Curricular Base, com inserção de campos personalizáveis.
+						- Período
+							- Agrupamento de Disciplinas. O Aluno poderá se matricular por período, por disciplina ou por curso (todos os períodos).
+						- Disciplinas
+							- Carga Horário
+							- Bibliografia Básica e Complementar
+							- Objetivos
+							- Restrições adicionais para Início e Término da disciplina
+							- Conteúdo
+								- Testes
+								- Exercícios
+								- Arquivos e Documentos
+								- etc...
+							- Regras para segunda chamada, provas substitutivas, etc..
+						- Dados alteráveis pelas instâncias (definido no cadastro)
+							- Datas de Início e término de disciplinas (para casos de exceção, em que o coordenador precisa extender o prazo de um prova, por ex.)
+							- Outras informações a definir
+					- Criação de instâncias da Matriz Curricular, com informações personalizaveis.
+					- Duplicação de Matriz Curricular, no caso de matrizes muito diferentes. 
+				- Abertura de Turmas	
+					- Instância da matriz Curricular, com a definição das datas
+						- Neste caso, será necessário OU escolher a matriz no momento da abertura do curso OU utilizar a mais recente. ( a definir)
+					- Definição da forma de matrícula (por periodo, por disciplina, etc..)
+						- No caso de ser por disciplina, a disciplina deverá estar marcada como disponível e ter regras de entrada definida.
+					- Forma de Entrada de aluno
+						- Definir os passos necessários para a ativação da matrícula do aluno, como:
+							- Confirmação de pagamento
+							- Vestibular
+							- Entrega de Documentação
+							- Critérios técnicos e cursos pré-existentes, gradução, etc..
+							- etc...
+						
+				- Cadastro de Calendário Acadêmico
+					- Cadastro de Feriados
+					- Cadastros de Eventos Especiais
+					- Verificar integração com soluções de calendário de terceiros.	
+					
+				- Projetos
+					- Incluir restrições por deadline, suporte a gantt e outras ferramentas de diagração (deixar somente o hook e incluir ferramentas a posteriori).
+					- Incluir restrições por número de alunos ou número de grupos 
+					- Interligar módulo de projetos com o módulo de "XCMS".
+					 
+			- Informações sobre Alunos (module_xuser)
+				- Dados Pessoais
+					- Incluir separação entre os dados do cadastro de usuário para a edição de usuário.
+					- Incluir o registro de dados no cadastro de usuários.
+						- Incluir mecanismo de "link" com o módulo de matrícula. 
+				- Dados Acadêmicos (levantar todas as informações necessárias)
+					- Histórico Escolar 
+					- Currículo
+					- Notas e Frequência
+					- Etc..
+				- Documentos Entregues
+				- Forma de Entrada (fazer um novo cadastro de "formas de entrada")
+					- Vestibular
+					- Desempenho acadêmico
+					- Etc...
+				- Histórico e Situação Financeira	
+				- Cancelamento 
+					- Pagamento
+						- Deverá haver a gestão da dívida (saldo devedor) do aluno. (OU NÃO... EMBUTIR NAS REGRAS) 
+			- Informações sobre pagamentos
+				- Customização de métodos de pagamento.
+[ ini ]				- Cada método de pagamento irá disponibilizar uma lista de regras, com "valores-padrão", que poderá ser customizável (OU NÃO) 
+					que irão operar diretamente sobre o valor total da mensalidade ou saldo devedor do aluno.
+						- As regras poderão ser para desconto ou acréscimo no valor da mensalidade.
+						- As regras poderão ser restrigidas por "Data/Valor/Caracteristicas do Aluno/etc.."
+						- As regras poderão ser definidas como "fixas" (não poderão ser alteradas) ou "váriaveis" (poderão ser customizadas por polo/curso/turma/aluno).
+						- A regra que irá influir sobre o pagamento poderá ser definida em valores percentuais ou em valores fixos.
+						- As regras deverão ser definidas em formato de cadeia, definindo assim a ordem de precedência.
+						- As regras poderão ser agrupadas.
+						- As regras (ou grupo de regras) poderão ser definidas como "cumulativas" ou "mutuamente exclusivas". 
+						- As regras poderão ser registradas com valores mínimos e máximos, que poderão ser usadas, a posteriori, para fins de negociação.
+						- As regras deverão limites diferenciados por tipo de usuário, dando a capacidade de limitar ou liberar descontos.
+[ ok ]			- Disponibilizar as seguintes opções por pagamento
+[ ok ]				- Data de de vencimento de Matrícula
+[ ok ]				- Data de Início de Cobrança
+					- Atualização de valores na alteração da modalidade de cursos (de web para presencial, ou vice-versa). 
+						Alterar somente valores de parcelas ainda não vencidas, OU ainda alterar somente valores de meses posteriores ao ATUAL. (A definir).
+[ ok ]			- Disponibilizar as seguintes opções por invoice (boleto)
+[ ok ]				- Bloquear Emissão de Fatura (retirar status "travado" e disponibilizar como outra opção => "travado = 1 OR travado = 0)
+[ ok ]				- Colocar botão para marcar fatura como paga!
+				- BUGS ATUALIZAR TABELAS DE PAGAMENTOS, PARA QUE TODAS TENHAM O enrollment_id.... atualizar sistema para que obdeça esssa restrição.
+					- CRIAR SELECT PARA VERIFICAÇÃO DE REGISTROS COM PROBLEMA (MUITO IMPORTANTE, E NÂO SOMENTE PARA PAGAMENTOS)
+					ACERTAR STATUS_ID DAS INVOICES, RETIRAR STATUS = 5
+				
+[ ini ]		- API do SysClass
+[ ini ]			- Pensar na melhor forma de disponibilização do serviço (Web-service, REST service, etc.)			
+						
+[ ini ]	- module_pagamento
+[ ok ] 		- Incluir Gravação de tipos de pagamentos (Tabela: module_pagamento_types,comdadso baseados na tabela module_pagamento_modules_avaliable)
+[ ok ] 		- Incluir gravação usando o paymnent_type_id
+[ ok ] 		- Incluir Alteração de informações de TODA a tabela "module_pagamento_types", que está no contexto module_pagamento, e alteração do campo "tag"que contêm informações relativas ao sub-modulo puxado. (Action = form_config)
+[ ini ]		- Incluir seleção de conta no module_pagamento_boleto de acordo com critérios (Critério: IES => CURSO => TURMA => ALUNO). 
+[ ok ] 		- Incluir geração de fatura 
+[ ok ] 		- Incluir / revisar listagem de registro de pagamentos.
+[ ini ] 	- Incluir / revisar listagem de pendências financeiras.
+[ ini ] 	- Incluir / revisar métodos de retorno.
+[ ok ] 		- Upload ou transferência de arquivos de retorno.
+[ ini ]		- Processamento do retorno dos arquivos.
+[ ok ]			- Atualização do banco com informações dos arquivos.
+					- Atualização de Status no módulo de Matrícula, após confirmação do pagamento.
+[ ini ]				- Registro das operações realizadas para consulta posterior.
+[ ini ]		- Incluir / revisar registro de entradas de pagamento, após matrícula.
+[ ok ]		- Incluir mecanisco de inclusão de pagamento, com lista de faturas, cursos, etc...
+			- Incluir traduções PHP no module_language e traduções JS no module_language => sections (principalmente dos templates HOOK)
+			 
+
+		- module_matricula
+			- Montar módulo de matrícula.
+				- Basear informações nas anotações da reunião com Pozi!
+			- Funcionamento Básico
+				- Abertura de matrícula
+					- Usuário deve selecionar o aluno (pode ser enviado através de GET => "xuser_id" OU "xuser_login")
+					- Usuário deve selecionar o curso (pode ser enviado através de GET => "xcourse_id")
+						- Selecionar modalidade (se o curso permitir + de uma)
+					- Selecionar forma de pagamento (poderá ser realizado depois)
+					
+[ ini ]		- Criar lista de cursos para matrícula, agrupado por IES
+				
+		- module_xcourse (module_lessons).
+			- Mesclar cursos, lições, numa única entidade, colocando todas as operações ali.
+			- Incluir dentro disso, a árvore de conteúdo, com separação por grupos (turmas).
+			- Incluir filtros de turmas na lista de usuários.
+			- Incluir cadastro de documentos (ou linkagem, o cadastro terá seu próprio módulo)
+			
+
+[ ok ]	- module_school
+[ ok ]		- Montar Módulo de "Escolas".
+
+[ ini ]	- module_extended_user
+[ ini ]		- Montar módulo de usuários, e migrar código atual para o módulo.
+[ ok ]			- Abrir possibilidade de inclusção de templates por outros módulos.
+[ ok ]			- Incluir Ligação com a instituição e com polos, se existir.
+				- Incluir forma de inclusão de novos campos pelo usuário da instuição de ensino.
+				
+	
+[ ini ]	- module_polo
+[ ok ] 		- Colocar tabela no formato datatables
+[ ok ]		- Incluir ligação com instituição várias instituições. 
+
+		- module_social_network
+			- Pensar sobre módulo de integração com facebook, orkut, twitter, etc....
+			- Incluir hook para módulo "module_xuser"
+	
+		- module_language
+			- Incluir Arquivos de "Language" no módulo apropriado
+[ ini ]			- Incluir edição de arquivo.
+[ ok ]			- Adaptar carregamento padrão de idioma através do módulo.
+				- Excluir carregamento padrão do Sysclass
+
+
+
+
+
+- ARRUMAR MATRICULAS
+	- REGISTRAR MATRICULA DE ALUNOS ANTIGOS
+- ARRUMAR PAGAMENTOS
+	- LIGAR O PAGAMENTO SOMENTE A MATRICULA 
+[ ok ]	- INCLUIR LISTA DE BOLETOS PARA O ALUNO
+
+	A ACERTAR URGENTE
+	- Os links de contatos (fazer dialog)
+		- Retirar links ainda não disponíveis
+	- Layout da agenda
+[ ok ] 	- Inclusão de widget para webtutoria
+		- Incluir controles no widget, para responder, ver conversa, etc...
+[ ok ] 	- Inclusão de questionário (enquete) para registro de grupos.
+[ ok ] - Acertar enquente no pós-graduação
+[ ok ] - Acertar listagem de envio de boletos
+- Envio de e-mails pro fórum
+- Extensão - Alunos que não estão com matrículas ativas, estão recebendo e-mail com link da aula.
+- Trocar o link da mensagem recebida pelo aluno de pós nas informações após o “envio” da matrícula.
+- Configurar a mensagem de e-mail para pós igual a mensagem recebida no “envio” da matrícula.
+[ ok ] - Verificar o cadastro de matrícula pois está saindo duplicado.
+[ ok ] - Alunos novos no 1º acesso está aparecendo com erro.
+- Colocar no Fórum uma informação que existe mais tópicos.
+[ ok ] - Fórum Pesquisa – Professor deve visualizar alunos que se inscreveram.
+[ ok ] - Criar na página inicial da pós - "ORIENTAÇÕES AOS ALUNOS" e inserir os anexos desse e-mail
+- Inserir novamente o calendário das aulas, pois não está mais aparecendo.
+- Acertar o acompanhamento de acesso dos alunos, pois no relatório não está registrando os acessos dos mesmos.
+
+- Novo Layout
+
+
+
+!!!* URGENTE *!!!
+Lista de liberação de conteúdo
+	- Programado e não programado
+Incluir coluna com valores de repasse para polo. O valor percentual é definido por polo e por curso. 
+	- Usar atualizações em cadeia. O polo tem um valor, que pode ser sobreescrito pelo curso. 
+ 
+- module_xuser e module_xcourse
+	- Adaptar para o o layout do http://posult.magester.net
+	- Agregar todas as versões do numa só (merge), em SysClass.com

@@ -19,6 +19,7 @@ class DropboxModel extends AbstractSysclassModel implements ISyncronizableModel
         $this->selectSql = "
         SELECT
         `id`,
+        `owner_id`,
         `upload_type`,
         `name`,
         `filename`,

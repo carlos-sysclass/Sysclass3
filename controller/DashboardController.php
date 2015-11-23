@@ -1,5 +1,7 @@
 <?php
-class DashboardController extends AbstractSysclassController
+namespace Sysclass\Controllers;
+
+class DashboardController extends \AbstractSysclassController
 {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
     // 
@@ -32,17 +34,18 @@ class DashboardController extends AbstractSysclassController
         return $ctg;
     }
     */
-	/**
-	 * Create login and reset password forms
-	 *
-	 * @url GET /dashboard
-     * @url GET /dashboard/:dashboard_id
-     * @url GET /dashboard/:dashboard_id/:clear
-	 */
+    /**
+     * * Create login and reset password forms
+     * @Get("/dashboard")
+     * @Get("/dashboard/{dashboard_id}")
+     * @Get("/dashboard/{dashboard_id}/{clear}")
+     * 
+     */
 	public function dashboardPage($dashboard_id, $clear)
 	{
         $currentUser = $this->getCurrentUser(true);
 
+        //$this->putCss("css/components");
         $this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
 
         // CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
@@ -76,10 +79,17 @@ class DashboardController extends AbstractSysclassController
 
         $pageLayout = $dashboardManager->loadLayout($dashboard_id, ($clear == "clear"));
 
+        //var_dump($pageLayout);
+
+
         $widgets = $dashboardManager->getPageWidgets();
 
+        //var_dump($widgets);
+        //exit;
+
+
         foreach($widgets as $key => $widget) {
-            call_user_func_array(array($this, "addWidget"), $widget);
+            $this->addWidget($widget[0], $widget[1], $widget[2]);
         }
 
         $this->putItem("page_layout", $pageLayout);

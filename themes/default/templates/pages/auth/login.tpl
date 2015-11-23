@@ -9,6 +9,7 @@
 
 		<input type="hidden" name="requested_uri" value="{$T_REQUESTED_URI}" />
 			<h3 class="form-title">{translateToken value="Login to your account"}</h3>
+
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 				<div class="alert alert-{$T_MESSAGE.type}">
 					<button class="close" data-dismiss="alert"></button>
@@ -16,25 +17,36 @@
 				</div>
 			{/if}
 
+			{if isset($messages) && $messages|@count > 0}
+				{foreach $messages as $type => $message}
+				<div class="alert alert-{$type}">
+					<button class="close" data-dismiss="alert"></button>
+					<span>{$message}</span>
+				</div>
+				{/foreach}
+			{/if}
+
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">{$T_LOGIN_FORM.login.label}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
 				<div class="input-icon">
 					<i class="icon-user"></i>
 					<input type="text" id="login" name="login" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control" data-rule-required="true">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">{$T_LOGIN_FORM.password.label}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Password"}</label>
 				<div class="input-icon">
 					<i class="icon-lock"></i>
-					<input type="password" id="password" name="password" placeholder="Password" autocomplete="off" class="form-control placeholder-no-fix">
+					<input type="password" id="password" name="password" placeholder="{translateToken value="Password"}" autocomplete="off" class="form-control placeholder-no-fix">
 				</div>
 			</div>
 			<div class="form-actions">
 				<div class="form-group">
+					<!--
 					<input type="checkbox" name="remeber" value="1"/>
 					<label class="checkbox">{translateToken value="Remember Me"}</label>
+					-->
 					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" >{translateToken value="Click to access"}
 						<i class="m-icon-swapright m-icon-white"></i>
 					</button>
@@ -86,15 +98,6 @@
 					</p>
 				</div>
 			{/if}
-			<!--
-			    <div class="login_footer">
-					{if $T_CONFIGURATION.lessons_directory == 1}
-						<p style=" color: #848484; float: right;font-size: 11px; margin: 6px 0 0;">
-							<a href = "{$smarty.server.PHP_SELF}?ctg=lessons">{$smarty.const._LESSONSLIST}</a>
-						</p>
-					{/if}
-			    </div>
-			-->
 		</form>
 		<!-- END LOGIN FORM -->
 
@@ -104,25 +107,25 @@
 			<p>{translateToken value="Enter your e-mail address below to reset your password."}</p>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">
-					{$T_RESET_PASSWORD_FORM.login_or_pwd.label}
+					{translateToken value="Email"}
 				</label>
 				<div class="input-icon">
 					<i class="fa fa-envelope"></i>
-					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" id="email" />
+					<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="{translateToken value="Email"}" name="email" id="email" />
 				</div>
 			</div>
 			<div class="form-actions">
-				<button type="button" id="back-btn" class="btn">
-					<i class="m-icon-swapleft"></i>{translateToken value="Back"}
+				<button type="button" id="back-btn" class="btn btn-default">
+					<i class="m-icon-swapleft"></i> {translateToken value="Back"}
 				</button>
 				<button type="submit" class="btn green pull-right">
-					{translateToken value="Submit"}<i class="m-icon-swapright m-icon-white"></i>
+					{translateToken value="Submit"} <i class="m-icon-swapright m-icon-white"></i>
 				</button>
 			</div>
 		</form>
 		<!-- END FORGOT PASSWORD FORM -->
-		<!-- BEGIN REGISTRATION FORM -->
-		<!-- END REGISTRATION FORM -->
+
+		<!-- BEGIN COPYRIGHT -->
 		<div class="copyright">
 			&copy; 2015 • WiseFlex Knowledge Systems LLC. <br />
 			<span style="color: black">
@@ -132,9 +135,7 @@
 			<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
 		</div>
 	</div>
-	<!-- BEGIN COPYRIGHT -->
-
-
+	
 	{if $T_OPEN_LOGIN_SECTION == 'reset'}
 		<style type="text/css">
 			.login .content .forget-form {

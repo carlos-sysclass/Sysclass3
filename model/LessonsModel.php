@@ -81,7 +81,7 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
             'content_type' => $progressAwareTypes
         ))->getItems();
 
-        $progressItens = array_column($contents, 'progress');
+        $progressItens = \array_column($contents, 'progress');
 
         if (array_sum($progressItens) == count($progressItens)) {
             $this->setItem(array('progress' => 1), $lesson_id);

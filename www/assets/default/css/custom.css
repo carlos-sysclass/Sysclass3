@@ -1189,7 +1189,8 @@ UI Loading
     height: 40px;
     top: -9px;
     width: 40px;
-    margin-right: 5px
+    margin-right: 5px;
+    margin-bottom: -8px;
 }
 
 .input-icon i.checkunique-error {
@@ -1281,3 +1282,46 @@ button.calendar-news-item {
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {
     font-size: 16px;
 }
+
+.portlet-sidebar {
+    background: #f8f8f8 none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 36px;
+    z-index: 101;
+}
+
+.fc-toolbar .fc-right {
+    position: relative;
+    right: 25px;
+}
+
+.page-header-fixed .page-container {
+    margin-top: 42px;
+}
+
+.header .navbar-brand {
+    height: 46px;
+}
+
+.advisor-chat-error .ver-inline-menu li.active a {
+  color: #fff;
+  background-color: #dfba49;
+  border-color: #c89f23;
+}
+.advisor-chat-error .ver-inline-menu li.active i {
+    background-color: #c89f23 !important;
+}
+
+.dashboard-stat .visual > i {
+	color: #fff;
+    opacity: 0.1;
+}
+
+.dashboard-stat .more {
+    font-weight: 600 !important;
+    opacity: 1 !important;
+}
+

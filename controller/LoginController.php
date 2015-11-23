@@ -1,54 +1,26 @@
 <?php
+namespace Sysclass\Controllers;
+
 use Phalcon\DI,
 	Sysclass\Models\Users\User,
+	Sysclass\Models\I18n\Language,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
-class LoginController extends AbstractSysclassController
+class LoginController extends \AbstractSysclassController
 {
 	public function authorize()
 	{
 		// Always authorize login page
 		return TRUE;
 	}
-	/*
-	protected function createLoginForm() {
-		//$postTarget = "/login?debug=10";
-		//		isset($_GET['ctg']) && $_GET['ctg'] == 'login' ? $postTarget = basename($_SERVER['PHP_SELF'])."?ctg=login" : $postTarget = basename($_SERVER['PHP_SELF'])."?index_page";
 
-		$form = new HTML_QuickForm("login_form", "post", $_SERVER['REQUEST_URI'], "", "class = 'login-form'", true);
-		$form->removeAttribute('name');
-		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
-		$form->addElement('text', 'login', self::$t->translate("Login"), 'class = "form-control placeholder-no-fix" ');
-		//$form->addRule('login', _THEFIELD.' "'._LOGIN.'" '._ISMANDATORY, 'required', null, 'client');
-		//$form->addRule('login', _INVALIDLOGIN, 'checkParameter', 'login');
-		$form->addElement('password', 'password', self::$t->translate("Password"), 'class = "form-control placeholder-no-fix" tabindex = "0"');
-		//$form->addRule('password', _THEFIELD.' "'._PASSWORD.'" '._ISMANDATORY, 'required', null, 'client');
-		$form->addElement('checkbox', 'remember', self::$t->translate("Remember me"), 1, 'class = "inputCheckbox"');
-		$form->addElement('submit', 'submit_login', self::$t->translate("Click to access"));
-
-		return $form;
-	}
-
-	protected function createResetPasswordForm() {
-		$postTarget = "/login/reset";
-		$form = new HTML_QuickForm("reset_password_form", "post", $postTarget, "", "class = 'forget-form'", true);
-		$form->removeAttribute('name');
-		//$form->registerRule('checkParameter', 'callback', 'sC_checkParameter'); //Register this rule for checking user input with our function, sC_checkParameter
-		$form->addElement('text', 'login_or_pwd', self::$t->translate("_LOGINOREMAIL"), 'class = "form-control placeholder-no-fix"');
-		//$form->addRule('login_or_pwd', _THEFIELD.' '._ISMANDATORY, 'required', null, 'client');
-		//$form->addRule('login_or_pwd', _INVALIDFIELDDATA, 'checkParameter', 'text');
-		$form->addElement('submit', 'submit_reset_password', self::$t->translate("Send"), 'class="flatButton"');
-
-		return $form;
-	}
-	*/
-	/**
-	 * Create login and reset password forms
-	 *
-	 * @url GET /
-	 * @url GET /login
-	 * @url GET /login/:reset
-	 */
+    /**
+     * * Create login and reset password forms
+     * @Get("/")
+     * @Get("/login")
+     * @Get("/login/{reset}")
+     * 
+     */
 	public function loginPage($reset)
 	{
 		$di = DI::getDefault();
@@ -58,45 +30,15 @@ class LoginController extends AbstractSysclassController
 			$user = $di->get("authentication")->checkAccess();
 			$this->redirect("/dashboard");
 		} catch (AuthenticationException $e) {
-			/*
-			switch($e->getCode()) {
-				case AuthenticationException :: NO_USER_LOGGED_IN : {
-					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
-		            //$message_type = 'info';
-					break;
-				}
-			}
-			*/
 		}
 
+		//$session = $di->get("session");
+		//$request_uri = $session->get("requested_uri");
 
-		$session = $di->get("session");
-		$request_uri = $session->get("requested_uri");
+		//if ($request_uri) {
+		//	$session->set("requested_uri", $request_uri);
+		//}
 
-		if ($request_uri) {
-			$session->set("requested_uri", $request_uri);
-		}
-
-		/*
-		if (isset($_COOKIE['cookie_login']) && isset($_COOKIE['cookie_password'])) {
-		    try {
-		        $user = MagesterUserFactory :: factory($_COOKIE['cookie_login']);
-		        $user->login($_COOKIE['cookie_password'], true);
-		        if ($GLOBALS['configuration']['show_license_note'] && $user->user['viewed_license'] == 0) {
-		            //sC_redirect("index.php?ctg=agreement");
-		            $this->redirect("agreement");
-		        } else {
-		            // Check if the mobile version of SysClass is required - if so set a session variable accordingly
-		            //sC_setMobile();
-		            MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_VISITED, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
-		            //LoginRedirect($user->user['user_type']);
-		            $this->redirect("/dashboard/" . $user->user['user_types_ID']);
-		        }
-		        exit;
-		    } catch (MagesterUserException $e) {}
-		}
-		*/
 		// CLEAR SESSION, IF THE USER IS OPENING THE LOGIN PAGE, AFTER CHECKING THE "REMEMBER" COOKIE
 		isset($_COOKIE[session_name()]) ? setcookie(session_name(), '', time()-42000, '/') : null;
 
@@ -115,40 +57,22 @@ class LoginController extends AbstractSysclassController
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/login");
 
-		if ($reset) {
+		if ($reset == "reset") {
 			$this->putItem("open_login_section", "reset");
+		} else {
+			$this->putItem("open_login_section", "login");
 		}
-		$this->putItem("requested_uri", $request_uri);
-		parent::display('pages/auth/login.tpl');
-	    /*
-	    } elseif (isset($_GET['id']) && isset($_GET['login'])) { //Second stage, user received the email and clicked on the link
-	        $login = $_GET['login'];
-	        if (!sC_checkParameter($login, 'login')) { //Possible hacking attempt: malformed user
-	            $message = _INVALIDUSER;
-	            $message_type = 'failure';
-	        } else {
-	            $user = sC_getTableData("users", "email, name", "login='".$login."'");
-	            if (strcmp($_GET['id'], MagesterUser::createPassword($login)) == 0 && sizeof($user) > 0) {
-	                $password = mb_substr(md5($login.time()), 0, 8);
-	                $password_encrypted = MagesterUser::createPassword($password);
-	                sC_updateTableData("users", array('password' => $password_encrypted), "login='$login'");
-	                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_NEW_PASSWORD_REQUEST, "users_LOGIN" => $login, "entity_name" => $password));
-	                $message = _EMAILWITHPASSWORDSENT;
-	                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode($message).'&message_type=success');
-	            } else {
-	                $message = _INVALIDUSER;
-	                $message_type = 'failure';
-	            }
-	        }
-	    }
-		}
-		*/
 
+		if ($this->dispatcher->wasForwarded()) {
+			$this->putItem("requested_uri", $this->request-> getURI());
+		}
+
+		parent::display('pages/auth/login.tpl');
 	}
 	/**
 	 * [Add a description]
 	 *
-	 * @url GET /signup
+	 * @Get("/signup")
 	 */
 	public function signupPage()
 	{
@@ -160,14 +84,6 @@ class LoginController extends AbstractSysclassController
 			$this->redirect("/dashboard");
 		} catch (AuthenticationException $e) {
 			/*
-			switch($e->getCode()) {
-				case AuthenticationException :: NO_USER_LOGGED_IN : {
-					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
-		            //$message_type = 'info';
-					break;
-				}
-			}
 			*/
 		}
 
@@ -216,9 +132,6 @@ class LoginController extends AbstractSysclassController
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/signup");
 
-		if ($reset) {
-			$this->putItem("open_login_section", "reset");
-		}
 		$this->putItem("requested_uri", $request_uri);
 
 
@@ -226,8 +139,8 @@ class LoginController extends AbstractSysclassController
 		//$this->putCss("plugins/select2/select2_metro");
 		//$this->putScript("plugins/select2/select2");
 
-        $languages = self::$t->getItems();
-        $this->putitem("languages", $languages);
+        $languages = Language::find("active = 1");
+        $this->putitem("languages", $languages->toArray());
 
 		parent::display('pages/auth/signup.tpl');
 
@@ -261,9 +174,9 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
-	 * @url POST /signup
+	 * @Post("/signup")
 	 */
-	public function signupAction()
+	public function signupRequest()
 	{
 		$di = DI::getDefault();
 
@@ -276,7 +189,7 @@ class LoginController extends AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
 					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            //$message_type = 'info';
 					break;
 				}
@@ -294,13 +207,13 @@ class LoginController extends AbstractSysclassController
         	if ($di->get("configuration")->get("signup_must_approve")) {
         		$this->redirect(
         			"/login", 
-        			self::$t->translate("Your registration has been received. You'll be notified by e-mail when your registration is accepted."),
+        			$this->translate->translate("Your registration has been received. You'll be notified by e-mail when your registration is accepted."),
         			"info"
         		);
         	} else {
         		$this->redirect(
         			"/login", 
-        			self::$t->translate("Your registration has been received. Please check your e-mail for instructions."),
+        			$this->translate->translate("Your registration has been received. Please check your e-mail for instructions."),
         			"success"
         		);
         	}
@@ -308,23 +221,23 @@ class LoginController extends AbstractSysclassController
         	// SHOW ERROR MESSAGE
     		$this->redirect(
     			"/signup", 
-    			self::$t->translate("A problem ocurred when tried to save you data. Please try again."),
+    			$this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
     			"danger"
     		);
         }
 	}
 
 
-	/**
-	 * [Add a description]
-	 *
-	 * @url POST /
-	 * @url POST /login
-	 * @url POST /lock
-	 */
-	public function loginAction()
+    /**
+     * Authenticate the user
+     * @Post("/")
+     * @Post("/login")
+     * @Post("/login/{reset}")
+     * 
+     */
+	public function login()
 	{
-		$data = $this->getHttpData(func_get_args());
+		$data = $this->request->getPost();
 
 		$di = DI::getDefault();
 
@@ -342,46 +255,47 @@ class LoginController extends AbstractSysclassController
 
 			// IF THE USER IS AUTHENTICATED, GO TO AUTHORIZATION
 		} catch (AuthenticationException $e) {
+
 			$url = null;
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 
 				case AuthenticationException :: MAINTENANCE_MODE : {
 
-		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-		            $message = self::$t->translate("Username and password are incorrect. Please make sure you typed correctly.");
+		            $message = $this->translate->translate("Username and password are incorrect. Please make sure you typed correctly.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$url = "/lock";
-		            $message = self::$t->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
 		            $message_type = 'info';
 		            break;
 				}
 				default : {
-		            $message = self::$t->translate($e->getMessage());
+		            $message = $this->translate->translate($e->getMessage());
 		            $message_type = 'danger';
 		            break;
 				}
 			}
 
-			if (!empty($data["requested_uri"])) {
-				$di->get("session")->set("requested_uri", $data["requested_uri"]);
-			}
+			//if (!empty($data["requested_uri"])) {
+			//	$di->get("session")->set("requested_uri", $data["requested_uri"]);
+			//}
 
 			$this->redirect($url, $message, $message_type);
 		}
@@ -395,9 +309,8 @@ class LoginController extends AbstractSysclassController
 		/**
 		 * @todo Create a way check if the user came from a external service, and if this service needs a pament function.
 		 */
-
+		
 		if (!empty($data["requested_uri"])) {
-			$di->get("session")->remove("requested_uri");
 			$this->redirect($data["requested_uri"]);
 		} else {
 			$this->redirect("/dashboard/");
@@ -407,10 +320,10 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * [Add a description]
 	 *
-	 * @url GET /logout
-	 * @url POST /logout
+	 * @Get("/logout")
+	 * @Post("/logout")
 	 */
-	public function logoutAction()
+	public function logoutRequest()
 	{
 		$di = DI::getDefault();
 
@@ -420,7 +333,7 @@ class LoginController extends AbstractSysclassController
 
 			$di->get("authentication")->logout($user);
 
-		    $message = self::$t->translate("You have been logout sucessfully. Thanks for using Sysclass.");
+		    $message = $this->translate->translate("You have been logout sucessfully. Thanks for using Sysclass.");
 		    $message_type = 'warning';
 
 			$this->redirect("/login", $message, $message_type);
@@ -432,7 +345,7 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
-	 * @url GET /autologin/:hash
+	 * @Get("/autologin/{hash}")
 	 */
 	public function autologinPage($hash)
 	{
@@ -465,28 +378,28 @@ class LoginController extends AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
-			            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-			            $message = self::$t->translate("The system can't locate this account. Please use the form below.");
+			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
 			            $message_type = 'warning';
 						break;
 					}
 					case AuthenticationException :: LOCKED_DOWN : {
-			            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 			            $message_type = 'warning';
 						break;
 					}
 					default : {
-			            $message = self::$t->translate($e->getMessage());
+			            $message = $this->translate->translate($e->getMessage());
 			            $message_type = 'danger';
 			            break;
 					}
@@ -499,7 +412,7 @@ class LoginController extends AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
-	 * @url GET /lock
+	 * @Get("/lock")
 	 */
 	public function lockPage($reset)
 	{
@@ -513,22 +426,22 @@ class LoginController extends AbstractSysclassController
 			$url = "/login";
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = self::$t->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: MAINTENANCE_MODE : {
-		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
-		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            $message_type = 'info';
 		            break;
 				}
@@ -539,7 +452,7 @@ class LoginController extends AbstractSysclassController
 		            $user = $di->get("authentication")->getSessionUser();
 				}
 				default : {
-		            $message = self::$t->translate($e->getMessage());
+		            $message = $this->translate->translate($e->getMessage());
 		            $message_type = 'danger';
 		            break;
 				}
@@ -551,25 +464,26 @@ class LoginController extends AbstractSysclassController
 		}
 
 		if ($user) {
-			$this->putItem("LOGGED_USER", $user->toArray());
+			$this->putItem("LOGGED_USER", $user->toFullArray(array("Avatars")));
 
 			$this->putCss("css/pages/lock");
 			$this->putScript("scripts/lock");
 			parent::display('pages/auth/lock.tpl');
+		} else {
+			$this->redirect("/login");
 		}
-		$this->redirect("/login");
 
 	}
 
 	/**
 	 * [Add a description]
 	 *
-	 * @url POST /login/reset
+	 * @Get("/login/reset")
 	 */
-	public function loginResetAction()
+	public function loginResetRequest()
 	{
 
-		$message = self::$t->translate("The system doesn't provides this function yet.Please came back in a while.");
+		$message = $this->translate->translate("The system doesn't provides this function yet.Please came back in a while.");
 		$message_type = 'warning';
 		$this->redirect("/login", $message, $message_type);
 		/*
@@ -582,7 +496,7 @@ class LoginController extends AbstractSysclassController
 		            if ($this->_checkParameter($input, 'email')) { //The user entered an email address
 		                $result = sC_getTableData("users", "login", "email='".$input."'"); //Get the user stored login
 		                if (sizeof($result) > 1) {
-		                    $message = self::$t->translate("There is more than one user with the same data given. Please try to use e-mail or login.");
+		                    $message = $this->translate->translate("There is more than one user with the same data given. Please try to use e-mail or login.");
 		                    $message_type = 'warning';
 		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
 							$this->redirect("login/reset", $message, $message_type);
@@ -597,7 +511,7 @@ class LoginController extends AbstractSysclassController
 		                sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='.urlencode(_LDAPUSERMUSTCONTACTADMIN.$GLOBALS['configuration']['system_email']).'&message_type=failure');
 		            } else {
 		                MagesterEvent::triggerEvent(array("type" => MagesterEvent::SYSTEM_FORGOTTEN_PASSWORD, "users_LOGIN" => $user->user['login'], "users_name" => $user->user['name'], "users_surname" => $user->user['surname']));
-		                $message = self::$t->translate("Within minutes, you will receive an email with instructions to set your new password.");
+		                $message = $this->translate->translate("Within minutes, you will receive an email with instructions to set your new password.");
 		                $message_type = 'success';
 		                if ($_SESSION['login_mode'] != 1) {
 		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?message='..'&message_type='.);

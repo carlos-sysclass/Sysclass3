@@ -15,12 +15,15 @@ class FileWrapperHelper {
 
     public function getPublicPath($type = null)
     {
-        $plicolib = PlicoLib::instance();
+        //$plicolib = PlicoLib::instance();
 
-        $path = $plicolib->get("path/files/public") . "/";
+        $di = Phalcon\DI::getDefault();
+        $environment = $di->get("environment");
+
+        $path = $environment["path/files/public"] . "/";
 
         if (!is_null($type)) {
-            $path .= "/" . $type;
+            $path .= $type;
         }
 
         if (!is_dir($path)) {
@@ -30,9 +33,12 @@ class FileWrapperHelper {
     }
 
     public function getPublicUrl($type = null) {
-        $plicolib = PlicoLib::instance();
+        //$plicolib = PlicoLib::instance();
 
-        $path = $plicolib->get("http/fqdn") . "/files";
+        $di = Phalcon\DI::getDefault();
+        $environment = $di->get("environment");
+
+        $path = $environment["http/fqdn"] . "/files";
 
         if (!is_null($type)) {
             $path .= "/" . $type;

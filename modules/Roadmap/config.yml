@@ -1,0 +1,18 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+blocks:
+  roadmap.courses.edit:
+    context:
+      block_id: "roadmap_course"
+models:
+  courses:
+    class: Sysclass\Models\Courses\Course
+    exportMethod: ["toFullArray", ["Classes"]]
+  classes:
+    class: Sysclass\Models\Courses\Roadmap\Classe
+    #listMethod: findFull
+    exportMethod: ["toFullArray", ["Lessons"]]
+  periods:
+    class: Sysclass\Models\Courses\CoursePeriods
+    exportMethod: ["toFullArray", []]

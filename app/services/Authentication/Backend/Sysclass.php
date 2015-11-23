@@ -4,7 +4,8 @@ namespace Sysclass\Services\Authentication\Backend;
 use Phalcon\Mvc\User\Component,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
-    Sysclass\Models\Users\User;
+    Sysclass\Models\Users\User,
+    Sysclass\Models\Users\UserApiTokens;
 
 class Sysclass extends Component implements IAuthentication
 {
@@ -13,16 +14,44 @@ class Sysclass extends Component implements IAuthentication
         if ($info instanceof User) {
             $user = $info;
             $password = @isset($options['password']) ? $options['password'] : null;
+            $secret_key = @isset($options['secret_key']) ? $options['secret_key'] : null;
         } else {
-            $user = User::findFirstByLogin($info['login']);
-            $password = $info['password'];
+            if (array_key_exists('login', $info)) {
+                $user = User::findFirstByLogin($info['login']);
+            } elseif (array_key_exists('id', $info)) {
+                $user = User::findFirstById($info['id']);
+            }
+            $password = @isset($info['password']) ? $info['password'] : null;
+            $secret_key = @isset($info['secret_key']) ? $info['secret_key'] : null;
+            $websocket_key = @isset($info['websocket_key']) ? $info['websocket_key'] : null;
         }
-
-        if ($this->checkPassword($password, $user)) {
+        
+        if (array_key_exists('useSecretKey', $options) && $options['useSecretKey'] == TRUE && $this->checkSecretKey($secret_key, $user)) {
+            return $user;
+        } elseif (array_key_exists('useWebsocketKey', $options) && $options['useWebsocketKey'] == TRUE && $this->checkWebsocketKey($websocket_key, $user)) {
+            return $user;
+        } elseif ($this->checkPassword($password, $user)) {
             return $user;
         }
         return false;
     }
+
+    public function checkPassword($password, User $user = null)
+    {
+        return (!is_null($password) && $this->security->checkHash($password, $user->password));
+    }
+
+    public function checkSecretKey($secret_key, User $user = null)
+    {
+        return (!is_null($secret_key) && $this->security->checkHash($secret_key, $user->api_secret_key));
+    }
+
+    public function checkWebsocketKey($websocket_key, User $user = null)
+    {
+        return (!is_null($websocket_key) && $this->security->checkHash($websocket_key, $user->websocket_key));
+    }
+    
+
     public function signup($info, $options = null)
     {
         if ($info instanceof User) {
@@ -57,14 +86,10 @@ class Sysclass extends Component implements IAuthentication
         return $user;
     }
 
-    public function checkPassword($password, User $user = null)
-    {
 
-        return (!is_null($password) && $this->security->checkHash($password, $user->password));
-    }
     public function hashPassword($password, User $user = null)
     {
-            return $this->security->hash($password);
+        return $this->security->hash($password);
     }
 
 

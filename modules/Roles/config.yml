@@ -1,0 +1,103 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Roles
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      blocks: ["roles.create.dialog", "roles.resources.dialog", "roles.users.dialog"]
+      scripts: ["views.roles.view"]
+      variables:
+        page_subtitle: Manage your Roles
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: in_course
+          sType: table-boolean
+          sClass: text-center
+          label: Course Role
+
+        - mData: in_class
+          sType: table-boolean
+          sClass: text-center
+          label: Class Role
+
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add: false
+    'edit/{id}': false
+blocks:
+  'roles.resources.dialog':
+    #components: ["validation", "select2", "wysihtml5", "datepicker", "timepicker"]
+    #components: ["select2","data-tables"]
+    #base_scripts : ["scripts/utils.datatables"]
+    #scripts: ["views.roles.set-resources"]
+    #template: set-resources.tpl
+    #variables:
+    #  page_subtitle: Manage permissions
+    context:
+      ajax_source: "/module/permission/items/me/datatable?block"
+      datatable_fields:
+      - mData: group
+        sClass: text-center
+        label: "Group"
+
+      - mData: name
+        label: Name
+
+      - mData: description
+        label: Description
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Enabled
+  'roles.users.dialog':
+    context:
+      #ajax_source: "/module/roles/items/users/datatable//"
+      datatable_fields:
+      - mData: icon
+        sType: table-icon
+        label: Type
+
+      - mData: fullname
+        label: User / Group
+
+      - mData: active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
+models:
+  me: Sysclass\Models\Acl\Role
+  resources: 
+    class: Sysclass\Models\Acl\RolesResources
+    exportMethod: ["toFullArray", []]
+
+

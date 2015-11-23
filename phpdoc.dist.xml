@@ -13,17 +13,16 @@
 	<logging>
 		<level>info</level>
 		<paths>
-		    <default>logs/phpdoc-{DATE}.log</default>
-		    <errors>logs/phpdoc-{DATE}.errors.log</errors>
+		    <default>build/logs/phpdoc-{DATE}.log</default>
+		    <errors>build/logs/phpdoc-{DATE}.errors.log</errors>
 		</paths>
 	</logging>
     <transformations>
         <template name="responsive" />
     </transformations>
 	<files>
+		<directory>app</directory>
 		<directory>controller</directory>
-		<directory>model</directory>
-        <directory>helper</directory>
 		<directory>modules</directory>
 <!--
 		<directory>/usr/local/share/plicolib/controller</directory>

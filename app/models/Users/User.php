@@ -10,11 +10,15 @@ class User extends Model
     {
         $this->setSource("users");
 
+         //$this->skipAttributesOnCreate(array('active'));
+
         //$this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'group'));
         //
         $this->belongsTo("language_id", "Sysclass\\Models\\I18n\\Language", "id",  array('alias' => 'language'));
 
         $this->hasOne("id", "Sysclass\\Models\\Users\\UserAvatar", "user_id",  array('alias' => 'avatar'));
+
+        $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
 
         $this->hasManyToMany(
             "id",
@@ -54,6 +58,8 @@ class User extends Model
 
     }
 
+
+
     public function getType() {
         return $this->user_type;
     }
@@ -75,7 +81,7 @@ class User extends Model
 
     public function getDashboards() {
         $roles = $this->getRoles();
-        $dashboards = array_map("strtolower", array_column($roles, "name"));
+        $dashboards = array_map("strtolower", \array_column($roles, "name"));
 
         return $dashboards;
     }

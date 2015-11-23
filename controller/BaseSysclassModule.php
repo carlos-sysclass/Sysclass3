@@ -1,23 +1,22 @@
 <?php
 abstract class BaseSysclassModule extends AbstractSysclassController
 {
-    protected $module_id = null;
-    protected $module_folder = null;
-    protected $module_request;
-
     protected $clientContext;
 
-    public function __construct() {
-
-    }
+    /*
     public function init($url = null, $method = null, $format = null, $root=NULL, $basePath="", $urlMatch = null)
     {
-        $plico = PlicoLib::instance();
-        $class_name = get_class($this);
-        $this->module_id = $plico->CamelDiscasefying(str_replace("Module", "", $class_name));
-        $this->module_folder = $plico->get("path/modules") . $this->module_id;
 
-        $baseUrl = $plico->get('module/base_path') . "/" . $this->module_id;
+        //$plico = PlicoLib::instance();
+        $reflect = new ReflectionClass($this);
+        $class_name = $reflect->getShortName();
+
+        $this->module_id = str_replace("Module", "", $class_name);
+
+        $this->module_folder = $this->environment["path/modules"] . $this->module_id;
+
+        $baseUrl = $this->environment['module/base_path'] . "/" . $this->module_id;
+
         if (is_null($url)) {
             $url = $baseUrl;
         }
@@ -27,15 +26,17 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
         $this->module_request = str_replace("module/" . $this->module_id . "/", "", $url);
 
+        var_dump($urlMatch);
+        exit;
         $urlMatch = str_replace("module/" . $this->module_id . "/", "", $urlMatch);
 
         parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
         //$this->createContext($this->module_id);
     }
-
+    */
     protected function createContext($module_id = null) {
-        $plico = PlicoLib::instance();
+        //$plico = PlicoLib::instance();
 
         if (is_null($module_id)) {
             $class_name = get_class($this);
@@ -43,8 +44,12 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         } else {
             $this->module_id = $module_id;
         }
+        if (is_null($this->context)) {
+            $this->context = array();
+        }
 
-        $this->module_folder = $plico->get("path/modules") . $this->module_id;
+
+        $this->module_folder = $this->environment["path/modules"] . $this->module_id;
 
         $this->module_request = str_replace($this->getBasePath(), "", $this->context['urlMatch']);
 
@@ -53,11 +58,13 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->context['module_id']         = $this->module_id;
         $this->context['module_request']    = $this->module_request;
         $this->context['module_folder']     = $this->module_folder;
+        
+        $this->context['basePath'] = sprintf("/module/%s/", strtolower($this->module_id));
 
-        $this->context['basePath'] = sprintf("/module/%s/", $this->module_id);
 
         $this->module_request = str_replace($this->getBasePath(), "", $this->context['module_request']);
         $this->context['module_request']    = $this->module_request;
+
 
         $this->loadConfigFile();
 
@@ -78,6 +85,10 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         if (is_null($path)) {
             return $this->context['*config*'];
         }
+        if (!array_key_exists('*config*', $this->context)) {
+            $this->loadConfigFile();
+        }
+
         $data = $this->context['*config*'];
 
         $keys = explode("\\", $path);
@@ -146,7 +157,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->putItem("module_id", $this->module_id);
 
         foreach($config['variables'] as $name => $value) {
-            $this->putItem($name, self::$t->translate($value));
+            $this->putItem($name, $this->translate->translate($value));
         }
 
         $this->putItem("module_context_name", $page);
@@ -163,10 +174,9 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         }
         $config = $this->getConfig("crud\\routes\\" . $override_route);
 
-        if ($config === FALSE) {
+        if ($config === FALSE || is_null($config)) {
             return false;
         }
-
 
         $this->clientContext = $config['context'];
         $this->clientContext['module_id'] = $this->context['module_id'];
@@ -215,18 +225,19 @@ abstract class BaseSysclassModule extends AbstractSysclassController
     /**
      * [ add a description ]
      *
-     * @url GET /js
-     * @url GET /js/:filename
+     * @Get("/js")
+     * @Get("/js/{filename}")
+     * 
      */
-    public function jsWrapperAction($module, $filename = null)
+    public function jsWrapperRequest($filename = null)
     {
-        if ($filename == 0 || $this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
+        //if ($filename == 0 || $this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
             header("Content-Type: application/javascript");
             if ($filename === 0) {
                 $filename = $this->module_id;
             }
 
-            $jsFileName = $this->module_folder . "/scripts/" . $filename . ".js";
+            $jsFileName = $this->module_folder . "/scripts/" . $filename;
             if (file_exists($jsFileName)) {
                 $sendData = $this->getCache($filename);
 
@@ -237,40 +248,39 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
                 echo file_get_contents($jsFileName);
             }
-        }
+        //}
         exit;
     }
 
     /**
      * [ add a description ]
      *
-     * @url GET /scripts/:filename
+     * @Get("/scripts/{filename}")
      */
-    public function jsCrudWrapperAction($module, $filename = null)
+    public function jsCrudWrapperRequest($filename = null)
     {
         $cacheKey = "crud_config/" . $this->module_id;
 
-        $plicolib = PlicoLib::instance();
+        
 
-        //$this->createContext($module);
-        if ($this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
-            header("Content-Type: application/javascript");
+        //if ($this->getRequestedFormat() == RestFormat::JAVASCRIPT) {
+        header("Content-Type: application/javascript");
 
-            $jsFileName = $plicolib->get("path/app/www") . "/assets/default/scripts/" . $filename . ".js";
-            if (file_exists($jsFileName)) {
-                $sendData = $this->getCache($cacheKey);
+        $jsFileName = $this->environment["path/app/www"] . "/assets/default/scripts/" . $filename . "";
+        if (file_exists($jsFileName)) {
+            $sendData = $this->getCache($cacheKey);
 
-                if (!is_null($sendData)) {
-                    $var_name = "crud_config";
-                    echo sprintf("var %s = %s;\n", $var_name, json_encode($sendData));
+            if (!is_null($sendData)) {
+                $var_name = "crud_config";
+                echo sprintf("var %s = %s;\n", $var_name, json_encode($sendData));
 
-                    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-                    header("Cache-Control: post-check=0, pre-check=0", false);
-                    header("Pragma: no-cache");
-                }
-                echo file_get_contents($jsFileName);
+                header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+                header("Cache-Control: post-check=0, pre-check=0", false);
+                header("Pragma: no-cache");
             }
+            echo file_get_contents($jsFileName);
         }
+        //}
         exit;
     }
 

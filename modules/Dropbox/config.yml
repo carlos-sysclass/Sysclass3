@@ -1,0 +1,5 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+models:
+  me: Sysclass\Models\Dropbox\File

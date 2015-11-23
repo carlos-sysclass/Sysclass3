@@ -232,6 +232,7 @@ ftp-htaccess targets, for instance.
             <arg path="${src.dir}"/>
         </exec>
         <xslt file="${build.logs.dir}/phploc.xml" tofile="${build.dist.dir}/phploc.html" style="${build.lib.dir}/phploc/table.xslt" overwrite="true" />
+        <copy file="${build.logs.dir}/phploc.xml" tofile="${build.dist.dir}/phploc.xml" overwrite="true" />
     </target>
 
     <target name="lint" depends="init" description="Check files for syntax errors">
@@ -239,7 +240,18 @@ ftp-htaccess targets, for instance.
             <fileset refid="php.files"/>
         </phplint>
     </target>
-
+    <!--
+    <target name="phpdoc-dev" depends="init" description="Generate API documentation">
+        <exec executable="phpdoc" logoutput="true" checkreturn="true" level="debug">
+        </exec>
+    </target>
+    -->
+    <target name="phpdoc" depends="init" description="Generate API documentation">
+        <exec executable="phpdoc" checkreturn="true">
+            <arg path="-t"/>
+            <arg path="${build.dist.dir}/phpdoc"/>
+        </exec>
+    </target>
 
 
 
@@ -325,13 +337,6 @@ ftp-htaccess targets, for instance.
         </phpcpd>
     </target>
 
-    <target name="phpdoc" depends="init" description="Generate API documentation">
-        <phpdoc2 title="${phing.project.name} ${project.version}" destdir="${build.api.dir}">
-            <!--fileset dir="${src.dir}"/-->
-            <fileset refid="php.files"/>
-        </phpdoc2>
-
-    </target>
 
 
 

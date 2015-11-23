@@ -171,8 +171,15 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                            valueArray = [values[idx]];
 		                        }
 		                        _.each(valueArray, function(itemValue, index) {
-		                        	if (input.filter("[value='" + itemValue +"']").size() > 0) {
+		                        	if (input.filter("[value='" + itemValue +"']").size() > 0 || input.filter("[data-value-unchecked='" + itemValue +"']")) {
 		                        		var innerInput = input.filter("[value='" + itemValue +"']");
+
+	                                    if (innerInput.size() == 0) {
+
+	                                        innerInput = input.filter("[data-value-unchecked='" + itemValue +"']");
+	                                        uncheck = true;
+
+	                                    }
 
 				                		if (innerInput.hasClass("icheck-me")) {
 				                			//if (input.filter("[value='" + itemValue +"']").size() > 0) {
@@ -180,6 +187,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				                			//}
 										} else if (input.hasClass("bootstrap-switch-me")) {
 											//input.bootstrapSwitch('state', (itemValue == 1), true);
+											
+
                                             innerInput.bootstrapSwitch('state', (itemValue == 1), true);
 				                		} else {
 				                			/*

@@ -25,8 +25,8 @@ dashboard:
         1: ["users.overview", "ads.leftbar.banner", "courses.overview", "news.latest" ]
         2: ["institution.overview", "advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         3: ["calendar"]
-        #1: ["courses.overview"]
-        #2: []
+        #1: []
+        #2: ["advisor.chat"]
         #3: []
     sortable: false
     resources:

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.1.0
+ */
 class CoursesAreasCollectionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()

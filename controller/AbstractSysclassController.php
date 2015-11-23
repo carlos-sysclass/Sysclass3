@@ -5,7 +5,7 @@ use Monolog\Handler\FirePHPHandler;
 use Monolog\Formatter\WildfireFormatter;
 */
 use Phalcon\DI,
-	Sysclass\Models\Settings,
+	Sysclass\Models\System\Settings,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 abstract class AbstractSysclassController extends AbstractDatabaseController
@@ -14,29 +14,29 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 	protected static $current_user = null;
 	protected static $logged_user = null;
 
-	public static $t = null;
+	//public static $t = null;
 	public static $cfg = null;
 	public static $syscfg = null;
 	public function init($url, $method, $format, $root=NULL, $basePath="", $urlMatch = null)
 	{
-		parent::init($url, $method, $format, $root, $basePath, $urlMatch);
+		//parent::init($url, $method, $format, $root, $basePath, $urlMatch);
 
 		// LOAD TRANSLATE MODEL
+		// 
+		/*
 		if (is_null(self::$t)) {
-			self::$t = $this->model("translate");
+			self::$t = $this->translator;
 		}
-
+		*/
 		if (is_null(self::$cfg)) {
 			$di = DI::getDefault();
 			self::$cfg = $di->get("configuration")->asArray();
 			self::$syscfg = $di->get("sysconfig");
-
 		}
 	}
 
 	public function authorize()
 	{
-		$smarty = $this->getSmarty();
 		// INJECT HERE SESSION AUTHORIZATION CODE
 		$di = DI::getDefault();
 		try {
@@ -46,8 +46,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			self::$current_user = $user;
 			self::$logged_user = $user->toArray();
 
-		    $smarty->assign("T_CURRENT_USER", self::$current_user);
-		    $smarty->assign("T_LOGGED_USER", self::$logged_user);
+		    $this->putItem("CURRENT_USER", self::$current_user);
+		    $this->putItem("LOGGED_USER", self::$logged_user);
 		    $GLOBALS["currentUser"] = self::$current_user;
 
 
@@ -65,28 +65,28 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			//exit;
 			switch($e->getCode()) {
 				case AuthenticationException :: MAINTENANCE_MODE : {
-		            $message = self::$t->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = self::$t->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
-		            $message = self::$t->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
 		            $message_type = 'info';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$url = "/lock";
-		            $message = self::$t->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
 		            $message_type = 'info';
 		            break;
 				}
 				default : {
-		            $message = self::$t->translate($e->getMessage());
+		            $message = $this->translate->translate($e->getMessage());
 		            $message_type = 'danger';
 		            break;
 				}
@@ -101,11 +101,11 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		//$smarty = $this->getSmarty();
 		// GET USER TOP BAR ICONS
 		$this->putItem("configuration", self::$cfg);
-		$this->putItem("sysconfig", self::$syscfg);
+		$this->putItem("sysconfig", $this->sysconfig);
 
-		if ($this->getCurrentUser()) {
+		if ($user = $this->getCurrentUser(true)) {
 
-			$userSettings = $this->module("settings")->getSettings(true);
+			$userSettings = $user->getSettings()->toArray();
 
 			$this->putItem("SETTINGS_", $userSettings);
 
@@ -120,7 +120,10 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 
         	$this->putItem("topbar_menu", $topbarMenu);
 
-        	parent::beforeDisplay();
+
+        	//print_r($topbarMenu);
+
+        	
 
         	/*
 			if (unserialize(self::$current_user -> user['additional_accounts'])) {
@@ -174,11 +177,14 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			$this->putItem("small_user_avatar", $small_user_avatar);
 			$this->putItem("big_user_avatar", $big_user_avatar);
 			*/
+			parent::beforeDisplay();
 		} else {
 			parent::beforeDisplay();
 		}
 
 	}
+
+
 
 	/**
 	 * @deprecated
@@ -208,8 +214,8 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 		if (is_null($who)) {
 			$who = 'default';
 		}
-		$plico = PlicoLib::instance();
-		$urls = $plico->getArray('urls');
+		
+		$urls = $this->environment['urls']->toArray();
 		if (array_key_exists($who, $urls)) {
 			return $urls[$who];
 		}

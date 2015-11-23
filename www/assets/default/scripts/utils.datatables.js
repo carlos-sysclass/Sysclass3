@@ -45,7 +45,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				//console.warn(e);
 
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
-				this.trigger("switchItem.datatables", _.first(data));
+				this.trigger("switchItem.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), state);
 				/*
 				if ($(e.currentTarget).hasClass("btn-danger")) {
 					$(e.currentTarget).removeClass("btn-danger").addClass("btn-success");

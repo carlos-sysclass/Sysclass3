@@ -1,6 +1,7 @@
 <?php
 abstract class AbstractToolsController extends PhalconWrapperController
 {
+	protected $config;
 
     // CREATE FUNCTION HERE
     public function loadLayout($layout_id = 'default', $use_cache = true) {
@@ -11,7 +12,7 @@ abstract class AbstractToolsController extends PhalconWrapperController
         if (@$this->config['dashboard']['merge_resource_with_modules']) {
             $modules = $this->getModules();
 
-            $modules_keys = array_keys($modules);
+            $modules_keys = array_map('strtolower', array_keys($modules));
             foreach($this->config['dashboard']['resources'] as $index => $resource) {
                 $this->config['dashboard']['resources'][$index] = array_unique(array_merge($resource, $modules_keys));
             }
@@ -27,9 +28,9 @@ abstract class AbstractToolsController extends PhalconWrapperController
     }
 
     protected function loadConfig($use_cache = true) {
-        $cached = $this->getCache("dashboard/{$this->layout_id}");
+        //$cached = $this->getCache("dashboard/{$this->layout_id}");
 
-        if (is_null($cached) || $use_cache == false) {
+        //if (is_null($cached) || $use_cache == false) {
 
             $defaultconfig = yaml_parse_file(__DIR__ . "/../config/default.yml");
 
@@ -37,10 +38,10 @@ abstract class AbstractToolsController extends PhalconWrapperController
 
             $this->config = array_replace_recursive($defaultconfig, $config);
 
-            $this->setCache("dashboard/{$this->layout_id}", $this->config);
-        } else {
-            $this->config = $cached;
-        }
+        //    $this->setCache("dashboard/{$this->layout_id}", $this->config);
+        //} else {
+        //    $this->config = $cached;
+        //}
         return $this->config;
     }
 
@@ -55,9 +56,6 @@ abstract class AbstractToolsController extends PhalconWrapperController
         // GET ALL MODULES, CHECK FOR IMenu Interface, CHECK FOR SECTION
         $modules = $this->getModules("ISectionMenu");
 
-        
-
-
         $menu_items = array();
         foreach($modules as $index => $module) {
             $menu_item = $module->getSectionMenu($section);
@@ -66,7 +64,7 @@ abstract class AbstractToolsController extends PhalconWrapperController
                 $menu_items[$index] = $menu_item;
             }
         }
-
+        
         $menu_items = $this->sortModules("layout.sections." . $section, $menu_items, true);
 
         return $menu_items;
@@ -75,9 +73,13 @@ abstract class AbstractToolsController extends PhalconWrapperController
     public function sortModules($sortId, $data, $preserveUncontainedKey = false) {
         $resource = $this->getResource($sortId);
 
+        //var_dump($resource);
+        //exit;
+
         $dataArray = array();
         if ($resource) {
             foreach($resource as $sortIndex) {
+            	$sortIndex = ucfirst($sortIndex);
                 if (array_key_exists($sortIndex, $data)) {
                     $dataArray[$sortIndex] = $data[$sortIndex];
                     unset($data[$sortIndex]);

@@ -20,9 +20,10 @@
 	<div class="content"></div>
 	{/block}
 	<!-- END LOGIN -->
-	{block name="foot"}
-		{include file="block/foot.tpl"}
-	{/block}
+	{include file="block/foot.tpl"}
+	{*block name="foot"*}
+		{*include file="block/foot.tpl"*}
+	{*/block*}
 </body>
 <!-- END BODY -->
 </html>

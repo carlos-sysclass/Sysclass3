@@ -8,6 +8,7 @@
 						{if $widget.weight == $column_id}
 							{* $widget|@json_encode *}
 							{if isset($widget.template)}
+								a
 								{include file="`$widget.template`.tpl" T_DATA=$widget.data}
 							{else}
 								{include file="widgets/widget.tpl" T_DATA=$widget.data}
