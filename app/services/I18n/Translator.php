@@ -18,6 +18,8 @@ class Translator extends Component
 
     protected $session_tokens = array();
 
+    protected $backends = array();
+
     public function __construct($clearCache = false) {
         // GET ALL LANGUAGES CACHE
         $this->languages = Language::find("active = 1");
@@ -61,7 +63,7 @@ class Translator extends Component
             $this->recreateCache();
 
             if ($this->source_tokens->count() > 0) {
-                $this->session->set("session_language", $this->source_lang);    
+                $this->session->set("session_language", $this->source_lang);
             }
 
             return true;
@@ -110,7 +112,14 @@ class Translator extends Component
         return $langcodes;
         */
     }
-
+    /*
+    public function __invoke($a, $b, $c) {
+        var_dump($a, $b, $c);
+        var_dump(func_get_args);
+        exit;
+    }
+    */
+   
     public function translate($token, $vars = null, $language_code = null)
     {
         /** @todo CHECK FOR TRANSLATION MODE */
@@ -128,7 +137,6 @@ class Translator extends Component
 
 
         $exists = array_search($token, $this->source_tokens_index);
-
         /*
         $exists = $this->source_tokens->filter(function($item) use ($token) {
             //if ($item['token'] === $token) {
@@ -142,14 +150,30 @@ class Translator extends Component
             $translated = $exists;
         } else {
             //REGISTER TOKEN HERE, TO TRANSLATE LATER
-            $translated = $token;
-            $tokenModel = new Tokens();
-            $tokenModel->assign(array(
-                'language_code' => $this->getSystemLanguageCode(),
-                'token' => $token,
-                'text'  => $translated
-            ));
-            $tokenModel->save();
+            if ($this->getSystemLanguageCode() == $this->source_lang) {
+                $translated = $token;
+                $tokenModel = new Tokens();
+                $tokenModel->assign(array(
+                    'language_code' => $this->getSystemLanguageCode(),
+                    'token' => $token,
+                    'text'  => $translated
+                ));
+                $tokenModel->save();
+            } else {
+                // JUST CALL THE REMOTE SYSTEM TRANSLATION METHOD
+                $translated = $this->translateText($this->getSystemLanguageCode(), $this->source_lang, $token);
+                if ($translated !== FALSE) {
+                    $tokenModel = new Tokens();
+                    $tokenModel->assign(array(
+                        'language_code' => $this->source_lang,
+                        'token' => $token,
+                        'text'  => $translated
+                    ));
+                    $tokenModel->save();
+                } else {
+                    $translated = $token;
+                }
+            }
         }
 
         // IF NOT FOUND, CHECK FOR CONSTANTS
@@ -166,6 +190,27 @@ class Translator extends Component
         return $translated;
     }
 
+    public function getBackend($backend) {
+        if (array_key_exists($backend, $this->backends)) {
+            return $this->backends[$backend];
+        }
+
+        $class = "\\Sysclass\\Services\\I18n\\Backend\\" . ucfirst($backend);
+        if (class_exists($class)) {
+            return $this->backends[$backend] = new $class();
+        }
+        return false;
+    }
+
+    public function translateText($source, $dest, $text) {
+        $langCodes = $this->getDisponibleLanguagesCodes();
+        if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
+            $result = $this->getBackend("bing")->translateText($text, $source, $dest);
+            return $result;
+        }
+        return false;
+    }
+
     /**
      * [translateTokens description]
      * @param  string $from   [description]
@@ -175,23 +220,24 @@ class Translator extends Component
      */
     public function translateTokens($source, $dest, $tokens, $source_column = null, $dest_column = "translated")
     {
+        /*
         if ($force === 'false' || $force === "0") {
             $force = false;
         } else {
             $force = true;
         }
-
-        $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+        */
+        $langCodes = $this->getDisponibleLanguagesCodes();
 
         if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
             // VALIDATE TOKEN
-            $bingTranslateModel = $this->model("bing/translate");
+            //$bingTranslateModel = $this->model("bing/translate");
             if (is_string($source_column)) {
                 $translateTokens = \array_column($tokens, $source_column);
             } else {
                 $translateTokens = array_values($tokens);
             }
-            $translatedTerms = $bingTranslateModel->translateArray($translateTokens, $source, $dest);
+            $translatedTerms = $this->getBackend("bing")->translateArray($translateTokens, $source, $dest);
 
             if (is_string($source_column)) {
                 foreach ($tokens as $key => $value) {

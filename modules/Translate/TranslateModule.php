@@ -8,7 +8,9 @@ namespace Sysclass\Modules\Translate;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-use Sysclass\Models\I18n\Language;
+use Sysclass\Models\I18n\Language,
+    Sysclass\Models\I18n\Tokens,
+    Phalcon\Mvc\Model\Resultset;
 
 /**
  * @RoutePrefix("/module/translate")
@@ -309,18 +311,20 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      *
      * @url GET /item/me/:id
      */
+    /*
     public function getItemAction($id) {
 
         $editItem = $this->model("translate")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url POST /item/me
      */
+    /*
     public function addItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -342,12 +346,13 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
+    /*
     public function setItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -365,7 +370,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             return $this->notAuthenticatedError();
         }
     }
-
+    */
 
 
     /**
@@ -474,25 +479,26 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      *
      * @Get("/tt/{from}/{to}")
      */
-    public function doTranslateAction($from, $to) {
+    public function doTranslateRequest($from, $to) {
         // TODO CREATE MULTIPLE TRANSLATIONS BACKENDS
         $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
 
         if (in_array($from, $langCodes) && in_array($to, $langCodes)) {
             // VALIDATE TOKEN
-            $bingTranslateModel = $this->model("bing/translate");
+            $translatedTerm = $this->translate->translateText($from, $to, $_GET['st']);
 
-            $translatedTerm = $bingTranslateModel->translateText($_GET['st'], $from, $to);
+            $tokensModel = new Tokens();
 
-            $data = array(
-                "token"         => $_GET['tk'],
-                "text"          => (string) $translatedTerm,
-                "language_code" => $to,
-                "srclang"       => $from,
-                "dstlang"       => $to
-            );
+            $tokensModel->assign(array(
+                'token'         => $_GET['st'],
+                'text'          => (string) $translatedTerm,
+                'language_code' => $to,
+                'edited'        => 0,
+            ));
 
-            return $data;
+            //$tokensModel->save();
+
+            return $tokensModel->toArray();
 
         } else {
             return $this->invalidRequestError();
@@ -505,7 +511,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      * @Get("/ttall/{from}/{to}")
      * @Get("/ttall/{from}/{to}/{force}")
      */
-    public function doTranslateAllAction($from, $to, $force = true) {
+    public function doTranslateAllRequest($from, $to, $force = true) {
         if ($force === 'false' || $force === "0") {
             $force = false;
         } else {
@@ -516,33 +522,35 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
 
         if (in_array($from, $langCodes) && in_array($to, $langCodes)) {
-            // VALIDATE TOKEN
-            $bingTranslateModel = $this->model("bing/translate");
-            $translateTokensModel = $this->model("translate/tokens");
+            $sourcesTokens = Tokens::find(array(
+                'columns' => 'text',
+                'conditions' => "language_code = ?0 AND token NOT IN (
+                    SELECT token FROM Sysclass\Models\I18n\Tokens WHERE 
+                        language_code = ?1 AND 
+                        (edited = 1 OR (UNIX_TIMESTAMP() - timestamp) < 300)
+                )",
+                'bind' => array($from, $to)
+            ));
+            $sourcesTokens = array_column($sourcesTokens->toArray(), 'text');
 
-            // GET ALL TOKENS FROM SRC LANG
-            $translateTokens = $translateTokensModel->cache(false)->getAssociativeLanguageTokens($from);
-            $translateTokens = array_values($translateTokens);
-
-            //$translateTokens = array_slice($translateTokens, 0 , 5, true);
-
-            $translatedTerms = $bingTranslateModel->translateArray($translateTokens, $from, $to);
+            $translatedTerms = $this->translate->translateTokens($from, $to, $sourcesTokens);
 
             foreach($translatedTerms as $token => $term) {
-                $data = array(
-                    "token"         => $token,
-                    "text"          => $term,
-                    "language_code" => $to,
-                    "srclang"       => $from,
-                    "dstlang"       => $to
-                );
-                // ADD THIS TOKEN
-                $translateTokensModel->addToken($data, $force);
+                $tokensModel = new Tokens();
 
+                $tokensModel->assign(array(
+                    'token'         => $token,
+                    'text'          => $term,
+                    'language_code' => $to
+                ));
+
+                $tokensModel->save();
+                // ADD THIS TOKEN
             }
             $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
 
             $response['data'] = $translatedTerms;
+
             return $response;
         } else {
             return $this->invalidRequestError();
@@ -554,16 +562,25 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      *
      * @Post("/datasource/token")
      */
-    public function insertTokenTranslationAction()
+    public function insertTokenTranslationRequest()
     {
-        $data = $this->getHttpData(func_get_args());
+        $data = $this->getHttpData();
 
         // TODO CHECK PERMISSIONS
         $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+
         if (in_array($data['language_id'], $langCodes)) {
             //var_dump($data);
-            $this->model("translate/tokens")->addToken($data, true);
+            $tokensModel = new Tokens();
 
+            $tokensModel->assign(array(
+                'token'         => $data['token'],
+                'text'          => $data['text'],
+                'language_code' => $data['dstlang'],
+                'edited'        => 1
+            ));
+            $tokensModel->save();
+            
             return $this->createAdviseResponse($this->translate->translate("Translation saved!"), "success");
 
         }

@@ -21,7 +21,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-success save-action">{translateToken value="Save"}</button>
+					<button type="button" class="btn btn-success save-action">{translateToken value="Save"}</button>
 					<button type="button" class="btn btn-danger" data-dismiss="modal">{translateToken value="Cancel"}</button>
 				</div>
 			</form>
