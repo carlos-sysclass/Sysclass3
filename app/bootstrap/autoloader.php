@@ -32,7 +32,7 @@ $loader->registerNamespaces(array(
     "Sysclass\Models" => __DIR__ . "/../models/",
     "Sysclass\Services" => __DIR__ . "/../services/",
     "Sysclass\Tasks" => __DIR__ . "/../tasks/",
-    "Sysclass\Websockets" => __DIR__ . "/../websockets/",
+    "Sysclass\Sockets" => __DIR__ . "/../sockets/",
     "Plico" => __DIR__ . "/../plico/", // TODO: Move code to plicolib itself
     "Sysclass" => __DIR__ . "/../sysclass/",
     "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/'
