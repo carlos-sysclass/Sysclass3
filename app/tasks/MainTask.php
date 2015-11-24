@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Tasks;
 
-use Sysclass\Services\Queue\Message;
+use Sysclass\Services\Queue\AsyncCall;
 
 class MainTask extends \Phalcon\CLI\Task
 {
@@ -11,6 +11,10 @@ class MainTask extends \Phalcon\CLI\Task
     }
 
     public function sendAction() {
-    	$this->queue->send(new Message("events", array("event" => "teste")));
+        $task = new AsyncCall("translate", "translateTokens", array(
+            "en",
+            "pt"
+        ));
+        $this->queue->send($task);
     }
 }

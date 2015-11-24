@@ -1,16 +1,10 @@
 <?php
-/**
- * Module Class File
- * @filesource
- */
 namespace Sysclass\Modules\Translate;
-/**
- * [NOT PROVIDED YET]
- * @package Sysclass\Modules
- */
+
 use Sysclass\Models\I18n\Language,
     Sysclass\Models\I18n\Tokens,
-    Phalcon\Mvc\Model\Resultset;
+    Phalcon\Mvc\Model\Resultset,
+    Sysclass\Services\Queue\AsyncCall;
 
 /**
  * @RoutePrefix("/module/translate")
@@ -280,8 +274,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         //$this->putComponent("select2", "validation");
         //his->putBlock("permission.add");
 
-        $this->putModuleScript("models.translate");
-        $this->putModuleScript("views.translate.edit", array('id' => $id));
+        //$this->putModuleScript("models.translate");
+        //$this->putModuleScript("views.translate.edit", array('id' => $id));
 
         
         $country_codes = $this->model("i18n/country")->getItems();
@@ -305,7 +299,24 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         //return array_values($news);
         parent::editPage($id);
     }
-    
+
+    public function afterModelCreate($evt, $model, $data) {
+        $task = new AsyncCall("translate", "translateTokens", array(
+            $this->translate->getSystemLanguageCode(),
+            $model->code
+        ));
+        $this->queue->send($task);
+        return true;
+    }
+
+    public function afterModelUpdate($evt, $model, $data) {
+        $task = new AsyncCall("translate", "translateTokens", array(
+            $this->translate->getSystemLanguageCode(),
+            $model->code
+        ));
+        $this->queue->send($task);
+        return true;
+    }
     /**
      * Get all translation visible to the current user
      *
@@ -593,6 +604,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      * @Get("/datasources/me")
      * @Get("/datasources/me/{datatable}")
      */
+    /*
     public function getItemsRequest($datatable)
     {
         //$currentUser    = $this->getCurrentUser(true);
@@ -622,6 +634,10 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                             "data-placement"        => "top",
                             'data-original-title'   => "Edit Language"
                         )
+                    ),
+                    'remove'  => array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'
                     )
                 );
             }
@@ -639,6 +655,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         $this->response->setJsonContent(array_values($itemsData));
         return true;
     }
+    */
 
     // TODO MOVE THIS FUNCTION TO FRAMWORK (ALIAS TO {Plico_GetResource file=""})
 

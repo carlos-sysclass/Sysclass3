@@ -27,9 +27,44 @@ class Queue extends Component implements WampServerInterface
     }
 
     public function onEvent($data) {
+        $info = json_decode($data, true);
+        if (array_key_exists("channel", $info)) {
+            switch($info['channel']) {
+                case "task" : {
+                    $this->callTask($info['data']);
+                    break;
+                }
+            }
+        } else {
+            echo "NO CHANNEL FOUND";
+        }
         // RECEIVE A JSON ENCODED STRING, 
-        var_dump(json_decode($data, true));
+
+        //var_dump($this->translate);
+
     }
+
+    public function callTask($metadata) {
+        $di = \Phalcon\DI::getDefault();
+
+        if ($di->has($metadata['service'])) {
+            $service = $di->get($metadata['service']);
+
+            $result = call_user_func_array(array(
+                $service, $metadata['method']
+            ), $metadata['args']);
+
+            // MAKE A WAY TO SEND THE RESULST TO THE WEBSOCKET
+
+            return $result;
+        } else {
+        }
+    }
+
+
+
+
+    /* WEBSOCKET CHAT FUNCTIONS */
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
