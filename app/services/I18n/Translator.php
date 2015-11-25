@@ -227,10 +227,12 @@ class Translator extends Component
             $force = true;
         }
         */
+
         $langCodes = $this->getDisponibleLanguagesCodes();
 
         if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
             if (is_null($tokens)) {
+
                 $sourcesTokens = Tokens::find(array(
                     'columns' => 'text',
                     'conditions' => "language_code = ?0 AND token NOT IN (
@@ -240,6 +242,7 @@ class Translator extends Component
                     )",
                     'bind' => array($source, $dest)
                 ));
+
                 $tokens = array_column($sourcesTokens->toArray(), 'text');
             }
 
@@ -250,6 +253,7 @@ class Translator extends Component
             } else {
                 $translateTokens = array_values($tokens);
             }
+
             $translatedTerms = $this->getBackend("bing")->translateArray($translateTokens, $source, $dest);
 
             if (is_string($source_column)) {

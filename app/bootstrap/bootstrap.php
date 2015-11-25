@@ -23,10 +23,10 @@ if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 // UTILITY SERVICES, LIKE string, url, escaper, and so on...
 require(__DIR__ . "/utils.php");
 
-if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// VIEW RELATED
 	require(__DIR__ . "/views.php");
 
+if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// BACKWARD COMPATIBILITY CODE, TO BE DEPRECATED..
 	require(__DIR__ . "/compat.php");
 }
