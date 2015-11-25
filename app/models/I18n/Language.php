@@ -10,4 +10,12 @@ class Language extends Model
         $this->setSource("mod_translate");
 
     }
+
+    public function toArray() {
+    	$depinj = \Phalcon\DI::getDefault();
+    	
+    	$response = parent::toArray();
+       	$response['country_image'] = $depinj->get("resourceUrl")->get(sprintf("/img/flags/%s.png", strtolower($this->country_code)));
+		return $response;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Tasks;
 
-use Sysclass\Services\Queue\Message;
+use Sysclass\Services\Queue\AsyncCall;
 
 class MainTask extends \Phalcon\CLI\Task
 {
@@ -10,7 +10,13 @@ class MainTask extends \Phalcon\CLI\Task
     	// SHOW HELP
     }
 
-    public function sendAction() {
-    	$this->queue->send(new Message("events", array("event" => "teste")));
+    public function callAction($params, $method) {
+        $service = array_shift($params);
+        $method = array_shift($params);
+
+        echo sprintf('Calling %s:%s(%s)', $service, $method, implode(",", $params));
+        
+        $task = new AsyncCall($service, $method, $params);
+        $this->queue->send($task);
     }
 }

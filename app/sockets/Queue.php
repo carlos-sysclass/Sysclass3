@@ -13,6 +13,8 @@ class Queue extends Component implements WampServerInterface
     protected $clients;
     protected $token;
 
+    protected $subscribedTopics = array();
+
     public function __construct() {
         $this->clients = new \SplObjectStorage;
         $this->users = array();
@@ -26,10 +28,69 @@ class Queue extends Component implements WampServerInterface
         echo "New connection! ({$conn->resourceId})\n";
     }
 
-    public function onEvent($data) {
-        // RECEIVE A JSON ENCODED STRING, 
-        var_dump(json_decode($data, true));
+    protected function createTaskEvent($data, $type, $result = null) {
+        return array(
+            'event' => $type . "ServiceExecution",
+            'channel' => $data['channel'],
+            'service' => $data['data']['service'],
+            'method' => $data['data']['method'],
+            'result' => $result
+        );
     }
+
+    public function onEvent($data) {
+        $info = json_decode($data, true);
+        if (array_key_exists("channel", $info)) {
+            switch($info['channel']) {
+                case "task" : {
+                    $topic = false;
+
+                    if (array_key_exists("system-events", $this->subscribedTopics)) {
+                        $topic = $this->subscribedTopics["system-events"];
+                    }
+
+                    if ($topic) {
+                        $topic->broadcast($this->createTaskEvent($info, "before"));
+                    }
+
+                    $result = $this->callTask($info['data']);
+
+                    if ($topic) {
+                        $topic->broadcast($this->createTaskEvent($info, "after", $result));
+                    }
+                    
+
+                    break;
+                }
+            }
+        } else {
+            echo "NO CHANNEL FOUND";
+        }
+        // RECEIVE A JSON ENCODED STRING, 
+
+    }
+
+    public function callTask($metadata) {
+        $di = \Phalcon\DI::getDefault();
+
+        if ($di->has($metadata['service'])) {
+            $service = $di->get($metadata['service']);
+            
+            $result = call_user_func_array(array(
+                $service, $metadata['method']
+            ), $metadata['args']);
+
+            // MAKE A WAY TO SEND THE RESULST TO THE WEBSOCKET
+
+            return $result;
+        } else {
+        }
+    }
+
+
+
+
+    /* WEBSOCKET CHAT FUNCTIONS */
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
@@ -123,7 +184,7 @@ class Queue extends Component implements WampServerInterface
                 ));
 
                 if ($lastQueue) {
-                   var_dump($lastQueue->toArray());
+                   //var_dump($lastQueue->toArray());
                 }
                 break;
             }
