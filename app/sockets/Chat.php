@@ -4,7 +4,7 @@ namespace Sysclass\Sockets;
 use Phalcon\Mvc\User\Component,
     Ratchet\Wamp\WampServerInterface,
     Ratchet\ConnectionInterface,
-    Sysclass\Models\Chat\Chat,
+    Sysclass\Models\Chat\ChatModel,
     Sysclass\Models\Chat\Message,
     Sysclass\Models\Users\UserTimes;
 
@@ -112,7 +112,7 @@ class Chat extends Component implements WampServerInterface
                 }
                 $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
 
-                $lastQueue = Chat::findFirst(array(
+                $lastQueue = ChatModel::findFirst(array(
                     'conditions' => "requester_id = ?0 AND closed = 0 AND type = ?1",
                     'bind' => array($user['id'], 'queue'),
                     'order' => 'ping DESC'
@@ -144,7 +144,7 @@ class Chat extends Component implements WampServerInterface
                 $started = time();
                 $subject = $this->translate->translate($params[1]);
 
-                $queueModel = new Chat();
+                $queueModel = new ChatModel();
                 $queueModel->websocket_token = $conn->wrappedConn->WAMP->sessionId;
                 $queueModel->type = "queue";
                 $queueModel->subject = $subject;
@@ -177,7 +177,7 @@ class Chat extends Component implements WampServerInterface
         $event['origin'] = $conn->wrappedConn->WAMP->sessionId;
         $event['from'] = $user;
 
-        $queueModel = Chat::findFirst(array(
+        $queueModel = ChatModel::findFirst(array(
             'conditions' => 'websocket_token = ?0 AND topic = ?1',
             'bind' => array($conn->wrappedConn->WAMP->sessionId, $topic->getId())
         ));
