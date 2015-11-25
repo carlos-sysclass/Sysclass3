@@ -93,6 +93,12 @@ if (APP_TYPE === "WEB") {
     });
 }
 
+$di->setShared('queue', function () {
+    $queue = new Sysclass\Services\Queue\Adapter();
+
+    return $queue;
+});
+
 $di->setShared('mail', function () {
     require_once REAL_PATH . "/vendor/swiftmailer/swiftmailer/lib/swift_required.php";
 

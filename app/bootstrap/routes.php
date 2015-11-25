@@ -40,6 +40,7 @@ if (APP_TYPE === "WEB") {
         // Attach a listener for type "dispatch"
         // 
         $eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("authentication"));
+        $eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("queue"));
 
         $eventsManager->attach('dispatch:afterExecuteRoute', function ($event, $dispatcher) use ($di) {
             // Possible controller class name

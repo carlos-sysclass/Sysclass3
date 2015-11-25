@@ -1,5 +1,5 @@
 <?php
-namespace Sysclass\Websockets;
+namespace Sysclass\Sockets;
 
 use Phalcon\Mvc\User\Component,
     Ratchet\Wamp\WampServerInterface,
@@ -8,7 +8,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Models\Chat\Message,
     Sysclass\Models\Users\UserTimes;
 
-class ChatWs extends Component implements WampServerInterface
+class Chat extends Component implements WampServerInterface
 {
     protected $clients;
     protected $token;
