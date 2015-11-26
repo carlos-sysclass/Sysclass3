@@ -32,10 +32,6 @@
         <i class="fa fa-circle text-danger"></i>
     <% } %>
     <%= model.requester.name %> (<%= model.requester.email %>)
-    <!--
-    <span class="badge badge-default"> <%= moment.unix(model.ping).fromNow() %> </span>
-    -->
-
     <div class="btn-group pull-right" style="margin-top:-6px;">
         <a aria-expanded="false" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:;">
             <i class="fa fa-cog"></i>
