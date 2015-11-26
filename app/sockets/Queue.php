@@ -229,6 +229,8 @@ class Queue extends Component implements WampServerInterface
                         if (array_key_exists($requester->id, $this->usersIds)) {
                             $item['online'] = true;
                             $item['session_id'] = $this->usersIds[$requester->id];
+                        } else {
+                            $item['online'] = false;
                         }
                         $result[] = $item;
                     }

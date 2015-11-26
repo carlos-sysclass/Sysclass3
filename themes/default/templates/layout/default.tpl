@@ -70,7 +70,7 @@
                     data-btn-ok-label="{translateToken value="Yes"}"
                     data-btn-cancel-label="{translateToken value="No"}"
 				<% } else { %>
-
+					data-datatable-action="<%= item.key %>"
 				<% } %>
 				<% if (item.attrs != undefined) { %>
 					<% _.each(item.attrs, function(value, tag) { %>

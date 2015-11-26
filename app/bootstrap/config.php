@@ -178,7 +178,7 @@ $di->setShared('environment', function() use ($di) {
 		'data-tables' => array(
 			'name'	=> 'data-tables',
 			'css'	=> array('plugins/data-tables/DT_bootstrap'),
-			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables.min', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
+			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
 		'bootstrap-switch' => array(
 			'name'	=> 'bootstrap-switch',

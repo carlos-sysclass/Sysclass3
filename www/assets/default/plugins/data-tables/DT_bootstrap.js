@@ -271,6 +271,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 					1 : "Yes",
 					0 : "No"
 				};
+				console.warn(data);
 				if (data == 1) {
 					return '<span class="label label-sm label-success">' + map[data] + '</span>';
 				} else if (data == 0) {

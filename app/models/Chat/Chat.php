@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Chat;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Chat extends Model
 {

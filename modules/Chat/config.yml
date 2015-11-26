@@ -1,0 +1,4 @@
+models:
+  me:
+    class : Sysclass\Models\Chat\Chat
+    exportMethod: ["toFullArray", ["Requester"]]
