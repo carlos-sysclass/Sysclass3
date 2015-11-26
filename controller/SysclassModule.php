@@ -457,12 +457,18 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
+        //if ($allowed = $this->isUserAllowed("delete")) {
+        $this->setArgs(array(
+            'model' => $model
+        ));
+
+        if ($allowed = $this->isUserAllowed("view")) {
             $currentUser    = $this->getCurrentUser(true);
 
             $model_info = $this->model_info[$model];
 
             $model_class = $model_info['class'];
+
             $itemModel = new $model_class();
             
             //$args = $this->getparamentrs();

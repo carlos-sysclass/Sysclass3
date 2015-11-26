@@ -4,7 +4,7 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 	  	// VIEWS
 		//var parent = app.module("portlet");
 		mod.chatModule = app.module("utils.chat");
-		/*
+
 		this.queueItemViewClass = Backbone.View.extend({
 			chatModule : mod.chatModule,
 			tagName : 'tr',
@@ -22,14 +22,11 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 				return this;
 			},
 			viewChatAction : function() {
-				e.preventDefault();
 				this.chatModule.subscribeToChat(this.model.get("topic"), this.model);
 				//this.chatModule.startQueueView(this.model);
 			}
 		});
-		*/
-
-		this.advisorQueueListWidgetViewClass = Backbone.View.extend({
+		this.advisorChatWidgetViewClass = Backbone.View.extend({
 			collection : null,
 			chatModule : mod.chatModule,
 			events : {
@@ -58,7 +55,7 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 					this.$(".start-chat-action").removeClass("disabled").removeAttr("disabled", "disabled");
 
 				}.bind(this));
-				/*
+
 				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
 					this.chatModule.getUnassignedQueues(function(list) {
 						//console.warn(list);
@@ -66,13 +63,12 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 					}.bind(this));
 				}.bind(this));
 
-				//this.listenTo(this.collection, "reset", this.render);
-				*/
+				this.listenTo(this.collection, "reset", this.render);
+
 				if (!this.chatModule.started) {
 					this.chatModule.start();
 				}
-			}
-			/*
+			},
 			render : function() {
 				$SC.getTable("view-advisor_queue_list").destroy();
 
@@ -88,56 +84,30 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 
 				this.$(".queue-list tbody").prepend(itemView.render().el);
 			},
-			*/
+			startChart : function() {
+				this.chatModule.createQueue("advisor", "Advisor");
+			}
 		});
 
-		this.bindTableEvents = function(table) {
-			
-			this.listenTo(table, "action.datatables", function(el, data, action) {
-				console.warn(el, data, action);
-				if (action == "view") {
-					var queueModel = new this.models.queue(data);
-
-					this.chatModule.subscribeToChat(queueModel.get("topic"), queueModel);
-
-	        	} else if (action == "remove") {
-					var queueModel = new this.models.queue(data);
-
-					queueModel.destroy();
-					//this.chatModule.subscribeToChat(queueModel.get("topic"), queueModel);
-
-	        	}
-			}.bind(this));
-		};	
-
-		app.on("added.table", function(name, table) {
-			if (name == "view-advisor_queue_list") {
-				this.bindTableEvents(table);
-			}
-		}.bind(this));
 
 		this.models = {
-			queue : Backbone.DeepModel.extend({
-				urlRoot : "/module/chat/item/me"
-			})
+			queue : Backbone.DeepModel.extend()
 		};
 
 		this.collections = {
 			queues : Backbone.Collection.extend({
+				url : "/module/kbase/items/question",
 				model : this.models.queue
 			})
 		};
 		mod.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 
-			mod.advisorChatWidgetView = new this.advisorQueueListWidgetViewClass({
+			mod.advisorChatWidgetView = new this.advisorChatWidgetViewClass({
 				model : app.userSettings,
 				el: '#advisor-queue-list',
 				collection : new this.collections.queues()
 			});
 
 		}.bind(this));
-
-
-
 	});
 });
