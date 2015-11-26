@@ -1,12 +1,11 @@
 <script type="text/template" id="chat-template">
-   <div class="portlet box dark-blue" style="display:hide;">
+   <div class="portlet box dark-blue">
       <div class="portlet-title">
          <div class="caption">
             <i class="icon-comments"></i>
-            <%= model.title %>
+            <%= model.subject %>
          </div>
          <div class="tools">
-            <a class="collapse" href="javascript:;"></a>
             <a class="remove" href="javascript:;"></a>
          </div>
       </div>

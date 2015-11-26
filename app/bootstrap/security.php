@@ -18,21 +18,31 @@ $di->setShared("user", function() use ($di, $eventsManager) {
         return false;
     }
 });
+if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
+    $di->setShared("acl", function() use ($di, $eventsManager) {
+        // GET CURRENT USER
+        $user = $di->get("user");
 
-$di->setShared("acl", function() use ($di, $eventsManager) {
-    // GET CURRENT USER
-    $user = $di->get("user");
-
-    if ($user) {
+        if ($user) {
+            // CREATE THE ACL
+            $acl = Sysclass\Acl\Adapter::getDefault($user);
+            // Bind the eventsManager to the ACL component
+            $acl->setEventsManager($eventsManager);
+        
+            return $acl;
+        }
+        return false;
+    });
+} else {
+    $di->setShared("acl", function() use ($di, $eventsManager) {
         // CREATE THE ACL
-        $acl = Sysclass\Acl\Adapter::getDefault($user);
+        $acl = Sysclass\Acl\Adapter::getDefault();
         // Bind the eventsManager to the ACL component
         $acl->setEventsManager($eventsManager);
     
         return $acl;
-    }
-    return false;
-});
+    });
+}
 
 $di->set('crypt', function () {
     $crypt = new \Phalcon\Crypt();

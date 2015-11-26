@@ -12,12 +12,15 @@ class Queue extends Component implements WampServerInterface
 {
     protected $clients;
     protected $token;
+    protected $usersIds;
+    protected $users;
 
     protected $subscribedTopics = array();
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
         $this->users = array();
+        $this->usersIds = array(); 
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -25,7 +28,7 @@ class Queue extends Component implements WampServerInterface
         $this->clients->attach($conn);
         //$this->users[$conn->wrappedConn->WAMP->sessionId] = true;
 
-        echo "New connection! ({$conn->resourceId})\n";
+        echo "New connection! (#{$conn->resourceId})\n";
     }
 
     protected function createTaskEvent($data, $type, $result = null) {
@@ -91,7 +94,7 @@ class Queue extends Component implements WampServerInterface
 
 
     /* WEBSOCKET CHAT FUNCTIONS */
-
+    /*
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
@@ -104,12 +107,18 @@ class Queue extends Component implements WampServerInterface
             }
         }
     }
-
+    */
     public function onClose(ConnectionInterface $conn) {
         // The connection is closed, remove it, as we can no longer send it messages
+        if (array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
+            $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+            unset($this->users[$conn->wrappedConn->WAMP->sessionId]);
+            unset($this->usersIds[$user['id']]);
+        }
+
         $this->clients->detach($conn);
 
-        echo "Connection {$conn->resourceId} has disconnected\n";
+        echo "Connection Closed: #{$conn->resourceId}\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
@@ -120,6 +129,7 @@ class Queue extends Component implements WampServerInterface
     
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
         // In this application if clients send data it's because the user hacked around in console
+        echo "FUNCTION CALL: {$topic->getId()} (#{$conn->resourceId})\n";
         switch($topic->getId()) {
             case "authentication" : {
                 if ($userTimes = UserTimes::findFirstBySessionId($params[1])) {
@@ -141,6 +151,7 @@ class Queue extends Component implements WampServerInterface
                             'name' => $user->name,
                             'surname' => $user->surname
                         );
+                        $this->usersIds[$user->id] = $conn->wrappedConn->WAMP->sessionId;
 
                         /*
                         $lastQueue = Queue::findFirst(array(
@@ -168,7 +179,9 @@ class Queue extends Component implements WampServerInterface
                 return true;
                 break;
             }
+            /*
             case "getMyQueues" : {
+
                 // ALLOWS THE USER TO VIEW AND PROBABLY RECOVER IS QUEUES
                 // CAN BE CALLED AFTER THE CONNECTION, 
                 if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
@@ -188,8 +201,44 @@ class Queue extends Component implements WampServerInterface
                 }
                 break;
             }
+            */
             case "getUnassignedQueues" : {
                 // ALLOWS THE SUPPORT USER TO LIST ALL UNANSWERED QUEUES
+                if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
+                    $conn->close();
+                    return true;
+                }
+                $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+
+                if ($this->acl->isUserAllowed($user, "Queue", "View")) {
+                    $queueList = Chat::find(array(
+                        //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
+                        'conditions' => "closed = 0 AND type = ?0",
+                        'bind' => array('queue'),
+                        'order' => 'ping ASC'
+                    ));
+
+                    $result = array();
+
+                    foreach($queueList as $queue) {
+                        $item = $queue->toArray();
+                        unset($item['websocket_token']);
+                        $requester = $queue->getRequester();
+                        $item['requester'] = $requester->toArray();
+
+                        if (array_key_exists($requester->id, $this->usersIds)) {
+                            $item['online'] = true;
+                            $item['session_id'] = $this->usersIds[$requester->id];
+                        }
+                        $result[] = $item;
+                    }
+
+
+                    $conn->callResult($id, $result);
+                } else {
+                    $conn->callError($id, $topic, "401: Unauthorized");
+                }
+
                 break;
             }
             case "assignQueue" : {
@@ -202,28 +251,43 @@ class Queue extends Component implements WampServerInterface
                 }
 
                 $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
-
                 $queue = $params[0];
-                $new_topic = $queue . "-" . \Phalcon\Text::random(RANDOM_HEXDEC, 16);
-
                 $started = time();
                 $subject = $this->translate->translate($params[1]);
 
-                $queueModel = new Chat();
-                $queueModel->websocket_token = $conn->wrappedConn->WAMP->sessionId;
-                $queueModel->type = "queue";
-                $queueModel->subject = $subject;
-                $queueModel->topic = $new_topic;
-                $queueModel->requester_id = $user['id'];
-                $queueModel->started = $started;
-                $queueModel->ping = $started;
-
-                $queueModel->save();
-
-                $conn->callResult($id, array(
-                    'topic' => $new_topic,
-                    'title' => $subject
+                // CHECK IF EXISTS A UNCLOSED QUEUE
+                $queueModel = Chat::findFirst(array(
+                    'conditions' => 'subject = ?0 AND requester_id = ?1 
+                        AND topic LIKE ?2 AND closed = 0',
+                    'bind' => array($subject, $user['id'], $queue . '%'),
+                    'order' => 'ping DESC'
                 ));
+
+                if ($queueModel) {
+                    $queueModel->ping = $started;
+                    $queueModel->save();
+
+                    $new_topic = $queueModel->topic;
+                } else {
+                   
+                    $new_topic = $queue . "-" . \Phalcon\Text::random(RANDOM_HEXDEC, 16);
+
+                    $queueModel = new Chat();
+                    $queueModel->websocket_token = $conn->wrappedConn->WAMP->sessionId;
+                    $queueModel->type = "queue";
+                    $queueModel->subject = $subject;
+                    $queueModel->topic = $new_topic;
+                    $queueModel->requester_id = $user['id'];
+                    $queueModel->started = $started;
+                    $queueModel->ping = $started;
+
+                    $queueModel->save();
+
+                }
+
+                echo "startQueue Topic: {$new_topic}\n";
+
+                $conn->callResult($id, $queueModel->toArray());
                 return true;
                 break;
             }
@@ -241,10 +305,10 @@ class Queue extends Component implements WampServerInterface
         $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
         $event['origin'] = $conn->wrappedConn->WAMP->sessionId;
         $event['from'] = $user;
-
+        
         $queueModel = Chat::findFirst(array(
-            'conditions' => 'websocket_token = ?0 AND topic = ?1',
-            'bind' => array($conn->wrappedConn->WAMP->sessionId, $topic->getId())
+            'conditions' => 'topic = ?0 AND closed = 0',
+            'bind' => array($topic->getId())
         ));
         if (!$queueModel) {
             $conn->close();

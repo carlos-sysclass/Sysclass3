@@ -32,43 +32,58 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
     // IWidgetContainer
     public function getWidgets($widgetsIndexes = array())
     {
-        if (in_array('advisor.chat', $widgetsIndexes) || in_array('advisor.schedule', $widgetsIndexes)) {
-        	$widgets = array();
+    	$widgets = array();
 
-            if (in_array('advisor.chat', $widgetsIndexes)) {
-                // START CHART ON CLICK
-                //
-                $this->putModuleScript("widget.chat.advisor");
+        if (in_array('advisor.chat', $widgetsIndexes)) {
+            // START CHART ON CLICK
+            //
+            $this->putModuleScript("widget.chat.advisor");
 
-                $this->putBlock("advisor.chat");
+            $this->putBlock("advisor.chat");
 
-                $widgets['advisor.chat'] = array(
-                    'id'        => 'advisor-chat-widget',
-       				'template'	=> $this->template("widgets/chat"),
-                    'header'     => $this->translate->translate("Talk to us"),
-                    'body'      => false,
-                    'icon'      => "fa fa-comment",
-                    'panel'     => 'dark-blue'
-        		);
-            }
-
-            if (in_array('advisor.schedule', $widgetsIndexes)) {
-                $widgets['advisor.schedule'] = array(
-                    'id'        => 'advisor-schedule-widget',
-                    'template'  => $this->template("widgets/schedule"),
-                    'panel'     => true
-
-                );
-            }
-
-            return $widgets;
+            $widgets['advisor.chat'] = array(
+                'id'        => 'advisor-chat-widget',
+   				'template'	=> $this->template("widgets/chat"),
+                'header'     => $this->translate->translate("Talk to us"),
+                'body'      => false,
+                'icon'      => "fa fa-comment",
+                'panel'     => 'dark-blue'
+    		);
         }
-        return false;
+
+        if (in_array('advisor.schedule', $widgetsIndexes)) {
+            $widgets['advisor.schedule'] = array(
+                'id'        => 'advisor-schedule-widget',
+                'template'  => $this->template("widgets/schedule"),
+                'header'     => $this->translate->translate("Queue List"),
+                'panel'     => true
+
+            );
+        }
+
+        if (in_array('advisor.queue.list', $widgetsIndexes)) {
+            $this->putModuleScript("widget.queue.list");
+
+            $this->putBlock("advisor.chat");
+
+            $widgets['advisor.queue.list'] = array(
+                'id'        => 'advisor-queue-list',
+                'template'  => $this->template("widgets/queue.list"),
+                'header'     => $this->translate->translate("Queue List"),
+                'body'      => false,
+                'icon'      => "fa fa-comment",
+                'panel'     => 'dark-blue'
+
+            );
+        }
+
+        return count($widgets) > 0 ? $widgets : false;
     }
 
     // IBlockProvider
     public function registerBlocks() {
         return array(
+            /*
             'chat.views' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putModuleScript("chat.views");
@@ -78,6 +93,7 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 return true;
 
             },
+            */
             'advisor.chat' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("autobahn");
@@ -85,7 +101,6 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 $self->putSectionTemplate("foot", "blocks/chat");
 
                 return true;
-
             }
         );
     }

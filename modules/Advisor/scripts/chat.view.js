@@ -51,6 +51,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             return this;
         }
     });
+
     var chatViewClass = Backbone.View.extend({
         chatTemplate: _.template($('#chat-template').html(), null, {variable : "model"}),
         collection  : null,
@@ -58,10 +59,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         bbview      : null,
         isStarted   : false,
         events : {
-            "click .portlet" : "removeFocus",
-            "keyup .send-block input" : "keyenter",
-            "click .portlet-title" : "toggleWindow",
-            "click .tools a.remove" : "close",
+            "keyup .send-block input" : "keyenter"
         },
         initialize: function(opt) {
             //console.log(this.model.toJSON());
@@ -81,8 +79,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             //this.listenTo(this.collection, 'add', this.addOne);
 
         },
-
-        keyenter: function(e) {
+        keyenter: function(e,a,b,c) {
             if ( e.which == 13 ) {
                 e.preventDefault();
 
@@ -128,73 +125,43 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             this.$(".chat-contents").append(view.render().el);
         },
         addOne: function(topic, data) {
-
             if (topic == this.model.get("topic")) {
                 var model = new mod.models.message(data);
                 var view = new messageViewClass({model: model});
                 this.$(".chat-contents").append(view.render().el);
-                /*
+
                 var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
                 this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
-                */
-                if (!model.get("mine")) {
-                    this.focus();
-                } else {
-                    var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
-                    this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
-                }
             }
-        },
-        focus : function() {
+
             document.getElementById('ping').play();
-            
-            this.$(".portlet").addClass("yellow");
-
-            if (!this.$(".portlet").is(":visible")) {
-                this.$el.removeClass("hidden");
-            }
-
-            if (!this.$(".portlet > .portlet-body").hasClass("hidden")) {
-                var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
-                this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
-            }
         },
-        collapse : function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            //this.removeFocus();
-
-            $(e.currentTarget).removeClass("collapse").addClass("expand");
-            this.$(".portlet > .portlet-body").addClass("hidden");
-        },
-        /*
-        expand : function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            //this.removeFocus();
-
-            $(e.currentTarget).removeClass("expand").addClass("collapse");
-            this.$(".portlet > .portlet-body").removeClass("hidden");
-        },
-        */
-        toggleWindow : function() {
-            this.$(".portlet > .portlet-body").toggleClass("hidden");
-            /*
-            if (this.$(".portlet > .portlet-body").hasClass("hidden")) {
-                //this.$(".tools .expand").removeClass("expand").addClass("collapse");
-                this.$(".portlet > .portlet-body").removeClass("hidden");
+        focus : function(restoreIfHidden) {
+            if (!this.$(".portlet").is(":visible") && restoreIfHidden != false) {
+                //this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
+                this.$el.slideDown(200);
+            } else if (!this.$(".portlet > .portlet-body").is(":visible") && restoreIfHidden != false) {
+                this.$(".portlet-title .tools a.expand").removeClass("expand").addClass("collapse");
+                var self = this;
+                this.$(".portlet > .portlet-body").slideDown(200, function() {
+                    /*
+                    self.$(".portlet-title").pulsate({
+                        color: "#399bc3",
+                        repeat: false
+                    });
+                    */
+                });
             } else {
-                this.$(".portlet > .portlet-body").addClass("hidden");
+                /*
+                this.$(".portlet-title").pulsate({
+                    color: "#399bc3",
+                    repeat: false
+                });
+                */
             }
-            */
-        },
-        close : function() {
-            //this.removeFocus();
 
-            this.$el.addClass("hidden");
-        },
-        removeFocus : function() {
-            this.$(".portlet").removeClass("yellow");
+            var scrollTo_val = this.$(".chat-contents").prop('scrollHeight') + 'px';
+            this.$(".chat-contents").slimScroll({scrollTo : scrollTo_val});
         }
     });
 
@@ -242,17 +209,17 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
 
     mod.initialize = function() {
+        this.on("afterConnection.chat", this.onChatConnected.bind(this));
+        this.on("startQueue.chat", this.startQueueView.bind(this));
         this.on("errorConnection.chat", this.startRetryMode.bind(this));
-        //this.on("afterConnection.chat", this.onChatConnected.bind(this));
-        
-        //this.on("receiveMessage.chat", this.startQueueView.bind(this));
-        //this.on("startQueue.chat", this.startQueueView.bind(this));
+        this.trigger();
         this.startRetryMode();
     }
-    /*
+
     mod.onChatConnected = function(result) {
+        this._token = result.token;
     }
-    */
+
     mod.startConnection = function(force_close) {
         if (_.isNull(app.userSettings.get("websocket_key"))) {
             return false;
@@ -311,7 +278,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                     this._conn
                         .call("authentication", websocket_key, session_key)
                         .then(function (result) {
-                            this._token = result.token;
                             this.trigger("afterConnection.chat", result);
                         }.bind(this), function (error) {
                             this.trigger("errorConnection.chat", error);
@@ -354,35 +320,23 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                 var model = new this.models.chat(result);
 
                 var new_topic = model.get("topic");
-
-                this.subscribeToChat(new_topic, model);
+                this._conn.subscribe(new_topic, function(topic, data) {
+                    if (data.origin == this._token) {
+                        data.mine = true;
+                    } else {
+                        data.mine = false;
+                    }
+                    
+                    this.trigger("receiveMessage.chat", topic, data);
+                }.bind(this));
                 
-                //this.trigger("startQueue.chat", new_topic, model);
-                
+                this.trigger("startQueue.chat", model);
 
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
                 console.warn("error", error);
             }.bind(this));
     };
-
-    this.subscribeToChat = function(topic, model) {
-        this._conn.subscribe(topic, this.parseReceivedTopic.bind(this));
-
-        this.startQueueView(model);
-    }
-
-    this.parseReceivedTopic = function(topic, data) {
-        // CHECK IF IS A COMMAND OR A MESSAGE
-        console.warn("RECEIVE", topic, data);
-        if (data.origin == this._token) {
-            data.mine = true;
-        } else {
-            data.mine = false;
-        }
-        
-        this.trigger("receiveMessage.chat", topic, data);
-    }
 
     this.sendMessage = function(topic, message) {
         if (_.isNull(this._token)) {
@@ -391,23 +345,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         }
         this._conn.publish(topic, message, false);
     }
-
-    this.getUnassignedQueues = function(callback) {
-        if (_.isNull(this._token)) {
-            this.trigger("notConnected.chat");
-            return false;
-        }
-        // CALL A FUNCTION TO CREATE THE TOPIC
-        this._conn
-            .call("getUnassignedQueues")
-            .then(function (result) {
-                callback(result);
-
-            }.bind(this), function (error) {
-                //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
-            }.bind(this));
-    };
 
 
     this.startQueueView = function(model) {

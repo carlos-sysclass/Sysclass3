@@ -1,0 +1,24 @@
+dashboard:
+    rows:
+        0:
+            1:
+                weight:
+                    lg: 4
+                    md: 4
+                    sm: 12
+                    xs: 12
+            2:
+                weight:
+                    lg: 8
+                    md: 8
+                    sm: 12
+                    xs: 12
+    widgets:
+        #1: ["users.overview", "ads.leftbar.banner", "courses.overview"]
+        #2: ["institution.overview", "advisor.chat", "ads.rightbar.banner"]
+        1: ["advisor.queue.list"]
+        2: []
+    sortable: false
+    resources:
+        layout.sections.topbar: ["messages", "forum"]
+        users.overview.notification.order: ["users", "courses", "kbase", "calendar", "advisor", "tests"]
