@@ -97,7 +97,7 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 'header'     => $this->translate->translate("Filters"),
                 'body'      => false,
                 'icon'      => "fa fa-filter",
-                'panel'     => 'dark-blue'
+                'panel'     => false
             );
         }
 
