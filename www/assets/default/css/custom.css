@@ -102,6 +102,7 @@ hr {
 	width: 100%;
 	position: fixed;
 	bottom: 0;
+	z-index: 10;
 }
 .chat-widget {
 	float: right;
@@ -1323,5 +1324,14 @@ button.calendar-news-item {
 .dashboard-stat .more {
     font-weight: 600 !important;
     opacity: 1 !important;
+}
+
+.hover-white {
+	background-color: #F9F9F9;
+	color: #555555;
+}
+
+.portlet.box > .portlet-title > .tools > a.collapse, .portlet.solid > .portlet-title > .tools > a.collapse {
+	visibility: visible;
 }
 

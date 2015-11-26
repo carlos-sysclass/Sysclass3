@@ -13,10 +13,11 @@ if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 // MODEL AND DATABASE-RELATED
 require(__DIR__ . "/models.php");
 
-if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
+
 	//Authentication, AUthorization and all security related
 	require(__DIR__ . "/security.php");
 
+if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// STORAGE SERVICES AND FILE SERVICES RELATED.
 	require(__DIR__ . "/storage.php");
 }

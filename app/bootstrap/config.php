@@ -123,7 +123,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/moment/moment.min',
 		'plugins/numeral/numeral',
 		'plugins/numeral/languages',
-
+		//'plugins/jquery.pulsate.min',
 		//<!-- JGROWL notifications -->
 
 		// TODO GET ALL THIS JS AND PUT ON A COMPONENTS BASIS
@@ -137,14 +137,14 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/backstretch/jquery.backstretch.min',
 
 		'plugins/jquery.blockui.min',
-
+		/*
 		'plugins/strophe/strophe',
 		'plugins/strophe/strophe.roster',
 		'plugins/strophe/strophe.messaging',
 
 		'plugins/strophe/strophe.chatstates',
 		'plugins/strophe/strophe.ping',
-
+		*/
 		'plugins/pageguide/pageguide.min',
 
 		'scripts/app',
@@ -154,7 +154,7 @@ $di->setShared('environment', function() use ($di) {
 		'scripts/views',
 		'scripts/utils',
 		'scripts/utils.toastr',
-		'scripts/utils.strophe',
+		//'scripts/utils.strophe',
 		'scripts/portlets'
 	);
 	$config['urls'] = array(

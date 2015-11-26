@@ -14,7 +14,7 @@ class MainTask extends \Phalcon\CLI\Task
         $service = array_shift($params);
         $method = array_shift($params);
 
-        echo sprintf('Calling %s:%s(%s)', $service, $method, implode(",", $params));
+        echo sprintf("Calling Method %s:%s(%s)\n", $service, $method, implode(",", $params));
         
         $task = new AsyncCall($service, $method, $params);
         $this->queue->send($task);

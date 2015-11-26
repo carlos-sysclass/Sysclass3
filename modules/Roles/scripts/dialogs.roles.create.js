@@ -22,13 +22,15 @@ $SC.module("dialogs.roles.create", function(mod, app, Backbone, Marionette, $, _
                 this.$el.modal("show");
             },
             close : function() {
+                alert(3);
                 this.$el.modal("hide");
                 this.trigger("hide.dialog");
             }
         });
 
         this.models = {
-            roles : Backbone.Model.extend({
+
+            roles : app.module("models").getBaseModel().extend({
                 defaults : {
                     name : "",
                     active : 1,
