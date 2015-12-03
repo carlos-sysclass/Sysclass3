@@ -4,10 +4,10 @@ widgets:
       block_id: "advisor_queue_list"
       ajax_source: "/module/chat/items/me/datatable?block"
       datatable_fields:
-        - mData: online
-          sType: table-boolean
-          sClass: text-center
-          label: "Status"
+#        - mData: online
+#          sType: table-boolean
+#          sClass: text-center
+#          label: "Status"
 
         - mData: requester.name
           label: Name
@@ -19,7 +19,7 @@ widgets:
           label: Email
 
         - mData: ping
-          sType: datetime-moment-since
+          sType: unix-moment-since
           sClass: text-center
           label: Last Message
 

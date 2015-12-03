@@ -322,6 +322,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
             $(this).slimScroll({
                 size: '7px',
+                wrapperClass: $(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : "slimScrollDiv",
                 color: ($(this).attr("data-handle-color")  ? $(this).attr("data-handle-color") : '#a1b2bd'),
                 railColor: ($(this).attr("data-rail-color")  ? $(this).attr("data-rail-color") : '#333'),
                 position: App.isRTL() ? 'left' : 'right',
