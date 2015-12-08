@@ -580,7 +580,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func_array(
+                    $items[$key] = call_user_func(
                         array($item, $model_info['exportMethod'][0]),
                         $model_info['exportMethod'][1]
                     );

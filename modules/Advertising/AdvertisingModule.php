@@ -183,9 +183,9 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /**
      * [ add a description ]
      *
-     * @Get("/edit/{identifier}")
+     * @Get("/edit/{id}")
      */
-    public function editPage($identifier)
+    public function editPage($id)
     {
         $placements = array(
             array('id' => 'ads.leftbar.banner', 'name' => $this->translate->translate('Left Side')),
@@ -199,13 +199,12 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         );
         $this->putitem("view_types", $view_types);
 
-        parent::editPage($identifier);
+        parent::editPage($id);
     }
 
     /**
      * [ add a description ]
      *
-     * @url GET 
      * @Get("/item/{model}/{identifier}")
      */
     public function getItemAction($model = "me", $identifier = null)
@@ -356,10 +355,11 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /**
      * [ add a description ]
      *
-     * @Get("/item/{model}")
-     * @Get("/item/{model}/{type}")
-     * @Get("/item/{model}/{type}/{filter}")
+     * @Get("/items/{model}")
+     * @Get("/items/{model}/{type}")
+     * @Get("/items/{model}/{type}/{filter}")
      */
+    /*
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
         // DEFAULT OPTIONS ROUTE
@@ -399,8 +399,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             }
             $itemsData = $itemsCollection->addFilter(array(
                 'active'    => 1,
-                'advertising_id' => $filter/*,
-                "parent_id" => null*/
+                'advertising_id' => $filter
             ))->getItems();
         }
 
@@ -442,7 +441,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 
         return array_values($itemsData);
     }
-
+    */
     /**
      * [ add a description ]
      *
