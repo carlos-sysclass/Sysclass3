@@ -2,10 +2,13 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
     // MODELS
     this.startWithParent = false;
     mod.addInitializer(function() {
-//        this.config = $SC.module("crud.config").getConfig();
+        this.config = $SC.module("crud.config").getConfig();
+        console.warn(this.config);
 //        mod.entity_id = mod.config.entity_id;
 
         var entityModel = app.module("crud.views.edit").itemModel;
+
+
 
         /**
          * SUB VIEW BASE CLASS
@@ -144,13 +147,13 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     _.each(this.uploadClass, function(item) {
                         self.$el.removeClass(item);
                     });
-
-                    console.warn({
+                    /*-
+                    console.warn(this.downloadTemplate({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
                         opt  : { formatFileSize : this.formatFileSize }
-                    });
-
+                    }));
+                    */
                     this.$el.html(this.downloadTemplate({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
@@ -731,6 +734,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
         var contentCollection = new this.collections.advertising_content([], {
             entity_id :  entityModel.get("id")
         });
+
+        if (entityModel.get("id")) {
+            contentCollection.fetch();
+        }
 
         this.listenTo(entityModel, "sync", function(a,b,c,d,e) {
             contentCollection.fetch();

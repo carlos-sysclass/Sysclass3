@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.10
+ */
 class AdvertisingModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()

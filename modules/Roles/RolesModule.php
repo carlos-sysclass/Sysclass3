@@ -30,7 +30,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Roles'),
-                        'icon'  => 'icon-group',
+                        'icon'  => 'fa fa-shield',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -52,7 +52,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-group',
+                    'icon'  => 'fa fa-shield',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Roles")
                 );
@@ -61,7 +61,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             }
             case "set-resources/:id" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-group',
+                    'icon'  => 'fa fa-shield',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Roles")
                 );
