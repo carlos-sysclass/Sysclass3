@@ -88,7 +88,7 @@
     <div class="message">
         <span class="arrow"></span>
         <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
-        <span class="datetime"><%= moment.unix(model.timestamp).format("HH:mm") %></span>
+        <span class="datetime"><%= moment.unix(model.sent).format("HH:mm:ss") %></span>
         <span class="body"> <%= model.message %> </span>
     </div>
 </div>
@@ -122,6 +122,8 @@
     </div>
 
     <div class="page-quick-sidebar-chat-user-messages"  data-height="auto" data-rail-visible="1" data-rail-color="#ddd">
+        <div class="page-quick-sidebar-chat-user-messages-previous"></div>
+        <div class="page-quick-sidebar-chat-user-messages-current"></div>
     </div>
     <div class="page-quick-sidebar-chat-user-form">
         <div class="input-group">

@@ -362,11 +362,11 @@ class Queue extends Component implements WampServerInterface
         $messageModel = new Message();
         $messageModel->chat_id = $queueModel->id;
         $messageModel->message = $event['message'];
-        $messageModel->sent = $event['timestamp'];
+        $messageModel->sent = $event['sent'];
         $messageModel->user_id = $user['id'];
         $messageModel->save();
 
-        var_dump($messageModel->getMessages());
+        //var_dump($messageModel->getMessages());
 
         $topic->broadcast($event, $exclude, $eligible);
     }
@@ -399,7 +399,7 @@ class Queue extends Component implements WampServerInterface
         $event['origin'] = $conn->wrappedConn->WAMP->sessionId;
         $event['from'] = $user;
         $event['topic'] = $topic->getId();
-        $event['timestamp'] = time();
+        $event['sent'] = time();
 
         return $event;
 

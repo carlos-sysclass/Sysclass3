@@ -330,7 +330,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                 alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
                 railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
                 disableFadeOut: true,
-                allowPageScroll : true
+                allowPageScroll : true,
+                wheelStep : 2,
             });
         });
     }

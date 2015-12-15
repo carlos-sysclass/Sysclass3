@@ -469,7 +469,9 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $model_class = $model_info['class'];
 
-            $itemModel = new $model_class();
+            $sort = @$model_info['sort'];
+
+            //$itemModel = new $model_class();
             
             //$args = $this->getparamentrs();
             $filter = filter_var($filter, FILTER_DEFAULT);
@@ -511,26 +513,24 @@ abstract class SysclassModule extends BaseSysclassModule
                         $filterData[$index] = $item;
                         $index++;
                     }
-
-                    
-                    
-                    
                 }
 
                 $args = array(
-                    array(
-                        'conditions'    => implode(" AND ", $modelFilters),
-                        'bind' => $filterData,
-                        'args'  => $filter
-                    )
+                    'conditions'    => implode(" AND ", $modelFilters),
+                    'bind' => $filterData,
+                    'args'  => $filter,
+                    'order'  => $sort
                 );
             } else {
-                $args = array();
+                $args = array(
+                    'order'  => $sort
+                );
             }
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
-            $resultRS = call_user_func_array(
+            //var_dump(array($model_info['class'], $model_info['listMethod']), $args);
+            $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
 
@@ -577,6 +577,8 @@ abstract class SysclassModule extends BaseSysclassModule
                 return true;
             } else {
                 $items = array();
+                //var_dump($resultRS->toArray());
+                //var_dump($model_info['exportMethod']);
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE

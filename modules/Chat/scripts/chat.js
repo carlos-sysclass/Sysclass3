@@ -290,7 +290,17 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
     this.models = {
         chat : Backbone.Model.extend({}),
-        message : Backbone.Model.extend({})
+        message : Backbone.DeepModel.extend({})
+    };
+
+    this.collections = {
+        conversations : Backbone.Collection.extend({
+            id: null,
+            model : this.models.message,
+            url : function() {
+                return "/module/chat/items/conversation/default/" + JSON.stringify({chat_id: this.id});
+            }
+        })
     };
 
     mod.initialize = function() {
