@@ -105,7 +105,7 @@
           Back
         </button>
 
-        <button type="button" class="btn btn-circle btn-sm btn-primary show-hover tooltips" data-original-title="Tooltip">
+        <button type="button" class="btn btn-circle btn-sm btn-primary show-hover tooltips " data-original-title="Tooltip">
             <i class="fa fa-user"></i>
         </button>
         <button type="button" class="btn btn-circle btn-sm btn-info show-hover">
