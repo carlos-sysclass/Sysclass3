@@ -12,34 +12,31 @@ crud:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
-      blocks: ["translate.edit.dialog"]
-      scripts: ["models.translate", "views.translate.view"]
+      #blocks: ["translate.edit.dialog"]
+      #scripts: ["models.translate", "views.translate.view"]
       variables:
         page_subtitle: View system languages
       context:
         datatable_fields:
-        - mData: id
+        - mData: code
           sClass: text-center
-          label: "#"
+          label: Code
+
+        - mData: country_image
+          sType: table-image
+          sClass: text-center
+          label: Country
 
         - mData: name
-          label: Name
+          label: English Name
 
-        - mData: surname
-          label: Surname
+        - mData: local_name
+          label: Local Name
 
-        - mData: login
-          label: Login
-
-        - mData: pending
+        - mData: rtl
           sType: table-boolean
           sClass: text-center
-          label: Pending aproval
-
-        - mData: viewed_license
-          sType: table-boolean
-          sClass: text-center
-          label: License Viewed
+          label: RTL
 
         - mData: active
           sType: table-boolean
@@ -59,13 +56,12 @@ crud:
         page_subtitle: View system languages
     'edit/{id}':
       components: ["select2","validation"]
-      blocks: ["enroll.user.block"]
+      #blocks: ["enroll.user.block"]
       template: form.tpl
-      scripts: ["edit"]
+      #scripts: ["edit"]
       variables:
         page_subtitle: View system languages
 
 models:
   me:
-    class: Sysclass\Models\L18n\Language
-    #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    class: Sysclass\Models\I18n\Language

@@ -313,6 +313,12 @@
 				</ul>
 			</li>
 		   <!-- END USER LOGIN DROPDOWN -->
+
+		   <li class="dropdown dropdown-quick-sidebar-toggler">
+                <a class="dropdown-toggle" href="javascript:;">
+                    <i class="fa fa-comments"></i>
+                </a>
+			</li>
 		</ul>
 		<!-- END TOP NAVIGATION MENU -->
 	</div>

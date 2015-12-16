@@ -8,13 +8,29 @@ use
     Phalcon\Flash\Direct as FlashDirect,
     Phalcon\Flash\Session as FlashSession;
 
-$di->setShared("url", function() use ($di) {
+
+$di->setShared("url", function() use ($di, $environment) {
     $url = new Phalcon\Mvc\Url();
     $url->setDI($di);
-    $url->setBasePath(realpath(__DIR__ . "/../../www"));
+    $url->setBasePath(realpath(REAL_PATH . "/www"));
 
     return $url;
 });
+
+$di->setShared("resourceUrl", function() use ($di, $environment) {
+    $url = new Plico\Mvc\ResourceUrl(array(
+        $environment->view->theme,
+        'default'
+    ));
+    $url->setDI($di);
+    $url->setBasePath(realpath(REAL_PATH . "/www/assets/"));
+    $url->setBaseUri("/assets");
+    $url->setStaticBaseUri("/assets");
+
+    return $url;
+});
+
+
 
 $di->setShared("escaper", function() {
     $escaper = new \Phalcon\Escaper();
@@ -92,6 +108,12 @@ if (APP_TYPE === "WEB") {
         return $translator;
     });
 }
+
+$di->setShared('queue', function () {
+    $queue = new Sysclass\Services\Queue\Adapter();
+
+    return $queue;
+});
 
 $di->setShared('mail', function () {
     require_once REAL_PATH . "/vendor/swiftmailer/swiftmailer/lib/swift_required.php";

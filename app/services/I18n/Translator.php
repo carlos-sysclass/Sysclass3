@@ -218,7 +218,7 @@ class Translator extends Component
      * @param  array $tokens [description]
      * @return array         [description]
      */
-    public function translateTokens($source, $dest, $tokens, $source_column = null, $dest_column = "translated")
+    public function translateTokens($source, $dest, $tokens = null, $source_column = null, $dest_column = "translated")
     {
         /*
         if ($force === 'false' || $force === "0") {
@@ -227,9 +227,25 @@ class Translator extends Component
             $force = true;
         }
         */
+
         $langCodes = $this->getDisponibleLanguagesCodes();
 
         if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
+            if (is_null($tokens)) {
+
+                $sourcesTokens = Tokens::find(array(
+                    'columns' => 'text',
+                    'conditions' => "language_code = ?0 AND token NOT IN (
+                        SELECT token FROM Sysclass\Models\I18n\Tokens WHERE 
+                            language_code = ?1 AND 
+                            (edited = 1 OR (UNIX_TIMESTAMP() - timestamp) < 300)
+                    )",
+                    'bind' => array($source, $dest)
+                ));
+
+                $tokens = array_column($sourcesTokens->toArray(), 'text');
+            }
+
             // VALIDATE TOKEN
             //$bingTranslateModel = $this->model("bing/translate");
             if (is_string($source_column)) {
@@ -237,6 +253,7 @@ class Translator extends Component
             } else {
                 $translateTokens = array_values($tokens);
             }
+
             $translatedTerms = $this->getBackend("bing")->translateArray($translateTokens, $source, $dest);
 
             if (is_string($source_column)) {

@@ -28,7 +28,8 @@ $SC.module("dialogs.roles.create", function(mod, app, Backbone, Marionette, $, _
         });
 
         this.models = {
-            roles : Backbone.Model.extend({
+
+            roles : app.module("models").getBaseModel().extend({
                 defaults : {
                     name : "",
                     active : 1,

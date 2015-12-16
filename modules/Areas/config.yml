@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Knowlegde Areas
+      page_title: Departaments
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Knowlegde Areas
+        page_subtitle: Manage your Departaments
       context:
         datatable_fields:
         - mData: id
@@ -22,9 +22,6 @@ crud:
 
         - mData: name
           label: Name
-
-        - mData: coordinator.name
-          label: Coordinator
 
         - mData: active
           sType: table-boolean
@@ -39,14 +36,14 @@ crud:
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
-        page_subtitle: Create a new knowlegde area
-    'edit/:id':
+        page_subtitle: Create a new Departament
+    'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       blocks: ["permission.add"]
       #scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
-        page_subtitle: Edit your knowlegde area
+        page_subtitle: Edit a Departament
 models:
   me:
     class: Sysclass\Models\Courses\Departament

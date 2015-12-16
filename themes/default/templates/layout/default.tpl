@@ -70,7 +70,7 @@
                     data-btn-ok-label="{translateToken value="Yes"}"
                     data-btn-cancel-label="{translateToken value="No"}"
 				<% } else { %>
-
+					data-datatable-action="<%= item.key %>"
 				<% } %>
 				<% if (item.attrs != undefined) { %>
 					<% _.each(item.attrs, function(value, tag) { %>
@@ -125,6 +125,32 @@
 		</script>
 		-->
 
+		{/block}
+		{block name="quick-sidebar"}
+			{if (isset($T_SECTION_TPL['sidebar']) &&  ($T_SECTION_TPL['sidebar']|@count > 0))}
+	            <div class="page-quick-sidebar-wrapper" data-close-on-body-click="true" id="page-quick-sidebar">
+	                <div class="page-quick-sidebar">
+						<ul class="nav nav-tabs">
+	                        <li class="active">
+	                            <a data-toggle="tab" data-target="#quick_sidebar_tab_1" href="javascript:;" aria-expanded="true"> Users
+	                                <!-- <span class="badge badge-danger">2</span> -->
+	                            </a>
+	                        </li>
+	                        <li class="">
+	                            <a data-toggle="tab" data-target="#quick_sidebar_tab_1" href="javascript:;" aria-expanded="true"> Alerts
+	                                <!-- <span class="badge badge-danger">2</span> -->
+	                            </a>
+	                        </li>
+	                    </ul>
+
+		                {foreach $T_SECTION_TPL['sidebar'] as $template}
+		                	<div id="quick_sidebar_tab_1" class="tab-pane page-quick-sidebar-chat active">
+	        					{include file=$template}
+	        				</div>
+    					{/foreach}
+	                </div>
+	            </div>
+        	{/if}
 		{/block}
 		<!-- BEGIN FOOTER -->
 		{block name="footer"}

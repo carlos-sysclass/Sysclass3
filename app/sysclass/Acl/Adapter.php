@@ -21,7 +21,9 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
     public static function getDefault(User $user = null) {
         if (is_null(self::$default)) {
             self::$default = new self();
-            self::$default->initialize($user);
+            if (!is_null($user)) {
+                self::$default->initialize($user);
+            }
 
             self::$user = $user;
         }
@@ -93,9 +95,19 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
         }
     }
 
-    public function isUserAllowed(User $user = null, $resource, $operation) {
+    public function isUserAllowed($user = null, $resource, $operation) {
         if (is_null($user)) {
             $user = self::$user;
+        }
+        if (is_array($user)) {
+            $user = $user['id'];
+        }
+        if (is_numeric($user)) {
+            $user = User::findFirstById($user['id']);
+            // INIT USER
+            if ($user) {
+                self::$default->initialize($user);
+            }
         }
 
         $depinject = \Phalcon\DI::getDefault();

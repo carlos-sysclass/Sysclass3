@@ -115,7 +115,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @Get("/edit/{id}")
      */
     public function editPage($id)
     {
