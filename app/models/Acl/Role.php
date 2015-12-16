@@ -18,5 +18,24 @@ class Role extends Model
             array('alias' => 'Resources', 'reusable' => true)
         );
 
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\Models\Acl\RolesUsers",
+            "role_id", "user_id",
+            "Sysclass\Models\Users\User",
+            "id",
+            array('alias' => 'Users', 'reusable' => true)
+        );
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\Models\Acl\RolesGroups",
+            "role_id", "group_id",
+            "Sysclass\Models\Users\Group",
+            "id",
+            array('alias' => 'Groups', 'reusable' => true)
+        );
+
+
     }
 }

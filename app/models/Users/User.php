@@ -2,6 +2,7 @@
 namespace Sysclass\Models\Users;
 
 use Plico\Mvc\Model,
+    Sysclass\Models\Acl\Resource,
     Sysclass\Models\Acl\RolesUsers;
 
 class User extends Model
@@ -58,7 +59,47 @@ class User extends Model
 
     }
 
+    public static function specialFind($filters) {
+        $users = array();
+        foreach($filters as $filter => $value) {
+            switch($filter) {
+                case "permission_id" : {
+                    // LOAD ALL USERS HAVING THE DEFINED(S) PERMISSSION(S)
+                    $users = array_merge($users, self::findByPermissionId($value));
+                    break;
+                }
+            }
+        }
+        $users = array_map("unserialize", array_unique(array_map("serialize", $users)));
+        return $users;
+    }
 
+    protected static function findByPermissionId($permission_id) {
+        $resource = Resource::findFirstById($permission_id);
+        $roles = $resource->getRoles();
+
+        $users = array();
+
+        foreach($roles as $role) {
+            // GET DIRECT USERS
+            $roleUsers = $role->getUsers();
+            if ($roleUsers) {
+                $users = array_merge($users, $roleUsers->toArray());
+            }
+
+            foreach($role -> getGroups () as $group) {
+                
+                $groupUsers = $role->getUsers();
+                if ($groupUsers) {
+                    $users = array_merge($users, $groupUsers->toArray());
+                }
+            };
+        }
+
+        $users = array_map("unserialize", array_unique(array_map("serialize", $users)));
+
+        return $users;
+    }
 
     public function getType() {
         return $this->user_type;

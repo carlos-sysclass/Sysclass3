@@ -63,7 +63,33 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
                 return true;
 
-            }
+            },
+            'users.select.dialog' =>  function($data, $self) {
+                if (is_array($data) && array_key_exists('special-filters', $data)) {
+
+                    $self->putItem("load_by_ajax", false);
+                    $users = User::specialFind($data['special-filters']);
+
+                    $self->putItem("dialog_user_select_users", $users);
+
+
+                } else {
+                    $self->putItem("load_by_ajax", true);
+                }
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                $self->putModuleScript("dialogs.users.select");
+
+
+
+                //$block_context = $self->getConfig("blocks\\users.list.table\context");
+                //$self->putItem("users_block_context", $block_context);
+
+                $self->putSectionTemplate("dialogs", "dialogs/select");
+
+                return true;
+
+            },
         );
     }
 

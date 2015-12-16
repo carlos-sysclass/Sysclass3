@@ -143,12 +143,22 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         };
 						opt.formatResult = function (item, container, query, escapeMarkup) {
 							///console.log(item, container, query, escapeMarkup);
+                            console.warn(this, item);
+
+
+                            var formatAsCallback = jQuery(this.element).data('format-as');
+                            if (!_.has(mod.select2FormatFunctions, formatAsCallback)) {
+                                formatAsCallback = "default";
+                            }
+                            var formatCallback = mod.select2FormatFunctions[formatAsCallback];
+
             				var markup=[];
             				var terms = query.term.split("%");
             				if (item.text) {
 								return item.text;
             				} else {
-	            				var text = item.name;
+                                var text = formatCallback.bind(this, item).apply();
+	            				//var text = item.name;
 
 	            				for(q in terms) {
 	            					term_markup = [];
@@ -158,7 +168,11 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
             				}
 					        return markup.join("") + text;
 						}
-						opt.formatSelection = function (item) { return item.name; }
+                        var formatAsCallback = jQuery(this).data('format-as');
+                        if (!_.has(mod.select2FormatFunctions, formatAsCallback)) {
+                            formatAsCallback = "default";
+                        }
+                        opt.formatSelection = mod.select2FormatFunctions[formatAsCallback];
                         //opt.minimumResultsForSearch = 3;
                         //console.warn(opt);
 						$el.select2(opt);
@@ -185,6 +199,17 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	};
 
 	this.select2FormatFunctions = {
+        "default" : function (item) { 
+            if (_.isFunction(sprintf)) {
+                var formatString = jQuery(this.element).data('format-as-template');
+                if (!_.isUndefined(sprintf)) {
+                    console.warn(formatString, item, sprintf(formatString, item));
+                    return sprintf(formatString, item);
+                }
+            }
+            //console.warn(this, item);
+            return item.name; 
+        },
 		"country-list" : function (state) {
             if (!state.id) return state.text; // optgroup
             return "<img class='flag' src='/assets/default/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
