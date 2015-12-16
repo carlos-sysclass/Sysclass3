@@ -74,10 +74,10 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
             $widgets['advisor.queue.list'] = array(
                 'id'        => 'advisor-queue-list',
                 'template'  => $this->template("widgets/queue.list"),
-                'header'     => $this->translate->translate("Queue List"),
+                'header'     => $this->translate->translate("Chat List"),
                 'body'      => false,
                 'icon'      => "fa fa-comment",
-                'panel'     => 'dark-blue'
+                'panel'     => false
 
             );
         }
@@ -94,7 +94,7 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
             $widgets['advisor.queue.filter'] = array(
                 'id'        => 'advisor-queue-filter',
                 'template'  => $this->template("widgets/queue.filter"),
-                'header'     => $this->translate->translate("Filters"),
+                'title'     => $this->translate->translate("Filters"),
                 'body'      => false,
                 'icon'      => "fa fa-filter",
                 'panel'     => false

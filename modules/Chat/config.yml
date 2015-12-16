@@ -2,3 +2,7 @@ models:
   me:
     class : Sysclass\Models\Chat\Chat
     exportMethod: ["toFullArray", ["Requester"]]
+  conversation:
+    class : Sysclass\Models\Chat\Message
+    exportMethod: ["toFullArray", ["From"]]
+    sort: "sent ASC"

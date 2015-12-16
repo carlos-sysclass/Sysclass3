@@ -24,7 +24,6 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 			viewChatAction : function() {
 				e.preventDefault();
 				this.chatModule.subscribeToChat(this.model.get("topic"), this.model);
-				//this.chatModule.startQueueView(this.model);
 			}
 		});
 		*/

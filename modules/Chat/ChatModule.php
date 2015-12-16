@@ -11,15 +11,32 @@ namespace Sysclass\Modules\Chat;
 /**
  * @RoutePrefix("/module/chat")
  */
-class ChatModule extends \SysclassModule
+class ChatModule extends \SysclassModule implements \IBlockProvider
 {
+    public function registerBlocks() {
+        return array(
+            'chat.quick-sidebar' => function($data, $self) {
+
+                $self->putComponent("autobahn");
+                
+                $self->putModuleScript("chat");
+                $self->putModuleScript("ui.menu.chat");
+
+                $self->putSectionTemplate("foot", "blocks/chat");
+                $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
+
+                return true;
+            }
+        );
+    }
+
     protected function getDatatableItemOptions() {
         if ($this->request->hasQuery('block')) {
             return array(
                 'view'  => array(
                     'icon'  => 'fa fa-eye',
                     'link' => "javascript: void(0);",
-                    'class' => 'btn btn-primary datatable-actionable tooltips',
+                    'class' => 'btn-sm btn-primary datatable-actionable tooltips',
                     'attrs'         => array(
                         'data-on-color' => "success",
                         'data-original-title' => $this->translate->translate('View Chat'),
@@ -29,7 +46,7 @@ class ChatModule extends \SysclassModule
                 'assign'  => array(
                     'icon'  => 'fa fa-user',
                     'link' => "javascript: alert('not disponible yet');",
-                    'class' => 'btn btn-success view-chat-action tooltips',
+                    'class' => 'btn-sm btn-success view-chat-action tooltips',
                     'attrs'         => array(
                         'data-on-color' => "success",
                         'data-original-title' => $this->translate->translate('Assign to Me'),
@@ -39,7 +56,7 @@ class ChatModule extends \SysclassModule
                 'resolution'  => array(
                     'icon'  => 'fa fa-clock-o',
                     'link' => "javascript: alert('not disponible yet');",
-                    'class' => 'btn btn-warning view-chat-action tooltips',
+                    'class' => 'btn-sm btn-warning view-chat-action tooltips',
                     'attrs' => array(
                         'data-on-color' => "success",
                         'data-original-title' => $this->translate->translate('Set Resolution'),
@@ -48,7 +65,7 @@ class ChatModule extends \SysclassModule
                 ),
                 'remove'  => array(
                     'icon'  => 'fa fa-close',
-                    'class' => 'btn btn-danger tooltips',
+                    'class' => 'btn-sm btn-danger tooltips',
                     'attrs'         => array(
                         'data-on-color' => "success",
                         'data-original-title' => $this->translate->translate('Remove Chat'),
@@ -60,4 +77,6 @@ class ChatModule extends \SysclassModule
             return parent::getDatatableItemOptions();
         }
     }
+
+    
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Chat;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Message extends Model
 {
@@ -9,7 +9,10 @@ class Message extends Model
     {
         $this->setSource("mod_chat_messages");
 
-        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => false));
+        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'From', 'reusable' => true));
+        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
+
+        $this->belongsTo("chat_id", "Sysclass\\Models\\Chat\\Chat", "id",  array('alias' => 'Chat', 'reusable' => true));
     }
 
 }

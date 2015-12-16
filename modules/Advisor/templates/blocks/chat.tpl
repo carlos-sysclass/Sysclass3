@@ -31,10 +31,20 @@
          <% } %>
       </span>
       <!--
-      <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+      <span class="badge badge-info badge-roundless pull-right"><%= moment.unix(model.timestamp).fromNow() %></span>
       -->
    </div>
-   <div class="message"><%= model.message %></div>
+   <% if (model.type == 'info') { %>
+      <div class="message"><i><%= model.message %></i></div>
+   <% } else { %>
+      <div class="message"><%= model.message %></div>
+   <% } %>
+   
+   <hr />
+</script>
+
+<script type="text/template" id="chat-item-info-template">
+   <div class="message"><i><%= model.message %></i></div>
    <hr />
 </script>
 

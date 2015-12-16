@@ -3,9 +3,6 @@ $SC.module("views.roles.view", function(mod, app, Backbone, Marionette, $, _) {
 	mod.addInitializer(function() {
 		app.module("crud.views.edit").on("start", function() {
 			var viewModule = this;
-			this.tableView.listenTo(app.module("dialogs.roles.create").dialogView, "hide.dialog", function() {
-				alert(2);
-			});
 			this.tableView.listenTo(app.module("dialogs.roles.create").dialogView, "hide.dialog", this.tableView.refresh);
 
 			this.listenTo(this.tableView, "action.datatable", function(data, item) {
@@ -28,11 +25,6 @@ $SC.module("views.roles.view", function(mod, app, Backbone, Marionette, $, _) {
 					app.module("dialogs.roles.resources").dialogView.setModel(model);
 					app.module("dialogs.roles.resources").dialogView.open();
 				}
-
-
-
-
-
 			}.bind(this));
 		});
 	});

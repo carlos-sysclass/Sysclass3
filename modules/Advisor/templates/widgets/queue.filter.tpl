@@ -1,7 +1,3 @@
-<h4>
-    <i class="{$T_DATA.icon}"></i>
-    <span class="advidor-title">{$T_DATA.header}</span>
-</h4>
 <!--
 <ul class="ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
     <li class="active block-title">
@@ -12,11 +8,11 @@
     </li>
 </ul>
 -->
-<div class="list-group">
-    <a class="list-group-item active" href="javascript: void(0);">
+<div class="btn-group-vertical">
+    <button data-toggle="button" class="btn btn-default active margin-bottom-10" type="button" aria-pressed="true">
         {translateToken value="Unanswered Chats"}
-    </a>
-    <a class="list-group-item" href="javascript: void(0);">
+    </button>
+    <button data-toggle="button" class="btn btn-default margin-bottom-10" type="button">
         {translateToken value="Assigned To Me"}
-    </a>
+    </button>
 </div>
