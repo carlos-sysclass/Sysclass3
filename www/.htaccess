@@ -9,4 +9,4 @@ DirectoryIndex index3.php
     RewriteRule ^((?s).*)$ index3.php?_url=/$1 [QSA,L]
 </IfModule>
 
-ModPagespeed off
+#ModPagespeed off
