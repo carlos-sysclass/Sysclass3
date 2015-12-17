@@ -13,7 +13,7 @@ use Sysclass\Models\Enrollments\Course as Enrollment;
 /**
  * @RoutePrefix("/module/enroll")
  */
-class EnrollModule extends \SysclassModule implements \IBlockProvider
+class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable
 {
 
     /* IBlockProvider */
@@ -37,29 +37,97 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider
             }
         );
     }
-    /*
-    protected function getDatatableItemOptions() {
+    /* ILinkable */
+    public function getLinks() {
+        //$data = $this->getItemsRequest();
+        
+        if ($this->acl->isUserAllowed(null, "Enroll", "View")) {
 
-        if ($this->request->hasQuery('block')) {
+            //$items = $this->model("institution")->addFilter(array(
+            //    'active'    => true
+            //))->getItems();
+            //$items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+
             return array(
-                'check'  => array(
-                    //'icon'        => 'icon-check',
-                    //'link'        => $baseLink . "block/" . $item['id'],
-                    //'text'            => $this->translate->translate('Disabled'),
-                    //'class'       => 'btn-sm btn-danger',
-                    'type'          => 'switch',
-                    //'state'           => 'disabled',
-                    'attrs'         => array(
-                        'data-on-color' => "success",
-                        'data-on-text' => $this->translate->translate('YES'),
-                        'data-off-color' =>"danger",
-                        'data-off-text' => $this->translate->translate('NO')
+                'administration' => array(
+                    array(
+                        'count' => count($items),
+                        'text'  => $this->translate->translate('Enrollment Process'),
+                        'icon'  => 'fa fa-cogs',
+                        'link'  => $this->getBasePath() . 'view'
                     )
                 )
             );
-        } else {
-            return parent::getDatatableItemOptions();
         }
     }
-    */
+    /* IBreadcrumbable */
+    public function getBreadcrumb() {
+        $breadcrumbs = array(
+            array(
+                'icon'  => 'icon-home',
+                'link'  => $this->getSystemUrl('home'),
+                'text'  => $this->translate->translate("Home")
+            )
+        );
+
+        $request = $this->getMatchedUrl();
+        switch($request) {
+            case "view" : {
+                $breadcrumbs[] = array(
+                    'icon'  => 'icon-user',
+                    'link'  => $this->getBasePath() . "view",
+                    'text'  => $this->translate->translate("Enrollment Rules")
+                );
+                return $breadcrumbs;
+                break;
+            }
+            case "add" : {
+                $breadcrumbs[] = array(
+                    'icon'  => 'icon-user',
+                    'link'  => $this->getBasePath() . "view",
+                    'text'  => $this->translate->translate("Enrollment Rules")
+                );
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Enrollment Rule"));
+                return $breadcrumbs;
+                break;
+            }
+            case "edit/{id}" : {
+                $breadcrumbs[] = array(
+                    'icon'  => 'icon-user',
+                    'link'  => $this->getBasePath() . "view",
+                    'text'  => $this->translate->translate("Enrollment Rules")
+                );
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Enrollment Rule"));
+                return $breadcrumbs;
+                break;
+            }
+        }
+    }
+
+    /* IActionable */
+    public function getActions() {
+        $request = $this->getMatchedUrl();
+
+        $actions = array(
+            'view'  => array(
+                array(
+                    'text'      => $this->translate->translate('New Enrollment Rule'),
+                    'link'      => $this->getBasePath() . "add",
+                    'class'     => "btn-primary",
+                    'icon'      => 'icon-plus'
+                )/*,
+                array(
+                    'separator' => true,
+                ),
+                array(
+                    'text'      => 'Add New 2',
+                    'link'      => $this->getBasePath() . "add",
+                    //'class'       => "btn-primary",
+                    //'icon'      => 'icon-plus'
+                )*/
+            )
+        );
+
+        return $actions[$request];
+    }
 }

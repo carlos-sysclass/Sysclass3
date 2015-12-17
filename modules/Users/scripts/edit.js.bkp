@@ -1,3 +1,4 @@
+/*
 $SC.module("views.users.edit", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.config = $SC.module("crud.config").getConfig();
@@ -28,23 +29,6 @@ $SC.module("views.users.edit", function(mod, app, Backbone, Marionette, $, _) {
 
 
         mod.bindTableEvents = function(table) {
-        	/*
-			this.listenTo(this.collection, "sync", function() {
-				table.redraw();
-			});
-        	this.listenTo(table, "draw.datatables", function(row, data) {
-        		//console.warn('DRAW', row, data);
-				var exists = this.collection.findWhere({resource_id: data['id']});
-
-				var innerInput = $(row).find(".datatable-option-switch");
-
-				if (typeof exists != "undefined") {
-					innerInput.bootstrapSwitch('state', true, true);
-				} else {
-					innerInput.bootstrapSwitch('state', false, true);
-				}
-			}.bind(this));
-			*/
 
 			this.listenTo(table, "switchItem.datatables", function(el, data, checked) {
 				console.warn(el, data);
@@ -62,3 +46,4 @@ $SC.module("views.users.edit", function(mod, app, Backbone, Marionette, $, _) {
         };
     });
 });
+*/

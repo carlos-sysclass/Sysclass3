@@ -1,6 +1,70 @@
 #######################
 # GENERAL DEFINITIONS #
 #######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Enrollment Rules
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      #blocks: ["group.add"]
+      scripts: ["view"]
+      variables:
+        page_subtitle: Manage the way student get into the system
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: surname
+          label: Surname
+
+        - mData: login
+          label: Login
+
+        - mData: pending
+          sType: table-boolean
+          sClass: text-center
+          label: Pending aproval
+
+        - mData: viewed_license
+          sType: table-boolean
+          sClass: text-center
+          label: License Viewed
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["select2","validation", "bootstrap-switch","pwstrength"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new Enrollment Rule
+    'edit/{id}':
+      components: ["select2","validation", "bootstrap-switch","pwstrength"]
+      blocks: ["enroll.user.block"]
+      template: form.tpl
+      scripts: ["edit"]
+      variables:
+        page_subtitle: Edit a new Enrollment Rule
+
 blocks:
   enroll.user.block:
     context:
@@ -25,6 +89,9 @@ blocks:
           label: Actions
 models:
   me: 
+    class: Sysclass\Models\Enrollments\Enroll
+    #exportMethod: ["toFullArray", ["User", "Course"]]
+  course: 
     class: Sysclass\Models\Enrollments\Course
     exportMethod: ["toFullArray", ["User", "Course"]]
 

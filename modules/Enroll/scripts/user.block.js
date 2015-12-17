@@ -13,7 +13,7 @@ $SC.module("block.enroll.users", function(mod, app, Backbone, Marionette, $, _) 
 		mod.models = {
 			enroll : baseItemModelClass.extend({
 				response_type : "object",
-	    		urlRoot : "/module/enroll/item/me"
+	    		urlRoot : "/module/enroll/item/course"
 			})
 
 		};
@@ -75,7 +75,7 @@ $SC.module("block.enroll.users", function(mod, app, Backbone, Marionette, $, _) 
 
 				this.tableView
 					.putVar('user_id', this.model.get("id"))
-					.setUrl("/module/enroll/items/me/datatable/" + JSON.stringify({
+					.setUrl("/module/enroll/items/course/datatable/" + JSON.stringify({
 						user_id : this.model.get("id")
 					}) + "?block");
             }
