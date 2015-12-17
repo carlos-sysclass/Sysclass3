@@ -323,14 +323,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 return false;
             }
         } else {
-            $message = new Message(
-                "Please provide a new password",
-                "password",
-                "warning"
-            );
-            $model->appendMessage($message);
-
-            return false;
+            // NO PASSWD CHANGE, JUST LET HIM GO.. (BECAUSE ITS UPDATING SOME ANOTHER INFO)
         }
 
         if (array_key_exists('avatar', $data) && is_array($data['avatar']) ) {

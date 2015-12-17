@@ -50,7 +50,7 @@
 											</li>
 										{/foreach}
 									</ul>
-									<ul class="ver-inline-menu tabbable margin-bottom-10">
+									<ul class="ver-inline-menu tabbable margin-bottom-10 profile-tabs">
 										<li class="active">
 											<a data-toggle="tab" href="#tab_1-1">
 											<i class="icon-cog"></i>
