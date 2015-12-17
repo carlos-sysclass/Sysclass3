@@ -1,3 +1,6 @@
+{has_permission resource="Chat" action="receive" assign="receiveAllowed"}
+{has_permission resource="Chat" action="assign" assign="assignAllowed"}
+
 <div class="tab-pane active" id="quick_sidebar_tab_1">
     <div class="page-quick-sidebar-chat-users" data-height="auto" data-rail-visible="1" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
         <!-- USE TO STICK MESSAGES
@@ -39,8 +42,10 @@
             </li>
         </ul>
         -->
+        <h3 class="list-heading">{translateToken value='Your Support Requests'}</h3>
+        <ul class="media-list list-items stick-queue-list"></ul>
 
-        <h3 class="list-heading">Support Requests</h3>
+        <h3 class="list-heading">{translateToken value='Support Requests'}</h3>
         <ul class="media-list list-items default-queue-list">
         </ul>
     </div>
@@ -60,15 +65,39 @@
             <i class="fa fa-lg fa-circle text-danger"></i>
         <% } %>
         -->
-        <button type="button" class="btn btn-circle btn-sm btn-primary hidden show-hover tooltips" data-original-title="Tooltip">
-            <i class="fa fa-user"></i>
+        {if $receiveAllowed}
+            <% if (!model.isOwner) { %>
+            <button type="button" class="btn btn-circle btn-sm btn-primary hidden tooltips show-hover assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
+                <i class="fa fa-sign-in"></i>
+            </button>
+            <% } %> 
+        {/if}
+        {if $assignAllowed}
+            <button type="button" class="btn btn-circle btn-sm btn-info hidden tooltips show-hover assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
+                <i class="fa fa-sign-out"></i>
+            </button>
+        {/if}
+        <button type="button" class="btn btn-circle btn-sm btn-warning hidden tooltips show-hover resolve-action" data-original-title="{translateToken value='Set Resolution'}">
+            <i class="fa fa-check-square-o"></i>
         </button>
-        <button type="button" class="btn btn-circle btn-sm btn-info hidden show-hover">
-            <i class="fa fa-user"></i>
+
+        <button type="button"
+            class="btn btn-circle btn-sm btn-danger hidden show-hover delete-action"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value='Do you really want to remove this conversation?'}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+        >
+            <i class="fa fa-close"></i>
         </button>
-        <button type="button" class="btn btn-circle btn-sm btn-warning hidden show-hover">
-            <i class="fa fa-user"></i>
-        </button>
+
         <% if ( model.new_count > 0) { %>
             <button type="button" class="btn btn-circle btn-sm btn-danger btn-disabled">
                 <%= model.new_count %>
@@ -104,15 +133,18 @@
             <i class="fa fa-arrow-left"></i>
           Back
         </button>
-
-        <button type="button" class="btn btn-circle btn-sm btn-primary show-hover tooltips " data-original-title="Tooltip">
-            <i class="fa fa-user"></i>
+        {if $receiveAllowed}
+        <button type="button" class="btn btn-circle btn-sm btn-primary tooltips assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
+            <i class="fa fa-sign-in"></i>
         </button>
-        <button type="button" class="btn btn-circle btn-sm btn-info show-hover">
-            <i class="fa fa-user"></i>
+        {/if}
+        {if $assignAllowed}
+        <button type="button" class="btn btn-circle btn-sm btn-info tooltips assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
+            <i class="fa fa-sign-out"></i>
         </button>
-        <button type="button" class="btn btn-circle btn-sm btn-warning show-hover">
-            <i class="fa fa-user"></i>
+        {/if}
+        <button type="button" class="btn btn-circle btn-sm btn-warning tooltips resolve-action" data-original-title="{translateToken value='Set Resolution'}">
+            <i class="fa fa-check-square-o"></i>
         </button>
 
         <div class="margin-top-10 user-details">

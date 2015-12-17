@@ -63,7 +63,33 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
                 return true;
 
-            }
+            },
+            'users.select.dialog' =>  function($data, $self) {
+                if (is_array($data) && array_key_exists('special-filters', $data)) {
+
+                    $self->putItem("load_by_ajax", false);
+                    $users = User::specialFind($data['special-filters']);
+
+                    $self->putItem("dialog_user_select_users", $users);
+
+
+                } else {
+                    $self->putItem("load_by_ajax", true);
+                }
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                $self->putModuleScript("dialogs.users.select");
+
+
+
+                //$block_context = $self->getConfig("blocks\\users.list.table\context");
+                //$self->putItem("users_block_context", $block_context);
+
+                $self->putSectionTemplate("dialogs", "dialogs/select");
+
+                return true;
+
+            },
         );
     }
 
@@ -269,26 +295,35 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 // CHECK PASSWORD
                 if ($this->acl->isUserAllowed(null, "users", "change-password")) {
                     // DEFINE AUTHENTICATION BACKEND
-
                     if (
-                        array_key_exists('old-password-confirm', $data) &&
-                        !empty($data['old-password'])
+                        array_key_exists('old-password', $data) &&
+                        !empty($data['old-password']) &&
+                        $this->authentication->checkPassword($data['old-password'], $model)
                     ) {
-                        $continue = $this->authentication->checkPassword($data['old-password'], $model);
+                        $model->password = $this->authentication->hashPassword($data['new-password'], $model);
                     } else {
-                        $continue = true;
-                    }
+                        $message = new Message(
+                            "Please provide your current password",
+                            "password",
+                            "warning"
+                        );
+                        $model->appendMessage($message);
 
-                    $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+                        return false;
+                    }
                 }
             } else {
                 $message = new Message(
-                    "User Password does not match",
+                    "Password confimation does not match",
                     "password",
                     "warning"
                 );
                 $model->appendMessage($message);
+
+                return false;
             }
+        } else {
+            // NO PASSWD CHANGE, JUST LET HIM GO.. (BECAUSE ITS UPDATING SOME ANOTHER INFO)
         }
 
         if (array_key_exists('avatar', $data) && is_array($data['avatar']) ) {

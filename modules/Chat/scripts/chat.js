@@ -286,6 +286,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     this._options = {
         maxRetries : 10,
         tryCount : 0,
+        delayTime: 100
     }
 
     this.models = {
@@ -309,7 +310,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         //this.on("errorConnection.chat", this.disableChatViews.bind(this));
         this.on("afterConnection.chat", this.restoreSession.bind(this));
         
-        this.startRetryMode();
+        this.startRetryMode(true);
     }
     /*
     mod.onChatConnected = function(result) {
@@ -362,11 +363,19 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         return this._conn;
     }
 
-    mod.startRetryMode = function() {
+    mod.startRetryMode = function(now) {
         this._options.tryCount++;
-        if (this._options.tryCount <= this._options.maxRetries) {
-            console.warn('WebSocket connection Try #' + this._options.tryCount);
-            mod.startConnection();
+        if (this._options.maxRetries > 0 && this._options.tryCount <= this._options.maxRetries) {
+            
+
+            if (_.isBoolean(now) && now) {
+                console.warn('WebSocket connection Try #' + this._options.tryCount);
+                mod.startConnection();
+            } else {
+                var delay = this._options.delayTime + this._options.tryCount * this._options.tryCount * 25;
+                console.warn('WebSocket connection Try #' + this._options.tryCount + ", delaying for " + delay + "ms");
+                setTimeout(mod.startConnection.bind(this), delay);
+            }
         }
     }
 

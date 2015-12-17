@@ -320,37 +320,60 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
+        $itemModel = $this->getModelData($model, $id);
+
         $this->setArgs(array(
             'model' => $model,
-            'id' => $id
+            'id' => $id,
+            'object' => $itemModel
         ));
 
         if ($allowed = $this->isUserAllowed("edit")) {
-            $data = $this->request->getJsonRawBody(true);
-
-            if (!array_key_exists($model, $this->model_info)) {
-                $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
-
-                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
-                $this->response->setJsonContent(
-                    array_merge($response, $data)
-                );
-                return true;
-            }
-
-            $itemModel = $this->getModelData($model, $id);
-
             if ($itemModel) {
 
+                $data = $this->request->getJsonRawBody(true);
 
+                if (!array_key_exists($model, $this->model_info)) {
+                    $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
+
+                    $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                    $this->response->setJsonContent(
+                        array_merge($response, $data)
+                    );
+                    return true;
+                }
+
+                /*
                 $model_info = $this->model_info[$model];
 
                 $model_class = $model_info['class'];
                 $itemModel = new $model_class();
+                */
+
                 $itemModel->assign($data);
                 $itemModel->id = $id;
 
+                $this->eventsManager->collectResponses(true);
+                
                 $status = $this->eventsManager->fire("module-{$this->module_id}:beforeModelUpdate", $itemModel, $data);
+
+                $responses = $this->eventsManager->getResponses();
+
+                if (in_array(false, $responses, true)) {
+                    // ABORT WITH PROVIDED MESSAGES
+                    $beforeMessages = $itemModel->getMessages();
+                    foreach($beforeMessages as $messageObject) {
+                        $message = $this->translate->translate($messageObject->getMessage());
+                        $type = $messageObject->getType();
+                        break;
+                    }
+
+                    $response = $this->createAdviseResponse($message, $type);
+                    $this->response->setJsonContent(
+                        $response
+                    );
+                    return true;
+                }
 
                 $beforeMessages = $itemModel->getMessages();
 

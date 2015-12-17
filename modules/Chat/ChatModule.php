@@ -4,6 +4,7 @@ namespace Sysclass\Modules\Chat;
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Acl\Resource;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -18,9 +19,23 @@ class ChatModule extends \SysclassModule implements \IBlockProvider
             'chat.quick-sidebar' => function($data, $self) {
 
                 $self->putComponent("autobahn");
+                $self->putComponent("bootstrap-confirmation");
                 
                 $self->putModuleScript("chat");
                 $self->putModuleScript("ui.menu.chat");
+
+                $self->putScript("plugins/sprintf/sprintf.min");
+
+                $resource = Resource::findFirst([
+                    'conditions' => '[group] = ?0 AND [name] = ?1',
+                    'bind' => ["Chat", "Receive"]
+                ]);
+
+                $self->putBlock("users.select.dialog", array(
+                    "special-filters" => array(
+                        "permission_id" => $resource->id
+                    )
+                ));
 
                 $self->putSectionTemplate("foot", "blocks/chat");
                 $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
@@ -78,5 +93,18 @@ class ChatModule extends \SysclassModule implements \IBlockProvider
         }
     }
 
-    
+    protected function isUserAllowed($action, $args) {
+
+        $allowed = parent::isUserAllowed($action);
+        if (!$allowed) {
+            switch($action) {
+                case "edit" : {
+                    return $allowed = parent::isUserAllowed("assign");
+                }
+            }
+        }
+        return $allowed;
+    }
+
+   
 }

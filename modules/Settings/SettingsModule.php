@@ -64,6 +64,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
             $this->response->setContentType('application/json', 'UTF-8');
             
             if ($results = $this->getSettings(true)) {
+                $results['user_id'] = $user->id;
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;
                 }
