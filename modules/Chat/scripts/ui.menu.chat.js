@@ -46,40 +46,100 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 		mod.chatModule = app.module("utils.chat");
 
-
+		//mod.userSelectDialog = 
 		this.sidebarChatQueueViewClass = Backbone.View.extend({
 			chatModule : mod.chatModule,
 			tagName : 'li',
 			className : "media",
 			template : _.template($("#sidebar-chat-queue-template").html(), null, {variable : 'model'}),
+			events : {
+				"click .assign-to-me-action" : "assignToMeAction",
+				"click .assign-to-other-action" : "assignToUserAction",
+				"click .resolve-action" : "resolveAction",
+				"click .delete-action" : "deleteAction",
+				"confirmed.bs.confirmation .delete-action" : "deleteAction",
+				"click" : "startChatAction",
+				"hover" : "hoverAction",
+			},
 			initialize : function() {
 				this.listenTo(this.model, "change", this.render.bind(this));
 
 				this.wrapperChat = this.$el.parents('.page-quick-sidebar-chat');
 
+
+				this.listenTo(mod, "stopChat.sidebar", this.stopChat.bind(this));
+				this.listenTo(mod, "assignToMe.sidebar", this.assignToMe.bind(this));
+				this.listenTo(mod, "assignToUser.sidebar", this.assignToUser.bind(this));
+				this.listenTo(mod, "resolve.sidebar", this.resolve.bind(this));
+				this.listenTo(mod, "delete.sidebar", this.delete.bind(this));
+
 				//this.listenTo(this.chatModule, "receiveMessage.chat", this.refreshCounter.bind(this));
 				this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true);
 			},
-			events : {
-				"click" : "startChatAction",
-				"hover" : "hoverAction",
+			isOwnership : function(switcher) {
+				this._isOwner = switcher;
 			},
-			hoverAction : function() {
-				this.$(".media-status button.show-hover").toggleClass("hidden");
+			hoverAction : function(e) {
+				if (e.type == "mouseenter") {
+					this.$(".media-status button.show-hover").removeClass("hidden");
+				} else if (e.type == "mouseleave") {
+					this.$(".media-status button.show-hover").addClass("hidden");
+				} else {
+					this.$(".media-status button.show-hover").toggleClass("hidden");
+				}
 			},
 			render : function() {
-				this.$el.html(this.template(this.model.toJSON()));
+				this.$el.html(this.template(_.extend(
+					this.model.toJSON(),
+					{isOwner : this._isOwner}
+				)));
 				return this;
 			},
 			startChatAction : function() {
 				mod.trigger("startChat.sidebar", this.model);
-
-
 			},
 			refreshCounter : function(topic, data) {
 				if (topic == this.model.get("topic")) {
 					//this.model.set("")
 				}
+			},
+			assignToMeAction : function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				mod.trigger("assignToMe.sidebar", this.model);
+			},
+			assignToUserAction : function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				mod.trigger("assignToUser.sidebar", this.model);
+			},
+			resolveAction : function () {
+				e.preventDefault();
+				mod.trigger("reolve.sidebar", this.model);
+			},
+			deleteAction : function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				mod.trigger("delete.sidebar", this.model);
+				this.listenTo(this.model, "destroy", this.remove.bind(this));
+			},
+
+			// FUNCTIONS TO RECEIVE THE TRIGGER
+			stopChat : function(model) {
+				console.info("menu.chat/sidebarChatQueueViewClass::initialize::stopChat", this);
+			},
+			assignToMe : function(model) {
+				console.info("menu.chat/sidebarChatQueueViewClass::initialize::assignToMe", this);
+			},
+			assignToUser : function(model) {
+				console.info("menu.chat/sidebarChatQueueViewClass::assignToUser", this);
+			},
+			resolve : function(model) {
+				console.info("menu.chat/sidebarChatQueueViewClass::resolve", this);
+			},
+			delete : function() {
+				console.info("menu.chat/sidebarChatQueueViewClass::delete", this);
 			}
 		});
 
@@ -109,7 +169,11 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				"keyup .page-quick-sidebar-chat-user-form input" : "keyenter",
 				"click .page-quick-sidebar-chat-user-form button" : "send",
-				"click .page-quick-sidebar-back-to-list" : "stop"
+				"click .page-quick-sidebar-back-to-list" : "stopAction",
+				"click .assign-to-me-action" : "assignToMeAction",
+				"click .assign-to-other-action" : "assignToUserAction",
+				"click .resolve-action" : "resolveAction"/*,
+				"confirmed.bs.confirmation .delete-action" : "deleteAction"*/
 			},
 			initialize : function(opt) {
 				console.info("menu.chat/sidebarChatConversationViewClass::initialize", this);
@@ -121,6 +185,13 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection = new this.chatModule.collections.conversations();
 				this.collection.id = this.model.get("id");
 				this.listenTo(this.collection, "sync", this.renderPrevious.bind(this));
+
+
+				this.listenTo(mod, "stopChat.sidebar", this.stopChat.bind(this));
+				this.listenTo(mod, "assignToMe.sidebar", this.assignToMe.bind(this));
+				this.listenTo(mod, "assignToUser.sidebar", this.assignToUser.bind(this));
+				this.listenTo(mod, "resolve.sidebar", this.resolve.bind(this));
+				this.listenTo(mod, "delete.sidebar", this.delete.bind(this));
 
 
 				this.start();
@@ -161,6 +232,9 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.messageContainer = this.$('.page-quick-sidebar-chat-user-messages');
 				this.previousMessageContainer = this.$('.page-quick-sidebar-chat-user-messages-previous');
 				this.currentMessageContainer = this.$('.page-quick-sidebar-chat-user-messages-current');
+
+
+				app.module("ui").refresh(this.$el);
 			
 				return this;
 			},
@@ -230,20 +304,54 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.$el.removeClass("hidden");
 				this.listenTo(this.chatModule, "receiveMessage.chat", this.addOne.bind(this));
 			},
-			stop : function() {
-				console.info("menu.chat/sidebarChatConversationViewClass::stopChat", this);
+
+			// FUNCTIONS TO START THE TRIGGER
+			stopAction : function() {
+				console.info("menu.chat/sidebarChatConversationViewClass::stopAction", this);
 				this.$el.addClass("hidden");
 				this.stopListening(this.chatModule);
 
 				mod.trigger("stopChat.sidebar", this.model);
-
-				
+			},
+			assignToMeAction : function(e) {
+				e.preventDefault();
+				mod.trigger("assignToMe.sidebar", this.model);
+			},
+			assignToUserAction : function(e) {
+				e.preventDefault();
+				mod.trigger("assignToUser.sidebar", this.model);
+			},
+			resolveAction : function () {
+				e.preventDefault();
+				mod.trigger("reolve.sidebar", this.model);
+			},
+			deleteAction : function () {
+				mod.trigger("delete.sidebar", this.model);
+				this.listenTo(this.model, "destroy", this.remove.bind(this));
+			},
+			// FUNCTIONS TO RECEIVE THE TRIGGER
+			stopChat : function(model) {
+				console.info("menu.chat/sidebarChatConversationViewClass::initialize::stopChat", this);
+			},
+			assignToMe : function() {
+				console.info("menu.chat/sidebarChatConversationViewClass::assignToMe", this);
+			},
+			assignToUser : function() {
+				console.info("menu.chat/sidebarChatConversationViewClass::assignToUser", this);
+			},
+			resolve : function() {
+				console.info("menu.chat/sidebarChatConversationViewClass::resolve", this);
+			},
+			delete : function() {
+				console.info("menu.chat/sidebarChatConversationViewClass::delete", this);
 			}
+
 		});
 
 		this.sidebarChatViewClass = Backbone.View.extend({
 			collection : null,
 			chatModule : mod.chatModule,
+			userSelectDialog : app.module("dialogs.users.select"),
 			conversationViews : {},
 			conversationHeight : 0,
 			events : {
@@ -325,6 +433,12 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod, "startChat.sidebar", this.startChat.bind(this));
 
+				this.listenTo(mod, "stopChat.sidebar", this.stopChat.bind(this));
+				this.listenTo(mod, "assignToMe.sidebar", this.assignToMe.bind(this));
+				this.listenTo(mod, "assignToUser.sidebar", this.assignToUser.bind(this));
+				this.listenTo(mod, "resolve.sidebar", this.resolve.bind(this));
+				this.listenTo(mod, "delete.sidebar", this.delete.bind(this));
+
 				/*
 				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
 					this.chatModule.getUnassignedQueues(function(list) {
@@ -340,23 +454,27 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderChatQueues : function(result) {
-				console.warn(result);
+				
 				this.collection.reset(result);
-
-				this.$(".default-queue-list").empty();
-				this.collection.each(this.addOneChatQueue);
-				app.module("ui").refresh(this.$(".default-queue-list"));
+			
+				this.$(".default-queue-list, .stick-queue-list").empty();
+				this.collection.each(this.addOneChatQueue.bind(this));
+				app.module("ui").refresh(this.$(".default-queue-list, .stick-queue-list"));
+				//app.module("ui").refresh(this.$(".default-queue-list"));
 			},
 			addOneChatQueue : function(model) {
 				var itemView = new mod.sidebarChatQueueViewClass({
 					model: model
 				});
+				//console.warn(model.get("assign_id"), this.model.get("user_id"));
 
-				//if (model.get("sticky")) {
-				//	this.$(".stick-queue-list").prepend(itemView.render().el);	
-				//} else {
+				if (model.get("assign_id") == this.model.get("user_id")) {
+					itemView.isOwnership(true);
+					this.$(".stick-queue-list").prepend(itemView.render().el);	
+				} else {
+					itemView.isOwnership(false);
 					this.$(".default-queue-list").prepend(itemView.render().el);
-				//}
+				}
 			},
 			startChat : function(model) {
 				//console.warn(model.toJSON());
@@ -375,8 +493,6 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 						height: this.conversationHeight
 						//el: this.$('.page-quick-sidebar-chat-user')
 					});
-
-					this.listenTo(mod, "stopChat.sidebar", this.stopChat.bind(this));
 
 					this.$('.page-quick-sidebar-chat-user').append(
 						this.conversationViews[topic].render().el
@@ -398,50 +514,39 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 				*/
 			},
 			stopChat : function(model) {
-				//this.conversationViews[topic].
-				/*
-				if (!_.isNull(this.conversationView)) {
-					this.conversationView.remove();
-					this.conversationView = null;
-				}
-				*/
 				this.$('.page-quick-sidebar-chat').removeClass("page-quick-sidebar-content-item-shown");
+			},
+			assignToMe : function(model) {
+				console.info("menu.chat/sidebarChatViewClass::assignToMe", this);
 
-				//this.updatesQueues();
+				//console.warn(this.model.get("user_id"));
 
-				//this.chatModule.getQueues(this.renderChatQueues.bind(this));
+				model.set("assign_id", this.model.get("user_id"));
+				model.save({}, {
+					success : function() {
+						this.chatModule.getQueues(this.renderChatQueues.bind(this));
+					}.bind(this)
+				});
+			},
+			assignToUser : function(model) {
+				console.info("menu.chat/sidebarChatViewClass::assignToUser", this);
+
+				this.userSelectDialog.getValue(function(item) {
+					// { user_id="1"}
+					model.set("assign_id", item.user_id);
+					model.save({}, {
+						success : function() {
+							this.chatModule.getQueues(this.renderChatQueues.bind(this));
+						}.bind(this)
+					});
+				}.bind(this));
+			},
+			resolve : function() {
+				console.info("menu.chat/sidebarChatViewClass::resolve", this);
+			},
+			delete : function() {
+				console.info("menu.chat/sidebarChatViewClass::delete", this);
 			}
 		});
-		/*
-		this.bindTableEvents = function(table) {
-			
-			this.listenTo(table, "action.datatables", function(el, data, action) {
-				console.warn(el, data, action);
-				if (action == "view") {
-					var queueModel = new this.models.queue(data);
-
-					this.chatModule.subscribeToChat(queueModel.get("topic"), queueModel);
-
-	        	} else if (action == "remove") {
-					var queueModel = new this.models.queue(data);
-
-					queueModel.destroy();
-					//this.chatModule.subscribeToChat(queueModel.get("topic"), queueModel);
-
-	        	}
-			}.bind(this));
-		};	
-
-		app.on("added.table", function(name, table) {
-			if (name == "view-advisor_queue_list") {
-				this.bindTableEvents(table);
-			}
-		}.bind(this));
-		*/
-
-
-
-
-
 	});
 });

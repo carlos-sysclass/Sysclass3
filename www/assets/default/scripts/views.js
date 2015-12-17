@@ -577,6 +577,17 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    }
   	});
 
+    this.dialogViewClass = this.baseFormClass.extend({
+        renderType : "byView",
+        open : function() {
+            this.$el.modal("show");
+        },
+        close : function() {
+            this.$el.modal("hide");
+            this.trigger("hide.dialog");
+        }
+    });
+
 	this.baseInsertableCollectionViewClass = Backbone.View.extend({
 		events : {
 			"click .add-action" : "insertModel"
