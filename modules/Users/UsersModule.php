@@ -88,8 +88,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $self->putSectionTemplate("dialogs", "dialogs/select");
 
                 return true;
-
-            },
+            }
         );
     }
 

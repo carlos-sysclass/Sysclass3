@@ -74,7 +74,6 @@
     </div>
 </div>
 <script type="text/template" id="question-item">
-<% console.warn(model) %>
     <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
         <i class="fa fa-arrows"></i>
     </a>

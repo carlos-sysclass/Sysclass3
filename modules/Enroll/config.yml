@@ -52,7 +52,7 @@ crud:
           label: Actions
 
     add:
-      components: ["select2","validation", "bootstrap-switch","pwstrength"]
+      components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck",]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
