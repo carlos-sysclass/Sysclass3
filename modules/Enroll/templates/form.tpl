@@ -4,10 +4,10 @@
 <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<ul class="nav nav-tabs">
-			<li class="active">
+			<li class="">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-			<li class="">
+			<li class="active">
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
 			</li>
 			<li class="">
@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 		<div class="tab-content">
-			<div class="tab-pane fade active in" id="tab_1_1">
+			<div class="tab-pane fade  in" id="tab_1_1">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -166,12 +166,12 @@
 				-->
 				<div class="clearfix"></div>
 			</div>
-			<div class="tab-pane fade in" id="tab_1_2">
+			<div class="tab-pane fade active in" id="tab_1_2">
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-cogs"></i>
-					{translateToken value="Admittance Method"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criterias for user admitance. This information is used to make course grouping control, and the calculate the course desired roadmap.'}">
+					{translateToken value="Interval Definition"}
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
                         <i class="fa fa-question"></i>
                     </span>
 				</h5>
@@ -180,19 +180,46 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="green" value="individual"> {translateToken value='Individual'}
+                                <input type="radio" name="interval_definition" data-update="interval_definition" class="icheck-me" data-skin="square" data-color="green" value="fixed"> {translateToken value='Fixed'}
                             </label>
                         </div>
                     </div>
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Grouping-Based'}
+                                <input type="radio" name="interval_definition" data-update="interval_definition" class="icheck-me" data-skin="square" data-color="blue" value="dynamic"> {translateToken value='Dynamic'}
                             </label>
                         </div>
                     </div>
-				</div>					    
+				</div>
 
+				<div class="interval-definition-container">
+					<div class="interval-definition-fixed">
+					    
+					    <div class="row">
+					        <div class="col-md-12 ">
+					            <ul class="list-group ui-sortable margin-bottom-10 items-container">
+					            </ul>
+					            <!--
+					            <a class="btn btn-sm btn-primary btn-link add-period-action" href="javascript: void(0);">
+					                <i class="fa fa-plus"></i>
+					                {translateToken value="Create Period"}
+
+					            </a>
+					            -->
+					            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
+					                <i class="fa fa-plus"></i>
+					                {translateToken value="Create Grouping"}
+
+					            </a>
+					        </div>
+					    </div>
+
+					</div>
+					<div class="interval-definition-dynamic">
+					</div>
+				</div>
+				<!--
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -205,6 +232,8 @@
 						</div>
 					</div>
 				</div>
+				-->
+
 			</div>
 			<div class="tab-pane fade in" id="tab_1_3">
 			    <div class="alert alert-info">
