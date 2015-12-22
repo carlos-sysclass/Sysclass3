@@ -269,6 +269,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
             if ($itemModel->save()) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
+
+
                 
                 if ($this->request->hasQuery('object')) {
                     $this->response->setJsonContent(
@@ -290,17 +292,30 @@ abstract class SysclassModule extends BaseSysclassModule
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelCreate", $itemModel, $data);
 
-                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+
+                // ABORT WITH PROVIDED MESSAGES
+                $afterMessages = $itemModel->getMessages();
+                if (count($afterMessages) > 0) {
+                    foreach($afterMessages as $messageObject) {
+                        $message = $this->translate->translate($messageObject->getMessage());
+                        $type = $messageObject->getType();
+                        break;
+                    }
+                } else {
+                    $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                    $type = "warning";
+                }
 
                 $itemData = call_user_func_array(
                     array($itemModel, $model_info['exportMethod'][0]),
                     $model_info['exportMethod'][1]
                 );
 
-                $this->response->setJsonContent(
-                    array_merge($response, $itemData)
-                );
 
+                $response = $this->invalidRequestError($message, $type);
+                $this->response->setJsonContent(
+                    array_merge($response, $data)
+                );
                 return true;
             }
         } else {
@@ -605,9 +620,10 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                    //var_dump($item, $model_info['exportMethod'][0], $model_info['exportMethod'][1]);
                     $items[$key] = call_user_func(
                         array($item, $model_info['exportMethod'][0]),
-                        $model_info['exportMethod'][1]
+                        count($model_info['exportMethod'][1]) > 0 ? $model_info['exportMethod'][1] : null
                     );
                 }
                 

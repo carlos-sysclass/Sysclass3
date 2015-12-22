@@ -202,12 +202,10 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         "default" : function (item) { 
             if (_.isFunction(sprintf)) {
                 var formatString = jQuery(this.element).data('format-as-template');
-                if (!_.isUndefined(sprintf)) {
-                    console.warn(formatString, item, sprintf(formatString, item));
+                if (!_.isUndefined(formatString)) {
                     return sprintf(formatString, item);
                 }
             }
-            //console.warn(this, item);
             return item.name; 
         },
 		"country-list" : function (state) {

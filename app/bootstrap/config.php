@@ -173,7 +173,7 @@ $di->setShared('environment', function() use ($di) {
 		'select2' => array(
 			'name'	=> 'select2',
 			'css'	=> array('plugins/select2/select2_metro'),
-			'js'	=> array('plugins/select2/select2')
+			'js'	=> array('plugins/sprintf/sprintf.min', 'plugins/select2/select2')
 		),
 		'data-tables' => array(
 			'name'	=> 'data-tables',
