@@ -81,8 +81,8 @@
                     </div>
 				</div>
 				<div class="admittance-type-container">
-					<div class="admittance-type-individual">
-					    <div class="alert alert-success hidden">
+					<div class="admittance-type-item admittance-type-individual hidden">
+					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
@@ -90,7 +90,7 @@
 					        </p>
 					    </div>
 					</div>
-					<div class="admittance-type-grouping">
+					<div class="admittance-type-item admittance-type-grouping hidden">
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
@@ -194,10 +194,9 @@
 				</div>
 
 				<div class="interval-definition-container">
-					<div class="interval-definition-fixed">
-					    
+					<div class="interval-definition-item interval-definition-fixed hidden">
 					    <div class="row">
-					        <div class="col-md-12 ">
+					        <div class="col-md-12" id="fixed_grouping-create-container">
 					            <ul class="list-group ui-sortable margin-bottom-10 items-container">
 					            </ul>
 					            <!--
@@ -216,7 +215,8 @@
 					    </div>
 
 					</div>
-					<div class="interval-definition-dynamic">
+					<div class="interval-definition-item interval-definition-dynamic hidden">
+						DUNAMIC
 					</div>
 				</div>
 				<!--
@@ -249,4 +249,125 @@
 		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 	</div>
 </form>
+
+
+
+<script type="text/template" id="grouping-edit-item">
+
+    <a href="#" class="btn btn-sm editable-me <% if (data.active == "0") { %>text-danger<% } %>"
+        data-type="text"
+        data-name="class.name"
+        data-send="never"
+        data-original-title="Class Name"
+        data-inputclass="form-control"
+
+    >
+        <%= data.name %>
+
+    </a>
+    <% if (data.start_date != 0 || data.end_date != 0) { %>
+    <i>
+        <small>
+        <% if (data.start_date != 0) { %>
+            {translateToken value="From"}
+            <strong><%= $SC.module("views").formatValue(data.start_date, "date", "unix-timestamp") %></strong>
+        <% } %>
+        <% if (data.end_date != 0) { %>
+            {translateToken value="To"}
+            <strong><%= $SC.module("views").formatValue(data.end_date, "date", "unix-timestamp") %></strong>
+        <% } %>
+        </small>
+    </i>
+    <% } else { %>
+        <i>
+            <small class="text-danger"><strong>No dates Defined</strong></small>
+        </i>
+    <% } %>
+
+    <div class="list-file-item-options">
+        <% if (typeof data.id !== 'undefined') { %>
+            <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
+
+            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit grouping info">
+                <i class="fa fa-edit"></i>
+            </a>
+            <!--
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+                <i class="fa fa-info-circle"></i>
+            </a>
+            -->
+            <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
+
+        <% } %>
+        <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
+            data-toggle="confirmation"
+            data-original-title="{translateToken value="Are you sure?"}"
+            data-placement="left"
+            data-singleton="true"
+            data-popout="true"
+            data-btn-ok-icon="fa fa-trash"
+            data-btn-ok-class="btn-sm btn-danger"
+            data-btn-cancel-icon="fa fa-times"
+            data-btn-cancel-class="btn-sm btn-warning"
+            data-btn-ok-label="{translateToken value="Yes"}"
+            data-btn-cancel-label="{translateToken value="No"}"
+        >
+            <i class="fa fa-trash"></i>
+        </a>
+    </div>
+    <% if (_.has(data, 'class')) { %>
+    <div class="detail-container">
+        <h5 class="form-section no-margin margin-bottom-5">Details</h5>
+        <% if (!_.isEmpty(data.class.description)) { %>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                    <span>{translateToken value="Description"}</span>
+                    <p class="">
+                        <strong><%= data.class.description %></strong>
+                    </p>
+            </div>
+        </div>
+        <hr class="no-margin margin-bottom-5"></hr>
+        <% } %>
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <p>
+                    <span>{translateToken value="Total Lessons"}</span>
+                    <% if (data.class.total_lessons == 0) { %>
+                        <strong class="text-danger pull-right"><%= data.class.total_lessons %></strong>
+                    <% } else { %>
+                        <strong class="text-primary pull-right"><%= data.class.total_lessons %></strong>
+                    <% } %>
+
+                </p>
+            </div>
+            <% if (_.isObject(data.class.instructors)) { %>
+            <div class="col-md-6 col-sm-6">
+                <div>
+                    <span>{translateToken value="Instructors"}</span>
+                    <ul class="pull-right">
+                        <%
+                            var instructors = _.map(data.class.instructors, function(data) {
+                                return _.pick(data, "name", "surname");
+                            });
+                        %>
+                        <% _.each(instructors, function(item) { %>
+                            <li class="text-primary"><strong><% print(item.name  + " " + item.surname); %></strong></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
+            <% } else { %>
+                <div class="col-md-6 col-sm-6">
+                    <p>
+                        <span>{translateToken value="Instructors"}</span>
+                        <strong class="text-danger pull-right">{translateToken value="No Instructors defined"}</strong>
+                    </p>
+                </div>
+            <% } %>
+        </div>
+
+    <% } %>
+</script>
+
 {/block}
