@@ -504,7 +504,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             self.trigger("complete:save", this.model);
 	    },
 	    setModel : function(model) {
-	    	console.warn(this, model);
+	    	//console.warn(this, model);
 	    	this.model = model;
 	    	this.render(model);
 	    }
@@ -588,6 +588,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
         }
     });
 
+    
 	this.baseInsertableCollectionViewClass = Backbone.View.extend({
 		events : {
 			"click .add-action" : "insertModel"

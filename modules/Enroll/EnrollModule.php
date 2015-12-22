@@ -33,7 +33,12 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putSectionTemplate("enroll", "blocks/enroll.user");
 
                 return true;
+            },
+            'fixed_grouping.dialog' => function($data, $self) {
+                $self->putComponent("bootstrap-confirmation", "bootstrap-editable");
+                $self->putModuleScript("dialogs.fixed_grouping.form");
 
+                $self->putSectionTemplate("dialogs", "dialogs/fixed_grouping.form");
             }
         );
     }

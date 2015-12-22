@@ -4,7 +4,7 @@
 crud:
   # BASE VALUES.. USED ON ALL ROUTES
   base_route:
-    #base_scripts: ["scripts/crud.models.js"]
+    stylesheets: ["css/components"]
     variables:
       page_title: Enrollment Rules
   # BASE VALUES.. USED ON ALL ROUTES
@@ -52,16 +52,17 @@ crud:
           label: Actions
 
     add:
-      components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck",]
+      components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
-      #scripts: ["models.users", "views.users.add"]
+      scripts: ["form"]
+      blocks: ["fixed_grouping.dialog"]
       variables:
         page_subtitle: Create a new Enrollment Rule
     'edit/{id}':
-      components: ["select2","validation", "bootstrap-switch","pwstrength"]
-      blocks: ["enroll.user.block"]
+      components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
-      scripts: ["edit"]
+      scripts: ["form"]
+      blocks: ["fixed_grouping.dialog"]
       variables:
         page_subtitle: Edit a new Enrollment Rule
 
