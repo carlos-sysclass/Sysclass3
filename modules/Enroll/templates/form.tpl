@@ -4,10 +4,10 @@
 <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<ul class="nav nav-tabs">
-			<li class="">
+			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-			<li class="active">
+			<li class="admittance-type-item admittance-type-grouping hidden">
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
 			</li>
 			<li class="">
@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 		<div class="tab-content">
-			<div class="tab-pane fade  in" id="tab_1_1">
+			<div class="tab-pane fade active in" id="tab_1_1">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -111,7 +111,7 @@
 				-->
 				<div class="clearfix"></div>
 			</div>
-			<div class="tab-pane fade active in" id="tab_1_2">
+			<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-cogs"></i>
