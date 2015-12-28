@@ -286,6 +286,11 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                     this.$(".interval-definition-item.interval-definition-" + value).removeClass("hidden");
                 }.bind(this));
 
+                this.model.on("change:interval_rule_type", function(model, value) {
+                    this.$(".interval-rule-type-item").addClass("hidden");
+                    this.$(".interval-rule-type-item.interval-rule-type-" + value).removeClass("hidden");
+                }.bind(this));
+
                 this.groupingFixedBlockView = new mod.groupingFixedBlockViewClass({
                     el : "#fixed_grouping-create-container",
                     collection : new mod.collections.fixed_grouping()

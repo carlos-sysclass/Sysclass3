@@ -100,61 +100,6 @@
 					</div>
 				</div>
 				<!--
-				<h5 class="form-section margin-bottom-10 margin-top-10">
-					<i class="fa fa-calendar"></i>
-					{translateToken value="Conclusion"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Especiy the start and final date for this rule be avaliable. If you do notspecify thfinal date, its duration will be underterminate.'}">
-                        <i class="fa fa-question"></i>
-                    </span>
-				</h5>
-
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">
-								{translateToken value="Start Date"}
-							</label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-								<input type="text" name="start_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
-							</div>
-							
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Finish Date"}</label>
-							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-								<input type="text" name="start_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
-							</div>
-						</div>
-					</div>
-				</div>
-				-->
-
-
-
-			    <!--
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value='Email'}</label>
-							<input name="email" value="" type="text" placeholder="{translateToken value='Email'}" class="form-control" data-rule-required="true" data-rule-email="true" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Primary Group"}</label>
-							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="id">
-								<option value="-1">{translateToken value="Select a group"}</option>
-								{foreach $T_GROUPS as $group}
-									<option value="{$group.id}">{$group.name}</option>
-								{/foreach}
-							</select>
-						</div>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -216,22 +161,107 @@
 
 					</div>
 					<div class="interval-definition-item interval-definition-dynamic hidden">
-						DUNAMIC
-					</div>
-				</div>
-				<!--
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Grouping name template"}
-								<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
-									<i class="fa fa-question"></i>
-								</span>
-							</label>
-							<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Grouping name template"}
+										<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
+											<i class="fa fa-question"></i>
+										</span>
+									</label>
+									<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<label class="control-label">
+									{translateToken value="Interval Rules"}
+								</label>
+								<div class="form-group form-group-inline">
+									<div class="inline-item">
+										<label class="control-label">Each </label>
+									</div>
+									<!--
+									<div class="inline-item">
+										<input name="units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-rule-number="3" />
+									</div>
+									-->
+									<div class="inline-item">
+										<select class="select2-me form-control input-block-level" name="interval_rule_type" style="min-width: 150px;">
+											<option value="-1">{translateToken value="Select a Period"}</option>
+											<option value="week">{translateToken value="Week"}</option>
+											<option value="month">{translateToken value="Month"}</option>
+											<!--
+											<option value="year">{translateToken value="Year"}</option>
+											-->
+										</select>
+									</div>
+									<div class="interval-rule-type-item interval-rule-type-week hidden">
+										<div class="inline-item">
+											<label class="control-label"> starting on weekday
+											</label>
+										</div>
+										<div class="inline-item">
+											<select class="select2-me form-control input-block-level" name="usergroups"  style="min-width: 125px;">
+												<option value="0">{translateToken value="Sunday"}</option>
+												<option value="1">{translateToken value="Monday"}</option>
+												<option value="2">{translateToken value="Tuesday"}</option>
+												<option value="3">{translateToken value="Wednesday"}</option>
+												<option value="4">{translateToken value="Thursday"}</option>
+												<option value="5">{translateToken value="Friday"}</option>
+												<option value="6">{translateToken value="Saturday"}</option>
+											</select>
+										</div>
+									</div>
+									<div class="interval-rule-type-item interval-rule-type-month hidden">
+										<div class="inline-item">
+											<label class="control-label"> starting on day
+											</label>
+										</div>
+										<div class="inline-item">
+											<select class="select2-me form-control input-block-level" name="usergroups" style="min-width: 80px;">
+												{for $day=1 to 31}
+												<option value="{$day}">{$day}</option>
+												{/for}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+				<h5 class="form-section margin-bottom-10">
+					<i class="fa fa-cogs"></i>
+					{translateToken value="Student Limit"}
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of students allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
+                        <i class="fa fa-question"></i>
+                    </span>
+				</h5>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Maximum students"}
+							</label>
+							<input name="limit_by_students_count" value="" type="text" placeholder="{translateToken value="Maximum students"}" class="form-control" data-rule-required="true" data-rule-number="true" />
+						</div>
+                    </div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Action if the maximum is reached"}
+							</label>
+							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
+								<option value="-1">{translateToken value="Select a action"}</option>
+								<option value="">{translateToken value="Block Admittance"}</option>
+								<option value="">{translateToken value="Send to the next Grouping"}</option>
+								<option value="">{translateToken value="Send to the waiting list"}</option>
+							</select>
+						</div>
+                    </div>
+				</div>
+				<!--
+				
 				-->
 
 			</div>
@@ -249,7 +279,6 @@
 		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 	</div>
 </form>
-
 
 
 <script type="text/template" id="grouping-edit-item">
