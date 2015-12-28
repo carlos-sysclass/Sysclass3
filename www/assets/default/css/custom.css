@@ -1664,3 +1664,11 @@ button.calendar-news-item {
 .btn-circle {
     border-radius: 15px !important;
 }
+
+.form-group-inline div.inline-item {
+	float: left;
+	margin-right: 12px;
+}
+.form-group-inline div.inline-item label.control-label {
+	padding: 5px 14px 2px;
+}
