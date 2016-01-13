@@ -96,9 +96,10 @@ class FileBackendLocalHelper extends AbstractFileBackend /* implements IFileBack
 
     public function getPublicPath($type = null)
     {
-        $plicolib = PlicoLib::instance();
+        $di = \Phalcon\DI::getDefault();
+        $environment = $di->get("environment");
 
-        $path = $plicolib->get("path/files/public") . "/";
+        $path = $environment["path/files/public"] . "/";
 
         if (!is_null($type)) {
             $path .= "/" . $type;
