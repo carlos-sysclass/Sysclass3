@@ -4,8 +4,9 @@ namespace Sysclass\Modules\Enroll;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\Course as Enrollment;
+use Sysclass\Models\Courses\Course as Course,
+    Sysclass\Models\Enrollments\Course as Enrollment,
+    Sysclass\Models\Forms\Fields;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -39,6 +40,30 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putModuleScript("dialogs.fixed_grouping.form");
 
                 $self->putSectionTemplate("dialogs", "dialogs/fixed_grouping.form");
+                return true;
+            },
+            'enroll.fields.dialog' => function($data, $self) {
+                $self->putComponent("bootstrap-confirmation", "bootstrap-editable");
+                $self->putModuleScript("dialogs.fields.form");
+
+                $self->putSectionTemplate("dialogs", "dialogs/fields.form");
+                return true;
+            },
+            'enroll.fields' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                $self->putBlock('enroll.fields.dialog');
+
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                $self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                $block_context = $self->getConfig("blocks\\enroll.fields\\context");
+                $self->putItem("enroll_fields_context", $block_context);
+
+                $self->putSectionTemplate("enroll.fields", "blocks/fields");
+
+                return true;
             }
         );
     }

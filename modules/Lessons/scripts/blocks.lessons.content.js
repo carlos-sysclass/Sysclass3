@@ -21,7 +21,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     childs          : []
                 };
             },
-            urlRoot: "/module/lessons/item/lesson-content/"
+            urlRoot: "/module/lessons/item/lesson_content"
         });
 
         var lessonFileContentModelClass = baseLessonContentModelClass.extend({
@@ -43,7 +43,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 defaults['content_type'] = 'subtitle';
                 return defaults;
             },
-            urlRoot: "/module/lessons/item/lesson-content/",
+            //urlRoot: "/module/lessons/datasource/lesson_content/",
             translate : function(from, to) {
                 $.ajax(
                     this.url() + "/translate",
@@ -69,7 +69,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 defaults['content_type'] = 'poster';
                 return defaults;
             },
-            urlRoot: "/module/lessons/item/lesson-content/"
+            //urlRoot: "/module/lessons/item/lesson_content/"
         });
 
         var lessonTextContentModelClass = baseLessonContentModelClass.extend({
