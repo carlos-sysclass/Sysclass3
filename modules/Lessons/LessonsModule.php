@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Lessons;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Contents\Exercise;
+use Sysclass\Models\Courses\Contents\Exercise,
+    Sysclass\Models\I18n\Language;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -110,11 +111,10 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                 $self->putModuleScript("blocks.lessons.content");
 
+                $languages = Language::find()->toArray();
 
 
-                $languages = $$this->translate->getItems();
-
-                $userLanguageCode = $$this->translate->getUserLanguageCode();
+                $userLanguageCode = $this->translate->getSource();
 
 
 
@@ -182,8 +182,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
+    
     public function addPage()
     {
         $items = $this->model("classes")->addFilter(array(
@@ -200,11 +201,12 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         parent::addPage($id);
     }
+    
 
-    /**
+  /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @Get("/edit/{id}")
      */
     public function editPage($id)
     {
@@ -270,9 +272,67 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url GET /items/:model
-     * @url GET /items/:model/:type
-     * @url GET /items/:model/:type/:filter
+     * @Post("/item/{model}")
+     * @Post("/item/{model}/")
+     */
+    public function addItemRequest($model)
+    {
+        if ($userData = $this->getCurrentUser()) {
+            $data = $this->getHttpData(func_get_args());
+
+            if ($model == "me") {
+                $itemModel = $this->model("lessons");
+                $messages = array(
+                    'success' => "Lesson created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+            } elseif ($model == "lesson_content") {
+                $itemModel = $this->model("lessons/content");
+                $messages = array(
+                    'success' => "Lesson content created with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $data['language_code'] = $this->translate->getSource();
+
+                $_GET['redirect'] = "0";
+            } elseif ($model == "question-content") {
+                $itemModel = $this->model("lessons/content/question");
+                $messages = array(
+                    'success' => "Question included with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $_GET['redirect'] = "0";
+            }
+
+
+            $data['login'] = $userData['login'];
+            if (($data['id'] = $itemModel->addItem($data)) !== false) {
+                if ($_GET['redirect'] === "0") {
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+                    return array_merge($response, $data);
+                } else {
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "edit/" . $data['id'],
+                        $this->translate->translate($messages['success']),
+                        "success"
+                    );
+                }
+            } else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                return $this->invalidRequestError($messages['error'], "error");
+            }
+        } else {
+            return $this->notAuthenticatedError();
+        }
+    }
+    /**
+     * [ add a description ]
+     *
+     * @Get("/items/{model}")
+     * @Get("/items/{model}/{type}")
+     * @Get("/items/{model}/{type}/{filter}")
      */
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
@@ -463,12 +523,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         return $file_result;
     }
 
-    /**
-     * [ add a description ]
-     *
-     * @url DELETE /upload/:lesson_id/:file_id
-     * @deprecated
-     */
+    /*
     public function removeFilesAction($lesson_id, $file_id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -490,6 +545,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             return $this->notAuthenticatedError();
         }
     }
+    */
 
     /**
      * [ add a description ]
@@ -526,63 +582,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         return $editItem;
     }
 
-    /**
-     * [ add a description ]
-     *
-     * @url POST /item/:model
-     */
-    public function addItemAction($model, $type)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
 
-            if ($model == "me") {
-                $itemModel = $this->model("lessons");
-                $messages = array(
-                    'success' => "Lesson created with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-            } elseif ($model == "lesson-content") {
-                $itemModel = $this->model("lessons/content");
-                $messages = array(
-                    'success' => "Lesson content created with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-
-                $data['language_code'] = $this->translate->getUserLanguageCode();
-
-                $_GET['redirect'] = "0";
-            } elseif ($model == "question-content") {
-                $itemModel = $this->model("lessons/content/question");
-                $messages = array(
-                    'success' => "Question included with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-
-                $_GET['redirect'] = "0";
-            }
-
-
-            $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== false) {
-                if ($_GET['redirect'] === "0") {
-                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
-                    return array_merge($response, $data);
-                } else {
-                    return $this->createRedirectResponse(
-                        $this->getBasePath() . "edit/" . $data['id'],
-                        $this->translate->translate($messages['success']),
-                        "success"
-                    );
-                }
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($messages['error'], "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
 
     /**
      * [ add a description ]
@@ -624,7 +624,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @url PUT /item/:model/:id
      */
-    public function setItemAction($model, $id)
+    public function setItemRequest($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());

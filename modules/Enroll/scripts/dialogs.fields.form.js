@@ -1,4 +1,4 @@
-$SC.module("dialogs.fixed_grouping.form", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("dialogs.fields.form", function(mod, app, Backbone, Marionette, $, _) {
 
     this.startWithParent = false;
     this.started = false;
@@ -15,8 +15,17 @@ $SC.module("dialogs.fixed_grouping.form", function(mod, app, Backbone, Marionett
                 var dialogViewClass = app.module("views").dialogViewClass;
 
                 var groupingEditDialogViewClass = dialogViewClass.extend({
+                    initialize : function() {
+                        dialogViewClass.prototype.initialize.apply(this);
+
+                        this.$("[name='field_id']").on("change", function(data) {
+                            if (data.added) {
+                                this.model.set("field", data.added);
+                            }
+                        }.bind(this));
+                    },
                     save : function() {
-                        console.info('dialogs.fixed_grouping.form/groupingEditDialogViewClass::save');
+                        console.info('dialogs.fields.form/groupingEditDialogViewClass::save');
                         //this.trigger("selected.dialogsUsersSelect", this.model.toJSON());
                         this.close();
 
@@ -27,9 +36,9 @@ $SC.module("dialogs.fixed_grouping.form", function(mod, app, Backbone, Marionett
                         }
                     }
                 });
-
+                
                 this.dialogView = new groupingEditDialogViewClass({
-                    el : "#fixed-grouping-dialog",
+                    el : "#enroll-fields-dialog",
                     model : new mod.modelClass()
                 });
                 this.dialogView.render();

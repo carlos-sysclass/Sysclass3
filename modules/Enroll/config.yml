@@ -55,7 +55,7 @@ crud:
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
-      blocks: ["fixed_grouping.dialog"]
+      blocks: ["fixed_grouping.dialog", "enroll.fields"]
       variables:
         page_subtitle: Create a new Enrollment Rule
     'edit/{id}':
@@ -67,6 +67,26 @@ crud:
         page_subtitle: Edit a new Enrollment Rule
 
 blocks:
+  enroll.fields:
+    context:
+      id : "enroll_fields"
+      datatable_fields:
+      - mData: icon
+        sType: table-icon
+        label: Type
+
+      - mData: fullname
+        label: User / Group
+
+      - mData: active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
   enroll.user.block:
     context:
       block_id: "enroll_users"
@@ -95,4 +115,8 @@ models:
   course: 
     class: Sysclass\Models\Enrollments\Course
     exportMethod: ["toFullArray", ["User", "Course"]]
+  ##fields: 
+    #class: Sysclass\Models\Enrollments\Fields
+    #exportMethod: ["toFullArray", ["User", "Course"]]
+
 

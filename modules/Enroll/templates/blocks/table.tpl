@@ -16,6 +16,11 @@
         <tbody></tbody>
     </table>
 </div>
+<script>
+_before_init_functions.push(function() {
+    $SC.addResource("{$T_MODULE_ID}_context", {$T_MODULE_CONTEXT|@json_encode nofilter});
+});
+</script>
 {if $FORCE_INIT}
 <script>
 _lazy_init_functions.push(function() {

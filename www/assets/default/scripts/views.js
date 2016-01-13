@@ -579,6 +579,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
     this.dialogViewClass = this.baseFormClass.extend({
         renderType : "byView",
+        /*
+        initialize : function() {
+			this.baseFormClass.initialize.apply(this);
+		},
+		*/
         open : function() {
             this.$el.modal("show");
         },
@@ -587,6 +592,119 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             this.trigger("hide.dialog");
         }
     });
+
+    this.listManagerCreatorViewClass = Backbone.View.extend({
+        dialogModule : null,
+        itemViewClass : null,
+        modelClass : Backbone.Model,
+        events : {
+            "click .add-item-action" : "addItem"
+        },
+        initialize : function() {
+            this.listenToOnce(this.collection, 'sync', this.render.bind(this));
+            //this.listenTo(this.collection, 'add', this.addOne.bind(this));
+            //this.listenTo(this.collection, 'add', this.refreshCounters.bind(this));
+            this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
+
+            this.initializeSortable();
+        },
+        initializeSortable : function() {
+            var self = this;
+
+            this.$(".list-group").sortable({
+                items: "li.list-file-item.draggable",
+                opacity: 0.8,
+                placeholder: 'list-file-item placeholder',
+                dropOnEmpty : true,
+                forceHelperSize : true,
+                forcePlaceholderSize: true,
+                tolerance: "intersect",
+                update : function( event, ui ) {
+                    var order = $(this).sortable("toArray", {attribute : "data-roadmap-grouping-id"});
+
+                    self.collection.setOrder(order);
+
+                    self.refreshCounters();
+                },
+                over : function( event, ui ) {
+                    $(this).addClass("ui-sortable-hover");
+                },
+                out  : function( event, ui ) {
+                    $(this).removeClass("ui-sortable-hover");
+                }
+            });
+        },
+        addItem : function() {
+            var self = this;
+            var itemModel = new this.modelClass();
+
+            self.collection.add(itemModel);
+
+            this.listenToOnce(itemModel, "sync", function(model) {
+                self.addOne(model);
+                self.refreshCounters();
+            });
+
+            //console.warn(app.module("dialogs.fixed_grouping.form"));
+
+            if (!this.dialogModule.started) {
+                this.dialogModule.start({
+                    modelClass : this.modelClass
+                });
+            }
+            this.dialogModule.getValue(function(item, model) {
+                console.warn(item);
+                self.addOne(model);
+                self.refreshCounters();
+            });
+        },
+        addOne : function(model) {
+            console.info('views/baseMultiListCreator::addOne');
+
+            var self = this;
+
+            var itemView = new this.itemViewClass({
+                model : model
+            });
+
+            $(itemView.render().el).appendTo(this.$("ul.items-container"));
+            itemView.start();
+
+            this.listenTo(itemView, "grouping:updated", function(model) {
+                self.refreshCounters();
+            });
+        },
+        refreshCounters : function() {
+            console.info('views/baseMultiListCreator::refreshCounters');
+            var total = this.collection.size();
+            this.$("ul.items-container > li.list-file-item .total").html(total);
+
+            this.$("ul.items-container > li.list-file-item").each(function(i, item) {
+                $(this).find(".counter").html(i+1);
+            });
+        },
+        render: function() {
+            console.info('view/baseMultiListCreator::render');
+
+            var self = this;
+
+            this.collection.each(function(model, i) {
+                self.addOne(model, i);
+            });
+            //this.refreshCounters();
+            app.module("ui").refresh( this.$("ul.items-container ") );
+
+            this.refreshCounters();
+        },
+        remove : function(e) {
+            var fileId = $(e.currentTarget).data("fileId");
+            var fileObject = new mod.lessonFileModelClass();
+            fileObject.set("id", fileId);
+            fileObject.destroy();
+            $(e.currentTarget).parents("li").remove();
+        }
+    });
+
 
     
 	this.baseInsertableCollectionViewClass = Backbone.View.extend({

@@ -505,6 +505,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $model_info = $this->model_info[$model];
 
+
+
             $model_class = $model_info['class'];
 
             $sort = @$model_info['sort'];

@@ -10,12 +10,15 @@
 			<li class="admittance-type-item admittance-type-grouping hidden">
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
 			</li>
-			<li class="">
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrollment Fields"}</a>
-			</li>
+			{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
+				<li class="">
+					<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrollment Fields"}</a>
+				</li>
+			{/if}
+			
 		</ul>
 		<div class="tab-content">
-			<div class="tab-pane fade active in" id="tab_1_1">
+			<div class="tab-pane fade  in" id="tab_1_1">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -265,14 +268,15 @@
 				-->
 
 			</div>
-			<div class="tab-pane fade in" id="tab_1_3">
-			    <div class="alert alert-info">
-			    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
-			        <p>
-			            <strong>TIP!</strong>
-			            Here, you select the mandatory and opcional fields needed to complete the registration process6</p>
+			
+
+			{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
+				<div class="tab-pane fade in active" id="tab_1_3">
+			    {foreach $T_SECTION_TPL['enroll.fields'] as $template}
+			        {include file=$template}
+			    {/foreach}
 			    </div>
-			</div>
+			{/if}
 		</div>
 	</div>
 	<div class="form-actions nobg">

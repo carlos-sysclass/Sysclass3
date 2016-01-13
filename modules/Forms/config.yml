@@ -1,0 +1,8 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+models:
+  fields:
+    class: Sysclass\Models\Forms\Fields
+    exportMethod: ["toFullArray", ["Type"]]
+

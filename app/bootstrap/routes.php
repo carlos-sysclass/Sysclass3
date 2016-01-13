@@ -27,7 +27,6 @@ if (APP_TYPE === "WEB") {
 
             $resource = sprintf("Sysclass\\Modules\\%s\\%sModule", $mod, $mod);
             $prefix = sprintf("/module/%s", strtolower($mod));
-            //var_dump($resource , $prefix);
             $router->addResource($resource , $prefix);
         }
 
