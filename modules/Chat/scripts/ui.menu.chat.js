@@ -74,7 +74,7 @@ $SC.module("menu.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(mod, "delete.sidebar", this.delete.bind(this));
 
 				//this.listenTo(this.chatModule, "receiveMessage.chat", this.refreshCounter.bind(this));
-				this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true);
+				this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true, false);
 			},
 			isOwnership : function(switcher) {
 				this._isOwner = switcher;

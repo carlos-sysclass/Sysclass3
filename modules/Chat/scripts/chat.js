@@ -388,6 +388,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     }
 
     this.createQueue = function(topic, title) {
+        console.warn("createQueue");
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
             return false;
@@ -413,7 +414,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             }.bind(this));
     };
 
-    this.subscribeToChat = function(topic, model, exclusive) {
+    this.subscribeToChat = function(topic, model, exclusive, startChat) {
         if (exclusive && _.has(this._subscribedTopics, topic)) {
             return false;
         }
@@ -421,12 +422,14 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
         this._conn.subscribe(topic, this.parseReceivedTopic.bind(this));
 
-        //this.startChatView(model);
+        if (startChat !== false) {
+
+            this.startChatView(model);
+        }
     }
 
     this.unsubscribeToChat = function(topic) {
         this._conn.unsubscribe(topic);
-''
         this._subscribedTopics[topic] = null;
     }
 
@@ -475,6 +478,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
 
     this.startChatView = function(model) {
+        console.warn("startChatView");
         var topic = model.get("topic");
         if (mod._chatViews[topic] == undefined) {
             mod._chatViews[topic] = new chatViewClass({
