@@ -1672,3 +1672,7 @@ button.calendar-news-item {
 .form-group-inline div.inline-item label.control-label {
 	padding: 5px 14px 2px;
 }
+
+.page-quick-sidebar-list, .page-quick-sidebar-item {
+	border-left: 1px solid #ccc;
+}
