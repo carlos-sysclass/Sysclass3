@@ -51,7 +51,8 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             },
             'enroll.fields' => function($data, $self) {
                 // GET ALL THIS DATA FROM config.yml
-                $self->putBlock('enroll.fields.dialog');
+                //$self->putBlock('enroll.fields.dialog');
+                $self->putModuleScript("fields.form");
 
                 $self->putComponent("data-tables");
                 $self->putComponent("select2");
@@ -106,7 +107,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment Rules")
+                    'text'  => $this->translate->translate("Enrollment")
                 );
                 return $breadcrumbs;
                 break;
@@ -115,9 +116,9 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment Rules")
+                    'text'  => $this->translate->translate("Enrollment")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Enrollment Rule"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Enrollment Guideline"));
                 return $breadcrumbs;
                 break;
             }
@@ -125,9 +126,9 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-user',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment Rules")
+                    'text'  => $this->translate->translate("Enrollment")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Enrollment Rule"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Enrollment Guideline"));
                 return $breadcrumbs;
                 break;
             }
@@ -141,7 +142,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Enrollment Rule'),
+                    'text'      => $this->translate->translate('New Enrollment Guideline'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'

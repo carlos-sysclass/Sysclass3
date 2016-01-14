@@ -334,7 +334,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      * @Get("/items/{model}/{type}")
      * @Get("/items/{model}/{type}/{filter}")
      */
-    public function getItemsAction($model = "me", $type = "default", $filter = null)
+    public function getItemsRequest($model = "me", $type = "default", $filter = null)
     {
         if ($model == "me") {
             $modelRoute = "lessons";

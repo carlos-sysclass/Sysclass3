@@ -42,7 +42,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
                 'administration' => array(
                     array(
                         //'count' => count($items),
-                        'text'  => $this->translate->translate('System Settings'),
+                        'text'  => $this->translate->translate('Settings'),
                         'icon'  => 'fa fa-code-fork',
                         'link'  => $this->getBasePath() . 'manage'
                     )

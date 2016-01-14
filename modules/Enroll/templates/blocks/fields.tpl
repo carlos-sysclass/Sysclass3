@@ -19,10 +19,31 @@
 
 <script type="text/template" id="enroll-fields-item">
 
-    <a href="#" class="btn btn-sm <% if (model.active == "0") { %>text-danger<% } %>">
-        <%= model.field.name %>
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+        <i class="fa fa-arrows"></i>
     </a>
-    <i><%= model.field.type.name %></i>
+    <a class="btn btn-sm btn-default tooltips view-item-detail" data-original-title="{translateToken value="Expand / Collpase"}">
+        <i class="fa fa-angle-down"></i>
+    </a>
+    <!--
+    <% if (_.has(model, 'field')) { %>
+        <a href="#" class="btn btn-sm <% if (model.active == "0") { %>text-danger<% } %>">
+            <%= model.field.name %>
+        </a>
+        <i><%= model.field.type.name %></i>
+    <% } else { %>
+        <span data-update="field.name">[Blank]</span>
+        <b>Type: </b>
+        <i data-update="field.type.name">[Unknown]</i>
+    <% } %>
+    -->
+
+    <strong> Name: </strong>
+    <i data-update="field.name">[Blank]</i>
+    <strong> Type: </strong>
+    <i data-update="field.type.name">[Blank]</i>
+    <strong> Label: </strong>
+    <i data-update="label">[Blank]</i>
 
     <div class="list-file-item-options">
         <% if (typeof model.field_id !== 'undefined') { %>
@@ -50,7 +71,47 @@
             <i class="fa fa-trash"></i>
         </a>
     </div>
-    <div class="detail-container">
+    <div class="detail-container form-horizontal">
         <h5 class="form-section no-margin margin-bottom-5">Details</h5>
+        <form action="#">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">{translateToken value="Field Name"}</label>
+                        <div class="col-md-9">
+                            <input 
+                                type="hidden" 
+                                class="select2-me form-control col-md-12" 
+                                name="field_id"
+                                data-placeholder="{translateToken value='Please Select'}" 
+                                data-url="/module/forms/items/fields"
+                                data-rule-required="true" 
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">{translateToken value="Label Name"}</label>
+                        <div class="col-md-9">
+                            <input name="label" value="" type="text" placeholder="{translateToken value="Label"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">{translateToken value="Required"}</label>
+                        <div class="col-md-9">
+                            <input type="checkbox" name="required" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions nobg">
+                <button class="btn btn-success save-action" type="button">{translateToken value="Save Changes"}</button>
+            </div>
+        </form>
     </div>
 </script>

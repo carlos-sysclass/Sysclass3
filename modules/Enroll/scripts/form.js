@@ -19,10 +19,10 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 }
             }),
-            fields : Backbone.Model.extend({
+            fields : Backbone.DeepModel.extend({
                 defaults : {
                     field_id : null,
-                    active : "1"
+                    required : "1"
                 },
             }),
         };
@@ -176,54 +176,6 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
 
                 this.listenTo(this.model, 'sync', this.render.bind(this));
             },
-            render : function() {
-                this.$el.html(this.template(this.model.toJSON()));
-                if (this.model.get("id")) {
-                    if (this.model.get("active") == 0) {
-                        this.$el.removeClass("green-stripe");
-                        this.$el.removeClass("blue-stripe");
-                        this.$el.addClass("red-stripe");
-                    } else {
-                        this.$el.removeClass("red-stripe");
-                        this.$el.removeClass("blue-stripe");
-                        this.$el.addClass("green-stripe");
-                    }
-                }
-                //this.$el.data("lessonId", this.model.get("id"));
-                this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
-
-                if (this.$el.length) {
-                    app.module("ui").refresh(this.$el);
-                }
-
-                this.trigger("grouping:updated", this.model);
-
-                return this;
-            },
-            start : function() {
-
-                var editableItem = this.$(".editable-me");
-
-                if (this.opened) {
-                    window.setTimeout(function() {
-                        editableItem.editable('show');
-                    }, 350);
-                }
-                /*
-                editableItem.editable("option", "ajaxOptions", {
-                    type: editableItem.data("method")
-                });
-                */
-                var self = this;
-                editableItem.on('save', function(e, params, b,c) {
-                    self.model.set($(this).data("name"), params.newValue);
-                    self.model.save();
-                });
-
-                if (this.$el.length) {
-                    app.module("ui").refresh(this.$el);
-                }
-            },
             editItem : function(e) {
                 var self = this;
 
@@ -252,10 +204,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                 mod.groupingAddDialog.open();
                 */
             },
-            toogleDetail : function(e) {
-                e.preventDefault();
-                this.$(".detail-container").toggle(500);
-            },
+  
             toogleActive : function(e, state) {
                 this.model.set("active", state);
                 this.model.save();
@@ -280,10 +229,75 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
             }
         });
 
-        this.fieldsItemBlockViewClass = listManagerCreatorItemViewClass.extend({
+
+
+        var baseFormClass = app.module("views").baseFormClass;
+
+        this.fieldsItemBlockViewClass = baseFormClass.extend({
             dialogModule : app.module("dialogs.fields.form"),
             modelClass : mod.models.fields,
             template : _.template($("#enroll-fields-item").html(), null, {variable: 'model'}),
+
+
+            events : function() {
+                var events = baseFormClass.prototype.events.apply(this);
+                events["click .view-item-detail"] = "toogleDetail";
+                console.warn(events);
+                return events;
+            },
+            tagName : "li",
+            className : "list-file-item draggable blue-stripe",
+
+            initialize: function(opt) {
+                baseFormClass.prototype.initialize.apply(this, opt);
+                this.listenTo(this.model, 'change', function(model) {
+                    console.warn(model.toJSON());
+                });
+
+                this.$el.delegate("[name='field_id']", "change", function(data) {
+                    console.warn(data);
+                    if (data.added) {
+                        this.model.set("field", data.added, {silent : true});
+                    }
+                }.bind(this));
+            },
+            start : function() {
+                this.toogleDetail();
+            },
+            toogleDetail : function(e) {
+                if (e) {
+                    e.preventDefault();
+                   }
+                this.$(".view-item-detail i.fa").toggleClass("fa-angle-down").toggleClass("fa-angle-up");
+                this.$(".detail-container").toggle(500);
+            },
+            render : function(model) {
+                this.$el.html(this.template(this.model.toJSON()));
+                if (this.model.get("id")) {
+                    if (this.model.get("active") == 0) {
+                        this.$el.removeClass("green-stripe");
+                        this.$el.removeClass("blue-stripe");
+                        this.$el.addClass("red-stripe");
+                    } else {
+                        this.$el.removeClass("red-stripe");
+                        this.$el.removeClass("blue-stripe");
+                        this.$el.addClass("green-stripe");
+                    }
+                }
+                //this.$el.data("lessonId", this.model.get("id"));
+                this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
+
+                if (this.$el.length) {
+                    app.module("ui").refresh(this.$el);
+                }
+
+                return baseFormClass.prototype.render.apply(this);
+            },
+            save : function() {
+                this.toogleDetail();
+
+                // APEND TO COLLECTION
+            }
         });
 
 
@@ -301,7 +315,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
         });
 
         this.fieldsBlockViewClass = listManagerCreatorViewClass.extend({
-            dialogModule : app.module("dialogs.fields.form"),
+            dialogModule : app.module("fields.form"),
             modelClass : mod.models.fields,
             itemViewClass : this.fieldsItemBlockViewClass
         });
@@ -329,14 +343,14 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                     collection : new mod.collections.fixed_grouping()
                 });
 
-                this.groupingFixedBlockView = new mod.fieldsBlockViewClass({
+                this.fieldsBlockView = new mod.fieldsBlockViewClass({
                     el : "#fields-create-container",
                     collection : new mod.collections.fields()
                 });
             }
         });
 
-        new this.enrollFormViewClass({
+        mod.enrollView = new this.enrollFormViewClass({
             el: "#form-enroll",
             model: formView.model
         })

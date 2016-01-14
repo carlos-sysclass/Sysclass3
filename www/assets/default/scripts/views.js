@@ -443,12 +443,14 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 					var values = [];
 					brothers.each(function() {
+
 						if (!$(this).is(":checked") && $(this).is("[data-value-unchecked]")) {
-							values.push($(this).data("valueUnchecked"));
+							values.push($(this).data("value-unchecked"));
 						} else if ($(this).is(":checked")) {
 							values.push($(this).val());
 						}
 					});
+					console.warn(values);
 					// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
 					this.model.unset(prop, {silent: true});
                     if ($el.is("[data-update-single]")) {
@@ -457,12 +459,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                     } else {
                         value = values;
                     }
-
-
-
-				//} else if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
-					//value = -1;
-				//	value = $el.data("valueUnchecked");
 				}
 
 				if ($el.is("[data-format-from]")) {
@@ -512,10 +508,13 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.baseFormClass = this.baseClass.extend({
 		//tagName : "form",
-	    events : {
-	    	"change :input"			: "update",
-	    	"click .save-action" 	: "submit"
-	    },
+		oForm : null,
+	    events : function() {
+	    	return {
+		    	"change :input"			: "update",
+		    	"click .save-action" 	: "submit"
+	    	};
+    	},
 	    initialize: function() {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
@@ -571,6 +570,22 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			});
 		},
+		onRender: function(model) {
+	    	console.info('views/baseFormClass::onRender');
+
+	    	if (_.isNull(this.oForm)) {
+		    	if (this.$el.is("form") || this.$("form").size() > 0) {
+		    		if (this.$el.is("form")) {
+		    			this.oForm = this.$el;
+		    		} else {
+		    			this.oForm = this.$("form");
+		    		}
+
+		    		this.handleValidation();
+		    	}
+	    	}
+
+	    },
 	    submit : function(e) {
 	    	console.info('views/baseFormClass::submit');
 	    	this.oForm.submit();
@@ -597,6 +612,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
         dialogModule : null,
         itemViewClass : null,
         modelClass : Backbone.Model,
+        sortableOptions : {},
         events : {
             "click .add-item-action" : "addItem"
         },
@@ -611,7 +627,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
         initializeSortable : function() {
             var self = this;
 
-            this.$(".list-group").sortable({
+            this.$(".list-group").sortable(_.extend({
                 items: "li.list-file-item.draggable",
                 opacity: 0.8,
                 placeholder: 'list-file-item placeholder',
@@ -632,20 +648,16 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 out  : function( event, ui ) {
                     $(this).removeClass("ui-sortable-hover");
                 }
-            });
+            }, this.sortableOptions));
         },
         addItem : function() {
             var self = this;
             var itemModel = new this.modelClass();
 
-            self.collection.add(itemModel);
-
             this.listenToOnce(itemModel, "sync", function(model) {
                 self.addOne(model);
                 self.refreshCounters();
             });
-
-            //console.warn(app.module("dialogs.fixed_grouping.form"));
 
             if (!this.dialogModule.started) {
                 this.dialogModule.start({
@@ -653,7 +665,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 });
             }
             this.dialogModule.getValue(function(item, model) {
-                console.warn(item);
+            	self.collection.add(model);
                 self.addOne(model);
                 self.refreshCounters();
             });

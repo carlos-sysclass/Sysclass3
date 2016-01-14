@@ -99,7 +99,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {

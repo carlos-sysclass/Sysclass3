@@ -6,8 +6,8 @@ crud:
   base_route:
     stylesheets: ["css/components"]
     variables:
-      page_title: Enrollment Rules
-  # BASE VALUES.. USED ON ALL ROUTES
+      page_title: Enrollment 
+      # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
@@ -57,14 +57,14 @@ crud:
       scripts: ["form"]
       blocks: ["fixed_grouping.dialog", "enroll.fields"]
       variables:
-        page_subtitle: Create a new Enrollment Rule
+        page_subtitle: Create Enrollment Guidelines
     'edit/{id}':
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
       blocks: ["fixed_grouping.dialog"]
       variables:
-        page_subtitle: Edit a new Enrollment Rule
+        page_subtitle: Edit Enrollment Guidelines
 
 blocks:
   enroll.fields:

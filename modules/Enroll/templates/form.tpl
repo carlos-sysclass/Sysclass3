@@ -1,24 +1,24 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
 
-<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
-	<div class="form-body">
-		<ul class="nav nav-tabs">
-			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
+<div class="form-body" id="form-{$T_MODULE_ID}">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
+		</li>
+		<li class="admittance-type-item admittance-type-grouping hidden">
+			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
+		</li>
+		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
+			<li class="">
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrollment Fields"}</a>
 			</li>
-			<li class="admittance-type-item admittance-type-grouping hidden">
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
-			</li>
-			{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
-				<li class="">
-					<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrollment Fields"}</a>
-				</li>
-			{/if}
-			
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane fade  in" id="tab_1_1">
+		{/if}
+		
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane fade active in" id="tab_1_1">
+			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -29,7 +29,7 @@
 				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
-					{translateToken value="Avaliability Period"}
+					{translateToken value="Open Period"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Especiy the start and final date for this rule be avaliable. If you don\'t specify the final date, its duration will be underterminate.'}">
                         <i class="fa fa-question"></i>
                     </span>
@@ -61,7 +61,7 @@
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-cogs"></i>
-					{translateToken value="Admittance Method"}
+					{translateToken value="Course Format"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criterias for user admitance. This information is used to make course grouping control, and the calculate the course desired roadmap.'}">
                         <i class="fa fa-question"></i>
                     </span>
@@ -78,7 +78,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Grouping-Based'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-Based'}
                             </label>
                         </div>
                     </div>
@@ -102,23 +102,14 @@
 					    </div>
 					</div>
 				</div>
-				<!--
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-		                    <label class="control-label">{translateToken value="Active"}</label>
-		                    <input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
-		                </div>
-					</div>
-				</div>
-				-->
 				<div class="clearfix"></div>
-			</div>
+			</form>
+		</div>
 			<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-cogs"></i>
-					{translateToken value="Interval Definition"}
+					{translateToken value="Enrollment Dates"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
                         <i class="fa fa-question"></i>
                     </span>
@@ -156,7 +147,7 @@
 					            -->
 					            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
 					                <i class="fa fa-plus"></i>
-					                {translateToken value="Create Grouping"}
+					                {translateToken value="New Group"}
 
 					            </a>
 					        </div>
@@ -167,7 +158,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Grouping name template"}
+									<label class="control-label">{translateToken value="Group name template"}
 										<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
 											<i class="fa fa-question"></i>
 										</span>
@@ -257,7 +248,7 @@
 							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
 								<option value="-1">{translateToken value="Select a action"}</option>
 								<option value="">{translateToken value="Block Admittance"}</option>
-								<option value="">{translateToken value="Send to the next Grouping"}</option>
+								<option value="">{translateToken value="Enroll in another group"}</option>
 								<option value="">{translateToken value="Send to the waiting list"}</option>
 							</select>
 						</div>
@@ -271,7 +262,7 @@
 			
 
 			{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
-				<div class="tab-pane fade in active" id="tab_1_3">
+				<div class="tab-pane fade in" id="tab_1_3">
 			    {foreach $T_SECTION_TPL['enroll.fields'] as $template}
 			        {include file=$template}
 			    {/foreach}
@@ -282,7 +273,7 @@
 	<div class="form-actions nobg">
 		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 	</div>
-</form>
+</div>
 
 
 <script type="text/template" id="grouping-edit-item">
