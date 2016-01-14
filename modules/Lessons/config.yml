@@ -23,7 +23,7 @@ crud:
         - mData: name
           label: Name
 
-        - mData: classe.name
+        - mData: class
           label: Class
 
         - mData: active

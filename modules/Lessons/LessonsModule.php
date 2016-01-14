@@ -661,7 +661,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @url DELETE /item/:model/:id
      */
-    public function deleteItemAction($model, $id)
+    public function deleteItemRequest($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
