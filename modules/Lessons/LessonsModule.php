@@ -340,7 +340,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $modelRoute = "lessons";
             $optionsRoute = "edit";
 
-            $itemsCollection = $this->model($modelRoute)->debug();
+            $itemsCollection = $this->model($modelRoute);
             if (!empty($filter)) {
                 $filter = json_decode($filter, true);
                 if (is_array($filter)) {
