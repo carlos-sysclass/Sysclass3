@@ -23,7 +23,7 @@ crud:
         - mData: name
           label: Name
 
-        - mData: class
+        - mData: classe.name
           label: Class
 
         - mData: active
@@ -51,4 +51,6 @@ crud:
       variables:
         page_subtitle: Edit your lesson info
 models:
-  me: Sysclass\Models\Courses\Lesson
+  me: 
+    class: Sysclass\Models\Courses\Lesson
+    exportMethod: ["toFullArray", ["Classe"]]

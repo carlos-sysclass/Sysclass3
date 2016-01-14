@@ -82,7 +82,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 'administration' => array(
                     array(
                         'count' => count($items),
-                        'text'  => $this->translate->translate('Enrollment Process'),
+                        'text'  => $this->translate->translate('Enrollment'),
                         'icon'  => 'fa fa-cogs',
                         'link'  => $this->getBasePath() . 'view'
                     )

@@ -208,9 +208,9 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
-    public function addPage($id)
+    public function addPage()
     {
         $knowledgeAreas = $this->model("courses/areas/collection")->addFilter(array(
             'active' => 1

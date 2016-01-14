@@ -52,7 +52,7 @@
 						{/foreach}
 					</select>
 				</div>
-
+				<!--
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Coordinators"}</label>
 
@@ -63,6 +63,7 @@
 						{/foreach}
 					</select>
 				</div>
+				-->
 
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>

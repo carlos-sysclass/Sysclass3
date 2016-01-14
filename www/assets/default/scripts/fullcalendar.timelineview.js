@@ -42,7 +42,6 @@
             console.warn("TimelineView::initialize");
             View.prototype.setHeight.apply(this, arguments);
         },
-
         renderEvents: function(events) {
             // reponsible for rendering the given Event Objects
             console.warn("TimelineView::initialize");

@@ -340,7 +340,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $modelRoute = "lessons";
             $optionsRoute = "edit";
 
-            $itemsCollection = $this->model($modelRoute);
+            $itemsCollection = $this->model($modelRoute)->debug();
             if (!empty($filter)) {
                 $filter = json_decode($filter, true);
                 if (is_array($filter)) {
@@ -351,7 +351,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             //var_dump($filter);
             //exit;
             $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
         } elseif ($model == "lesson-and-test") {
             $modelRoute = "base/lessons";
             $optionsRoute = "edit";

@@ -228,7 +228,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             $data = $this->getHttpData(func_get_args());
             if ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
-                $itemModel = $this->model($modelRoute);
+                $itemModel = $this->model($modelRoute)->debug();
                 $messages = array(
                     'success' => "Class created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
