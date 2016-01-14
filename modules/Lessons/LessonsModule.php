@@ -659,7 +659,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/:model/:id
+     * @Delete("/item/{model}/{id}")
      */
     public function deleteItemRequest($model, $id)
     {
@@ -670,7 +670,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'success' => "Lesson removed with success",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
-            } elseif ($model == "lesson-content") {
+            } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content removed with success",

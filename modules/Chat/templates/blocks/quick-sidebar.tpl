@@ -2,7 +2,7 @@
 {has_permission resource="Chat" action="assign" assign="assignAllowed"}
 
 <div class="tab-pane active" id="quick_sidebar_tab_1">
-    <div class="page-quick-sidebar-chat-users" data-height="auto" data-rail-visible="1" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
+    <div class="page-quick-sidebar-chat-users blurred-bg tinted" data-height="auto" data-rail-visible="1" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
         <!-- USE TO STICK MESSAGES
         <h3 class="list-heading">Staff</h3>
         <ul class="media-list list-items">
@@ -49,7 +49,7 @@
         <ul class="media-list list-items default-queue-list">
         </ul>
     </div>
-    <div class="page-quick-sidebar-item">
+    <div class="page-quick-sidebar-item blurred-bg tinted">
         <div class="page-quick-sidebar-chat-user">
 
         </div>
