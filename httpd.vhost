@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+	ServerName local.sysclass.com
+
+	UseCanonicalName Off
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/sysclass/current/www
+
+       <Directory /var/www/sysclass/current/www>
+                AllowOverride All
+		Require all granted
+        </Directory>
+
+	Alias /files /var/www/sysclass/current/files/
+
+	<Directory /var/www/sysclass/current/files/>
+        	#Order Allow,Deny
+	        #Allow from all
+		Require all granted
+        	Options -Indexes
+	</Directory>
+
+	ErrorLog /var/www/sysclass/logs/error.log
+	CustomLog /var/www/sysclass/logs/access.log combined
+
+</VirtualHost>

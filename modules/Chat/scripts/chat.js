@@ -487,7 +487,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         } else {
             mod._chatViews[topic].focus();
         }
-    }
+    } 
 
     // REMOTE FUNCTIONS
     this.getQueues = function(callback) {
