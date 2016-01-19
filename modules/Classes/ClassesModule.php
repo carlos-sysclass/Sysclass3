@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Classes;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Classe;
+use Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Courses\Lesson;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -306,28 +307,32 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Put("/items/lessons/set-order/{class_id}")
      */
-    public function setLessonOrderAction($class_id)
+    public function setLessonOrderRequest($class_id)
     {
-        $modelRoute = "base/lessons";
+        if ($this->isUserAllowed("edit")) {
+            $data = $this->request->getPut();
 
-        $itemsCollection = $this->model($modelRoute);
-        // APPLY FILTER
-        if (is_null($class_id) || !is_numeric($class_id)) {
-            return $this->invalidRequestError();
+            $itemModel = $this->getModelData("me", $class_id);
+
+            $messages = array(
+                'success' => "Lesson order updated with success",
+                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+            );
+
+            if ($itemModel->setLessonOrder($data['position'])) {
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+            } else {
+                $response = $this->invalidRequestError($this->translate->translate($messages['success']), "success");
+            }
+        } else {
+            $response = $this->notAuthenticatedError();
+        
         }
-
-        $messages = array(
-            'success' => "Lesson order updated with success",
-            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+        $this->response->setJsonContent(
+            $response
         );
 
-        $data = $this->getHttpData(func_get_args());
 
-        if ($itemsCollection->setOrder($class_id, $data['position'])) {
-            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
-        } else {
-            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
-        }
     }
 
 }

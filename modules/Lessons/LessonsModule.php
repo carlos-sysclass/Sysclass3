@@ -274,6 +274,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Post("/item/{model}")
      * @Post("/item/{model}/")
+     * @deprecated Move all to new sysclass module create system, especifing the model in config.yml
      */
     public function addItemRequest($model)
     {
@@ -624,6 +625,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @url PUT /item/:model/:id
      */
+    /*
     public function setItemRequest($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -655,7 +657,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *

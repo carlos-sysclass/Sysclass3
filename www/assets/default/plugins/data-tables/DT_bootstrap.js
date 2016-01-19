@@ -5,6 +5,10 @@ var dataTableOptionTemplates = {
 };
 //console.log($("#datatables-options-template").html());
 //
+jQuery.fn.dataTableExt.sErrMode = function( settings, tn, msg ) {
+	console.error("DATATABLE ERROR: " + msg);
+};
+
 jQuery.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
 {
     // DataTables 1.10 compatibility - if 1.10 then `versionCheck` exists.
