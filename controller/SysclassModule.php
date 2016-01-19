@@ -346,7 +346,7 @@ abstract class SysclassModule extends BaseSysclassModule
         if ($allowed = $this->isUserAllowed("edit")) {
             if ($itemModel) {
 
-                 $data = $this->request->getJsonRawBody(true);
+                $data = $this->request->getJsonRawBody(true);
 
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
