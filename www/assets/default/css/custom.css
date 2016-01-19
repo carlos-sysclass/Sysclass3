@@ -1347,6 +1347,15 @@ button.calendar-news-item {
 
 
 /* Quick sidebar wrapper */
+.page-quick-sidebar-toggler {
+	z-index: 10501;
+	top: 5px;
+	color: #fff;
+}
+.page-quick-sidebar-toggler:hover {
+	color: #ddd;
+	text-decoration: none;
+}
 .page-quick-sidebar-wrapper {
   transition: right 0.3s;
   z-index: 10500;
@@ -1392,6 +1401,7 @@ button.calendar-news-item {
           border: 0;
           height: auto;
           font-size: 14px;
+          margin-top: 31px;
           padding: 14px 15px 8px;
           text-transform: uppercase;
           background: none;

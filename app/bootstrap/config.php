@@ -83,7 +83,8 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/bootstrap/css/bootstrap',
 		//'plugins/uniform/css/uniform.default',
 		'plugins/fa/css/font-awesome',
-
+		'plugins/fa/css/font-awesome',
+		'plugins/simple-line-icons/simple-line-icons',
 		//<!-- END GLOBAL MANDATORY STYLES -->
 
 		//<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->

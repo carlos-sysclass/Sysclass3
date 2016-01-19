@@ -128,6 +128,10 @@
 		{/block}
 		{block name="quick-sidebar"}
 			{if (isset($T_SECTION_TPL['sidebar']) &&  ($T_SECTION_TPL['sidebar']|@count > 0))}
+				<a class="page-quick-sidebar-toggler" href="javascript:;">
+    	            <i class="icon-login"></i>
+	            </a>
+
 	            <div class="page-quick-sidebar-wrapper" data-close-on-body-click="true" id="page-quick-sidebar">
 	                <div class="page-quick-sidebar">
 						<ul class="nav nav-tabs">
