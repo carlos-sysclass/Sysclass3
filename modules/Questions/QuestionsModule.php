@@ -6,6 +6,7 @@ namespace Sysclass\Modules\Questions;
  */
 
 use Sysclass\Models\Courses\Departament,
+    Sysclass\Models\Courses\Questions\Question,
     Sysclass\Models\Courses\Questions\Type as QuestionType,
     Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;
 
@@ -23,15 +24,12 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Questions", "View")) {
 
-            $itemsData = $this->model($this->_modelRoute)->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "classe", 'permission_access_mode');
+            $count = Question::count("active = 1");
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $count,
                         'text'  => $this->translate->translate('Questions'),
                         'icon'  => 'fa fa-question',
                         'link'  => $this->getBasePath() . 'view'
@@ -66,7 +64,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Question"));
                 break;
             }
-            case "edit/:identifier" : {
+            case "edit/{identifier}" : {
                 $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Question"));
                 break;
             }
@@ -338,6 +336,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      * @url GET /items/:model/:type
      * @url GET /items/:model/:type/:data
      */
+    /*
     public function getItemsAction($model, $type)
     {
         if ($model == "me") {
@@ -400,7 +399,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
 
         return array_values($items);
     }
-
+    */
 
 
 }

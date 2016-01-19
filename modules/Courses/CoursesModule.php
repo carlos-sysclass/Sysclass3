@@ -33,15 +33,18 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     public function getLinks() {
 
         if ($this->acl->isUserAllowed(null, "Courses", "View")) {
+            /*
             $itemsData = $this->model("courses")->addFilter(array(
                 'active'    => true
             ))->getItems();
+            */
+            $count = Course::count("active = 1");
             //$items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $count,
                         'text'  => $this->translate->translate('Courses'),
                         'icon'  => 'fa fa-cube',
                         'link'  => $this->getBasePath() . 'view'
