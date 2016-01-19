@@ -346,7 +346,7 @@ abstract class SysclassModule extends BaseSysclassModule
         if ($allowed = $this->isUserAllowed("edit")) {
             if ($itemModel) {
 
-                $data = $this->request->getJsonRawBody(true);
+                 $data = $this->request->getJsonRawBody(true);
 
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -358,9 +358,9 @@ abstract class SysclassModule extends BaseSysclassModule
                     return true;
                 }
 
-                /*
+                
                 $model_info = $this->model_info[$model];
-
+                /*
                 $model_class = $model_info['class'];
                 $itemModel = new $model_class();
                 */
@@ -391,6 +391,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 }
 
                 $beforeMessages = $itemModel->getMessages();
+                $beforeMessages = is_null($beforeMessages) ? [] : $beforeMessages;
 
                 if ($itemModel->save()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);

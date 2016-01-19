@@ -39,7 +39,7 @@ crud:
         page_subtitle: Create a new Departament
     'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
-      blocks: ["permission.add"]
+      #blocks: ["permission.add"]
       #scripts: ["views.courses.edit"]
       template: form.tpl
       variables:

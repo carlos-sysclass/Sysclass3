@@ -61,7 +61,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Department"));
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Department"));
                 break;
             }
