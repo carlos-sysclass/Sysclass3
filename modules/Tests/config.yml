@@ -42,7 +42,7 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Create a new test
-    'edit/:identifier':
+    'edit/{identifier}':
       components: ["select2", "validation", "bootstrap-switch"]
       blocks:
       #- "questions.create.dialog"
