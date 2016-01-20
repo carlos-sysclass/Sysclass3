@@ -289,7 +289,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("User created with success"),
+                            $this->translate->translate("Created with success"),
                             "success"
                         )
                     );
@@ -413,7 +413,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             break;
                         }
                     } else {
-                        $message = $this->translate->translate("Item updated with success");
+                        $message = $this->translate->translate("Updated with success");
                         $type = "success";
                     }
 
@@ -474,7 +474,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
-                    $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Removed with success"), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                     $response = $this->invalidRequestError("", "warning");
