@@ -273,12 +273,18 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 
                 if ($this->request->hasQuery('object')) {
-                    $this->response->setJsonContent(
+                    $itemData = call_user_func_array(
+                        array($itemModel, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
+                    );
+
+                    $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
                             $this->translate->translate("Entity created with success"),
                             "success"
-                        )
-                    );
+                        ),
+                        $itemData 
+                    ));
                 } else {
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(

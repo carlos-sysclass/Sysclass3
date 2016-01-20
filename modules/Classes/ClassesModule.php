@@ -331,8 +331,6 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $this->response->setJsonContent(
             $response
         );
-
-
     }
 
 }

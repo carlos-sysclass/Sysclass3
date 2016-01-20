@@ -1,4 +1,5 @@
 <?php
+namespace Sysclass\Modules\Tests;
 /**
  * Module Class File
  * @filesource
@@ -12,8 +13,10 @@ use Phalcon\Acl\Adapter\Memory as AclList,
  */
 
 
-
-class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IBreadcrumbable, IActionable, IBlockProvider
+/**
+ * @RoutePrefix("/module/tests")
+ */
+class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
     private static $suitable_translate_contents = array("subtitle");
 
@@ -34,8 +37,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
 
     /* ILinkable */
     public function getLinks() {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, "Tests", "View")) {
+        if ($this->acl->isUserAllowed(null, "Tests", "View")) {
             $itemsData = $this->model("tests")->addFilter(array(
                 'active'    => true
             ))->getItems();
@@ -196,7 +198,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {
@@ -225,7 +227,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:identifier
+     * @Get("/edit/{identifier}")
      */
     public function editPage($identifier)
     {
@@ -255,7 +257,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * Test landing page, before execution
      *
-     * @url GET /open/:identifier
+     * @Get("/open/{identifier}")
      */
     public function openPage($identifier)
     {
@@ -314,7 +316,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * The test execution itself
      *
-     * @url POST /execute/:identifier
+     * @Post("/execute/{identifier}")
      */
     public function executePage($identifier)
     {
@@ -368,8 +370,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * The test execution itself
      *
-     * @url GET /execute/:identifier
-     * @url GET /execute/:identifier/:execution_id
+     * @Get("/execute/{identifier}")
+     * @Get("/execute/{identifier}/{execution_id}")
      */
     public function executeViewPage($identifier, $execution_id)
     {
@@ -460,9 +462,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url GET /item/:model/:identifier
+     * @Get("/item/{model}/{identifier}")
      */
-    public function getItemAction($model = "me", $identifier = null)
+    public function getItemRequest($model = "me", $identifier = null)
     {
         if ($model == "me") {
             $itemModel = $this->model("tests");
@@ -480,9 +482,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url POST /item/:model
+     * @Post("/item/{model}")
      */
-    public function addItemAction($model, $type)
+    public function addItemRequest($model, $type)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -502,7 +504,7 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $data['language_code'] = $this->translate->getUserLanguageCode();
+                $data['language_code'] = $this->translate->getSource();
 
                 $_GET['redirect'] = "0";
             } elseif ($model == "execution") {
@@ -561,9 +563,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url PUT /item/:model/:identifier
+     * @Put("/item/{model}/{identifier}")
      */
-    public function setItemAction($model, $identifier)
+    public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -628,9 +630,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url DELETE /item/:model/:identifier
+     * @Delete("/item/{model}/{identifier}")
      */
-    public function deleteItemAction($model, $identifier)
+    public function deleteItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
@@ -666,11 +668,11 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url GET /items/:model
-     * @url GET /items/:model/:type
-     * @url GET /items/:model/:type/:filter
+     * @Get("/items/{model}")
+     * @Get("/items/{model}/{type}")
+     * @Get("/items/{model}/{type}/{filter}")
      */
-    public function getItemsAction($model = "me", $type = "default", $filter = null)
+    public function getItemsRequest($model = "me", $type = "default", $filter = null)
     {
         // DEFAULT OPTIONS ROUTE
         $optionsRoute = array(
@@ -810,8 +812,8 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * The test execution itself
      *
-     * @url GET /recalculate/:identifier/:execution_id
-     * @url POST /recalculate/:identifier/:execution_id
+     * @Get("/recalculate/{identifier}/{execution_id}")
+     * @Post("/recalculate/{identifier}/{execution_id}")
      */
     public function recalculateViewPage($identifier, $execution_id)
     {
@@ -890,9 +892,9 @@ class TestsModule extends SysclassModule implements ISummarizable, ILinkable, IB
     /**
      * [ add a description ]
      *
-     * @url PUT /items/:model/set-order/:lesson_id
+     * @Put("/items/{model}/set-order/{lesson_id}")
      */
-    public function setOrderAction($model, $lesson_id)
+    public function setOrderRequest($model, $lesson_id)
     {
         if ($model == "me") {
             return $this->invalidRequestError();
