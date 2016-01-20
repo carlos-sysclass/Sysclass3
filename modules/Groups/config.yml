@@ -52,3 +52,6 @@ crud:
         page_subtitle: Config and edit group info
 models:
   me: Sysclass\Models\Users\Group
+  users: 
+    class: Sysclass\Models\Users\UsersGroups
+    findMethod: findByGroupId

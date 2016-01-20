@@ -67,7 +67,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Group"));
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
