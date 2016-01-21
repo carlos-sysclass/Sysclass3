@@ -11,6 +11,17 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="row margin-top-20">
+                    <div class="col-md-12">
+                        {include "`$smarty.current_dir`/../blocks/table.tpl" 
+                        FORCE_INIT=1
+                        T_MODULE_CONTEXT=$T_QUESTIONS_SELECT_BLOCK_CONTEXT
+                        T_MODULE_ID="questions-select"}
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="modal-body">
                 <div class="backgrid-table">
                     <table class="table table-striped table-bordered table-hover table-full-width data-table" id="questions-select-modal-table">
                         <thead>
@@ -30,6 +41,7 @@
                     </table>
                 </div>
             </div>
+            -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>

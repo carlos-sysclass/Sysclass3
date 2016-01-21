@@ -873,6 +873,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         var lessonExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
+            questionSelectDialog : app.module("dialogs.questions.select"),
             template : _.template($("#exercise-timeline-item").html()),
             className : "timeline-item",
             tagName : "div",
@@ -881,9 +882,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     $SC.module("dialogs.questions.select").start();
                 }
 
-                this.questionModule = $SC.module("dialogs.questions.select");
+                //this.questionModule = $SC.module("dialogs.questions.select");
 
-                this.listenTo(this.questionModule, "select:item", this.selectQuestion.bind(this));
+                //this.listenTo(this.questionModule, "select:item", this.selectQuestion.bind(this));
+
+                if (!this.questionSelectDialog.started) {
+                    this.questionSelectDialog.start({
+                        modelClass : Backbone.Model
+                    });
+                }
             },
             events : function() {
                 var events = baseLessonChildContentTimelineViewClass.prototype.events.apply(this);
@@ -922,12 +929,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 //this.model.addQuestion(model);
             },
             openSelectDialog : function() {
-                $SC.module("dialogs.questions.select").setFilter({
+                console.warn(this.questionSelectDialog);
+                this.questionSelectDialog.setFilter({
                     content_id : this.model.get("id")
-                });
-
-                app.module("dialogs.questions.select").open();
+                }).getValue(function(result) {
+                    this.model.get("exercise").add(result);
+                }.bind(this));
             },
+            /*
             selectQuestion : function(e, model) {
                 app.module("dialogs.questions.select").close();
                 this.model.get("exercise").add(model);
@@ -936,6 +945,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             renderQuestionsContent : function() {
 
             },
+            */
             delete : function() {
                 baseLessonChildContentTimelineViewClass.prototype.delete.apply(this);
 
@@ -1280,18 +1290,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             collection : mod.lessonContentCollection,
             collectionFilter : {parent_id: null}
         });
-
-        /*
-        var contents = $SC.module("blocks.lessons.content").lessonContentCollection.where({
-          parent_id: "22"
-        });
-
-        _.each(contents, function(item) {
-          console.log(item);
-        });
-        */
-
     });
+
     $SC.module("crud.views.edit").on("start", function() {
         mod.start();
 

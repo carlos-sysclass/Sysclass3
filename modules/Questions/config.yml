@@ -4,22 +4,23 @@
 blocks:
   questions.select.dialog:
     context:
+      sAjaxSource: /module/questions/items/lesson-content/datatable/
       datatable_fields:
 
         - mData: id
           sClass: text-center
           label: "#"
 
-        - mData: area
+        - mData: departament.name
           label: Knowlegde Area
 
         - mData: title
           label: Title
 
-        - mData: type
+        - mData: type.name
           label: Type
 
-        - mData: difficulty
+        - mData: difficulty.name
           label: Difficulty
 
         - mData: options
@@ -82,5 +83,8 @@ crud:
         page_subtitle: Edit your questions
 models:
   me:
+    class: Sysclass\Models\Courses\Questions\Question
+    exportMethod: ["toFullArray", ["Departament", "Type", "Difficulty"]]
+  'lesson-content':
     class: Sysclass\Models\Courses\Questions\Question
     exportMethod: ["toFullArray", ["Departament", "Type", "Difficulty"]]

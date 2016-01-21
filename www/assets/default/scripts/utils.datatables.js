@@ -16,7 +16,8 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				"click .datatable-option-remove" : "removeItem",
 				"click .datatable-option-check" : "checkItem",
 				"switchChange.bootstrapSwitch .datatable-option-switch" : "switchItem",
-				"click .datatable-actionable" : "doAction"
+				"click .datatable-actionable" : "doAction",
+				"click [data-datatable-action]" : "doAction"
 			},
 			options : null,
         	initialize : function(opt) {
@@ -68,6 +69,9 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				*/
         	},
 			doAction : function(e) {
+				if (e) {
+					e.preventDefault();
+				}
 				var item = $(e.currentTarget);
 				if (item.data("actionUrl")) {
 					var url = item.data("actionUrl");
@@ -120,12 +124,9 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
 				}
         	},
-
-        	
-
-
         	setUrl : function(url) {
         		this.oTable.api().ajax.url(url).load();
+        		return this;
         	},
 	        refresh : function() {
 	            this.oTable.api().ajax.reload();

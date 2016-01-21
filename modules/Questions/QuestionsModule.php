@@ -207,6 +207,21 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
         parent::editPage($identifier);
     }
 
+
+    public function getDatatableItemOptions() {
+        if ($this->_args['model'] == 'lesson-content') {
+            $options['select'] = array(
+                'icon'  => 'icon-check',
+                'class' => 'btn-sm btn-primary'
+            );
+
+            return $options;
+
+        } else {
+            return parent::getDatatableItemOptions();
+        }
+    }
+
     /**
      * [ add a description ]
      *
