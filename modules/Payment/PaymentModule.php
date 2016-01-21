@@ -2,13 +2,15 @@
 namespace Sysclass\Modules\Payment;
 
 use 
+    Phalcon\Mvc\User\Component,
     Sysclass\Models\Payments\Payment,
     Sysclass\Models\Payments\PaymentItem,
-    Kint;
+    Kint,
+    Sysclass\Models\Payments\PaymentTransacao;
 
 /**
  * @RoutePrefix("/module/payment")
- */
+*/
 class PaymentModule extends \SysclassModule implements \ILinkable
 {
     /* ILinkable */
@@ -33,37 +35,167 @@ class PaymentModule extends \SysclassModule implements \ILinkable
     /**
      * [ add a description ]
      *
-     * @Get("/receive/{payment_item_id}")
+     * @Get("/authorized/{payment_itens_id}")
      */
+    public function authorizedPaymentRequest($payment_itens_id) {
+        $token   = $this->request->getQuery('token');
+
+        $item = PaymentTransacao::findFirst(
+            array(
+                    'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
+                        "bind"             => array(
+                        "token"            => $token,
+                        "payment_itens_id" => $payment_itens_id
+                    )
+                )
+        );
+        $item->status = "authorized";
+        $item->save();
+        echo "authorized";
+    }
     
-    public function receivePaymentRequest($payment_item_id) {
+    /**
+     * [ add a description ]
+     *
+     * @Get("/checkout/{token}")
+     */
+    public function checkoutPaymentRequest($token) {    
+        $curl = curl_init();          
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_URL, 'https://api-3t.sandbox.paypal.com/nvp');
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array(
+            'USER'      => 'conta-business_api1.test.com',
+            'PWD'       => '1365001380',
+            'SIGNATURE' => 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx',          
+            'METHOD'    => 'GetExpressCheckoutDetails',
+            'VERSION'   => '108',          
+            'TOKEN'     => $token
+        )));
+          
+        $response = curl_exec($curl);
+          
+        curl_close($curl);
+          
+        $nvp = array();
+          
+        if (preg_match_all('/(?<name>[^\=]+)\=(?<value>[^&]+)&?/', $response, $matches)) {
+            foreach ($matches['name'] as $offset => $name) {
+                $nvp[$name] = urldecode($matches['value'][$offset]);
+            }
+        }         
+        echo "<pre>"; print_r($nvp);
+    }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/createRecurring/{token}/{payerID}")
+     */
+    public function createRecurringPaymentRequest($token, $payerID) {    
+            
+            echo "token   => ".$token;
+            echo "payerID => ".$payerID;
+
+            $curl = curl_init();
+              
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_URL, 'https://api-3t.sandbox.paypal.com/nvp');
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array(
+                'USER'      => 'conta-business_api1.test.com',
+                'PWD'       => '1365001380',
+                'SIGNATURE' => 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx',                      
+                'METHOD'    => 'CreateRecurringPaymentsProfile',
+                'VERSION'   => '108',
+                'LOCALECODE'=> 'pt_BR',              
+                'TOKEN'     => $token,
+                'PayerID'   => $payerID,              
+                'PROFILESTARTDATE' => '2012-10-08T16:00:00Z',
+                'DESC'             => 'Exemplo',
+                'BILLINGPERIOD'    => 'Month',
+                'BILLINGFREQUENCY' => '1',
+                'AMT'              => 100,
+                'CURRENCYCODE'     => 'BRL',
+                'COUNTRYCODE'      => 'BR',
+                'MAXFAILEDPAYMENTS'=> 3
+            )));
+              
+            $response =    curl_exec($curl);
+              
+            curl_close($curl);
+              
+            $nvp = array();
+              
+            if (preg_match_all('/(?<name>[^\=]+)\=(?<value>[^&]+)&?/', $response, $matches)) {
+                foreach ($matches['name'] as $offset => $name) {
+                    $nvp[$name] = urldecode($matches['value'][$offset]);
+                }
+            }              
+            echo "<pre>"; print_r($nvp);
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/cancel/{payment_itens_id}")
+     */
+    public function cancelPaymentRequest($payment_itens_id) {
+        $token   = $this->request->getQuery('token');
+
+        $item = PaymentTransacao::findFirst(
+            array(
+                    'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
+                    "bind"       => array(
+                        "token"            => $token,
+                        "payment_itens_id" => $payment_itens_id
+                    )
+                )
+        );
+        $item->status = "cancel";
+        $item->save();
+        echo "cancel";
+    }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/initiate/{payment_item_id}")
+     */
+    public function initiatePaymentRequest($payment_item_id) {
+
+        // PEGAR O USUÁRIO ATUAL
+        //$this->user->id
+
+        //$paymentItemObject->getPayment()->getUser()->id
 
         Kint::dump($payment_item_id);
-        $paymentObject = PaymentItem::findFirstById($payment_item_id);
-
+        $paymentItemObject = PaymentItem::findFirstById($payment_item_id);
+        
         //SE DER ALGUMA ERRO ENTRA NA CONDIÇÃO    
-        if (!$paymentObject) {
-            echo "nao foi encontrado registro";
+        if (!$paymentItemObject) {
+            echo "Não foi encontrado registro";
             exit;
         }
 
-
-
-        Kint::dump($paymentObject->toArray(), $paymentObject->getPayment()->getUser()->toArray());
-        exit;
-        
-        //CHAMA UMA CONFIGURAÇÃO PRE-DEFINIDA // app/config/local.ini
-        $this->environment->paypal->user;
-        $this->environment->paypal->pass;
-
-        //$user_id = 1; $payment_id = 1;
-        $object = new Payment();
-        $object->assign();
-        $object->payment_id = 3;
+        $data = $paymentItemObject->toArray();
+        $data['user'] = $paymentItemObject->getPayment()->getUser()->toArray();
 
         //ENVIA P/ PAYPAL    
-        $this->payment->EnviarPagamento(10);
+        $result = $this->payment->sendPayment($data);        
 
+        if ($this->request->isAjax()) {
+            echo "json";
+        } else {
+            //header("location:".$result);            
+            echo "<meta http-equiv=refresh content='0;URL=$result'>";
+        }
+
+        exit;
         $resut = Payment::find([
                 'conditions' => 'payment_id = :pay_id: AND user_id = :user_id:',
                 'bind'       => [
@@ -71,9 +203,8 @@ class PaymentModule extends \SysclassModule implements \ILinkable
                 'user_id'    => $user_id
             ]
         ]);
-
-        //foreach($resut)
     }
+
 
     public function beforeModelCreate($evt, $model, $data) {
         if (

@@ -170,3 +170,12 @@ $di->setShared('flash', function () {
 
     return $flash;
 });
+
+
+$di->setShared("payment", function() use ($eventsManager) {
+    $storage = new Sysclass\Services\Payment\Adapter();
+    $storage->setEventsManager($eventsManager);
+    $storage->initialize();
+    //$storage
+    return $storage;
+});
