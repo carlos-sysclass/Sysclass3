@@ -35,5 +35,11 @@ class LocalFilesystem extends Component implements IStorage {
 		}
 		return false;
 	}
-}
 
+    public function putFilestream(File $struct, $fileStream = null) {
+        $file_path = $this->getFullFilePath($struct);
+        $bytes  = file_put_contents($file_path, $fileStream);
+        
+        return $bytes;
+    }
+}

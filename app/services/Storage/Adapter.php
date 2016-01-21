@@ -90,6 +90,10 @@ class Adapter extends Component implements IStorage
         return $this->backend->getfilestream($struct);
     }
 
+    public function putFilestream(File $struct, $fileStream = null) {
+        return $this->backend->putFilestream($struct, $fileStream);
+    }
+
 
 
 

@@ -11,7 +11,10 @@ $SC.module("dialogs.questions.select", function(mod, app, Backbone, Marionette, 
         this.dialogView.open();
 
         this.stopListening(this.tableView);
-        this.listenTo(this.tableView, "action.datatables", function(el, data, action) {
+        this.listenTo(this.tableView, "action.datatables", function(el, data, action, evt) {
+            if (evt) {
+                evt.preventDefault();
+            }
             
             if (action == "select") {
                 this.stopListening(this.tableView);

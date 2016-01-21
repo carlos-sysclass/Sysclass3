@@ -5,7 +5,8 @@ namespace Sysclass\Modules\Lessons;
  * @filesource
  */
 use Sysclass\Models\Courses\Contents\Exercise,
-    Sysclass\Models\I18n\Language;
+    Sysclass\Models\I18n\Language,
+    Sysclass\Models\Dropbox\File;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -779,7 +780,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     }
 
     public function normatizeSubtitleFile($fileInfo) {
-        $filestream = $this->model("dropbox")->getFileContents($fileInfo);
+        $fileStruct =File::findFirstById($fileInfo['id']);
+        $filestream = $this->storage->getFilestream($fileStruct);
+        //$filestream = $this->model("dropbox")->getFileContents($fileInfo);
         $parsed = $this->parseWebVTTFile($filestream);
 
         if (count($parsed) == 0) {
@@ -788,8 +791,12 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $parsedFilestream = $this->makeWebVTTFile($parsed, array("index", "from", "to", "text"));
 
-        // CREATE FILE
-        return $this->model("dropbox")->updateFile($parsedFilestream, $fileInfo);
+        $result = $this->storage->putFilestream($fileStruct, $parsedFilestream);
+
+        if ($result !== FALSE) {
+            return $fileInfo;
+        }
+        return false;
     }
     /**
      * This function parse a WEBVTT File into a array

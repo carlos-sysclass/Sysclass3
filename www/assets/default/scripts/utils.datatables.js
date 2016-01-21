@@ -69,9 +69,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				*/
         	},
 			doAction : function(e) {
-				if (e) {
-					e.preventDefault();
-				}
 				var item = $(e.currentTarget);
 				if (item.data("actionUrl")) {
 					var url = item.data("actionUrl");
@@ -83,7 +80,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 	                $.ajax(url, { method : method } );
 				} else {
 					var data = this.oTable._($(e.currentTarget).closest("tr"));
-					this.trigger("action.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), $(e.currentTarget).data("datatableAction"));
+					this.trigger("action.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), $(e.currentTarget).data("datatableAction"), e);
 
 
 					var item = $(e.currentTarget);
