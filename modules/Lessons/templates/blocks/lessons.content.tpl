@@ -9,10 +9,12 @@
             <span>{translateToken value="Add File"}</span>
             <input type="file" name="files[]">
         </span>
+        <!--
         <span class="btn btn-sm btn-link timeline-addtext">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Text"}</span>
         </span>
+        -->
         <span class="btn btn-sm btn-link timeline-addexercise">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Exercises"}</span>
