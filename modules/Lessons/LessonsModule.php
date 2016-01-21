@@ -433,7 +433,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url PUT /items/lesson-content/set-order/:lesson_id
+     * @Put("/items/lesson-content/set-order/{lesson_id}")
      */
     public function setContentOrderAction($lesson_id)
     {
@@ -588,7 +588,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url PUT /item/exercise/:id
+     * @Put("/item/exercise/{id}")
      */
     public function setExerciseAnswersRequest() {
         if ($user = $this->getCurrentUser(true)) {
@@ -623,9 +623,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url PUT /item/:model/:id
+     * @Put("/item/{model}/{id}")
      */
-    /*
+    
     public function setItemRequest($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -637,7 +637,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'success' => "Lesson updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
-            } elseif ($model == "lesson-content") {
+            } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content updated with success",
@@ -657,7 +657,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             return $this->notAuthenticatedError();
         }
     }
-    */
+    
     /**
      * [ add a description ]
      *
@@ -697,9 +697,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @url PUT /item/lesson-content/:id/translate
+     * @Put("/item/lesson-content/{id}/translate")
      */
-    public function translateContent($model, $id)
+    public function translateContent($id)
     {
         $modelRoute = "lessons/content";
 
