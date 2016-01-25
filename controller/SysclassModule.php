@@ -222,7 +222,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
         if (is_object($editItem)) {
             $model_info = $this->model_info[$model];
-            $this->response->setJsonContent(call_user_func_array(
+            $this->response->setJsonContent(call_user_func(
                 array($editItem, $model_info['exportMethod'][0]),
                 $model_info['exportMethod'][1]
             ));
@@ -273,7 +273,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 
                 if ($this->request->hasQuery('object')) {
-                    $itemData = call_user_func_array(
+                    $itemData = call_user_func(
                         array($itemModel, $model_info['exportMethod'][0]),
                         $model_info['exportMethod'][1]
                     );
@@ -312,7 +312,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $type = "warning";
                 }
 
-                $itemData = call_user_func_array(
+                $itemData = call_user_func(
                     array($itemModel, $model_info['exportMethod'][0]),
                     $model_info['exportMethod'][1]
                 );
@@ -426,7 +426,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             $type
                         );
                     } elseif ($_GET['object'] == "1") {
-                        $itemData = call_user_func_array(
+                        $itemData = call_user_func(
                             array($itemModel, $model_info['exportMethod'][0]),
                             $model_info['exportMethod'][1]
                         );
@@ -596,7 +596,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func_array(
+                    $items[$key] = call_user_func(
                         array($item, $model_info['exportMethod'][0]),
                         $model_info['exportMethod'][1]
                     );

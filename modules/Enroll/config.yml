@@ -55,14 +55,13 @@ crud:
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
-      blocks: ["fixed_grouping.dialog", "enroll.fields"]
       variables:
         page_subtitle: Create Enrollment Guidelines
     'edit/{id}':
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
-      blocks: ["fixed_grouping.dialog"]
+      blocks: ["fixed_grouping.dialog", "enroll.fields"]
       variables:
         page_subtitle: Edit Enrollment Guidelines
 
@@ -111,7 +110,7 @@ blocks:
 models:
   me: 
     class: Sysclass\Models\Enrollments\Enroll
-    #exportMethod: ["toFullArray", ["User", "Course"]]
+    exportMethod: ["toFullArray", ["Fields"]]
   course: 
     class: Sysclass\Models\Enrollments\Course
     exportMethod: ["toFullArray", ["User", "Course"]]
