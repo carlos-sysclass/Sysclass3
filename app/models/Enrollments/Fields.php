@@ -14,5 +14,9 @@ class Fields extends Model
 
         $this->belongsTo("field_id", "Sysclass\\Models\\Forms\\Fields", "id",  array('alias' => 'Field'));
     }
-    
+
+    public function toArray() {
+    	return $this->toFullArray(array('Field'), parent::toArray());
+    }
+
 }

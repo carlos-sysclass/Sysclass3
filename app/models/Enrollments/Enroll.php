@@ -13,14 +13,13 @@ class Enroll extends Model
     {
         $this->setSource("mod_enroll");
 
-        /*
+        
         $this->hasMany(
             "id",
             "Sysclass\Models\Enrollments\Fields",
             "enroll_id",
-            array('alias' => 'Fields')
+            array('alias' => 'EnrollFields')
         );
-        */
 
         $this->hasManyToMany(
             "id",

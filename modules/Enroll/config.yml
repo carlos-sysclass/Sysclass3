@@ -110,12 +110,12 @@ blocks:
 models:
   me: 
     class: Sysclass\Models\Enrollments\Enroll
-    exportMethod: ["toFullArray", ["Fields"]]
+    exportMethod: ["toExtendArray", ["EnrollFields"]]
   course: 
     class: Sysclass\Models\Enrollments\Course
     exportMethod: ["toFullArray", ["User", "Course"]]
-  ##fields: 
-    #class: Sysclass\Models\Enrollments\Fields
-    #exportMethod: ["toFullArray", ["User", "Course"]]
+  fields: 
+    class: Sysclass\Models\Enrollments\Fields
+    exportMethod: ["toFullArray", ["Field"]]
 
 

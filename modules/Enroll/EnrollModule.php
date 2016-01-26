@@ -57,6 +57,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putComponent("data-tables");
                 $self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
+
+                $fields = Fields::find();
+                $self->putItem("form_fields", $fields->toArray());
+
                 //$self->putComponent("bootstrap-switch");
 
                 $block_context = $self->getConfig("blocks\\enroll.fields\\context");

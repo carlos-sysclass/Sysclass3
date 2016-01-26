@@ -419,13 +419,13 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $response = $this->createAdviseResponse($message, $type);
 
-                    if ($_GET['redirect'] == "1") {
+                    if ($this->request->hasQuery('redirect')) {
                         $response = $this->createRedirectResponse(
                             null,
                             $message, 
                             $type
                         );
-                    } elseif ($_GET['object'] == "1") {
+                    } else {
                         $itemData = call_user_func(
                             array($itemModel, $model_info['exportMethod'][0]),
                             $model_info['exportMethod'][1]

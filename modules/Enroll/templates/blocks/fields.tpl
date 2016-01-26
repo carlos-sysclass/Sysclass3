@@ -48,12 +48,6 @@
     <div class="list-file-item-options">
         <% if (typeof model.field_id !== 'undefined') { %>
             <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
-
-            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="{translateToken value="Edit Field Info"}">
-                <i class="fa fa-edit"></i>
-            </a>
-            <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (model.active == "1") { %>checked="checked"<% } %> value="1">
-
         <% } %>
         <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
             data-toggle="confirmation"
@@ -79,14 +73,11 @@
                     <div class="form-group">
                         <label class="control-label col-md-3">{translateToken value="Field Name"}</label>
                         <div class="col-md-9">
-                            <input 
-                                type="hidden" 
-                                class="select2-me form-control col-md-12" 
-                                name="field_id"
-                                data-placeholder="{translateToken value='Please Select'}" 
-                                data-url="/module/forms/items/fields"
-                                data-rule-required="true" 
-                            />
+                            <select name="field_id" class="select2-me form-control col-md-12" data-placeholder="{translateToken value='Please Select'}" data-rule-required="true">
+                                {foreach $T_FORM_FIELDS as $field}
+                                <option value="{$field.id}">{$field.name}</option>
+                                {/foreach}
+                            </select>
                         </div>
                     </div>
                 </div>
