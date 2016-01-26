@@ -39,18 +39,17 @@ class Adapter extends Component implements IPayment
     public function initiatePayment(array $data) {
 
         //Vai usar o Sandbox, ou produção?
-        $sandbox = true;
-        
+        $sandbox = true;        
         //Baseado no ambiente, sandbox ou produção, definimos as credenciais
+
         //e URLs da API.
         if ($sandbox) {
             //credenciais da API para o Sandbox
-            $user = 'conta-business_api1.test.com';
-            $pswd = '1365001380';
-            $signature = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx';
-          
+            $user = $this->environment->paypal->user;
+            $pswd = $this->environment->paypal->pass;
+            $signature = $this->environment->paypal->signature;          
             //URL da PayPal para redirecionamento, não deve ser modificada
-            $paypalURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+            $paypalURL = $this->environment->paypal->paypalURL;
         } else {
             //credenciais da API para produção
             $user      = 'usuario';
@@ -65,7 +64,6 @@ class Adapter extends Component implements IPayment
         $id         = $data['id'];
         $valor      = floatval($data['valor']);
         $valor      = round($valor,2);
-
           
         $requestNvp = array(
             'USER'      => $user,
@@ -86,7 +84,7 @@ class Adapter extends Component implements IPayment
             
             //'RETURNURL'    => 'http://local.sysclass.com/module/payment/paypal/authorize/' . $id,
             //'CANCELURL'    => 'http://local.sysclass.com/module/payment/paypal/cancel/' . $id,
-            'RETURNURL'    => 'http://local.sysclass.com/module/payment/authorize/' . $id,
+            'RETURNURL'    => 'http://local.sysclass.com/module/payment/authorized/' . $id,
             'CANCELURL'    => 'http://local.sysclass.com/module/payment/cancel/' . $id,
             'BUTTONSOURCE' => 'BR_EC_EMPRESA'
         );  
@@ -114,7 +112,6 @@ class Adapter extends Component implements IPayment
             //printf("Erro[%d]: %s\n", $responseNvp['L_ERRORCODE0'], $responseNvp['L_LONGMESSAGE0']);
             //status == 'failed'
             
-            echo "<pre>";
             Kint::dump($responseNvp);
 
             $x->descricao = json_encode($responseNvp);
@@ -133,14 +130,14 @@ class Adapter extends Component implements IPayment
             'continue' => '<continue>',
             'reason' => '<err_message>'
         ] */ 
+        
+        $token            = $data['args']['token'];
+        $payment_itens_id = $data['payment_itens_id'];
+        
 
         $autorized = $this->backend->authorizePayment($data['args']);
 
         if ($autorized['continue']) {
-            //  SALVA OS DADOS NA TABELA DE TRANSACAO E RETORNA TRUE PARA CONTINUAR
-
-            Kint::dump($data);
-
             $item = PaymentTransacao::findFirst(
                 array(
                         'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
@@ -150,47 +147,43 @@ class Adapter extends Component implements IPayment
                         )
                     )
             );
-            $item->status = "authorized";
-            $item->save();
-            return true;
+            if($item){
+                $item->status = "authorized";            
+                $item->save();
+                return true;
+            }
+                return false;
         } else {
             //SALVA OS MOTIVOS DE FALHA NA TABELA E RETORNA FALSE PARA PARAR O PROCESSO
-
             return false;
         }
     }
 
-    public function checkDetailsPayment($token, $payment_itens_id) {
+    public function confirmPayment(array $data) {
+        
+            $token            = $data['args']['token'];           
+            $PayerID          = $data['PayerID'];            
+            $payment_itens_id = 3;
+            
+            $confirmed = $this->backend->confirmPayment($data['args']);
 
-       // echo "=>>  ".$autorized = $this->backend->checkDetailsPayment($token);
-
-
-        $item = PaymentTransacao::findFirst(
-        array(
-                    'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
-                        "bind"             => array(
-                        "token"            => $token,
-                        "payment_itens_id" => $payment_itens_id
-                    )
-                )
-        );
-        $item->status = "checked";
-        $item->save();
-        echo "checked";
-    }    
-
-    public function confirmPayment($token, $payerID, $payment_itens_id) {
-            $item = PaymentTransacao::findFirst(
-                array(
-                        'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
-                            "bind"             => array(
-                            "token"            => $token,
-                            "payment_itens_id" => $payment_itens_id
+            if ($confirmed['confirmed']) {
+                $item = PaymentTransacao::findFirst(
+                    array(
+                            'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
+                                "bind"             => array(
+                                "token"            => $token,
+                                "payment_itens_id" => $payment_itens_id
+                            )
                         )
-                    )
-            );
-            $item->status = "Success";
-            $item->save();
-            echo "Success";
+                );
+                if($item){
+                    $item->status = "Success";            
+                    $item->save();
+                    return true;
+                }else{
+                    return false;
+                }                
+            } return false;
     }    
 }

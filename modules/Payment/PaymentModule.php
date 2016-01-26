@@ -15,8 +15,6 @@ class PaymentModule extends \SysclassModule implements \ILinkable
 {
     /* ILinkable */
     public function getLinks() {
-        //if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-
             //$total_itens = User::count("active = 1");
 
             return array(
@@ -29,7 +27,6 @@ class PaymentModule extends \SysclassModule implements \ILinkable
                     )
                 )
             );
-        //}
     }
 
    /**
@@ -43,7 +40,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable
         //$this->user->id
         
         //$paymentItemObject->getPayment()->getUser()->id;
-        Kint::dump($paymentItemId);
+        //Kint::dump($paymentItemId);
         $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
         
         //SE DER ALGUMA ERRO ENTRA NA CONDIÇÃO    
@@ -57,7 +54,6 @@ class PaymentModule extends \SysclassModule implements \ILinkable
         
         //ENVIA P/ PAYPAL    
         $result = $this->payment->initiatePayment($data);        
-        //$result = $this->payment->sendPayment($data);        
         
         if ($this->request->isAjax()) {
             echo "json";
@@ -69,21 +65,27 @@ class PaymentModule extends \SysclassModule implements \ILinkable
 
     /**
      * [ add a description ]
-     *
-     * @Get("/authorize/{backend}/{payment_itens_id}")
+     *        
+     * @Get("/authorized/{payment_itens_id}")
      */
-    public function authorizePaymentRequest($backend, $payment_itens_id) {
-
+    public function authorizePaymentRequest($payment_itens_id) {
+        $token   = $this->request->getQuery('token');   
+        $PayerID = $this->request->getQuery('PayerID');   
+        
         $continue = $this->payment->authorizePayment(array(
-            'backend' => $backend,
+            'backend'          => $backend,
             'payment_itens_id' => $payment_itens_id,
             'args' => $this->request->getQuery()
         ));
-
+        
         if ($continue) {
-            $this->payment->confirmPayment();
+            $this->payment->confirmPayment(array(
+                'backend'          => $backend,
+                'payment_itens_id' => $payment_itens_id,
+                'args'             => $this->request->getQuery()
+            ));
         } else {
-            //$this->payment->cancel()
+            echo "success";
         }
     }
     
@@ -94,9 +96,9 @@ class PaymentModule extends \SysclassModule implements \ILinkable
      * @Get("/cancel/{payment_itens_id}")
      */
     public function cancelPaymentRequest($payment_itens_id) {
-        $token   = $this->request->getQuery('token');
-
-        $item = PaymentTransacao::findFirst(
+        $token = $this->request->getQuery('token');        
+        
+        $item  = PaymentTransacao::findFirst(
             array(
                     'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
                     "bind"       => array(
@@ -106,52 +108,41 @@ class PaymentModule extends \SysclassModule implements \ILinkable
                 )
         );
         $item->status = "cancel";
-        $item->save();        
+        $item->save();    
+        //echo "-> ".$this->response->setJsonContent(array("status" => "OK"));
+        echo "<script>alert('Cancelado pelo usuario');</script>";       
+        echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";        
     }
 
-    /**
+     /** 
      * [ add a description ]
      *
-     * @Get("/checkout/{token}/{payment_itens_id}")
+     * @Get("/confirm/{payment_itens_id}")
      */
-    public function checkDetailsPayment($token, $payment_itens_id) {   
 
-        //ENVIA P/ PAYPAL    
-        //$result = $this->payment->checkDetailsPayment($token);        
-        
-        $item = PaymentTransacao::findFirst(
-            array(
-                    'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
-                        "bind"             => array(
-                        "token"            => $token,
-                        "payment_itens_id" => $payment_itens_id
-                    )
-                )
-        );
-        $item->status = "checked";
-        $item->save();
-        echo "checked";
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/confirm/{token}/{payerID}/{payment_itens_id}")
-     */
-    public function doExpressCheckoutPaymentPaymentRequest($token, $payerID, $payment_itens_id) {    
+    /*confirm/{backend}/{payment_itens_id}")*/
+    public function doExpressCheckoutPaymentPaymentRequest($payment_itens_id) {    
             
-            $item = PaymentTransacao::findFirst(
-                array(
-                        'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
-                            "bind"             => array(
-                            "token"            => $token,
-                            "payment_itens_id" => $payment_itens_id
-                        )
-                    )
-            );
-            $item->status = "Success";
-            $item->save();
-            echo "Success";
+            $token   = $this->request->getQuery('token');   
+            $PayerID = $this->request->getQuery('PayerID');   
+           
+           $continue = $this->payment->confirmPayment(array(
+            'backend' => $backend,
+            'payment_itens_id' => $payment_itens_id,
+            'args' => $this->request->getQuery()
+        ));
 
+        $continue = true;
+        if ($continue) {
+            $this->payment->confirmPayment(array(
+                'backend'          => $backend,
+                'payment_itens_id' => $payment_itens_id,
+                'args'             => $this->request->getQuery()
+            ));
+            echo "<script>alert('Pagamento Confirmado');</script>";       
+            echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";   
+        } else {
+            echo "Nao foi possivel confirmar o pagamento";
+        }        
     }
 }

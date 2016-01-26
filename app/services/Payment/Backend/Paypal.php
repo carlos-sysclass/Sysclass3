@@ -41,13 +41,11 @@ class Paypal extends Component implements IPayment {
         //Baseado no ambiente, sandbox ou produção, definimos as credenciais
         //e URLs da API.
         if ($sandbox) {
-            //credenciais da API para o Sandbox
-            $user = 'conta-business_api1.test.com';
-            $pswd = '1365001380';
-            $signature = 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx';
-          
+            $user = $this->environment->paypal->user;
+            $pswd = $this->environment->paypal->pass;
+            $signature = $this->environment->paypal->signature;          
             //URL da PayPal para redirecionamento, não deve ser modificada
-            $paypalURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+            $paypalURL = $this->environment->paypal->paypalURL;
         } else {
             //credenciais da API para produção
             $user      = 'usuario';
@@ -55,7 +53,7 @@ class Paypal extends Component implements IPayment {
             $signature = 'assinatura';
           
             //URL da PayPal para redirecionamento, não deve ser modificada
-            $paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
+            $paypalURL = $this->environment->paypal->paypalURL;
         }
           
         //Campos da requisição da operação SetExpressCheckout, como ilustrado acima.
@@ -80,9 +78,9 @@ class Paypal extends Component implements IPayment {
             'L_PAYMENTREQUEST_0_DESC0' => 'Produto A – 110V',
             'L_PAYMENTREQUEST_0_AMT0'  => $valor,
             'L_PAYMENTREQUEST_0_QTY0'  => '1',    
-            
-            'RETURNURL'    => 'http://local.sysclass.com/module/payment/paypal/authorized/' . $id,
-            'CANCELURL'    => 'http://local.sysclass.com/module/payment/paypal/cancel/' . $id,
+                                                                               
+            'RETURNURL'    => 'http://local.sysclass.com/module/payment/authorized/paypal/' . $id,
+            'CANCELURL'    => 'http://local.sysclass.com/module/payment/cancel/paypal/' . $id,
             'BUTTONSOURCE' => 'BR_EC_EMPRESA'
         );  
 
@@ -147,17 +145,16 @@ class Paypal extends Component implements IPayment {
         $result = array(
             'token' => $data['token']
         );
-
-        $details = $this->checkDetailsPayment($result);
+        //$details = $this->checkDetailsPayment($result);
 
         //INSERIR ESTES DADOS NA TABELA ESPECIFICA DO PAYPAL, (SE HOUVER)
-        $paypalTransation = new PaypalTransactionLog();
+        /*$paypalTransation = new PaypalTransactionLog();
         $paypalTransation->token = 
         $paypalTransation->timestamp = 
         $paypalTransation->request = json_encode($data);
         $paypalTransation->response = json_encode($responseNvp);
         $paypalTransation->save();
-
+        */
         $result['email'] = $details['EMAIL'];
         //TODO Check todos os status de retorno do paypal e retornar true or false
 
@@ -165,11 +162,17 @@ class Paypal extends Component implements IPayment {
 
         $result['failreason'] = $details['CHECKOUTSTATUS'];
 
-        // RETORNAR DADOS NA ESTRUTURA ESPERADA PELO ADAPTER
+        //RETORNAR DADOS NA ESTRUTURA ESPERADA PELO ADAPTER
         return $result;
     }
 
-    public function confirmPayment($token, $payerID, $payment_itens_id){
+    public function confirmPayment(array $data){
+
+            $token   = $this->request->getQuery('token');   
+            $PayerID = $this->request->getQuery('PayerID');  
+            //$payment_itens_id = $this->request->getQuery('payment_itens_id');  
+            $payment_itens_id = 3;
+
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -178,14 +181,14 @@ class Paypal extends Component implements IPayment {
             
 
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array(
-                'USER'      => 'conta-business_api1.test.com',
-                'PWD'       => '1365001380',
-                'SIGNATURE' => 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx',                      
+                'USER'      => $user,
+                'PWD'       => $pswd,
+                'SIGNATURE' => $signature,                          
                 'METHOD'    => 'DoExpressCheckoutPayment',
                 'VERSION'   => '108',
                 'LOCALECODE'=> 'pt_BR',              
                 'TOKEN'     => $token,
-                'PayerID'   => $payerID,              
+                'PayerID'   => $PayerID,              
                 'PROFILESTARTDATE' => '2016-01-22T12:00:00Z',
                 'DESC'             => 'Exemplo',
                 'BILLINGPERIOD'    => 'Month',
@@ -212,7 +215,7 @@ class Paypal extends Component implements IPayment {
                 'MAXFAILEDPAYMENTS'=> 3
             )));
               
-            $response =    curl_exec($curl);
+            $response = curl_exec($curl);
               
             curl_close($curl);
               
@@ -222,44 +225,8 @@ class Paypal extends Component implements IPayment {
                 foreach ($matches['name'] as $offset => $name) {
                     $nvp[$name] = urldecode($matches['value'][$offset]);
                 }
-            }              
+            }          
             
-            echo "<pre>"; print_r($nvp);            
-            return $responseNvp;
-    }   
-
-    protected function checkDetailsPayment(array $data) {
-        $token = $data['token'];
-
-        $curl = curl_init();          
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_URL, 'https://api-3t.sandbox.paypal.com/nvp');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array(
-            'USER'      => 'conta-business_api1.test.com',
-            'PWD'       => '1365001380',
-            'SIGNATURE' => 'AiPC9BjkCyDFQXbSkoZcgqH3hpacA-p.YLGfQjc0EobtODs.fMJNajCx',          
-            'METHOD'    => 'GetExpressCheckoutDetails',
-            'VERSION'   => '108',          
-            'TOKEN'     => $token
-        )));
-          
-        $response = curl_exec($curl);
-
-        var_dump($response);
-          
-        curl_close($curl);
-          
-        $nvp = array();
-          
-        if (preg_match_all('/(?<name>[^\=]+)\=(?<value>[^&]+)&?/', $response, $matches)) {
-            Kint::dump($matches);
-            foreach ($matches['name'] as $offset => $name) {
-                $nvp[$name] = urldecode($matches['value'][$offset]);
-            }
-        }       
-        
-        return $nvp;
-    }   
+            return $nvp;
+    }         
 }
