@@ -219,7 +219,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
      *
      * @Post("/item/{model}")
      */
-    public function addItemAction($model)
+    public function addItemRequest($model)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -237,7 +237,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $data['language_code'] = $this->translate->getUserLanguageCode();
+                $data['language_code'] = $this->translate->getSource();
 
                 $_GET['redirect'] = "0";
             /*
@@ -280,7 +280,6 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /**
      * [ add a description ]
      *
-     * @url PUT /item/:model/:id
      * @Put("/item/{model}/{id}")
      */
     public function setItemAction($model, $id)
@@ -322,6 +321,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
      *
      * @Delete("/item/{model}/{id}")
      */
+    /*
     public function deleteItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -352,6 +352,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
+    */
     /**
      * [ add a description ]
      *
@@ -447,7 +448,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
      *
      * @Put("/items/content/set-order/{advertising_id}")
      */
-    public function setContentOrderAction($advertising_id)
+    public function setContentOrderRequest($advertising_id)
     {
         $modelRoute = "advertising/content";
 

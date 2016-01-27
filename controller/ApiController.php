@@ -289,7 +289,16 @@ class ApiController extends \AbstractSysclassController
 			if (!$enroll) {
 				$this->response->setJsonContent($this->invalidRequestError(self::NO_DATA_FOUND, "warning"));
 			} else {
-				$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
+				$data = $enroll->toArray();
+				$fields = $enroll->getEnrollFields(array(
+					'order' => 'position'
+				));
+				$data['fields'] = array();
+				foreach($fields as $field) {
+					$data['fields'][] = $field->toFullArray();
+				}
+
+				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
 
 				$this->response->setJsonContent(array(
 					'status' => $this->createResponse(200, self::EXECUTION_OK, "success"),

@@ -55,3 +55,7 @@ models:
   content:
     class: Sysclass\Models\Advertising\Content
     exportMethod: ["toFullArray", ["Files"]]
+    acl:
+      delete:
+        resource: Advertising
+        action: edit

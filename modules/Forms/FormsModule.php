@@ -17,7 +17,7 @@ use Sysclass\Models\Courses\Course as Course,
 class FormsModule extends \SysclassModule 
 {
 
-    protected function isUserAllowed($action, $args) {
+    protected function isUserAllowed($action, $module_id = null) {
         // THIS MODULE IS ALWAYS PUBLIC
         return true;
     }

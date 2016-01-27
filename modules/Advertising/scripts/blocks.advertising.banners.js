@@ -154,6 +154,12 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         opt  : { formatFileSize : this.formatFileSize }
                     }));
                     */
+                    console.warn({
+                        model: this.model.toJSON(),
+                        //file : this.fuploadFile,
+                        opt  : { formatFileSize : this.formatFileSize }
+                    });
+                    
                     this.$el.html(this.downloadTemplate({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
@@ -245,6 +251,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         return rows;
                     })
                     .bind('fileuploaddone', function (e, data) {
+                        console.warn("fileuploaddone");
                         var files = data.getFilesFromResponse(data);
                         var rows = $();
                         var viewObject = data.context.data("viewObject");
@@ -271,10 +278,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         return rows;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        //console.warn("fileuploadfail");
+                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
+                        console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -556,10 +563,12 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     })
                     .bind('fileuploaddone', function (e, data) {
                         var files = data.getFilesFromResponse(data);
+
                         var viewObject = data.context.data("viewObject");
 
                         $.each(files, function (index, file) {
                             viewObject.model.mergeWithinFileObject(file);
+                            console.warn("OBJECT", file, viewObject.model.toJSON());
                             viewObject.setOptions({
                                 upload : false,
                                 file: file,
@@ -649,10 +658,11 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     options = {};
                 }
 
-
+                /*
                 console.warn(_.extend(options, {
                     model : model
                 }));
+                */
 
 
                 var bannerAdvertisingContentView = new bannerAdvertisingContentViewClass(_.extend(options, {
@@ -684,7 +694,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     bannerAdvertisingContentView.remove();
                     //self.collection.add(model, "text");
                 });
-                console.warn(3);
 
                 return bannerAdvertisingContentView;
             },
@@ -762,7 +771,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 active          : 1
             };
         },
-        urlRoot: "/module/advertising/item/content/"
+        urlRoot: "/module/advertising/item/content"
     });
 
     this.models = {
@@ -821,7 +830,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 if (attrs.content_type == "file") {
 
                     return new mod.models.advertising.file(attrs, _.extend(options, {
-                        collection: this,
+                        collection: this
                     }));
                 /*
                 } else if (attrs.content_type == "subtitle") {
