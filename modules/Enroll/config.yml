@@ -25,21 +25,18 @@ crud:
         - mData: name
           label: Name
 
-        - mData: surname
-          label: Surname
+        - mData: admittance_type
+          label: Admittance Type
 
-        - mData: login
-          label: Login
-
-        - mData: pending
-          sType: table-boolean
+        - mData: start_date
+          sType: unix-moment-date
           sClass: text-center
-          label: Pending aproval
+          label: Start Date
 
-        - mData: viewed_license
-          sType: table-boolean
+        - mData: end_date
+          sType: unix-moment-date
           sClass: text-center
-          label: License Viewed
+          label: End Date
 
         - mData: active
           sType: table-boolean

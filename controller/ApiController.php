@@ -283,22 +283,22 @@ class ApiController extends \AbstractSysclassController
      * 
      */
 	public function enrollInfoRequest($identifier) {
-		if (filter_var($identifier, FILTER_VALIDATE_INT)) {
-			$enroll = Enroll::findFirstById($identifier);
+		//if (filter_var($identifier, FILTER_VALIDATE_)) {
+			$enroll = Enroll::findFirstByIdentifier($identifier);
 
 			if (!$enroll) {
 				$this->response->setJsonContent($this->invalidRequestError(self::NO_DATA_FOUND, "warning"));
 			} else {
-				$data = $enroll->toFullArray(array("Fields"));
+				$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
 
 				$this->response->setJsonContent(array(
 					'status' => $this->createResponse(200, self::EXECUTION_OK, "success"),
 					'data' => $data
 				));
 			}
-		} else {
-			$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));
-		}
+		//} else {
+		//	$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));
+		//}
 
 	}
 
@@ -307,6 +307,7 @@ class ApiController extends \AbstractSysclassController
 	{
 		http_response_code($code);
 		$error = array(
+			"code" 		=> $code,
 			"message"	=> $message,
 			"type"		=> $type
 		);

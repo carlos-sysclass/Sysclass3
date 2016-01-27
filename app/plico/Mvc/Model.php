@@ -13,11 +13,15 @@ class Model extends \Phalcon\Mvc\Model
         }
         
         if (is_array($manyAliases)) {
-            foreach($manyAliases as $alias) {
+            foreach($manyAliases as $index => $alias) {
                 $alias = ucfirst(strtolower($alias));
                 $methodName = "get{$alias}";
 
-                $key = strtolower($alias);
+                if (is_numeric($index)) {
+                    $key = strtolower($alias);
+                } else {
+                    $key = $index;
+                }
                 $itemRel = $this->{$methodName}();
 
                 if ($extended) {
