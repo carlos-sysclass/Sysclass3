@@ -1,7 +1,7 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
 
-<div class="form-body" id="form-{$T_MODULE_ID}">
+<div class="form-body">
 	<ul class="nav nav-tabs">
 		<li class="active">
 			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
@@ -18,7 +18,7 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane fade active in" id="tab_1_1">
-			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+			<form role="form" class="form-validate" method="post" id="form-{$T_MODULE_ID}" action="{$T_FORM_ACTION}">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -43,7 +43,7 @@
 							</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-								<input type="text" name="start_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+								<input type="text" name="start_date" value="" data-format="date" data-format-from="unix-timestamp" class="form-control date-picker">
 							</div>
 							
 						</div>
@@ -53,7 +53,7 @@
 							<label class="control-label">{translateToken value="Finish Date"}</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-								<input type="text" name="start_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+								<input type="text" name="end_date" value="" data-format="date" data-format-from="unix-timestamp" class="form-control date-picker">
 							</div>
 						</div>
 					</div>
@@ -103,175 +103,175 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
-			</form>
-		</div>
-			<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
-
-				<h5 class="form-section margin-bottom-10 margin-top-10">
-					<i class="fa fa-cogs"></i>
-					{translateToken value="Enrollment Dates"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
-                        <i class="fa fa-question"></i>
-                    </span>
-				</h5>
-				
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-                            <label>
-                                <input type="radio" name="interval_definition" data-update="interval_definition" class="icheck-me" data-skin="square" data-color="green" value="fixed"> {translateToken value='Fixed'}
-                            </label>
-                        </div>
-                    </div>
-					<div class="col-md-6">
-						<div class="form-group">
-                            <label>
-                                <input type="radio" name="interval_definition" data-update="interval_definition" class="icheck-me" data-skin="square" data-color="blue" value="dynamic"> {translateToken value='Dynamic'}
-                            </label>
-                        </div>
-                    </div>
+				<div class="form-actions nobg">
+					<button class="btn btn-success save-action" type="button">{translateToken value="Save Changes"}</button>
 				</div>
+			</form>
 
-				<div class="interval-definition-container">
-					<div class="interval-definition-item interval-definition-fixed hidden">
-					    <div class="row">
-					        <div class="col-md-12" id="fixed_grouping-create-container">
-					            <ul class="list-group ui-sortable margin-bottom-10 items-container">
-					            </ul>
-					            <!--
-					            <a class="btn btn-sm btn-primary btn-link add-period-action" href="javascript: void(0);">
-					                <i class="fa fa-plus"></i>
-					                {translateToken value="Create Period"}
+		</div>
+		<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
 
-					            </a>
-					            -->
-					            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
-					                <i class="fa fa-plus"></i>
-					                {translateToken value="New Group"}
+			<h5 class="form-section margin-bottom-10 margin-top-10">
+				<i class="fa fa-cogs"></i>
+				{translateToken value="Enrollment Dates"}
+				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
+                    <i class="fa fa-question"></i>
+                </span>
+			</h5>
+			
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+                        <label>
+                            <input type="radio" name="interval_definition" data-update="interval_definition" class="icheck-me" data-skin="square" data-color="green" value="fixed"> {translateToken value='Fixed'}
+                        </label>
+                    </div>
+                </div>
+				<div class="col-md-6">
+					<div class="form-group">
+                        <label>
+                            <input type="radio" name="interval_definition" data-update="interval_definition" class="icheck-me" data-skin="square" data-color="blue" value="dynamic"> {translateToken value='Dynamic'}
+                        </label>
+                    </div>
+                </div>
+			</div>
 
-					            </a>
-					        </div>
-					    </div>
+			<div class="interval-definition-container">
+				<div class="interval-definition-item interval-definition-fixed hidden">
+				    <div class="row">
+				        <div class="col-md-12" id="fixed_grouping-create-container">
+				            <ul class="list-group ui-sortable margin-bottom-10 items-container">
+				            </ul>
+				            <!--
+				            <a class="btn btn-sm btn-primary btn-link add-period-action" href="javascript: void(0);">
+				                <i class="fa fa-plus"></i>
+				                {translateToken value="Create Period"}
 
-					</div>
-					<div class="interval-definition-item interval-definition-dynamic hidden">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label class="control-label">{translateToken value="Group name template"}
-										<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
-											<i class="fa fa-question"></i>
-										</span>
-									</label>
-									<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-								</div>
+				            </a>
+				            -->
+				            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
+				                <i class="fa fa-plus"></i>
+				                {translateToken value="New Group"}
+
+				            </a>
+				        </div>
+				    </div>
+
+				</div>
+				<div class="interval-definition-item interval-definition-dynamic hidden">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label class="control-label">{translateToken value="Group name template"}
+									<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
+										<i class="fa fa-question"></i>
+									</span>
+								</label>
+								<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<label class="control-label">
-									{translateToken value="Interval Rules"}
-								</label>
-								<div class="form-group form-group-inline">
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">
+								{translateToken value="Interval Rules"}
+							</label>
+							<div class="form-group form-group-inline">
+								<div class="inline-item">
+									<label class="control-label">Each </label>
+								</div>
+								<!--
+								<div class="inline-item">
+									<input name="units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-rule-number="3" />
+								</div>
+								-->
+								<div class="inline-item">
+									<select class="select2-me form-control input-block-level" name="interval_rule_type" style="min-width: 150px;">
+										<option value="-1">{translateToken value="Select a Period"}</option>
+										<option value="week">{translateToken value="Week"}</option>
+										<option value="month">{translateToken value="Month"}</option>
+										<!--
+										<option value="year">{translateToken value="Year"}</option>
+										-->
+									</select>
+								</div>
+								<div class="interval-rule-type-item interval-rule-type-week hidden">
 									<div class="inline-item">
-										<label class="control-label">Each </label>
+										<label class="control-label"> starting on weekday
+										</label>
 									</div>
-									<!--
 									<div class="inline-item">
-										<input name="units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-rule-number="3" />
-									</div>
-									-->
-									<div class="inline-item">
-										<select class="select2-me form-control input-block-level" name="interval_rule_type" style="min-width: 150px;">
-											<option value="-1">{translateToken value="Select a Period"}</option>
-											<option value="week">{translateToken value="Week"}</option>
-											<option value="month">{translateToken value="Month"}</option>
-											<!--
-											<option value="year">{translateToken value="Year"}</option>
-											-->
+										<select class="select2-me form-control input-block-level" name="usergroups"  style="min-width: 125px;">
+											<option value="0">{translateToken value="Sunday"}</option>
+											<option value="1">{translateToken value="Monday"}</option>
+											<option value="2">{translateToken value="Tuesday"}</option>
+											<option value="3">{translateToken value="Wednesday"}</option>
+											<option value="4">{translateToken value="Thursday"}</option>
+											<option value="5">{translateToken value="Friday"}</option>
+											<option value="6">{translateToken value="Saturday"}</option>
 										</select>
 									</div>
-									<div class="interval-rule-type-item interval-rule-type-week hidden">
-										<div class="inline-item">
-											<label class="control-label"> starting on weekday
-											</label>
-										</div>
-										<div class="inline-item">
-											<select class="select2-me form-control input-block-level" name="usergroups"  style="min-width: 125px;">
-												<option value="0">{translateToken value="Sunday"}</option>
-												<option value="1">{translateToken value="Monday"}</option>
-												<option value="2">{translateToken value="Tuesday"}</option>
-												<option value="3">{translateToken value="Wednesday"}</option>
-												<option value="4">{translateToken value="Thursday"}</option>
-												<option value="5">{translateToken value="Friday"}</option>
-												<option value="6">{translateToken value="Saturday"}</option>
-											</select>
-										</div>
+								</div>
+								<div class="interval-rule-type-item interval-rule-type-month hidden">
+									<div class="inline-item">
+										<label class="control-label"> starting on day
+										</label>
 									</div>
-									<div class="interval-rule-type-item interval-rule-type-month hidden">
-										<div class="inline-item">
-											<label class="control-label"> starting on day
-											</label>
-										</div>
-										<div class="inline-item">
-											<select class="select2-me form-control input-block-level" name="usergroups" style="min-width: 80px;">
-												{for $day=1 to 31}
-												<option value="{$day}">{$day}</option>
-												{/for}
-											</select>
-										</div>
+									<div class="inline-item">
+										<select class="select2-me form-control input-block-level" name="usergroups" style="min-width: 80px;">
+											{for $day=1 to 31}
+											<option value="{$day}">{$day}</option>
+											{/for}
+										</select>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<h5 class="form-section margin-bottom-10">
-					<i class="fa fa-cogs"></i>
-					{translateToken value="Student Limit"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of students allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
-                        <i class="fa fa-question"></i>
-                    </span>
-				</h5>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Maximum students"}
-							</label>
-							<input name="limit_by_students_count" value="" type="text" placeholder="{translateToken value="Maximum students"}" class="form-control" data-rule-required="true" data-rule-number="true" />
-						</div>
-                    </div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="control-label">{translateToken value="Action if the maximum is reached"}
-							</label>
-							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
-								<option value="-1">{translateToken value="Select a action"}</option>
-								<option value="">{translateToken value="Block Admittance"}</option>
-								<option value="">{translateToken value="Enroll in another group"}</option>
-								<option value="">{translateToken value="Send to the waiting list"}</option>
-							</select>
-						</div>
-                    </div>
-				</div>
-				<!--
-				
-				-->
-
 			</div>
-			
+			<h5 class="form-section margin-bottom-10">
+				<i class="fa fa-cogs"></i>
+				{translateToken value="Student Limit"}
+				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of students allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
+                    <i class="fa fa-question"></i>
+                </span>
+			</h5>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="control-label">{translateToken value="Maximum students"}
+						</label>
+						<input name="limit_by_students_count" value="" type="text" placeholder="{translateToken value="Maximum students"}" class="form-control" data-rule-required="true" data-rule-number="true" />
+					</div>
+                </div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="control-label">{translateToken value="Action if the maximum is reached"}
+						</label>
+						<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
+							<option value="-1">{translateToken value="Select a action"}</option>
+							<option value="">{translateToken value="Block Admittance"}</option>
+							<option value="">{translateToken value="Enroll in another group"}</option>
+							<option value="">{translateToken value="Send to the waiting list"}</option>
+						</select>
+					</div>
+                </div>
+			</div>
+			<div class="form-actions nobg">
+				<button class="btn btn-success save-action" type="button">{translateToken value="Save Changes"}</button>
+			</div>
 
-			{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_3">
-			    {foreach $T_SECTION_TPL['enroll.fields'] as $template}
-			        {include file=$template}
-			    {/foreach}
-			    </div>
-			{/if}
 		</div>
-	</div>
-	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		
+
+		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
+			<div class="tab-pane fade in" id="tab_1_3">
+		    {foreach $T_SECTION_TPL['enroll.fields'] as $template}
+		        {include file=$template}
+		    {/foreach}
+		    </div>
+		{/if}
 	</div>
 </div>
 

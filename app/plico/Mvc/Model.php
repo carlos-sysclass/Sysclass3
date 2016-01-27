@@ -6,21 +6,39 @@ use Phalcon\DI,
 
 class Model extends \Phalcon\Mvc\Model
 {
-    public function toFullArray($manyAliases = null) {
+    public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
 
-        $itemData = $this->toArray();
-
+        if (is_null($itemData)) {
+            $itemData = $this->toArray();    
+        }
+        
         if (is_array($manyAliases)) {
-            foreach($manyAliases as $alias) {
+            foreach($manyAliases as $index => $alias) {
                 $alias = ucfirst(strtolower($alias));
                 $methodName = "get{$alias}";
 
-                $key = strtolower($alias);
-                $itemRel = $this->{$methodName}();
-                if ($itemRel) {
-                    $itemData[$key] = $itemRel->toArray();
+                if (is_numeric($index)) {
+                    $key = strtolower($alias);
                 } else {
-                    $itemData[$key] = null;
+                    $key = $index;
+                }
+                $itemRel = $this->{$methodName}();
+
+                if ($extended) {
+                    if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
+                        $itemData[$key] = array();
+                        foreach($itemRel as $sub) {
+                            $itemData[$key][] = $sub->toFullArray();
+                        }
+                    } else {
+                        $itemData[$key] = $itemRel->toFullArray();
+                    }
+                } else {
+                    if ($itemRel) {
+                        $itemData[$key] = $itemRel->toArray();
+                    } else {
+                        $itemData[$key] = null;
+                    }
                 }
 
             }
@@ -67,6 +85,11 @@ class Model extends \Phalcon\Mvc\Model
         }
 
         return $itemData;
+    }
+
+
+    public function toExtendArray($manyAliases, $itemData = null) {
+        return $this->toFullArray($manyAliases, $itemData, true);
     }
 
     public static function findConnectBy($params) {

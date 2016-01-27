@@ -20,16 +20,54 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                 }
             }),
             fields : Backbone.DeepModel.extend({
-                defaults : {
-                    field_id : null,
-                    required : "1"
-                },
+                urlRoot : function() {
+                    if (this.get("id")) {
+                        return "/module/enroll/item/fields";
+                    } else {
+                        return "/module/enroll/item/fields?object";
+                    }
+                }
             }),
         };
 
         this.collections = {
             fixed_grouping : Backbone.Collection.extend({}),
-            fields : Backbone.Collection.extend({}),
+            fields : Backbone.Collection.extend({
+                enroll_id : null,
+                model : mod.models.fields,
+                initialize : function() {
+                    this.listenTo(this, "add", function(model) {
+                        model.set("enroll_id", this.enroll_id);
+                    }.bind(this));
+                },
+                setOrder : function(order) {
+                    console.warn(order);
+
+                    for(var i in order) {
+                        var item = this.get(order[i]);
+                        item.set("position", parseInt(i) + 1);
+                        item.save();
+                    }
+                    this.sort();
+
+
+                },
+                comparator : function(first, last) {
+                    if (first.get("position") < last.get("position")) {
+                        return -1;
+                    }
+                    return 1;
+                }
+                /*
+                url : function() {
+                    if (_.isNull(this.enroll_id)) {
+                        throw "enroll_id not defined";
+                    } else {
+                        return '/module/enroll/items/fields/default/' + JSON.stringify({enroll_id : this.enroll_id})
+                    }
+                }
+                */
+            }),
             model : this.models.fixed_grouping
         };
 
@@ -237,12 +275,11 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
             dialogModule : app.module("dialogs.fields.form"),
             modelClass : mod.models.fields,
             template : _.template($("#enroll-fields-item").html(), null, {variable: 'model'}),
-
-
             events : function() {
                 var events = baseFormClass.prototype.events.apply(this);
                 events["click .view-item-detail"] = "toogleDetail";
-                console.warn(events);
+                events["confirmed.bs.confirmation .delete-item-action"] = "deleteItem";
+
                 return events;
             },
             tagName : "li",
@@ -250,28 +287,32 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
 
             initialize: function(opt) {
                 baseFormClass.prototype.initialize.apply(this, opt);
-                this.listenTo(this.model, 'change', function(model) {
-                    console.warn(model.toJSON());
-                });
-
+                this.listenTo(this.model, 'sync', function(model) {
+                    
+                }.bind(this));
+                /*
                 this.$el.delegate("[name='field_id']", "change", function(data) {
-                    console.warn(data);
                     if (data.added) {
                         this.model.set("field", data.added, {silent : true});
                     }
                 }.bind(this));
+                */
             },
             start : function() {
-                this.toogleDetail();
+                if (!this.model.get("id")) {
+                    this.toogleDetail();
+                }
             },
             toogleDetail : function(e) {
                 if (e) {
                     e.preventDefault();
-                   }
+                }
                 this.$(".view-item-detail i.fa").toggleClass("fa-angle-down").toggleClass("fa-angle-up");
                 this.$(".detail-container").toggle(500);
             },
-            render : function(model) {
+            onBeforeRender : function(model) {
+                console.info('views/fieldsItemBlockViewClass::onBeforeRender');
+                this.oForm = null;
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.model.get("id")) {
                     if (this.model.get("active") == 0) {
@@ -291,12 +332,11 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                     app.module("ui").refresh(this.$el);
                 }
 
-                return baseFormClass.prototype.render.apply(this);
+                return this;
             },
-            save : function() {
-                this.toogleDetail();
-
-                // APEND TO COLLECTION
+            deleteItem : function() {
+                this.model.destroy();
+                this.remove();
             }
         });
 
@@ -317,7 +357,15 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
         this.fieldsBlockViewClass = listManagerCreatorViewClass.extend({
             dialogModule : app.module("fields.form"),
             modelClass : mod.models.fields,
-            itemViewClass : this.fieldsItemBlockViewClass
+            itemViewClass : this.fieldsItemBlockViewClass/*,
+            initialize : function() {
+                listManagerCreatorViewClass.prototype.initialize.apply(this);
+
+                this.listenTo(this.collection, "add remove change", function() {
+                    console.warn("changed");
+                });
+
+            }*/
         });
 
         this.enrollFormViewClass = Backbone.View.extend({
@@ -343,10 +391,24 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                     collection : new mod.collections.fixed_grouping()
                 });
 
-                this.fieldsBlockView = new mod.fieldsBlockViewClass({
-                    el : "#fields-create-container",
-                    collection : new mod.collections.fields()
-                });
+                if (formView.model.get("id")) {
+
+                    this.listenToOnce(formView.model, "sync", function() {
+                        this.fieldsCollection = new mod.collections.fields();
+
+                        this.fieldsCollection.enroll_id = formView.model.get("id");
+
+                        this.fieldsBlockView = new mod.fieldsBlockViewClass({
+                            el : "#fields-create-container",
+                            collection : this.fieldsCollection
+                        });
+
+                        console.warn(formView.model.get("enrollfields"));
+
+                        this.fieldsCollection.reset(formView.model.get("enrollfields"));
+                        console.warn(this.fieldsCollection.toJSON());
+                    }.bind(this));
+                }
             }
         });
 

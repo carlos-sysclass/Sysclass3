@@ -25,21 +25,18 @@ crud:
         - mData: name
           label: Name
 
-        - mData: surname
-          label: Surname
+        - mData: admittance_type
+          label: Admittance Type
 
-        - mData: login
-          label: Login
-
-        - mData: pending
-          sType: table-boolean
+        - mData: start_date
+          sType: unix-moment-date
           sClass: text-center
-          label: Pending aproval
+          label: Start Date
 
-        - mData: viewed_license
-          sType: table-boolean
+        - mData: end_date
+          sType: unix-moment-date
           sClass: text-center
-          label: License Viewed
+          label: End Date
 
         - mData: active
           sType: table-boolean
@@ -55,14 +52,13 @@ crud:
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
-      blocks: ["fixed_grouping.dialog", "enroll.fields"]
       variables:
         page_subtitle: Create Enrollment Guidelines
     'edit/{id}':
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
-      blocks: ["fixed_grouping.dialog"]
+      blocks: ["fixed_grouping.dialog", "enroll.fields"]
       variables:
         page_subtitle: Edit Enrollment Guidelines
 
@@ -111,12 +107,12 @@ blocks:
 models:
   me: 
     class: Sysclass\Models\Enrollments\Enroll
-    #exportMethod: ["toFullArray", ["User", "Course"]]
+    exportMethod: ["toExtendArray", ["EnrollFields"]]
   course: 
     class: Sysclass\Models\Enrollments\Course
     exportMethod: ["toFullArray", ["User", "Course"]]
-  ##fields: 
-    #class: Sysclass\Models\Enrollments\Fields
-    #exportMethod: ["toFullArray", ["User", "Course"]]
+  fields: 
+    class: Sysclass\Models\Enrollments\Fields
+    exportMethod: ["toFullArray", ["Field"]]
 
 

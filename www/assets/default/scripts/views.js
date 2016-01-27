@@ -497,6 +497,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		}
 	    	});
 
+	    	this.renderUiItems();
+
             self.trigger("complete:save", this.model);
 	    },
 	    setModel : function(model) {
@@ -519,15 +521,21 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
 
-	    	if (this.$el.is("form") || this.$("form").size() > 0) {
-	    		if (this.$el.is("form")) {
-	    			this.oForm = this.$el;
-	    		} else {
-	    			this.oForm = this.$("form");
-	    		}
+	    	this.initializeForm();
 
-	    		this.handleValidation();
-	    	}
+	    },
+	    initializeForm : function() {
+	    	if (_.isNull(this.oForm)) {
+		    	if (this.$el.is("form") || this.$("form").size() > 0) {
+		    		if (this.$el.is("form")) {
+		    			this.oForm = this.$el;
+		    		} else {
+		    			this.oForm = this.$("form");
+		    		}
+
+		    		this.handleValidation();
+		    	}
+		    }
 	    },
 	    handleValidation : function() {
 	    	console.info('views/baseFormClass::handleValidation');
@@ -573,18 +581,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		onRender: function(model) {
 	    	console.info('views/baseFormClass::onRender');
 
-	    	if (_.isNull(this.oForm)) {
-		    	if (this.$el.is("form") || this.$("form").size() > 0) {
-		    		if (this.$el.is("form")) {
-		    			this.oForm = this.$el;
-		    		} else {
-		    			this.oForm = this.$("form");
-		    		}
-
-		    		this.handleValidation();
-		    	}
-	    	}
-
+	    	this.initializeForm();
 	    },
 	    submit : function(e) {
 	    	console.info('views/baseFormClass::submit');
@@ -617,8 +614,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             "click .add-item-action" : "addItem"
         },
         initialize : function() {
-            this.listenToOnce(this.collection, 'sync', this.render.bind(this));
-            //this.listenTo(this.collection, 'add', this.addOne.bind(this));
+            this.listenToOnce(this.collection, 'sync', this.updateView.bind(this));
+            this.listenTo(this.collection, 'reset', this.updateView.bind(this));
+            this.listenTo(this.collection, 'add', this.addOne.bind(this));
             //this.listenTo(this.collection, 'add', this.refreshCounters.bind(this));
             this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
 
@@ -655,7 +653,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             var itemModel = new this.modelClass();
 
             this.listenToOnce(itemModel, "sync", function(model) {
-                self.addOne(model);
+                //self.addOne(model);
                 self.refreshCounters();
             });
 
@@ -664,11 +662,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                     modelClass : this.modelClass
                 });
             }
+
             this.dialogModule.getValue(function(item, model) {
-            	self.collection.add(model);
-                self.addOne(model);
-                self.refreshCounters();
-            });
+            	this.collection.add(model);
+                //self.addOne(model);
+                this.refreshCounters();
+            }.bind(this));
         },
         addOne : function(model) {
             console.info('views/baseMultiListCreator::addOne');
@@ -681,10 +680,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
             $(itemView.render().el).appendTo(this.$("ul.items-container"));
             itemView.start();
-
+            /*
             this.listenTo(itemView, "grouping:updated", function(model) {
                 self.refreshCounters();
             });
+			*/
         },
         refreshCounters : function() {
             console.info('views/baseMultiListCreator::refreshCounters');
@@ -695,19 +695,23 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 $(this).find(".counter").html(i+1);
             });
         },
-        render: function() {
-            console.info('view/baseMultiListCreator::render');
+        updateView: function(item) {
+        	if (item instanceof Backbone.Collection) {
+	            console.info('view/baseMultiListCreator::updateView');
 
-            var self = this;
+	            this.$("ul.items-container ").empty();
 
-            this.collection.each(function(model, i) {
-                self.addOne(model, i);
-            });
-            //this.refreshCounters();
-            app.module("ui").refresh( this.$("ul.items-container ") );
+	            var self = this;
 
-            this.refreshCounters();
-        },
+	            this.collection.each(function(model, i) {
+	                self.addOne(model, i);
+	            });
+	            //this.refreshCounters();
+	            app.module("ui").refresh( this.$("ul.items-container ") );
+
+	            this.refreshCounters();
+	        }
+        }/*,
         remove : function(e) {
             var fileId = $(e.currentTarget).data("fileId");
             var fileObject = new mod.lessonFileModelClass();
@@ -715,6 +719,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             fileObject.destroy();
             $(e.currentTarget).parents("li").remove();
         }
+        */
     });
 
 

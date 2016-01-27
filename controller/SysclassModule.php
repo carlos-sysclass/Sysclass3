@@ -163,7 +163,7 @@ abstract class SysclassModule extends BaseSysclassModule
         $default = array(
             'exportMethod'  => array(
                 'toArray',
-                array()
+                null
             ),
             'findMethod'  => 'findFirstById',
             'listMethod'  => 'find'
@@ -222,7 +222,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
         if (is_object($editItem)) {
             $model_info = $this->model_info[$model];
-            $this->response->setJsonContent(call_user_func_array(
+            $this->response->setJsonContent(call_user_func(
                 array($editItem, $model_info['exportMethod'][0]),
                 $model_info['exportMethod'][1]
             ));
@@ -273,7 +273,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 
                 if ($this->request->hasQuery('object')) {
-                    $itemData = call_user_func_array(
+                    $itemData = call_user_func(
                         array($itemModel, $model_info['exportMethod'][0]),
                         $model_info['exportMethod'][1]
                     );
@@ -312,7 +312,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $type = "warning";
                 }
 
-                $itemData = call_user_func_array(
+                $itemData = call_user_func(
                     array($itemModel, $model_info['exportMethod'][0]),
                     $model_info['exportMethod'][1]
                 );
@@ -419,14 +419,14 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $response = $this->createAdviseResponse($message, $type);
 
-                    if ($_GET['redirect'] == "1") {
+                    if ($this->request->hasQuery('redirect')) {
                         $response = $this->createRedirectResponse(
                             null,
                             $message, 
                             $type
                         );
-                    } elseif ($_GET['object'] == "1") {
-                        $itemData = call_user_func_array(
+                    } else {
+                        $itemData = call_user_func(
                             array($itemModel, $model_info['exportMethod'][0]),
                             $model_info['exportMethod'][1]
                         );
@@ -460,13 +460,26 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $itemModel = $this->getModelData($model, $id);
 
+        $model_info = $this->model_info[$model];
+
+        $resource = null;
+        $action = "delete";
+        if (
+            array_key_exists('acl', $model_info) && 
+            array_key_exists('delete', $model_info['acl']) &&
+            is_array($model_info['acl']['delete'])
+        ) {
+            $acl = $model_info['acl']['delete'];
+            $resource = $acl['resource'];
+            $action = @isset($acl['action']) ? $acl['action'] : $action;
+        }
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
             'object' => $itemModel
         ));
 
-        if ($allowed = $this->isUserAllowed("delete")) {
+        if ($allowed = $this->isUserAllowed($action, $resource)) {
 
             if ($itemModel) {
 
@@ -511,8 +524,6 @@ abstract class SysclassModule extends BaseSysclassModule
             $currentUser    = $this->getCurrentUser(true);
 
             $model_info = $this->model_info[$model];
-
-
 
             $model_class = $model_info['class'];
 
@@ -580,7 +591,6 @@ abstract class SysclassModule extends BaseSysclassModule
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
-
             
 
             if ($type === 'datatable') {
@@ -596,7 +606,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func_array(
+                    $items[$key] = call_user_func(
                         array($item, $model_info['exportMethod'][0]),
                         $model_info['exportMethod'][1]
                     );
@@ -685,8 +695,13 @@ abstract class SysclassModule extends BaseSysclassModule
     }
 
 
-    protected function isUserAllowed($action, $args) {
-        return $this->acl->isUserAllowed(null, $this->module_id, $action);
+    protected function isUserAllowed($action, $module_id = null) {
+
+        return $this->acl->isUserAllowed(
+            null, 
+            !is_null($module_id) ? $module_id : $this->module_id, 
+            $action
+        );
     }
 
     /* 

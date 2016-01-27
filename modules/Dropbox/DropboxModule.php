@@ -313,7 +313,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
         }
     }
 
-    protected function isUserAllowed($action, $args) {
+    protected function isUserAllowed($action, $module_id = null) {
         $allowed = parent::isUserAllowed($action);
         if ($allowed) {
             switch($action) {

@@ -125,7 +125,11 @@
     </div>
 </script>
 <script type="text/template" id="fileupload-download-banner-item">
-    <% var file = _.first(model.files) %>
+    <% if (_.has(model, 'files')) { %>
+        <% var file = _.first(model.files) %>
+    <% } else { %>
+        <% var file = model.file %>
+    <% } %>
     <%
         var file_type = "other";
         if (/^video\/.*$/.test(file.type)) {
