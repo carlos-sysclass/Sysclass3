@@ -5,13 +5,14 @@ use
     Phalcon\Mvc\User\Component,
     Sysclass\Models\Payments\Payment,
     Sysclass\Models\Payments\PaymentItem,
+    Sysclass\Services\Payment\Exception as PaymentException,
     Kint,
     Sysclass\Models\Payments\PaymentTransacao;
 
 /**
  * @RoutePrefix("/module/payment")
 */
-class PaymentModule extends \SysclassModule implements \ILinkable
+class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetContainer
 {
     /* ILinkable */
     public function getLinks() {
@@ -37,9 +38,8 @@ class PaymentModule extends \SysclassModule implements \ILinkable
     public function initiatePaymentRequest($paymentItemId) {
 
         // PEGAR O USUÁRIO ATUAL
-        //$this->user->id
-        
-        //$paymentItemObject->getPayment()->getUser()->id;
+        //
+       
         //Kint::dump($paymentItemId);
         $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
         
@@ -85,7 +85,9 @@ class PaymentModule extends \SysclassModule implements \ILinkable
                 'args'             => $this->request->getQuery()
             ));
         } else {
-            echo "success";
+            //echo "success";
+            echo "<script>alert('autorizado pelo usuario');</script>";       
+            echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";        
         }
     }
     
@@ -144,5 +146,48 @@ class PaymentModule extends \SysclassModule implements \ILinkable
         } else {
             echo "Nao foi possivel confirmar o pagamento";
         }        
+    }
+
+    /* IWidgetContainer */
+    /**
+     * [getWidgets description]
+     * @param  array  $widgetsIndexes [description]
+     * @return [type]                 [description]
+     * @implemen
+     */
+    public function getWidgets($widgetsIndexes = array()) {
+        if (in_array('payment.overview', $widgetsIndexes)) {
+
+            $id = "480";                        
+            
+            $conditions = "id = ?1";
+            $parameters = array(1 => $id);
+            $items      = PaymentTransacao::find(
+                        array(
+                            $conditions,
+                            "bind" => $parameters
+                             )
+                        );
+            $data = array();
+            //$items->toArray();  
+            
+            foreach ($items as $linha) {
+                echo    $data = $linha->descricao;
+            }
+                        
+            //criar uma array para passar os parametros na outra pagina
+             //*/
+            return array(
+             'payment.overview' => array(
+                    'id'        => 'payment-panel',
+                    'type'      => 'payment',
+                    'title'     => 'Payment Student',
+                    'template'  => $this->template("widgets/overview"),
+                    'panel'     => true,
+                    'data'      => $data,
+                    'box'       => 'blue'
+                )
+            );
+        }
     }
 }

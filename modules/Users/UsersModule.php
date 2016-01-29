@@ -141,7 +141,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $request = $this->getMatchedUrl();
 
         $actions = array(
-            'view'  => array(
+            'viewgetBreadcrumb'  => array(
                 array(
                     'text'      => $this->translate->translate('New User'),
                     'link'      => $this->getBasePath() . "add",
