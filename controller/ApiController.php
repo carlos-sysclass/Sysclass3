@@ -287,7 +287,9 @@ class ApiController extends \AbstractSysclassController
 			$enroll = Enroll::findFirstByIdentifier($identifier);
 
 			if (!$enroll) {
-				$this->response->setJsonContent($this->invalidRequestError(self::NO_DATA_FOUND, "warning"));
+				$this->response->setJsonContent(array(
+					'status' => $this->invalidRequestError(self::NO_DATA_FOUND, "warning")
+				));
 			} else {
 				$data = $enroll->toArray();
 				$fields = $enroll->getEnrollFields(array(
