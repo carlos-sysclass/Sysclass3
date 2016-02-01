@@ -4,7 +4,7 @@ namespace Sysclass\Models\Enrollments;
 use Plico\Mvc\Model,
     Phalcon\DI,
     Sysclass\Models\Enrollments\Fields as EnrollFields,
-    Sysclass\Models\Forms\Fields,
+    Sysclass\Models\Forms\Fields as FormFields,
     Phalcon\Mvc\Model\Message as Message;
 
 class Enroll extends Model
@@ -42,7 +42,7 @@ class Enroll extends Model
 
     public function afterCreate() {
         // CREATE THE SET OF FIELDS
-        $fields = Fields::find("[name] = 'name' OR [name] = 'surname' OR [name] = 'email'");
+        $fields = FormFields::find("[name] = 'name' OR [name] = 'surname' OR [name] = 'email'");
 
 
         foreach($fields as $field) {
@@ -54,9 +54,7 @@ class Enroll extends Model
                 'required' => 1
             ));
             $enrollField->save();
-            var_dump($enrollField->getMessages());
         }
-        exit;
     }
 
 
