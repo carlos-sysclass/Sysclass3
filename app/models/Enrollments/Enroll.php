@@ -4,7 +4,7 @@ namespace Sysclass\Models\Enrollments;
 use Plico\Mvc\Model,
     Phalcon\DI,
     Sysclass\Models\Enrollments\Fields as EnrollFields,
-    Sysclass\Models\Forms\Fields as Fields,
+    Sysclass\Models\Forms\Fields,
     Phalcon\Mvc\Model\Message as Message;
 
 class Enroll extends Model

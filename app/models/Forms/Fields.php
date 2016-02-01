@@ -9,7 +9,7 @@ class Fields extends Model
     public function initialize()
     {
         $this->setSource("mod_fields");
-		$this->belongsTo("type_id", "Sysclass\\Models\\Forms\\FieldTypes", "id",  array('alias' => 'Type', 'reusable' => true));
+		$this->belongsTo("type_id", "Sysclass\\Models\\Forms\\FieldTypes", "id",  array('alias' => 'Type', 'reusable' => false));
     }
 
     public function toArray() {
