@@ -335,12 +335,14 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     }
 
     public function afterModelUpdate($evt, $model, $data) {
+
+
         if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
-            UsersGroups::find("user_id = {$userModel->id}")->delete();
+            UsersGroups::find("user_id = {$model->id}")->delete();
             
             foreach($data['usergroups'] as $group) {
                 $userGroup = new UsersGroups();
-                $userGroup->user_id = $userModel->id;
+                $userGroup->user_id = $model->id;
                 $userGroup->group_id = $group['id'];
                 $userGroup->save();
             }
