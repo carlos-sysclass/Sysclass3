@@ -44,7 +44,7 @@ crud:
       scripts: ["grades.form"]
       variables:
         page_subtitle: Create a new grade
-    'edit/:id':
+    'edit/{id}':
       components: ["validation", "wysihtml5", "bootstrap-switch", "noui-slider", "bootstrap-confirmation"]
       #blocks: ["users.list.table"]
       template: form.tpl
@@ -97,4 +97,6 @@ crud:
     #  variables:
     #    page_subtitle: Config and edit the grade group
 models:
-  me: Sysclass\Models\Courses\Grades\Grade
+  me: 
+    class: Sysclass\Models\Courses\Grades\Grade
+    exportMethod: ["toFullArray", ["Ranges"]]
