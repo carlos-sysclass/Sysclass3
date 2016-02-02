@@ -292,13 +292,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         ) {
             if ($data['new-password'] === $data['new-password-confirm']) {
                 // CHECK PASSWORD
-                if ($this->acl->isUserAllowed(null, "users", "change-password")) {
+                if ($this->isUserAllowed("change-password")) {
                     // DEFINE AUTHENTICATION BACKEND
                     if (
                         array_key_exists('old-password', $data) &&
                         !empty($data['old-password']) &&
                         $this->authentication->checkPassword($data['old-password'], $model)
                     ) {
+                        $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+                    } elseif ($this->isUserAllowed("edit")) {
                         $model->password = $this->authentication->hashPassword($data['new-password'], $model);
                     } else {
                         $message = new Message(
@@ -402,7 +404,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             switch($action) {
                 case "edit" : {
                     // ALLOW IF THE USER IS UPDATING HIMSELF
-                    return $this->_args['id'] == $this->getCurrentUser(true)->id;
+                    return $this->_args['id'] == $this->user->id;
                 }
             }
         }
