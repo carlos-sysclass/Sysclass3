@@ -136,6 +136,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             toogleActive : function(e, state) {
                 //this.model.set("active", state);
                 this.model.save();
+                mod.blockView.refreshScore();
             //    this.render();
             },
 
@@ -148,6 +149,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
         mod.blockViewClass = Backbone.View.extend({
             questionModule : null,
+            questionSelectDialog : app.module("dialogs.questions.select"),
             events : {
                 "click .add-item-action" : "addItem",
                 "click .create-question" : "openCreateDialog",
@@ -166,16 +168,16 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                     $SC.module("dialogs.questions.create").start();
                 }
                 */
-                if (!$SC.module("dialogs.questions.select").started) {
-                    $SC.module("dialogs.questions.select").start();
+                if (!this.questionSelectDialog.started) {
+                    this.questionSelectDialog.start();
                 }
                 /*
                 this.questionCreateModule = $SC.module("dialogs.questions.create");
                 this.listenTo(this.questionCreateModule, "created.question", this.createQuestion.bind(this));
                 */
 
-                this.questionSelectModule = $SC.module("dialogs.questions.select");
-                this.listenTo(this.questionSelectModule, "select:item", this.selectQuestion.bind(this));
+                //this.questionSelectModule = $SC.module("dialogs.questions.select");
+                //this.listenTo(this.questionSelectModule, "select:item", this.selectQuestion.bind(this));
 
             },
             initializeSortable : function() {
@@ -279,35 +281,31 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 }
             },
             openSelectDialog : function() {
-                $SC.module("dialogs.questions.select").setFilter({
+                this.questionSelectDialog.setFilter({
                     content_id : this.model.get("id")
-                });
+                }).getValue(function(questionData) {
 
-                app.module("dialogs.questions.select").open();
-            },
-            selectQuestion : function(e, model) {
-                app.module("dialogs.questions.select").close();
+                    var testQuestionModel = new mod.models.question({
+                        question_id : questionData.id,
+                        question : questionData,
+                        active : 1
+                    });
 
-                var testQuestionModel = new mod.models.question({
-                    question_id : model.get("id"),
-                    question : model.toJSON(),
-                    active : 1
-                });
+                    var exists = this.collection.where({
+                        question_id : questionData.id,
+                        lesson_id : this.collection.lesson_id
+                    });
 
-                var exists = this.collection.where({
-                    question_id : model.get("id"),
-                    lesson_id : this.collection.lesson_id
-                });
-
-                if (_.size(exists) === 0) {
-                    this.collection.add(testQuestionModel);
-                    testQuestionModel.save();
-                } else {
-                    // already exists. Show message??
-                }
+                    if (_.size(exists) === 0) {
+                        this.collection.add(testQuestionModel);
+                        testQuestionModel.save();
+                    } else {
+                        // already exists. Show message??
+                    }
+                }.bind(this));
             },
             refreshCounters : function() {
-                console.info('blocks.roadmap.grouping/classLessonsView::refreshCounters');
+                console.info('blocks.questions.list/blockViewClass::refreshCounters');
                 var total = this.collection.size();
                 this.$("ul.items-container > li.list-file-item .total").html(total);
 
@@ -317,11 +315,18 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
             },
             refreshScore : function() {
+                console.info('blocks.questions.list/blockViewClass::refreshScore');
                 this.$(".total_score").empty();
 
                 var score = this.collection.reduce(function(context, model) {
-                    return context + (model.get("points") * model.get("weight"));
+                    if (model.get("active") == 1) {
+                        return context + (model.get("points") * model.get("weight"));
+                    } else {
+                        return context;
+                    }
                 }, 0);
+
+                this.$(".total_score").html((score).toFixed(2));
 
                 if (score > 0) {
                     /*
@@ -331,9 +336,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
                     if (weights > 0) {
                     */
-                        this.$(".total_score").html((score).toFixed(2)
-                            //app.module("views").formatValue(score / weights, "decimal2")
-                        );
+                        
                     /*
                     }
                     */
