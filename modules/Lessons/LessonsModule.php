@@ -698,7 +698,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @Put("/item/lesson-content/{id}/translate")
+     * @Put("/item/lesson_content/{id}/translate")
      */
     public function translateContent($id)
     {
@@ -706,7 +706,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $itemModel = $this->model($modelRoute);
 
-        $http_data = $this->getHttpData(func_get_args());
+        $http_data = $this->request->getPut();
+
+
 
         $translateModel = $this->model("translate");
         $lang_codes = $translateModel->getDisponibleLanguagesCodes();
@@ -717,6 +719,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         if (!in_array($http_data['from'], $lang_codes)) {
             $http_data['from'] = $translateModel->getUserLanguageCode();
         }
+        
         // 1. GET FILE DATA
         $contentData = $itemModel->getItem($id);
         if (in_array($contentData['content_type'], self::$suitable_translate_contents)) {

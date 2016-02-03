@@ -279,8 +279,13 @@ $di->setShared('environment', function() use ($di) {
 		'websocket' => array(
 			'name' => 'websocket',
 			'js' => array('plugins/jquery-websocket/jquery.websocket')
-		)
+		),
+		'noui-slider' => array(
+			'name' => 'noui-slider',
+			'css'	=> array('plugins/nouislider/nouislider'),
+			'js'	=> array('plugins/nouislider/nouislider')
 
+		)
 	);
 
 	// MOVE TO module config.yml!!!

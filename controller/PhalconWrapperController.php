@@ -339,6 +339,11 @@ abstract class PhalconWrapperController extends Controller
 		return $this->createResponse(200, $message, $type, "advise");
 	}
 
+	protected function createNonAdviseResponse($message, $type = "ACK")
+	{
+		return $this->createResponse(200, $message, $type, 'info');
+	}
+
 	protected function invalidRequestError($message = "", $type = "warning") {
 		if (empty($message)) {
 			$message = $this->translate->translate("There's a problem with your request. Please try again.");
