@@ -123,6 +123,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
 
     public function setItem($data, $identifier, $quote = true) {
         $classModel = $this->model("classes");
+
         if (array_key_exists('class_id', $data)) {
             $classModel->setItem($data['class'], $data['class_id']);
         }
