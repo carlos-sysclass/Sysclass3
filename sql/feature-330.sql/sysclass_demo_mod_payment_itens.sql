@@ -29,8 +29,11 @@ CREATE TABLE `mod_payment_itens` (
   `payment_id` mediumint(8) DEFAULT NULL,
   `vencimento` timestamp NULL DEFAULT NULL,
   `valor` decimal(10,4) DEFAULT NULL,
+  `amount_paid` decimal(10,4) DEFAULT NULL,
+  `payment_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

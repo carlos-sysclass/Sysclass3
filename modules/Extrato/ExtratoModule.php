@@ -18,16 +18,14 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function getLinks() {
         //$depinject = Phalcon\DI::getDefault();
         if ($this->acl->isUserAllowed(null, "Extrato", "View")) {
-            $itemsData = $this->model("extrato/collection")->addFilter(array(
-                'active'    => true
-            ))->getItems();
+
             //$items = $this->module("permission")->checkRules($itemsData, "area", 'permission_access_mode');
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
-                        'text'  => $this->translate->translate('Departments'),
+                        'count' => 1,
+                        'text'  => $this->translate->translate('Extracts'),
                         'icon'  => 'fa fa-cubes',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -47,7 +45,7 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             array(
                 'icon'  => 'fa fa-cubes',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => $this->translate->translate("Departments")
+                'text'  => $this->translate->translate("Extracts")
             )
         );
 
@@ -57,14 +55,14 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             }
-            case "add" : {
+            /*case "add" : {
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Department"));
                 break;
-            }
-            case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Department"));
+            }*/
+            /*case "edit/:id" : {
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Extracts"));
                 break;
-            }
+            }*/
         }
         return $breadcrumbs;
     }
@@ -73,10 +71,10 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function getActions() {
         $request = $this->getMatchedUrl();
 
-        $actions = array(
+        /*$actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Department'),
+                    'text'      => $this->translate->translate('New Department++'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -89,18 +87,18 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
                     //'icon'      => 'icon-plus'
-                )*/
+                )*
             )
         );
-
-        return $actions[$request];
+        return $actions[$request];*/
     }
 
     /**
      * [ add a description ]
      *
-     * @Get("/add")
+          * @Get("/add")
      */
+
     public function addPage()
     {
         $coordinators = User::find(
@@ -124,9 +122,36 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         );
         $this->putItem("coordinators", $coordinators->toArray());
 
-
         parent::editPage($id);
     }
+
+    //
+    protected function getDatatableItemOptions() {
+        return false;
+    }
+
+    //função que chama o paypal
+    protected function getDatatableSingleItemOptions($item) {
+
+        if(empty($item->payment_date)){
+
+        //var_dump($item);
+        //if (!$this->request->hasQuery('block') && $item->pending == 1) {
+            return array(
+                'aprove' => array(
+                    'icon'  => 'fa fa-lock',
+                    'link'  => "http://local.sysclass.com/module/payment/initiate/" . $item->id,
+                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Make Payment'
+                    )
+                )
+            );
+        //}
+        return false;
+        }
+    }
+
 
     /**
      * [ add a description ]
@@ -235,7 +260,6 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      * @url GET /item/me/:id
      */
     public function getItemAction($id) {
-
         $editItem = $this->model("courses/extratos/collection")->getItem($id);
         // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
         return $editItem;
@@ -246,7 +270,7 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @url POST /item/me
      */
-    public function addItemAction($id)
+   /* public function addItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -266,14 +290,14 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         } else {
             return $this->notAuthenticatedError();
         }
-    }
+    }*/
 
     /**
      * [ add a description ]
      *
      * @url PUT /item/me/:id
      */
-    public function setItemAction($id)
+   /* public function setItemAction($id)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -289,7 +313,7 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         } else {
             return $this->notAuthenticatedError();
         }
-    }
+    }*/
 
     /**
      * [ add a description ]
@@ -303,7 +327,7 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Department removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Extract removed with success"), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -313,5 +337,4 @@ class ExtratoModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             return $this->notAuthenticatedError();
         }
     }
-
 }

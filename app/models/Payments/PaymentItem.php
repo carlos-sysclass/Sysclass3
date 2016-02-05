@@ -61,4 +61,17 @@ class PaymentItem extends Model
         */
 
     }
+
+    public function listByUser($params) {
+        //pega o ID do usuario da sessao
+        $di = \Phalcon\DI::getDefault();
+        $user = $di->get('user');
+        
+        $payment = Payment::findFirst(array(
+            'conditions' => 'user_id = ?0',
+            'bind' => array($user->id)
+        ));
+
+        return $payment->getItems();
+    }
 }

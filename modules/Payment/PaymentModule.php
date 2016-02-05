@@ -36,66 +36,112 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
      * @Get("/initiate/{payment_item_id}")
      */
     public function initiatePaymentRequest($paymentItemId) {
-
-        // PEGAR O USUÁRIO ATUAL
-        //
-       
         //Kint::dump($paymentItemId);
         $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
         
         //SE DER ALGUMA ERRO ENTRA NA CONDIÇÃO    
         if (!$paymentItemObject) {
-            echo "Não foi encontrado registro";
-            exit;
+            $this->redirect("/module/extrato/view", "Erro mágico", "error");  
+            return;             
         }
 
         $data = $paymentItemObject->toArray();
         $data['user'] = $paymentItemObject->getPayment()->getUser()->toArray();        
         
-        //ENVIA P/ PAYPAL    
-        $result = $this->payment->initiatePayment($data);        
-        
+        //Adapter.php => initiatePayment(array $data) 
+        $result = $this->payment->initiatePayment($data);
+                
         if ($this->request->isAjax()) {
-            echo "json";
+
+
         } else {
-            //header("location:".$result);            
-            echo "<meta http-equiv=refresh content='0;URL=$result'>";
+            
+            //if ($result['continue']) {
+                switch($result['action']) {
+                    case "redirect" : {
+                        $this->response->redirect($result['redirect']);
+                        break;
+                    }
+                    case "message" :
+                    default : {
+                        $this->redirect("/module/extrato/view", $this->translate->translate($result['message']), "warning");  
+                    }
+                }
+            //}
         }
+        /*
+        
+            // EXEMPLO DE RETONO DE MENSAGEM 
+            if (!$result) { /// CASO DÊ ERRO
+                $this->response->setJsonContent(
+                    $this->createAdviseResponse(
+                        $this->translate->translate("A problem ocurred when tried to save you data. Please try again."), 
+                        "warning"
+                    )
+                );
+            } else {            
+            // EXEMPLO DE RETONO DE MENSAGEM COM REDIRECIONAMENTO
+                $this->response->setJsonContent(
+                    $this->createRedirectResponse(
+                        $result
+                    )
+                );
+            }
+        } else {
+            
+            if (!$result) { /// CASO DÊ ERRO
+                $this->redirect("/module/extrato/view", "Erro mágico", "error");  
+            } else {
+                $this->response->redirect($result);  
+            }
+            
+
+
+            //
+            //header("location:".$result);            
+            //echo "---".$result;
+            //echo "<meta http-equiv=refresh content='0;URL=$result'>";
+
+         
+        }
+        */
     }
 
     /**
      * [ add a description ]
      *        
-     * @Get("/authorized/{payment_itens_id}")
+     * @Get("/authorized/paypal/{payment_itens_id}")
      */
-    public function authorizePaymentRequest($payment_itens_id) {
+    public function authorizePaymentRequest($payment_itens_id) {        
         $token   = $this->request->getQuery('token');   
         $PayerID = $this->request->getQuery('PayerID');   
         
         $continue = $this->payment->authorizePayment(array(
             'backend'          => $backend,
             'payment_itens_id' => $payment_itens_id,
-            'args' => $this->request->getQuery()
+            'args'             => $this->request->getQuery()
         ));
         
+        //var_dump($continue);
+        // Adapter.php => confirmPayment
         if ($continue) {
             $this->payment->confirmPayment(array(
                 'backend'          => $backend,
                 'payment_itens_id' => $payment_itens_id,
                 'args'             => $this->request->getQuery()
             ));
+            $this->redirect("/module/extrato/view", "Authorized by User", "sucess");              
+            return;             
         } else {
-            //echo "success";
-            echo "<script>alert('autorizado pelo usuario');</script>";       
-            echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";        
-        }
-    }
-    
+            $this->redirect("/module/extrato/view", "Error Authorize the User", "warning");  
+            return;             
+        }        
+    }    
 
     /**
      * [ add a description ]
      *
-     * @Get("/cancel/{payment_itens_id}")
+     * @Get("/cancel/paypal/{payment_itens_id}")
      */
     public function cancelPaymentRequest($payment_itens_id) {
         $token = $this->request->getQuery('token');        
@@ -111,9 +157,8 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
         );
         $item->status = "cancel";
         $item->save();    
-        //echo "-> ".$this->response->setJsonContent(array("status" => "OK"));
-        echo "<script>alert('Cancelado pelo usuario');</script>";       
-        echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";        
+        $this->redirect("/module/extrato/view", $this->translate->translate("Cancelado pelo Usuário"), "warning");  
+        return;             
     }
 
      /** 
@@ -158,7 +203,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('payment.overview', $widgetsIndexes)) {
 
-            $id = "480";                        
+            //$id = "480";                        
             
             $conditions = "id = ?1";
             $parameters = array(1 => $id);

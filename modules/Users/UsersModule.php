@@ -382,7 +382,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return array(
                 'aprove' => array(
                     'icon'  => 'fa fa-lock',
-                    //'link'  => $baseLink . "block/" . $item['id'],
+                    'link'  => $this->getBasePath() . $baseLink . "block/" . $item['id'],
                     'class' => 'btn-sm btn-info datatable-actionable tooltips',
                     'attrs' => array(
                         'data-datatable-action' => "aprove",

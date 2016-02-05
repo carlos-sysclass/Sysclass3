@@ -25,16 +25,21 @@
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Name"}</label>
-					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+					<label class="control-label">{translateToken value="Expiration Date"}</label>
+					<input name="name" value="" type="text" placeholder="Expiration Date" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 				</div>
 				<div class="form-group">
-					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Value"}</label>
+					<input name="name" value="" type="text" placeholder="Value" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+				</div>
+				
+				<!--div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that>
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
-				</div>
+				</div -->
 
-				<div class="form-group">
+				<!-- div class="form-group">
 					<label class="control-label">{translateToken value="Coordinator"}</label>
 					<select class="select2-me form-control input-block-level" name="coordinator_id" data-placeholder="{translateToken value='Coordinator'}" data-minimum-results-for-search="4" />
 						<option value="">{translateToken value="Please Select"}</option>
@@ -42,10 +47,10 @@
 							<option value="{$coord.id}">{$coord.name} {$coord.surname}</option>
 						{/foreach}
                     </select>
-				</div>
+				</div-->
 
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Active"}</label>
+					<label class="control-label">{translateToken value="Status"}</label>
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 			</div>

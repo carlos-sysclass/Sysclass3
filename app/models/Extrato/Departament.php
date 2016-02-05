@@ -1,5 +1,5 @@
 <?php
-namespace Sysclass\Models\Courses;
+namespace Sysclass\Models\Extrato;
 
 use Plico\Mvc\Model;
 

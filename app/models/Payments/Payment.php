@@ -11,7 +11,7 @@ class Payment extends Model
     {
         $this->setSource("mod_payment");
 
-        $this->hasOne("id", "Sysclass\\Models\\Payments\\PaymentTypes", "payment_id",  array('alias' => 'itens'));        
+        $this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id",  array('alias' => 'items'));        
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'user'));
 
@@ -63,4 +63,5 @@ class Payment extends Model
         */
 
     }
+
 }
