@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Courses;
  * @filesource
  */
 use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\Course as Enrollment;
+use Sysclass\Models\Enrollments\CourseUsers as Enrollment;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules

@@ -5,7 +5,7 @@ use Phalcon\DI,
 	Phalcon\Mvc\Dispatcher,
 	Sysclass\Models\Users\User,
 	Sysclass\Models\Courses\Course,
-	Sysclass\Models\Enrollments\Course as Enrollment,
+	Sysclass\Models\Enrollments\CourseUsers as Enrollment,
 	Sysclass\Models\Enrollments\Enroll,
 	Sysclass\Models\I18n\Language,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
@@ -292,6 +292,12 @@ class ApiController extends \AbstractSysclassController
 				));
 			} else {
 				$data = $enroll->toArray();
+				$courses = $enroll->getCourses();
+				$data['courses'] = array();
+				foreach($courses as $course) {
+					$data['courses'][] = $course->toFullArray(array('Course'));
+				}
+
 				$fields = $enroll->getEnrollFields(array(
 					'order' => 'position'
 				));

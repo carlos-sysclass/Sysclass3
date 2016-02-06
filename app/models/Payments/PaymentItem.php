@@ -25,7 +25,7 @@ class PaymentItem extends Model
 
         $this->hasManyToMany(
             "id",
-            "Sysclass\\Models\\Enrollments\\Course",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
             "user_id", "course_id",
             "Sysclass\\Models\\Courses\\Course",
             "id",

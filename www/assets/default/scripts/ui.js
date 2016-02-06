@@ -143,7 +143,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         };
 						opt.formatResult = function (item, container, query, escapeMarkup) {
 							///console.log(item, container, query, escapeMarkup);
-                            console.warn(this, item);
+                            //console.warn(this, item);
 
 
                             var formatAsCallback = jQuery(this.element).data('format-as');
@@ -207,6 +207,12 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                 }
             }
             return item.name; 
+        },
+        "attr" : function(item) {
+            var prop = jQuery(this.element).data('format-as-value');
+            var model = new Backbone.DeepModel(item);
+
+            return model.get(prop);
         },
 		"country-list" : function (state) {
             if (!state.id) return state.text; // optgroup

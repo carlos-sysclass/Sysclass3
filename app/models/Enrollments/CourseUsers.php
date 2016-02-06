@@ -4,7 +4,7 @@ namespace Sysclass\Models\Enrollments;
 use Plico\Mvc\Model,
     Phalcon\Mvc\Model\Message as Message;
 
-class Course extends Model
+class CourseUsers extends Model
 {
     public function initialize()
     {
