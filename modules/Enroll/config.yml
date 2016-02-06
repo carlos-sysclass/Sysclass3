@@ -58,11 +58,28 @@ crud:
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
-      blocks: ["fixed_grouping.dialog", "enroll.fields"]
+      blocks: ["fixed_grouping.dialog", "enroll.courses", "enroll.fields"]
       variables:
         page_subtitle: Edit Enrollment Guidelines
 
 blocks:
+  enroll.courses:
+    context:
+      id : "enroll_courses"
+      sAjaxSource: /module/enroll/items/courses/datatable
+      datatable_fields:
+      - mData: course.name
+        label: User / Group
+
+      - mData: course.active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
   enroll.fields:
     context:
       id : "enroll_fields"
@@ -109,10 +126,13 @@ models:
     class: Sysclass\Models\Enrollments\Enroll
     exportMethod: ["toExtendArray", ["EnrollFields"]]
   course: 
-    class: Sysclass\Models\Enrollments\Course
+    class: Sysclass\Models\Enrollments\CourseUsers
     exportMethod: ["toFullArray", ["User", "Course"]]
   fields: 
     class: Sysclass\Models\Enrollments\Fields
     exportMethod: ["toFullArray", ["Field"]]
+  courses: 
+    class: Sysclass\Models\Enrollments\Courses
+    exportMethod: ["toFullArray", ["Enroll", "Course"]]
 
 

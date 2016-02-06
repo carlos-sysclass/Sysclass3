@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Roadmap;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Enrollments\Course as EnrolledCourse;
+use Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules

@@ -9,9 +9,15 @@
 		<li class="admittance-type-item admittance-type-grouping hidden">
 			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
 		</li>
+
+		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}
+			<li class="">
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Courses"}</a>
+			</li>
+		{/if}
 		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
 			<li class="">
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrollment Fields"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Fields"}</a>
 			</li>
 		{/if}
 		
@@ -265,8 +271,16 @@
 		</div>
 		
 
-		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
+		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}
 			<div class="tab-pane fade in" id="tab_1_3">
+		    {foreach $T_SECTION_TPL['enroll.courses'] as $template}
+		        {include file=$template}
+		    {/foreach}
+		    </div>
+		{/if}
+
+		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
+			<div class="tab-pane fade in" id="tab_1_4">
 		    {foreach $T_SECTION_TPL['enroll.fields'] as $template}
 		        {include file=$template}
 		    {/foreach}

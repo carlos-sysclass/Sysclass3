@@ -16,6 +16,13 @@ class Enroll extends Model
         
         $this->hasMany(
             "id",
+            "Sysclass\Models\Enrollments\Courses",
+            "course_id",
+            array('alias' => 'Courses')
+        );
+
+        $this->hasMany(
+            "id",
             "Sysclass\Models\Enrollments\Fields",
             "enroll_id",
             array('alias' => 'EnrollFields')
