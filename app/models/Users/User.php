@@ -59,6 +59,21 @@ class User extends Model
 
     }
 
+    public function beforeValidationOnCreate() {
+        if (empty($this->login)) {
+            $this->login = $this->createNewLogin();
+        }
+        if (empty($this->passwd)) {
+            $password = $this->createRandomPass();
+            // ENCRYPT PASS
+            $this->password = $this->getDi()->get('security')->hash($password);
+        }
+        if (is_null($this->websocket_key)) {
+            $websocket_key = $this->createRandomPass();
+            $this->websocket_key = $this->getDi()->get('security')->hash($websocket_key);
+        }
+    }
+
     public static function specialFind($filters) {
         $users = array();
         foreach($filters as $filter => $value) {

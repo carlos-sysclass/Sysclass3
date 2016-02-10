@@ -32,6 +32,9 @@ $di->setShared("resourceUrl", function() use ($di, $environment) {
 
 
 
+
+
+
 $di->setShared("escaper", function() {
     $escaper = new \Phalcon\Escaper();
     return $escaper;

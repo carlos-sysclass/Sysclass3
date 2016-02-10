@@ -223,66 +223,106 @@ class ApiController extends \AbstractSysclassController
      * @Post("/enroll")
      * 
      */
-	public function enrollRequest() {
+	public function addEnrollRequest() {
 		$postdata = $this->request->getJsonRawBody(true);
 
+		$error = false;
+
+		$messages = $data = array();
+
 		if (is_null($postdata)) {
-			$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));
+			$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
 		} else {
-			/*
-				CHANGE SysclassModule Default Add/Edit/Delete Methods, 
-				to allow parameters to be passed by arguments (it's now getting from GET/POST/PUT data)
-				Maybe it's better to create a method to receive, or move the validation to model (the correct way!!)
-			 */
-			if (array_key_exists("user", $postdata)) {
-				// SIGNUP USER
-				$user = $this->authentication->signup($postdata['user']);
-				$user->refresh();
-			} elseif (array_key_exists("user_id", $postdata)) {
-				$user = User::findFirstById($postdata['user_id']);
-			}
 
-			if (!$user) {
-				$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));
+			$enroll = Enroll::findFirstByIdentifier($postdata['_package_id']);
+			
+			if($enroll) {
+ 				$check = $enroll->isAllowed();
+ 				if (!$check['error']) {
+ 					// CREATE TRANSACTION
+ 					$this->db->begin();
+
+ 					$user = $this->authentication->signup($postdata);
+
+ 					if ($user) {
+ 						$user->refresh();
+ 						$messages[] = $this->createResponse(200, "User created with success!", "success");
+
+ 						$data['user'] = array(
+ 							'id' => $user->id,
+ 							'name' => $user->name,
+ 							'surname' => $user->surname,
+ 							'email' => $user->email,
+ 							'login' => $user->login
+ 						);
+
+ 						if (count($postdata['courses']) > 0) {
+ 							$data['courses'] = array();
+	 						foreach($postdata['courses'] as $course_id) {
+								$course = Course::findFirstById($course_id);
+								if ($course) {
+									$result = $enroll->enrollUser($user, $course);
+
+									if (count($result) == 0) {
+										$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name} with success!", "success");
+
+										$data['courses'][] = array(
+											'id' => $course->id,
+											'name' => $course->name
+										);
+									} else {
+
+										$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
+										$error = true;
+										break;
+									}
+								} else {
+									$messages[] = $this->createResponse(400, "Course does not exists!", "error");
+									$error = true;
+								}
+							}
+						} else {
+							$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");
+							$error = true;
+						}
+
+ 					} else {
+						$messages[] = $this->createResponse(400, "Your data sent appers to be imcomplete. Please check your info and try again!", "error");
+						$error = true;
+ 					}
+ 				} else {
+ 					$messages[] = $this->invalidRequestError($check['reason'], "warning");
+ 					$error = true;
+ 				}
 			} else {
-				// USER IS UP AND DEFINED
-				if (
-					!array_key_exists("course_id", $postdata) ||
-					!($course = Course::findFirstById($postdata['course_id']))
-				) {
-					$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));
-				} else {
-					$enrollment = new Enrollment();
-
-					$enrollment->assign(array(
-						'user_id' => $user->id,
-						'course_id' => $course->id
-					));
-
-					if (!$enrollment->save()) {
-						$message = reset($enrollment->getMessages());
-
-						$this->response->setJsonContent(
-							$this->createResponse(412, $message->getMessage(), $message->getType())
-						);
-					} else {
-						$enrollment->refresh();
-
-						$this->response->setJsonContent(
-							$this->createResponse(200, "Used Enrolled successfully.", "success")
-						);
-					}
-				}
+				// ENROLL DOES NOT EXISTS
+				$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+				$error = true;
 			}
+
+			if ($error) {
+				// ROLLBACK TRANSACTION
+				$this->db->rollback();
+			} else {
+				$this->db->commit();
+			}
+
+			$this->response->setJsonContent(array(
+				'messages' => $messages,
+				'error' => $error,
+				'data' => $data
+			));
+
+			return true;
 		}
 	}
 
     /**
      * Api Method to get enrollment info
-     * @Get("/enroll/info/{identifier}")
+     * @Get("/enroll/{identifier}")
      * 
      */
-	public function enrollInfoRequest($identifier) {
+	public function getEnrollRequest($identifier) {
 		//if (filter_var($identifier, FILTER_VALIDATE_)) {
 			$enroll = Enroll::findFirstByIdentifier($identifier);
 
@@ -293,6 +333,7 @@ class ApiController extends \AbstractSysclassController
 			} else {
 				$data = $enroll->toArray();
 				$courses = $enroll->getCourses();
+
 				$data['courses'] = array();
 				foreach($courses as $course) {
 					$data['courses'][] = $course->toFullArray(array('Course'));
