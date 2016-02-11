@@ -42,10 +42,10 @@ class Adapter extends Component
   		//Settings
   		$mailSettings = $this->environment->mail;
   		if ($render) {
-        if (is_array($vars)) {
-          var_dump($vars);
-          $this->view->setVars($vars);
-        }
+            if (is_array($vars)) {
+                
+                $this->view->setVars($vars);
+            }
   			$template = $this->view->render($template);
   		}
   		//$template = $this->getTemplate($name, $params);
@@ -58,17 +58,16 @@ class Adapter extends Component
     			))
     			->setBody($template, 'text/html');
 
-var_dump($template);
-	  	// Create the Mailer using your created Transport
-		$status = $this->getMailer()->send($this->getMessage());
+  	  	// Create the Mailer using your created Transport
+  		$status = $this->getMailer()->send($this->getMessage());
 
-		$this->clearMessage();
+  		$this->clearMessage();
 
-		return $status;
+  		return $status;
     }
 
     public function attachInline($path) {
-    	$path = "/var/www/sysclass/develop/current/www/assets/default/img/logo.png";
+      $path = REAL_PATH . "/www/assets/default/img/logo.png";
 
     	$cid = $this->getMessage()
     		->setContentType("text/html")
