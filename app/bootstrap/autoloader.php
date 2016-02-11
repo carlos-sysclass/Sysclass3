@@ -30,6 +30,7 @@ $loader->registerNamespaces(array(
     "Sysclass\Controllers" => __DIR__ . "/../../controller/", 
     "Sysclass\Modules" => __DIR__ . "/../../modules/", 
     "Sysclass\Models" => __DIR__ . "/../models/",
+    "Sysclass\Collections" => __DIR__ . "/../collections/",
     "Sysclass\Services" => __DIR__ . "/../services/",
     "Sysclass\Tasks" => __DIR__ . "/../tasks/",
     "Sysclass\Sockets" => __DIR__ . "/../sockets/",

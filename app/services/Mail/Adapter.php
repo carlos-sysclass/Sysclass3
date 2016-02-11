@@ -38,24 +38,27 @@ class Adapter extends Component
 	  	return $this->_mailer;
     }
 
-    public function send($to, $subject, $template, $render = false) {
-		//Settings
-		$mailSettings = $this->environment->mail;
-		if ($render) {
-			$template = $this->view->render($template);
-		}
-		//$template = $this->getTemplate($name, $params);
-		// Create the message
-		$this->getMessage()
-  			->setSubject($subject)
-  			->setTo($to)
-  			->setFrom(array(
-  				$mailSettings->from_email => $mailSettings->from_name
-  			))
-  			->setBody($template, 'text/html');
+    public function send($to, $subject, $template, $render = false, $vars = null) {
+  		//Settings
+  		$mailSettings = $this->environment->mail;
+  		if ($render) {
+        if (is_array($vars)) {
+          var_dump($vars);
+          $this->view->setVars($vars);
+        }
+  			$template = $this->view->render($template);
+  		}
+  		//$template = $this->getTemplate($name, $params);
+  		// Create the message
+  		$this->getMessage()
+    			->setSubject($subject)
+    			->setTo($to)
+    			->setFrom(array(
+    				$mailSettings->from_email => $mailSettings->from_name
+    			))
+    			->setBody($template, 'text/html');
 
-
-
+var_dump($template);
 	  	// Create the Mailer using your created Transport
 		$status = $this->getMailer()->send($this->getMessage());
 

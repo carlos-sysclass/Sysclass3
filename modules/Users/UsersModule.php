@@ -579,7 +579,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @Put("/item/agreement/{id}")
+     * @Put("/datasource/agreement/{id}")
      * @todo MOVE TO AGREEMENT CONTROLLER
      */
     public function setAgreementRequest($id)

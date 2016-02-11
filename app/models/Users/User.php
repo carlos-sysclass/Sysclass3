@@ -192,4 +192,8 @@ class User extends Model
         return substr(md5(rand().rand()), 0, $len);
     }
 
+    public function generateConfirmHash() {
+        $this->reset_hash = $this->createRandomPass(16);
+    }
+
 }
