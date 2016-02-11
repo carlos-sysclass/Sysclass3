@@ -14,6 +14,7 @@ use
 */
 class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetContainer
 {
+    
     /* ILinkable */
     public function getLinks() {
             //$total_itens = User::count("active = 1");
@@ -30,6 +31,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
             );
     }
 
+
    /**
      * [ add a description ]
      *
@@ -41,7 +43,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
         
         //SE DER ALGUMA ERRO ENTRA NA CONDIÇÃO    
         if (!$paymentItemObject) {
-            $this->redirect("/module/extrato/view", "Erro mágico", "error");  
+            $this->redirect("/module/payment/view", "Erro mágico", "error");  
             return;             
         }
 
@@ -64,7 +66,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
                     }
                     case "message" :
                     default : {
-                        $this->redirect("/module/extrato/view", $this->translate->translate($result['message']), "warning");  
+                        $this->redirect("/module/payment/view", $this->translate->translate($result['message']), "warning");  
                     }
                 }
             //}
@@ -107,6 +109,28 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
         */
     }
 
+    //função que chama o paypal
+    protected function getDatatableSingleItemOptions($item) {
+
+        if(empty($item->payment_date)){
+
+        //var_dump($item);
+        //if (!$this->request->hasQuery('block') && $item->pending == 1) {
+            return array(
+                'aprove' => array(
+                    'icon'  => 'fa fa-lock',
+                    'link'  => "http://local.sysclass.com/module/payment/initiate/" . $item->id,
+                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Make Payment'
+                    )
+                )
+            );
+        //}
+        return false;
+        }
+    }
+
     /**
      * [ add a description ]
      *        
@@ -122,7 +146,6 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
             'args'             => $this->request->getQuery()
         ));
         
-        //var_dump($continue);
         // Adapter.php => confirmPayment
         if ($continue) {
             $this->payment->confirmPayment(array(
@@ -130,10 +153,10 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
                 'payment_itens_id' => $payment_itens_id,
                 'args'             => $this->request->getQuery()
             ));
-            $this->redirect("/module/extrato/view", "Authorized by User", "sucess");              
+            $this->redirect("/module/payment/view", "Authorized by User", "sucess");              
             return;             
         } else {
-            $this->redirect("/module/extrato/view", "Error Authorize the User", "warning");  
+            $this->redirect("/module/payment/view", "Error Authorize the User", "warning");  
             return;             
         }        
     }    
@@ -157,7 +180,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
         );
         $item->status = "cancel";
         $item->save();    
-        $this->redirect("/module/extrato/view", $this->translate->translate("Cancelado pelo Usuário"), "warning");  
+        $this->redirect("/module/payment/view", $this->translate->translate("Cancelled by User"), "warning");  
         return;             
     }
 
@@ -168,7 +191,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
      */
 
     /*confirm/{backend}/{payment_itens_id}")*/
-    public function doExpressCheckoutPaymentPaymentRequest($payment_itens_id) {    
+    /*public function doExpressCheckoutPaymentPaymentRequest($payment_itens_id) {    
             
             $token   = $this->request->getQuery('token');   
             $PayerID = $this->request->getQuery('PayerID');   
@@ -191,7 +214,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
         } else {
             echo "Nao foi possivel confirmar o pagamento";
         }        
-    }
+    }*/
 
     /* IWidgetContainer */
     /**
@@ -203,8 +226,6 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('payment.overview', $widgetsIndexes)) {
 
-            //$id = "480";                        
-            
             $conditions = "id = ?1";
             $parameters = array(1 => $id);
             $items      = PaymentTransacao::find(

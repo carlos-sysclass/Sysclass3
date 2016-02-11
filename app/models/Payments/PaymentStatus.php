@@ -5,13 +5,11 @@ use Plico\Mvc\Model,
     Sysclass\Models\Acl\Resource,
     Sysclass\Models\Acl\RolesUsers;
 
-class PaymentItem extends Model
+class PaymentStatus extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_payment_itens");
-
-        $this->belongsTo("id_status", "Sysclass\\Models\\Payments\\PaymentStatus", "id",  array('alias' => 'Status', 'reusable' => true));
+        $this->setSource("mod_payment_status");
         
         //$this->belongsTo("payment_id", "Sysclass\\Models\\Payments\\Payment", "id",  array('alias' => 'payment'));
 

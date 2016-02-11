@@ -1,0 +1,67 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Payments
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      variables:
+        page_subtitle: Payments Manager
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: vencimento #assets/default/plugins/data-tables/DT_bootstrap.js (LOCAL DAS MASCARAS)
+          sType: datetime-moment
+          label: Expiration Date
+
+        - mData: payment_date
+          sType: datetime-moment
+          label: Payment Date
+
+        - mData: valor
+          sType: table-currency
+          label: Value
+
+        - mData: amount_paid
+          sType: table-currency
+          label: Amount Paid 
+
+        - mData: status.name
+          #sType: table-currency
+          sClass: text-center
+          label: Status
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+    add:
+      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      template: form.tpl
+      variables:
+        #page_subtitle: Create a new Departament
+
+   # 'edit/{id}':
+   #   components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch", "icheck"]
+      #blocks: ["permission.add"]
+      #scripts: ["views.courses.edit"]
+      #template: form.tpl
+      #scripts: ["edit"]
+      #variables:
+      #  page_subtitle: Edit Extract
+
+models:
+  me:
+    class: Sysclass\Models\Payments\PaymentItem
+    listMethod: "listByUser"
+    exportMethod: ["toFullArray", ["Status"]]

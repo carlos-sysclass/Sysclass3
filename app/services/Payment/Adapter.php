@@ -136,6 +136,7 @@ class Adapter extends Component implements IPayment
                 if($item){
                     $item->amount_paid  = $data['valor'];
                     $item->payment_date = date("Y-m-d");
+                    $item->id_status    = "2";
                     $item->save();
                     return true;                    
                 }else{
