@@ -8,10 +8,21 @@
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
 			<h4 class="form-title">{translateToken value="Please type login and password below"}</h4>
 			<div class="form-body">
-				<div class="alert alert-danger hidden">
-					<button class="close" data-dismiss="alert"></button>
-					<span>{translateToken value="There's some errors"}</span>
-				</div>
+				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
+					<div class="alert alert-{$T_MESSAGE.type}">
+						<button class="close" data-dismiss="alert"></button>
+						<span>{$T_MESSAGE.message}</span>
+					</div>
+				{/if}
+
+				{if isset($messages) && $messages|@count > 0}
+					{foreach $messages as $type => $message}
+					<div class="alert alert-{$type}">
+						<button class="close" data-dismiss="alert"></button>
+						<span>{$message}</span>
+					</div>
+					{/foreach}
+				{/if}
 
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>

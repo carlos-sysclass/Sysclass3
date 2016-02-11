@@ -718,6 +718,5 @@ abstract class SysclassModule extends BaseSysclassModule
         beforeModelDelete
         afterModelDelete
         errorModelDelete
-        
     */
 }
