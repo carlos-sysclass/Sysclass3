@@ -112,8 +112,9 @@ class ApiController extends \AbstractSysclassController
 	public function tokenRequest($reset)
 	{
 		//$userHash = "44adcd9fcb0b3f7c74fdd6bc860f0f7c5803be49c7bfb3e695ba519e5ca66c37";
-
 		$this->response->setContentType('application/json', 'UTF-8');
+
+
 
 		try {
 			$user = $this->request->getServer('PHP_AUTH_USER');
@@ -305,6 +306,9 @@ class ApiController extends \AbstractSysclassController
 				$this->db->rollback();
 			} else {
 				$this->db->commit();
+
+				// PUBLISH SYSTEM EVENT FOR ENROLLMENT
+				$this->eventsManager->fire("user:signup", $this, $user->toArray());
 			}
 
 			$this->response->setJsonContent(array(

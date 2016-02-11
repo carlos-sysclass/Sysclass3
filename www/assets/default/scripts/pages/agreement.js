@@ -3,7 +3,7 @@ $SC.module("view.agreement", function(mod, app, Backbone, Marionette, $, _){
 
 	this.on("start", function(opt) {
 		var itemModelClass = Backbone.Model.extend({
-			urlRoot : "/module/users/item/agreement"
+			urlRoot : "/module/users/datasource/agreement"
 		});
 
 		var itemModel = new itemModelClass();

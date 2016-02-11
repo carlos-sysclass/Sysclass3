@@ -75,3 +75,22 @@ $di->set('cache', function() {
 
     return $cache;
 });
+
+
+$di->set('mongo', function () use ($environment, $di) {
+    $environment_name = $di->get("sysconfig")->deploy->environment;
+
+    if (class_exists("MongoClient")) {
+        $mongo = new MongoClient();    
+    } else {
+        $mongo = new Mongo();
+    }
+
+   
+    return $mongo->selectDB($environment->mongo->database . "-" . $environment_name);
+   
+}, true);
+
+$di->set('collectionManager', function(){
+    return new Phalcon\Mvc\Collection\Manager();
+}, true);
