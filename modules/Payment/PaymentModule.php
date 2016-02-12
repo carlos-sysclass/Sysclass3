@@ -39,15 +39,17 @@ class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetConta
      */
     public function initiatePaymentRequest($paymentItemId) {
         //Kint::dump($paymentItemId);
-        $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
+        //var_dump($paymentItemId);
         
-        //SE DER ALGUMA ERRO ENTRA NA CONDIÇÃO    
+        $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
+        //exit;
+        //SE DER ALGUM ERRO ENTRA NA CONDIÇÃO    
         if (!$paymentItemObject) {
-            $this->redirect("/module/payment/view", "Erro mágico", "error");  
+            $this->redirect("/module/payment/view", "Error Starting Transaction", "error");  
             return;             
         }
 
-        $data = $paymentItemObject->toArray();
+        $data = $paymentItemObject->toArray();       
         $data['user'] = $paymentItemObject->getPayment()->getUser()->toArray();        
         
         //Adapter.php => initiatePayment(array $data) 

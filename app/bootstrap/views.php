@@ -71,6 +71,16 @@ $di->set('view', function() use ($environment, $di) {
             ));
             // Set some options here
             return $volt;
+        },
+        '.cert' => function ($view, $di) {
+            $volt = new VoltEngine($view, $di);
+            
+            $volt->setOptions(array(
+                'compiledPath' => __DIR__ . "/../../cache/view/volt/compiled/",
+                //'compileAlways'     => true, // performance decrease
+            ));
+            // Set some options here
+            return $volt;
         }
     ));
 

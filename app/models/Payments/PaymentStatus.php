@@ -62,7 +62,7 @@ class PaymentStatus extends Model
 
     }
 
-    public function listByUser($params) {
+    /*public function listByUser($params) {
         //pega o ID do usuario da sessao
         $di = \Phalcon\DI::getDefault();
         $user = $di->get('user');
@@ -73,5 +73,5 @@ class PaymentStatus extends Model
         ));
 
         return $payment->getItems();
-    }
+    }*/
 }

@@ -37,7 +37,6 @@ crud:
           label: Amount Paid 
 
         - mData: status.name
-          #sType: table-currency
           sClass: text-center
           label: Status
 
