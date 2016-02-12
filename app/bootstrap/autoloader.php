@@ -36,7 +36,8 @@ $loader->registerNamespaces(array(
     "Sysclass\Sockets" => __DIR__ . "/../sockets/",
     "Plico" => __DIR__ . "/../plico/", // TODO: Move code to plicolib itself
     "Sysclass" => __DIR__ . "/../sysclass/",
-    "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/'
+    "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/',
+    "Dompdf" => __DIR__ . '/../../vendor/dompdf/dompdf/src/'
     /*
     "Ratchet" => __DIR__ . '/../../vendor/cboden/ratchet/src/Ratchet/',
     "React\EventLoop" => __DIR__ . '/../../vendor/react/event-loop/',
