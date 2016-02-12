@@ -467,7 +467,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
-                    $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Class removed with success"), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                     $response = $this->invalidRequestError("", "warning");

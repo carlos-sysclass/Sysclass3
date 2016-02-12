@@ -31,6 +31,7 @@ CREATE TABLE `mod_payment_itens` (
   `valor` decimal(10,4) DEFAULT NULL,
   `amount_paid` decimal(10,4) DEFAULT NULL,
   `payment_date` timestamp NULL DEFAULT NULL,
+  `id_status` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
