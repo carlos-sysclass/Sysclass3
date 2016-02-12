@@ -108,7 +108,7 @@ SYSCLASS_HOME={base_path}
 #OPENFIRE_RUN_CMD="${JAVACMD} -server ${OPENFIRE_OPTS} -classpath \"${LOCALCLASSPATH}\" -jar \"${OPENFIRE_LIB}/startup.jar\""
 
 PHP_CMD="/usr/bin/php";
-SYSCLASS_RUN_CMD="${PHPCMD} {base_path}/current/listener.php"
+SYSCLASS_RUN_CMD="${PHP_CMD} ${SYSCLASS_HOME}/listener.php"
 
 #####
 # End setup work
@@ -134,7 +134,7 @@ start() {
     su -s /bin/sh -c "nohup $SYSCLASS_RUN_CMD > $SYSCLASS_LOGDIR/daemon.out 2>&1 &" $SYSCLASS_USER
     RETVAL=$?
 
-    echo
+    echo 
 
     [ $RETVAL -eq 0 -a -d /var/lock/subsys ] && touch /var/lock/subsys/sysclassd-{environment}
 
@@ -144,6 +144,8 @@ start() {
     echo $PID > $SYSCLASS_PIDFILE
 
     cd $OLD_PWD
+
+    return $RETVAL
 }
 
 stop() {

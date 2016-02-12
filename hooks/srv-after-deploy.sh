@@ -65,4 +65,4 @@ echo "environment=$environment" >> RELEASE
 # UPDATE THE SYSCLASS SERVICE AND LET HIM THERE (MANUAL UPDATE)
 dirname=`readlink -f .`; cat hooks/service.sh | sed "s#{base_path}#$dirname#g" | sed "s#{environment}#$environment#g" > sysclassd-$environment
 
-sudo service sysclassd-$environment start
+sudo service sysclassd-$environment restart
