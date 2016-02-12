@@ -62,11 +62,7 @@ echo "build_number=$build_number" >> RELEASE
 echo "branch=$branch" >> RELEASE
 echo "environment=$environment" >> RELEASE
 
-# CREATE / UPDATE THE SYSCLASS SERVICE
-# 
-
+# UPDATE THE SYSCLASS SERVICE AND LET HIM THERE (MANUAL UPDATE)
 dirname=`readlink -f .`; cat hooks/service.sh | sed "s#{base_path}#$dirname#g" | sed "s#{environment}#$environment#g" > sysclassd-$environment
 
-sudo mv sysclassd-$environment /etc/init.d/
-sudo chmod a+x /etc/init.d/sysclassd-$environment
 sudo service sysclassd-$environment start
