@@ -59,7 +59,7 @@ fi
 #    fi
 #fi
 
-SYSCLASS_HOME={base_path}
+SYSCLASS_HOME=$(readlink -f {base_path}/../current)
 
 # If log path is not set in sysconfig, set to $OPENFIRE_HOME/logs.
 [ -z "$SYSCLASS_LOGDIR" ] && SYSCLASS_LOGDIR="${SYSCLASS_HOME}/logs"
