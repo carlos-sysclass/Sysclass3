@@ -23,4 +23,4 @@
 
 declare `awk -F = '{print $0}' $1`
 
-return `service sysclassd-$environment stop`
+#return `service sysclassd-$environment stop`

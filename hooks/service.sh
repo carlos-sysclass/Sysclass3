@@ -134,8 +134,6 @@ start() {
     su -s /bin/sh -c "nohup $SYSCLASS_RUN_CMD > $SYSCLASS_LOGDIR/daemon.out 2>&1 &" $SYSCLASS_USER
     RETVAL=$?
 
-    echo 
-
     [ $RETVAL -eq 0 -a -d /var/lock/subsys ] && touch /var/lock/subsys/sysclassd-{environment}
 
     sleep 1 # allows prompt to return
@@ -145,7 +143,12 @@ start() {
 
     cd $OLD_PWD
 
-    return $RETVAL
+    if [ ! -z $PID ]; then
+        success
+    else
+        failure
+    fi
+    echo
 }
 
 stop() {
@@ -157,7 +160,7 @@ stop() {
         rm -f $SYSCLASS_PIDFILE
     else
         PID=$(findPID)
-        if [ -n $PID ]; then
+        if [ ! -z $PID ]; then
             kill $PID
         else
             echo "sysclassd-{environment} is not running."
@@ -172,7 +175,7 @@ stop() {
 
 restart() {
     stop
-    sleep 10 # give it a few moments to shut down
+    sleep 3 # give it a few moments to shut down
     start
 }
 
