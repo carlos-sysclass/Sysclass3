@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Enroll;
  * @filesource
  */
 use Sysclass\Models\Courses\Course as Course,
-    Sysclass\Models\Enrollments\Course as Enrollment,
+    Sysclass\Models\Enrollments\CourseUsers as Enrollment,
     Sysclass\Models\Forms\Fields;
 /**
  * [NOT PROVIDED YET]
@@ -67,6 +67,28 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putItem("enroll_fields_context", $block_context);
 
                 $self->putSectionTemplate("enroll.fields", "blocks/fields");
+
+                return true;
+            },
+            'enroll.courses' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                //$self->putBlock('enroll.fields.dialog');
+                $self->putModuleScript("blocks.enroll.courses");
+
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                $self->putScript("scripts/utils.datatables");
+
+                //$fields = Fields::find();
+                //$self->putItem("form_fields", $fields->toArray());
+
+                //$self->putComponent("bootstrap-switch");
+
+                $block_context = $self->getConfig("blocks\\enroll.courses\\context");
+                $self->putItem("enroll_courses_context", $block_context);
+
+                $self->putSectionTemplate("enroll.courses", "blocks/courses");
+
 
                 return true;
             }
@@ -164,5 +186,17 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         );
 
         return $actions[$request];
+    }
+
+    public function getDatatableItemOptions() {
+        if ($this->_args['model'] == 'courses') {
+            return array(
+                'remove'  => array(
+                    'icon'  => 'icon-remove',
+                    'class' => 'btn-sm btn-danger'
+                )
+            );
+        }
+        return parent::getDatatableItemOptions();
     }
 }

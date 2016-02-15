@@ -112,33 +112,42 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             template : _.template($("#classes-edit-item").html(), null, {variable: 'data'}),
             tagName : "li",
             className : "list-file-item draggable blue-stripe",
+            invalidated : true,
             initialize: function(opt) {
                 console.info('blocks.roadmap.classes/roadmapBlockClassItemViewClass::initialize');
                 this.opened = opt.opened ? opt.opened : false;
                 //this.listenTo(this.model, 'sync', this.render.bind(this));
             },
             render : function() {
-                this.$el.html(this.template(this.model.toJSON()));
-                if (this.model.get("id")) {
-                    if (this.model.get("active") === 0) {
-                        this.$el.removeClass("green-stripe");
-                        this.$el.removeClass("blue-stripe");
-                        this.$el.addClass("red-stripe");
-                    } else {
-                        this.$el.removeClass("red-stripe");
-                        this.$el.removeClass("blue-stripe");
-                        this.$el.addClass("green-stripe");
+                //if (this.invalidated || !this.model.get("id")) {
+                    this.$el.html(this.template(this.model.toJSON()));
+                    if (this.model.get("id")) {
+                        if (this.model.get("active") === 0) {
+                            this.$el.removeClass("green-stripe");
+                            this.$el.removeClass("blue-stripe");
+                            this.$el.addClass("red-stripe");
+                        } else {
+                            this.$el.removeClass("red-stripe");
+                            this.$el.removeClass("blue-stripe");
+                            this.$el.addClass("green-stripe");
+                        }
                     }
-                }
-                this.$el.attr("data-roadmap-class-id", this.model.get("id"));
+                    this.$el.attr("data-roadmap-class-id", this.model.get("id"));
 
-                if (this.$el.length) {
-                    app.module("ui").refresh(this.$el);
-                }
+                    if (this.$el.length) {
+                        app.module("ui").refresh(this.$el);
+                    }
 
-                mod.trigger("lesson:updated", this.model);
+                    mod.trigger("lesson:updated", this.model);
 
-                this.$el.data("view", this);
+                    this.$el.data("view", this);
+/*                    
+                    if (this.invalidated && this.$el.closest(document.documentElement)) {
+                        //this.start();
+                    }
+*/
+                    this.invalidated = false;
+                //
 
                 return this;
             },
@@ -156,7 +165,22 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 editableItem.on('save', function(e, params, b,c) {
 
                     self.model.set($(this).data("name"), params.newValue);
-                    self.model.save();
+                    if (!self.model.get("id")) {
+                        self.invalidated = true;
+                    }
+                    self.model.save(null, {
+                        success : function() {
+                            if (self.invalidated) {
+                                alert('saved');
+                                self.invalidated = false;
+                                self.render();
+                                self.opened = false;
+                                self.start();
+                            }
+                            
+                        }
+                    });
+
                 });
 
                 if (this.$el.length) {

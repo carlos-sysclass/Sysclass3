@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Grades;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Grades\Grade;
+use Sysclass\Models\Courses\Grades\Grade,
+    Sysclass\Models\Courses\Grades\Range;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -145,6 +146,30 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         );
 
         return $actions[$request];
+    }
+
+    public function afterModelCreate($evt, $model, $data) {
+        if (array_key_exists('ranges', $data) && is_array($data['ranges']) ) {
+            foreach($data['ranges'] as $grade) {
+                $range = new Range();
+                $range->assign($grade);
+                $range->grade_id = $model->id;
+                $range->save();
+            }
+        }
+    }
+
+    public function afterModelUpdate($evt, $model, $data) {
+        if (array_key_exists('ranges', $data) && is_array($data['ranges']) ) {
+            $model->getRanges()->delete();
+            
+            foreach($data['ranges'] as $grade) {
+                $range = new Range();
+                $range->assign($grade);
+                $range->grade_id = $model->id;
+                $range->save();
+            }
+        }
     }
 
     /**
@@ -332,6 +357,12 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         return array_values($itemsData);
     }
     */
+
+
+
+
+
+
     
     /**
      * [ add a description ]

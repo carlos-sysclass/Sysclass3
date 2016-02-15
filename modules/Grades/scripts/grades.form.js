@@ -36,16 +36,20 @@ $SC.module("grades.form", function(mod, app, Backbone, Marionette, $, _) {
 
  				var handlesSlider = this.getSlider();
  				var startValue = 0;
- 				var currentRange = this.model.get("range");
+ 				var currentRange = _.values(this.model.pick("range_start", "range_end"));
+
  				var self = this;
 
             	// CALCULATE PREVIOUS VALUE
-            	if (!currentRange) {
+            	if (!currentRange || _.size(currentRange) == 0) {
                 	var previousSlider = this.getPrevSlider();
 
                 	if (!_.isUndefined(previousSlider) && previousSlider.noUiSlider) {
 
                 		var previousValue = previousSlider.noUiSlider.get();
+
+
+                		console.warn(previousValue);
 
                 		if (!_.isArray(previousValue)) {
 	                		var newValue = previousValue / 2;
@@ -60,6 +64,9 @@ $SC.module("grades.form", function(mod, app, Backbone, Marionette, $, _) {
 	                	currentRange = [ 0, 100 ];
 	                }
 	            }
+
+
+
 				noUiSlider.create(handlesSlider, {
 					start: currentRange,
 					connect : true,
@@ -109,8 +116,10 @@ $SC.module("grades.form", function(mod, app, Backbone, Marionette, $, _) {
 					} else {
 						self.$(".range-end").html(range[who]);
 					}
+					self.model.set("range_start", range[0]);
+					self.model.set("range_end", range[1]);
 					// UPDATE MODEL
-					self.model.set("range", range);
+					//self.model.set("range", range);
 				});
 			},
 			setGrade : function(e) {
@@ -148,17 +157,24 @@ $SC.module("grades.form", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			initialize : function() {
 				this.listenToOnce(formView, "form:rendered", this.render.bind(this));
-			},
-			render : function() {
-				this.$(".ranges-rules-container").empty();
-				this.collection = new mod.collections.grades.ranges(this.model.get("grades"));
+				this.collection = new mod.collections.grades.ranges();
 
 				this.listenTo(this.collection, "add", this.addOne.bind(this));
 				this.listenTo(this.collection, "remove change", function() {
 					// UPDATES INDEXES
-					this.model.unset("grades");
-					this.model.set("grades", this.collection.toJSON());
+					this.model.unset("ranges");
+					this.model.set("ranges", this.collection.toJSON());
 				}.bind(this));
+				
+			},
+			render : function() {
+				this.$(".ranges-rules-container").empty();
+
+				//this.collection = new mod.collections.grades.ranges();
+
+				this.collection.reset(this.model.get("ranges"));
+
+
 
 				this.collection.each(this.addOne.bind(this));
 			},

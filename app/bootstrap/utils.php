@@ -32,6 +32,9 @@ $di->setShared("resourceUrl", function() use ($di, $environment) {
 
 
 
+
+
+
 $di->setShared("escaper", function() {
     $escaper = new \Phalcon\Escaper();
     return $escaper;
@@ -114,6 +117,12 @@ $di->setShared('queue', function () {
 
     return $queue;
 });
+
+$messagebus = new Sysclass\Services\MessageBus\Manager();
+$messagebus->setEventsManager($eventsManager);
+$messagebus->initialize();
+$di->setShared('messagebus', $messagebus);
+
 
 $di->setShared('mail', function () {
     require_once REAL_PATH . "/vendor/swiftmailer/swiftmailer/lib/swift_required.php";

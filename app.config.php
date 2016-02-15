@@ -209,21 +209,6 @@ $plicoLib->add("resources/components", array(
 ));
 
 $plicoLib->add("resources/components", array(
-	'name'	=> 'icheck',
-	'css'	=> array('plugins/icheck/skins/all'),
-	'js'	=> array('plugins/icheck/icheck')
-));
-
-$plicoLib->add("resources/components", array(
-	'name'	=> 'noui-slider',
-	'css'	=> array('plugins/nouislider/nouislider'),
-	'js'	=> array('plugins/nouislider/nouislider')
-));
-
-
-
-
-$plicoLib->add("resources/components", array(
 	'name'	=> 'jquery-file-upload',
 	'css'	=> array(
 		'plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min',

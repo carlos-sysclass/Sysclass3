@@ -60,7 +60,7 @@ class Sysclass extends Component implements IAuthentication
             $user = new User();
             $user->assign($info);
         }
-
+        /*
         if (empty($user->login)) {
             $user->login = $user->createNewLogin();
         }
@@ -70,7 +70,7 @@ class Sysclass extends Component implements IAuthentication
             // ENCRYPT PASS
             $user->password = $this->hashPassword($password, $user);
         }
-
+        */
         $user->viewed_license = 0;
 
         if ($this->configuration->get("signup_must_approve")) {

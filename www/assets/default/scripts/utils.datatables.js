@@ -14,6 +14,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	_vars : {},
 			events : {
 				"click .datatable-option-remove" : "removeItem",
+				"confirmed.bs.confirmation .datatable-option-remove" : "removeItem",
 				"click .datatable-option-check" : "checkItem",
 				"switchChange.bootstrapSwitch .datatable-option-switch" : "switchItem",
 				"click .datatable-actionable" : "doAction",
@@ -91,10 +92,15 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			removeItem : function(e) {
+				
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 
+
+
 				var model = this.getTableItemModel(data[0]);
+
+				console.warn(model.toJSON());
 
 				this.oTable
 					.api()

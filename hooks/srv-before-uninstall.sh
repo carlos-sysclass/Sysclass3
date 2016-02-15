@@ -17,52 +17,10 @@
 # ---------------------------------------------------------------------------- #
 
 # ---------------------------------------------------------------------------- #
-# hooks/srv-after-deploy.sh                                                    #
-# Executado após a instalação.                                                 #
+# hooks/srv-before-uninstall.sh                                                #
+# Executado antes de desinstalar, efetuar limpeza                              #
 # ---------------------------------------------------------------------------- #
 
 declare `awk -F = '{print $0}' $1`
 
-DIRNAME=`dirname $(readlink -f $0)`
-
-#ln -s ../files/public/ files
-
-#creating cache dir
-#mkdir -p "$DIRNAME/../cache/volt"
-#chmod 777 "$DIRNAME/../cache/volt" -R
-
-
-mkdir -p "$DIRNAME/../cache/metadata"
-chmod 777 "$DIRNAME/../cache/metadata" -R
-
-mkdir -p "$DIRNAME/../cache/view/volt/compiled"
-chmod 777 "$DIRNAME/../cache/view/volt/compiled" -R
-
-mkdir -p "$DIRNAME/../cache/view/smarty/cache"
-chmod 777 "$DIRNAME/../cache/view/smarty/cache" -R
-
-mkdir -p "$DIRNAME/../cache/view/smarty/compiled"
-chmod 777 "$DIRNAME/../cache/view/smarty/compiled" -R
-
-
-mkdir -p "$DIRNAME/../logs"
-chmod 777 "$DIRNAME/../logs" -R
-
-mkdir -p "$DIRNAME/../www/resources"
-chmod 777 "$DIRNAME/../www/resources" -R
-
-# INJECT VERSION INSIDE DATABASE
-#full_version=$1
-#branch=$2
-
-echo "[deploy]" > RELEASE
-echo "base_version=$base_version" >> RELEASE
-echo "full_version=$full_version" >> RELEASE
-echo "build_number=$build_number" >> RELEASE
-echo "branch=$branch" >> RELEASE
-echo "environment=$environment" >> RELEASE
-
-# UPDATE THE SYSCLASS SERVICE AND LET HIM THERE (MANUAL UPDATE)
-dirname=`readlink -f .`; cat hooks/service.sh | sed "s#{base_path}#$dirname#g" | sed "s#{environment}#$environment#g" > sysclassd-$environment
-
-sudo service sysclassd-$environment restart
+#return `service sysclassd-$environment stop`

@@ -23,7 +23,7 @@ class User extends Model
 
         $this->hasManyToMany(
             "id",
-            "Sysclass\\Models\\Enrollments\\Course",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
             "user_id", "course_id",
             "Sysclass\\Models\\Courses\\Course",
             "id",
@@ -57,6 +57,21 @@ class User extends Model
             array('alias' => 'UserGroups')
         );
 
+    }
+
+    public function beforeValidationOnCreate() {
+        if (empty($this->login)) {
+            $this->login = $this->createNewLogin();
+        }
+        if (empty($this->passwd)) {
+            $password = $this->createRandomPass();
+            // ENCRYPT PASS
+            $this->password = $this->getDi()->get('security')->hash($password);
+        }
+        if (is_null($this->websocket_key)) {
+            $websocket_key = $this->createRandomPass();
+            $this->websocket_key = $this->getDi()->get('security')->hash($websocket_key);
+        }
     }
 
     public static function specialFind($filters) {
@@ -175,6 +190,10 @@ class User extends Model
 
     public function createRandomPass($len = 8) {
         return substr(md5(rand().rand()), 0, $len);
+    }
+
+    public function generateConfirmHash() {
+        $this->reset_hash = $this->createRandomPass(16);
     }
 
 }

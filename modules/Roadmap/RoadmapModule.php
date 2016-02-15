@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Roadmap;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Enrollments\Course as EnrolledCourse;
+use Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -228,7 +228,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             $data = $this->getHttpData(func_get_args());
             if ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
-                $itemModel = $this->model($modelRoute)->debug();
+                $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Class created with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
@@ -300,7 +300,8 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
     public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
-            $data = $this->request->getPut();
+            //$data = $this->request->getPut();
+            $data = $this->getHttpData(func_get_args());
 
             if ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";

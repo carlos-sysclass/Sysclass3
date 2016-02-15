@@ -263,8 +263,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	            }
 	        }
-	        this.trigger("form:rendered");
-
 	    },
         renderViewItens : function(inputList) {
             // TEMPORARLY DISABLE UPDATE METHOD
@@ -398,6 +396,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             this.renderUiItems();
 
 	    	Marionette.triggerMethodOn(this, "render", model);
+
+	    	this.trigger("form:rendered");
+	    	
 	        return this;
 	    },
 	    setReadonly : function(toogle) {

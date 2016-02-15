@@ -256,6 +256,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                     }
                 } else {
                     $filedata['id'] = $this->model("dropbox")->addItem($filedata);
+
                 }
 
                 switch($type) {
@@ -273,14 +274,12 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                     }
                 }
 
-                $filedata = $this->model("dropbox")->getItem($filedata['id']);
+                $filedata = $this->model("dropbox")->clear()->getItem($filedata['id']);
 
                 $file_result[$param_name][] = $filedata;
             }
         }
         $this->response->setJsonContent($file_result);
-
-
 
         return $file_result;
     }

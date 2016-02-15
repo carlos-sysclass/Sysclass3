@@ -267,7 +267,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
 
-            if ($itemModel->save()) {
+            if ($itemModel->create()) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
 
 
@@ -718,6 +718,5 @@ abstract class SysclassModule extends BaseSysclassModule
         beforeModelDelete
         afterModelDelete
         errorModelDelete
-        
     */
 }

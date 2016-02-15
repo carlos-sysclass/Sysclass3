@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Forms;
  * @filesource
  */
 use Sysclass\Models\Courses\Course as Course,
-    Sysclass\Models\Enrollments\Course as Enrollment,
+    Sysclass\Models\Enrollments\CourseUsers as Enrollment,
     Sysclass\Models\Forms\Fields;
 /**
  * [NOT PROVIDED YET]
