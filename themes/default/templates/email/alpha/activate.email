@@ -61,9 +61,9 @@
                               <table class="row note">
                               <tr>
                                     <td class="wrapper last">
-                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">{{translate.translate("Thank you for joining %s!", [configuration.get("site_title")]) }}</h4>
+                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">{{translate.translate("Obrigado pelo seu cadastro!") }}</h4>
                                           <p>
-                                                 {{translate.translate("We received your signin request and now we only need to confirm your email. Please click on the link below to active your account") }}
+                                                 {{translate.translate("Nós recebemos seu pedido de inscrição e apenas precisamos confirmar o seu e-mail. Por favor, clique sobre a url abaixo para ativar sua conta") }}
                                           </p>
                                           <!-- BEGIN: Note Panel -->
                                           <table class="twelve columns" style="margin-bottom: 10px">
@@ -78,8 +78,7 @@
                                           </tr>
                                           </table>
                                           <p>
-                                                {{translate.translate("If clicking the URL above does not work, copy and paste the URL into a browser window.") }}
-                                                 
+                                                {{translate.translate("Se a link acima não estiver funcionando, copie e cola a url acima em seu navegador.") }}
                                           </p>
                                           <!-- END: Note Panel -->
                                     </td>
@@ -104,7 +103,7 @@
                                           <tr>
                                                 <td class="wrapper last" style="vertical-align: middle;color: #666;">
                                                       <span style="font-size:12px;">
-                                                      <i>{{ translate.translate("This ia a system generated email and reply is not required.") }}</i>
+                                                      <i>{{ translate.translate("Este e-mail é gerada automaticamente e respondê-lo não é necessário.") }}</i>
                                                       </span>
                                                 </td>
                                           </tr>
