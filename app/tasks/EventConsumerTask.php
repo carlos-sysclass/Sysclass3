@@ -32,11 +32,11 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                 $user->generateConfirmHash();
                 $user->save();
                 //$content = $this->view->render("email/activate.email");
-
+                //
                 $status = $this->mail->send(
                     $user->email, 
                     "Confirmação de conta Sysclass",
-                    "email/activate.email",
+                    "email/" . $this->sysconfig->environment . "/activate.email",
                     true,
                     array(
                         'activation_link' => 
@@ -45,7 +45,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                 );
             }
 
-            $this->messagebus->unqueue($event->_id);
+            //$this->messagebus->unqueue($event->_id);
 
             echo sprintf("processed event user:signup #%s with data %s\n", $event->_id, json_encode($event->data));
         }
