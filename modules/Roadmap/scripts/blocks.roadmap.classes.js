@@ -176,7 +176,6 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                                 self.opened = false;
                                 self.start();
                             }
-                            
                         }
                     });
 
