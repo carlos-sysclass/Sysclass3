@@ -58,7 +58,7 @@ class Adapter extends Component
     			))
     			->setBody($template, 'text/html');
 
-          var_dump($template);
+          echo $template;
 
   	  	// Create the Mailer using your created Transport
   		$status = $this->getMailer()->send($this->getMessage());
@@ -69,7 +69,7 @@ class Adapter extends Component
     }
 
     public function attachInline($path) {
-      $path = REAL_PATH . "/www/assets/default/img/logo.png";
+      $path = REAL_PATH . "/www/assets/sysclass.itaipu/img/logo.png";
 
     	$cid = $this->getMessage()
     		->setContentType("text/html")

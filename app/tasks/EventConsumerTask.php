@@ -36,7 +36,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                 $status = $this->mail->send(
                     $user->email, 
                     "Confirmação de conta Sysclass",
-                    "email/" . $this->sysconfig->environment . "/activate.email",
+                    "email/" . $this->sysconfig->deploy->environment . "/activate.email",
                     true,
                     array(
                         'activation_link' => 
@@ -44,6 +44,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                     )
                 );
             }
+            exit;
 
             //$this->messagebus->unqueue($event->_id);
 

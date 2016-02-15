@@ -1,38 +1,139 @@
-{% extends "layout/email.email" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <!--IMPORTANT: 
+      Before deploying this email template into your application make sure you convert all the css code in <style> tag using http://beaker.mailchimp.com/inline-css.
+      Chrome and other few mail clients do not support <style> tag so the above converter from mailchip will make sure that all the css code will be converted into inline css.
+      -->
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <meta name="viewport" content="width=device-width"/>
+      <title>{% block title %}{{ configuration.get("site_title") }} - {{ configuration.get("site_subtitle") }}{% endblock %}</title>
 
-{# block header %}
-      {{ configuration.get("site_title") }}
-{% endblock #}
+      {% block styles %}
+            {% include "block/styles.email" %}
+      {% endblock %}
+</head>
 
-{% block content %}
-      <table class="row note">
-      <tr>
-            <td class="wrapper last">
-                  <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">{{translate.translate("Thank you for joining %s!", [configuration.get("site_title")]) }}</h4>
-                  <p>
-                         {{translate.translate("We received your signin request and now we only need to confirm your email. Please click on the link below to active your account") }}
-                  </p>
-                  <!-- BEGIN: Note Panel -->
-                  <table class="twelve columns" style="margin-bottom: 10px">
+<body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;direction: ltr;background: #f6f8f1;width: 100% !important;">
+<table class="body">
+<tr>
+
+      <td class="center" align="center" valign="top">
+            {% block header %}
+            <table class="page-header" align="center" style="width: 100%;background: #fff;">
                   <tr>
-                        <td class="panel" style="background: #ECF8FF;border: 0;padding: 10px !important;">
-                              <a href="{{ activation_link }}">
-                                    {{ activation_link }}
-                              </a>
-                        </td>
-                        <td class="expander">
+                        <td class="center" align="left">
+                              <!-- BEGIN: Header Container -->
+                              <table class="container" align="left">
+                              <tr>
+                                    <td>
+                                          <table class="row ">
+                                          <tr>
+                                                <td class="wrapper vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
+                                                      <!-- BEGIN: Logo -->
+                                                      <table class="six columns">
+                                                      <tr>
+                                                            <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
+                                                                  <a href="index.html">
+                                                                  <img src="{{ mail.attachInline("img/logo.png") }}" width="185"border="0" alt="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;height: auto;max-width: 100%;float: left;clear: both;display: block;">
+                                                                  </a>
+                                                            </td>
+                                                      </tr>
+                                                      </table>
+                                                      <!-- END: Logo -->
+                                                </td>
+                                                <td class="wrapper vertical-middle last" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
+                                                </td>
+                                          </tr>
+                                          </table>
+                                    </td>
+                              </tr>
+                              </table>
+                              <!-- END: Header Container -->
                         </td>
                   </tr>
-                  </table>
-                  <p>
-                        {{translate.translate("If clicking the URL above does not work, copy and paste the URL into a browser window.") }}
-                         
-                  </p>
-                  <!-- END: Note Panel -->
-            </td>
-      </tr>
-      </table>
-{% endblock %}
+            </table>
+            {% endblock %}
+            <table class="container content" align="center">
+                  <tr>
+                        <td>
+                              {% block content %}
+                              <table class="row note">
+                              <tr>
+                                    <td class="wrapper last">
+                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">{{translate.translate("Thank you for joining %s!", [configuration.get("site_title")]) }}</h4>
+                                          <p>
+                                                 {{translate.translate("We received your signin request and now we only need to confirm your email. Please click on the link below to active your account") }}
+                                          </p>
+                                          <!-- BEGIN: Note Panel -->
+                                          <table class="twelve columns" style="margin-bottom: 10px">
+                                          <tr>
+                                                <td class="panel" style="background: #ECF8FF;border: 0;padding: 10px !important;">
+                                                      <a href="{{ activation_link }}">
+                                                            {{ activation_link }}
+                                                      </a>
+                                                </td>
+                                                <td class="expander">
+                                                </td>
+                                          </tr>
+                                          </table>
+                                          <p>
+                                                {{translate.translate("If clicking the URL above does not work, copy and paste the URL into a browser window.") }}
+                                                 
+                                          </p>
+                                          <!-- END: Note Panel -->
+                                    </td>
+                              </tr>
+                              </table>
 
-{# block footer %}
-{% endblock #}
+                              {% endblock %}
+                              <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;">
+                              </span>
+                        </td>
+                  </tr>
+            </table>
+            {% block footer %}
+            <table class="page-footer" align="center" style="width: 100%;background: #fff;">
+                  <tr>
+                        <td class="center" align="center" style="vertical-align: middle;color: #666;">
+                              <table class="container" align="center">
+                              <tr>
+                                    <td style="vertical-align: middle;color: #666;">
+                                          <!-- BEGIN: Unsubscribet -->
+                                          <table class="row">
+                                          <tr>
+                                                <td class="wrapper last" style="vertical-align: middle;color: #666;">
+                                                      <span style="font-size:12px;">
+                                                      <i>{{ translate.translate("This ia a system generated email and reply is not required.") }}</i>
+                                                      </span>
+                                                </td>
+                                          </tr>
+                                          </table>
+                                          <!-- END: Unsubscribe -->
+                                          <!-- BEGIN: Footer Panel -->
+                                          <table class="row">
+                                          <tr>
+                                                <td class="wrapper" style="vertical-align: middle;color: #666;">
+                                                      <table class="four columns">
+                                                      <tr>
+                                                            <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;color: #666;">
+                                                                   &copy; {{ configuration.get("site_title")}} - {{ configuration.get("site_subtitle")}} {{date ("Y")}}.
+                                                            </td>
+                                                      </tr>
+                                                      </table>
+                                                </td>
+                                          </tr>
+                                          </table>
+                                          <!-- END: Footer Panel List -->
+                                    </td>
+                              </tr>
+                              </table>
+                        </td>
+                  </tr>
+            </table>
+            {% endblock %}
+      </td>
+</tr>
+</table>
+</body>
+</html>
