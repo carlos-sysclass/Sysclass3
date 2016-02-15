@@ -280,7 +280,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Entity created with success"),
+                            $this->translate->translate("Created with success"),
                             "success"
                         ),
                         $itemData 
