@@ -910,36 +910,37 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
 					}
-					var videoDomID = "lesson-video-" + this.videoModel.get("id");
 
-					if (this.$("#" + videoDomID).size() === 0) {
-						this.$el.empty().append(
-							this.template(this.videoModel.toJSON())
-						);
-						//console.warn(this.videoModel.toJSON());
+					if (this.videoModel) {
+						var videoDomID = "lesson-video-" + this.videoModel.get("id");
 
-						//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
-						videojs(videoDomID, {
-							"controls": true,
-							"autoplay": false,
-							"preload": "auto",
-							"width" : "auto",
-							"height" : "auto",
-							"techOrder" : [
-								'html5', 'flash'
-							]
-						}, function() {
-							//this.play();
-						});
+						if (this.$("#" + videoDomID).size() === 0) {
+							this.$el.empty().append(
+								this.template(this.videoModel.toJSON())
+							);
+							//console.warn(this.videoModel.toJSON());
+
+							//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
+							videojs(videoDomID, {
+								"controls": true,
+								"autoplay": false,
+								"preload": "auto",
+								"width" : "auto",
+								"height" : "auto",
+								"techOrder" : [
+									'html5', 'flash'
+								]
+							}, function() {
+								//this.play();
+							});
+						}
+
+						this.videoJS = videojs(videoDomID);
+
+						this.videoJS.ready(this.bindStartVideoEvents.bind(this));
+
+						mod.videoJS = this.videoJS;
 					}
-
-
-
-					this.videoJS = videojs(videoDomID);
-
-					this.videoJS.ready(this.bindStartVideoEvents.bind(this));
-
-					mod.videoJS = this.videoJS;
 
 					app.module("ui").refresh(this.$el);
 				}
