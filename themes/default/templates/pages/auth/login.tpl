@@ -94,7 +94,7 @@
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
-						<a href="/signup" id="register-btn" >{translateToken value="Create an account"}</a>
+						<a href="http://signup.{$T_SYSCONFIG.deploy.environment}.sysclass.com" id="register-btn" >{translateToken value="Create an account"}</a>
 					</p>
 				</div>
 			{/if}
