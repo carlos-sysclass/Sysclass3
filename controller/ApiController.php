@@ -27,7 +27,6 @@ class ApiController extends \AbstractSysclassController
 			return true;
 		}
 		//$userHash = "44adcd9fcb0b3f7c74fdd6bc860f0f7c5803be49c7bfb3e695ba519e5ca66c37";
-		
 
 		try {
 			/*

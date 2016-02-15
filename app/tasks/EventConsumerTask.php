@@ -44,9 +44,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                     )
                 );
             }
-            exit;
-
-            //$this->messagebus->unqueue($event->_id);
+            $this->messagebus->unqueue($event->_id);
 
             echo sprintf("processed event user:signup #%s with data %s\n", $event->_id, json_encode($event->data));
         }
