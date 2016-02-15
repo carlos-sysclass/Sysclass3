@@ -611,9 +611,8 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     /**
      * [ add a description ]
      *
-     * @url POST /item/users/switch
-     * @deprecated 3.0.0.18
-    */
+     * @Post("/item/users/toggle")
+     */
     public function switchUserInGroup() {
         $data = $this->getHttpData(func_get_args());
 
@@ -627,11 +626,11 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course with success"), "error");
         }
         return array_merge($response, $info);
     }

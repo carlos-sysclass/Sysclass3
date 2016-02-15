@@ -591,6 +591,9 @@ abstract class SysclassModule extends BaseSysclassModule
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
+
+            //var_dump(array($model_info['class'], $model_info['listMethod']), $args);
+            //exit;
             
 
             if ($type === 'datatable') {

@@ -71,3 +71,4 @@ blocks:
           label: Actions
 models:
   me: Sysclass\Models\Courses\Course
+  users: Sysclass\Models\Enrollments\CourseUsers

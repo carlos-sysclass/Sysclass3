@@ -38,7 +38,10 @@ class EnrollmentCourseModel extends AbstractSysclassModel implements ISyncroniza
             $sql = sprintf("DELETE FROM mod_enroll_course_to_users WHERE course_id = %d AND user_id = '%s'", $course_id, $user_id);
             $result = -1;
         } else {
-            $sql = sprintf("INSERT INTO mod_enroll_course_to_users (course_id, user_id) VALUES (%d, '%s')", $course_id, $user_id);
+            /**
+             * @todo REMOVE THIS HARD_CODED enroll_id = 10. MOVE TO THE NEXT MODEL PATTERN
+             */
+            $sql = sprintf("INSERT INTO mod_enroll_course_to_users (enroll_id, course_id, user_id) VALUES (10, %d, '%s')", $course_id, $user_id);
             $result = 1;
         }
         $this->db->Execute($sql);
