@@ -18,6 +18,7 @@ class Course extends Model
             array('alias' => 'Classes')
         );
     }
-    isCompleted()
+    public function isCompleted(){
         return true;
+    }
 }
