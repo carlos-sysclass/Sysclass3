@@ -12,8 +12,14 @@
 </head>
 
 <body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;direction: ltr;background: #f6f8f1;width: 100% !important;">
+<h1>{{ user.name }} {{ user.surname }}</h1>
+{{ organization.formal_name }}
 <table class="body">
 <tr>
+
+{% if user.id == 1 %}
+      
+{% endif %}
 
 	<td class="center" align="center" valign="top">
 		{% block header %}

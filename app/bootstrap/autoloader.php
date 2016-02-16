@@ -50,6 +50,7 @@ $loader->registerNamespaces(array(
 
 $loader-> registerClasses(array(
     'Smarty'    => __DIR__ . "/../../vendor/smarty/smarty/libs/Smarty.class.php",
+    'Cpdf'    => __DIR__ . "/../../vendor/dompdf/dompdf/lib/Cpdf.php",
     'Kint'    => __DIR__ . "/../../vendor/raveren/kint/Kint.class.php"
 ));
 
