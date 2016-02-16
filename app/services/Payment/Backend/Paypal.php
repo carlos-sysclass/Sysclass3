@@ -23,38 +23,25 @@ class Paypal extends Component implements IPayment {
         $apiEndpoint  = 'https://api-3t.' . ($this->debug ? 'sandbox.': "");
         $apiEndpoint .= 'paypal.com/nvp';
       
-        //Kint::dump($data);
-        //Executando a operação
-        $curl = curl_init();
-      
-        curl_setopt($curl, CURLOPT_URL, $apiEndpoint);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
-      
-
-      //Vai usar o Sandbox, ou produção?
-        $sandbox = true;
+        /*
+            Kint::dump($data);
+            Executando a operação
+            $curl = curl_init();
+          
+            curl_setopt($curl, CURLOPT_URL, $apiEndpoint);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_VERBOSE, true);      
+        */
         
         //Baseado no ambiente, sandbox ou produção, definimos as credenciais
-        //e URLs da API.
-        if ($sandbox) {
-            $user = $this->environment->paypal->user;
-            $pswd = $this->environment->paypal->pass;
-            $signature = $this->environment->paypal->signature;          
-            //URL da PayPal para redirecionamento, não deve ser modificada
-            $paypalURL = $this->environment->paypal->paypalURL;
-        } else {
-            //credenciais da API para produção
-            $user      = 'usuario';
-            $pswd      = 'senha';
-            $signature = 'assinatura';
-          
-            //URL da PayPal para redirecionamento, não deve ser modificada
-            $paypalURL = $this->environment->paypal->paypalURL;
-        }
+        //credenciais da API para o Sandbox
+        $user      = $this->environment->paypal->user;
+        $pswd      = $this->environment->paypal->pass;
+        $signature = $this->environment->paypal->signature;          
+        $paypalURL = $this->environment->paypal->paypalURL;
           
         //Campos da requisição da operação SetExpressCheckout, como ilustrado acima.
 
@@ -62,6 +49,9 @@ class Paypal extends Component implements IPayment {
         $valor      = floatval($data['valor']);
         $valor      = round($valor,2);
 
+        $url  = $this->request->getScheme()."://";
+        $url .= $this->request->getHttpHost();
+        
         $requestNvp = array(
             'USER'      => $user,
             'PWD'       => $pswd,
@@ -70,19 +60,30 @@ class Paypal extends Component implements IPayment {
             'METHOD'    => 'SetExpressCheckout',          
             'PAYMENTREQUEST_0_PAYMENTACTION' => 'SALE',
             'PAYMENTREQUEST_0_AMT'           => $valor,
-            'PAYMENTREQUEST_0_CURRENCYCODE'  => 'BRL',
+            'PAYMENTREQUEST_0_CURRENCYCODE'  => 'USD',
             'PAYMENTREQUEST_0_ITEMAMT'       => $valor,
             'PAYMENTREQUEST_0_INVNUM'        => $id,
           
             //'L_PAYMENTREQUEST_0_NAME0' => 'Item A',
-            'L_PAYMENTREQUEST_0_DESC0' => 'Produto A – 110V',
+            'L_PAYMENTREQUEST_0_DESC0' => 'Curso',
             'L_PAYMENTREQUEST_0_AMT0'  => $valor,
             'L_PAYMENTREQUEST_0_QTY0'  => '1',    
                                                                                
-            'RETURNURL'    => 'http://local.sysclass.com/module/payment/authorized/paypal/' . $id,
-            'CANCELURL'    => 'http://local.sysclass.com/module/payment/cancel/paypal/' . $id,
+            'RETURNURL'    => $url . '/module/payment/authorized/paypal/' . $id,
+            'CANCELURL'    => $url . '/module/payment/cancel/paypal/' . $id,
             'BUTTONSOURCE' => 'BR_EC_EMPRESA'
         );  
+
+       //Kint::dump($data);
+       //Executando a operação
+       $curl = curl_init();
+      
+        curl_setopt($curl, CURLOPT_URL, $apiEndpoint);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($requestNvp));
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
 
         $response = urldecode(curl_exec($curl));
       
@@ -99,31 +100,30 @@ class Paypal extends Component implements IPayment {
             }
         }
 
-        // TODO: Gravar aqui os dados de requisição e retorno
-        /*$item = PaymentTransacao::findFirst(
-            array(
-                    'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
-                        "bind"             => array(
-                        "token"            => $token,
-                        "payment_itens_id" => $payment_itens_id
+        /*
+            // TODO: Gravar aqui os dados de requisição e retorno
+            $item = PaymentTransacao::findFirst(
+                array(
+                        'conditions' => "token = :token: AND payment_itens_id = :payment_itens_id:",
+                            "bind"             => array(
+                            "token"            => $token,
+                            "payment_itens_id" => $payment_itens_id
+                        )
                     )
-                )
-        );
-        $item->status = "authorized";
-        $item->save();*/
+            );
+            $item->status = "authorized";
+            $item->save();         
+            REQUISIÇÂO = $data
+            RETORNO = $responseNvp     
 
-        /* 
-        REQUISIÇÂO = $data
-        RETORNO = $responseNvp
+            $paypalTransation = new PaypalTransaction();
+            $paypalTransation->token = 
+            $paypalTransation->timestamp = 
+            $paypalTransation->request = json_encode($data);
+            $paypalTransation->response = json_encode($responseNvp);
+            $paypalTransation->save();
         */
 
-        /*$paypalTransation = new PaypalTransaction();
-        $paypalTransation->token = 
-        $paypalTransation->timestamp = 
-        $paypalTransation->request = json_encode($data);
-        $paypalTransation->response = json_encode($responseNvp);
-        $paypalTransation->save();
-*/
         //Verificando se deu tudo certo e, caso algum erro tenha ocorrido,
         //gravamos um log para depuração.
         if (isset($responseNvp['ACK']) && $responseNvp['ACK'] != 'Success') {
@@ -136,26 +136,56 @@ class Paypal extends Component implements IPayment {
                 error_log($message);
             }
         }
-      
-        return $responseNvp;
+
+        $paypalURL = $this->environment->paypal->paypalURL;
+        $query = array(
+            'cmd'    => '_express-checkout',
+            'token'  => $responseNvp['TOKEN']
+        );    
+
+        if (isset($responseNvp['ACK']) && $responseNvp['ACK'] == 'Success') {
+            $response = array(
+                'continue' => true,
+                'action' => 'redirect',
+                'redirect' => sprintf('%s?%s', $paypalURL, http_build_query($query)),
+                'status' => "initiated",
+                'token' => $responseNvp['TOKEN'],
+                'info' => $responseNvp
+            );
+        } else {
+            $response = array(
+                'continue' => false,
+                'action' => 'message',
+                //'redirect' => sprintf('%s?%s', $paypalURL, http_build_query($query)),
+                'token' => $responseNvp['TOKEN'],
+                'message' => $responseNvp['L_LONGMESSAGE0'],
+                'status' => $responseNvp['L_SHORTMESSAGE0'],
+                'info' => $responseNvp
+            );
+        }
+
+        return $response;
     }
 
     public function authorizePayment(array $data) {
         
+       /* $PayerID = $this->request->getQuery('PayerID');  
         $result = array(
             'token' => $data['token']
         );
+
+        
         //$details = $this->checkDetailsPayment($result);
 
         //INSERIR ESTES DADOS NA TABELA ESPECIFICA DO PAYPAL, (SE HOUVER)
-        /*$paypalTransation = new PaypalTransactionLog();
+        $paypalTransation = new PaypalTransactionLog();
         $paypalTransation->token = 
         $paypalTransation->timestamp = 
         $paypalTransation->request = json_encode($data);
         $paypalTransation->response = json_encode($responseNvp);
         $paypalTransation->save();
-        */
-        $result['email'] = $details['EMAIL'];
+        
+        //$result['email'] = $details['EMAIL'];
         //TODO Check todos os status de retorno do paypal e retornar true or false
 
         $result['continue'] = true;
@@ -163,22 +193,26 @@ class Paypal extends Component implements IPayment {
         $result['failreason'] = $details['CHECKOUTSTATUS'];
 
         //RETORNAR DADOS NA ESTRUTURA ESPERADA PELO ADAPTER
-        return $result;
+        return $result;*/
     }
 
     public function confirmPayment(array $data){
 
-            $token   = $this->request->getQuery('token');   
-            $PayerID = $this->request->getQuery('PayerID');  
-            //$payment_itens_id = $this->request->getQuery('payment_itens_id');  
-            $payment_itens_id = 3;
-
+            $token            = $this->request->getQuery('token');   
+            $PayerID          = $this->request->getQuery('PayerID');  
+            $payment_itens_id = $data['payment_itens_id'];  
+            $valor            = floatval($data['valor']);
+             $valor           = round($valor,2);
+            
+            $user = $this->environment->paypal->user;
+            $pswd = $this->environment->paypal->pass;
+            $signature = $this->environment->paypal->signature;  
+            
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_URL, 'https://api-3t.sandbox.paypal.com/nvp');
-            
 
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array(
                 'USER'      => $user,
@@ -194,23 +228,25 @@ class Paypal extends Component implements IPayment {
                 'BILLINGPERIOD'    => 'Month',
                 'BILLINGFREQUENCY' => '1',
                 'AMT'              => 100,
-                'CURRENCYCODE'     => 'BRL',
-                'COUNTRYCODE'      => 'BR',
+                'CURRENCYCODE'     => 'USD',
+                'COUNTRYCODE'      => 'US',
                 'NOTIFYURL'        => 'http://PayPalPartner.com.br/notifyme',
 
                 'PAYMENTREQUEST_0_PAYMENTACTION' => 'SALE',
-                'PAYMENTREQUEST_0_AMT'           => '200.00',
-                'PAYMENTREQUEST_0_CURRENCYCODE'  => 'BRL',
-                'PAYMENTREQUEST_0_ITEMAMT'       => '200.00',
+                'PAYMENTREQUEST_0_AMT'           => $valor,
+                'PAYMENTREQUEST_0_CURRENCYCODE'  => 'USD',
+                'PAYMENTREQUEST_0_ITEMAMT'       => $valor,
                 'PAYMENTREQUEST_0_INVNUM'        => $payment_itens_id, 
 
-                'PAYMENTREQUEST_0_SHIPTONAME'    =>'José Silva',
+                /*
+                PAYMENTREQUEST_0_SHIPTONAME'    =>'José Silva',
                 'PAYMENTREQUEST_0_SHIPTOSTREET'  =>'Rua Main, 150',
                 'PAYMENTREQUEST_0_SHIPTOSTREET2' =>'Centro',
                 'PAYMENTREQUEST_0_SHIPTOCITY'    =>'Rio De Janeiro',
                 'PAYMENTREQUEST_0_SHIPTOSTATE'   =>'RJ',
                 'PAYMENTREQUEST_0_SHIPTOZIP'     =>'22021-001',
                 'PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE' =>'BR',
+                */
 
                 'MAXFAILEDPAYMENTS'=> 3
             )));
@@ -225,8 +261,17 @@ class Paypal extends Component implements IPayment {
                 foreach ($matches['name'] as $offset => $name) {
                     $nvp[$name] = urldecode($matches['value'][$offset]);
                 }
-            }          
-            
-            return $nvp;
+            }       
+
+            if (isset($nvp['PAYMENTINFO_0_ACK']) && $nvp['PAYMENTINFO_0_ACK'] == 'Success') {
+                    $response = array(
+                    'continue' => true                    
+                );
+            }else{
+                    $response = array(
+                    'continue' => false                    
+                );
+            }  
+            return $response;
     }         
 }

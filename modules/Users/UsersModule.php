@@ -141,7 +141,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $request = $this->getMatchedUrl();
 
         $actions = array(
-            'view'  => array(
+            'viewgetBreadcrumb'  => array(
                 array(
                     'text'      => $this->translate->translate('New User'),
                     'link'      => $this->getBasePath() . "add",
@@ -386,7 +386,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return array(
                 'aprove' => array(
                     'icon'  => 'fa fa-lock',
-                    //'link'  => $baseLink . "block/" . $item['id'],
+                    'link'  => $this->getBasePath() . $baseLink . "block/" . $item['id'],
                     'class' => 'btn-sm btn-info datatable-actionable tooltips',
                     'attrs' => array(
                         'data-datatable-action' => "aprove",

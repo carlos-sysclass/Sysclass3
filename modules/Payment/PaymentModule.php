@@ -5,14 +5,16 @@ use
     Phalcon\Mvc\User\Component,
     Sysclass\Models\Payments\Payment,
     Sysclass\Models\Payments\PaymentItem,
+    Sysclass\Services\Payment\Exception as PaymentException,
     Kint,
     Sysclass\Models\Payments\PaymentTransacao;
 
 /**
  * @RoutePrefix("/module/payment")
 */
-class PaymentModule extends \SysclassModule implements \ILinkable
+class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetContainer
 {
+    
     /* ILinkable */
     public function getLinks() {
             //$total_itens = User::count("active = 1");
@@ -29,71 +31,142 @@ class PaymentModule extends \SysclassModule implements \ILinkable
             );
     }
 
+
    /**
      * [ add a description ]
      *
      * @Get("/initiate/{payment_item_id}")
      */
     public function initiatePaymentRequest($paymentItemId) {
-
-        // PEGAR O USUÁRIO ATUAL
-        //$this->user->id
-        
-        //$paymentItemObject->getPayment()->getUser()->id;
         //Kint::dump($paymentItemId);
-        $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
+        //var_dump($paymentItemId);
         
-        //SE DER ALGUMA ERRO ENTRA NA CONDIÇÃO    
+        $paymentItemObject = PaymentItem::findFirstById($paymentItemId);        
+        //exit;
+        //SE DER ALGUM ERRO ENTRA NA CONDIÇÃO    
         if (!$paymentItemObject) {
-            echo "Não foi encontrado registro";
-            exit;
+            $this->redirect("/module/payment/view", "Error Starting Transaction", "error");  
+            return;             
         }
 
-        $data = $paymentItemObject->toArray();
+        $data = $paymentItemObject->toArray();       
         $data['user'] = $paymentItemObject->getPayment()->getUser()->toArray();        
         
-        //ENVIA P/ PAYPAL    
-        $result = $this->payment->initiatePayment($data);        
-        
+        //Adapter.php => initiatePayment(array $data) 
+        $result = $this->payment->initiatePayment($data);
+                
         if ($this->request->isAjax()) {
-            echo "json";
+
+
         } else {
+            
+            //if ($result['continue']) {
+                switch($result['action']) {
+                    case "redirect" : {
+                        $this->response->redirect($result['redirect']);
+                        break;
+                    }
+                    case "message" :
+                    default : {
+                        $this->redirect("/module/payment/view", $this->translate->translate($result['message']), "warning");  
+                    }
+                }
+            //}
+        }
+        /*
+        
+            // EXEMPLO DE RETONO DE MENSAGEM 
+            if (!$result) { /// CASO DÊ ERRO
+                $this->response->setJsonContent(
+                    $this->createAdviseResponse(
+                        $this->translate->translate("A problem ocurred when tried to save you data. Please try again."), 
+                        "warning"
+                    )
+                );
+            } else {            
+            // EXEMPLO DE RETONO DE MENSAGEM COM REDIRECIONAMENTO
+                $this->response->setJsonContent(
+                    $this->createRedirectResponse(
+                        $result
+                    )
+                );
+            }
+        } else {
+            
+            if (!$result) { /// CASO DÊ ERRO
+                $this->redirect("/module/extrato/view", "Erro mágico", "error");  
+            } else {
+                $this->response->redirect($result);  
+            }
+            
+
+
+            //
             //header("location:".$result);            
-            echo "<meta http-equiv=refresh content='0;URL=$result'>";
+            //echo "---".$result;
+            //echo "<meta http-equiv=refresh content='0;URL=$result'>";
+
+         
+        }
+        */
+    }
+
+    //função que chama o paypal
+    protected function getDatatableSingleItemOptions($item) {
+
+        if(empty($item->payment_date)){
+
+        //var_dump($item);
+        //if (!$this->request->hasQuery('block') && $item->pending == 1) {
+            return array(
+                'aprove' => array(
+                    'icon'  => 'fa fa-lock',
+                    'link'  => "http://local.sysclass.com/module/payment/initiate/" . $item->id,
+                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Make Payment'
+                    )
+                )
+            );
+        //}
+        return false;
         }
     }
 
     /**
      * [ add a description ]
      *        
-     * @Get("/authorized/{payment_itens_id}")
+     * @Get("/authorized/paypal/{payment_itens_id}")
      */
-    public function authorizePaymentRequest($payment_itens_id) {
+    public function authorizePaymentRequest($payment_itens_id) {        
         $token   = $this->request->getQuery('token');   
         $PayerID = $this->request->getQuery('PayerID');   
         
         $continue = $this->payment->authorizePayment(array(
             'backend'          => $backend,
             'payment_itens_id' => $payment_itens_id,
-            'args' => $this->request->getQuery()
+            'args'             => $this->request->getQuery()
         ));
         
+        // Adapter.php => confirmPayment
         if ($continue) {
             $this->payment->confirmPayment(array(
                 'backend'          => $backend,
                 'payment_itens_id' => $payment_itens_id,
                 'args'             => $this->request->getQuery()
             ));
+            $this->redirect("/module/payment/view", "Authorized by User", "sucess");              
+            return;             
         } else {
-            echo "success";
-        }
-    }
-    
+            $this->redirect("/module/payment/view", "Error Authorize the User", "warning");  
+            return;             
+        }        
+    }    
 
     /**
      * [ add a description ]
      *
-     * @Get("/cancel/{payment_itens_id}")
+     * @Get("/cancel/paypal/{payment_itens_id}")
      */
     public function cancelPaymentRequest($payment_itens_id) {
         $token = $this->request->getQuery('token');        
@@ -109,9 +182,8 @@ class PaymentModule extends \SysclassModule implements \ILinkable
         );
         $item->status = "cancel";
         $item->save();    
-        //echo "-> ".$this->response->setJsonContent(array("status" => "OK"));
-        echo "<script>alert('Cancelado pelo usuario');</script>";       
-        echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";        
+        $this->redirect("/module/payment/view", $this->translate->translate("Cancelled by User"), "warning");  
+        return;             
     }
 
      /** 
@@ -121,7 +193,7 @@ class PaymentModule extends \SysclassModule implements \ILinkable
      */
 
     /*confirm/{backend}/{payment_itens_id}")*/
-    public function doExpressCheckoutPaymentPaymentRequest($payment_itens_id) {    
+    /*public function doExpressCheckoutPaymentPaymentRequest($payment_itens_id) {    
             
             $token   = $this->request->getQuery('token');   
             $PayerID = $this->request->getQuery('PayerID');   
@@ -144,5 +216,46 @@ class PaymentModule extends \SysclassModule implements \ILinkable
         } else {
             echo "Nao foi possivel confirmar o pagamento";
         }        
+    }*/
+
+    /* IWidgetContainer */
+    /**
+     * [getWidgets description]
+     * @param  array  $widgetsIndexes [description]
+     * @return [type]                 [description]
+     * @implemen
+     */
+    public function getWidgets($widgetsIndexes = array()) {
+        if (in_array('payment.overview', $widgetsIndexes)) {
+
+            $conditions = "id = ?1";
+            $parameters = array(1 => $id);
+            $items      = PaymentTransacao::find(
+                        array(
+                            $conditions,
+                            "bind" => $parameters
+                             )
+                        );
+            $data = array();
+            //$items->toArray();  
+            
+            foreach ($items as $linha) {
+                echo    $data = $linha->descricao;
+            }
+                        
+            //criar uma array para passar os parametros na outra pagina
+             //*/
+            return array(
+             'payment.overview' => array(
+                    'id'        => 'payment-panel',
+                    'type'      => 'payment',
+                    'title'     => 'Payment Student',
+                    'template'  => $this->template("widgets/overview"),
+                    'panel'     => true,
+                    'data'      => $data,
+                    'box'       => 'blue'
+                )
+            );
+        }
     }
 }

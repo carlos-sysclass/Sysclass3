@@ -5,15 +5,13 @@ use Plico\Mvc\Model,
     Sysclass\Models\Acl\Resource,
     Sysclass\Models\Acl\RolesUsers;
 
-class PaymentItem extends Model
+class PaymentStatus extends Model
 {
     public function initialize()
     {
-       $this->setSource("mod_payment_itens");
-       
-       $this->belongsTo("id_status", "Sysclass\\Models\\Payments\\PaymentStatus", "id",  array('alias' => 'Status', 'reusable' => true));
-
-       $this->belongsTo("payment_id", "Sysclass\\Models\\Payments\\Payment", "id",  array('alias' => 'payment'));
+        $this->setSource("mod_payment_status");
+        
+        //$this->belongsTo("payment_id", "Sysclass\\Models\\Payments\\Payment", "id",  array('alias' => 'payment'));
 
         //$this->skipAttributesOnCreate(array('active'));
 
@@ -27,7 +25,7 @@ class PaymentItem extends Model
 
         $this->hasManyToMany(
             "id",
-            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "Sysclass\\Models\\Enrollments\\Course",
             "user_id", "course_id",
             "Sysclass\\Models\\Courses\\Course",
             "id",
@@ -64,7 +62,7 @@ class PaymentItem extends Model
 
     }
 
-    public function listByUser($params) {
+    /*public function listByUser($params) {
         //pega o ID do usuario da sessao
         $di = \Phalcon\DI::getDefault();
         $user = $di->get('user');
@@ -75,5 +73,5 @@ class PaymentItem extends Model
         ));
 
         return $payment->getItems();
-    }
+    }*/
 }
