@@ -372,6 +372,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
             initialize : function() {
 
                 this.model.on("change:admittance_type", function(model, value) {
+console.warn(this, this.$el);
                     this.$(".admittance-type-item").addClass("hidden");
                     this.$(".admittance-type-item.admittance-type-" + value).removeClass("hidden");
                 }.bind(this));

@@ -69,6 +69,31 @@
 					<label class="control-label">{translateToken value="Active"}</label>
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
+
+			    <h5 class="form-section margin-bottom-10 margin-top-10">
+			        <i class="fa fa-calendar"></i>
+			        {translateToken value="Course Duration"}
+			    </h5>
+			    <div class="row">
+			        <div class="col-md-12">
+			            <div class="form-group form-group-inline">
+			                <div class="inline-item">
+			                    <label class="control-label">Each </label>
+			                </div>
+			                <div class="inline-item">
+			                    <input name="duration_units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-rule-number="3" />
+			                </div>
+			                <div class="inline-item">
+			                    <select class="select2-me form-control input-block-level" name="duration_type" style="min-width: 150px;">
+			                        <option value="-1">{translateToken value="Select a Period"}</option>
+			                        <option value="week">{translateToken value="Week(s)"}</option>
+			                        <option value="month">{translateToken value="Month(s)"}</option>
+			                        <option value="year">{translateToken value="Year(s)"}</option>
+			                    </select>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
 			</div>
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">

@@ -42,6 +42,11 @@
         </div>
     </div>
     -->
+    <h5 class="form-section margin-bottom-10 margin-top-10">
+        <i class="fa fa-calendar"></i>
+        {translateToken value="Classes Disponible"}
+    </h5>
+
     <div class="row">
         <div class="col-md-12">
             <!--
