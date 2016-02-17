@@ -134,6 +134,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
 		//'plugins/uniform/jquery.uniform.min',
+		
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 
@@ -151,6 +152,7 @@ $di->setShared('environment', function() use ($di) {
 		'scripts/app',
 		'scripts/sysclass',
 		'scripts/models',
+		'scripts/fields',
 		'scripts/ui', // TODO MERGE ui AND views
 		'scripts/views',
 		'scripts/utils',

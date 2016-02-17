@@ -41,12 +41,37 @@ class CourseUsers extends Model
             $this->appendMessage($message);
         }
         return $count == 0;
-
     }
 
-    public function enroll() {
+    public function afterCreate() {
+        // CREATE THE TIMELINE RECORDS
+        
+        
+        // CREATE THE PAYMENT RECORDS
+    }    
 
+    public function getProgress() {
+
+
+        $start = new \DateTime($this->created);
+
+        $end = $this->getCourse()->calculateDuration($start);
+
+        $total_days = $start->diff($end)->days;
+        $current_days = $start->diff(new \DateTime())->days;
+
+        /**
+         * @todo GET THE USER CALCULATE PROGRESS
+         */
+
+        return array(
+            'start' => $start,
+            'end' => $end,
+            'total_days' => $total_days,
+            'current_days' => $current_days,
+            'expected' => $current_days / $total_days,
+            'current' => 0.1
+        );
     }
-
 
 }

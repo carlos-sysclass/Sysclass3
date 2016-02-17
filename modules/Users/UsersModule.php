@@ -172,8 +172,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      */
 
 	public function getWidgets($widgetsIndexes = array()) {
-		if (in_array('users.overview', $widgetsIndexes)) {
-			$currentUser    = $this->getCurrentUser(true);
+    	if (in_array('users.overview', $widgetsIndexes)) {
+			$currentUser    = $this->user;
 
 			$modules = $this->getModules("ISummarizable");
 
