@@ -459,7 +459,7 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
-
+	<!--
 	<div class="row" id="progress-content">
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
@@ -483,6 +483,7 @@
 		</div>
 		<div class="clearfix margin-bottom-10"></div>
 	</div>
+	-->
 </div>
 
 <script type="text/template" id="tab_course_description-template">
