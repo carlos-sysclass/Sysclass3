@@ -1686,3 +1686,13 @@ button.calendar-news-item {
 .page-quick-sidebar-list, .page-quick-sidebar-item {
 	border-left: 1px solid #ccc;
 }
+
+.summary-list {
+	padding: 10px;
+}
+.summary-list li {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    width: 32.93%;
+}

@@ -20,13 +20,13 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
     // ISummarizable
     public function getSummary() {
         //$data = $this->dataAction();
-        return false;
-        $total = $this->getTotalUnviewed();
+        //return false;
+        //$total = $this->getTotalUnviewed();
         return array(
             'type'  => 'primary',
             //'count' => count($data),
-            'count' => $total,
-            'text'  => $this->translate->translate('Messages'),
+            'count' => 0,
+            'text'  => $this->translate->translate('Emails'),
             'link'  => array(
                 'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . 'inbox'

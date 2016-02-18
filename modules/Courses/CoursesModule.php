@@ -457,12 +457,10 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             // CALCULATE COURSE PROGRESS
             
             
-            var_dump($enrollmentCourse->getProgress());
-            exit;
+            $progress = $enrollmentCourse->getProgress();
 
-            $enrollmentCourse = reset($enrollmentCourse);
-
-            $classes = $enrollmentCourse->getCourse()->getClasses();
+            $course = $enrollmentCourse->getCourse();
+            $classes = $course->getClasses();
             
             $lessons = array();
             $total_lessons = 0;
@@ -472,21 +470,18 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                 $total_lessons = $classe->getLessons()->count();
             }
 
-            return array(
+            $this->response->setJsonContent(array(
                 "id" => $identifier,
+                "name" => $course->name,
+                //"enroll_token" => $enrollmentCourse->token,
                 //'total_courses' => $enrollments->count(),
                 'total_classes' => $classes->count(),
                 'total_lessons' => $total_lessons,
-                'progress' => array(
-                    // TRIGGER RECALCULATION ???
-                    'course' => floatval($enrollmentCourse->getCourseProgress()->factor),
-                    'classes' => -1,
-                    'lessons' => -1
-                )
-            );
+                'progress' => $enrollmentCourse->getProgress()
+            ));
         } else {
             // USER NOT ENROLLED IN REQUESTED COURSE
-            return $this->invalidRequestError();
+            $this->response->setJsonContent($this->invalidRequestError());
         }
 
 
