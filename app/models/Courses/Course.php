@@ -21,4 +21,26 @@ class Course extends Model
     public function isCompleted(){
         return true;
     }
+
+    public function calculateDuration(\DateTime $start) {
+        switch($this->duration_type) {
+            case "week" : {
+                $duration = $this->duration_units * 7;
+                $interval = "P{$duration}D";
+                break;
+            }
+            case "year" : {
+                $interval = "P{$this->duration_units}Y";
+                break;
+            }
+            case "month" : {
+                $interval = "P{$this->duration_units}M";
+                break;
+            }
+        }
+
+        $end = clone $start;
+
+        return $end->add(new \DateInterval($interval));
+    }
 }

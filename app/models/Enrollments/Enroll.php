@@ -18,12 +18,19 @@ class Enroll extends Model
     {
         $this->setSource("mod_enroll");
 
-        
         $this->hasMany(
             "id",
             "Sysclass\Models\Enrollments\Courses",
             "enroll_id",
             array('alias' => 'Courses')
+        );
+
+
+        $this->hasMany(
+            "id",
+            "Sysclass\Models\Enrollments\CourseUsers",
+            "enroll_id",
+            array('alias' => 'CourseUsers')
         );
 
         $this->hasMany(
@@ -109,6 +116,5 @@ class Enroll extends Model
         $enrollment->save();
         return $enrollment->getMessages();
     }
-
 
 }

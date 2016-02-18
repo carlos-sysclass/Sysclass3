@@ -4,7 +4,7 @@
 crud:
   # BASE VALUES.. USED ON ALL ROUTES
   base_route:
-    #base_scripts: ["scripts/crud.models.js"]
+    
     stylesheets: ["css/components"]
     variables:
       page_title: Courses
@@ -34,14 +34,14 @@ crud:
           sClass: text-center
           label: Actions
     add:
-      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
+      components: ["datepicker", "timepicker", "select2", "wysihtml5", "jquery-mask", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
         page_subtitle: Create a new course
     'edit/{id}':
-      components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
-      blocks: ["roadmap.classes", "roadmap.grouping", "users.list.table"]
-      #blocks: ["roadmap.classes"]
+      components: ["datepicker", "timepicker", "select2", "wysihtml5", "jquery-mask", "validation", "bootstrap-switch"]
+      #blocks: ["roadmap.classes", "roadmap.grouping", "users.list.table"]
+      blocks: ["roadmap.classes", "users.list.table"]
       scripts: ["views.courses.edit"]
       template: form.tpl
       variables:

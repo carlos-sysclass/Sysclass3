@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Courses;
  * @filesource
  */
 use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\CourseUsers as Enrollment;
+use Sysclass\Models\Enrollments\CourseUsers;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -161,7 +161,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             
             if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
                 // GET FIRST COURSE FORM USER LIST
-                $enrollment = Enrollment::findFirst(array(
+                $enrollment = CourseUsers::findFirst(array(
                     'conditions'    => 'user_id = ?0 AND status_id = 1',
                     'bind' => array($currentUser->id)
                     //'bind' => '123456'
@@ -276,7 +276,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                     $index++;
                 }
 
-                $modelRS = Enrollment::find(array(
+                $modelRS = CourseUsers::find(array(
                     'conditions'    => implode(" AND ", $modelFilters),
                     'bind' => $filterData
                 ));
@@ -440,18 +440,25 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     public function getCourseStatsRequest($identifier)
     {
         $user = $this->getCurrentUser(true);
-        $enrollments = Enrollment::find(array(
-            'conditions'    => "user_id = ?0",
-            'bind' => array($user->id)
+        $enrollmentCourse = CourseUsers::findFirst(array(
+            'conditions'    => "user_id = ?0 AND course_id = ?1",
+            'bind' => array($user->id, $identifier)
         ));
-
+        /*
         $enrollmentCourse = $enrollments->filter(function($item) use ($identifier) {
             if ($item->course_id == $identifier) {
                 return $item;
             }
         });
+        */
 
         if (count($enrollmentCourse) > 0) {
+
+            // CALCULATE COURSE PROGRESS
+            
+            
+            var_dump($enrollmentCourse->getProgress());
+            exit;
 
             $enrollmentCourse = reset($enrollmentCourse);
 

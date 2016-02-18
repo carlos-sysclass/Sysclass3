@@ -522,9 +522,26 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
 
-	    	this.initializeForm();
+            this.handleElements();
+            this.handleMasks();
 
+	    	this.initializeForm();
 	    },
+        handleElements : function() {
+            this.$('[data-helper]').each(function(i, el) {
+                if (_.isEmpty($(el).data('helper'))) {
+                    return;
+                }
+                var helper = $(el).data('helper');
+
+                app.module("fields").handle(helper, el);
+            }.bind(this));
+        },
+        handleMasks : function() {
+        	if ($.applyDataMask) {
+            	$.applyDataMask();
+            }
+        },
 	    initializeForm : function() {
 	    	if (_.isNull(this.oForm)) {
 		    	if (this.$el.is("form") || this.$("form").size() > 0) {
