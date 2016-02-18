@@ -11,7 +11,7 @@ class CourseUsers extends Model
         $this->setSource("mod_enroll_course_to_users");
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
-        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => true));
+        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => false));
 
 		$this->hasOne(
             array("course_id", "user_id"),

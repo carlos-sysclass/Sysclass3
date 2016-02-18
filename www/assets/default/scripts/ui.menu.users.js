@@ -7,7 +7,6 @@ $SC.module("menu.users", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    setCourse : function(e,a,b,c,d) {
 	    	console.info('menu.users/usersMenuViewClass::setCourse');
-	    	alert($(e.currentTarget).data("entity-id"));
 	    	this.model.set("course_id", $(e.currentTarget).data("entity-id"));
 
 	    }

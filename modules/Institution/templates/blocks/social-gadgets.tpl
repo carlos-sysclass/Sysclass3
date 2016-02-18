@@ -11,6 +11,6 @@
 	</a>
 	-->
 	<a class="btn btn-lg btn-danger" id="open-pageguide-action" href="#">
-		<i class="icon-question tooltips"  data-original-title="{translateToken value="Need Help"}" data-placement="left"></i>
+		<i class="fa fa-question tooltips"  data-original-title="{translateToken value="Need Help"}" data-placement="left"></i>
 	</a>
 </div>

@@ -12,7 +12,7 @@ use
 /**
  * @RoutePrefix("/module/payment")
 */
-class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IWidgetContainer
+class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkable /* \IWidgetContainer */
 {
     /* ISummarizable */
     public function getSummary() {
@@ -239,6 +239,7 @@ class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      * @return [type]                 [description]
      * @implemen
      */
+    /*
     public function getWidgets($widgetsIndexes = array()) {
         if (in_array('payment.overview', $widgetsIndexes)) {
 
@@ -258,7 +259,7 @@ class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             }
                         
             //criar uma array para passar os parametros na outra pagina
-             //*/
+             //
             return array(
              'payment.overview' => array(
                     'id'        => 'payment-panel',
@@ -272,4 +273,5 @@ class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             );
         }
     }
+    */
 }
