@@ -3,7 +3,7 @@
 	<div class="header-inner container">
 		<!-- BEGIN LOGO -->
 		<a class="navbar-brand" href="/dashboard">
-			<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
+			<img src="{Plico_GetResource file='img/logo-sysclass.png'}" alt="logo" class="img-responsive" />
 		</a>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
