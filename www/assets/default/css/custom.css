@@ -1700,3 +1700,7 @@ button.calendar-news-item {
 .tabbable-custom > .tab-content {
 	padding : 0;
 }
+
+.dropdown-menu li > a {
+	padding: 6px 13px;
+}
