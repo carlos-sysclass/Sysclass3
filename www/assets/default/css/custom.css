@@ -736,7 +736,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-right: 0;
 }
 #courses-content .tabbable-custom  .tab-content > .tab-pane {
-	padding-bottom: 57%;
+	padding-bottom: 56%;
 	height: 0;
 }
 @media (max-width: 767px) {
@@ -1695,4 +1695,8 @@ button.calendar-news-item {
     margin-bottom: 10px;
     padding-bottom: 10px;
     width: 32.93%;
+}
+
+.tabbable-custom > .tab-content {
+	padding : 0;
 }

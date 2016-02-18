@@ -1257,7 +1257,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					var percent = factor * 100;
 
-					this.$(".course").data('easyPieChart').update(percent);
+					if (_.isObject(this.$(".course").data('easyPieChart'))) {
+						this.$(".course").data('easyPieChart').update(percent);
+					}
 				}
 			},
 			renderSemester : function() {
@@ -1276,7 +1278,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					var percent = factor * 100;
 
-					this.$(".class").data('easyPieChart').update(percent);
+					if (_.isObject(this.$(".class").data('easyPieChart'))) {
+						this.$(".class").data('easyPieChart').update(percent);
+					}
 				}
 			},
 			renderLesson : function(factor) {
@@ -1290,7 +1294,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					var percent = factor * 100;
 
-					this.$(".lesson").data('easyPieChart').update(percent);
+					if (_.isObject(this.$(".lesson").data('easyPieChart'))) {
+						this.$(".lesson").data('easyPieChart').update(percent);
+					}
 				}
 			}
 		});

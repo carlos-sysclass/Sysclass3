@@ -64,8 +64,14 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                         'html' => $content['info']
                     );
                 }
+
+                $widgetsData[$item['placement']]['panel'] = 'no-border';
+                $widgetsData[$item['placement']]['body'] = 'no-padding';
+                
             }
+
         }
+
 
         return $widgetsData;
     }
