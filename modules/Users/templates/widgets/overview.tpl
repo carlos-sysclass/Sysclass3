@@ -14,9 +14,10 @@
 	</div>
 	<div class="col-md-9 col-sm-7 col-xs-7">
 		<div class="row">
-			<div class="col-md-6 col-sm-12 col-xs-12">
+			<div class="col-md-12 col-sm-12 col-xs-12">
 				<h3 class="users-panel-username">{$user_details.name} {$user_details.surname}</h3>
 			</div>
+			<!--
 			<div class="col-md-6 col-sm-12 col-xs-12">
 				<div class="form-group">
 					<select class="select2-me form-control input-block-level" name="current_course" data-placeholder="{translateToken value='Select a course'}">
@@ -26,6 +27,7 @@
 					</select>
 				</div>
 			</div>
+			-->
 		</div>
 		<div class="row">
 			<div class="col-md-6 col-sm-12 col-xs-12">

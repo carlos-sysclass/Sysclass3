@@ -166,8 +166,10 @@
 							     		{elseif $item.type == 'notification'}
 											<li>
 							                  	<a href="{$subitem.link}">
-							                  		<span class="label label-sm label-icon label-info"><i class="icon-warning-sign"></i></span>
-							                  		{$subitem.text}
+							                  		<span class="label label-sm label-icon label-info">
+							                  			<i class="fa fa-book"></i>
+							                  		</span>
+							                  		{$subitem.name}
 							                  	</a>
 							               </li>
 							     		{/if}
@@ -183,12 +185,14 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown hidden-xs">
+				<li class="dropdown hidden-xs" id="{$item.id}">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 						{if $item.icon}
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
-			      		{$item.text}
+			      		{if $item.text}
+			      			{$item.text}
+			      		{/if}
 						{if isset($item.notif)}
 			      		<span class="badge">{$item.notif}</span>
 			      		{/if}
@@ -196,7 +200,11 @@
 			      	<ul class="dropdown-menu {$item.type}">
 					{foreach $item.items as $subitem}
 						<li>
-							<a href="{$subitem.link}">{$subitem.text}</a>
+							<a href="{$subitem.link}"
+								{foreach $subitem.attrs as $attr => $attr_value}
+									{$attr}="{$attr_value}" 
+								{/foreach}
+							>{$subitem.text}</a>
 						</li>
 				    {/foreach}
 				    </ul>

@@ -25,10 +25,10 @@ dashboard:
         1: ["users.overview", "ads.leftbar.banner", "courses.overview", "news.latest" ]
         2: ["institution.overview", "advisor.chat", "payment.overview", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         3: ["calendar"]
-        1: ["users.overview"]
-        2: []
-        3: []
+        #1: ["users.overview"]
+        #2: []
+        #3: []
     sortable: false
     resources:
-        layout.sections.topbar: ["messages", "forum"]
+        layout.sections.topbar: ["users", "dashboard"]
         users.overview.notification.order: ["users", "courses", "kbase", "calendar", "advisor", "tests"]
