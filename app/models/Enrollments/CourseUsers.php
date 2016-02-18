@@ -70,7 +70,7 @@ class CourseUsers extends Model
             'total_days' => $total_days,
             'current_days' => $current_days,
             'expected' => $current_days / $total_days,
-            'current' => 0.1
+            'current' => $this->getCourseProgress()->factor
         );
     }
 

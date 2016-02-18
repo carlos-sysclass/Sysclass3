@@ -12,9 +12,23 @@ use
 /**
  * @RoutePrefix("/module/payment")
 */
-class PaymentModule extends \SysclassModule implements \ILinkable, \IWidgetContainer
+class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IWidgetContainer
 {
-    
+    /* ISummarizable */
+    public function getSummary() {
+        $data = array(1);
+
+        return array(
+            'type'  => 'warning',
+            'count' => $data[0],
+            'text'  => $this->translate->translate('Payments'),
+            'link'  => array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => $this->getBasePath()
+            )
+        );
+    }
+
     /* ILinkable */
     public function getLinks() {
             //$total_itens = User::count("active = 1");

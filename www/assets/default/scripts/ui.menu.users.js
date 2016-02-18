@@ -1,7 +1,6 @@
 $SC.module("menu.users", function(mod, app, Backbone, Marionette, $, _) {
 
 
-	alert('ddd');
 	var usersMenuViewClass = Backbone.View.extend({
 	    events: {
 	    	"click [data-entity-id]" : 'setCourse'

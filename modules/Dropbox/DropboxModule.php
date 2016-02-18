@@ -11,8 +11,22 @@ namespace Sysclass\Modules\Dropbox;
 /**
  * @RoutePrefix("/module/dropbox")
  */
-class DropboxModule extends \SysclassModule implements \IBlockProvider
+class DropboxModule extends \SysclassModule implements \ISummarizable, \IBlockProvider
 {
+    public function getSummary() {
+        //$data = Dropbox::count(); // FAKE, PUT HERE DUE PAYMENTS
+
+        return array(
+            'type'  => 'primary',
+            'count' => 0,
+            'text'  => $this->translate->translate('File Box'),
+            
+            'link'  => array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => 'javascript: void(0)'
+            )
+        );
+    }
 
     public function registerBlocks() {
         return array(
