@@ -15,7 +15,12 @@ class Course extends Model
             "course_id", "class_id",
             "Sysclass\Models\Courses\Classe",
             "id",
-            array('alias' => 'Classes')
+            array(
+                'alias' => 'Classes',
+                'params' => array(
+                    'order' => '[Sysclass\Models\Courses\CourseClasses].position'
+                )
+            )
         );
     }
     public function isCompleted(){
