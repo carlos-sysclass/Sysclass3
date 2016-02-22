@@ -17,14 +17,31 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 {
     /* ISummarizable */
     public function getSummary() {
+        $progress = CourseUsers::getUserProgress(true);
+
+        foreach($progress as $progCourse) {
+            $completed += $progCourse['lessons']['completed'];
+            $expected += $progCourse['lessons']['expected'];
+            $total += $progCourse['lessons']['total'];
+        }
+
+        if ($completed > $expected) {
+            $type = 'success';
+            $count = '<i class="icon-arrow-up"></i>';
+        } elseif ($completed < $expected) {
+            $type = 'danger';
+            $count = '<i class="icon-arrow-up"></i>';
+        } else {
+            $type = 'info';
+            $count = '<i class="icon-arrow-right"></i>';
+        }
 
         return array(
-            'type'  => 'danger',
-            'count' => '<i class="icon-arrow-down"></i>',
+            'type'  => $type,
+            'count' => $count,
             'text'  => $this->translate->translate('Progress'),
             'link'  => array(
-                'text'  => '35%',
-                'link'  => $this->getBasePath() . 'all'
+                'text'  => $completed . "/" . $total
             )
         );
     }
@@ -439,56 +456,23 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      */
     public function getCourseStatsRequest($identifier)
     {
-        $user = $this->getCurrentUser(true);
+        //$user = $this->getCurrentUser(true);
         $enrollmentCourse = CourseUsers::findFirst(array(
             'conditions'    => "user_id = ?0 AND course_id = ?1",
-            'bind' => array($user->id, $identifier)
+            'bind' => array($this->user->id, $identifier)
         ));
-        /*
-        $enrollmentCourse = $enrollments->filter(function($item) use ($identifier) {
-            if ($item->course_id == $identifier) {
-                return $item;
-            }
-        });
-        */
 
         if (count($enrollmentCourse) > 0) {
-
             // CALCULATE COURSE PROGRESS
-            
-            
-            $progress = $enrollmentCourse->getProgress();
+            $progress = $enrollmentCourse->getProgress(true);
 
-            $course = $enrollmentCourse->getCourse();
-            $classes = $course->getClasses();
-            
-            $lessons = array();
-            $total_lessons = 0;
-
-            foreach($classes as $classe) {
-                //$lessons[] = $classe->getLessons()->count();
-                $total_lessons = $classe->getLessons()->count();
-            }
-
-            $this->response->setJsonContent(array(
-                "id" => $identifier,
-                "name" => $course->name,
-                //"enroll_token" => $enrollmentCourse->token,
-                //'total_courses' => $enrollments->count(),
-                'total_classes' => $classes->count(),
-                'total_lessons' => $total_lessons,
-                'progress' => $enrollmentCourse->getProgress()
-            ));
+            $this->response->setJsonContent($progress);
+            return true;
         } else {
             // USER NOT ENROLLED IN REQUESTED COURSE
             $this->response->setJsonContent($this->invalidRequestError());
         }
-
-
     }
-
-
-
     /**
      * @todo Move all /items routes to above
      */

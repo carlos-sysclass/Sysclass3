@@ -15,16 +15,16 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	//current_course
 	    	console.info('panel.users/usersWidgetViewClass::initialize');
 
-	    	this.statsModel = new mod.models.course_stats();
+	    	//this.statsModel = new mod.models.course_stats();
 
 	    	this.listenTo(this.model, "change:course_id", this.loadCourseDetails.bind(this));
 
-	    	this.listenTo(this.statsModel, "sync", this.injectCourseDetails.bind(this));
+	    	this.listenTo(this.model, "sync", this.injectCourseDetails.bind(this));
 
-	    	this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
-	    	this.statsModel.set("id", this.model.get("course_id"));
+	    	//this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
+	    	//this.statsModel.set("id", this.model.get("course_id"));
 
-	    	this.statsModel.fetch();
+	    	//this.statsModel.fetch();
 	    },
 	    render: function(collection) {
 	    	console.info('panel.users/usersWidgetViewClass::render');
@@ -38,6 +38,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 
 	    },
 	    loadCourseDetails : function(model) {
+	    	console.warn(model);
 			console.info('panel.users/usersWidgetViewClass::loadCourseDetails');
 
 			var html = '<div class="loading-message loading-message-boxed">' +
@@ -65,22 +66,20 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			});
 
-			this.statsModel.set("id", this.model.get("course_id"));
-			this.statsModel.fetch();
+			//this.statsModel.set("id", this.model.get("course_id"));
+			//this.statsModel.fetch();
 
 			// LOAD COURSE DETAILS AND INJECT
 
 			//window.setTimeout(1500, this.$(".user-course-details").unblock());
 	    },
 	    injectCourseDetails : function() {
-	    	this.$(".course_name").html(this.statsModel.get("name"));
-	    	this.$(".enroll_token").html(this.statsModel.get("enroll_token"));
-	    	
-	    	
+	    	this.$(".course_name").html(this.model.get("course_name"));
+	    	//this.$(".enroll_token").html(this.model.get("enroll_token"));
 
-	    	this.$(".total_classes").html(this.statsModel.get("total_classes"));
-	    	this.$(".total_lessons").html(this.statsModel.get("total_lessons"));
-
+	    	//this.$(".total_classes").html(this.statsModel.get("total_classes"));
+	    	//this.$(".total_lessons").html(this.statsModel.get("total_lessons"));
+	    	/*
 	    	this.$(".progress-text").html(
     			app.module("views").formatValue(
 					this.statsModel.get("progress.course"),
@@ -88,8 +87,9 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 					'0.[00]%'
     			)
 	    	);
+	    	*/
 
-	    	this.$(".user-course-details").unblock();
+	    	//this.$(".user-course-details").unblock();
 	    }
   	});
 

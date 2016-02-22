@@ -1704,3 +1704,8 @@ button.calendar-news-item {
 .dropdown-menu li > a {
 	padding: 6px 13px;
 }
+
+.progress-mini {
+	height: 10px;
+	margin-bottom: 10px;
+}
