@@ -115,6 +115,7 @@
 		{/if}
 	</div>
 </div>
+<!--
 <hr />
 <div class="col-md-4 col-sm-4 col-xs-4">
   <h5 class="text-center">Courses</h5>
@@ -135,5 +136,5 @@
 	    </div>
   </div>
 </div>
-
+-->
 
