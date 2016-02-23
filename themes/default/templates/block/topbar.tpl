@@ -1,3 +1,12 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=304180646448346";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="header navbar-inverse navbar-fixed-top">
 	<!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner container">
@@ -6,6 +15,8 @@
 			<img src="{Plico_GetResource file='img/logo-sysclass.png'}" alt="logo" class="img-responsive hidden-xs" />
 			<img src="{Plico_GetResource file='img/logo-sysclass-small.png'}" alt="logo" class="img-responsive visible-xs" />
 		</a>
+
+		<div class="navbar-text fb-like" data-href="https://www.facebook.com/sysclass" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 		<!--

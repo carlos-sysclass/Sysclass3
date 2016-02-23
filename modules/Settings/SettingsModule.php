@@ -15,7 +15,7 @@ use Sysclass\Models\System\Settings as SystemSettings,
 /**
  * @RoutePrefix("/module/settings")
  */
-class SettingsModule extends \SysclassModule implements \ILinkable
+class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkable
 {
     protected $legalValues = array(
         'course_id',
@@ -32,7 +32,26 @@ class SettingsModule extends \SysclassModule implements \ILinkable
         'js_date_fmt'   => 'mm/dd/yyyy',
         'php_date_fmt'  => 'm/d/Y'
     );
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
 
+            // INJECT THE HELP BUTTON
+
+            $this->putCss('css/pageguide/pageguide');
+            $this->putScript('plugins/pageguide/pageguide.min');
+
+            $menuItem = array(
+                'id'        => "open-pageguide-action",
+                'icon'      => ' fa fa-question',
+                'text'      => $this->translate->translate('Help'),
+                'type'      => ''
+            );
+
+            return $menuItem;
+        }
+        return false;
+    }
 
     /* ILinkable */
     public function getLinks() {

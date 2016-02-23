@@ -18,7 +18,7 @@
 				<h4 class="users-panel-username">
 					<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
-					{$user_details.name} {$user_details.surname} - <span class="course_name"></span> <span class="enroll_token"></span>
+					<strong>{$user_details.name} {$user_details.surname}</strong> - <span class="course_name"></span> <span class="enroll_token"></span>
 				</h4>
 			</div>
 			<!--
@@ -34,8 +34,6 @@
 			-->
 		</div>
 		{if isset($notifications)}
-		<!-- <ul class="summary-list list-unstyled list-inline"> -->
-		
 			{foreach $notifications as $key => $notif}
 				{if ($notif@iteration % 3 == 1 || $notif@first)}
 				<div class="row summary-list">
@@ -43,15 +41,17 @@
 
 
 		       	<div class="col-md-4 col-sm-4 col-xs-12">
-					<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count nofilter}</strong></span>
-					{$notif.text}
-					<div class="pull-right" >
-					{if isset($notif.link)}
-						<!--
-						<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
-						-->
-						<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
-					{/if}
+		       		<div class="summary-item">
+						<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count nofilter}</strong></span>
+						{$notif.text}
+						<div class="pull-right" >
+						{if isset($notif.link)}
+							<!--
+							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
+							-->
+							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
+						{/if}
+						</div>
 					</div>
 		       	</div>
 
