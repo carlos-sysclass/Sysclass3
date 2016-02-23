@@ -1,10 +1,22 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=304180646448346";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="header navbar-inverse navbar-fixed-top">
 	<!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner container">
 		<!-- BEGIN LOGO -->
 		<a class="navbar-brand" href="/dashboard">
-			<img src="{Plico_GetResource file='img/logo-sysclass.png'}" alt="logo" class="img-responsive" />
+			<img src="{Plico_GetResource file='img/logo-sysclass.png'}" alt="logo" class="img-responsive hidden-xs" />
+			<img src="{Plico_GetResource file='img/logo-sysclass-small.png'}" alt="logo" class="img-responsive visible-xs" />
 		</a>
+
+		<div class="navbar-text fb-like" data-href="https://www.facebook.com/sysclass" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 		<!--
@@ -28,15 +40,15 @@
 								{if $item.icon}
 					      		<i class="{$item.icon}"></i>
 					      		{/if}
-								{$item.text}
+					      		<span class="hidden-xs">{$item.text}</span>
 							</a>
-							<ul class="dropdown-menu" style="min-width: 700px;">
+							<ul class="dropdown-menu mega-menu-container">
 								<li>
 									<!-- Content container to add padding -->
 									<div class="mega-menu-content">
 										<div class="row">
 											{foreach $item.items as $subkey => $subitems}
-												<div class="col-md-3">
+												<div class="col-md-3  col-sm-3">
 													<ul class="mega-menu-submenu">
 														<li>
 															<h3>{$subkey}</h3>
@@ -185,13 +197,13 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown hidden-xs" id="{$item.id}">
+				<li class="dropdown" id="{$item.id}">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 						{if $item.icon}
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
 			      		{if $item.text}
-			      			{$item.text}
+			      			<span class="hidden-xs">{$item.text}</span>
 			      		{/if}
 						{if isset($item.notif)}
 			      		<span class="badge">{$item.notif}</span>
@@ -281,7 +293,7 @@
 			<li class="dropdown user">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 					{if ({$T_CURRENT_USER.avatars[0].url})}
-						<div class="avatar-img vertical-align">
+						<div class="avatar-img vertical-align hidden-xs">
 							{if ({$T_CURRENT_USER.avatars[0].url})}
 								<img src="{$T_CURRENT_USER.avatars[0].url}" alt="" class="user-profile-image">
 							{else}
@@ -296,16 +308,8 @@
 					<li>
 						<a href="/module/users/profile"><i class="icon-user"></i> {translateToken value="My Profile"}</a>
 					</li>
-					<li class="divider"></li>
 					{foreach $T_TOPBAR_MENU as $key => $item}
 				        {if isset($item.link)}
-							<li class="visible-xs">
-								<a href="{$item.link.link}">
-						      		<i class="icon-{$item.icon}"></i>
-						      		<span class="badge">{$item.notif}</span>
-						      		{$item.link.text}
-						      	</a>
-							</li>
 						{/if}
 					{/foreach}
 					<li class="divider visible-xs"></li>
@@ -321,14 +325,16 @@
 				</ul>
 			</li>
 		   <!-- END USER LOGIN DROPDOWN -->
-
+		   <!--
 		   <li class="dropdown dropdown-quick-sidebar-toggler">
                 <a class="dropdown-toggle" href="javascript:;">
                     <i class="fa fa-comments"></i>
                 </a>
 			</li>
+			-->
 		</ul>
 		<!-- END TOP NAVIGATION MENU -->
 	</div>
 	<!-- END TOP NAVIGATION BAR -->
 </div>
+<div class="clearfix"></div>

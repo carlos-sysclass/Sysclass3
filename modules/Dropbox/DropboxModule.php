@@ -19,7 +19,7 @@ class DropboxModule extends \SysclassModule implements \ISummarizable, \IBlockPr
         return array(
             'type'  => 'primary',
             'count' => 0,
-            'text'  => $this->translate->translate('File Box'),
+            'text'  => $this->translate->translate('Drop Box'),
             
             'link'  => array(
                 'text'  => $this->translate->translate('View'),
