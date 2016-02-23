@@ -42,10 +42,15 @@ class Course extends Model
                 $interval = "P{$this->duration_units}M";
                 break;
             }
+            default : {
+                $interval = false;
+            }
         }
 
         $end = clone $start;
-
-        return $end->add(new \DateInterval($interval));
+        if ($interval) {
+            return $end->add(new \DateInterval($interval));
+        }
+        return $end;
     }
 }
