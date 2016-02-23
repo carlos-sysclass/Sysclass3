@@ -280,7 +280,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Entity created with success"),
+                            $this->translate->translate("Created with success"),
                             "success"
                         ),
                         $itemData 
@@ -487,6 +487,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
+
                     $response = $this->createAdviseResponse($this->translate->translate("Removed with success"), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
@@ -591,6 +592,9 @@ abstract class SysclassModule extends BaseSysclassModule
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
+
+            //var_dump(array($model_info['class'], $model_info['listMethod']), $args);
+            //exit;
             
 
             if ($type === 'datatable') {

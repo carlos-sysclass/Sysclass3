@@ -736,7 +736,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-right: 0;
 }
 #courses-content .tabbable-custom  .tab-content > .tab-pane {
-	padding-bottom: 57%;
+	padding-bottom: 56%;
 	height: 0;
 }
 @media (max-width: 767px) {
@@ -1685,4 +1685,32 @@ button.calendar-news-item {
 
 .page-quick-sidebar-list, .page-quick-sidebar-item {
 	border-left: 1px solid #ccc;
+}
+
+.summary-list {
+	padding: 10px;
+}
+.summary-list li {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    width: 32.93%;
+}
+
+.tabbable-custom > .tab-content {
+	padding : 0;
+}
+
+.dropdown-menu li > a {
+	padding: 6px 13px;
+}
+
+.progress-mini {
+	height: 10px;
+	margin-bottom: 10px;
+}
+
+.navbar-nav > li > a.no-padding {
+	padding-left: 0px;
+	padding-right: 0px;
 }

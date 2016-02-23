@@ -5,7 +5,8 @@ namespace Sysclass\Modules\Settings;
  * @filesource
  */
 use Sysclass\Models\System\Settings as SystemSettings, 
-    Sysclass\Models\Users\Settings;
+    Sysclass\Models\Users\Settings,
+    Sysclass\Models\Courses\Course;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -60,7 +61,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
      * @Get("/")
      */
     public function getRequest() {
-        if ($user = $this->getCurrentUser(true)) {
+        if ($user = $this->user) {
             $this->response->setContentType('application/json', 'UTF-8');
             
             if ($results = $this->getSettings(true)) {
@@ -68,6 +69,13 @@ class SettingsModule extends \SysclassModule implements \ILinkable
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;
                 }
+                $course = Course::findFirst(array(
+                    'conditions' => "id = ?0",
+                    'columns' => 'name',
+                    'bind' => array($results['course_id'])
+                ));
+                $results['course_name'] = $course->name;
+
                 $this->response->setJsonContent($results);
                 return $results;
             } else {

@@ -110,6 +110,20 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"aTargets": [ 'datetime-moment-since' ]
 		},
 		{
+			"mRender": function ( data, type, row) {
+				if (!_.isNull(data)) {
+					if (type == 'display' || type == 'filter') {
+						return moment(data).format("L");
+					} else {
+						return moment(data).unix();
+					}
+				}	
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'datetime-moment' ]
+		},
+		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display' || type == 'filter') {
 					if (data != 0) {

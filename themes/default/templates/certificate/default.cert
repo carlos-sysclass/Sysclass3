@@ -9,18 +9,21 @@
       <meta name="viewport" content="width=device-width"/>
       <title>{% block title %}{{ configuration.get("site_title") }} - {{ configuration.get("site_subtitle") }}{% endblock %}</title>
 
-      {% block styles %}
-            {% include "block/styles.email" %}
-      {% endblock %}
 </head>
 
 <body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;direction: ltr;background: #f6f8f1;width: 100% !important;">
+<h1>{{ user.name }} {{ user.surname }}</h1>
+{{ organization.formal_name }}
 <table class="body">
 <tr>
 
-      <td class="center" align="center" valign="top">
-            {% block header %}
-            <table class="page-header" align="center" style="width: 100%;background: #fff;">
+{% if user.id == 1 %}
+      
+{% endif %}
+
+	<td class="center" align="center" valign="top">
+		{% block header %}
+            <table class="page-header" align="center" style="width: 100%;background: #0f4e74;">
                   <tr>
                         <td class="center" align="left">
                               <!-- BEGIN: Header Container -->
@@ -43,6 +46,25 @@
                                                       <!-- END: Logo -->
                                                 </td>
                                                 <td class="wrapper vertical-middle last" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
+                                                      <!-- BEGIN: Social Icons -->
+                                                      
+                                                      <table class="six columns">
+                                                      <tr>
+                                                            <td>
+                                                                  
+                                                                  <table class="wrapper social-icons" align="right" style="float: right;">
+                                                                  <tr>
+                                                                        <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;padding: 0 2px !important;width: auto !important;">
+                                                                              teste   
+                                                                        </td>                    
+                                                                  </tr>
+                                                                  </table>
+                                                                  >
+                                                            </td>
+                                                      </tr>
+                                                      </table>
+                                                      
+                                                      <!-- END: Social Icons -->
                                                 </td>
                                           </tr>
                                           </table>
@@ -53,7 +75,7 @@
                         </td>
                   </tr>
             </table>
-            {% endblock %}
+		{% endblock %}
             <table class="container content" align="center">
                   <tr>
                         <td>
@@ -61,49 +83,47 @@
                               <table class="row note">
                               <tr>
                                     <td class="wrapper last">
-                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">{{translate.translate("Obrigado pelo seu cadastro!") }}</h4>
+                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">Thank you for joining the Metronic Community!</h4>
                                           <p>
-                                                 {{translate.translate("Nós recebemos seu pedido de inscrição e apenas precisamos confirmar o seu e-mail. Por favor, clique sobre a url abaixo para ativar sua conta") }}
+                                                 Please click the following URL to activate your account:
                                           </p>
                                           <!-- BEGIN: Note Panel -->
                                           <table class="twelve columns" style="margin-bottom: 10px">
                                           <tr>
                                                 <td class="panel" style="background: #ECF8FF;border: 0;padding: 10px !important;">
-                                                      <a href="{{ activation_link }}">
-                                                            {{ activation_link }}
-                                                      </a>
+                                                      <a href="https://www.keenthemes.com/signup/activate/">
+                                                      https://www.keenthemes.com/signup/activate/?code=1212 </a>
                                                 </td>
                                                 <td class="expander">
                                                 </td>
                                           </tr>
                                           </table>
                                           <p>
-                                                {{translate.translate("Se a link acima não estiver funcionando, copie e cola a url acima em seu navegador.") }}
+                                                 If clicking the URL above does not work, copy and paste the URL into a browser window.
                                           </p>
                                           <!-- END: Note Panel -->
                                     </td>
                               </tr>
                               </table>
-
                               {% endblock %}
                               <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;">
                               </span>
                         </td>
                   </tr>
             </table>
-            {% block footer %}
-            <table class="page-footer" align="center" style="width: 100%;background: #fff;">
+		{% block footer %}
+            <table class="page-footer" align="center" style="width: 100%;background: #1f5e84;">
                   <tr>
-                        <td class="center" align="center" style="vertical-align: middle;color: #666;">
+                        <td class="center" align="center" style="vertical-align: middle;color: #fff;">
                               <table class="container" align="center">
                               <tr>
-                                    <td style="vertical-align: middle;color: #666;">
+                                    <td style="vertical-align: middle;color: #fff;">
                                           <!-- BEGIN: Unsubscribet -->
                                           <table class="row">
                                           <tr>
-                                                <td class="wrapper last" style="vertical-align: middle;color: #666;">
+                                                <td class="wrapper last" style="vertical-align: middle;color: #fff;">
                                                       <span style="font-size:12px;">
-                                                      <i>{{ translate.translate("Este e-mail é gerada automaticamente e respondê-lo não é necessário.") }}</i>
+                                                      <i>{{ translate.translate("This ia a system generated email and reply is not required.") }}</i>
                                                       </span>
                                                 </td>
                                           </tr>
@@ -112,11 +132,27 @@
                                           <!-- BEGIN: Footer Panel -->
                                           <table class="row">
                                           <tr>
-                                                <td class="wrapper" style="vertical-align: middle;color: #666;">
+                                                <td class="wrapper" style="vertical-align: middle;color: #fff;">
                                                       <table class="four columns">
                                                       <tr>
-                                                            <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;color: #666;">
+                                                            <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;color: #fff;">
                                                                    &copy; {{ configuration.get("site_title")}} - {{ configuration.get("site_subtitle")}} {{date ("Y")}}.
+                                                            </td>
+                                                      </tr>
+                                                      </table>
+                                                </td>
+                                                <td class="wrapper last" style="vertical-align: middle;color: #fff;">
+                                                      <table class="eight columns">
+                                                      <tr>
+                                                            <td class="vertical-middle align-reverse" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;text-align: right;color: #fff;">
+                                                                  <!--
+                                                                  <a href="#">
+                                                                  About Us </a>
+                                                                  &nbsp; <a href="#">
+                                                                  Privacy Policy </a>
+                                                                  &nbsp; <a href="#">
+                                                                  Terms of Use </a>
+                                                                  -->
                                                             </td>
                                                       </tr>
                                                       </table>
@@ -130,8 +166,8 @@
                         </td>
                   </tr>
             </table>
-            {% endblock %}
-      </td>
+		{% endblock %}
+	</td>
 </tr>
 </table>
 </body>

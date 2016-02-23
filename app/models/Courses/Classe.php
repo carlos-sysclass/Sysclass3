@@ -9,7 +9,19 @@ class Classe extends Model
     {
         $this->setSource("mod_classes");
 
-        $this->hasMany("id", "Sysclass\\Models\\Courses\\Lesson", "class_id",  array('alias' => 'Lessons'));
+        $this->hasMany(
+        	"id",
+        	"Sysclass\\Models\\Courses\\Lesson",
+        	"class_id",
+        	array('alias' => 'Lessons')
+        );
+
+		$this->hasOne(
+            "id",
+            "Sysclass\\Models\\Courses\\ClasseProgress",
+            "class_id",
+            array('alias' => 'Progress')
+        );
     }
 
     protected function resetOrder($class_id) {

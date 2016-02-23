@@ -171,13 +171,11 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     self.model.save(null, {
                         success : function() {
                             if (self.invalidated) {
-                                alert('saved');
                                 self.invalidated = false;
                                 self.render();
                                 self.opened = false;
                                 self.start();
                             }
-                            
                         }
                     });
 

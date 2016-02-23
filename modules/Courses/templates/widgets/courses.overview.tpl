@@ -11,7 +11,10 @@
 				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
-							<span class="">{translateToken value="Courses"}</span>
+							<span class="">
+								{translateToken value="Courses"}
+							</span>
+							<span class="label label-sm label-default courses-count"></span>
 						</div>
 					</a>
 				</li>
@@ -19,6 +22,7 @@
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Classes"}</span>
+							<span class="label label-sm label-default classes-count"></span>
 						</div>
 					</a>
 				</li>
@@ -26,6 +30,7 @@
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Lessons"}</span>
+							<span class="label label-sm label-default lessons-count"></span>
 						</div>
 					</a>
 				</li>
@@ -46,6 +51,25 @@
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
 							</a>
 						</div>
+						<div class="collapse navbar-collapse navbar-ex1-collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
+										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-info no-padding">
+                    				<span class="courses-current"></span> / <span class="courses-count"></span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
+										<i class="icon-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
 						<!--
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 
@@ -64,6 +88,7 @@
 						</div>
 						-->
 					</div>
+					<div class="clearfix"></div>
 
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
@@ -136,6 +161,11 @@
 								<li>
 									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Class"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-info no-padding">
+                    				<span class="classes-current"></span> / <span class="classes-count"></span>
 									</a>
 								</li>
 								<li>
@@ -373,6 +403,11 @@
 									</a>
 								</li>
 								<li>
+									<a href="#" class="nav-info no-padding">
+                    				<span class="lessons-current"></span> / <span class="lessons-count"></span>
+									</a>
+								</li>
+								<li>
 									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
@@ -459,7 +494,7 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
-
+	<!--
 	<div class="row" id="progress-content">
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
@@ -483,6 +518,7 @@
 		</div>
 		<div class="clearfix margin-bottom-10"></div>
 	</div>
+	-->
 </div>
 
 <script type="text/template" id="tab_course_description-template">

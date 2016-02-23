@@ -9,7 +9,19 @@ class Lesson extends Model
     {
         $this->setSource("mod_lessons");
 
-		$this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
+		$this->belongsTo(
+			"class_id", 
+			"Sysclass\\Models\\Courses\\Classe", 
+			"id",
+			array('alias' => 'Classe')
+		);
+
+		$this->hasOne(
+            "id",
+            "Sysclass\\Models\\Courses\\LessonProgress",
+            "lesson_id",
+            array('alias' => 'Progress')
+        );
 
     }
 

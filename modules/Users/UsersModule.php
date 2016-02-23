@@ -13,7 +13,7 @@ use Phalcon\DI,
 /**
  * @RoutePrefix("/module/users")
  */
-class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer, \ISectionMenu
 {
     /*
     public function getSummary() {
@@ -141,7 +141,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $request = $this->getMatchedUrl();
 
         $actions = array(
-            'view'  => array(
+            'viewgetBreadcrumb'  => array(
                 array(
                     'text'      => $this->translate->translate('New User'),
                     'link'      => $this->getBasePath() . "add",
@@ -172,8 +172,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      */
 
 	public function getWidgets($widgetsIndexes = array()) {
-		if (in_array('users.overview', $widgetsIndexes)) {
-			$currentUser    = $this->getCurrentUser(true);
+    	if (in_array('users.overview', $widgetsIndexes)) {
+			$currentUser    = $this->user;
 
 			$modules = $this->getModules("ISummarizable");
 
@@ -214,6 +214,57 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 			);
 		}
 	}
+
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+
+            $this->putScript("scripts/ui.menu.users");
+
+            $courses = $this->user->getCourses();
+
+            $items = array();
+            foreach($courses as $course) {
+                $items[] = array(
+                    'link' => "javascript:void(0);",
+                    'text' => sprintf("#%s %s", $course->id, $course->name),
+                    'attrs' => array(
+                        'data-entity-id' => $course->id
+                    )
+                );
+            }
+
+            if (count($courses) > 0) {
+                $menuItem = array(
+                    'id'        => "users-topbar-menu",
+                    'icon'      => ' fa fa-book',
+                    //'text'      => $this->translate->translate('Your Courses'),
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    */
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    'type'      => 'notification',
+                    'items'     => $items,
+                    'extended'  => false,
+                );
+
+                return $menuItem;
+            }
+        }
+        return false;
+    }
+    /*
+    // CREATE FUNCTION HERE
+    public function getSectionMenu($section_id) {
+
+    }
+    */
 
 
     /**
@@ -386,7 +437,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return array(
                 'aprove' => array(
                     'icon'  => 'fa fa-lock',
-                    //'link'  => $baseLink . "block/" . $item['id'],
+                    'link'  => $this->getBasePath() . $baseLink . "block/" . $item['id'],
                     'class' => 'btn-sm btn-info datatable-actionable tooltips',
                     'attrs' => array(
                         'data-datatable-action' => "aprove",

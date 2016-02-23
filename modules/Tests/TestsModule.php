@@ -27,7 +27,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         return array(
             'type'  => 'primary',
             'count' => $data[0],
-            'text'  => $this->translate->translate('Scheduled Tests'),
+            'text'  => $this->translate->translate('New Tests'),
             'link'  => array(
                 'text'  => $this->translate->translate('View'),
                 'link'  => "javascript:App.scrollTo($('#calendar-widget'))"

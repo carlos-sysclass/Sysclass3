@@ -349,6 +349,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
+
+				$("#courses-content .courses-count")
+					.html(this.collection.size());
+
+				$("#courses-content .courses-current")
+					.html(this.collection.getPointer() + 1);
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
@@ -360,6 +366,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
 			},
 			onBlockableItemClick : function(e) {
 				// APLLY USER TO ENROLLMENT PROCESS
@@ -644,6 +651,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
+				$("#courses-content .classes-count")
+					.html(this.collection.size());
+
+				$("#courses-content .classes-current")
+					.html(this.collection.getPointer() + 1);
+
 				this.unBlockUi();
 			},
 			updateCollectionIndex : function(e) {
@@ -866,6 +879,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
+
+				$("#courses-content .lessons-count")
+					.html(this.collection.size());
+
+				$("#courses-content .lessons-current")
+					.html(this.collection.getPointer() + 1);
 			},
 			setViewed : function() {
 				this.$(".viewed-status").removeClass("hidden");
@@ -876,10 +895,14 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection.find(function(model, index, collection) {
 					if (model.get("id") == this.model.get("id")) {
 						this.collection.setPointer(index);
+
+
+
 						return true;
 					}
 					return false;
 				}.bind(this));
+
 			},
 			onBlockableItemClick : function(e) {
 				$("[href='#class-tab']").click();
@@ -910,36 +933,37 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
 					}
-					var videoDomID = "lesson-video-" + this.videoModel.get("id");
 
-					if (this.$("#" + videoDomID).size() === 0) {
-						this.$el.empty().append(
-							this.template(this.videoModel.toJSON())
-						);
-						//console.warn(this.videoModel.toJSON());
+					if (this.videoModel) {
+						var videoDomID = "lesson-video-" + this.videoModel.get("id");
 
-						//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
-						videojs(videoDomID, {
-							"controls": true,
-							"autoplay": false,
-							"preload": "auto",
-							"width" : "auto",
-							"height" : "auto",
-							"techOrder" : [
-								'html5', 'flash'
-							]
-						}, function() {
-							//this.play();
-						});
+						if (this.$("#" + videoDomID).size() === 0) {
+							this.$el.empty().append(
+								this.template(this.videoModel.toJSON())
+							);
+							//console.warn(this.videoModel.toJSON());
+
+							//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
+							videojs(videoDomID, {
+								"controls": true,
+								"autoplay": false,
+								"preload": "auto",
+								"width" : "auto",
+								"height" : "auto",
+								"techOrder" : [
+									'html5', 'flash'
+								]
+							}, function() {
+								//this.play();
+							});
+						}
+
+						this.videoJS = videojs(videoDomID);
+
+						this.videoJS.ready(this.bindStartVideoEvents.bind(this));
+
+						mod.videoJS = this.videoJS;
 					}
-
-
-
-					this.videoJS = videojs(videoDomID);
-
-					this.videoJS.ready(this.bindStartVideoEvents.bind(this));
-
-					mod.videoJS = this.videoJS;
 
 					app.module("ui").refresh(this.$el);
 				}
@@ -1256,7 +1280,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					var percent = factor * 100;
 
-					this.$(".course").data('easyPieChart').update(percent);
+					if (_.isObject(this.$(".course").data('easyPieChart'))) {
+						this.$(".course").data('easyPieChart').update(percent);
+					}
 				}
 			},
 			renderSemester : function() {
@@ -1275,7 +1301,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					var percent = factor * 100;
 
-					this.$(".class").data('easyPieChart').update(percent);
+					if (_.isObject(this.$(".class").data('easyPieChart'))) {
+						this.$(".class").data('easyPieChart').update(percent);
+					}
 				}
 			},
 			renderLesson : function(factor) {
@@ -1289,7 +1317,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (jQuery.fn.easyPieChart) {
 					var percent = factor * 100;
 
-					this.$(".lesson").data('easyPieChart').update(percent);
+					if (_.isObject(this.$(".lesson").data('easyPieChart'))) {
+						this.$(".lesson").data('easyPieChart').update(percent);
+					}
 				}
 			}
 		});

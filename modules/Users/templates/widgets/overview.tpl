@@ -14,9 +14,12 @@
 	</div>
 	<div class="col-md-9 col-sm-7 col-xs-7">
 		<div class="row">
-			<div class="col-md-6 col-sm-12 col-xs-12">
-				<h3 class="users-panel-username">{$user_details.name} {$user_details.surname}</h3>
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<h4 class="users-panel-username">
+					{$user_details.name} {$user_details.surname} - <span class="course_name"></span> <span class="enroll_token"></span>
+				</h4>
 			</div>
+			<!--
 			<div class="col-md-6 col-sm-12 col-xs-12">
 				<div class="form-group">
 					<select class="select2-me form-control input-block-level" name="current_course" data-placeholder="{translateToken value='Select a course'}">
@@ -26,10 +29,28 @@
 					</select>
 				</div>
 			</div>
+			-->
 		</div>
+		{if isset($notifications)}
+		<ul class="summary-list list-unstyled list-inline">
+			{foreach $notifications as $key => $notif}
+		       	<li>
+					<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count nofilter}</strong></span>
+					{$notif.text}
+					<div class="pull-right" >
+					{if isset($notif.link)}
+						<!--
+						<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
+						-->
+						<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
+					{/if}
+					</div>
+		       	</li>
+	       	{/foreach}
+       	</ul>
+       	<!--
 		<div class="row">
 			<div class="col-md-6 col-sm-12 col-xs-12">
-				{if isset($notifications)}
 				<table class="table table-hover no-space users-panel-notification-table">
 			        <thead>
 						{foreach $notifications as $key => $notif}
@@ -40,9 +61,6 @@
 							</td>
 							<td align="right">
 								{if isset($notif.link)}
-									<!--
-									<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
-									-->
 									<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 								{/if}
 							</td>
@@ -50,9 +68,9 @@
 			           	{/foreach}
 			        </thead>
 		        </table>
-		        {else}
-		        {/if}
 			</div>
+		-->
+			<!--
 			<div class="col-md-6 col-sm-12 col-xs-12">
 				<table class="table table-hover no-space users-panel-notification-table user-course-details">
 			        <thead>
@@ -92,6 +110,31 @@
 			        </thead>
 		        </table>
 			</div>
-		</div>
+			-->
+		
+		{/if}
 	</div>
 </div>
+<!--
+<hr />
+<div class="col-md-4 col-sm-4 col-xs-4">
+  <h5 class="text-center">Courses</h5>
+  	<div class="col-md-6 col-sm-6 col-xs-6">
+		  <small>Time Elapsed</small>
+	    <div class="progress progress-striped active progress-mini">
+	        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+	            <span class="sr-only"> 40% Complete (success) </span>
+	        </div>
+	    </div>
+  </div>
+  <div class="col-md-6 col-sm-6 col-xs-6">
+	    <small>Completed</small>
+	    <div class="progress progress-striped active progress-mini">
+	        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+	            <span class="sr-only"> 40% Complete (success) </span>
+	        </div>
+	    </div>
+  </div>
+</div>
+-->
+

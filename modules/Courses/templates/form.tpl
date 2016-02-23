@@ -34,41 +34,99 @@
 					<label class="control-label">{translateToken value="Name"}</label>
 					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 				</div>
+
+			    <h5 class="form-section margin-bottom-10 margin-top-20">
+			        <i class="fa fa-calendar"></i>
+			        {translateToken value="Course Duration"}
+			    </h5>
+			    <div class="row">
+			        <div class="col-md-12">
+			            <div class="form-group form-group-inline">
+			                <div class="inline-item">
+			                    <label class="control-label">Maximum </label>
+			                </div>
+			                <div class="inline-item">
+			                    <input name="duration_units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-helper="integer" />
+			                </div>
+			                <div class="inline-item">
+			                    <select class="select2-me form-control input-block-level" name="duration_type" style="min-width: 150px;" data-rule-required="true">
+			                        <option value="">{translateToken value="Select a Period"}</option>
+			                        <option value="week">{translateToken value="Week(s)"}</option>
+			                        <option value="month">{translateToken value="Month(s)"}</option>
+			                        <option value="year">{translateToken value="Year(s)"}</option>
+			                    </select>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+
+			    <h5 class="form-section margin-bottom-10 margin-top-20">
+			        <i class="fa fa-money"></i>
+			        {translateToken value="Course Prices"}
+			    </h5>
+			    <div class="row">
+			        <div class="col-md-12">
+			            <div class="form-group form-group-inline">
+			                <div class="inline-item">
+			                    <label class="control-label">Total Price </label>
+			                </div>
+			                <div class="inline-item">
+			                    <input name="price_total" value="" type="text" placeholder="{translateToken value="Price"}" class="form-control" data-rule-required="true" data-helper="float" />
+			                </div>
+			                <div class="inline-item">
+			                    <label class="control-label">Installments: </label>
+			                </div>
+ 							<div class="inline-item">
+			                    <input name="price_step_units" value="" type="text" placeholder="{translateToken value="Installments"}" class="form-control" data-rule-required="true" data-helper="integer" />
+			                </div>
+			                <div class="inline-item">
+			                    <label class="control-label">Period: </label>
+			                </div>
+			                <div class="inline-item">
+			                    <select class="select2-me form-control input-block-level" name="price_step_type" style="min-width: 150px;" data-rule-required="true">
+			                        <option>{translateToken value="Select a Period"}</option>
+			                        <option value="week">{translateToken value="Week(s)"}</option>
+			                        <option value="month">{translateToken value="Month(s)"}</option>
+			                        <option value="year">{translateToken value="Year(s)"}</option>
+			                    </select>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+
+			    <h5 class="form-section margin-bottom-10 margin-top-20">
+			        <i class="fa fa-cogs"></i>
+			        {translateToken value="Details"}
+			    </h5>
+
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
 				</div>
 
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Department"}</label>
-					<!--
-					<input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
-					-->
-					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Department'}">
-						<option value="">{translateToken value="Please Select"}</option>
-						{foreach $T_KNOWLEDGE_AREAS as $knowledge}
-							<option value="{$knowledge.id}">{$knowledge.name}</option>
-						{/foreach}
-					</select>
-				</div>
-				<!--
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Coordinators"}</label>
 
-					<select class="select2-me form-control" name="coordinator_id" multiple="multiple">
-						<option value="">{translateToken value="Please Select"}</option>
-						{foreach $T_COORDINATORS as $id => $coordinator}
-							<option value="{$coordinator.id}">{$coordinator.name} {$coordinator.surname}</option>
-						{/foreach}
-					</select>
+			    <div class="row">
+			        <div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Department"}</label>
+							<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Department'}">
+								<option value="">{translateToken value="Please Select"}</option>
+								{foreach $T_KNOWLEDGE_AREAS as $knowledge}
+									<option value="{$knowledge.id}">{$knowledge.name}</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+			        <div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Active"}</label>
+							<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+						</div>
+					</div>
 				</div>
-				-->
 
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Active"}</label>
-					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
-				</div>
+
 			</div>
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">

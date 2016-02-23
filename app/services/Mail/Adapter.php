@@ -58,8 +58,6 @@ class Adapter extends Component
     			))
     			->setBody($template, 'text/html');
 
-          echo $template;
-
   	  	// Create the Mailer using your created Transport
   		$status = $this->getMailer()->send($this->getMessage());
 

@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Courses;
  * @filesource
  */
 use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\CourseUsers as Enrollment;
+use Sysclass\Models\Enrollments\CourseUsers;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -17,14 +17,31 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 {
     /* ISummarizable */
     public function getSummary() {
+        $progress = CourseUsers::getUserProgress(true);
+
+        foreach($progress as $progCourse) {
+            $completed += $progCourse['lessons']['completed'];
+            $expected += $progCourse['lessons']['expected'];
+            $total += $progCourse['lessons']['total'];
+        }
+
+        if ($completed > $expected) {
+            $type = 'success';
+            $count = '<i class="icon-arrow-up"></i>';
+        } elseif ($completed < $expected) {
+            $type = 'danger';
+            $count = '<i class="icon-arrow-down"></i>';
+        } else {
+            $type = 'info';
+            $count = '<i class="icon-arrow-right"></i>';
+        }
 
         return array(
-            'type'  => 'danger',
-            'count' => '<i class="icon-arrow-down"></i>',
+            'type'  => $type,
+            'count' => $count,
             'text'  => $this->translate->translate('Progress'),
             'link'  => array(
-                'text'  => '35%',
-                'link'  => $this->getBasePath() . 'all'
+                'text'  => $completed . "/" . $total
             )
         );
     }
@@ -161,7 +178,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             
             if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
                 // GET FIRST COURSE FORM USER LIST
-                $enrollment = Enrollment::findFirst(array(
+                $enrollment = CourseUsers::findFirst(array(
                     'conditions'    => 'user_id = ?0 AND status_id = 1',
                     'bind' => array($currentUser->id)
                     //'bind' => '123456'
@@ -235,7 +252,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      * @Get("/edit/{id}")
      */
     public function editPage($id)
-    {
+    {        
         $knowledgeAreas = $this->model("courses/areas/collection")->addFilter(array(
             'active' => 1
         ))->getItems();
@@ -276,7 +293,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                     $index++;
                 }
 
-                $modelRS = Enrollment::find(array(
+                $modelRS = CourseUsers::find(array(
                     'conditions'    => implode(" AND ", $modelFilters),
                     'bind' => $filterData
                 ));
@@ -439,54 +456,23 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      */
     public function getCourseStatsRequest($identifier)
     {
-        $user = $this->getCurrentUser(true);
-        $enrollments = Enrollment::find(array(
-            'conditions'    => "user_id = ?0",
-            'bind' => array($user->id)
+        //$user = $this->getCurrentUser(true);
+        $enrollmentCourse = CourseUsers::findFirst(array(
+            'conditions'    => "user_id = ?0 AND course_id = ?1",
+            'bind' => array($this->user->id, $identifier)
         ));
 
-        $enrollmentCourse = $enrollments->filter(function($item) use ($identifier) {
-            if ($item->course_id == $identifier) {
-                return $item;
-            }
-        });
-
         if (count($enrollmentCourse) > 0) {
+            // CALCULATE COURSE PROGRESS
+            $progress = $enrollmentCourse->getProgress(true);
 
-            $enrollmentCourse = reset($enrollmentCourse);
-
-            $classes = $enrollmentCourse->getCourse()->getClasses();
-            
-            $lessons = array();
-            $total_lessons = 0;
-
-            foreach($classes as $classe) {
-                //$lessons[] = $classe->getLessons()->count();
-                $total_lessons = $classe->getLessons()->count();
-            }
-
-            return array(
-                "id" => $identifier,
-                //'total_courses' => $enrollments->count(),
-                'total_classes' => $classes->count(),
-                'total_lessons' => $total_lessons,
-                'progress' => array(
-                    // TRIGGER RECALCULATION ???
-                    'course' => floatval($enrollmentCourse->getCourseProgress()->factor),
-                    'classes' => -1,
-                    'lessons' => -1
-                )
-            );
+            $this->response->setJsonContent($progress);
+            return true;
         } else {
             // USER NOT ENROLLED IN REQUESTED COURSE
-            return $this->invalidRequestError();
+            $this->response->setJsonContent($this->invalidRequestError());
         }
-
-
     }
-
-
-
     /**
      * @todo Move all /items routes to above
      */
@@ -611,9 +597,8 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     /**
      * [ add a description ]
      *
-     * @url POST /item/users/switch
-     * @deprecated 3.0.0.18
-    */
+     * @Post("/item/users/toggle")
+     */
     public function switchUserInGroup() {
         $data = $this->getHttpData(func_get_args());
 
@@ -627,11 +612,11 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course with success"), "error");
         }
         return array_merge($response, $info);
     }

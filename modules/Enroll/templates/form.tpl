@@ -1,7 +1,7 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
 
-<div class="form-body">
+<div class="form-body" id="form-{$T_MODULE_ID}">
 	<ul class="nav nav-tabs">
 		<li class="active">
 			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
@@ -24,7 +24,7 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane fade active in" id="tab_1_1">
-			<form role="form" class="form-validate" method="post" id="form-{$T_MODULE_ID}" action="{$T_FORM_ACTION}">
+			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
