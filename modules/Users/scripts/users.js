@@ -153,7 +153,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		renderCourse : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-			
+			_.max()
 			var factor = completed / total;
 			this.$(".course span").html(
 				app.module("views").formatValue(
