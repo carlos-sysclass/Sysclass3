@@ -237,6 +237,7 @@ h4.border-bottom {
 
 .header .navbar-brand {
 	padding: 10px 0 8px;
+	height: 46px;
 }
 .header .navbar-brand img {
 	height: 29px;
@@ -245,6 +246,13 @@ h4.border-bottom {
 .page-boxed .header .navbar-brand img {
 	margin-left: 0;
 }
+
+@media (max-width: 480px) {
+	.header .navbar-brand {
+	  width: auto;
+	}
+}
+
 .ver-inline-menu.ver-inline-menu-noarrow li.active:after {
 	border-bottom: 0;
 	border-left: 0;
@@ -1247,7 +1255,8 @@ button.calendar-news-item {
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle {
-  padding: 12px 10px 9px;
+    padding: 10px 4px 12px;
+    color: #ddd;
 }
 
 .modal-title small {
@@ -1301,10 +1310,6 @@ button.calendar-news-item {
 
 .page-header-fixed .page-container {
     margin-top: 42px;
-}
-
-.header .navbar-brand {
-    height: 46px;
 }
 
 .advisor-chat-error .ver-inline-menu li.active a {
@@ -1688,13 +1693,13 @@ button.calendar-news-item {
 }
 
 .summary-list {
-	padding: 10px;
+
 }
-.summary-list li {
+.summary-list > div {
     border-bottom: 1px solid #ccc;
     margin-bottom: 10px;
     padding-bottom: 10px;
-    width: 32.93%;
+    /* width: 32%; */
 }
 
 .tabbable-custom > .tab-content {

@@ -12,7 +12,7 @@
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="">
-								{translateToken value="Courses"}
+								{translateToken value="Programs"}
 							</span>
 							<span class="label label-sm label-default courses-count"></span>
 						</div>
@@ -21,7 +21,7 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Classes"}</span>
+							<span class="tab-title">{translateToken value="Courses"}</span>
 							<span class="label label-sm label-default classes-count"></span>
 						</div>
 					</a>
@@ -29,7 +29,7 @@
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Lessons"}</span>
+							<span class="tab-title">{translateToken value="Units"}</span>
 							<span class="label label-sm label-default lessons-count"></span>
 						</div>
 					</a>
@@ -41,11 +41,13 @@
 					<div class="clearfix"></div>
 					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
+							<!--
 							<a href="#" class="navbar-brand disabled">
 								<strong>{translateToken value="You're in:"} </strong>
 							</a>
+							-->
 							<a href="#" class="navbar-brand course-title">
-								 {translateToken value="Course"}
+								 {translateToken value="Program"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
@@ -59,7 +61,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-info no-padding">
+									<a href="#" class="nav-info no-padding disabled">
                     				<span class="courses-current"></span> / <span class="courses-count"></span>
 									</a>
 								</li>
@@ -96,7 +98,7 @@
 								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Classes"}</span></a>
+								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
 							</li>
 							<!--
 							<li class="">
@@ -109,7 +111,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this course"}
+										{translateToken value="Ops! There's any info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -142,15 +144,17 @@
 
 					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
+							<!--
 							<a href="#" class="navbar-brand disabled">
 								<strong>{translateToken value="You're in:"} </strong>
 							</a>
+							-->
 							<a href="#" class="navbar-brand course-title hidden-xs">
-								{translateToken value="Course"}
+								{translateToken value="Program"}
 							</a>
 							<a href="#" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="#" class="navbar-brand class-title">
-								{translateToken value="Class"}
+								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
@@ -164,7 +168,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-info no-padding">
+									<a href="#" class="nav-info no-padding disabled">
                     				<span class="classes-current"></span> / <span class="classes-count"></span>
 									</a>
 								</li>
@@ -187,7 +191,7 @@
 								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-file"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Lessons"}</span></a>
+								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-file"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
 							</li>
 
 							<!--
@@ -381,15 +385,17 @@
 				<div id="lesson-tab" class="tab-pane active">
 					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
+							<!--
 							<a href="#" class="navbar-brand disabled">
 								<strong>{translateToken value="You're in:"} </strong>
 							</a>
+							-->
 							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand class-title hidden-xs">
-								{translateToken value="Class"}
+								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="javascript: void(0);" class="navbar-brand lesson-title">
-								{translateToken value="Lessons"}
+								{translateToken value="Unit"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
@@ -403,7 +409,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-info no-padding">
+									<a href="#" class="nav-info no-padding disabled">
                     				<span class="lessons-current"></span> / <span class="lessons-count"></span>
 									</a>
 								</li>
@@ -427,7 +433,7 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_video"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video Lesson"}</span></a>
+								<a data-toggle="tab" href="#tab_lesson_video"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
@@ -528,7 +534,7 @@
 	<td colspan="5"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any classes registered for this course"}
+			{translateToken value="Ops! There's any courses registered for this course"}
 		</span>
 	</td>
 </script>

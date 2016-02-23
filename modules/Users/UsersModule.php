@@ -238,7 +238,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-book',
-                    //'text'      => $this->translate->translate('Your Courses'),
+                    'text'      => $this->translate->translate('Programs'),
                     /*
                     'external'  => array(
                         'link'  => $this->getBasePath(),
@@ -249,7 +249,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         'link'  => $this->getBasePath(),
                         'text'  => $this->translate->translate('Courses')
                     ),
-                    'type'      => 'notification',
+                    'type'      => '',
                     'items'     => $items,
                     'extended'  => false,
                 );

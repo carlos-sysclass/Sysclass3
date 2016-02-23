@@ -32,9 +32,15 @@
 			-->
 		</div>
 		{if isset($notifications)}
-		<ul class="summary-list list-unstyled list-inline">
+		<!-- <ul class="summary-list list-unstyled list-inline"> -->
+		
 			{foreach $notifications as $key => $notif}
-		       	<li>
+				{if ($notif@iteration % 3 == 1 || $notif@first)}
+				<div class="row summary-list">
+				{/if}
+
+
+		       	<div class="col-md-4 col-sm-4 col-xs-12">
 					<span class="btn btn-xs btn-link text-{$notif.type}"><strong>{$notif.count nofilter}</strong></span>
 					{$notif.text}
 					<div class="pull-right" >
@@ -45,9 +51,13 @@
 						<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 					{/if}
 					</div>
-		       	</li>
+		       	</div>
+
+				{if ($notif@iteration % 3 == 0 || $notif@last)}
+				</div>
+				{/if}
 	       	{/foreach}
-       	</ul>
+       	
        	<!--
 		<div class="row">
 			<div class="col-md-6 col-sm-12 col-xs-12">
