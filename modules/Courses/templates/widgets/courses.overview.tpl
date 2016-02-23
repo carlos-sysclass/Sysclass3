@@ -11,7 +11,10 @@
 				<li class="the-course-tab">
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
-							<span class="">{translateToken value="Courses"}</span>
+							<span class="">
+								{translateToken value="Courses"}
+							</span>
+							<span class="label label-sm label-default courses-count"></span>
 						</div>
 					</a>
 				</li>
@@ -19,6 +22,7 @@
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Classes"}</span>
+							<span class="label label-sm label-default classes-count"></span>
 						</div>
 					</a>
 				</li>
@@ -26,6 +30,7 @@
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Lessons"}</span>
+							<span class="label label-sm label-default lessons-count"></span>
 						</div>
 					</a>
 				</li>

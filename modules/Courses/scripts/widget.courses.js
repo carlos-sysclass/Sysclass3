@@ -360,6 +360,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
+				var elId = this.$el.attr("id");
+
+				$(".nav-tabs a[href='#" + elId + "'] .courses-count")
+					.html(this.collection.size());
+				
 			},
 			onBlockableItemClick : function(e) {
 				// APLLY USER TO ENROLLMENT PROCESS
@@ -644,6 +650,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
+				var elId = this.$el.attr("id");
+				$(".nav-tabs a[href='#" + elId + "'] .classes-count")
+					.html(this.collection.size());
+
+				console.warn(this.collection.toJSON());
+
 				this.unBlockUi();
 			},
 			updateCollectionIndex : function(e) {
@@ -866,6 +878,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
+
+				var elId = this.$el.attr("id");
+				$(".nav-tabs a[href='#" + elId + "'] .lessons-count")
+					.html(this.collection.size());
 			},
 			setViewed : function() {
 				this.$(".viewed-status").removeClass("hidden");
@@ -880,6 +896,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
 			},
 			onBlockableItemClick : function(e) {
 				$("[href='#class-tab']").click();

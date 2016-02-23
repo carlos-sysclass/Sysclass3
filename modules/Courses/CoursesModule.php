@@ -30,7 +30,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             $count = '<i class="icon-arrow-up"></i>';
         } elseif ($completed < $expected) {
             $type = 'danger';
-            $count = '<i class="icon-arrow-up"></i>';
+            $count = '<i class="icon-arrow-down"></i>';
         } else {
             $type = 'info';
             $count = '<i class="icon-arrow-right"></i>';
