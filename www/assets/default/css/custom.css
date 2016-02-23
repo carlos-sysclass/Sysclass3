@@ -1709,3 +1709,8 @@ button.calendar-news-item {
 	height: 10px;
 	margin-bottom: 10px;
 }
+
+.navbar-nav > li > a.no-padding {
+	padding-left: 0px;
+	padding-right: 0px;
+}

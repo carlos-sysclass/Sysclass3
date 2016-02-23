@@ -51,6 +51,25 @@
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
 							</a>
 						</div>
+						<div class="collapse navbar-collapse navbar-ex1-collapse">
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
+										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-info no-padding">
+                    				<span class="courses-current"></span> / <span class="courses-count"></span>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
+										<i class="icon-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</div>
 						<!--
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 
@@ -69,6 +88,7 @@
 						</div>
 						-->
 					</div>
+					<div class="clearfix"></div>
 
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
@@ -141,6 +161,11 @@
 								<li>
 									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Class"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-info no-padding">
+                    				<span class="classes-current"></span> / <span class="classes-count"></span>
 									</a>
 								</li>
 								<li>
@@ -375,6 +400,11 @@
 								<li>
 									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
+									</a>
+								</li>
+								<li>
+									<a href="#" class="nav-info no-padding">
+                    				<span class="lessons-current"></span> / <span class="lessons-count"></span>
 									</a>
 								</li>
 								<li>

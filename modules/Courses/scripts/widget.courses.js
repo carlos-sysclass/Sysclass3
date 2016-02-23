@@ -349,6 +349,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
+
+				$("#courses-content .courses-count")
+					.html(this.collection.size());
+
+				$("#courses-content .courses-current")
+					.html(this.collection.getPointer() + 1);
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
@@ -361,11 +367,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					return false;
 				}.bind(this));
 
-				var elId = this.$el.attr("id");
-
-				$(".nav-tabs a[href='#" + elId + "'] .courses-count")
-					.html(this.collection.size());
-				
 			},
 			onBlockableItemClick : function(e) {
 				// APLLY USER TO ENROLLMENT PROCESS
@@ -650,11 +651,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
-				var elId = this.$el.attr("id");
-				$(".nav-tabs a[href='#" + elId + "'] .classes-count")
+				$("#courses-content .classes-count")
 					.html(this.collection.size());
 
-				console.warn(this.collection.toJSON());
+				$("#courses-content .classes-current")
+					.html(this.collection.getPointer() + 1);
 
 				this.unBlockUi();
 			},
@@ -879,9 +880,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
-				var elId = this.$el.attr("id");
-				$(".nav-tabs a[href='#" + elId + "'] .lessons-count")
+				$("#courses-content .lessons-count")
 					.html(this.collection.size());
+
+				$("#courses-content .lessons-current")
+					.html(this.collection.getPointer() + 1);
 			},
 			setViewed : function() {
 				this.$(".viewed-status").removeClass("hidden");
@@ -892,6 +895,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection.find(function(model, index, collection) {
 					if (model.get("id") == this.model.get("id")) {
 						this.collection.setPointer(index);
+
+
+
 						return true;
 					}
 					return false;
