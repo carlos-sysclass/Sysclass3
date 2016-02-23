@@ -132,7 +132,7 @@
 	<div class="col-md-4 col-sm-4 col-xs-4">
 		<div class="easy-pie-chart">
 			<div class="number course" data-percent="0"><span>0</span></div>
-			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Program"}</a>
+			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Programs"}</a>
 		</div>
 		<h6 class="text-center"><span class="course-counter"></span> {translateToken value="completed"}</h6>
 	</div>
