@@ -53,12 +53,35 @@ hr {
 
 
 @media (max-width: 767px) {
-
 	.page-boxed .header .dropdown .username {
 		display: none;
 	}
-
 }
+
+
+.mega-menu-container {
+	min-width: 700px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.mega-menu-container {
+		min-width: 600px;
+	}
+}
+
+
+@media (min-width: 468px) and (max-width: 767px) {
+	.mega-menu-container {
+		min-width: 400px;
+	}
+}
+
+@media (max-width: 467px) {
+	.mega-menu-container {
+		min-width: 230px;
+	}
+}
+
 .portlet > .portlet-title > .caption a {
 	color: white;
 	text-decoration: underline;

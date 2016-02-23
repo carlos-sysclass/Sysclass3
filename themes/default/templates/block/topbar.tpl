@@ -31,7 +31,7 @@
 					      		{/if}
 					      		<span class="hidden-xs">{$item.text}</span>
 							</a>
-							<ul class="dropdown-menu" style="min-width: 700px; max-width: 90%;">
+							<ul class="dropdown-menu mega-menu-container">
 								<li>
 									<!-- Content container to add padding -->
 									<div class="mega-menu-content">
