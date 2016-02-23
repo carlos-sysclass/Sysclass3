@@ -3,7 +3,7 @@
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
-	<div class="col-md-3 col-sm-5 col-xs-5" id="users-avatar">
+	<div class="col-md-3 col-sm-3 hidden-xs" id="users-avatar">
 
 		{if ({$user_details.avatars[0].url})}
 			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
@@ -12,10 +12,12 @@
 		{/if}
 	
 	</div>
-	<div class="col-md-9 col-sm-7 col-xs-7">
+	<div class="col-md-9 col-sm-9 col-xs-12">
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<h4 class="users-panel-username">
+					<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
+
 					{$user_details.name} {$user_details.surname} - <span class="course_name"></span> <span class="enroll_token"></span>
 				</h4>
 			</div>
