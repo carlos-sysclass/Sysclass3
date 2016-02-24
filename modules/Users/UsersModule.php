@@ -141,7 +141,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $request = $this->getMatchedUrl();
 
         $actions = array(
-            'viewgetBreadcrumb'  => array(
+            'view'  => array(
                 array(
                     'text'      => $this->translate->translate('New User'),
                     'link'      => $this->getBasePath() . "add",
@@ -273,7 +273,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      *
      * @Get("/add")
      */
-    public function addPage($id)
+    public function addPage()
     {
         $languages = Language::find("active = 1");
         $this->putitem("languages", $languages->toArray());
