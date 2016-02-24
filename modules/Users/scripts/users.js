@@ -15,16 +15,23 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	//current_course
 	    	console.info('panel.users/usersWidgetViewClass::initialize');
 
-	    	//this.statsModel = new mod.models.course_stats();
+	    	this.statsModel = new mod.models.course_stats();
+
+	    	this.overallProgressView = new overallProgressViewClass({
+	    		el : this.$("#progress-user"),
+	    		model : this.statsModel
+	    	});
 
 	    	this.listenTo(this.model, "change:course_id", this.loadCourseDetails.bind(this));
 
-	    	this.listenTo(this.model, "sync", this.injectCourseDetails.bind(this));
+	    	this.listenTo(this.statsModel, "sync", this.injectCourseDetails.bind(this));
 
 	    	//this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
-	    	//this.statsModel.set("id", this.model.get("course_id"));
+	    	this.statsModel.set("id", this.model.get("course_id"));
 
-	    	//this.statsModel.fetch();
+	    	this.statsModel.fetch();
+
+
 	    },
 	    render: function(collection) {
 	    	console.info('panel.users/usersWidgetViewClass::render');
@@ -75,6 +82,9 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    },
 	    injectCourseDetails : function() {
 	    	this.$(".course_name").html(this.model.get("course_name"));
+
+
+
 	    	//this.$(".enroll_token").html(this.model.get("enroll_token"));
 
 	    	//this.$(".total_classes").html(this.statsModel.get("total_classes"));
@@ -92,6 +102,124 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	//this.$(".user-course-details").unblock();
 	    }
   	});
+
+
+	var overallProgressViewClass = Backbone.View.extend({
+		el: $('#progress-content'),
+		portlet: $('#courses-widget'),
+		initialize: function() {
+			this.listenTo(this.model, 'sync', this.render.bind(this));
+			this.initializeElements();
+		},
+		initializeElements : function() {
+			//console.warn(jQuery.fn.easyPieChart);
+			if (jQuery.fn.easyPieChart) {
+
+				this.$(".lesson").easyPieChart({
+					animate: 1000,
+					size: 75,
+					lineWidth: 3,
+					lineCap : 'butt',
+					barColor: App.getLayoutColorCode('green')
+				});
+				this.$(".class").easyPieChart({
+					animate: 1000,
+					size: 75,
+					lineWidth: 3,
+					lineCap : 'butt',
+					barColor: App.getLayoutColorCode('yellow')
+				});
+				this.$(".course").easyPieChart({
+					animate: 1000,
+					size: 75,
+					lineWidth: 3,
+					lineCap : 'butt',
+					barColor: App.getLayoutColorCode('red')
+				});
+			}
+		},
+		render : function() {
+			this.renderCourse(
+				this.model.get('current_days'), this.model.get('total_days')
+			);
+			this.renderClass(
+				this.model.get('classes.completed'), this.model.get('classes.total')
+			);
+			this.renderLesson(
+				this.model.get('lessons.completed'), this.model.get('lessons.total')
+			);
+
+
+		},
+		renderCourse : function(completed, total) {
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+			_.max()
+			var factor = completed / total;
+			this.$(".course span").html(
+				app.module("views").formatValue(
+					factor,
+					'decimal-custom',
+					'0.[0]%'
+				)
+			);
+
+			this.$(".course-counter").html(completed + "/" + total);
+
+			if (jQuery.fn.easyPieChart) {
+				var percent = factor * 100;
+
+				if (_.isObject(this.$(".course").data('easyPieChart'))) {
+					this.$(".course").data('easyPieChart').update(percent);
+				}
+			}
+		},
+		renderClass : function(completed, total) {
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+			var factor = completed / total;
+			this.$(".class span").html(
+				app.module("views").formatValue(
+					factor,
+					'decimal-custom',
+					'0.[0]%'
+				)
+			);
+
+			this.$(".class-counter").html(completed + "/" + total);
+
+			if (jQuery.fn.easyPieChart) {
+				var percent = factor * 100;
+
+				if (_.isObject(this.$(".class").data('easyPieChart'))) {
+					this.$(".class").data('easyPieChart').update(percent);
+				}
+			}
+		},
+		renderLesson : function(completed, total) {
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+			var factor = completed / total;
+
+			this.$(".lesson span").html(
+				app.module("views").formatValue(
+					factor,
+					'decimal-custom',
+					'0.[0]%'
+				)
+			);
+
+			this.$(".lesson-counter").html(completed + "/" + total);
+
+			if (jQuery.fn.easyPieChart) {
+				var percent = factor * 100;
+
+				if (_.isObject(this.$(".lesson").data('easyPieChart'))) {
+					this.$(".lesson").data('easyPieChart').update(percent);
+				}
+			}
+		}
+	});
+
+
+
 
 	mod.on("start", function() {
 		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {

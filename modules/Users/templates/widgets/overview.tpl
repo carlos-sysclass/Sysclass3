@@ -127,26 +127,30 @@
 		{/if}
 	</div>
 </div>
-<!--
 <hr />
-<div class="col-md-4 col-sm-4 col-xs-4">
-  <h5 class="text-center">Courses</h5>
-  	<div class="col-md-6 col-sm-6 col-xs-6">
-		  <small>Time Elapsed</small>
-	    <div class="progress progress-striped active progress-mini">
-	        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-	            <span class="sr-only"> 40% Complete (success) </span>
-	        </div>
-	    </div>
-  </div>
-  <div class="col-md-6 col-sm-6 col-xs-6">
-	    <small>Completed</small>
-	    <div class="progress progress-striped active progress-mini">
-	        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-	            <span class="sr-only"> 40% Complete (success) </span>
-	        </div>
-	    </div>
-  </div>
+<div class="row" id="progress-user">
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<div class="easy-pie-chart">
+			<div class="number course" data-percent="0"><span>0</span></div>
+			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Programs"}</a>
+		</div>
+		<h6 class="text-center"><span class="course-counter"></span> {translateToken value="completed"}</h6>
+	</div>
+	<div class="margin-bottom-10 visible-sm"></div>
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<div class="easy-pie-chart">
+			<div class="number class" data-percent="0"><span>0</span></div>
+			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Courses"}</a>
+		</div>
+		<h6 class="text-center"><span class="class-counter"></span> {translateToken value="completed"}</h6>
+	</div>
+	<div class="margin-bottom-10 visible-sm"></div>
+	<div class="col-md-4 col-sm-4 col-xs-4">
+		<div class="easy-pie-chart">
+			<div class="number lesson" data-percent="0"><span>0</span></div>
+			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units"}</a>
+		</div>
+		<h6 class="text-center"><span class="lesson-counter"></span> {translateToken value="completed"}</h6>
+	</div>
+	<div class="clearfix margin-bottom-10"></div>
 </div>
--->
-
