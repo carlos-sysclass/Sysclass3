@@ -648,6 +648,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
                 $userModel->viewed_license = is_array($data['viewed_license']) ? reset($data['viewed_license']) : $data['viewed_license'];
 
+
+
                 // CHECK FOR PASSWORD CHANGING
                 if ($userModel->update()) {
                     if ($userModel->viewed_license == 1) {
@@ -666,11 +668,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         );
                     }
                 } else {
-
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {
+                var_dump("Sem permissão");
+                exit;
                 return $this->invalidRequestError($this->translate->translate("You don't have the permission to update these info."), "error");
             }
         } else {

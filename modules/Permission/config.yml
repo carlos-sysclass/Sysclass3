@@ -6,5 +6,11 @@ crud:
   base_route:
     variables:
       page_title: Permissions
+
 models:
-  me: Sysclass\Models\Acl\Resource
+  me: 
+    class: Sysclass\Models\Acl\Resource
+    acl:
+      view:
+        resource: Roles
+        action: view

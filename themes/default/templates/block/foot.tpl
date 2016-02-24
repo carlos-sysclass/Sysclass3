@@ -87,12 +87,6 @@
 
 <script>
     jQuery(document).ready(function() {
-        // pageguide init
-        tl.pg.init({
-            /* pg_caption : "" */
-            custom_open_button : "#open-pageguide-action"
-        });
-
         var options = {
             theme_path : "{$T_PATH.resource}",
             theme_app  : App

@@ -12,7 +12,7 @@ use
 /**
  * @RoutePrefix("/module/payment")
 */
-class PaymentModule extends \SysclassModule implements \ISummarizable, \ILinkable /* \IWidgetContainer */
+class PaymentModule extends \SysclassModule implements \ISummarizable/*,  \ILinkable */ /* \IWidgetContainer */
 {
     /* ISummarizable */
     public function getSummary() {

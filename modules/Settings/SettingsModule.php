@@ -41,6 +41,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             $this->putCss('css/pageguide/pageguide');
             $this->putScript('plugins/pageguide/pageguide.min');
 
+            $this->putScript("scripts/ui.menu.users");
+
             $menuItem = array(
                 'id'        => "open-pageguide-action",
                 'icon'      => ' fa fa-question',
@@ -202,11 +204,9 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
      * Returns a JSON string object to the browser when hitting the root of the domain
      *
      * @Get("/manage")
-     * @allow(resource=settings, action=manage)
      */
     public function managePage() {
-        // THE ANNOUTATION PERMISSION IS NOT NOW WORKING NOW.
-        if ($this->isResourceAllowed()) {
+        if ($this->isResourceAllowed("manage")) {
 
             $settingsRS = SystemSettings::find(
                 array(

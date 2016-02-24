@@ -96,7 +96,7 @@ $di->setShared('environment', function() use ($di) {
 		//'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
 		'plugins/bootstrap-fileupload/bootstrap-fileupload',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
-		//'css/pageguide/pageguide',
+		'css/pageguide/pageguide',
  		//<!-- BEGIN THEME STYLES -->
  		'css/flags',
 		'css/style-sysclass',

@@ -60,25 +60,25 @@ hr {
 
 
 .mega-menu-container {
-	min-width: 700px;
+	min-width: 700px !important;
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
 	.mega-menu-container {
-		min-width: 600px;
+		min-width: 600px !important;
 	}
 }
 
 
 @media (min-width: 468px) and (max-width: 767px) {
 	.mega-menu-container {
-		min-width: 400px;
+		min-width: 400px !important;
 	}
 }
 
 @media (max-width: 467px) {
 	.mega-menu-container {
-		min-width: 230px;
+		min-width: 230px !important;
 	}
 }
 

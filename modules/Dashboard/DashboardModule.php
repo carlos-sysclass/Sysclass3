@@ -69,6 +69,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
 
             // ADD ENVIROMENT SELECTION
             $dashboards = $currentUser->getDashboards();
+
             if (count($dashboards) > 1) {
 
                 $items = array();
