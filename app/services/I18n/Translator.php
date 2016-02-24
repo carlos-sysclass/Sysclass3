@@ -58,15 +58,14 @@ class Translator extends Component
 
         if (in_array($language_code, $langCodes)) {
             $this->source_lang = $language_code;
+        } else {
+            $this->source_lang = $this->getSystemLanguageCode();
+        }
+        // RECREATE TOKENS CACHE
+        $this->recreateCache();
 
-            // RECREATE TOKENS CACHE
-            $this->recreateCache();
-
-            if ($this->source_tokens->count() > 0) {
-                $this->session->set("session_language", $this->source_lang);
-            }
-
-            return true;
+        if ($this->source_tokens->count() > 0) {
+            $this->session->set("session_language", $this->source_lang);
         }
         return false;
     }

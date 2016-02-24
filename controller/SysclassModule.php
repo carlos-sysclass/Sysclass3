@@ -79,24 +79,6 @@ abstract class SysclassModule extends BaseSysclassModule
     }
 
     /**
-     * Check if the request resource is avaliable to current user. The resource can overriden in config.yml
-     * @param  [type]  $route   [description]
-     * @param  [type]  $default [description]
-     * @return boolean          [description]
-     */
-    protected function isResourceAllowed($default = null) {
-        $resource = $this->getConfig("crud\\routes\\{$this->context['module_request']}\\acl\\resource");
-        if (is_null($resource)) {
-            if (is_null($default)) {
-                return false;
-            }
-            $resource = $default;
-        }
-        return $this->acl->isUserAllowed(null, $this->module_id, $resource);
-    }
-
-
-    /**
      * [ add a description ]
      * @Get("/view")
      */
@@ -247,7 +229,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
         if ($this->isResourceAllowed("create")) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
-            // 
             $data = $this->request->getJsonRawBody(true);
 
             if (!array_key_exists($model, $this->model_info)) {
@@ -521,7 +502,7 @@ abstract class SysclassModule extends BaseSysclassModule
             'model' => $model
         ));
 
-        if ($allowed = $this->isUserAllowed("view")) {
+        if ($allowed = $this->isResourceAllowed("view", $this->model_info[$model])) {
             $currentUser    = $this->getCurrentUser(true);
 
             $model_info = $this->model_info[$model];
@@ -698,6 +679,43 @@ abstract class SysclassModule extends BaseSysclassModule
         return null;
     }
 
+    /**
+     * Check if the request resource is avaliable to current user. The resource can overriden in config.yml
+     * @param  [type]  $route   [description]
+     * @param  [type]  $default [description]
+     * @return boolean          [description]
+     */
+    protected function isResourceAllowed($action = null, $model_info = null) {
+        if (@isset($model_info['acl'][$action])) {
+            $acl = $model_info['acl'][$action];
+            $action = array_key_exists('action', $acl) ? $acl['action'] : $action;
+            $module_id = array_key_exists('resource', $acl) ? $acl['resource'] : null;
+        } else {
+            $module_id = null;
+        }
+        return $this->isUserAllowed($action, $module_id);
+        /*
+        $resource = $this->getConfig("crud\\routes\\{$this->context['module_request']}\\acl\\resource");
+
+        if (is_null($resource)) {
+            if (is_null($default_resource)) {
+                $resource = $this->module_id;
+            } else {
+                $resource = $default_resource;    
+            }
+        }
+
+        $action = $this->getConfig("crud\\routes\\{$this->context['module_request']}\\acl\\action");
+        if (is_null($action)) {
+            if (is_null($default_action)) {
+                return false;
+            }
+            $action = $default_action;
+        }
+
+        return $this->isUserAllowed($action, $resource);
+        */
+    }
 
     protected function isUserAllowed($action, $module_id = null) {
 
