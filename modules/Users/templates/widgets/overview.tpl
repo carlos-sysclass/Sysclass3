@@ -134,7 +134,7 @@
 			<div class="number course" data-percent="0"><span>0</span></div>
 			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Programs"}</a>
 		</div>
-		<h6 class="text-center"><span class="course-counter"></span> {translateToken value="completed"}</h6>
+<!-- 		<h6 class="text-center"><span class="course-counter"></span> {translateToken value="completed"}</h6> -->
 	</div>
 	<div class="margin-bottom-10 visible-sm"></div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
@@ -142,7 +142,9 @@
 			<div class="number class" data-percent="0"><span>0</span></div>
 			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Courses"}</a>
 		</div>
+		<!--
 		<h6 class="text-center"><span class="class-counter"></span> {translateToken value="completed"}</h6>
+		-->
 	</div>
 	<div class="margin-bottom-10 visible-sm"></div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
@@ -150,7 +152,9 @@
 			<div class="number lesson" data-percent="0"><span>0</span></div>
 			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units"}</a>
 		</div>
+		<!--
 		<h6 class="text-center"><span class="lesson-counter"></span> {translateToken value="completed"}</h6>
+		-->
 	</div>
 	<div class="clearfix margin-bottom-10"></div>
 </div>
