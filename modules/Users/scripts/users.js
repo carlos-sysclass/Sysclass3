@@ -159,7 +159,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				app.module("views").formatValue(
 					factor,
 					'decimal-custom',
-					'0.[0]%'
+					'0%'
 				)
 			);
 
@@ -180,7 +180,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				app.module("views").formatValue(
 					factor,
 					'decimal-custom',
-					'0.[0]%'
+					'0%'
 				)
 			);
 
@@ -202,7 +202,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				app.module("views").formatValue(
 					factor,
 					'decimal-custom',
-					'0.[0]%'
+					'0%'
 				)
 			);
 
