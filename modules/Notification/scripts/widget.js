@@ -11,18 +11,10 @@ $SC.module("panel.notification", function(mod, app, Backbone, Marionette, $, _) 
 
 	    	// CREATE THE PSEUDO-CAROUSELL
 	    	this.$(".alert:first").fadeIn(400);
-	    	/*
-	    	this.$(".portlet-body").scrollbox({
-			  direction: 'h',
-			  switchItems: 1
-			});
-			*/
-
-	    	this.resume();
 	    },
 	    resume : function() {
 	    	console.info('panel.notification/notificationWidgetViewClass::start');
-	    	if (_.isNull(this.timer)) {
+	    	if (_.isNull(this.timer) && this.$(".alert").size() > 1) {
 	    		this.timer = window.setInterval(this.rotate.bind(this), 5000);
 	    	}
 	    },

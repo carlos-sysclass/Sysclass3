@@ -26,7 +26,7 @@ class NotificationModule extends \SysclassModule implements \IWidgetContainer
 
             $data = $notifications->toArray();
 
-            $this->putScript('plugins/jquery/jquery.scrollbox');
+            //$this->putScript('plugins/jquery/jquery.scrollbox');
             $this->putModuleScript("widget");
 
             /**
