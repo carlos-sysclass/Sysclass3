@@ -2,15 +2,21 @@
 namespace Sysclass\Services\MessageBus;
 
 use Phalcon\Mvc\User\Component,
+	Sysclass\Models\MessageBus\Listeners,
 	Sysclass\Collections\MessageBus\Event,
-    Phalcon\Mvc\Dispatcher;
+    Phalcon\Mvc\Dispatcher,
+    Phalcon\Script\Color;
 
 class Manager extends Component
 {
 	protected $types = array(
 		'user',
-		'api'
+		'api',
+		'course'
 	);
+
+	protected $listeners = array();
+	protected $modules = array();
 
 	public function initialize() {
 		foreach($this->types as $type) {
@@ -21,6 +27,25 @@ class Manager extends Component
 					$data
 				);
 			});
+		}
+
+		// POPULATE LISTENERS ARRAY, FROM NOTIFICATIONS MODEL
+		$DBlisteners = Listeners::find("active = 1");
+
+		foreach($DBlisteners as $listen) {
+			if (!array_key_exists($listen->module, $this->modules)) {
+				$this->modules[$listen->module] = $this->loader->module($listen->module);
+			}
+			if (!array_key_exists($listen->type, $this->listeners)) {
+				$this->listeners[$listen->type] = array();
+			}
+			if (!array_key_exists($listen->name, $this->listeners[$listen->type])) {
+				$this->listeners[$listen->type][$listen->name] = array();
+			}
+			$this->listeners[$listen->type][$listen->name][] = array(
+				'module' => $listen->module,
+				'action' => $listen->action
+			);
 		}
 		
 	}
@@ -51,6 +76,34 @@ class Manager extends Component
 
 		$events = Event::find(array($conditions));
  		return $events;
+	}
+
+	public function processEvents() {
+		$events = $this->messagebus->receive(false);
+
+		foreach($events as $evt) {
+			//$this->module
+			if (@isset($this->listeners[$evt->type][$evt->name])) {
+				$processing = $this->listeners[$evt->type][$evt->name];
+
+				foreach($processing as $proc) {
+					$message = sprintf(
+						"Processing Event %:%s calling %s::%s (ID: #%s)",
+						$evt->type,
+						$evt->name,
+						$proc['module'],
+						$proc['action'],
+						$evt->_id
+					);
+
+					fwrite(STDERR, Color::info($message));
+					// fwrite(STDOUT, $message . PHP_EOL); // WRITE TO LOG
+					
+					$this->modules[$proc['module']]->processNotification($proc['action'], $evt);
+				}
+			}
+		}
+
 	}
 
 	public function unqueue($id) {

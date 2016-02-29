@@ -155,4 +155,19 @@ class CourseUsers extends Model
         return $info;
     }
 
+    public function isCompleted(){
+        return true;
+    }
+
+    public function complete() {
+        // TODO: CHECK IF THE COURSE CAN BE COMPLETED AND MAKE THE COMPLETION LOGIC
+        $evManager = $this->getDI()->get("eventsManager");
+        $evManager = $this->getDI()->get("eventsManager");
+
+        $evManager->fire("course:user-completed", $this, $this->toArray());
+        //var_dump(get_class($evManager));
+
+        //$this->eventsManager;
+    }
+
 }

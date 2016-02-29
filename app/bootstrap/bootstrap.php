@@ -4,7 +4,7 @@
 require(__DIR__ . "/autoloader.php");
 
 // SYSTEM AND ENVIRONMENT INFO
-require(__DIR__ . "/config.php");
+require(__DIR__ . "/configuration.php");
 
 if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// ROUTES AND DISPATCHER'

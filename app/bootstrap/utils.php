@@ -4,10 +4,25 @@ use
     Sysclass\Services\I18n\Translator,
     Sysclass\Services\Mail\Adapter as MailAdapter,
     Sysclass\Services\Debug\Adapter as DebugAdapter,
+    Sysclass\Services\Loader\Adapter as LoaderAdapter,
+    Sysclass\Services\Notifications\Manager as NotificationManager,
     Plico\Php\Helpers\Strings as stringsHelper,
     Phalcon\Flash\Direct as FlashDirect,
     Phalcon\Flash\Session as FlashSession;
 
+
+/**
+ * Component to provide module/model/controller cold loading (used when manually loading is need)
+ */
+$di->setShared("loader", function() use ($di, $environment) {
+    $loader = new LoaderAdapter();
+    return $loader;
+});
+
+$di->setShared("notification", function() use ($di, $environment) {
+    $notification = new NotificationManager();
+    return $notification;
+});
 
 $di->setShared("url", function() use ($di, $environment) {
     $url = new Phalcon\Mvc\Url();

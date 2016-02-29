@@ -5,12 +5,12 @@ use
 	Phalcon\Cache\Backend\Apc as BackendCache;
 
 $di->set('db', function () use ($environment, $eventsManager) {
-    $class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($environment->database->dbtype);
+    $class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($environment->database->adapter);
     if (class_exists($class)) {
         $database = new $class(array(
-            "host"     => $environment->database->dbhost,
-            "username" => $environment->database->dbuser,
-            "password" => $environment->database->dbpass,
+            "host"     => $environment->database->host,
+            "username" => $environment->database->username,
+            "password" => $environment->database->password,
             "dbname"   => $environment->database->dbname,
             "charset"  => 'utf8'
         ));

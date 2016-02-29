@@ -23,9 +23,6 @@ class Course extends Model
             )
         );
     }
-    public function isCompleted(){
-        return true;
-    }
 
     public function calculateDuration(\DateTime $start) {
         switch($this->duration_type) {
