@@ -21,6 +21,13 @@ class User extends Model
 
         $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id",
+            array('alias' => 'UserCourses')
+        );
+
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",

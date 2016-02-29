@@ -29,15 +29,20 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $this->module_folder = $this->environment["path/modules"] . ucfirst($this->module_id);
 
+        if (is_null($this->context)) {
+            $this->context = array();
+        }
+
         $baseUrl = $this->environment['module/base_path'] . "/" . $this->module_id;
         //$url = $baseUrl;
         $this->context['basePath'] = $baseUrl . "/";
 
         $route = $this->router->getMatchedRoute();
-        $this->module_request = str_replace($this->context['basePath'], "", $route->getPattern());
 
-        if (is_null($this->context)) {
-            $this->context = array();
+        if ($route) {
+            $this->module_request = str_replace($this->context['basePath'], "", $route->getPattern());
+        } else {
+            $this->module_request = $this->context['basePath'];
         }
 
         $this->module_folder = $this->environment["path/modules"] . ucfirst($this->module_id);

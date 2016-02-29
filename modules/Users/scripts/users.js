@@ -153,8 +153,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		renderCourse : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-			_.max()
-			var factor = completed / total;
+			var factor = 0;
+			if (total > 0) {
+				factor = completed / total;
+			}
 			this.$(".course span").html(
 				app.module("views").formatValue(
 					factor,
@@ -175,7 +177,11 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		renderClass : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-			var factor = completed / total;
+			var factor = 0;
+			if (total > 0) {
+				factor = completed / total;
+			}
+
 			this.$(".class span").html(
 				app.module("views").formatValue(
 					factor,
@@ -196,7 +202,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		renderLesson : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
-			var factor = completed / total;
+			var factor = 0;
+			if (total > 0) {
+				factor = completed / total;
+			}
 
 			this.$(".lesson span").html(
 				app.module("views").formatValue(

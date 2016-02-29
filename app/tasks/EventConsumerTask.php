@@ -49,4 +49,13 @@ class EventConsumerTask extends \Phalcon\CLI\Task
             echo sprintf("processed event user:signup #%s with data %s\n", $event->_id, json_encode($event->data));
         }
     }
+
+    public function processEventsAction(array $params = null)
+    {
+//        
+
+        $this->messagebus->processEvents();
+
+    }
+
 }

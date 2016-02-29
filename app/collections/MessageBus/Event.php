@@ -10,6 +10,7 @@ class Event extends Collection
 	public $data;
 	public $processed;
 	public $priority;
+	public $timestamp;
 	/*
 	public $surname;
 	public $email;
@@ -23,6 +24,7 @@ class Event extends Collection
 
 	public function beforeCreate() {
 		$this->processed = false;
+		$this->timestamp = time();
 		//$this->_environment = $this->getDi()->get('environment')->name;
 	}
 
