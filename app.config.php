@@ -33,7 +33,7 @@ $configurationDefaults = array(
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'sysclass',
 		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass_demo',
+		'dbname'	=> 'sysclass_clean',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
@@ -50,6 +50,11 @@ $configurationDefaults = array(
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.default')
 	),
 	*/
+	'alpha.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_alpha',
+		'theme'		=> 'sysclass.default',
+		'https'		=> 'required',
+	),
 	'develop.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_develop',
 		'theme'		=> 'sysclass.default',

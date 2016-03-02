@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6f16b0808e2b5a6e74554e4f4e811d8f",
-    "content-hash": "f1a4b1b7eb3884a6970f22903f4a246f",
+    "hash": "c2e9e7ff9a37cb2114bb1e274464dbcc",
+    "content-hash": "4e3492a70f3e844c28641c160430f378",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -61,12 +61,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "cee6a79e845f247305f3b42987d0a356a1c98d86"
+                "reference": "8658648502acdc45e93d6e11f9f906ded5224aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/cee6a79e845f247305f3b42987d0a356a1c98d86",
-                "reference": "cee6a79e845f247305f3b42987d0a356a1c98d86",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/8658648502acdc45e93d6e11f9f906ded5224aba",
+                "reference": "8658648502acdc45e93d6e11f9f906ded5224aba",
                 "shasum": ""
             },
             "require": {
@@ -114,7 +114,7 @@
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
-            "time": "2016-02-09 19:21:14"
+            "time": "2016-02-24 03:08:40"
         },
         {
             "name": "evenement/evenement",
@@ -365,6 +365,62 @@
             "time": "2014-05-01 21:36:02"
         },
         {
+            "name": "phalcon/devtools",
+            "version": "v2.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phalcon/phalcon-devtools.git",
+                "reference": "54bc21bb262ad40b4a07ff148691a895279eeac0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/54bc21bb262ad40b4a07ff148691a895279eeac0",
+                "reference": "54bc21bb262ad40b4a07ff148691a895279eeac0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-phalcon": "~2.0",
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "kherge/box": "^2.5"
+            },
+            "bin": [
+                "phalcon.php"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phalcon\\": "scripts/Phalcon/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Phalcon Team",
+                    "email": "team@phalconphp.com"
+                }
+            ],
+            "description": "This tools provide you useful scripts to generate code helping to develop faster and easy applications that use with Phalcon framework.",
+            "homepage": "http://phalconphp.com",
+            "keywords": [
+                "Devtools",
+                "framework",
+                "phalcon",
+                "phar",
+                "webtools"
+            ],
+            "time": "2016-02-05 07:08:56"
+        },
+        {
             "name": "phalcon/incubator",
             "version": "dev-master",
             "source": {
@@ -485,6 +541,46 @@
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "time": "2015-05-06 18:49:49"
+        },
+        {
+            "name": "piwik/piwik-php-tracker",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/piwik/piwik-php-tracker.git",
+                "reference": "ac3e26bb3e2c8a428ccbf6ca663c2ef37fa47a5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/piwik/piwik-php-tracker/zipball/ac3e26bb3e2c8a428ccbf6ca663c2ef37fa47a5e",
+                "reference": "ac3e26bb3e2c8a428ccbf6ca663c2ef37fa47a5e",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "."
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "The Piwik Team",
+                    "email": "hello@piwik.org",
+                    "homepage": "http://piwik.org/the-piwik-team/"
+                }
+            ],
+            "description": "PHP Client for Piwik Analytics Tracking API",
+            "homepage": "http://piwik.org",
+            "keywords": [
+                "analytics",
+                "piwik",
+                "tracker"
+            ],
+            "time": "2015-11-11 02:55:37"
         },
         {
             "name": "raveren/kint",

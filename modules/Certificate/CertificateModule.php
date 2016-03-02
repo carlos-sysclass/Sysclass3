@@ -1,10 +1,13 @@
 <?php
 namespace Sysclass\Modules\Certificate;
 
-use Phalcon\Mvc\Model,
+use Sysclass\Models\Courses\Course,
+    Sysclass\Models\Users\User,
     Dompdf\Dompdf,
     Dompdf\Canvas,
-    Sysclass\Models\Organizations\Organization;
+    Sysclass\Models\Organizations\Organization,
+    Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event;
 
 /**
  * [NOT PROVIDED YET]
@@ -14,14 +17,45 @@ use Phalcon\Mvc\Model,
  * @RoutePrefix("/module/certificate")
  */
 
-class CertificateModule extends \SysclassModule
+class CertificateModule extends \SysclassModule implements INotifyable
 {
     
-    #RENDERIZAR TEMPLATE
-    /*$courseModel->isCompleted() ;
-    $courseModel->getCertificateTemplate() // RETORNA template3
-    $html = $this->view->render("certificate/template3.cert");
-    */    
+    /* INotifyable */
+    public function getAllActions() {
+
+    }
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "make-avaliable" : {
+                $data = $event->data;
+                $course = Course::findFirstById($data['course_id']);
+                $user = User::findFirstById($data['user_id']);
+
+                if ($course && $user) {
+                    $this->notification->createForUser(
+                        $user,
+                        sprintf(
+                            'You have a certificate avaliable for course %s', 
+                            $course->name
+                        ),
+                        'info',
+                        array(
+                            'text' => "View",
+                            'link' => $this->getBasePath() . "view/" . $course->id
+                        )
+                    );
+                } else {
+                    echo 'error found';
+                }
+                //var_dump($action, $event->toArray());
+
+                // CREATE A SYSTEM NOTIFICATION TO USER
+                
+                exit;
+            }
+        }
+    }
 
     /**
     * [ add a description ]
@@ -32,39 +66,42 @@ class CertificateModule extends \SysclassModule
     {
         //var_dump($courseModel->getCertificateTemplate($id)); // RETORNA template3
 
-        //themes/default/templates/certificate
-        //$html = $this->view->render("certificate/template3.cert");
-        
-        /*var_dump($this->user->getCourses());
+        /*var_dump();
         exit;
+        */
 
-        foreach($this->user->getCourses() as $course) {
-            echo "<br>=> ".$course;
-        }   
+        $courses = $this->user->getUserCourses();
 
-        exit;*/
-        echo "=> ".$organization = Organization::findFirst();
+        $canContinue = false;
+        foreach($courses as $course) {
+            if ($course->course_id = $id) {
+                $canContinue = $course->isCompleted();
+                break;
+            }
+        }
 
-        $this->view->setVar("organization", $organization);
+        if ($canContinue) {
+
+            $course->complete();
+            exit;
+            $this->view->setVar("course", $course);    
+
+            $organization = Organization::findFirst();
+            $this->view->setVar("organization", $organization);
+        }
+
+        
+
+        $this->assets
+            ->collection('header')
+            ->addCss('assets/default/css/certificate.css');
 
         $html = $this->view->render("certificate/default.cert");
-        exit;
 
-   /* $html ="
-    <table border='15' align='center' width='99%' cellspacing='0' cellpadding='0'><tr><td>
-        <table border='0' align='center' width='100%' cellspacing='0' cellpadding='0'>
-            <tr><td colspan='3' align='center' style='height:150px; font-size:35px'>Certificate of Completion</td></tr>
-            <tr><td colspan='3' align='center' style='height:50px'>Checked the __________________________ This certificate</td></tr>    
-            <tr><td colspan='3' align='center' style='height:50px'>for participation in the online course __________________________</td></tr>    
-            <tr><td colspan='3' align='center' style='height:50px'>with a workload of ________ hours.</td></tr>
-            <tr>
-                <td align='center' style='height:200px'>___________<p>Instructor</td>m
-                <td align='center' style='height:200px'>___________<p>Institution</td>
-                <td align='center' style='height:200px'>___________<p>Student</td>
-            </tr>    
-        </table>
-    </td></tr></table>";*/
-        //exit;
+        $this->response->setContent($html);
+
+        return true;
+
         $dompdf = new DOMPDF();
         $dompdf->load_html($html);
         $dompdf->set_paper('letter', 'landscape');
@@ -72,5 +109,7 @@ class CertificateModule extends \SysclassModule
         $dompdf->stream("$id");
         $pdf->stream(date('d/m/Y').'certificado.pdf', array('Attachment'=>true));
     }
+
+
 }
 ?>

@@ -1753,3 +1753,11 @@ button.calendar-news-item {
 	padding-left: 0px;
 	padding-right: 0px;
 }
+/*
+#notification-panel .portlet-body {
+	overflow: hidden;
+}
+*/
+#notification-panel .alert {
+	display: none;
+}

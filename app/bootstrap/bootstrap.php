@@ -4,7 +4,7 @@
 require(__DIR__ . "/autoloader.php");
 
 // SYSTEM AND ENVIRONMENT INFO
-require(__DIR__ . "/config.php");
+require(__DIR__ . "/configuration.php");
 
 if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// ROUTES AND DISPATCHER'
@@ -21,6 +21,14 @@ if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// STORAGE SERVICES AND FILE SERVICES RELATED.
 	require(__DIR__ . "/storage.php");
 }
+
+if (APP_TYPE === "WEB") {
+	// STORAGE SERVICES AND FILE SERVICES RELATED.
+	require(__DIR__ . "/tracking.php");
+}
+
+
+
 // UTILITY SERVICES, LIKE string, url, escaper, and so on...
 require(__DIR__ . "/utils.php");
 

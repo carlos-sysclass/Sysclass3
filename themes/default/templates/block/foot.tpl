@@ -85,6 +85,8 @@
 {/foreach}
 <!-- END JAVASCRIPTS -->
 
+{$T_TRACKING_TAG_SCRIPT nofilter}
+
 <script>
     jQuery(document).ready(function() {
         var options = {
