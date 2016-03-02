@@ -82,34 +82,48 @@ class CertificateModule extends \SysclassModule implements INotifyable
 
         if ($canContinue) {
 
-            $course->complete();
-            exit;
+            //$course->complete();
             $this->view->setVar("course", $course);    
 
             $organization = Organization::findFirst();
             $this->view->setVar("organization", $organization);
+
+            $this->assets
+                ->collection('header')
+                ->addCss('assets/default/css/certificate.css');
+
+            $html = $this->view->render("certificate/default.cert");
+            /*
+            $this->response->setContent($html);
+            return true;
+            */
+            $dompdf = new DOMPDF();
+            $dompdf->load_html($html);
+            $dompdf->set_paper('letter', 'landscape');
+            $dompdf->render();
+            $dompdf->stream("$id");
+            $pdf->stream(date('d/m/Y').'certificado.pdf', array('Attachment'=>true));
+        } else {
+            //$this->response->redirect();
+            $this->redirect(
+                '/dashboard',
+                $this->translate->translate('Warning: Your course is not completed yet!'),
+                'warning'
+            );
+            //$this->response->redirect('/module/progress/course/' . $id);
+            //$this->view->disable();
+            /*
+            $this->dispatcher->forward(
+                array(
+                    'namespace'     => 'Sysclass\Modules\Courses',
+                    'controller'    => 'courses_module',
+                    'action'        => 'viewpage'
+                )
+            );
+            */
+            
+            return;
         }
-
-        
-
-        $this->assets
-            ->collection('header')
-            ->addCss('assets/default/css/certificate.css');
-
-        $html = $this->view->render("certificate/default.cert");
-
-        $this->response->setContent($html);
-
-        return true;
-
-        $dompdf = new DOMPDF();
-        $dompdf->load_html($html);
-        $dompdf->set_paper('letter', 'landscape');
-        $dompdf->render();
-        $dompdf->stream("$id");
-        $pdf->stream(date('d/m/Y').'certificado.pdf', array('Attachment'=>true));
     }
-
-
 }
 ?>
