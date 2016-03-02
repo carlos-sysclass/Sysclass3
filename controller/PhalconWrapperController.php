@@ -396,6 +396,7 @@ abstract class PhalconWrapperController extends Controller
 			//var_dump($template);
 			$template = $this->template;
 		}
+	
 		
 		//$smarty = $this->getSmarty();
 		$params = array();
@@ -405,6 +406,8 @@ abstract class PhalconWrapperController extends Controller
 			//$smarty->assign("T_" . strtoupper($key), $item);
 			$this->view->setVar("T_" . strtoupper($key), $item);
 		}
+
+		$this->view->setVar("T_TRACKING_TAG_SCRIPT", $this->tracking->generateTrackingTag());
 
  		if (is_null($template)) {
 			$this->view->render($this->template);

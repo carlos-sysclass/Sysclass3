@@ -21,6 +21,14 @@ if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
 	// STORAGE SERVICES AND FILE SERVICES RELATED.
 	require(__DIR__ . "/storage.php");
 }
+
+if (APP_TYPE === "WEB") {
+	// STORAGE SERVICES AND FILE SERVICES RELATED.
+	require(__DIR__ . "/tracking.php");
+}
+
+
+
 // UTILITY SERVICES, LIKE string, url, escaper, and so on...
 require(__DIR__ . "/utils.php");
 

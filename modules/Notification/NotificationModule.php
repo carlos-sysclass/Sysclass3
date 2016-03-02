@@ -33,10 +33,6 @@ class NotificationModule extends \SysclassModule implements \IWidgetContainer
              * @todo  Merge with system notifications
              */
 
-            //$notifications
-
-
-
             return array(
                 'notification.lastest' => array(
                     'id'        => 'notification-panel',
