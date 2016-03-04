@@ -19,6 +19,45 @@ class Content extends Model
         );
 
     }
+
+    public function afterSave() {
+        $identifier = $this->id;
+
+        $type = $this->content_type;
+        if (in_array($type, array('file', 'text'))) {
+            $classname = sprintf("Sysclass\\Models\\Advertising\\Content%s", ucfirst($type));
+            if (class_exists($classname)) {
+            //$innerModel = $this->model("advertising/content/" . $type);
+                $innerModel = new $classname;
+
+                $fileinfo = json_decode($this->info);
+
+                $innerModel->assign(array(
+                    'content_id'    => $identifier,
+                    'file_id'       => $fileinfo->id
+                ));
+
+                $innerModel->save();
+            }
+        }
+    }
+
+    public function listByAdvertisingId($params) {
+        return self::find($params);
+        
+        var_dump($params);
+        exit;
+        //pega o ID do usuario da sessao
+        $di = \Phalcon\DI::getDefault();
+        $user = $di->get('user');
+        
+        $payment = Payment::findFirst(array(
+            'conditions' => 'user_id = ?0',
+            'bind' => array($user->id)
+        ));
+
+        return $payment->getItems();
+    }
     /*
     public function toFullArray($manyAliases = null) {
         var_dump($manyAliases);

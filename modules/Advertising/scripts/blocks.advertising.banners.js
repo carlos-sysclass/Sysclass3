@@ -3,13 +3,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
     this.startWithParent = false;
     mod.addInitializer(function() {
         this.config = $SC.module("crud.config").getConfig();
-        console.warn(this.config);
+//        console.warn(this.config);
 //        mod.entity_id = mod.config.entity_id;
 
         var entityModel = app.module("crud.views.edit").itemModel;
-
-
-
         /**
          * SUB VIEW BASE CLASS
          *
@@ -759,7 +756,12 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
         });
     });
 
-    var baseAdvertisingContentModelClass = Backbone.Model.extend({
+    this.baseItemModelClass = app.module("models").getBaseModel({
+        
+    });
+
+    var baseAdvertisingContentModelClass = this.baseItemModelClass.extend({
+        response_type : "object",
         defaults : function() {
             return {
                 id              : null,
@@ -823,7 +825,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             */
         },
         url: function() {
-            return "/module/advertising/items/content/default/" + this.entity_id;
+            return "/module/advertising/items/content/default/" + JSON.stringify({advertising_id:this.entity_id});
         },
         model: function(attrs, options) {
             if (options.add) {

@@ -42,4 +42,17 @@ class LocalFilesystem extends Component implements IStorage {
         
         return $bytes;
     }
+
+    public function getImageFileInfo(File $struct) {
+        if ($file_path = $this->getFullFilePath($struct)) {
+            $info = getimagesize($file_path);
+            return array(
+                'width' => $info[0],
+                'height' => $info[1],
+                'type'  => $info[2],
+                'mime' => $info['mime']
+            );
+        }
+        return false;
+    }
 }
