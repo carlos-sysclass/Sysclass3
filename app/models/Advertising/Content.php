@@ -41,32 +41,5 @@ class Content extends Model
             }
         }
     }
-
-    public function listByAdvertisingId($params) {
-        return self::find($params);
-        
-        var_dump($params);
-        exit;
-        //pega o ID do usuario da sessao
-        $di = \Phalcon\DI::getDefault();
-        $user = $di->get('user');
-        
-        $payment = Payment::findFirst(array(
-            'conditions' => 'user_id = ?0',
-            'bind' => array($user->id)
-        ));
-
-        return $payment->getItems();
-    }
-    /*
-    public function toFullArray($manyAliases = null) {
-        var_dump($manyAliases);
-        $result = parent::toFullArray($manyAliases);
-        print_r($this->getFiles()->toArray());
-        print_r($result);
-        exit;
-    }
-    */
-
 }
 
