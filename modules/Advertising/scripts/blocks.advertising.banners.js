@@ -825,7 +825,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             */
         },
         url: function() {
-            return "/module/advertising/items/content/default/" + JSON.stringify({advertising_id:this.entity_id});
+            return "/module/advertising/items/content/default/" + JSON.stringify({ advertising_id:this.entity_id });
         },
         model: function(attrs, options) {
             if (options.add) {

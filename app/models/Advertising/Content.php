@@ -42,4 +42,3 @@ class Content extends Model
         }
     }
 }
-
