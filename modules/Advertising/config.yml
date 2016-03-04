@@ -54,6 +54,7 @@ models:
     class: Sysclass\Models\Advertising\Advertising
   content:
     class: Sysclass\Models\Advertising\Content
+    listMethod: "listByAdvertisingId"
     exportMethod: ["toFullArray", ["Files"]]
     acl:
       delete:

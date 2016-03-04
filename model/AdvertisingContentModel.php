@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0
+ */
 class AdvertisingContentModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
@@ -123,6 +126,7 @@ class AdvertisingContentModel extends AbstractSysclassModel implements ISyncroni
         // TODO: SAVE EXERCISES SENT!
         return $identifier;
     }
+
     public function setItem($data, $identifier) {
         parent::setItem($data, $identifier);
 

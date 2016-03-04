@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0
+ */
 class TranslateModel extends ModelManager
 {
     public function init()
