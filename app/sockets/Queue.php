@@ -6,7 +6,8 @@ use Phalcon\Mvc\User\Component,
     Ratchet\ConnectionInterface,
     Sysclass\Models\Chat\Chat,
     Sysclass\Models\Chat\Message,
-    Sysclass\Models\Users\UserTimes;
+    Sysclass\Models\Users\UserTimes,
+    Sysclass\Models\Users\Group;
 
 class Queue extends Component implements WampServerInterface
 {
@@ -248,7 +249,7 @@ class Queue extends Component implements WampServerInterface
                         } else {
                             $item['online'] = false;
                         }
-                        var_dump($user['last_ping']);
+                        //var_dump($user['last_ping']);
                         
                         $chat_messages = $chat->getChatMessages([
                             'conditions' => 'sent > ?0',
@@ -325,6 +326,74 @@ class Queue extends Component implements WampServerInterface
                 $conn->callResult($id, $queueModel->toArray());
                 return true;
                 break;
+            }
+            case "getAvaliableQueues" : {
+                // GET ALL USERS 
+                $coordinator_group_id = $this->configuration->get('chat_role_coordinator');
+                $technical_group_id = $this->configuration->get('chat_role_technical_support');
+
+                $coordinator_group = Group::findFirstById($coordinator_group_id);
+                $technical_group = Group::findFirstById($technical_group_id);
+
+                $coordinator_users = $coordinator_group->getUsers();
+                $technical_users = $technical_group->getUsers();
+
+                $result = array(
+                    'coordinator' => array(
+                        'topic' => 'academic-coordinator',
+                        'name' => 'Academic Coordinator',
+                        'user' => $coordinator_users->getFirst()->toArray()
+                    ),
+                    'technical' => array(
+                        'topic' => 'technical-support',
+                        'name' => 'Technical Support',
+                        'user' => $coordinator_users->getFirst()->toArray()
+                    )
+                );
+
+                foreach($coordinator_users as $user) {
+                    $item = $user->toFullArray(array('avatars'));
+                    /*
+                    $item['language'] = $user->getLanguage();
+                    $item['avatars'] = $user->getAvatars();
+                    $item['avatar'] = $user->getAvatar();
+                    */
+
+                    if (array_key_exists($user->id, $this->usersIds)) {
+                        $item['online'] = true;
+                        $item['session_id'] = $this->usersIds[$requester->id];
+                        $result['coordinator']['user'] = $item;
+                        break;
+                    } else {
+                        
+                    }
+                }
+
+                foreach($technical_users as $user) {
+                    $item = $user->toFullArray(array('avatars'));
+                    /*
+                    $item['language'] = $user->getLanguage();
+                    $item['avatars'] = $user->getAvatars();
+                    $item['avatar'] = $user->getAvatar();
+                    */
+                    
+
+                    if (array_key_exists($user->id, $this->usersIds)) {
+                        $item['online'] = true;
+                        $item['session_id'] = $this->usersIds[$requester->id];
+
+                        $result['technical']['user'] = $item;
+                    } else {
+                        $item['online'] = false;
+                    }
+                }
+
+
+                
+
+
+
+                $conn->callResult($id, array_values($result));
             }
         }
         //var_dump("CALL", $id, $topic->getId(), $params);
