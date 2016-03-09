@@ -37,11 +37,10 @@
 
 
 <script type="text/template" id="widget-chat-queue-template">
-    <% console.warn(model) %>
     <div class="row">
         <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
-            <% if (model.online) { %>
-                <img class="avatar img-responsive" alt="" src="<%= model.avatars[0].url %>" style="width: 160px;" />
+            <% if (_.size(model.user.avatars) > 0) { %>
+                <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
             <% } else { %>
                 <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
             <% } %>

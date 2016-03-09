@@ -85,41 +85,9 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			startChat : function() {
 				var topic = this.model.get("topic");
 
-				console.warn(this.model.toJSON());
+				//console.warn(topic, this.model.get("name"), this.model.get("user"), this.model.get("user.id"));
 
-				this.chatModule.createQueue(topic, this.model.get("name"));
-
-				/*
-				this.$('.page-quick-sidebar-chat').addClass("page-quick-sidebar-content-item-shown");
-
-				if (
-					_.has(this.conversationViews, topic) &&
-					_.isObject(this.conversationViews[topic])
-				) {
-					//this.conversationViews[model.get("topic")].focus();
-					this.conversationViews[topic].start();
-				} else {
-					this.conversationViews[topic] = new mod.blockChatConversationViewClass({
-						model: model,
-						height: this.conversationHeight
-						//el: this.$('.page-quick-sidebar-chat-user')
-					});
-
-					this.$('.page-quick-sidebar-chat-user').append(
-						this.conversationViews[topic].render().el
-					);
-				}
-				/*
-				if (!_.isNull(this.conversationViews[model.get("topic")])) {
-					//this.conversationView.remove();
-				}
-				*/
-				//console.warn(this.conversationViews[topic].render());
-				//this.conversationViews[topic].updateScrolls();
-				/*
-				// LOAD ALL MESSAGES FROM QUEUE
-				// SUBSCRIBE
-				*/
+				this.chatModule.createChat(this.model.get("user.id"));
 			},
 			/*
 			hoverAction : function(e) {
@@ -386,9 +354,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			//userSelectDialog : app.module("dialogs.users.select"),
 			//conversationViews : {},
 			//conversationHeight : 0,
-			events : {
-				"click .start-chat-action" : "startChat"
-			},
 			blockingOptions : {
 			    css: {
 			        border: '0px',
@@ -466,7 +431,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection.each(this.addOneChatQueue.bind(this));
 				app.module("ui").refresh(this.$(".queue-container"));
 			},
-
 			addOneChatQueue : function(model) {
 				var itemView = new mod.blockChatQueueViewClass({
 					model: model
@@ -475,7 +439,7 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
 
-
+			/*
 			stopChat : function(model) {
 				this.$('.page-quick-sidebar-chat').removeClass("page-quick-sidebar-content-item-shown");
 			},
@@ -510,6 +474,7 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			delete : function() {
 				console.info("menu.chat/sidebarChatViewClass::delete", this);
 			}
+			*/
 		});
 
 		
@@ -700,19 +665,30 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 	    });
 
 
-		this.listenTo(this.chatModule, "receiveMessage.chat", function(topic, model) {
-			mod.startChatView(model);
+		this.listenTo(this.chatModule, "createChat.chat", function(topic, model) {
+			mod.startChatView(topic, model);
+		});
+		/*
+		this.listenTo(this.chatModule, "createQueue.chat", function(topic, model) {
+			console.warn(topic, model);
+			mod.startChatView(topic, model);
+		});
+		*/
+		
+		this.listenTo(this.chatModule, "receiveChat.chat", function(topic, model) {
+			mod.startChatView(topic);
 		});
 
+	    this.startChatView = function(topic, model, closed) {
+       
+	        if (_.isUndefined(mod._chatViews[topic])) {
 
-	    this.startChatView = function(model) {
-	    	console.warn(model);
-	        console.warn("startChatView");
-	        var topic = model.get("topic");
-	        if (mod._chatViews[topic] == undefined) {
 	            mod._chatViews[topic] = new chatViewClass({
 	                model : model
 	            });
+	            if (closed === true) {
+	            	mod._chatViews[topic].close();
+	            }
 	        } else {
 	            mod._chatViews[topic].focus();
 	        }

@@ -18,7 +18,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
         if ($section_id == "topbar") {
 
             // CHECK PERMISSION
-               
+            if ($this->acl->isUserAllowed($user, "Chat", "View")) {               
 
                 $this->putBlock("chat.quick-sidebar");
 
@@ -43,7 +43,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 );
 
                 return $menuItem;
-            //}
+            }
         }
         return false;
     }
@@ -51,8 +51,6 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
     public function registerBlocks() {
         return array(
             'chat.quick-sidebar' => function($data, $self) {
-                /*
-
                 $self->putComponent("autobahn");
                 $self->putComponent("bootstrap-confirmation");
                 
@@ -77,7 +75,6 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
 
                 return true;
-                */
             },
             'chat' => function($data, $self) {
                 // CREATE BLOCK CONTEXT

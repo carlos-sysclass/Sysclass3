@@ -7,6 +7,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     this._token = null;
     this._started = moment().unix();
     this._subscribedTopics = {};
+    this._subscribedChats = {};
 
     this._wsUri = 'ws://' + window.location.hostname +':8080';
 
@@ -129,7 +130,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
                 var new_topic = model.get("topic");
 
-                //this.trigger("chatCreated.chat", new_topic, model);
+                this.trigger("createQueue.chat", new_topic, model);
 
                 this.subscribeToChat(new_topic, model, exclusive, startChat);
                 
@@ -142,19 +143,78 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             }.bind(this));
     };
 
+    this.createChat = function(user_id) {
+        //console.warn("createQueue");
+        if (_.isNull(this._token)) {
+            this.trigger("notConnected.chat");
+            return false;
+        }
+        // CALL A FUNCTION TO CREATE THE TOPIC
+        this._conn
+            .call("createChat", user_id)
+            .then(function (result) {
+                console.warn(result);
+                //this.trigger("afterConnection.chat", result);
+                var model = new this.models.chat(result);
+
+                var new_topic = model.get("topic");
+
+                this.trigger("createChat.chat", new_topic, model);
+
+                
+
+                this.subscribeToChat(new_topic, model, true);
+                
+                //this.trigger("startQueue.chat", new_topic, model);
+                
+
+            }.bind(this), function (error) {
+                //this.trigger("errorConnection.chat", error);
+                console.warn("error", error);
+            }.bind(this));
+    };
+
+    this.receiveChat = function(topic, callback) {
+        if (_.isNull(this._token)) {
+            this.trigger("notConnected.chat");
+            return false;
+        }
+        if (!_.has(this._subscribedChats, topic) || _.isNull(this._subscribedChats[topic])) {
+            // CALL A FUNCTION TO CREATE THE TOPIC
+            this._conn
+                .call("receiveChat", topic)
+                .then(function (result) {
+                    //console.warn(result);
+                    var model = new this.models.chat(result);
+
+                    this._subscribedChats[topic] = model;
+
+                    this.trigger("receiveChat.chat", topic, model);
+
+                    callback();
+                }.bind(this), function (error) {
+                    console.warn("error", error);
+                }.bind(this));
+        } else {
+            console.warn("receiveChat-error");
+            callback();
+        }
+    };
+
     this.subscribeToChat = function(topic, model, exclusive, startChat) {
         if (exclusive && _.has(this._subscribedTopics, topic)) {
             return false;
         }
         this._subscribedTopics[topic] = topic;
+        this._subscribedChats[topic] = model ? model : null;
 
         this._conn.subscribe(topic, this.parseReceivedTopic.bind(this));
 
-        this.trigger("queueSubscribed.chat", topic, model);
+        //this.trigger("queueSubscribed.chat", topic, model);
 
         if (startChat !== false) {
 
-            this.startChatView(model);
+            //this.startChatView(model);
         }
     }
 
@@ -166,14 +226,18 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     this.parseReceivedTopic = function(topic, data) {
         // CHECK IF IS A COMMAND OR A MESSAGE
         console.warn("RECEIVE", topic, data);
-        if (data.origin == this._token) {
-            data.mine = true;
-        } else {
-            data.mine = false;
-        }
+        
+        this.receiveChat(topic, function() {
+            if (data.origin == this._token) {
+                data.mine = true;
+            } else {
+                data.mine = false;
+            }
 
-        var model = new this.models.message(data);
-        this.trigger("receiveMessage.chat", topic, model);
+            var model = new this.models.message(data);
+            this.trigger("receiveMessage.chat", topic, model);
+        }.bind(this));
+
     }
 
     this.sendMessage = function(topic, message) {
@@ -184,7 +248,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         console.warn("SEND", topic, message);
         this._conn.publish(topic, message, false);
     }
-
+    /*
     this.getQueues = function(callback) {
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
@@ -201,6 +265,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                 console.warn("error", error);
             }.bind(this));
     };
+    */
 
     this.disableChatViews = function() {
         for (var topic in this._chatViews) {
@@ -230,6 +295,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._conn
             .call("getQueues")
             .then(function (result) {
+                console.warn("getQueues", result);
                 callback(result);
 
             }.bind(this), function (error) {
@@ -248,6 +314,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._conn
             .call("getAvaliableQueues")
             .then(function (result) {
+                console.warn("getAvaliableQueues", result);
                 callback(result);
 
             }.bind(this), function (error) {
