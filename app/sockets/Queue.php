@@ -352,46 +352,39 @@ class Queue extends Component implements WampServerInterface
                 );
 
                 foreach($coordinator_users as $user) {
-                    $item = $user->toFullArray(array('avatars'));
-                    /*
-                    $item['language'] = $user->getLanguage();
-                    $item['avatars'] = $user->getAvatars();
-                    $item['avatar'] = $user->getAvatar();
-                    */
+                    $item = $user->toArray();
+
+                    $item['language'] = $user->getLanguage()->toArray();
+                    $item['avatars'] = $user->getAvatars()->toArray();
+                    //$item['avatar'] = $user->getAvatar();
 
                     if (array_key_exists($user->id, $this->usersIds)) {
-                        $item['online'] = true;
-                        $item['session_id'] = $this->usersIds[$requester->id];
+                        $result['coordinator']['online'] = true;
+                        $result['coordinator']['session_id'] = $this->usersIds[$user->id];
                         $result['coordinator']['user'] = $item;
-                        break;
                     } else {
-                        
+                        $result['coordinator']['online'] = false;
+                        $result['coordinator']['user'] = $item;
                     }
                 }
 
                 foreach($technical_users as $user) {
-                    $item = $user->toFullArray(array('avatars'));
-                    /*
-                    $item['language'] = $user->getLanguage();
-                    $item['avatars'] = $user->getAvatars();
-                    $item['avatar'] = $user->getAvatar();
-                    */
-                    
+                    $item = $user->toArray();
+
+                    $item['language'] = $user->getLanguage()->toArray();
+                    $item['avatars'] = $user->getAvatars()->toArray();
+                    //$item['avatar'] = $user->getAvatar();
 
                     if (array_key_exists($user->id, $this->usersIds)) {
-                        $item['online'] = true;
-                        $item['session_id'] = $this->usersIds[$requester->id];
+                        $result['technical']['online'] = true;
+                        $result['technical']['session_id'] = $this->usersIds[$user->id];
 
                         $result['technical']['user'] = $item;
                     } else {
-                        $item['online'] = false;
+                        $result['technical']['online'] = false;
+                        $result['coordinator']['user'] = $item;
                     }
                 }
-
-
-                
-
-
 
                 $conn->callResult($id, array_values($result));
             }
