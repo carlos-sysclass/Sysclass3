@@ -12,17 +12,53 @@ use Sysclass\Models\Acl\Resource;
 /**
  * @RoutePrefix("/module/chat")
  */
-class ChatModule extends \SysclassModule implements \IBlockProvider
+class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvider, \IWidgetContainer
 {
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+
+            // CHECK PERMISSION
+               
+
+                $this->putBlock("chat.quick-sidebar");
+
+                $menuItem = array(
+                    'id'        => "chat-topbar-menu",
+                    'icon'      => ' fa fa-comments',
+                    //'text'      => $this->translate->translate('Programs'),
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    */
+                    //'type'      => 'dropdown-quick-sidebar-toggler',
+                    'items'     => false,
+                    //'extended'  => false,
+                );
+
+                return $menuItem;
+            //}
+        }
+        return false;
+    }
+
     public function registerBlocks() {
         return array(
             'chat.quick-sidebar' => function($data, $self) {
+                /*
 
                 $self->putComponent("autobahn");
                 $self->putComponent("bootstrap-confirmation");
                 
-                $self->putModuleScript("chat");
-                $self->putModuleScript("ui.menu.chat");
+                //$self->putScript("scripts/utils.chat");
+                $self->putmoduleScript("chat");
+                $self->putModuleScript("ui.sidebar");
 
                 $self->putScript("plugins/sprintf/sprintf.min");
 
@@ -41,10 +77,44 @@ class ChatModule extends \SysclassModule implements \IBlockProvider
                 $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
 
                 return true;
-            }
+                */
+            },
+            'chat' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $self->putComponent("autobahn");
+                $this->putmoduleScript("chat");
+                //$self->putModuleScript("chat");
+                $self->putSectionTemplate("foot", "blocks/chat");
+            },
         );
     }
 
+    // IWidgetContainer
+    public function getWidgets($widgetsIndexes = array())
+    {
+        $widgets = array();
+
+        if (in_array('advisor.chat', $widgetsIndexes)) {
+            // START CHART ON CLICK
+            //$this->putScript("scripts/utils.chat");
+            //$this->putComponent("autobahn");
+            //$this->putmoduleScript("chat");
+            $this->putBlock("chat");
+
+            $this->putModuleScript("ui.widget");
+
+            $widgets['advisor.chat'] = array(
+                'id'        => 'advisor-chat-widget',
+                'template'  => $this->template("widgets/chat"),
+                'header'     => $this->translate->translate("Talk to us"),
+                'body'      => false,
+                'icon'      => "fa fa-comment",
+                'panel'     => 'dark-blue'
+            );
+        }
+
+        return count($widgets) > 0 ? $widgets : false;
+    }
     protected function getDatatableItemOptions() {
         if ($this->request->hasQuery('block')) {
             return array(

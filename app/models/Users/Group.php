@@ -19,6 +19,15 @@ class Group extends Model
             array('alias' => 'Roles', 'reusable' => true)
         );
 
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\Models\Users\UsersGroups",
+            "group_id", "user_id",
+            "Sysclass\Models\Users\User",
+            "id",
+            array('alias' => 'Users')
+        );
+
         $this->hasMany(
             "behaviour_allow_messages", 
             "Sysclass\\Models\\Messages\\Group",
