@@ -85,9 +85,9 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			startChat : function() {
 				var topic = this.model.get("topic");
 
-				console.warn(this.model.toJSON());
+				//console.warn(topic, this.model.get("name"), this.model.get("user"), this.model.get("user.id"));
 
-				this.chatModule.createQueue(topic, this.model.get("name"));
+				this.chatModule.createChat(this.model.get("user.id"));
 
 				/*
 				this.$('.page-quick-sidebar-chat').addClass("page-quick-sidebar-content-item-shown");
@@ -386,9 +386,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			//userSelectDialog : app.module("dialogs.users.select"),
 			//conversationViews : {},
 			//conversationHeight : 0,
-			events : {
-				"click .start-chat-action" : "startChat"
-			},
 			blockingOptions : {
 			    css: {
 			        border: '0px',
@@ -466,7 +463,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.collection.each(this.addOneChatQueue.bind(this));
 				app.module("ui").refresh(this.$(".queue-container"));
 			},
-
 			addOneChatQueue : function(model) {
 				var itemView = new mod.blockChatQueueViewClass({
 					model: model
@@ -475,7 +471,7 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
 
-
+			/*
 			stopChat : function(model) {
 				this.$('.page-quick-sidebar-chat').removeClass("page-quick-sidebar-content-item-shown");
 			},
@@ -510,6 +506,7 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			delete : function() {
 				console.info("menu.chat/sidebarChatViewClass::delete", this);
 			}
+			*/
 		});
 
 		
@@ -699,10 +696,16 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 	        }
 	    });
 
+		this.listenTo(this.chatModule, "createChat.chat", function(topic, model) {
+			console.warn(topic, model);
+			mod.startChatView(topic, model);
+		});
+		/*
 		this.listenTo(this.chatModule, "createQueue.chat", function(topic, model) {
 			console.warn(topic, model);
 			mod.startChatView(topic, model);
 		});
+		*/
 		/*
 		this.listenTo(this.chatModule, "receiveMessage.chat", function(topic, model) {
 			mod.startChatView(topic);

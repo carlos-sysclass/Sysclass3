@@ -37,7 +37,6 @@
 
 
 <script type="text/template" id="widget-chat-queue-template">
-    <% console.warn(model) %>
     <div class="row">
         <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
             <% if (_.size(model.user.avatars) > 0) { %>

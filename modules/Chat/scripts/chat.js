@@ -142,6 +142,37 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             }.bind(this));
     };
 
+    this.createChat = function(user_id) {
+        //console.warn("createQueue");
+        if (_.isNull(this._token)) {
+            this.trigger("notConnected.chat");
+            return false;
+        }
+        // CALL A FUNCTION TO CREATE THE TOPIC
+        this._conn
+            .call("createChat", user_id)
+            .then(function (result) {
+                console.warn(result);
+                //this.trigger("afterConnection.chat", result);
+                var model = new this.models.chat(result);
+
+                var new_topic = model.get("topic");
+
+                this.trigger("createChat.chat", new_topic, model);
+
+                this.subscribeToChat(new_topic, model, true);
+                
+                //this.trigger("startQueue.chat", new_topic, model);
+                
+
+            }.bind(this), function (error) {
+                //this.trigger("errorConnection.chat", error);
+                console.warn("error", error);
+            }.bind(this));
+    };
+
+
+
     this.subscribeToChat = function(topic, model, exclusive, startChat) {
         if (exclusive && _.has(this._subscribedTopics, topic)) {
             return false;
@@ -150,7 +181,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
         this._conn.subscribe(topic, this.parseReceivedTopic.bind(this));
 
-        this.trigger("queueSubscribed.chat", topic, model);
+        //this.trigger("queueSubscribed.chat", topic, model);
 
         if (startChat !== false) {
 
@@ -248,6 +279,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._conn
             .call("getAvaliableQueues")
             .then(function (result) {
+                console.warn("getAvaliableQueues", result);
                 callback(result);
 
             }.bind(this), function (error) {
