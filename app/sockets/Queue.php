@@ -351,40 +351,37 @@ class Queue extends Component implements WampServerInterface
                     )
                 );
 
-                foreach($coordinator_users as $user) {
-                    $item = $user->toFullArray(array('avatars'));
-                    /*
+                foreach($technical_users as $user) {
+                    $item = $user->toArray();
+
                     $item['language'] = $user->getLanguage();
                     $item['avatars'] = $user->getAvatars();
-                    $item['avatar'] = $user->getAvatar();
-                    */
+                    //$item['avatar'] = $user->getAvatar();
 
                     if (array_key_exists($user->id, $this->usersIds)) {
-                        $item['online'] = true;
-                        $item['session_id'] = $this->usersIds[$requester->id];
+                        $result['coordinator']['online'] = true;
+                        $result['coordinator']['session_id'] = $this->usersIds[$requester->id];
+
                         $result['coordinator']['user'] = $item;
-                        break;
                     } else {
-                        
+                        $result['coordinator']['online'] = false;
                     }
                 }
 
                 foreach($technical_users as $user) {
-                    $item = $user->toFullArray(array('avatars'));
-                    /*
+                    $item = $user->toArray();
+
                     $item['language'] = $user->getLanguage();
                     $item['avatars'] = $user->getAvatars();
-                    $item['avatar'] = $user->getAvatar();
-                    */
-                    
+                    //$item['avatar'] = $user->getAvatar();
 
                     if (array_key_exists($user->id, $this->usersIds)) {
-                        $item['online'] = true;
-                        $item['session_id'] = $this->usersIds[$requester->id];
+                        $result['technical']['online'] = true;
+                        $result['technical']['session_id'] = $this->usersIds[$requester->id];
 
                         $result['technical']['user'] = $item;
                     } else {
-                        $item['online'] = false;
+                        $result['technical']['online'] = false;
                     }
                 }
 
