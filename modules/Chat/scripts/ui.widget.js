@@ -88,38 +88,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				//console.warn(topic, this.model.get("name"), this.model.get("user"), this.model.get("user.id"));
 
 				this.chatModule.createChat(this.model.get("user.id"));
-
-				/*
-				this.$('.page-quick-sidebar-chat').addClass("page-quick-sidebar-content-item-shown");
-
-				if (
-					_.has(this.conversationViews, topic) &&
-					_.isObject(this.conversationViews[topic])
-				) {
-					//this.conversationViews[model.get("topic")].focus();
-					this.conversationViews[topic].start();
-				} else {
-					this.conversationViews[topic] = new mod.blockChatConversationViewClass({
-						model: model,
-						height: this.conversationHeight
-						//el: this.$('.page-quick-sidebar-chat-user')
-					});
-
-					this.$('.page-quick-sidebar-chat-user').append(
-						this.conversationViews[topic].render().el
-					);
-				}
-				/*
-				if (!_.isNull(this.conversationViews[model.get("topic")])) {
-					//this.conversationView.remove();
-				}
-				*/
-				//console.warn(this.conversationViews[topic].render());
-				//this.conversationViews[topic].updateScrolls();
-				/*
-				// LOAD ALL MESSAGES FROM QUEUE
-				// SUBSCRIBE
-				*/
 			},
 			/*
 			hoverAction : function(e) {
@@ -696,8 +664,8 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 	        }
 	    });
 
+
 		this.listenTo(this.chatModule, "createChat.chat", function(topic, model) {
-			console.warn(topic, model);
 			mod.startChatView(topic, model);
 		});
 		/*
@@ -706,19 +674,21 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			mod.startChatView(topic, model);
 		});
 		*/
-		/*
-		this.listenTo(this.chatModule, "receiveMessage.chat", function(topic, model) {
+		
+		this.listenTo(this.chatModule, "receiveChat.chat", function(topic, model) {
 			mod.startChatView(topic);
 		});
-		*/
 
-	    this.startChatView = function(topic, model) {
+	    this.startChatView = function(topic, model, closed) {
        
 	        if (_.isUndefined(mod._chatViews[topic])) {
 
 	            mod._chatViews[topic] = new chatViewClass({
 	                model : model
 	            });
+	            if (closed === true) {
+	            	mod._chatViews[topic].close();
+	            }
 	        } else {
 	            mod._chatViews[topic].focus();
 	        }

@@ -228,7 +228,7 @@ class Queue extends Component implements WampServerInterface
                 }
                 $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
 
-                var_dump($conn->wrappedConn->WAMP->sessionId, $this->users);
+                //var_dump($conn->wrappedConn->WAMP->sessionId, $this->users);
 
                 if ($this->acl->isUserAllowed($user, "Chat", "View")) {
                     $chatList = Chat::find(array(
@@ -277,9 +277,6 @@ class Queue extends Component implements WampServerInterface
                 } else {
                     $conn->callError($id, $topic, "401: Unauthorized");
                 }
-
-                var_dump($result);
-
                 break;
             }
             case "assignQueue" : {
@@ -399,6 +396,10 @@ class Queue extends Component implements WampServerInterface
                 return $this->RPC_createChat($conn, $id, $params[0]);
                 break;
             }
+            case "receiveChat" : {
+                return $this->RPC_receiveChat($conn, $id, $params[0]);
+                break;   
+            }
         }
         //var_dump("CALL", $id, $topic->getId(), $params);
         $conn->callError($id, $topic, 'Please especify a valid procedure method');
@@ -456,6 +457,33 @@ class Queue extends Component implements WampServerInterface
         echo "startChat Topic: {$new_topic}\n";
 
         $conn->callResult($id, $queueModel->toArray());
+        return true;
+    }
+
+    protected function RPC_receiveChat(ConnectionInterface $conn, $id, $topic) {
+        if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
+            $conn->close();
+            return true;
+        }
+
+        $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+        //$subject = $this->translate->translate($title);
+
+        // CHECK IF EXISTS A UNCLOSED QUEUE
+        $queueModel = Chat::findFirst(array(
+            'conditions' => '(requester_id = ?0 OR receiver_id = ?0) AND topic = ?1 AND closed = 0',
+            'bind' => array($user['id'], $topic),
+            'order' => 'ping DESC'
+        ));
+
+        echo "receiveChat Topic: {$topic}\n";
+
+        if ($queueModel) {
+            $conn->callResult($id, $queueModel->toArray());
+        } else {
+            $conn->callError($id, $topic, "401: Unauthorized");
+        }
+        
         return true;
     }
 

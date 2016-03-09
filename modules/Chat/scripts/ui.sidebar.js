@@ -52,6 +52,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 			tagName : 'li',
 			className : "media",
 			template : _.template($("#sidebar-chat-queue-template").html(), null, {variable : 'model'}),
+			_isOwner : false,
 			events : {
 				"click .assign-to-me-action" : "assignToMeAction",
 				"click .assign-to-other-action" : "assignToUserAction",
@@ -74,7 +75,8 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(mod, "delete.sidebar", this.delete.bind(this));
 
 				//this.listenTo(this.chatModule, "receiveMessage.chat", this.refreshCounter.bind(this));
-				this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true, false);
+				console.warn(this.model.get("topic"), this.model, true);
+				this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true);
 			},
 			isOwnership : function(switcher) {
 				this._isOwner = switcher;
@@ -89,6 +91,10 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			render : function() {
+				console.warn(_.extend(
+					this.model.toJSON(),
+					{isOwner : this._isOwner}
+				));
 				this.$el.html(this.template(_.extend(
 					this.model.toJSON(),
 					{isOwner : this._isOwner}
@@ -455,25 +461,29 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 			renderChatQueues : function(result) {
 				
 				this.collection.reset(result);
-			
+
 				this.$(".default-queue-list, .stick-queue-list").empty();
 				this.collection.each(this.addOneChatQueue.bind(this));
 				app.module("ui").refresh(this.$(".default-queue-list, .stick-queue-list"));
 				//app.module("ui").refresh(this.$(".default-queue-list"));
 			},
 			addOneChatQueue : function(model) {
+				console.warn(1);
 				var itemView = new mod.sidebarChatQueueViewClass({
 					model: model
 				});
-				//console.warn(model.get("assign_id"), this.model.get("user_id"));
+				console.warn(1);
+				console.warn(itemView);
+				console.warn(2);
+				console.warn(itemView.render());
 
-				if (model.get("assign_id") == this.model.get("user_id")) {
-					itemView.isOwnership(true);
-					this.$(".stick-queue-list").prepend(itemView.render().el);	
-				} else {
+				//if (model.get("assign_id") == this.model.get("user_id")) {
+				//	itemView.isOwnership(true);
+				//	this.$(".stick-queue-list").prepend(itemView.render().el);	
+				//} else {
 					itemView.isOwnership(false);
 					this.$(".default-queue-list").prepend(itemView.render().el);
-				}
+				//}
 			},
 			startChat : function(model) {
 				//console.warn(model.toJSON());
