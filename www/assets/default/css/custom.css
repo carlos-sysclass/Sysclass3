@@ -1027,6 +1027,10 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 .no-padding {
     padding: 0;
 }
+.no-padding-right {
+	padding-right: 0px;
+}
+
 .no-padding-bottom {
 	padding-bottom: 0px;
 }

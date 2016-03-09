@@ -37,9 +37,14 @@
 
 
 <script type="text/template" id="widget-chat-queue-template">
+    <% console.warn(model) %>
     <div class="row">
-        <div class="col-md-4 col-sm-4 col-xs-4 text-center">
-            <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='img/avatar_chat.jpg'}" style="width: 160px;" />
+        <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
+            <% if (model.online) { %>
+                <img class="avatar img-responsive" alt="" src="<%= model.avatars[0].url %>" style="width: 160px;" />
+            <% } else { %>
+                <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
+            <% } %>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
             <p class="text-muted text-left margin-bottom-5">
@@ -51,9 +56,15 @@
             </p>
             <p class="text-muted text-left margin-bottom-5">
                 <%= model.user.language.name %>
+                <% if (model.online) { %>
                 <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
-                    <i class="icon-ok-sign"></i> {translateToken value="Chat"}
+                    <i class="icon-ok-sign"></i> {translateToken value="Online"}
                 </a>
+                <% } else { %>
+                <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
+                    <i class="icon-ok-sign"></i> {translateToken value="Offline"}
+                </a>
+                <% } %>
             </p>
             <p class="text-muted text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->

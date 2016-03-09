@@ -351,44 +351,40 @@ class Queue extends Component implements WampServerInterface
                     )
                 );
 
-                foreach($technical_users as $user) {
+                foreach($coordinator_users as $user) {
                     $item = $user->toArray();
 
-                    $item['language'] = $user->getLanguage();
-                    $item['avatars'] = $user->getAvatars();
+                    $item['language'] = $user->getLanguage()->toArray();
+                    $item['avatars'] = $user->getAvatars()->toArray();
                     //$item['avatar'] = $user->getAvatar();
 
                     if (array_key_exists($user->id, $this->usersIds)) {
                         $result['coordinator']['online'] = true;
-                        $result['coordinator']['session_id'] = $this->usersIds[$requester->id];
-
+                        $result['coordinator']['session_id'] = $this->usersIds[$user->id];
                         $result['coordinator']['user'] = $item;
                     } else {
                         $result['coordinator']['online'] = false;
+                        $result['coordinator']['user'] = $item;
                     }
                 }
 
                 foreach($technical_users as $user) {
                     $item = $user->toArray();
 
-                    $item['language'] = $user->getLanguage();
-                    $item['avatars'] = $user->getAvatars();
+                    $item['language'] = $user->getLanguage()->toArray();
+                    $item['avatars'] = $user->getAvatars()->toArray();
                     //$item['avatar'] = $user->getAvatar();
 
                     if (array_key_exists($user->id, $this->usersIds)) {
                         $result['technical']['online'] = true;
-                        $result['technical']['session_id'] = $this->usersIds[$requester->id];
+                        $result['technical']['session_id'] = $this->usersIds[$user->id];
 
                         $result['technical']['user'] = $item;
                     } else {
                         $result['technical']['online'] = false;
+                        $result['coordinator']['user'] = $item;
                     }
                 }
-
-
-                
-
-
 
                 $conn->callResult($id, array_values($result));
             }
