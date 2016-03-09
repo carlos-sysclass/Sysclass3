@@ -699,17 +699,20 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 	        }
 	    });
 
-
-		this.listenTo(this.chatModule, "receiveMessage.chat", function(topic, model) {
-			mod.startChatView(model);
+		this.listenTo(this.chatModule, "createQueue.chat", function(topic, model) {
+			console.warn(topic, model);
+			mod.startChatView(topic, model);
 		});
+		/*
+		this.listenTo(this.chatModule, "receiveMessage.chat", function(topic, model) {
+			mod.startChatView(topic);
+		});
+		*/
 
+	    this.startChatView = function(topic, model) {
+       
+	        if (_.isUndefined(mod._chatViews[topic])) {
 
-	    this.startChatView = function(model) {
-	    	console.warn(model);
-	        console.warn("startChatView");
-	        var topic = model.get("topic");
-	        if (mod._chatViews[topic] == undefined) {
 	            mod._chatViews[topic] = new chatViewClass({
 	                model : model
 	            });

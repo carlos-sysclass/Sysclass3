@@ -129,7 +129,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
                 var new_topic = model.get("topic");
 
-                //this.trigger("chatCreated.chat", new_topic, model);
+                this.trigger("createQueue.chat", new_topic, model);
 
                 this.subscribeToChat(new_topic, model, exclusive, startChat);
                 
