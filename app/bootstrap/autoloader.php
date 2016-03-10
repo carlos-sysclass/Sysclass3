@@ -38,7 +38,8 @@ $loader->registerNamespaces(array(
     "Sysclass" => __DIR__ . "/../sysclass/",
     "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/',
     'Phalcon\Script' => __DIR__ . '/../../vendor/phalcon/devtools/scripts/Phalcon/Script',
-    "Dompdf" => __DIR__ . '/../../vendor/dompdf/dompdf/src/'
+    "Dompdf" => __DIR__ . '/../../vendor/dompdf/dompdf/src/',
+    "FontLib" => __DIR__ . '/../../vendor/phenx/php-font-lib/src/FontLib/'
     /*
     "Ratchet" => __DIR__ . '/../../vendor/cboden/ratchet/src/Ratchet/',
     "React\EventLoop" => __DIR__ . '/../../vendor/react/event-loop/',
@@ -53,7 +54,10 @@ $loader-> registerClasses(array(
     'Smarty'    => __DIR__ . "/../../vendor/smarty/smarty/libs/Smarty.class.php",
     'Cpdf'    => __DIR__ . "/../../vendor/dompdf/dompdf/lib/Cpdf.php",
     'Kint'    => __DIR__ . "/../../vendor/raveren/kint/Kint.class.php",
-    'PiwikTracker' => __DIR__ . "/../../vendor/piwik/piwik-php-tracker/PiwikTracker.php"
+    'PiwikTracker' => __DIR__ . "/../../vendor/piwik/piwik-php-tracker/PiwikTracker.php",
+    "HTML5_Tokenizer" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/Tokenizer.php',
+    "HTML5_InputStream" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/InputStream.php',
+    "HTML5_TreeBuilder" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/TreeBuilder.php'
 ));
 
 
