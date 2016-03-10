@@ -41,7 +41,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             $this->putCss('css/pageguide/pageguide');
             $this->putScript('plugins/pageguide/pageguide.min');
 
-            $this->putScript("scripts/ui.menu.users");
+            $this->putScript("scripts/ui.menu.settings");
 
             $menuItem = array(
                 'id'        => "open-pageguide-action",

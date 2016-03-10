@@ -197,8 +197,15 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown" id="{$item.id}">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+
+				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
+					<a href="#" 
+						{if $item.items}
+						class="dropdown-toggle" data-toggle="dropdown" data-close-others="true"
+						{else}
+						class="menu-link"
+						{/if}
+					>
 						{if $item.icon}
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
@@ -209,17 +216,19 @@
 			      		<span class="badge">{$item.notif}</span>
 			      		{/if}
 			      	</a>
-			      	<ul class="dropdown-menu {$item.type}">
-					{foreach $item.items as $subitem}
-						<li>
-							<a href="{$subitem.link}"
-								{foreach $subitem.attrs as $attr => $attr_value}
-									{$attr}="{$attr_value}" 
-								{/foreach}
-							>{$subitem.text}</a>
-						</li>
-				    {/foreach}
-				    </ul>
+			      	{if $item.items}
+				      	<ul class="dropdown-menu {$item.type}">
+						{foreach $item.items as $subitem}
+							<li>
+								<a href="{$subitem.link}"
+									{foreach $subitem.attrs as $attr => $attr_value}
+										{$attr}="{$attr_value}" 
+									{/foreach}
+								>{$subitem.text}</a>
+							</li>
+					    {/foreach}
+					    </ul>
+				    {/if}
 				</li>
 		        {/if}
 		   {/foreach}

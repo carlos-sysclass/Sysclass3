@@ -21,10 +21,16 @@ class Piwik extends Component implements ITracking {
 
     public function generateTrackingTag() {
         if (!empty($this->trackerUrl) && !empty($this->siteId)) {
+
             $script = sprintf('<script type="text/javascript">
                   var _paq = _paq || [];
                   _paq.push([\'trackPageView\']);
                   _paq.push([\'enableLinkTracking\']);
+            ');
+            if ($this->user) {
+                $script .= sprintf('_paq.push([\'setUserId\', \'%s\']);', $this->user->id . " - " . $this->user->login);
+            }
+            $script .= sprintf('
                   (function() {
                     var u="%1$s/";
                     _paq.push([\'setTrackerUrl\', u+\'piwik.php\']);

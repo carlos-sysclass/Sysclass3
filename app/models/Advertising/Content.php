@@ -19,15 +19,26 @@ class Content extends Model
         );
 
     }
-    /*
-    public function toFullArray($manyAliases = null) {
-        var_dump($manyAliases);
-        $result = parent::toFullArray($manyAliases);
-        print_r($this->getFiles()->toArray());
-        print_r($result);
-        exit;
+
+    public function afterSave() {
+        $identifier = $this->id;
+
+        $type = $this->content_type;
+        if (in_array($type, array('file', 'text'))) {
+            $classname = sprintf("Sysclass\\Models\\Advertising\\Content%s", ucfirst($type));
+            if (class_exists($classname)) {
+            //$innerModel = $this->model("advertising/content/" . $type);
+                $innerModel = new $classname;
+
+                $fileinfo = json_decode($this->info);
+
+                $innerModel->assign(array(
+                    'content_id'    => $identifier,
+                    'file_id'       => $fileinfo->id
+                ));
+
+                $innerModel->save();
+            }
+        }
     }
-    */
-
 }
-

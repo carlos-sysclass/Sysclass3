@@ -23,10 +23,6 @@
             <i class="fa fa-minus"></i>
             <span>{translateToken value="Collapse All"}</span>
         </a>
-        <a class="btn btn-sm btn-success timeline-collapse tooltips" href="javascript:void(0);" data-original-title="{translateToken value="Copy content from another lesson"}">
-            <i class="fa fa-copy"></i>
-            <span>{translateToken value="Copy"}</span>
-        </a>
     </div>
     <div class="clearfix"></div>
 

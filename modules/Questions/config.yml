@@ -12,7 +12,7 @@ blocks:
           label: "#"
 
         - mData: departament.name
-          label: Knowlegde Area
+          label: Departament
 
         - mData: title
           label: Title
@@ -48,7 +48,7 @@ crud:
           label: "#"
 
         - mData: departament.name
-          label: Knowlegde Area
+          label: Departament
 
         - mData: title
           label: Title

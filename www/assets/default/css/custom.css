@@ -1027,11 +1027,19 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 .no-padding {
     padding: 0;
 }
+.no-padding-right {
+	padding-right: 0px;
+}
+
 .no-padding-bottom {
 	padding-bottom: 0px;
 }
 .padding-bottom-10 {
     padding-bottom: 10px;
+}
+
+.no-margin {
+    margin: 0;
 }
 
 .modal-backdrop {
@@ -1760,4 +1768,22 @@ button.calendar-news-item {
 */
 #notification-panel .alert {
 	display: none;
+}
+
+.header .navbar-nav > li.menu-item {
+	padding-left: 4px;
+    padding-right: 4px;
+}
+
+.header .navbar-nav > li.menu-item .menu-link {
+    color: #fff;
+    padding: 10px 6px 11px;
+}
+
+.header .navbar-nav > li.menu-item .menu-link > i {
+    font-size: 18px;
+}
+
+.header .navbar-nav .menu-link:hover {
+    background-color: #146a9d !important;
 }

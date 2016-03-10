@@ -34,23 +34,6 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
     {
     	$widgets = array();
 
-        if (in_array('advisor.chat', $widgetsIndexes)) {
-            // START CHART ON CLICK
-            //
-            $this->putModuleScript("widget.chat.advisor");
-
-            $this->putBlock("advisor.chat");
-
-            $widgets['advisor.chat'] = array(
-                'id'        => 'advisor-chat-widget',
-   				'template'	=> $this->template("widgets/chat"),
-                'header'     => $this->translate->translate("Talk to us"),
-                'body'      => false,
-                'icon'      => "fa fa-comment",
-                'panel'     => 'dark-blue'
-    		);
-        }
-
         if (in_array('advisor.schedule', $widgetsIndexes)) {
             $widgets['advisor.schedule'] = array(
                 'id'        => 'advisor-schedule-widget',

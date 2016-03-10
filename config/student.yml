@@ -22,13 +22,13 @@ dashboard:
                     sm: 12
                     xs: 12
     widgets:
-        1: ["users.overview", "notification.lastest", ads.leftbar.banner", "courses.overview", "news.latest" ]
+        1: ["users.overview", "ads.leftbar.banner", "notification.lastest", "courses.overview", "news.latest" ]
         2: ["institution.overview", "advisor.chat", "payment.overview", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         3: ["calendar"]
-        #1: ["users.overview"]
-        #2: []
+        #1: []
+        #2: ["advisor.chat"]
         #3: []
     sortable: false
     resources:
-        layout.sections.topbar: ["users", "dashboard"]
+        layout.sections.topbar: ["users", "dashboard", "settings", "chat"]
         users.overview.notification.order: ["users", "courses", "kbase", "calendar", "advisor", "tests"]

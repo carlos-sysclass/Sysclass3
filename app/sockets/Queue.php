@@ -6,7 +6,9 @@ use Phalcon\Mvc\User\Component,
     Ratchet\ConnectionInterface,
     Sysclass\Models\Chat\Chat,
     Sysclass\Models\Chat\Message,
-    Sysclass\Models\Users\UserTimes;
+    Sysclass\Models\Users\UserTimes,
+    Sysclass\Models\Users\User,
+    Sysclass\Models\Users\Group;
 
 class Queue extends Component implements WampServerInterface
 {
@@ -226,6 +228,8 @@ class Queue extends Component implements WampServerInterface
                 }
                 $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
 
+                //var_dump($conn->wrappedConn->WAMP->sessionId, $this->users);
+
                 if ($this->acl->isUserAllowed($user, "Chat", "View")) {
                     $chatList = Chat::find(array(
                         //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
@@ -248,7 +252,7 @@ class Queue extends Component implements WampServerInterface
                         } else {
                             $item['online'] = false;
                         }
-                        var_dump($user['last_ping']);
+                        //var_dump($user['last_ping']);
                         
                         $chat_messages = $chat->getChatMessages([
                             'conditions' => 'sent > ?0',
@@ -273,7 +277,6 @@ class Queue extends Component implements WampServerInterface
                 } else {
                     $conn->callError($id, $topic, "401: Unauthorized");
                 }
-
                 break;
             }
             case "assignQueue" : {
@@ -326,9 +329,161 @@ class Queue extends Component implements WampServerInterface
                 return true;
                 break;
             }
+            case "getAvaliableQueues" : {
+                // GET ALL USERS 
+                $coordinator_group_id = $this->configuration->get('chat_role_coordinator');
+                $technical_group_id = $this->configuration->get('chat_role_technical_support');
+
+                $coordinator_group = Group::findFirstById($coordinator_group_id);
+                $technical_group = Group::findFirstById($technical_group_id);
+
+                $coordinator_users = $coordinator_group->getUsers();
+                $technical_users = $technical_group->getUsers();
+
+                $result = array();
+                if ($coordinator_users->count() > 0) {
+                    $result['coordinator'] = array(
+                        'topic' => 'academic-coordinator',
+                        'name' => 'Academic Coordinator'
+                    );
+
+                    foreach($coordinator_users as $user) {
+                        $item = $user->toArray();
+
+                        $item['language'] = $user->getLanguage()->toArray();
+                        $item['avatars'] = $user->getAvatars()->toArray();
+                        //$item['avatar'] = $user->getAvatar();
+
+                        if (array_key_exists($user->id, $this->usersIds)) {
+                            $result['coordinator']['online'] = true;
+                            $result['coordinator']['session_id'] = $this->usersIds[$user->id];
+                            $result['coordinator']['user'] = $item;
+                        } else {
+                            $result['coordinator']['online'] = false;
+                            $result['coordinator']['user'] = $item;
+                        }
+                    }
+                }
+                if ($technical_users->count() > 0) {
+                    $result['technical'] = array(
+                        'topic' => 'technical-support',
+                        'name' => 'Technical Support'
+                    );
+
+                    foreach($technical_users as $user) {
+                        $item = $user->toArray();
+
+                        $item['language'] = $user->getLanguage()->toArray();
+                        $item['avatars'] = $user->getAvatars()->toArray();
+                        //$item['avatar'] = $user->getAvatar();
+
+                        if (array_key_exists($user->id, $this->usersIds)) {
+                            $result['technical']['online'] = true;
+                            $result['technical']['session_id'] = $this->usersIds[$user->id];
+
+                            $result['technical']['user'] = $item;
+                        } else {
+                            $result['technical']['online'] = false;
+                            $result['technical']['user'] = $item;
+                        }
+                    }
+                }
+
+                $conn->callResult($id, array_values($result));
+                break;
+            }
+            case "createChat" : {
+                return $this->RPC_createChat($conn, $id, $params[0]);
+                break;
+            }
+            case "receiveChat" : {
+                return $this->RPC_receiveChat($conn, $id, $params[0]);
+                break;   
+            }
         }
         //var_dump("CALL", $id, $topic->getId(), $params);
         $conn->callError($id, $topic, 'Please especify a valid procedure method');
+        return true;
+    }
+
+    protected function RPC_createChat(ConnectionInterface $conn, $id, $user_id) {
+        if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
+            $conn->close();
+            return true;
+        }
+
+        $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+        $started = time();
+        //$subject = $this->translate->translate($title);
+
+        // CHECK IF EXISTS A UNCLOSED QUEUE
+        $queueModel = Chat::findFirst(array(
+            'conditions' => '((requester_id = ?0 AND receiver_id = ?1) OR (requester_id = ?1 AND receiver_id = ?0)) AND closed = 0',
+            'bind' => array($user['id'], $user_id),
+            'order' => 'ping DESC'
+        ));
+
+        if ($queueModel) {
+            $queueModel->ping = $started;
+            $queueModel->save();
+
+            $new_topic = $queueModel->topic;
+        } else {
+
+            $receiver = User::findFirstById($user_id);
+
+
+            if (!$receiver) {
+                $conn->callError($id, $topic, "401: Unauthorized");   
+            } else {
+
+            }
+           
+            $new_topic = $user['login'] . "-" . $receiver->login;
+
+            $queueModel = new Chat();
+            $queueModel->websocket_token = $conn->wrappedConn->WAMP->sessionId;
+            $queueModel->type = "chat";
+            $queueModel->subject = $receiver->name . " " . $receiver->surname;
+            $queueModel->topic = $new_topic;
+            $queueModel->requester_id = $user['id'];
+            $queueModel->receiver_id = $user_id;
+            $queueModel->started = $started;
+            $queueModel->ping = $started;
+
+            $queueModel->save();
+        }
+
+        echo "startChat Topic: {$new_topic}\n";
+
+        $conn->callResult($id, $queueModel->toArray());
+        return true;
+    }
+
+    protected function RPC_receiveChat(ConnectionInterface $conn, $id, $topic) {
+        if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
+            $conn->close();
+            return true;
+        }
+
+        $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+        //$subject = $this->translate->translate($title);
+
+        // CHECK IF EXISTS A UNCLOSED QUEUE
+        $queueModel = Chat::findFirst(array(
+            'conditions' => '(requester_id = ?0 OR receiver_id = ?0) AND topic = ?1 AND closed = 0',
+            'bind' => array($user['id'], $topic),
+            'order' => 'ping DESC'
+        ));
+
+        echo "receiveChat Topic: {$topic}\n";
+
+        if ($queueModel) {
+            $conn->callResult($id, $queueModel->toArray());
+        } else {
+            $conn->callError($id, $topic, "401: Unauthorized");
+        }
+        
         return true;
     }
 

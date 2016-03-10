@@ -72,7 +72,6 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 
         }
 
-
         return $widgetsData;
     }
 
@@ -116,7 +115,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             case "view":
                 $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
-            case "edit/:id":
+            case "edit/{id}":
                 $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Advertising"));
                 break;
         }
@@ -213,18 +212,20 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
      *
      * @Get("/item/{model}/{identifier}")
      */
+    /*
     public function getItemAction($model = "me", $identifier = null)
     {
         $editItem = $this->model($this->_modelRoute)->getItem($identifier);
 
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Post("/item/{model}")
      */
+    /*
     public function addItemRequest($model)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -246,17 +247,6 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 $data['language_code'] = $this->translate->getSource();
 
                 $_GET['redirect'] = "0";
-            /*
-            } elseif ($model == "question-content") {
-                $itemModel = $this->model("lessons/content/question");
-                $messages = array(
-                    'success' => "Question included with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-
-                $_GET['redirect'] = "0";
-            }
-            */
             } else {
                 return $this->invalidRequestError();
             }
@@ -282,12 +272,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Put("/item/{model}/{id}")
      */
+    /*
     public function setItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -321,7 +312,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *

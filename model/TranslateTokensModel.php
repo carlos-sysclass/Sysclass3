@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0
+ */
 class TranslateTokensModel extends ModelManager {
 
 	public function init()

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0
+ */
 class QuestionsModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
