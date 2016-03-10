@@ -167,24 +167,20 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {
-        $items = $this->model("courses/areas/collection")->addFilter(array(
-            'active' => 1
-        ))->getItems();
+        $items = Departament::find("active = 1");
+        $this->putitem("knowledge_areas", $items->toArray());
 
-        $this->putitem("knowledge_areas", $items);
+        $items = QuestionType::find();
+        $this->putItem("questions_types", $items->toArray());
 
-        $items = $this->model("questions/types")->getItems();
-        $this->putItem("questions_types", $items);
-
-        $items =  $this->model("questions/difficulties")->getItems();
-        $this->putItem("questions_difficulties", $items);
+        $items = QuestionDifficulty::find();
+        $this->putItem("questions_difficulties", $items->toArray());
 
         parent::addPage($id);
-
     }
 
     /**

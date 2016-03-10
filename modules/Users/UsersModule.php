@@ -175,6 +175,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     	if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->user;
 
+            $this->putComponent("easy-pie-chart");
+
 			$modules = $this->getModules("ISummarizable");
 
 			//var_dump(array_keys($modules));
