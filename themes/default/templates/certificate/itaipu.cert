@@ -17,7 +17,7 @@
                         Itaipu Envolve
                   </div>
                   <div class="pull-right right-top-title">
-                        <img src="/assets/sysclass.itaipu/img/logo-white.png" />
+                        <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/logo-white.png" />
                   </div>
             </div>
 
@@ -50,7 +50,7 @@
       <div class="container-fluid">
             <div class="row" align="center">
                   <div class="col-md-12 signatures-container">
-                        <img src="/assets/sysclass.itaipu/img/signatures.png" />
+                        <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/signatures.png" />
                   </div>
             </div>
       </div>

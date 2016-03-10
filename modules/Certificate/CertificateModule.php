@@ -88,9 +88,14 @@ class CertificateModule extends \SysclassModule implements INotifyable
             $organization = Organization::findFirst();
             $this->view->setVar("organization", $organization);
 
+
             $this->assets
                 ->collection('header')
-                ->setPrefix('http://local.sysclass.com/')
+                ->setPrefix(sprintf(
+                    '%s://%s',
+                    $this->request->getScheme(),
+                    $this->request->getHttpHost()
+                ))
                 //->addCss('http://fonts.googleapis.com/css?family=Roboto', true)
                 ->addCss('/assets/default/plugins/bootstrap/css/bootstrap.css', true)
                 ->addCss('/assets/default/css/certificate.css', true)
@@ -109,7 +114,7 @@ class CertificateModule extends \SysclassModule implements INotifyable
             
             $dompdf = new DOMPDF();
             $dompdf->set_base_path(REAL_PATH);
-            //$dompdf->set_option('isHtml5ParserEnabled', true);
+            $dompdf->set_option('isHtml5ParserEnabled', true);
             $dompdf->set_option('isRemoteEnabled', true);
             //$dompdf->set_option('debugCss', true);
 
