@@ -91,20 +91,22 @@ class CertificateModule extends \SysclassModule implements INotifyable
 
             $this->assets
                 ->collection('header')
+                /*
                 ->setPrefix(sprintf(
                     '%s://%s',
                     $this->request->getScheme(),
                     $this->request->getHttpHost()
                 ))
+                */
                 //->addCss('http://fonts.googleapis.com/css?family=Roboto', true)
-                ->addCss('/assets/default/plugins/bootstrap/css/bootstrap.css', true)
-                ->addCss('/assets/default/css/certificate.css', true)
-                ->addCss('/assets/default/css/certificates/itaipu.css', true);
+                //->addCss('/assets/default/plugins/bootstrap/css/bootstrap.css', true)
+                ->addCss('assets/default/css/certificate.css')
+                ->addCss('assets/default/css/certificates/itaipu.css');
 
             $html = $this->view->render("certificate/itaipu.cert");
             
             $this->response->setContent($html);
-            return true;
+            //return true;
 
             global $_dompdf_show_warnings;
             //$_dompdf_show_warnings = true;
@@ -112,14 +114,18 @@ class CertificateModule extends \SysclassModule implements INotifyable
             global $_dompdf_debug;
             //$_dompdf_debug = true;
             
-            $dompdf = new DOMPDF();
+            $pdf = new \mPdf("","A4-L");
+
+            $pdf->WriteHTML($html, 0);
+            $br = rand(0, 100000);
+            $ispis = "Certificado-" . $id . ".pdf";
+
+            $pdf->Output($ispis, "I");
+            /*
             $dompdf->set_base_path(REAL_PATH);
-            $dompdf->set_option('isHtml5ParserEnabled', true);
+            //$dompdf->set_option('isHtml5ParserEnabled', true);
             $dompdf->set_option('isRemoteEnabled', true);
             //$dompdf->set_option('debugCss', true);
-
-
-
 
             $dompdf->load_html($html);
             $dompdf->set_paper('letter', 'landscape');
@@ -127,6 +133,7 @@ class CertificateModule extends \SysclassModule implements INotifyable
             
             //$dompdf->stream("$id");
             $dompdf->stream(date('d/m/Y').'certificado.pdf', array('Attachment'=>true));
+            */
         } else {
             //$this->response->redirect();
             $this->redirect(

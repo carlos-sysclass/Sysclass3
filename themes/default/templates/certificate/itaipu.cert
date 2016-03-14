@@ -10,6 +10,29 @@
 
 </head>
 <body>
+      <table class="bg-yellow">
+            <tr class="height-100">
+                  <td align="left" width="25%" class="left-top-title">
+                        Itaipu Envolve
+                  </td>
+                  <td width="10%">&nbsp;</td>
+                  <td width="15%">&nbsp;</td>
+                  <td align="right" width="50%" class="right-top-title">
+                        <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/logo-white.png" />
+                  </td>
+            </tr>
+            <tr class="height-60">
+                  <td align="left" class="left-bottom-title height-40">
+                        CONHECIMENTO
+                  </td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td align="left" class="right-bottom-title">
+                        CERTIFICADO
+                  </td>
+            </tr>
+      </table>
+      <!--
       <div class="container-fluid bg-yellow">
 
             <div class="row height-100">
@@ -32,6 +55,7 @@
                   </div>
             </div>
       </div>
+      -->
       <div class="container-fluid">
             <div class="row" align="center">
                   <div class="col-md-12 inner-text">
@@ -43,15 +67,12 @@
                         <br />
                         <br />
                         Curitiba, <span>Data</span>.
-
                   </div>
             </div>
       </div>
       <div class="container-fluid">
-            <div class="row" align="center">
-                  <div class="col-md-12 signatures-container">
-                        <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/signatures.png" />
-                  </div>
+            <div class="signatures-container"  align="center">
+                  <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/signatures.png" />
             </div>
       </div>
 </body>
