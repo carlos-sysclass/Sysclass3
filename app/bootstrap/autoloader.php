@@ -55,9 +55,11 @@ $loader-> registerClasses(array(
     'Cpdf'    => __DIR__ . "/../../vendor/dompdf/dompdf/lib/Cpdf.php",
     'Kint'    => __DIR__ . "/../../vendor/raveren/kint/Kint.class.php",
     'PiwikTracker' => __DIR__ . "/../../vendor/piwik/piwik-php-tracker/PiwikTracker.php",
+    "mPdf" => __DIR__ . '/../../vendor/mpdf/mpdf/mpdf.php',
     "HTML5_Tokenizer" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/Tokenizer.php',
     "HTML5_InputStream" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/InputStream.php',
-    "HTML5_TreeBuilder" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/TreeBuilder.php'
+    "HTML5_TreeBuilder" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/TreeBuilder.php',
+    "HTML5_Data" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/Data.php'
 ));
 
 
