@@ -111,12 +111,11 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			this.listenTo(this.model, 'sync', this.render.bind(this));
 			this.initializeElements();
 
-			alert(1);
 		},
 		initializeElements : function() {
 			//console.warn(jQuery.fn.easyPieChart);
 			if (jQuery.fn.easyPieChart) {
-alert(2);
+
 				this.$(".lesson").easyPieChart({
 					animate: 1000,
 					size: 75,
