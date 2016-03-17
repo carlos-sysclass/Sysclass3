@@ -46,14 +46,14 @@
             <% } %>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-            <p class="text-muted text-left margin-bottom-5">
+            <p class="text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Attendee"}:</span> -->
                 <strong class="text-default"><%= model.name %></strong>
             </p>
-            <p class="text-muted text-left margin-bottom-5">
+            <p class="text-left margin-bottom-5">
                 <%= model.user.name %> <%= model.user.surname %>
             </p>
-            <p class="text-muted text-left margin-bottom-5">
+            <p class="text-left margin-bottom-5">
                 <%= model.user.language.name %>
                 <% if (model.online) { %>
                 <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
@@ -65,7 +65,7 @@
                 </a>
                 <% } %>
             </p>
-            <p class="text-muted text-left margin-bottom-5">
+            <p class="text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
                 <span class="text-default"><%= model.user.timezone %></span>
             </p>
