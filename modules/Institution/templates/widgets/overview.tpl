@@ -6,38 +6,39 @@
 </div>
 <hr />
 <div class="row">
-	<div class="col-md-6 col-sm-12 col-xs-12">
-		<a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-link">
-			<span class="text"><i class="icon-map-marker"></i> {translateToken value="View Map"}</span>
-		</a>
-	</div>
-	<div class="col-md-6 col-sm-12 col-xs-12">
-		{if $context.website}
-		<div class="btn-group-vertical btn-group-fixed-size">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+                {if $context.website}
+                <div class="btn-group-vertical btn-group-fixed-size">
 
-			<a href="{$context.website}" target="_blank" class="btn btn-link">
-				<span class="text"><i class="icon-link"></i> {translateToken value="Website"}</span>
-			</a>
-		</div>
-		{/if}
-	</div>
+                        <a href="{$context.website}" target="_blank" class="btn btn-link">
+                                <span class="text"><i class="icon-link"></i> {translateToken value="Website"}</span>
+                        </a>
+                </div>
+                {/if}
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-xs-12">
+                {if $context.facebook}
+                        <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-link">
+                                <span class="text"><i class="icon-facebook"></i> {translateToken value="Facebook"}</span>
+                        </a>
+                {/if}
+        </div>
 </div>
 <div class="row">
-	<div class="col-md-6 col-sm-12 col-xs-12">
-		{if $context.facebook}
-			<a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-link">
-				<span class="text"><i class="icon-facebook"></i> {translateToken value="Facebook"}</span>
-			</a>
-		{/if}
-	</div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+                {if $context.phone}
+                        <a href="tel://{$context.phone}" target="_blank" class="btn btn-link">
+                                <span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
+                        </a>
+                {/if}
+        </div>
 
-	<div class="col-md-6 col-sm-12 col-xs-12">
-		{if $context.phone}
-			<a href="tel://{$context.phone}" target="_blank" class="btn btn-link">
-				<span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
-			</a>
-		{/if}
-	</div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+                <a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-link">
+                        <span class="text"><i class="icon-map-marker"></i> {translateToken value="View Map"}</span>
+                </a>
+        </div>
 </div>
 
 

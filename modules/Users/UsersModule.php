@@ -240,7 +240,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             if (count($courses) > 0) {
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
-                    'icon'      => ' fa fa-book',
+                    'icon'      => ' fa fa-certificate',
                     'text'      => $this->translate->translate('Programs'),
                     /*
                     'external'  => array(

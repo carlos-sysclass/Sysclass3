@@ -12,7 +12,7 @@ blocks:
           label: "#"
 
         - mData: departament.name
-          label: Departament
+          label: Department
 
         - mData: title
           label: Title

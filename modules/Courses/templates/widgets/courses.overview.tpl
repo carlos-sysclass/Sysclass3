@@ -14,7 +14,7 @@
 							<span class="">
 								{translateToken value="Programs"}
 							</span>
-							<span class="label label-sm label-default courses-count"></span>
+							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="courses-count"></span></strong></span>
 						</div>
 					</a>
 				</li>
@@ -22,7 +22,7 @@
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Courses"}</span>
-							<span class="label label-sm label-default classes-count"></span>
+							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="classes-count"></span></strong></span>
 						</div>
 					</a>
 				</li>
@@ -30,7 +30,7 @@
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Units"}</span>
-							<span class="label label-sm label-default lessons-count"></span>
+							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="lessons-count"></span></strong></span>
 						</div>
 					</a>
 				</li>
@@ -433,7 +433,7 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_video"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video"}</span></a>
+								<a data-toggle="tab" href="#tab_lesson_video"><i class="fa fa-youtube-play"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
