@@ -71,7 +71,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $widgets['calendar'] = array(
                 'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'calendar-widget',
-                'title'     => $this->translate->translate('Calendar'),
+                'title'     => '',
                 'template'  => $this->template("widgets/calendar"),
                 'icon'      => 'calendar',
                 'box'       => 'dark-blue calendar', 

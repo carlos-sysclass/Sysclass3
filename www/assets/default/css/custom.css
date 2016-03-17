@@ -799,6 +799,11 @@ h3.users-panel-username, h6.users-panel-username {
 	margin: 0;
 }
 
+h4.users-panel-username {
+	margin-bottom: 30px;
+}
+
+
 .users-panel-links li {
 	padding-top: 8px;
 	padding-bottom: 8px;
@@ -1786,4 +1791,28 @@ button.calendar-news-item {
 
 .header .navbar-nav .menu-link:hover {
     background-color: #146a9d !important;
+}
+
+#calendar {
+    margin-bottom: -46px;
+    position: relative;
+    top: -46px;
+}
+.portlet.calendar .fc-button {
+	top: 0px;
+}
+
+.fc-left {
+    margin-left: 10px;
+    padding: 8px 10px 2px;
+    position: relative;
+}
+.fc-left h2 {
+	display: inline-block;
+    float: left;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #fff !important;
+    position: relative;
 }

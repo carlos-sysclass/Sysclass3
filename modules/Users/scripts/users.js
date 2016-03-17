@@ -119,23 +119,26 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				this.$(".lesson").easyPieChart({
 					animate: 1000,
 					size: 75,
-					lineWidth: 3,
-					lineCap : 'butt',
-					barColor: App.getLayoutColorCode('green')
+					lineWidth: 9,
+					lineCap : 'square',
+					barColor: App.getLayoutColorCode('green'),
+					scaleColor : false
 				});
 				this.$(".class").easyPieChart({
 					animate: 1000,
 					size: 75,
-					lineWidth: 3,
-					lineCap : 'butt',
-					barColor: App.getLayoutColorCode('yellow')
+					lineWidth: 9,
+					lineCap : 'square',
+					barColor: App.getLayoutColorCode('yellow'),
+					scaleColor : false
 				});
 				this.$(".course").easyPieChart({
 					animate: 1000,
 					size: 75,
-					lineWidth: 3,
-					lineCap : 'butt',
-					barColor: App.getLayoutColorCode('red')
+					lineWidth: 9,
+					lineCap : 'square',
+					barColor: App.getLayoutColorCode('red'),
+					scaleColor : false
 				});
 			}
 		},
