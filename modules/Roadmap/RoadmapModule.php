@@ -211,7 +211,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             }
 
             $itemModel = $this->model($modelRoute);
-            $editItem = $itemModel->setUserFilter($userData->id)->getItem($identifier);
+            $editItem = $itemModel->setUserFilter($this->user->id)->getItem($identifier);
 
             $this->response->setJsonContent($editItem);
         }
