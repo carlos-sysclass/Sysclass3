@@ -4,7 +4,10 @@ namespace Sysclass\Modules\Roadmap;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse;
+use Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse,
+    Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -12,7 +15,7 @@ use Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse;
 /**
  * @RoutePrefix("/module/roadmap")
  */
-class RoadmapModule extends \SysclassModule implements \IBlockProvider
+class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifyable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -50,6 +53,43 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
                 return true;
             },
         );
+    }
+
+    // INotifyable
+    public function getAllActions() {
+
+    }
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "calculate-progress" : {
+                $data = $event->data;
+                $course = Course::findFirstById($data['course_id']);
+                $user = User::findFirstById($data['user_id']);
+
+                if ($course && $user) {
+                    $this->notification->createForUser(
+                        $user,
+                        sprintf(
+                            'You have a certificate avaliable for course %s', 
+                            $course->name
+                        ),
+                        'info',
+                        array(
+                            'text' => "View",
+                            'link' => $this->getBasePath() . "view/" . $course->id
+                        )
+                    );
+                } else {
+                    echo 'error found';
+                }
+                //var_dump($action, $event->toArray());
+
+                // CREATE A SYSTEM NOTIFICATION TO USER
+                
+                exit;
+            }
+        }
     }
 
     /**
@@ -221,6 +261,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
      *
      * @Post("/item/{model}")
      */
+    /*
     public function addItemRequest($model)
     {
 
@@ -291,7 +332,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *

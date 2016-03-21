@@ -32,6 +32,8 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                         params.push("object=" + "1");
                     } else if (this.response_type == "status") {
                         params.push("status=" + "1");
+                    } else if (this.response_type == "silent") {
+                        params.push("silent=" + "1");
                     }
                     options.url = options.url + "?" + params.join("&");
                 }

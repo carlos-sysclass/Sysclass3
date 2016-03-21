@@ -232,7 +232,10 @@ abstract class SysclassModule extends BaseSysclassModule
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($this->isResourceAllowed("create")) {
+
+        $model_info = $this->model_info[$model];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
             $data = $this->request->getJsonRawBody(true);
 
@@ -253,10 +256,22 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
 
-            if ($itemModel->create()) {
+
+            if (
+                array_key_exists('createMethod', $model_info)
+            ) {
+                $createMethod = $model_info['createMethod'];
+            } else {
+                $createMethod = "create";
+            }
+
+            //$itemModel->user_id = $this->user->id;
+
+            //var_dump($itemModel->toArray());
+            //exit;
+
+            if (call_user_func(array($itemModel, $createMethod))) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
-
-
                 
                 if ($this->request->hasQuery('object')) {
                     $itemData = call_user_func(
@@ -270,6 +285,20 @@ abstract class SysclassModule extends BaseSysclassModule
                             "success"
                         ),
                         $itemData 
+                    ));
+                } elseif ($this->request->hasQuery('status')) {
+                    $this->response->setJsonContent(array_merge(
+                        $this->createAdviseResponse(
+                            $this->translate->translate("Created with success"),
+                            "success"
+                        )
+                    ));
+                } elseif ($this->request->hasQuery('silent')) {
+                    $this->response->setJsonContent(array_merge(
+                        $this->createNonAdviseResponse(
+                            $this->translate->translate("Created with success"),
+                            "success"
+                        )
                     ));
                 } else {
                     $this->response->setJsonContent(
