@@ -23,6 +23,16 @@ class Progress extends Model
 
         return parent::save($data, $whiteList);
     }
+
+    public function afterSave() {
+        $evManager = $this->getDI()->get("eventsManager");
+        $evManager->fire("unit:progress", $this, $this->toArray());
+    }
+
+
+
+        
+
     /*
     public function metaData()
     {

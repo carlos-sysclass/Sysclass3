@@ -48,11 +48,6 @@ class CertificateModule extends \SysclassModule implements INotifyable
                 } else {
                     echo 'error found';
                 }
-                //var_dump($action, $event->toArray());
-
-                // CREATE A SYSTEM NOTIFICATION TO USER
-                
-                exit;
             }
         }
     }

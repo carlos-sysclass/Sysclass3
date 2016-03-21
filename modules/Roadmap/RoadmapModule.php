@@ -64,6 +64,13 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
         switch($action) {
             case "calculate-progress" : {
                 $data = $event->data;
+                /**
+                 * @todo  Recalculate all progress based on following variables
+                 * user_id
+                 * content_id OR lesson_id OR class_id OR course_id
+                 */
+                var_dump($data);
+                return true;
                 $course = Course::findFirstById($data['course_id']);
                 $user = User::findFirstById($data['user_id']);
 
@@ -86,8 +93,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 //var_dump($action, $event->toArray());
 
                 // CREATE A SYSTEM NOTIFICATION TO USER
-                
-                exit;
+                break;
             }
         }
     }

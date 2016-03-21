@@ -12,7 +12,8 @@ class Manager extends Component
 	protected $types = array(
 		'user',
 		'api',
-		'course'
+		'course',
+		'unit'
 	);
 
 	protected $listeners = array();
@@ -99,7 +100,11 @@ class Manager extends Component
 					fwrite(STDERR, Color::info($message));
 					// fwrite(STDOUT, $message . PHP_EOL); // WRITE TO LOG
 					
-					$this->modules[$proc['module']]->processNotification($proc['action'], $evt);
+					$status = $this->modules[$proc['module']]->processNotification($proc['action'], $evt);
+
+					if ($status === TRUE) {
+						$this->unqueue($evt->id);
+					}
 				}
 			}
 		}
