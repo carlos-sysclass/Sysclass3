@@ -45,14 +45,18 @@ class CertificateModule extends \SysclassModule implements INotifyable
                             'link' => $this->getBasePath() . "view/" . $course->id
                         )
                     );
-                } else {
-                    echo 'error found';
-                }
-                //var_dump($action, $event->toArray());
 
-                // CREATE A SYSTEM NOTIFICATION TO USER
-                
-                exit;
+
+                    return array(
+                        'status' => true
+                    );
+
+                } else {
+                    return array(
+                        'status' => false,
+                        'unqueue' => true
+                    );
+                }
             }
         }
     }

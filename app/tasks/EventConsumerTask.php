@@ -2,6 +2,7 @@
 namespace Sysclass\Tasks;
 
 use Sysclass\Models\Users\User,
+    Phalcon\Script\Color,
     Kint;
 
 class EventConsumerTask extends \Phalcon\CLI\Task
@@ -54,7 +55,11 @@ class EventConsumerTask extends \Phalcon\CLI\Task
     {
 //        
 
-        $this->messagebus->processEvents();
+        $result = $this->messagebus->processEvents();
+
+        foreach($result['messages'] as $message) {
+            fwrite(STDERR, Color::{$message['type']}($message['message']));    
+        }
 
     }
 

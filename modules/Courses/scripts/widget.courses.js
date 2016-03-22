@@ -1699,8 +1699,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		}
 	});
 
+	var baseModel = app.module("models").getBaseModel();
+
 	this.models = {
-		content_progress : Backbone.DeepModel.extend({
+		content_progress : baseModel.extend({
+			response_type : "silent",
 			urlRoot : "/module/roadmap/item/content-progress",
 			setAsViewed : function(model, factor) {
 				if (_.isUndefined(factor)) {
