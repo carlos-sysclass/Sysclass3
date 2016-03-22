@@ -82,6 +82,8 @@ class Manager extends Component
 	public function processEvents() {
 		$events = $this->messagebus->receive(false);
 
+		$result = array();
+
 		foreach($events as $evt) {
 			//$this->module
 			if (@isset($this->listeners[$evt->type][$evt->name])) {
@@ -100,14 +102,16 @@ class Manager extends Component
 					fwrite(STDERR, Color::info($message));
 					// fwrite(STDOUT, $message . PHP_EOL); // WRITE TO LOG
 					
-					$status = $this->modules[$proc['module']]->processNotification($proc['action'], $evt);
+					$result = $this->modules[$proc['module']]->processNotification($proc['action'], $evt);
 
-					if ($status === TRUE) {
-						$this->unqueue($evt->id);
+					if ($result['status'] === TRUE || $result['unqueue'] === TRUE) {
+						$this->unqueue($evt->_id);
 					}
 				}
 			}
 		}
+
+		return $result;
 
 	}
 

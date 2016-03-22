@@ -4,9 +4,10 @@ namespace Sysclass\Modules\Roadmap;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse,
-    Sysclass\Services\MessageBus\INotifyable,
-    Sysclass\Collections\MessageBus\Event;
+use Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event,
+    Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse,
+    Sysclass\Models\Courses\Contents\Progress as ContentProgress;
 
 /**
  * [NOT PROVIDED YET]
@@ -69,32 +70,24 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                  * user_id
                  * content_id OR lesson_id OR class_id OR course_id
                  */
-                var_dump($data);
-                return true;
-                $course = Course::findFirstById($data['course_id']);
-                $user = User::findFirstById($data['user_id']);
-
-                if ($course && $user) {
-                    $this->notification->createForUser(
-                        $user,
-                        sprintf(
-                            'You have a certificate avaliable for course %s', 
-                            $course->name
-                        ),
-                        'info',
-                        array(
-                            'text' => "View",
-                            'link' => $this->getBasePath() . "view/" . $course->id
-                        )
-                    );
-                } else {
-                    echo 'error found';
+                if (array_key_exists('user_id', $data)) {
+                    if (array_key_exists('content_id', $data)) {
+                        $progressObject = ContentProgress::findFirst(array(
+                            'conditions' => 'user_id = ?0 AND content_id =?1',
+                            'bind' => array($data['user_id'], $data['content_id'])
+                        ));
+                    } elseif (array_key_exists('lesson_id', $data)) {
+                        return false;
+                    } else {
+                        return false;
+                    }
+                    return $progressObject->updateProgress();
                 }
-                //var_dump($action, $event->toArray());
 
-                // CREATE A SYSTEM NOTIFICATION TO USER
+                return false;
                 break;
             }
+
         }
     }
 
