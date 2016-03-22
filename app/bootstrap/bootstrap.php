@@ -1,5 +1,7 @@
 <?php
 
+(new \Phalcon\Debug())->listen();
+
 // CONFIG AUTOLOADERS
 require(__DIR__ . "/autoloader.php");
 

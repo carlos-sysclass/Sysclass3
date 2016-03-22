@@ -22,6 +22,20 @@ class Classe extends Model
             "class_id",
             array('alias' => 'Progress')
         );
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\Models\Courses\CourseClasses",
+            "class_id", "course_id", 
+            "Sysclass\Models\Courses\Course",
+            "id",
+            array(
+                'alias' => 'Courses',
+                'params' => array(
+                    'order' => '[Sysclass\Models\Courses\CourseClasses].position'
+                )
+            )
+        );
     }
 
     protected function resetOrder($class_id) {

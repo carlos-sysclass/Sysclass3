@@ -16,3 +16,12 @@ models:
   periods:
     class: Sysclass\Models\Courses\CoursePeriods
     exportMethod: ["toFullArray", []]
+  content-progress:
+    class: Sysclass\Models\Courses\Contents\Progress
+    createMethod: save
+    acl:
+      create:
+        resource: Lessons
+        action: take
+    #listMethod: findFull
+    #exportMethod: ["toFullArray", ["Lessons"]]

@@ -230,7 +230,7 @@ class Queue extends Component implements WampServerInterface
 
                 //var_dump($conn->wrappedConn->WAMP->sessionId, $this->users);
 
-                if ($this->acl->isUserAllowed($user, "Chat", "View")) {
+                //if ($this->acl->isUserAllowed($user, "Chat", "View")) {
                     $chatList = Chat::find(array(
                         //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
                         //'conditions' => "",
@@ -274,9 +274,9 @@ class Queue extends Component implements WampServerInterface
 
 
                     $conn->callResult($id, $result);
-                } else {
+                //} else {
                     $conn->callError($id, $topic, "401: Unauthorized");
-                }
+                //}
                 break;
             }
             case "assignQueue" : {
