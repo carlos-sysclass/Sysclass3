@@ -17,6 +17,7 @@ class LessonsContentModel extends AbstractSysclassModel implements ISyncronizabl
                 lc.`content_type`,
                 lc.`title`,
                 lc.`info`,
+                lc.`content`,
                 lc.`language_code`,
                 lc.`position`,
                 lc.`active`,
