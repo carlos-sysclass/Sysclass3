@@ -112,7 +112,6 @@ class Manager extends Component
 		}
 
 		return $result;
-
 	}
 
 	public function unqueue($id) {
