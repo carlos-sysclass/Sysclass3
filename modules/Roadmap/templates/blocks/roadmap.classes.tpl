@@ -187,14 +187,14 @@
 <script type="text/template" id="classes-edit-item">
     <a href="#" class="btn btn-sm editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
-        data-name="class.name"
+        data-name="classe.name"
         data-send="never"
         data-original-title="Class Name"
         data-inputclass="form-control"
     >
-        <% if (_.has(data, 'class')) { %>
-            <% if (_.has(data['class'], 'name')) { %>
-                <%= data.class.name %>
+        <% if (_.has(data, 'classe')) { %>
+            <% if (_.has(data['classe'], 'name')) { %>
+                <%= data.classe.name %>
             <% } %>
         <% } %>
     </a>

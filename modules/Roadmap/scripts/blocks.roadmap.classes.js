@@ -7,9 +7,9 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
         mod.classModelClass = Backbone.DeepModel.extend({
             urlRoot : function() {
                 if (this.get("id")) {
-                    return "/module/roadmap/item/classes";
+                    return "/module/roadmap/item/course-classes";
                 } else {
-                    return "/module/roadmap/item/classes?redirect=0";
+                    return "/module/roadmap/item/course-classes?object=1";
                 }
             }
         });
