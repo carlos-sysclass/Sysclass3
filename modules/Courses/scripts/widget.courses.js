@@ -1685,6 +1685,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		isVideo : function() {
 			return /^video\/.*$/.test(this.get("file.type"));
 		},
+		isRemoteVideo : function() {
+			return /\.mp4$/.test(this.get("content"));
+		},
 		isAudio : function() {
 			return /^audio\/.*$/.test(this.get("file.type"));
 		},
@@ -1773,7 +1776,15 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				if (_.size(filteredVideoCollection) === 0) {
-					return false;
+					filteredCollection = this.where({
+						content_type : "url"
+					});
+					filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
+						return model.isRemoteVideo();
+					});
+					if (_.size(filteredVideoCollection) === 0) {
+						return false;
+					}
 				}
 
 				var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
@@ -1781,6 +1792,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.size(mainVideo) === 0) {
 					mainVideo = _.first(filteredVideoCollection);
 				}
+
+				//console.warn(mainVideo.toJSON());
 
 				// GET CHILDS OBJECTS
 				var poster = _.map(
@@ -1792,6 +1805,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						return model.toJSON();
 					}
 				);
+
 				if (_.size(poster) > 0) {
 
 					mainVideo.set("poster", _.first(poster));
