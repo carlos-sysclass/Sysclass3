@@ -722,7 +722,11 @@
 				poster="<%= model.poster.file.url %>"
 			<% } %>
 			style="max-height:100%;max-width:100%;">
-			<source src="<%= model.file.url %>" type='<%= model.file.type %>' />
+			<% if (_.has(model, 'file')) { %>
+				<source src="<%= model.file.url %>" type='<%= model.file.type %>' />
+			<% } else if (_.has(model, 'content')) { %>
+				<source src="<%= model.content %>" />
+			<% } %>
 
 			<% _.each(model.childs, function(item, index){ %>
 				<track kind="subtitles" src="<%= item.file.url %>" srclang="<%= item.language_code %>" label="<%= item.language_code %>"></track>

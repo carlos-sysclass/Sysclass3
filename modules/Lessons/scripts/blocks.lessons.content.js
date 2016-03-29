@@ -121,7 +121,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     */
                 });
             }
-
         });
 
         var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
