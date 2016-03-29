@@ -1,10 +1,12 @@
 <?php
 namespace Sysclass\Models\Courses;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Courses\Classe;
 
 class CourseClasses extends Model
 {
+    protected $assignedData = null;
     public function initialize()
     {
         $this->setSource("mod_roadmap_courses_to_classes");
@@ -12,9 +14,32 @@ class CourseClasses extends Model
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
         $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
-        $this->HasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
+        $this->hasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
     }
+
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        $this->assignedData = $data;
+        return parent::assign($data, $dataColumnMap, $whiteList);
+    }
+
+    public function beforeValidationOnCreate() {
+        if (is_null($this->class_id)) {
+            // CREATE A NEW CLASS
+            if (array_key_exists('classe', $this->assignedData)) {
+                $classe = new Classe();
+                $classe->assign($this->assignedData['classe']);
+                $classe->save();
+                $this->class_id = $classe->id;
+            }
+        }
+        return true;
+    }
+
+    public function beforeValidation() {
+        $this->active = (int) $this->active;
+    }
+
 
     public function findFull() {
     	$args = func_get_arg(0);

@@ -364,7 +364,10 @@ abstract class SysclassModule extends BaseSysclassModule
             'object' => $itemModel
         ));
 
-        if ($allowed = $this->isUserAllowed("edit")) {
+        $model_info = $this->model_info[$model];
+        if ($this->isResourceAllowed("create", $model_info)) {
+
+        //if ($allowed = $this->isUserAllowed("edit")) {
             if ($itemModel) {
 
                 $data = $this->request->getJsonRawBody(true);
