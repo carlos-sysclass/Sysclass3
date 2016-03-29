@@ -228,6 +228,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
      *
      * @Get("/item/{model}/{identifier}")
     */
+   /*
     public function getItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser(true)) {
@@ -255,6 +256,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
             $this->response->setJsonContent($editItem);
         }
     }
+    */
     /**
      * [ add a description ]
      *
@@ -337,6 +339,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
      *
      * @Put("/item/{model}/{id}")
      */    
+    /*
     public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -396,7 +399,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
