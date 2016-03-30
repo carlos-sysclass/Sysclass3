@@ -33,7 +33,6 @@
             <div class="portlet-title">
                 <div class="caption">
                 <i class="fa fa-calendar"></i>
-                    {translateToken value="Calendar"}
                 </div>
             </div>
             <div class="portlet-body">

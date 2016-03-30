@@ -14,4 +14,13 @@ class Event extends Model
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
     }
 
+    public function beforeValidation() {
+    	if (is_null($this->user_id)) {
+    		$user = $this->getDI()->get('user');
+    		if ($user) {
+    			$this->user_id = $user->id;
+    		}
+    	}
+    }
+
 }
