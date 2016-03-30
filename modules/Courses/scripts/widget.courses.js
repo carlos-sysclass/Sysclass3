@@ -337,6 +337,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					collection : new mod.collections.classes(this.model.get("classes")) */
 				});
 				this.blockUi('No Course Selected');
+
+				this.updateCollectionIndex();
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseTabViewClass::render');
@@ -350,11 +352,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
-				$("#courses-content .courses-count")
-					.html(this.collection.size());
-
-				$("#courses-content .courses-current")
-					.html(this.collection.getPointer() + 1);
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
@@ -366,6 +363,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
+				$("#courses-content .courses-count")
+					.html(this.collection.size());
+
+				$("#courses-content .courses-current")
+					.html(this.collection.getPointer() + 1);
 
 			},
 			onBlockableItemClick : function(e) {
@@ -400,7 +403,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewClass::render');
 
-				this.collection = new mod.collections.classes(this.model.get("classes"));
+				this.collection = new mod.collections.classes(this.model.get("courseclasses"));
 
 				this.$el.empty();
 
@@ -423,7 +426,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			tagName : "tr",
 			template : _.template($("#tab_course_classes-item-template").html(), null, {variable: "model"}),
 			setClassId : function(e) {
-				app.userSettings.set("class_id", this.model.get("id"));
+				app.userSettings.set("class_id", this.model.get("class_id"));
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewItemClass::render');
@@ -637,12 +640,14 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				this.blockUi('No Class Selected');
+
+				this.updateCollectionIndex();
 			},
 			render : function(e) {
 				console.info('portlet.courses/classTabViewClass::render');
 
 				this.$(".course-title").html(this.model.get("course.name"));
-				this.$(".class-title").html(this.model.get("class.name"));
+				this.$(".class-title").html(this.model.get("classe.name"));
 
 				var factor = this.model.get("progress.factor");
 				if (factor >= 1) {
@@ -650,17 +655,21 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
-
+				/*
 				$("#courses-content .classes-count")
 					.html(this.collection.size());
 
 				$("#courses-content .classes-current")
 					.html(this.collection.getPointer() + 1);
-
+				*/
 				this.unBlockUi();
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
+
+
+				$("#courses-content .classes-count")
+					.html(this.collection.size());
 
 				this.collection.find(function(model, index, collection) {
 					if (model.get("id") == this.model.get("id")) {
@@ -669,6 +678,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
+				$("#courses-content .classes-current")
+					.html(this.collection.getPointer() + 1);
 			},
 			onBlockableItemClick : function(e) {
 				$("[href='#course-tab']").click();
@@ -802,7 +814,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		var classLessonsTabViewClass = baseClassChildTabViewClass.extend({
 			childViewClass : classLessonsTabViewItemClass,
 			makeCollection: function() {
-				var collection = new mod.collections.lessons(this.model.get("lessons"));
+				var collection = new mod.collections.lessons(this.model.get("classe.lessons"));
 				return collection;
 			}
 		});
@@ -864,6 +876,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				this.blockUi('No Lesson Selected');
+
+				this.updateCollectionIndex();
 
 			},
 			render : function(e) {
@@ -1554,8 +1568,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				if (_.isNull(this.classesCollection)) {
 					//console.warn(this.courseModel.get("classes"));
-					this.classesCollection = new mod.collections.classes(this.courseModel.get("classes"));
-
+					this.classesCollection = new mod.collections.classes(this.courseModel.get("courseclasses"));
 				}
 
 				if (_.isNull(this.classTabView)) {
@@ -1570,6 +1583,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(this.model, "change:class_id", function() {
 					this.classModel.set("id", this.model.get("class_id"), {silent : true});
+
 					this.classModel.fetch();
 				}.bind(this));
 
@@ -1580,6 +1594,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					//this.classModel.fetch();
 
 					//this.classesCollection.fetch();
+				} else {
+					if (this.classesCollection.size() > 0) {
+						this.model.set("class_id", this.classesCollection.first().get('id')); 
+						//this.classModel.set("id", this.classesCollection.first().get('id'), {silent : true});
+					}
 				}
 			},
 			startLessonView : function() {
@@ -1597,8 +1616,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}.bind(this));
 				}
 
+				
+
 				if (_.isNull(this.lessonsCollection)) {
-					this.lessonsCollection = new mod.collections.lessons(this.classModel.get("lessons"));
+					this.lessonsCollection = new mod.collections.lessons(this.classModel.get("classe.lessons"));
 				}
 
 				if (_.isNull(this.lessonTabView)) {
@@ -1619,6 +1640,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				if (this.model.get("lesson_id")) {
 					this.lessonModel.set("id", this.model.get("lesson_id"), {silent : true});
+					this.lessonModel.fetch();
+				} else {
+					if (this.lessonsCollection.size() > 0) {
+						this.model.set("lesson_id", this.lessonsCollection.first().get('id')); 
+						//this.classModel.set("id", this.classesCollection.first().get('id'), {silent : true});
+					}
 				}
 			}
 		});
@@ -1676,7 +1703,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		urlRoot : "/module/roadmap/item/courses"
 	});
 	var fullClassModelClass = Backbone.DeepModel.extend({
-		urlRoot : "/module/roadmap/item/classes"
+		urlRoot : "/module/roadmap/item/course-classes"
 	});
 	var fullLessonModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/lessons"

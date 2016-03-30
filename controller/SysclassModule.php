@@ -205,18 +205,34 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $editItem = $this->getModelData($model, $identifier);
 
+        //var_dump($model, $identifier);
+
         $this->response->setContentType('application/json', 'UTF-8');
 
         if (is_object($editItem)) {
             $model_info = $this->model_info[$model];
-            $this->response->setJsonContent(call_user_func(
-                array($editItem, $model_info['exportMethod'][0]),
-                $model_info['exportMethod'][1]
-            ));
+
+            if (array_key_exists('exportParams', $model_info) && is_array($model_info['exportParams'])) {
+                $params = array_merge(
+                    array(
+                        $model_info['exportMethod'][1]
+                    ), 
+                    $model_info['exportParams']
+                );
+                $this->response->setJsonContent(call_user_func_array(
+                    array($editItem, $model_info['exportMethod'][0]),
+                    $params
+                ));
+            } else {
+                $this->response->setJsonContent(call_user_func(
+                    array($editItem, $model_info['exportMethod'][0]),
+                    $model_info['exportMethod'][1]
+                ));
+            }
             return true;   
         } else {
             $this->response->setJsonContent(
-                $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning")
+                $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to get your data. Please try again."), "warning")
             );
             return true;
         }

@@ -23,6 +23,13 @@ class Lesson extends Model
             array('alias' => 'Progress')
         );
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Contents\\Content",
+            "lesson_id",
+            array('alias' => 'Contents')
+        );
+
     }
 
 }
