@@ -14,7 +14,7 @@ class CourseClasses extends Model
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
         $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
-        $this->hasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
+        //$this->hasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
     }
 
@@ -118,5 +118,21 @@ class CourseClasses extends Model
         $rows = $query->execute();
 
         //print_r($rows);
+    }
+
+    public function toFullClassArray() {
+        $result = $this->toArray();
+
+        $course = $this->getCourse();
+        $result['course'] = $course->toArray();
+
+        $class = $this->getClasse();
+        $result['classe'] = $class->toArray();
+
+        $lessons = $class->getLessons();
+
+        $result['classe']['lessons'] = $lessons->toArray();
+
+        return $result;
     }
 }

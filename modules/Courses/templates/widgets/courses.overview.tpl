@@ -515,7 +515,7 @@
 	</td>
 </script>
 <script type="text/template" id="tab_course_classes-item-template">
-	<td><a href="#class-tab" class="class-change-action"><%= model['class'].name %></a></td>
+	<td><a href="#class-tab" class="class-change-action"><%= model['classe'].name %></a></td>
 
 	<td class="text-center">
 		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
@@ -528,9 +528,9 @@
 
 
 <script type="text/template" id="tab_classes-info-template">
-	<% if (!_.isEmpty(model['class'].description)) { %>
+	<% if (!_.isEmpty(model['classe'].description)) { %>
 	<h5>{translateToken value="During this course you will..."}</h5>
-	<%= model['class'].description %>
+	<%= model['classe'].description %>
 	<hr />
 	<% } %>
 	<table class="table table-striped table-bordered table-advance table-hover">
@@ -576,7 +576,7 @@
 </script>
 
 <script type="text/template" id="tab_classes-instructor-template">
-	<% var instructors = model['class'].instructors; %>
+	<% var instructors = model['classe'].instructors; %>
 	<div id="instructor_accordion">
 	<% _.each(instructors, function(instructor, index) { %>
 		<h5 class="text-danger block">
@@ -651,7 +651,7 @@
 </script>
 
 <script type="text/template" id="tab_class_child-nofound-template">
-	<td colspan="5"  class="alert alert-info">
+	<td colspan="6"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
 			{translateToken value="Ops! There's no data registered for this course"}
