@@ -832,6 +832,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/lessonTabViewClass::initialize');
 
 				// TODO CREATE SUB VIEWS!!
+				console.warn(this.collection)
 				this.navigationView 	= new navigationViewClass({
 					el : this.$(".navbar-lesson"),
 					collection : this.collection
@@ -894,11 +895,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
-				$("#courses-content .lessons-count")
-					.html(this.collection.size());
-
-				$("#courses-content .lessons-current")
-					.html(this.collection.getPointer() + 1);
 			},
 			setViewed : function() {
 				this.$(".viewed-status").removeClass("hidden");
@@ -906,16 +902,20 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
 
+				$("#courses-content .lessons-count")
+					.html(this.collection.size());
+
 				this.collection.find(function(model, index, collection) {
 					if (model.get("id") == this.model.get("id")) {
 						this.collection.setPointer(index);
-
-
 
 						return true;
 					}
 					return false;
 				}.bind(this));
+
+				$("#courses-content .lessons-current")
+					.html(this.collection.getPointer() + 1);
 
 			},
 			onBlockableItemClick : function(e) {
@@ -942,7 +942,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.disableView();
 				} else {
 					var contentsCollection = new mod.collections.contents(this.model.get("contents"));
+					console.warn(contentsCollection.toJSON(), this.videoModel);
 					this.videoModel = contentsCollection.getMainVideo();
+
+					console.warn(contentsCollection.toJSON(), this.videoModel);
 
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();

@@ -32,4 +32,22 @@ class Lesson extends Model
 
     }
 
+    public function toFullLessonArray() {
+        $result = $this->toArray();
+
+        $contents = $this->getContents();
+        $result['contents'] = array();
+
+        foreach($contents as $content) {
+            $item = $content->toFullContentArray();
+            
+            $result['contents'][] = $item;
+        }
+        
+        $progress = $this->getProgress();
+        $result['progress'] = $progress->toArray();
+
+        return $result;
+    }
+
 }
