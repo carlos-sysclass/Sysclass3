@@ -1216,12 +1216,14 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 this.$(".content-timeline-items").append(urlContentTimelineView.render().el);
 
+                app.module("ui").refresh(urlContentTimelineView.el);
+
                 this.listenTo(urlContentTimelineView, "timeline-url-content:save", function(model) {
                     model.save();
                 });
 
                 this.listenTo(urlContentTimelineView, "timeline-url-content:delete", function(model) {
-                    mode.destroy();
+                    model.destroy();
                 });
 
                 return urlContentTimelineView;
@@ -1345,7 +1347,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 this.$(".content-timeline-items").append(exerciseContentTimelineView.render().el);
 
-                app.module("ui").refresh(exerciseContentTimelineView.render().el);
+                app.module("ui").refresh(exerciseContentTimelineView.el);
 
                 mod.exerciseView = exerciseContentTimelineView;
 

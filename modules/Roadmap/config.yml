@@ -33,13 +33,7 @@ models:
         action: create
   lessons:
     class: Sysclass\Models\Courses\Lesson
-    #listMethod: findFull
-    exportMethod: ["toFullArray", ["Contents", "Progress"]]
-    #acl:
-    #  create:
-    #    resource: Classes
-    #    action: create
-
+    exportMethod: ["toFullLessonArray", ["Contents", "Progress"]]
   periods:
     class: Sysclass\Models\Courses\CoursePeriods
     exportMethod: ["toFullArray", []]
