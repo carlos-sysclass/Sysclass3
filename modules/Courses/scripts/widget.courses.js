@@ -234,9 +234,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
 				//"click .nav-next-action" 		: "searchItem"
 			},
+			/*
 			initialize : function(opt) {
 				console.info('portlet.courses/navigationViewClass::initialize');
 			},
+			*/
 			prevItem : function(e) {
 				console.info('portlet.courses/navigationViewClass::prevItem');
 				e.preventDefault();
@@ -610,13 +612,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.collection, 'sync', this.updateCollectionIndex.bind(this));
 
 				this.listenTo(this.collection, 'prevModel nextModel', function(model, index, collection) {
-					//console.warn(model, index, collection);
 					this.model.set("id", model.get("id"));
 					this.model.fetch();
 				}.bind(this));
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
-
 
 
 				this.classInfoTabView = new classInfoTabViewClass({
@@ -832,7 +832,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/lessonTabViewClass::initialize');
 
 				// TODO CREATE SUB VIEWS!!
-				console.warn(this.collection)
 				this.navigationView 	= new navigationViewClass({
 					el : this.$(".navbar-lesson"),
 					collection : this.collection
@@ -942,10 +941,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.disableView();
 				} else {
 					var contentsCollection = new mod.collections.contents(this.model.get("contents"));
-					console.warn(contentsCollection.toJSON(), this.videoModel);
 					this.videoModel = contentsCollection.getMainVideo();
-
-					console.warn(contentsCollection.toJSON(), this.videoModel);
 
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
@@ -958,7 +954,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							this.$el.empty().append(
 								this.template(this.videoModel.toJSON())
 							);
-							//console.warn(this.videoModel.toJSON());
 
 							//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 							videojs(videoDomID, {
@@ -1243,7 +1238,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function() {
-				//console.warn(jQuery.fn.easyPieChart);
 				if (jQuery.fn.easyPieChart) {
 
 					this.$(".lesson").easyPieChart({
@@ -1422,7 +1416,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 							if (!_.isNull(this.classesCollection)) {
 								
-								this.classesCollection.reset(model.get("classes"));
+								this.classesCollection.reset(model.get("courseclasses"));
 
 								if (this.classesCollection.size() == 0) {
 									this.classTabView.blockUi("No classes avaliable");	
@@ -1450,8 +1444,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 								this.model.save();
 							}
 							if (!_.isNull(this.classesCollection)) {
-								this.classesCollection.reset(model.get("classes"));
-								if (_.size(model.get("classes")) > 0) {
+								this.classesCollection.reset(model.get("courseclasses"));
+								if (_.size(model.get("courseclasses")) > 0) {
 									this.classesCollection.setPointer(0);
 								} else {
 									this.classesCollection.setPointer(-1);
@@ -1583,7 +1577,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (_.isNull(this.classesCollection)) {
-					//console.warn(this.courseModel.get("classes"));
 					this.classesCollection = new mod.collections.classes(this.courseModel.get("courseclasses"));
 				}
 
@@ -1788,7 +1781,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			var newPointer = _.max([0, this.pointer-1]);
 			if (newPointer != this.pointer) {
 				this.pointer = newPointer;
-				//console.warn("prev", this.at(this.pointer), this.pointer, this);
 				this.trigger("prevModel", this.at(this.pointer), this.pointer, this);
 				
 			}
@@ -1799,7 +1791,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			var newPointer = _.min([this.size()-1, this.pointer+1]);
 			if (newPointer != this.pointer) {
 				this.pointer = newPointer;
-				//console.warn("prev", this.at(this.pointer), this.pointer, this);
 				this.trigger("nextModel", this.at(this.pointer), this.pointer, this);
 			}
 			return this.pointer;
@@ -1842,8 +1833,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.size(mainVideo) === 0) {
 					mainVideo = _.first(filteredVideoCollection);
 				}
-
-				//console.warn(mainVideo.toJSON());
 
 				// GET CHILDS OBJECTS
 				var poster = _.map(
