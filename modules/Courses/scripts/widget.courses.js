@@ -1163,6 +1163,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/lessonExercisesTabViewClass::onBeforeRender');
 				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
 				this.collection = contentsCollection.getExercises();
+
+				console.warn(this.collection);
 			},
 			loadExerciseDetails : function(model) {
 				/*
