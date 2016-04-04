@@ -1466,8 +1466,30 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						this.overallProgressView.renderCourse(this.courseModel.get("progress.factor"));
 					}.bind(this));
 				}
+
 				if (_.isNull(this.coursesCollection)) {
 					this.coursesCollection = new mod.collections.courses();
+
+					this.listenToOnce(this.coursesCollection, 'sync', function(model, model_id) {
+						// CREATE CLASS VIEW
+						var exists = this.coursesCollection.where({
+							"id" : this.model.get("course_id")
+						});
+
+
+						if (_.size(exists) > 0 && this.model.get("course_id")) {
+							// create a view to show a list off courses to select
+							// IF THERE'S ONLY A COURSE, AUTO SELECT
+							this.courseModel.set("id", this.model.get("course_id"), {silent : true});
+							this.courseModel.fetch();
+
+						} else if (this.coursesCollection.size() > 0) {
+							this.model.set("course_id", this.coursesCollection.first().get('id')); 
+						}
+
+					}.bind(this));
+
+					this.coursesCollection.fetch();
 				}
 
 				if (_.isNull(this.courseTabView)) {
@@ -1486,17 +1508,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.courseModel.set("id", this.model.get("course_id"), {silent : true});
 					this.courseModel.fetch();
 
-					this.coursesCollection.fetch();
+					//this.coursesCollection.fetch();
 				}.bind(this));
-
-				if (this.model.get("course_id")) {
-					// create a view to show a list off courses to select
-					// IF THERE'S ONLY A COURSE, AUTO SELECT
-					this.courseModel.set("id", this.model.get("course_id"), {silent : true});
-					this.courseModel.fetch();
-
-					this.coursesCollection.fetch();
-				}
 			},
 			startClassView : function() {
 				console.info('portlet.courses/courseWidgetViewClass::startClassView');
@@ -1590,7 +1603,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.classModel.fetch();
 				}.bind(this));
 
-				if (this.model.get("class_id")) {
+				var exists = this.classesCollection.where({
+					"id" : this.model.get("class_id")
+				});
+
+				if (_.size(exists) > 0 && this.model.get("class_id")) {
 					// create a view to show a list off courses to select
 					// IF THERE'S ONLY A COURSE, AUTO SELECT
 					this.classModel.set("id", this.model.get("class_id"), {silent : true});
@@ -1640,8 +1657,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.lessonModel.fetch();
 				}.bind(this));
 
+				var exists = this.lessonsCollection.where({
+					"id" : this.model.get("lesson_id")
+				});
 
-				if (this.model.get("lesson_id")) {
+				if (_.size(exists) > 0 && this.model.get("lesson_id")) {
 					this.lessonModel.set("id", this.model.get("lesson_id"), {silent : true});
 					this.lessonModel.fetch();
 				} else {
