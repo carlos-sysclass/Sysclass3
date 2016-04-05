@@ -232,7 +232,6 @@ class LoginController extends \AbstractSysclassController
      * Authenticate the user
      * @Post("/")
      * @Post("/login")
-     * @Post("/login/{reset}")
      * 
      */
 	public function login()
@@ -698,6 +697,21 @@ class LoginController extends \AbstractSysclassController
 		}
 		*/
 	}
+
+	/**
+	 * [Add a description]
+	 *
+	 * @Post("/password-reset")
+	 */
+	public function passwordResetRequest() {
+		$postData = $this->request->getPost();
+
+		// GET THE USER, FIRE THE EVENT, AND LET THE BACKEND SYSTEM DO THE REST! :)
+		var_dump($postData);
+		exit;
+	}
+
+
 
 
 }

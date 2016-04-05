@@ -102,7 +102,7 @@
 		<!-- END LOGIN FORM -->
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
-		<form class="forget-form" action="/login/reset" method="post">
+		<form class="forget-form" action="/password-reset" method="post">
 			<h3 >{translateToken value="Forget your password?"}</h3>
 			<p>{translateToken value="Enter your e-mail address below to reset your password."}</p>
 			<div class="form-group">
