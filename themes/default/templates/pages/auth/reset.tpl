@@ -24,13 +24,15 @@
 					{/foreach}
 				{/if}
 
-				<div class="form-group">
-					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
-					<div class="input-icon">
-						<i class="fa fa-user"></i>
-						<input type="text" id="login" name="login" value="{$T_USER.login}" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
+				{if !$T_DISABLE_LOGIN}
+					<div class="form-group">
+						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
+						<div class="input-icon">
+							<i class="fa fa-user"></i>
+							<input type="text" id="login" name="login" value="{$T_USER.login}" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
+						</div>
 					</div>
-				</div>
+				{/if}
 
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="New Password"}</label>
@@ -53,7 +55,7 @@
 			<div class="form-actions nobg">
 				<button class="btn btn-primary pull-right" type="submit">
 					<i class="m-icon-swapup m-icon-white"></i>
-					{translateToken value="Create my account"}
+					{translateToken value="Reset my Pass"}
 				</button>
 			</div>
 		</form>

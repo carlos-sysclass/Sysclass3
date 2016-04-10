@@ -8,12 +8,15 @@ use Phalcon\DI,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\I18n\Language,
     Sysclass\Services\I18n\Timezones,
-    Sysclass\Services\Authentication\Exception as AuthenticationException;
+    Sysclass\Services\Authentication\Exception as AuthenticationException,
+    Sysclass\Models\Users\UserPasswordRequest,
+    Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event;
 
 /**
  * @RoutePrefix("/module/users")
  */
-class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer, \ISectionMenu
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer, \ISectionMenu, INotifyable
 {
     /*
     public function getSummary() {
@@ -262,12 +265,77 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
         return false;
     }
-    /*
-    // CREATE FUNCTION HERE
-    public function getSectionMenu($section_id) {
+
+
+
+    /* INotifyable */
+    public function getAllActions() {
 
     }
-    */
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "start-password-request" : {
+                // SEND EMAIL PASSWORD RESET 
+                $data = $event->data;
+                var_dump($event->timestamp);
+
+                $user = User::findFirstById($data['id']);
+
+                if ($user) {
+                    // REMOVE PREVIOUS REQUESTS
+                    $requests = $user->getPasswordRequests();
+                    foreach ($requests as $request) {
+                        $request->active = 0;
+                        $request->save();
+                    }
+
+                    $passwordRequest = new UserPasswordRequest();
+                    $passwordRequest->user_id = $user->id;
+                    $passwordRequest->reset_hash = $user->createRandomPass(16);
+
+                    $date = \DateTime::createFromFormat('U', $event->timestamp);
+                    $date->add(new \DateInterval('PT6H'));
+                    $passwordRequest->valid_until = $date->format('Y-m-d H:i:s');
+
+                    if ($passwordRequest->save()) {
+                        $status = $this->mail->send(
+                            $user->email, 
+                            "Solicitação de troca de senha. Email automático, não é necessário responder.",
+                            "email/" . $this->sysconfig->deploy->environment . "/password-reset.email",
+                            true,
+                            array(
+                                'user' => $user->toArray(),
+                                'reset_link' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/password-reset/" . $passwordRequest->reset_hash
+                            )
+                        );
+
+
+                        $this->notification->createForUser(
+                            $user,
+                            sprintf(
+                                'You request a password reset.', 
+                                $course->name
+                            ),
+                            'activity',
+                            array(
+                                'text' => "View",
+                                'link' => $this->getBasePath() . "view/" . $course->id
+                            )
+                        );
+
+                        return array(
+                            'status' => true
+                        );
+                    }
+                }
+                return array(
+                    'status' => false,
+                    'unqueue' => true
+                );
+            }
+        }
+    }
 
 
     /**

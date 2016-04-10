@@ -28,6 +28,17 @@ class User extends Model
             array('alias' => 'UserCourses')
         );
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Users\\UserPasswordRequest",
+            "user_id",
+            array(
+                'alias' => 'PasswordRequests',
+                'conditions' => 'valid_until > ?0 AND active = 1',
+                'bind' => (new \DateTime('now'))->format('Y-m-d H:i:s')
+            )
+        );
+
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",
