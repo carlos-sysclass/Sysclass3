@@ -23,7 +23,6 @@ class Manager extends Component
 
         $notifyUser->create();
 
-        var_dump($notifyUser->getMessages());
-        exit;
+        return true;
     }
 }
