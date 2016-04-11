@@ -260,7 +260,9 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($this->isResourceAllowed()) {
+        $model_info = $this->model_info[$model];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
             
             $data = $this->request->getJsonRawBody(true);
