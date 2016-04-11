@@ -205,8 +205,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $editItem = $this->getModelData($model, $identifier);
 
-        //var_dump($model, $identifier);
-
         $this->response->setContentType('application/json', 'UTF-8');
 
         if (is_object($editItem)) {
@@ -379,9 +377,9 @@ abstract class SysclassModule extends BaseSysclassModule
             'id' => $id,
             'object' => $itemModel
         ));
-
         $model_info = $this->model_info[$model];
-        if ($this->isResourceAllowed("create", $model_info)) {
+        
+        if ($this->isResourceAllowed("edit", $model_info)) {
 
         //if ($allowed = $this->isUserAllowed("edit")) {
             if ($itemModel) {
