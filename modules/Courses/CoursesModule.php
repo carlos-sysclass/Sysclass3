@@ -62,7 +62,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                 'content' => array(
                     array(
                         'count' => $count,
-                        'text'  => $this->translate->translate('Courses'),
+                        'text'  => $this->translate->translate('Programs'),
                         'icon'  => 'fa fa-cube',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -82,7 +82,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             array(
                 'icon'  => 'fa fa-cube',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => $this->translate->translate("Courses")
+                'text'  => $this->translate->translate("Programs")
             )
         );
 
@@ -93,11 +93,11 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Course"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Program"));
                 break;
             }
-            case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Course"));
+            case "edit/{id}" : {
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Program"));
                 break;
             }
         }
