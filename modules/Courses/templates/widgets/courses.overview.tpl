@@ -12,6 +12,7 @@
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="">
+								<i class="fa fa-cube"></i>
 								{translateToken value="Programs"}
 							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="courses-count"></span></strong></span>
@@ -21,7 +22,10 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Courses"}</span>
+							<span class="tab-title">
+								<i class="fa fa-folder"></i>
+								{translateToken value="Courses"}
+							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="classes-count"></span></strong></span>
 						</div>
 					</a>
@@ -29,7 +33,10 @@
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Units"}</span>
+							<span class="tab-title">
+								<i class="fa fa-file"></i>
+								{translateToken value="Units"}
+							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="lessons-count"></span></strong></span>
 						</div>
 					</a>
