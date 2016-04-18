@@ -894,13 +894,22 @@ class LoginController extends \AbstractSysclassController
 			// GET THE USER, FIRE THE EVENT, AND LET THE BACKEND SYSTEM DO THE REST! :)
 			$user = User::findFirstByEmail($email);
 
-			$this->eventsManager->fire("user:password-reset", $this, $user->toArray());
+			if ($user) {
 
-			$this->redirect(
-				"login/reset",
-				$this->translate->translate("We'll send you an e-mail containing a link to reset your password. Please check your inbox."),
-				'success'
-			);
+				$this->eventsManager->fire("user:password-reset", $this, $user->toArray());
+
+				$this->redirect(
+					"login/reset",
+					$this->translate->translate("We'll send you an e-mail containing a link to reset your password. Please check your inbox."),
+					'success'
+				);
+			} else {
+				$this->redirect(
+					"login/reset",
+					$this->translate->translate('The system can\'t found the provided e-mail address.'),
+					'warning'
+				);
+			}
 		}
 
 	}
