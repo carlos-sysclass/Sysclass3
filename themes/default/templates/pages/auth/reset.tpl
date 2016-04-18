@@ -32,6 +32,14 @@
 							<input type="text" id="login" name="login" value="{$T_USER.login}" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 						</div>
 					</div>
+				{else}
+					<div class="form-group">
+						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
+						<div class="input-icon">
+							<i class="fa fa-user"></i>
+							<input type="text" value="" autocomplete="off" class="form-control placeholder-no-fix" readonly="readonly">
+						</div>
+					</div>
 				{/if}
 
 				<div class="form-group">
