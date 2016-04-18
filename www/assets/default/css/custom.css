@@ -800,7 +800,11 @@ h3.users-panel-username, h6.users-panel-username {
 }
 
 h4.users-panel-username {
-	margin-bottom: 30px;
+	margin-bottom: 5px;
+}
+
+h5.users-panel-username {
+	margin-bottom: 5px;	
 }
 
 
@@ -1862,4 +1866,19 @@ a.list-group-item,
 .navbar-lesson .navbar-nav.navbar-right {
     float: right !important;
     margin: 0 -15px 0 0;
+}
+
+#progress-user {
+	position: relative;
+	height: 100%;
+}
+
+#progress-user .easy-pie-chart {
+	height: 100%;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }

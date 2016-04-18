@@ -32,7 +32,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     array(
                         'count' => count($items),
                         'text'  => $this->translate->translate('Lessons'),
-                        'icon'  => 'fa fa-file',
+                        'icon'  => 'fa fa-book',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )

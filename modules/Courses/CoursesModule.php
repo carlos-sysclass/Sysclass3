@@ -13,7 +13,7 @@ use Sysclass\Models\Enrollments\CourseUsers;
 /**
  * @RoutePrefix("/module/courses")
  */
-class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
+class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
 {
     /* ISummarizable */
     public function getSummary() {
@@ -63,7 +63,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Programs'),
-                        'icon'  => 'fa fa-cube',
+                        'icon'  => 'fa fa-graduation-cap',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )

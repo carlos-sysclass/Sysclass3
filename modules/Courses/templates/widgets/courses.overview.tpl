@@ -12,7 +12,7 @@
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="">
-								<i class="fa fa-cube"></i>
+								<i class="fa fa-graduation-cap"></i>
 								{translateToken value="Programs"}
 							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="courses-count"></span></strong></span>
@@ -23,7 +23,7 @@
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
 							<span class="tab-title">
-								<i class="fa fa-folder"></i>
+								<i class="fa fa-sitemap"></i>
 								{translateToken value="Courses"}
 							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="classes-count"></span></strong></span>
@@ -34,7 +34,7 @@
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
 							<span class="tab-title">
-								<i class="fa fa-file"></i>
+								<i class="fa fa-book"></i>
 								{translateToken value="Units"}
 							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="lessons-count"></span></strong></span>
