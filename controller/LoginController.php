@@ -607,7 +607,7 @@ class LoginController extends \AbstractSysclassController
 				));
 
 	            if ($passwordRequest) {
-
+	            	$user = $passwordRequest->getUser();
 	            	//Date
 	            	//
 	            	$valid_until = new \DateTime($passwordRequest->valid_until);
@@ -626,7 +626,7 @@ class LoginController extends \AbstractSysclassController
 					$this->putScript("scripts/pages/reset");
 
 					$this->putItem('form_action', "/password-reset/{$hash}");
-					//$this->putItem('user', $user->toArray());
+					$this->putItem('user', $user->toArray());
 					$this->putItem("disable_login", true);
 					
 
