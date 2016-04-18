@@ -39,8 +39,6 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    setCourse : function(e,a,b,c,d) {
 	    	console.info('panel.users/usersWidgetViewClass::setCourse');
 
-	    	
-
 	    	this.model.set("course_id", $(e.currentTarget).val());
 
 	    },
@@ -116,6 +114,15 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			//console.warn(jQuery.fn.easyPieChart);
 			if (jQuery.fn.easyPieChart) {
 
+				this.$(".unit").easyPieChart({
+					animate: 1000,
+					size: 150,
+					lineWidth: 25,
+					lineCap : 'square',
+					barColor: App.getLayoutColorCode('green'),
+					scaleColor : false
+				});
+				/*
 				this.$(".lesson").easyPieChart({
 					animate: 1000,
 					size: 75,
@@ -140,9 +147,12 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 					barColor: App.getLayoutColorCode('red'),
 					scaleColor : false
 				});
+				*/
 			}
 		},
 		render : function() {
+			/*
+			console.warn(this.model.toJSON());
 			this.renderCourse(
 				this.model.get('current_days'), this.model.get('total_days')
 			);
@@ -150,6 +160,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				this.model.get('classes.completed'), this.model.get('classes.total')
 			);
 			this.renderLesson(
+				this.model.get('lessons.completed'), this.model.get('lessons.total')
+			);
+			*/
+			this.renderUnit(
 				this.model.get('lessons.completed'), this.model.get('lessons.total')
 			);
 
@@ -226,6 +240,31 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 
 				if (_.isObject(this.$(".lesson").data('easyPieChart'))) {
 					this.$(".lesson").data('easyPieChart').update(percent);
+				}
+			}
+		},
+		renderUnit : function(completed, total) {
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+			var factor = 0;
+			if (total > 0) {
+				factor = completed / total;
+			}
+
+			this.$(".unit span").html(
+				app.module("views").formatValue(
+					factor,
+					'decimal-custom',
+					'0%'
+				)
+			);
+
+			//this.$(".unit-counter").html(completed + "/" + total);
+
+			if (jQuery.fn.easyPieChart) {
+				var percent = factor * 100;
+
+				if (_.isObject(this.$(".unit").data('easyPieChart'))) {
+					this.$(".unit").data('easyPieChart').update(percent);
 				}
 			}
 		}

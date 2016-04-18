@@ -213,7 +213,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					//'title' 	=> 'User Overview',
 					'template'	=> $this->template("widgets/overview"),
 					'panel'		=> true,
-                    'body'      => 'no-padding-bottom',
+                    'body'      => 'no-padding',
 					'data'      => $data
 					//'box'       => 'blue'
 				)

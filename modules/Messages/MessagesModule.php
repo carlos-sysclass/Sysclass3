@@ -15,7 +15,7 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockProvider, \ISectionMenu, \IWidgetContainer
+class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider, \ISectionMenu, \IWidgetContainer
 {
     // ISummarizable
     public function getSummary() {

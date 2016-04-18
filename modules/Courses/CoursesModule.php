@@ -13,7 +13,7 @@ use Sysclass\Models\Enrollments\CourseUsers;
 /**
  * @RoutePrefix("/module/courses")
  */
-class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
+class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
 {
     /* ISummarizable */
     public function getSummary() {
