@@ -63,7 +63,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Programs'),
-                        'icon'  => 'fa fa-cube',
+                        'icon'  => 'fa fa-graduation-cap',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
