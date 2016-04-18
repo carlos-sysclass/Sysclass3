@@ -30,5 +30,5 @@ dashboard:
         #3: []
     sortable: false
     resources:
-        layout.sections.topbar: ["users", "dashboard", "settings", "chat"]
+        layout.sections.topbar: ["dashboard", "users", "settings", "chat"]
         users.overview.notification.order: ["users", "courses", "kbase", "calendar", "advisor", "tests"]
