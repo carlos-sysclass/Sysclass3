@@ -37,6 +37,10 @@ models:
   periods:
     class: Sysclass\Models\Courses\CoursePeriods
     exportMethod: ["toFullArray", []]
+    acl:
+      create:
+        resource: Courses
+        action: edit
   content-progress:
     class: Sysclass\Models\Courses\Contents\Progress
     createMethod: save
