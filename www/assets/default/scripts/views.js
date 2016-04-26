@@ -515,7 +515,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    events : function() {
 	    	return {
 		    	"change :input"			: "update",
-		    	"click .save-action" 	: "submit"
+		    	"click .save-action" 	: "submit",
+		    	"click .save-and-add-action" 	: "submitAndAddAnother"
 	    	};
     	},
 	    initialize: function() {
@@ -604,7 +605,14 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    submit : function(e) {
 	    	console.info('views/baseFormClass::submit');
 	    	this.oForm.submit();
-	    }
+	    },
+	    submitAndAddAnother : function(e) {
+	    	console.info('views/baseFormClass::submit');
+	    	this.model.set("_add_another", true);
+	    	this.oForm.submit();
+	    },
+
+	    
   	});
 
     this.dialogViewClass = this.baseFormClass.extend({
