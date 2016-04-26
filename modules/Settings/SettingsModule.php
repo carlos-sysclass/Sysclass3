@@ -90,6 +90,9 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;
                 }
+
+                $results['websocket_port'] = $this->environment->websocket->port;
+
                 $course = Course::findFirst(array(
                     'conditions' => "id = ?0",
                     'columns' => 'name',

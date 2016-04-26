@@ -9,7 +9,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     this._subscribedTopics = {};
     this._subscribedChats = {};
 
-    this._wsUri = 'ws://' + window.location.hostname +':8080';
+    this._wsUri = 'ws://' + window.location.hostname +':8080'; // DEFAULT
 
     this._options = {
         maxRetries : 10,
@@ -33,6 +33,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
 
     mod.initialize = function() {
+
+        this._wsUri = 'ws://' + window.location.hostname +':' + app.userSettings.get("websocket_port");
+
         this.on("errorConnection.chat", this.startRetryMode.bind(this));
 
         //this.on("errorConnection.chat", this.disableChatViews.bind(this));
