@@ -11,7 +11,7 @@ namespace Sysclass\Modules\Dropbox;
 /**
  * @RoutePrefix("/module/dropbox")
  */
-class DropboxModule extends \SysclassModule implements \ISummarizable, \IBlockProvider
+class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider
 {
     public function getSummary() {
         //$data = Dropbox::count(); // FAKE, PUT HERE DUE PAYMENTS
@@ -335,6 +335,8 @@ class DropboxModule extends \SysclassModule implements \ISummarizable, \IBlockPr
                     // Check if the user is the owner of the file.
                     if (is_object($this->_args['object'])) {
                         return is_null($this->_args['object']->owner_id) || $this->_args['object']->owner_id == $this->user->id;
+                    } else {
+                        return false;
                     }
                 }
             }

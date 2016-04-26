@@ -17,9 +17,25 @@ use Sysclass\Models\Courses\Course,
  * @RoutePrefix("/module/certificate")
  */
 
-class CertificateModule extends \SysclassModule implements INotifyable
+class CertificateModule extends \SysclassModule implements \ISummarizable, INotifyable
 {
     
+
+    /* ISummarizable */
+    public function getSummary() {
+        $data = array(1);
+
+        return array(
+            'type'  => 'warning',
+            'count' => $data[0],
+            'text'  => $this->translate->translate('Certificates'),
+            'link'  => array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => $this->getBasePath()
+            )
+        );
+    }
+
     /* INotifyable */
     public function getAllActions() {
 

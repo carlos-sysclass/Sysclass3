@@ -1,5 +1,9 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
+
+
+{has_permission resource="Users" action="change-password" assign="canChangePassword"}
+
 <!-- BEGIN PAGE CONTENT-->
 <form id="form-users" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
@@ -59,7 +63,10 @@
 											<span class="after"></span>
 										</li>
 										<li ><a data-toggle="tab" href="#tab_1-2"><i class="icon-picture"></i> {translateToken value="Profile Picture"}</a></li>
+
+										{if $canChangePassword}
 										<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
+										{/if}
 										<!--
 										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Your Courses"}</a></li>
 										-->
@@ -111,11 +118,14 @@
 												{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 											</div>
 										</div>
+										
+										{if $canChangePassword}
 										<div id="tab_1-3" class="tab-pane">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
 											</div>
-										 </div>
+										</div>
+										{/if}
 										<!--
 										<div id="tab_1-4" class="tab-pane">
 											<div class="form-body">

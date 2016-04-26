@@ -102,9 +102,17 @@
 		<!-- END LOGIN FORM -->
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
-		<form class="forget-form" action="/login/reset" method="post">
+		<form class="forget-form" action="/password-reset" method="post">
 			<h3 >{translateToken value="Forget your password?"}</h3>
 			<p>{translateToken value="Enter your e-mail address below to reset your password."}</p>
+
+			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
+				<div class="alert alert-{$T_MESSAGE.type}">
+					<button class="close" data-dismiss="alert"></button>
+					<span>{$T_MESSAGE.message}</span>
+				</div>
+			{/if}
+			
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">
 					{translateToken value="Email"}
@@ -127,7 +135,7 @@
 
 		<!-- BEGIN COPYRIGHT -->
 		<div class="copyright">
-			&copy; 2015 • WiseFlex Knowledge Systems LLC. <br />
+			&copy; 2016 • WiseFlex Knowledge Systems LLC. <br />
 			<span style="color: black">
 				{$T_SYSCONFIG.deploy.base_version} 
 				Build {$T_SYSCONFIG.deploy.build_number}

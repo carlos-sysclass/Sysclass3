@@ -7,14 +7,14 @@ crud:
     
     stylesheets: ["css/components"]
     variables:
-      page_title: Courses
+      page_title: Programs
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Courses
+        page_subtitle: Manage your Programs
       context:
         datatable_fields:
         - mData: id
@@ -37,7 +37,7 @@ crud:
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "jquery-mask", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
-        page_subtitle: Create a new course
+        page_subtitle: Create a new program
     'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "jquery-mask", "validation", "bootstrap-switch"]
       #blocks: ["roadmap.classes", "roadmap.grouping", "users.list.table"]
@@ -45,7 +45,7 @@ crud:
       scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
-        page_subtitle: Edit your course info
+        page_subtitle: Edit your program info
 
 blocks:
   courses.list.table:

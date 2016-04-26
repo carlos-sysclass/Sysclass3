@@ -27,7 +27,7 @@
 		<!-- END RESPONSIVE MENU TOGGLER -->
 
 		<!-- BEGIN TOP NAVIGATION MENU -->
-		{* $T_TOPBAR_MENU|@json_encode *}
+		{*$T_TOPBAR_MENU|@json_encode*}
 		<ul class="nav navbar-nav pull-right">
 
 
@@ -199,7 +199,7 @@
 				{else}
 
 				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
-					<a href="#" 
+					<a href="javascript:void(0);" 
 						{if $item.items}
 						class="dropdown-toggle" data-toggle="dropdown" data-close-others="true"
 						{else}
@@ -231,7 +231,7 @@
 				    {/if}
 				</li>
 		        {/if}
-		   {/foreach}
+		   	{/foreach}
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
@@ -299,6 +299,7 @@
 			-->
 		   <!-- END TODO DROPDOWN -->
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
+		   {* MOVE TO MENU SYSTEM *}
 			<li class="dropdown user">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
 					{if ({$T_CURRENT_USER.avatars[0].url})}

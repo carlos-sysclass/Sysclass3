@@ -90,6 +90,9 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;
                 }
+
+                $results['websocket_port'] = $this->environment->websocket->port;
+
                 $course = Course::findFirst(array(
                     'conditions' => "id = ?0",
                     'columns' => 'name',
@@ -260,7 +263,9 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($this->isResourceAllowed()) {
+        $model_info = $this->model_info[$model];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
             
             $data = $this->request->getJsonRawBody(true);

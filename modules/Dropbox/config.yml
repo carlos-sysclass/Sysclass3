@@ -2,4 +2,9 @@
 # GENERAL DEFINITIONS #
 #######################
 models:
-  me: Sysclass\Models\Dropbox\File
+  me: 
+    class: Sysclass\Models\Dropbox\File
+    acl:
+      create:
+        resource: Settings
+        action: manage

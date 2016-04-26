@@ -53,7 +53,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 if (this.get("id")) {
                     return "/module/roadmap/item/periods";
                 } else {
-                    return "/module/roadmap/item/periods?redirect=0";
+                    return "/module/roadmap/item/periods?object=1";
                 }
             }
         });

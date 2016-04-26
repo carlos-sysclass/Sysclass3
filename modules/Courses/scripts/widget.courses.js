@@ -234,9 +234,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
 				//"click .nav-next-action" 		: "searchItem"
 			},
+			/*
 			initialize : function(opt) {
 				console.info('portlet.courses/navigationViewClass::initialize');
 			},
+			*/
 			prevItem : function(e) {
 				console.info('portlet.courses/navigationViewClass::prevItem');
 				e.preventDefault();
@@ -337,6 +339,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					collection : new mod.collections.classes(this.model.get("classes")) */
 				});
 				this.blockUi('No Course Selected');
+
+				this.updateCollectionIndex();
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseTabViewClass::render');
@@ -350,11 +354,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
-				$("#courses-content .courses-count")
-					.html(this.collection.size());
-
-				$("#courses-content .courses-current")
-					.html(this.collection.getPointer() + 1);
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
@@ -366,6 +365,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
+				$("#courses-content .courses-count")
+					.html(this.collection.size());
+
+				$("#courses-content .courses-current")
+					.html(this.collection.getPointer() + 1);
 
 			},
 			onBlockableItemClick : function(e) {
@@ -400,7 +405,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewClass::render');
 
-				this.collection = new mod.collections.classes(this.model.get("classes"));
+				this.collection = new mod.collections.classes(this.model.get("courseclasses"));
 
 				this.$el.empty();
 
@@ -423,7 +428,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			tagName : "tr",
 			template : _.template($("#tab_course_classes-item-template").html(), null, {variable: "model"}),
 			setClassId : function(e) {
-				app.userSettings.set("class_id", this.model.get("id"));
+				app.userSettings.set("class_id", this.model.get("class_id"));
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewItemClass::render');
@@ -607,13 +612,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.collection, 'sync', this.updateCollectionIndex.bind(this));
 
 				this.listenTo(this.collection, 'prevModel nextModel', function(model, index, collection) {
-					//console.warn(model, index, collection);
 					this.model.set("id", model.get("id"));
 					this.model.fetch();
 				}.bind(this));
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
-
 
 
 				this.classInfoTabView = new classInfoTabViewClass({
@@ -637,12 +640,14 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				this.blockUi('No Class Selected');
+
+				this.updateCollectionIndex();
 			},
 			render : function(e) {
 				console.info('portlet.courses/classTabViewClass::render');
 
 				this.$(".course-title").html(this.model.get("course.name"));
-				this.$(".class-title").html(this.model.get("class.name"));
+				this.$(".class-title").html(this.model.get("classe.name"));
 
 				var factor = this.model.get("progress.factor");
 				if (factor >= 1) {
@@ -650,17 +655,21 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
-
+				/*
 				$("#courses-content .classes-count")
 					.html(this.collection.size());
 
 				$("#courses-content .classes-current")
 					.html(this.collection.getPointer() + 1);
-
+				*/
 				this.unBlockUi();
 			},
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
+
+
+				$("#courses-content .classes-count")
+					.html(this.collection.size());
 
 				this.collection.find(function(model, index, collection) {
 					if (model.get("id") == this.model.get("id")) {
@@ -669,6 +678,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					return false;
 				}.bind(this));
+
+				$("#courses-content .classes-current")
+					.html(this.collection.getPointer() + 1);
 			},
 			onBlockableItemClick : function(e) {
 				$("[href='#course-tab']").click();
@@ -802,7 +814,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		var classLessonsTabViewClass = baseClassChildTabViewClass.extend({
 			childViewClass : classLessonsTabViewItemClass,
 			makeCollection: function() {
-				var collection = new mod.collections.lessons(this.model.get("lessons"));
+				var collection = new mod.collections.lessons(this.model.get("classe.lessons"));
 				return collection;
 			}
 		});
@@ -865,6 +877,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.blockUi('No Lesson Selected');
 
+				this.updateCollectionIndex();
+
 			},
 			render : function(e) {
 				console.info('portlet.courses/lessonTabViewClass::render');
@@ -880,11 +894,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
-				$("#courses-content .lessons-count")
-					.html(this.collection.size());
-
-				$("#courses-content .lessons-current")
-					.html(this.collection.getPointer() + 1);
 			},
 			setViewed : function() {
 				this.$(".viewed-status").removeClass("hidden");
@@ -892,16 +901,20 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			updateCollectionIndex : function(e) {
 				console.info('portlet.courses/courseTabViewClass::updateCollectionIndex');
 
+				$("#courses-content .lessons-count")
+					.html(this.collection.size());
+
 				this.collection.find(function(model, index, collection) {
 					if (model.get("id") == this.model.get("id")) {
 						this.collection.setPointer(index);
-
-
 
 						return true;
 					}
 					return false;
 				}.bind(this));
+
+				$("#courses-content .lessons-current")
+					.html(this.collection.getPointer() + 1);
 
 			},
 			onBlockableItemClick : function(e) {
@@ -941,7 +954,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							this.$el.empty().append(
 								this.template(this.videoModel.toJSON())
 							);
-							//console.warn(this.videoModel.toJSON());
 
 							//var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 							videojs(videoDomID, {
@@ -1151,6 +1163,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/lessonExercisesTabViewClass::onBeforeRender');
 				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
 				this.collection = contentsCollection.getExercises();
+
+				console.warn(this.collection);
 			},
 			loadExerciseDetails : function(model) {
 				/*
@@ -1226,7 +1240,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function() {
-				//console.warn(jQuery.fn.easyPieChart);
 				if (jQuery.fn.easyPieChart) {
 
 					this.$(".lesson").easyPieChart({
@@ -1405,7 +1418,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 							if (!_.isNull(this.classesCollection)) {
 								
-								this.classesCollection.reset(model.get("classes"));
+								this.classesCollection.reset(model.get("courseclasses"));
 
 								if (this.classesCollection.size() == 0) {
 									this.classTabView.blockUi("No classes avaliable");	
@@ -1433,8 +1446,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 								this.model.save();
 							}
 							if (!_.isNull(this.classesCollection)) {
-								this.classesCollection.reset(model.get("classes"));
-								if (_.size(model.get("classes")) > 0) {
+								this.classesCollection.reset(model.get("courseclasses"));
+								if (_.size(model.get("courseclasses")) > 0) {
 									this.classesCollection.setPointer(0);
 								} else {
 									this.classesCollection.setPointer(-1);
@@ -1449,8 +1462,30 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 						this.overallProgressView.renderCourse(this.courseModel.get("progress.factor"));
 					}.bind(this));
 				}
+
 				if (_.isNull(this.coursesCollection)) {
 					this.coursesCollection = new mod.collections.courses();
+
+					this.listenToOnce(this.coursesCollection, 'sync', function(model, model_id) {
+						// CREATE CLASS VIEW
+						var exists = this.coursesCollection.where({
+							"id" : this.model.get("course_id")
+						});
+
+
+						if (_.size(exists) > 0 && this.model.get("course_id")) {
+							// create a view to show a list off courses to select
+							// IF THERE'S ONLY A COURSE, AUTO SELECT
+							this.courseModel.set("id", this.model.get("course_id"), {silent : true});
+							this.courseModel.fetch();
+
+						} else if (this.coursesCollection.size() > 0) {
+							this.model.set("course_id", this.coursesCollection.first().get('id')); 
+						}
+
+					}.bind(this));
+
+					this.coursesCollection.fetch();
 				}
 
 				if (_.isNull(this.courseTabView)) {
@@ -1469,17 +1504,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.courseModel.set("id", this.model.get("course_id"), {silent : true});
 					this.courseModel.fetch();
 
-					this.coursesCollection.fetch();
+					//this.coursesCollection.fetch();
 				}.bind(this));
-
-				if (this.model.get("course_id")) {
-					// create a view to show a list off courses to select
-					// IF THERE'S ONLY A COURSE, AUTO SELECT
-					this.courseModel.set("id", this.model.get("course_id"), {silent : true});
-					this.courseModel.fetch();
-
-					this.coursesCollection.fetch();
-				}
 			},
 			startClassView : function() {
 				console.info('portlet.courses/courseWidgetViewClass::startClassView');
@@ -1553,9 +1579,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (_.isNull(this.classesCollection)) {
-					//console.warn(this.courseModel.get("classes"));
-					this.classesCollection = new mod.collections.classes(this.courseModel.get("classes"));
-
+					this.classesCollection = new mod.collections.classes(this.courseModel.get("courseclasses"));
 				}
 
 				if (_.isNull(this.classTabView)) {
@@ -1570,16 +1594,26 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(this.model, "change:class_id", function() {
 					this.classModel.set("id", this.model.get("class_id"), {silent : true});
+
 					this.classModel.fetch();
 				}.bind(this));
 
-				if (this.model.get("class_id")) {
+				var exists = this.classesCollection.where({
+					"id" : this.model.get("class_id")
+				});
+
+				if (_.size(exists) > 0 && this.model.get("class_id")) {
 					// create a view to show a list off courses to select
 					// IF THERE'S ONLY A COURSE, AUTO SELECT
 					this.classModel.set("id", this.model.get("class_id"), {silent : true});
 					//this.classModel.fetch();
 
 					//this.classesCollection.fetch();
+				} else {
+					if (this.classesCollection.size() > 0) {
+						this.model.set("class_id", this.classesCollection.first().get('id')); 
+						//this.classModel.set("id", this.classesCollection.first().get('id'), {silent : true});
+					}
 				}
 			},
 			startLessonView : function() {
@@ -1597,8 +1631,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					}.bind(this));
 				}
 
+				
+
 				if (_.isNull(this.lessonsCollection)) {
-					this.lessonsCollection = new mod.collections.lessons(this.classModel.get("lessons"));
+					this.lessonsCollection = new mod.collections.lessons(this.classModel.get("classe.lessons"));
 				}
 
 				if (_.isNull(this.lessonTabView)) {
@@ -1616,9 +1652,18 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.lessonModel.fetch();
 				}.bind(this));
 
+				var exists = this.lessonsCollection.where({
+					"id" : this.model.get("lesson_id")
+				});
 
-				if (this.model.get("lesson_id")) {
+				if (_.size(exists) > 0 && this.model.get("lesson_id")) {
 					this.lessonModel.set("id", this.model.get("lesson_id"), {silent : true});
+					this.lessonModel.fetch();
+				} else {
+					if (this.lessonsCollection.size() > 0) {
+						this.model.set("lesson_id", this.lessonsCollection.first().get('id')); 
+						//this.classModel.set("id", this.classesCollection.first().get('id'), {silent : true});
+					}
 				}
 			}
 		});
@@ -1676,7 +1721,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		urlRoot : "/module/roadmap/item/courses"
 	});
 	var fullClassModelClass = Backbone.DeepModel.extend({
-		urlRoot : "/module/roadmap/item/classes"
+		urlRoot : "/module/roadmap/item/course-classes"
 	});
 	var fullLessonModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/lessons"
@@ -1738,7 +1783,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			var newPointer = _.max([0, this.pointer-1]);
 			if (newPointer != this.pointer) {
 				this.pointer = newPointer;
-				//console.warn("prev", this.at(this.pointer), this.pointer, this);
 				this.trigger("prevModel", this.at(this.pointer), this.pointer, this);
 				
 			}
@@ -1749,7 +1793,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			var newPointer = _.min([this.size()-1, this.pointer+1]);
 			if (newPointer != this.pointer) {
 				this.pointer = newPointer;
-				//console.warn("prev", this.at(this.pointer), this.pointer, this);
 				this.trigger("nextModel", this.at(this.pointer), this.pointer, this);
 			}
 			return this.pointer;
@@ -1792,8 +1835,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.size(mainVideo) === 0) {
 					mainVideo = _.first(filteredVideoCollection);
 				}
-
-				//console.warn(mainVideo.toJSON());
 
 				// GET CHILDS OBJECTS
 				var poster = _.map(

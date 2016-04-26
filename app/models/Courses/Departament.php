@@ -25,4 +25,6 @@ class Departament extends Model
 
         
     }
+
+    
 }

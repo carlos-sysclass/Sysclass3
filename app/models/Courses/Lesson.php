@@ -23,6 +23,31 @@ class Lesson extends Model
             array('alias' => 'Progress')
         );
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Contents\\Content",
+            "lesson_id",
+            array('alias' => 'Contents')
+        );
+
+    }
+
+    public function toFullLessonArray() {
+        $result = $this->toArray();
+
+        $contents = $this->getContents();
+        $result['contents'] = array();
+
+        foreach($contents as $content) {
+            $item = $content->toFullContentArray();
+            
+            $result['contents'][] = $item;
+        }
+        
+        $progress = $this->getProgress();
+        $result['progress'] = $progress->toArray();
+
+        return $result;
     }
 
 }

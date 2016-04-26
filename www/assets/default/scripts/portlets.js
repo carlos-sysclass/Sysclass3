@@ -56,7 +56,7 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
             container.empty();
 
             if (!_.isUndefined(this.collection) && this.collection.size() === 0) {
-                this.$el.append(this.nofoundTemplate());
+                container.html(this.nofoundTemplate());
 
                 Marionette.triggerMethodOn(this, "renderEmpty");
             } else {

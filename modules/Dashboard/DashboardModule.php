@@ -71,14 +71,16 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
             $dashboards = $currentUser->getDashboards();
 
             if (count($dashboards) > 1) {
-
                 $items = array();
 
                 foreach($dashboards as $dashboard) {
-                    $items[] = array(
-                        'link'  => "/dashboard/" . $dashboard,
-                        'text'  => $this->translate->translate(ucfirst($dashboard))
-                    );
+                    if ($this->layoutExists($dashboard)) {
+
+                        $items[] = array(
+                            'link'  => "/dashboard/" . $dashboard,
+                            'text'  => $this->translate->translate(ucfirst($dashboard))
+                        );
+                    }
                 }
 
                 $links[$this->translate->translate('Environment')] = $items;

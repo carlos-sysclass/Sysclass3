@@ -12,6 +12,7 @@
 					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="">
+								<i class="fa fa-graduation-cap"></i>
 								{translateToken value="Programs"}
 							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="courses-count"></span></strong></span>
@@ -21,7 +22,10 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Courses"}</span>
+							<span class="tab-title">
+								<i class="fa fa-sitemap"></i>
+								{translateToken value="Courses"}
+							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="classes-count"></span></strong></span>
 						</div>
 					</a>
@@ -29,7 +33,10 @@
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Units"}</span>
+							<span class="tab-title">
+								<i class="fa fa-book"></i>
+								{translateToken value="Units"}
+							</span>
 							<span class="badge badge-success" style="border-radius: 3px !important"><strong><span class="lessons-count"></span></strong></span>
 						</div>
 					</a>
@@ -507,15 +514,17 @@
 	<%= data.description %>
 </script>
 <script type="text/template" id="tab_course_classes-nofound-template">
-	<td colspan="5"  class="alert alert-info">
-		<span class="text-info">
-			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any courses registered for this course"}
-		</span>
-	</td>
+	<tr>
+		<td colspan="5"  class="alert alert-info">
+			<span class="text-info">
+				<i class="icon-warning-sign"></i>
+				{translateToken value="Ops! There's any courses registered for this course"}
+			</span>
+		</td>
+	</tr>
 </script>
 <script type="text/template" id="tab_course_classes-item-template">
-	<td><a href="#class-tab" class="class-change-action"><%= model['class'].name %></a></td>
+	<td><a href="#class-tab" class="class-change-action"><%= model['classe'].name %></a></td>
 
 	<td class="text-center">
 		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
@@ -528,9 +537,9 @@
 
 
 <script type="text/template" id="tab_classes-info-template">
-	<% if (!_.isEmpty(model['class'].description)) { %>
+	<% if (!_.isEmpty(model['classe'].description)) { %>
 	<h5>{translateToken value="During this course you will..."}</h5>
-	<%= model['class'].description %>
+	<%= model['classe'].description %>
 	<hr />
 	<% } %>
 	<table class="table table-striped table-bordered table-advance table-hover">
@@ -576,7 +585,7 @@
 </script>
 
 <script type="text/template" id="tab_classes-instructor-template">
-	<% var instructors = model['class'].instructors; %>
+	<% var instructors = model['classe'].instructors; %>
 	<div id="instructor_accordion">
 	<% _.each(instructors, function(instructor, index) { %>
 		<h5 class="text-danger block">
@@ -651,12 +660,14 @@
 </script>
 
 <script type="text/template" id="tab_class_child-nofound-template">
-	<td colspan="5"  class="alert alert-info">
-		<span class="text-info">
-			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's no data registered for this course"}
-		</span>
-	</td>
+	<tr>
+		<td colspan="6"  class="alert alert-info">
+			<span class="text-info">
+				<i class="icon-warning-sign"></i>
+				{translateToken value="Ops! There's no data registered for this course"}
+			</span>
+		</td>
+	</tr>
 </script>
 <script type="text/template" id="tab_class_lessons-item-template">
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
@@ -736,12 +747,14 @@
 </script>
 
 <script type="text/template" id="tab_lessons_materials-nofound-template">
-	<td colspan="5"  class="alert alert-info">
-		<span class="text-info">
-			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any materials registered for this course"}
-		</span>
-	</td>
+	<tr>
+		<td colspan="5"  class="alert alert-info">
+			<span class="text-info">
+				<i class="icon-warning-sign"></i>
+				{translateToken value="Ops! There's any materials registered for this course"}
+			</span>
+		</td>
+	</tr>
 </script>
 <script type="text/template" id="tab_lessons_materials-item-template">
     <%
@@ -784,10 +797,14 @@
 </script>
 
 <script type="text/template" id="tab_lesson_exercises-nofound-template">
-	<span class="text-info">
-		<i class="icon-warning-sign"></i>
-		{translateToken value="Ops! There's any materials registered for this course"}
-	</span>
+	<tr>
+		<td colspan="4"  class="alert alert-info">
+			<span class="text-info">
+				<i class="icon-warning-sign"></i>
+				{translateToken value="Ops! There's any exercises registered for this course"}
+			</span>
+		</td>
+	</tr>
 </script>
 <script type="text/template" id="tab_lesson_exercises-item-template">
 	<td class="text-center"><%= model.model_index+1 %></th>

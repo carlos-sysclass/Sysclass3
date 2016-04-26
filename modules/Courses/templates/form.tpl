@@ -125,7 +125,9 @@
 						</div>
 					</div>
 				</div>
-
+				<div class="form-actions nobg">
+					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+				</div>
 
 			</div>
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
@@ -158,8 +160,6 @@
 			{/if}
 		</div>
 	</div>
-	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
-	</div>
+
 </form>
 {/block}

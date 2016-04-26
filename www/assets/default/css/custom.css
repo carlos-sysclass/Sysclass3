@@ -800,7 +800,11 @@ h3.users-panel-username, h6.users-panel-username {
 }
 
 h4.users-panel-username {
-	margin-bottom: 30px;
+	margin-bottom: 5px;
+}
+
+h5.users-panel-username {
+	margin-bottom: 5px;	
 }
 
 
@@ -1827,4 +1831,60 @@ a.list-group-item,
 .dropdown-menu li > a,
 .page-quick-sidebar-wrapper .page-quick-sidebar .list-heading {
     color: #444;
+}
+
+
+@media (max-width: 767px) {
+  .navbar-collapse {
+    width: auto;
+    border-top: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+  .navbar-collapse.collapse {
+    display: block !important;
+    height: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+    visibility: visible !important;
+  }
+  .navbar-collapse.in {
+    overflow-y: visible;
+  }
+  .navbar-fixed-top .navbar-collapse,
+  .navbar-static-top .navbar-collapse,
+  .navbar-fixed-bottom .navbar-collapse {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+.navbar-lesson .navbar-header, .navbar-lesson .navbar-nav > li {
+	float: left;
+}
+
+.navbar-lesson .navbar-nav.navbar-right {
+    float: right !important;
+    margin: 0 -15px 0 0;
+}
+
+#progress-user {
+	position: relative;
+	height: 100%;
+}
+
+#progress-user .easy-pie-chart {
+	height: 100%;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.fc-unthemed .fc-today {
+	background: #3089c9 none repeat scroll 0 0 !important;
+	font-weight: bold;
+	color: #fff;
 }

@@ -61,6 +61,8 @@ abstract class AbstractToolsController extends PhalconWrapperController
         foreach($modules as $index => $module) {
             $menu_item = $module->getSectionMenu($section);
 
+
+
             if ($menu_item) {
                 $menu_items[$index] = $menu_item;
             }
