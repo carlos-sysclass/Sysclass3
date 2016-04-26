@@ -16,9 +16,8 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
 {
     public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
-
             // CHECK PERMISSION
-            if ($this->acl->isUserAllowed($user, "Chat", "View")) {               
+            if ($this->acl->isUserAllowed($this->user, "Chat", "View")) {               
 
                 $this->putBlock("chat.quick-sidebar");
 
@@ -73,7 +72,6 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
 
                 $self->putSectionTemplate("foot", "blocks/chat");
                 $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
-
                 return true;
             },
             'chat' => function($data, $self) {

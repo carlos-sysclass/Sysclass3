@@ -4,7 +4,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 	this.canStart = false;
 
 	this.startChatSidebar = function() {
-		if (this.canStart && _.isNull(this.sidebarChatView) && $('body').hasClass('page-quick-sidebar-open')) {
+		if (this.canStart && _.isNull(this.sidebarChatView) /* && $('body').hasClass('page-quick-sidebar-open') */) {
 			this.started = true;
 			this.sidebarChatView = new this.sidebarChatViewClass({
 				model : app.userSettings,
@@ -462,6 +462,14 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				
 				this.collection.reset(result);
 
+				// UPDATE SIDEBAR ICON
+				if ($("#chat-topbar-menu > a .badge").size() > 0) {
+					$("#chat-topbar-menu > a .badge").html(_.size(result));
+				} else {
+					$("#chat-topbar-menu > a > i").after("<span class=\"badge badge-warning\">" + _.size(result) +"</span>")
+				}
+				
+
 				this.$(".default-queue-list, .stick-queue-list").empty();
 				this.collection.each(this.addOneChatQueue.bind(this));
 				app.module("ui").refresh(this.$(".default-queue-list, .stick-queue-list"));
@@ -472,18 +480,18 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				var itemView = new mod.sidebarChatQueueViewClass({
 					model: model
 				});
-				console.warn(1);
-				console.warn(itemView);
-				console.warn(2);
-				console.warn(itemView.render());
+				console.warn(this.model.toJSON());
+				console.warn(model.toJSON());
+				//console.warn(2);
+				//console.warn(itemView.render());
 
-				//if (model.get("assign_id") == this.model.get("user_id")) {
-				//	itemView.isOwnership(true);
-				//	this.$(".stick-queue-list").prepend(itemView.render().el);	
-				//} else {
+				if (model.get("receiver_id") == this.model.get("user_id")) {
+					itemView.isOwnership(true);
+					this.$(".stick-queue-list").prepend(itemView.render().el);	
+				} else {
 					itemView.isOwnership(false);
 					this.$(".default-queue-list").prepend(itemView.render().el);
-				//}
+				}
 			},
 			startChat : function(model) {
 				//console.warn(model.toJSON());
@@ -530,7 +538,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 				//console.warn(this.model.get("user_id"));
 
-				model.set("assign_id", this.model.get("user_id"));
+				model.set("receiver_id", this.model.get("user_id"));
 				model.save({}, {
 					success : function() {
 						this.chatModule.getQueues(this.renderChatQueues.bind(this));
@@ -542,7 +550,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.userSelectDialog.getValue(function(item) {
 					// { user_id="1"}
-					model.set("assign_id", item.user_id);
+					model.set("receiver_id", item.user_id);
 					model.save({}, {
 						success : function() {
 							this.chatModule.getQueues(this.renderChatQueues.bind(this));

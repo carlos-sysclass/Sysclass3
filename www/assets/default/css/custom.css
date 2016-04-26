@@ -1882,3 +1882,9 @@ a.list-group-item,
     vertical-align: middle;
     float: none;
 }
+
+.fc-unthemed .fc-today {
+	background: #3089c9 none repeat scroll 0 0 !important;
+	font-weight: bold;
+	color: #fff;
+}

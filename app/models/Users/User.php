@@ -155,6 +155,7 @@ class User extends Model
 
     public function getDashboards() {
         $roles = $this->getRoles();
+
         $dashboards = array_map("strtolower", \array_column($roles, "name"));
 
         return $dashboards;
