@@ -116,8 +116,8 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.$(".unit").easyPieChart({
 					animate: 1000,
-					size: 150,
-					lineWidth: 25,
+					size: 140,
+					lineWidth: 8,
 					lineCap : 'square',
 					barColor: App.getLayoutColorCode('green'),
 					scaleColor : false
