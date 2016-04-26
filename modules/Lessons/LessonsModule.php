@@ -315,8 +315,15 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
                     return array_merge($response, $data);
                 } else {
+                    if ($data['_add_another'] == 'true') {
+                        $url = $this->getBasePath() . "add";
+                    } else {
+                        $url = $this->getBasePath() . "edit/" . $data['id'];
+                    }
+
+
                     return $this->createRedirectResponse(
-                        $this->getBasePath() . "edit/" . $data['id'],
+                        $url,
                         $this->translate->translate($messages['success']),
                         "success"
                     );
@@ -647,9 +654,21 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             }
 
             if ($itemModel->setItem($data, $id) !== false) {
-                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
-                $data = $itemModel->getItem($id);
-                return array_merge($response, $data);
+
+
+                if ($data['_add_another'] == 'true') {
+                    $url = $this->getBasePath() . "add";
+
+                    return $this->createRedirectResponse(
+                        $url,
+                        $this->translate->translate($messages['success']),
+                        "success"
+                    );
+                } else {
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+                    $data = $itemModel->getItem($id);
+                    return array_merge($response, $data);
+                }
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
