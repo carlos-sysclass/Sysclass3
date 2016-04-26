@@ -6,19 +6,20 @@
 	<div class="col-md-3 col-sm-3 hidden-xs" id="users-avatar">
 
 		{if ({$user_details.avatars[0].url})}
-			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
+			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="" height="164">
 		{else}
-			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="100%" alt="">
+			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="100%" alt=""  height="164">
 		{/if}
 	
 	</div>
-	<div class="col-md-5 col-sm-5 col-xs-12">
+	<div class="col-md-5 col-sm-5 col-xs-9">
 		<h4 class="users-panel-username">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
 			<strong>{$user_details.name} {$user_details.surname}</strong>
+			<span class="course_name visible-xs"></span>
 		</h4>
-		<h5 class="users-panel-username">
+		<h5 class="users-panel-username hidden-xs">
 			<span class="course_name"></span> <span class="enroll_token"></span>
 		</h5>
 		{if isset($notifications)}
@@ -52,7 +53,7 @@
 
 		{/if}
 	</div>
-	<div class="col-md-4 col-sm-4 col-xs-12 vcenter" id="progress-user">
+	<div class="col-md-4 col-sm-4 col-xs-3 vcenter" id="progress-user">
 		<div class="easy-pie-chart">
 			<div class="number unit" data-percent="0"><span>0</span></div>
 			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units Completed"}</a>
