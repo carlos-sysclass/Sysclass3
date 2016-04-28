@@ -253,9 +253,6 @@ abstract class SysclassModule extends BaseSysclassModule
             // TODO CHECK IF CURRENT USER CAN DO THAT
             $data = $this->request->getJsonRawBody(true);
 
-            var_dump($data);
-            exit;
-
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
