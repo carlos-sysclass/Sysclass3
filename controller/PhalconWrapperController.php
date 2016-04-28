@@ -536,8 +536,10 @@ abstract class PhalconWrapperController extends Controller
 		    ->addFilter(new Phalcon\Assets\Filters\Cssmin());
 
 		foreach($css as $file) {
+		//	var_dump($file);
 			$cssHeaderAssets->addCss($file, true);
 		}
+		//exit;
 
 		$scripts = $this->resolvePaths(self::$_scripts);
 

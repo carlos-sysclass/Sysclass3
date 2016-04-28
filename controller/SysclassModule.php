@@ -705,14 +705,14 @@ abstract class SysclassModule extends BaseSysclassModule
 
         if ($editAllowed) {
             $options['edit']  = array(
-                'icon'  => 'icon-edit',
+                'icon'  => 'fa fa-pencil',
                 'link'  => $baseLink . 'edit/%id$s',
                 'class' => 'btn-sm btn-primary'
             );
         }
         if ($deleteAllowed) {
             $options['remove']  = array(
-                'icon'  => 'icon-remove',
+                'icon'  => 'fa fa-remove',
                 'class' => 'btn-sm btn-danger'
             );
         }
