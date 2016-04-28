@@ -194,7 +194,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
     {
         // MUST SHOW ALL AVALIABLE CALENDARS TYPES
         //$this->createClientContext("event-source/add");
-        if (!$this->createClientContext("event-source/add")) {
+        if (!$this->createClientContext("add")) {
             $this->entryPointNotFoundError($this->getSystemUrl('home'));
         }
         $this->display($this->template);
