@@ -32,10 +32,11 @@ try {
     
     $context = new React\ZMQ\Context($loop);
     $pull = $context->getSocket(ZMQ::SOCKET_PULL);
-    $pull->bind('tcp://127.0.0.1:5555'); // Binding to 127.0.0.1 means the only client that can connect is itself
-    $pull->on('message', array($app, 'onEvent'));
 
-    var_dump($environment);
+    $endpoint = $environment->queue->endpoint;
+
+    $pull->bind($endpoint); // Binding to 127.0.0.1 means the only client that can connect is itself
+    $pull->on('message', array($app, 'onEvent'));
 
     $port = $environment->websocket->port;
     //var$enr$di->get("environment")

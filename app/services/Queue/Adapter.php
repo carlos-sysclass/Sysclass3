@@ -10,7 +10,10 @@ class Adapter extends Component
 	public function __construct() {
 	    $context = new \ZMQContext();
 	    $this->socket = $context->getSocket(\ZMQ::SOCKET_PUSH);
-	    $this->socket->connect("tcp://localhost:5555");
+
+	    $endpoint = $environment->queue->endpoint;
+
+	    $this->socket->connect($endpoint);
 	}
 	public function send(Message $message) {
     	$this->socket->send($message, \ZMQ::MODE_NOBLOCK);
