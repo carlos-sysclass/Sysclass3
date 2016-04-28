@@ -5,8 +5,10 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		//this.collection = new Backbone.Collection;
 		//this.collection.url = "/module/calendar/data";
 
-	  	// VIEWS
-	  	var viewClass = Backbone.View.extend({
+		var parent = app.module("portlet");
+
+	  	
+	  	var viewClass = parent.widgetViewClass.extend({
 		    //portlet: $('#calendar-widget'),
 		    calendarDialog : $('#calendar-dialog'),
 		    calendarCreateDialog : $('#calendar-create-dialog'),
@@ -117,8 +119,6 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		mod.onFilter = function() {
 			mod.view.$(".portlet-sidebar").toggle();
 		}
-
-		
 
 		this.searchBy = "title";
         $('.fc-prev-button, .fc-next-button, .fc-today-button').click(function() {
