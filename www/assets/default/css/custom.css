@@ -1919,3 +1919,38 @@ a.list-group-item,
 		width: 320px;
 	}
 }
+
+.ver-inline-menu {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+
+.ver-inline-menu li a {
+	border-left: none;
+}
+.ver-inline-menu li a, .ver-inline-menu li i {
+	background: white !important;
+}
+.ver-inline-menu li:nth-child(odd) a, .ver-inline-menu li:nth-child(odd) i  {
+	background: #EAF4FF !important;
+}
+
+.ver-inline-menu li a:hover, .ver-inline-menu li a:hover i {
+	background: #C4D5DF !important;
+}
+
+.ver-inline-menu li.active a, .ver-inline-menu li.active i {
+	background: #005999 !important;
+    color: #fff;
+    text-decoration: none;
+}
+.ver-inline-menu li.active a:hover i {
+	background: #005999 !important;
+}
+
+
+
+
+
+.ver-inline-menu li.active a, .ver-inline-menu li.active i {
