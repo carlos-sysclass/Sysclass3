@@ -76,10 +76,10 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
                 'icon'      => 'calendar',
                 'box'       => 'dark-blue calendar', 
                 'tools'     => array(
-                    'filter'        => true
+                    'filter'        => true,
                     //'reload'      => 'javascript:void(0);',
                     //'collapse'      => true,
-                    //'fullscreen'    => true
+                    'fullscreen'    => true
                 )
             );
         }

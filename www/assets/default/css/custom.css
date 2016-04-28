@@ -1948,3 +1948,15 @@ a.list-group-item,
 .ver-inline-menu li.active a:hover i {
 	background: #005999 !important;
 }
+#calendar {
+	top: 0px;
+}
+.fc-toolbar {
+    position: relative;
+    top: -46px;
+    width: 95%;
+}
+.fc-view-container {
+    position: relative;
+    top: -46px;
+}
