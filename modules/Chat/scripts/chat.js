@@ -34,7 +34,11 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
     mod.initialize = function() {
 
-        this._wsUri = 'ws://' + window.location.hostname +':' + app.userSettings.get("websocket_port");
+        if (window.location.protocol == 'https:') {
+            this._wsUri = 'wss://' + window.location.hostname +':' + app.userSettings.get("websocket_ssl_port");
+        } else {
+            this._wsUri = 'ws://' + window.location.hostname +':' + app.userSettings.get("websocket_port");
+        }
 
         this.on("errorConnection.chat", this.startRetryMode.bind(this));
 

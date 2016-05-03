@@ -92,6 +92,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 }
 
                 $results['websocket_port'] = $this->environment->websocket->port;
+                $results['websocket_ssl_port'] = $this->environment->websocket->ssl_port;
 
                 $course = Course::findFirst(array(
                     'conditions' => "id = ?0",
