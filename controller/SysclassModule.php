@@ -378,6 +378,8 @@ abstract class SysclassModule extends BaseSysclassModule
             'object' => $itemModel
         ));
         $model_info = $this->model_info[$model];
+
+
         
         if ($this->isResourceAllowed("edit", $model_info)) {
 
@@ -395,8 +397,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     );
                     return true;
                 }
-
-                
+               
                 $model_info = $this->model_info[$model];
                 /*
                 $model_class = $model_info['class'];
@@ -436,6 +437,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $afterMessages = $itemModel->getMessages();
 
+
+
                     $modelMessages = array_merge($beforeMessages, $afterMessages);
 
                     if (count($modelMessages) > 0) {
@@ -465,6 +468,8 @@ abstract class SysclassModule extends BaseSysclassModule
                         $response = array_merge($response, $itemData);
                     }
                 } else {
+                                        var_dump($itemModel->getMessages());
+                    exit;
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
                     $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
