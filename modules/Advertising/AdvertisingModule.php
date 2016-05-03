@@ -23,7 +23,10 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         $adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
 
-        $items = $adsModel->getItems();
+        $items = $adsModel->addFilter(array(
+            'active' => true
+        ))->getItems();
+
         $widgetsData = array();
 
         foreach($items as $item) {
