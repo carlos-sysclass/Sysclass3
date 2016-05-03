@@ -41,7 +41,6 @@ try {
     $port = $environment->websocket->port;
     //var$enr$di->get("environment")
     //exit;
-  
     
     // Set up our WebSocket server for clients wanting real-time updates
     $webSock = new React\Socket\Server($loop);
