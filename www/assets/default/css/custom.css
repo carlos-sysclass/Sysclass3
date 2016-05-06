@@ -772,6 +772,12 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-bottom: 56%;
 	height: 0;
 }
+.nav.nav-tabs > li {
+	height: 44px;
+}
+.nav.nav-tabs > li > a {
+	margin-bottom: 1px;
+}
 @media (max-width: 767px) {
 	.nav > li > a {
 		padding-left: 10px;
