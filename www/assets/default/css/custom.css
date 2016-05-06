@@ -406,6 +406,9 @@ h4.border-bottom {
 	height: 0;
 }
 */
+.nav-tabs > li {
+	margin-bottom: -2px;
+}
 .portlet-tabs > .nav-tabs > li.nav-text > a {
 	padding-left: 2px;
 	padding-right: 2px;
@@ -772,12 +775,15 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-bottom: 56%;
 	height: 0;
 }
-.nav.nav-tabs > li {
-	height: 44px;
+/*
+#courses-widget .tab-content .nav.nav-tabs > li {
+	height: 43px;
 }
-.nav.nav-tabs > li > a {
+
+#courses-widget .tab-content .nav.nav-tabs > li > a {
 	margin-bottom: 1px;
 }
+*/;
 @media (max-width: 767px) {
 	.nav > li > a {
 		padding-left: 10px;
@@ -1776,7 +1782,7 @@ button.calendar-news-item {
 	}
 }
 .tabbable-custom > .tab-content {
-	padding : 0;
+	padding : 1px 0 0;
 }
 
 .dropdown-menu li > a {
