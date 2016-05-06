@@ -102,10 +102,10 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_description"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
+								<a data-toggle="tab" href="#tab_course_description"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
+								<a data-toggle="tab" href="#tab_course_classes"><i class="fa fa-sitemap"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
 							</li>
 							<!--
 							<li class="">
@@ -192,13 +192,13 @@
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_info"><i class="icon-info-sign"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
+								<a data-toggle="tab" href="#tab_class_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-file"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
+								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
 							</li>
 
 							<!--
@@ -216,7 +216,7 @@
 							</li>
 							-->
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_tests"><i class="fa fa-list-ol"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+								<a data-toggle="tab" href="#tab_class_tests"><i class="fa fa-check-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
 							</li>
 							<li class="visible-xxs visible-md">
 								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">{translateToken value="More"}</span></a>
