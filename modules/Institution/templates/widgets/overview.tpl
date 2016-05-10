@@ -15,12 +15,12 @@
                         </a>
                 </div>
                 {/if}
-        </div>
-
+        </div>       
+     
         <div class="col-md-6 col-sm-12 col-xs-12">
                 {if $context.facebook}
                         <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-link">
-                                <span class="text"><i class="icon-facebook"></i> {translateToken value="Facebook"}</span>
+                                <span class="text"><i class="fa fa-facebook"></i> {translateToken value="Facebook"}</span>
                         </a>
                 {/if}
         </div>
