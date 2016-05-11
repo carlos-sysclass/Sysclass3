@@ -30,15 +30,15 @@ crud:
           sClass: text-center
           label: Active
 
-        - mData: in_course
-          sType: table-boolean
-          sClass: text-center
-          label: Course Role
+        #- mData: in_course
+        #  sType: table-boolean
+        #  sClass: text-center
+        #  label: Course Role
 
-        - mData: in_class
-          sType: table-boolean
-          sClass: text-center
-          label: Class Role
+        #- mData: in_class
+        #  sType: table-boolean
+        #  sClass: text-center
+        #  label: Class Role
 
 
         - mData: options
