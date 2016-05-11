@@ -10,6 +10,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             el : "#dropbox-image-crop",
             jCropApi : null,
             events : {
+                "shown.bs.modal" : "startJCrop",
                 "click .save-action" : "saveCrop",
                 "click .close-action" : "cancelCrop"
             },
@@ -29,17 +30,21 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.trigger("file-crop:cancel", this.model);
             },
             setModel : function(model) {
-                var self = this;
                 this.model = model;
+            },
+            startJCrop : function(e) {
                 this.$(".crop-container").attr("src", this.model.get("url"));
-
-                console.warn(this.jCropApi);
+                //console.warn(this.jCropApi);
+                //
                 if (!_.isNull(this.jCropApi)) {
                     this.jCropApi.destroy();
                 }
 
+                var self = this;
                 this.$(".crop-container").Jcrop({
                     aspectRatio: 1,
+                    boxWidth: this.$(".modal-dialog .modal-body").width(),
+                    boxHeight: 900,
                     onSelect: function (c) {
                         this.model.set("crop", c);
                         /*
@@ -50,7 +55,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                         */
                     }.bind(this)
                 }, function() {
-                   self.jCropApi = this;
+                    self.jCropApi = this;
                 });
             },
             open : function() {
