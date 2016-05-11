@@ -223,11 +223,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
         }
     }
 
-    /**
-     * [ add a description ]
-     *
-     * @Get("/item/{model}/{identifier}")
-    */
    /*
     public function getItemRequest($model, $identifier)
     {

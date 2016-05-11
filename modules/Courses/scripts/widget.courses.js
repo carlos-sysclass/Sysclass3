@@ -428,7 +428,10 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			tagName : "tr",
 			template : _.template($("#tab_course_classes-item-template").html(), null, {variable: "model"}),
 			setClassId : function(e) {
-				app.userSettings.set("class_id", this.model.get("class_id"));
+				//console.warn(this.model.toJSON());
+				app.userSettings.set("class_id", this.model.get("id"));
+
+				//$("[href='#class-tab']").click();
 			},
 			render : function(e) {
 				console.info('portlet.courses/courseClassesTabViewItemClass::render');
@@ -618,6 +621,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 
+				this.listenTo(app.userSettings, "change:class_id", this.focus.bind(this));
+
 
 				this.classInfoTabView = new classInfoTabViewClass({
 					el : this.$("#tab_class_info"),
@@ -642,6 +647,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.blockUi('No Class Selected');
 
 				this.updateCollectionIndex();
+			},
+			focus : function() {
+				$("[href='#class-tab']").tab('show');
 			},
 			render : function(e) {
 				console.info('portlet.courses/classTabViewClass::render');
@@ -847,6 +855,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 
+				this.listenTo(app.userSettings, "change:lesson_id", this.focus.bind(this));
+
 				// TODO CREATE SUB VIEWS!!
 				//
 				this.lessonVideoTabView 	= new lessonVideoTabViewClass({
@@ -884,7 +894,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/lessonTabViewClass::render');
 				this.unBlockUi();
 				//
-				this.$(".class-title").html(this.model.get("class"));
+				
+				this.$(".class-title").html(this.model.get("classe.name"));
 				this.$(".lesson-title").html(this.model.get("name"));
 
 				var factor = this.model.get("progress.factor");
@@ -894,6 +905,9 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".viewed-status").addClass("hidden");
 				}
 
+			},
+			focus : function() {
+				$("[href='#lesson-tab']").tab('show');
 			},
 			setViewed : function() {
 				this.$(".viewed-status").removeClass("hidden");
