@@ -2762,6 +2762,16 @@ Custom portlet tabs
   list-style: none;
 }
 
+.portlet-body ul li .list-group-item {
+  border-bottom: 1px solid #ddd;
+  border-right: none;
+  border-top: none;
+  border-left: none;
+}
+.portlet-body ul li:last-child .list-group-item {
+  border: none;
+}
+
 .tab-pane > p:last-child {
   margin-bottom: 0px;
 }
