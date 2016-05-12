@@ -10,7 +10,10 @@
 <meta name="MobileOptimized" content="320">
 
 <link rel="icon" type="image/ico" href="{Plico_GetResource file='img/favicon.png'}" />
+{$T_ALLSTYLESHEETS nofilter}
 <link rel="stylesheet" type="text/css" href="/{$T_STYLESHEET_TARGET}" />
+
+
 <link rel="shortcut icon" href="{Plico_GetResource file='img/favicon.png'}" />
 <!--
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full"></script>
