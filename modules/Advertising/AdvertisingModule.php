@@ -4,6 +4,7 @@ namespace Sysclass\Modules\Advertising;
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Dropbox\File;
 /**
  * Manage and control the advertising system strategy
  * @package Sysclass\Modules
@@ -207,7 +208,44 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         );
         $this->putitem("view_types", $view_types);
 
+        $this->putBlock("dropbox.upload");
+
         parent::editPage($id);
+    }
+
+    public function afterModelCreate($evt, $model, $data) {
+        if (array_key_exists("crop", $data)) {
+            if (array_key_exists("file", $data)) {
+                $file_id = $data['file']['id'];
+
+                $fileModel = File::findFirstById($file_id);
+
+                $stream = $this->storage->getFilestream($fileModel);
+
+                $image = new \Plico\Php\Image();
+                $croped = $image->resize($stream, $data['crop'], 150, 150);
+
+                $file_path = $this->storage->getFullFilePath($fileModel);
+                $file_full_path = $image->saveAsJpeg($croped, $file_path);
+
+                if ($file_full_path) {
+
+                    $path_info = pathinfo($file_full_path);
+
+                    $fileModel->name = $path_info['basename'];
+                    $fileModel->filename = $path_info['basename'];
+                    $fileModel->type = "image/jpeg";
+
+                    $fileModel->size = filesize($file_full_path);
+
+                    $fileModel->url = $this->storage->getFullFileUrl($fileModel);
+
+                    $path_info = pathinfo($file_path);
+
+                    $fileModel->save();
+                }
+            }
+        }
     }
 
     /**
@@ -475,4 +513,5 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
+
 }

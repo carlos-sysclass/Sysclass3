@@ -40,7 +40,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
         if (is_null($module_id)) {
             $class_name = get_class($this);
-            $this->module_id = strtolower(str_replace("Module", "", $class_name));
+            $this->module_id = str_replace("Module", "", $class_name);
         } else {
             $this->module_id = $module_id;
         }
@@ -49,7 +49,8 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         }
 
 
-        $this->module_folder = $this->environment["path/modules"] . $this->module_id;
+        echo $this->module_folder = $this->environment["path/modules"] . $this->module_id;
+        exit;
 
         $this->module_request = str_replace($this->getBasePath(), "", $this->context['urlMatch']);
 
@@ -286,7 +287,13 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     protected function display($template=NULL)
     {
-        return parent::display($this->template($template));
+        $full_template = $this->template($template);
+
+        if (!file_exists($full_template)) {
+            $full_template = 'crud/' . $template;
+        }
+
+        return parent::display($full_template);
     }
     protected function fetch($template=NULL)
     {

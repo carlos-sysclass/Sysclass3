@@ -82,6 +82,7 @@ abstract class PhalconWrapperController extends Controller
 
 	public function module($module, $noCached=FALSE)
 	{
+		return $this->loader->module($module);
 		$module = strtolower($module);
 
 		//var_dump($module, self::$resourceCache["module"]);
@@ -396,7 +397,6 @@ abstract class PhalconWrapperController extends Controller
 			//var_dump($template);
 			$template = $this->template;
 		}
-	
 		
 		//$smarty = $this->getSmarty();
 		$params = array();
@@ -527,13 +527,17 @@ abstract class PhalconWrapperController extends Controller
 		// UNCOMMENT TO PROVIDE CSS MINIFICATION (MUST ADJUST @import inside)
 		$filename = md5(implode(":", $css)) . ".css";
 
-		$cssHeaderAssets
-			->join(true)
-		    // The name of the final output
-		    ->setTargetPath("resources/" . $filename)
-		    // The script tag is generated with this URI
-		    ->setTargetUri("resources/" . $filename)
-		    ->addFilter(new Phalcon\Assets\Filters\Cssmin());
+		
+		if (!$this->environment->run->debug) {
+		
+			$cssHeaderAssets
+				->join(true)
+			    // The name of the final output
+			    ->setTargetPath("resources/" . $filename)
+			    // The script tag is generated with this URI
+			    ->setTargetUri("resources/" . $filename)
+			    ->addFilter(new Phalcon\Assets\Filters\Cssmin());
+		}
 
 		foreach($css as $file) {
 		//	var_dump($file);
@@ -560,11 +564,18 @@ abstract class PhalconWrapperController extends Controller
 			$jsFooterAssets->addJs($file, true);
 		}
 
-		$assets->outputCss("cssHeader");
+		//var_dump($assets->outputCss("cssHeader"));
+		//exit;
+
+		if ($this->environment->run->debug) {
+			$this->putItem('allstylesheets', $assets->outputCss("cssHeader"));
+		} else {
+			$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
+		}
 
 		$this->putData(array(
 			//'scripts'			=> self::$_scripts,
-			//'stylesheets'		=> $assets->outputCss("cssHeader"),
+			//'allstylesheets'		=> $assets->outputCss("cssHeader"),
 			'scripts'			=> $assets->outputJs("jsFooter"),
 			'module_scripts'	=> self::$_moduleScripts,
 			//'stylesheets'		=> self::$_css,
@@ -572,7 +583,7 @@ abstract class PhalconWrapperController extends Controller
 			'section_tpl'		=> self::$_sections_tpl
 		));
 
-		$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
+//		$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
 		$this->putItem("script_target", $jsFooterAssets->getTargetUri());
 
 		$message = $this->getMessage();
