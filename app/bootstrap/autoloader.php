@@ -47,7 +47,6 @@ $loader->registerNamespaces(array(
     "React\Stream" => __DIR__ . '/../../vendor/react/stream/src/',
     "Evenement" => __DIR__ . '/../../vendor/evenement/evenement/src/Evenement/',
     */
-    
 ));
 
 $loader-> registerClasses(array(

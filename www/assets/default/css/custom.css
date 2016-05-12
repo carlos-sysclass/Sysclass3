@@ -1979,3 +1979,8 @@ a.list-group-item,
     position: relative;
     top: -46px;
 }
+
+.pagination > li > a, .pagination > li > span, .pagination > li i.fa {
+	line-height: 1.42857;
+	text-align: center;
+}

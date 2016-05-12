@@ -85,6 +85,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/fa/css/font-awesome',
 		'plugins/fa/css/font-awesome',
 		'plugins/simple-line-icons/simple-line-icons',
+		'css/colors',
 		//<!-- END GLOBAL MANDATORY STYLES -->
 
 		//<!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -100,8 +101,10 @@ $di->setShared('environment', function() use ($di) {
  		//<!-- BEGIN THEME STYLES -->
  		'css/flags',
 		'css/style-sysclass',
+		
 		'css/style',
 		'css/style-responsive',
+
 		'css/plugins',
 		'css/layout',
 		'css/themes/blue',
