@@ -82,6 +82,7 @@ abstract class PhalconWrapperController extends Controller
 
 	public function module($module, $noCached=FALSE)
 	{
+		return $this->loader->module($module);
 		$module = strtolower($module);
 
 		//var_dump($module, self::$resourceCache["module"]);
@@ -396,7 +397,6 @@ abstract class PhalconWrapperController extends Controller
 			//var_dump($template);
 			$template = $this->template;
 		}
-	
 		
 		//$smarty = $this->getSmarty();
 		$params = array();

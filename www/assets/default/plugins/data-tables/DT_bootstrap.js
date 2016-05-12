@@ -289,7 +289,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 					1 : "Yes",
 					0 : "No"
 				};
-				console.warn(data);
 				if (data == 1) {
 					return '<span class="label label-sm label-success">' + map[data] + '</span>';
 				} else if (data == 0) {
@@ -304,6 +303,16 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"bSortable"		: true,
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-boolean' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				// TODO GET THE MAP FROM TRANSLATION MODEL
+				return '<span style="display:inline-block;" class="label '+  data + '">' + data + '</span>';
+			},
+			"bSearchable" 	: true,
+			"bSortable"		: true,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-color' ]
 		},
 	],
 	"aaSorting": [[0, 'asc']],
@@ -377,8 +386,8 @@ $.extend( $.fn.dataTableExt.oPagination, {
 			// pagination with prev, next link icons
 			$(nPaging).append(
 				'<ul class="pagination">'+
-					'<li class="prev disabled"><a href="#" title="'+oLang.sPrevious+'"><i class="icon-angle-left"></i></a></li>'+
-					'<li class="next disabled"><a href="#" title="'+oLang.sNext+'"><i class="icon-angle-right"></i></a></li>'+
+					'<li class="prev disabled"><a href="#" title="'+oLang.sPrevious+'"><i class="fa fa-angle-left"></i></a></li>'+
+					'<li class="next disabled"><a href="#" title="'+oLang.sNext+'"><i class="fa fa-angle-right"></i></a></li>'+
 				'</ul>'
 			);
 
