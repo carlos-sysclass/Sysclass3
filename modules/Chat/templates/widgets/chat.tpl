@@ -1,4 +1,4 @@
-aaa<ul class="ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
+<ul class="ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
     <li class="active block-title">
         <a>
             <i class="{$T_DATA.icon}"></i>
