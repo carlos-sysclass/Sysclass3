@@ -287,7 +287,6 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
     protected function display($template=NULL)
     {
-        var_dump($template);
         $full_template = $this->template($template);
 
         if (!file_exists($full_template)) {

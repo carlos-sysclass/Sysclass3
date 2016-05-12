@@ -11,7 +11,22 @@
                 </h4>
             </div>
             <div class="modal-body" align="center">
-                <p>You can crop your picture, if you wish</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-inline">
+                            <div class="inline-item">
+                                <label class="control-label">{translateToken value='You can crop your picture, if you wish'}</label>
+                            </div>
+                            <div class="inline-item">
+                                <label class="control-label">{translateToken value="Sizes:"}</label>
+                            </div>
+                            <div class="inline-item">
+                                <select class="select2-me form-control" name="default_sizes" data-placeholder="{translateToken value='Please select the size'}">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <img src="" class="crop-container" />
             </div>
             <div class="modal-footer">
