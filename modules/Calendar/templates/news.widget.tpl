@@ -1,4 +1,5 @@
-<div class="scroller list-group widget-block-view-container" data-height="200px" data-always-visible="1" data-rail-visible="1">
+<div class="scroller list-group" data-height="200px" data-always-visible="1" data-rail-visible="1">
+	<ul class="widget-block-view-container"></ul>
 </div>
 
 <script type="text/template" id="news-item-template">
