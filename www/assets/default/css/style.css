@@ -1608,7 +1608,7 @@ Box portlet
 }
 
 .portlet.box > .portlet-title {
-  margin-bottom: 0px;
+  margin-bottom: -1px;
 }
 
 .portlet.box.blue > .portlet-title {
@@ -2754,6 +2754,12 @@ Custom portlet tabs
 .portlet.tabbable .portlet-body {
   padding: 0px;
   border: 1px solid #ddd;
+}
+.portlet-body ul {
+  padding: 0;
+}
+.portlet-body ul li {
+  list-style: none;
 }
 
 .tab-pane > p:last-child {
