@@ -417,12 +417,12 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             foreach ($itemsData as $key => $item) {
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
-                        'icon'  => 'icon-edit',
+                        'icon'  => 'fa fa-pencil',
                         'link'  => $this->getBasePath() . $optionsRoute . "/" . $item['id'],
                         'class' => 'btn-sm btn-primary'
                     ),
                     'remove'    => array(
-                        'icon'  => 'icon-remove',
+                        'icon'  => 'fa fa-remove',
                         'class' => 'btn-sm btn-danger'
                     )
                 );

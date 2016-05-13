@@ -17,10 +17,10 @@
                             <div class="inline-item">
                                 <label class="control-label">{translateToken value='You can crop your picture, if you wish'}</label>
                             </div>
-                            <div class="inline-item">
+                            <div class="inline-item size-container">
                                 <label class="control-label">{translateToken value="Sizes:"}</label>
                             </div>
-                            <div class="inline-item">
+                            <div class="inline-item size-container">
                                 <select class="select2-me form-control" name="default_sizes" data-placeholder="{translateToken value='Please select the size'}">
                                 </select>
                             </div>

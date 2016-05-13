@@ -8,8 +8,11 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
         events : {
             "shown.bs.modal" : "startJCrop",
             "click .save-action" : "saveCrop",
-            "click .close-action" : "cancelCrop"
+            "click .close-action" : "cancelCrop",
+            "change [name='default_sizes']" : "changeAspectRatio"
         },
+        aspectRatio : 1,
+        cropSizes : null,
         initialize : function(opt) {
             console.warn(opt);
 
@@ -19,10 +22,16 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.$("[name='default_sizes']").empty();
 
                 for (var i in this.cropSizes) {
-                    $option = jQuery("<option value=" + this.cropSizes[i][0] + "x" + this.cropSizes[i][1] + ">"+ this.cropSizes[i][2] + "</option>");
+                    $option = jQuery("<option value=" + i + ">"+ this.cropSizes[i][2] + "</option>");
                     this.$("[name='default_sizes']").append($option);
                 }
-                this.$("[name='default_sizes']")
+                //this.$("[name='default_sizes']").
+                this.$(".size-container").show();
+
+                this.$("[name='default_sizes']").select2();
+                this.$("[name='default_sizes']").select2('val', 0);
+            } else {
+                this.$(".size-container").hide();
             }
 
             this.$el.modal({
@@ -31,7 +40,20 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
 
             //"file-crop:save"
             //"file-crop:cancel"
-
+        },
+        setAspectRatio : function(width, height) {
+            this.aspectRatio = width / height;
+            if (!_.isNull(this.jCropApi)) {
+                this.jCropApi.setOptions(
+                {
+                    aspectRatio: width / height
+                });
+            }
+        },
+        changeAspectRatio : function(e) {
+            //console.warn(e, this.jCropApi);
+            var id = e.added.id;
+            this.setAspectRatio(this.cropSizes[id][0], this.cropSizes[id][1]);
         },
         saveCrop : function() {
             this.trigger("file-crop:save", this.model);
@@ -52,7 +74,8 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
 
             var self = this;
             this.$(".crop-container").Jcrop({
-                aspectRatio: 1,
+                aspectRatio: this.aspectRatio,
+                setSelect:   [ 0, 0, 4096, 4096 ],
                 boxWidth: this.$(".modal-dialog .modal-body").width(),
                 boxHeight: 900,
                 onSelect: function (c) {
