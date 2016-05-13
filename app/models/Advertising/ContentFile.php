@@ -23,7 +23,6 @@ class ContentFile extends Model
 			array(120, 600, 600/120 * -1) // VERTICAL BANNER
 		);
     }
-    /*
     public function beforeCreate() {
         // RESIZE THE FILE BASED ON ADSENSE TABLE (get the most closer size ratio)
         // 
@@ -68,7 +67,6 @@ class ContentFile extends Model
             $file->save();
         }
     }
-    */
 	/**
 	 * 
 	 */

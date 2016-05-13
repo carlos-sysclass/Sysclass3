@@ -1,33 +1,53 @@
-<div class="form-group" id="advertising-banners">
+<div id="advertising-banners">
     <!--
     <ul class="list-group ui-sortable margin-top-20">
     </ul>
     -->
-    <div class="pull-left">
-        <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/image">
-            <i class="fa fa-plus"></i>
-            <span>{translateToken value="Add File"}</span>
-            <input type="file" name="files[]">
-        </span>
-        <span class="btn btn-sm btn-link timeline-addtext">
-            <i class="fa fa-plus"></i>
-            <span>{translateToken value="Add HTML"}</span>
-        </span>
-    </div>
-    <div class="pull-right">
-        <a class="btn btn-sm btn-primary timeline-expand" href="javascript:void(0);">
-            <i class="fa fa-plus"></i>
-            <span>{translateToken value="Expand All"}</span>
-        </a>
-        <a class="btn btn-sm btn-warning timeline-collapse" href="javascript:void(0);">
-            <i class="fa fa-minus"></i>
-            <span>{translateToken value="Collapse All"}</span>
-        </a>
-    </div>
-    <div class="clearfix"></div>
 
-    <ul class="timeline content-timeline-items">
-    </li>
+    <div class="form-group">
+        <label class="control-label">{translateToken value="Banner Size"}</label>
+        <!--
+        <input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
+        -->
+        <select class="select2-me form-control" name="banner_size" data-rule-required="1"  data-placeholder="{translateToken value='View Type'}">
+            {foreach $T_BANNER_SIZES as $banner_size}
+                <option value="{$banner_size.id}" data-width="{$banner_size.width}" data-height="{$banner_size.height}">{$banner_size.name} ({$banner_size.width}x{$banner_size.height})</option>
+            {/foreach}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">{translateToken value="Global Link"}</label>
+        <input name="global_link" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+    </div>
+
+    <div class="form-group">
+        <div class="pull-left">
+            <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/image">
+                <i class="fa fa-plus"></i>
+                <span>{translateToken value="Add File"}</span>
+                <input type="file" name="files[]">
+            </span>
+            <span class="btn btn-sm btn-link timeline-addtext">
+                <i class="fa fa-plus"></i>
+                <span>{translateToken value="Add HTML"}</span>
+            </span>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-sm btn-primary timeline-expand" href="javascript:void(0);">
+                <i class="fa fa-plus"></i>
+                <span>{translateToken value="Expand All"}</span>
+            </a>
+            <a class="btn btn-sm btn-warning timeline-collapse" href="javascript:void(0);">
+                <i class="fa fa-minus"></i>
+                <span>{translateToken value="Collapse All"}</span>
+            </a>
+        </div>
+        <div class="clearfix"></div>
+
+        <ul class="timeline content-timeline-items">
+        </ul>
+    </div>
 </div>
 
 <script type="text/template" id="text-banner-item">
