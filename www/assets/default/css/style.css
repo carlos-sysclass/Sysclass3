@@ -362,6 +362,15 @@ ie8 & ie9 modes
 *********************/
 
 /***
+Dashboard resets
+***/
+.btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active {
+    border-color: transparent;
+    text-align: center;
+    width: 100%;
+}
+
+/***
 Header and header elements.
 ***/
 
@@ -2782,6 +2791,7 @@ Dashboard container
 #dashboard {
   overflow: hidden;
 }
+
 
 /***
 Dashboard stats
