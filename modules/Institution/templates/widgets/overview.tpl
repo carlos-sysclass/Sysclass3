@@ -8,12 +8,9 @@
 <div class="row">
         <div class="col-lg-6 col-md-12 col-xs-12">
                 {if $context.website}
-                <div class="">
-
                         <a href="{$context.website}" target="_blank" class="btn btn-link btn-info">
                                 <span class="text"><i class="icon-link"></i> {translateToken value="Website"}</span>
                         </a>
-                </div>
                 {/if}
         </div>       
      
