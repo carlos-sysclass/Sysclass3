@@ -3,12 +3,12 @@ dashboard:
         0:
             1:
                 weight:
-                    md: 8
+                    md: 9
                     sm: 12
                     xs: 12
             2:
                 weight:
-                    md: 4
+                    md: 3
                     sm: 12
                     xs: 12
 
