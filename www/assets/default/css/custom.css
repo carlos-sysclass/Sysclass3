@@ -1772,7 +1772,7 @@ button.calendar-news-item {
 }
 @media (min-width: 768px) {
 	#users-panel {
-		max-height: 166px;
+		height: auto;
 	}
 }
 .tabbable-custom > .tab-content {
