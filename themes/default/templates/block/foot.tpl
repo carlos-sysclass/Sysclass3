@@ -69,6 +69,7 @@
     </div>
 {/if}
 
+{$T_ALLSCRIPTS nofilter}
 <script type="text/javascript" src="/{$T_SCRIPT_TARGET}"></script>
 
 <!-- END CORE PLUGINS -->

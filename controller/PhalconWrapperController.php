@@ -543,7 +543,15 @@ abstract class PhalconWrapperController extends Controller
 		//	var_dump($file);
 			$cssHeaderAssets->addCss($file, true);
 		}
-		//exit;
+
+		if ($this->environment->run->debug) {
+			$this->putItem('allstylesheets', $assets->outputCss("cssHeader"));
+		} else {
+			$assets->outputCss("cssHeader");
+
+			$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
+		}
+
 
 		$scripts = $this->resolvePaths(self::$_scripts);
 
@@ -552,39 +560,33 @@ abstract class PhalconWrapperController extends Controller
 		// UNCOMMENT TO PROVIDE CSS MINIFICATION (MUST ADJUST @import inside)
 		$filename = md5(implode(":", $scripts)) . ".js";
 		
-		$jsFooterAssets
-			->join(true)
-		    // The name of the final output
-		    ->setTargetPath("resources/" . $filename)
-		    // The script tag is generated with this URI
-		    ->setTargetUri("resources/" . $filename)
-		    ->addFilter(new Phalcon\Assets\Filters\Jsmin());
+		if (!$this->environment->run->debug) {
+			$jsFooterAssets
+				->join(true)
+			    // The name of the final output
+			    ->setTargetPath("resources/" . $filename)
+			    // The script tag is generated with this URI
+			    ->setTargetUri("resources/" . $filename)
+			    ->addFilter(new Phalcon\Assets\Filters\Jsmin());
+		}
 		
 		foreach($scripts as $file) {
 			$jsFooterAssets->addJs($file, true);
 		}
 
-		//var_dump($assets->outputCss("cssHeader"));
-		//exit;
-
 		if ($this->environment->run->debug) {
-			$this->putItem('allstylesheets', $assets->outputCss("cssHeader"));
+			$this->putItem('allscripts', $assets->outputJs("jsFooter"));
 		} else {
-			$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
+			$assets->outputJs("jsFooter");
+
+			$this->putItem("script_target", $jsFooterAssets->getTargetUri());
 		}
 
 		$this->putData(array(
-			//'scripts'			=> self::$_scripts,
-			//'allstylesheets'		=> $assets->outputCss("cssHeader"),
-			'scripts'			=> $assets->outputJs("jsFooter"),
 			'module_scripts'	=> self::$_moduleScripts,
-			//'stylesheets'		=> self::$_css,
 			'links'				=> $this->_links,
 			'section_tpl'		=> self::$_sections_tpl
 		));
-
-//		$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
-		$this->putItem("script_target", $jsFooterAssets->getTargetUri());
 
 		$message = $this->getMessage();
 
