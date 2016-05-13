@@ -523,16 +523,17 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             },
             initializeImageCropDialog : function() {
                 var imageCropDialogViewClass = app.module("blocks.dropbox.upload").imageCropDialogViewClass;
+                 
                 this.imageCropDialog = new imageCropDialogViewClass({
+                    /*
                     sizes : [
-                        [728, 90, 'Horizontal Banner'], // HORIZONTAL BANNER
-                        [300, 250, 'Square Banner'], // ALMOST SQUARE BANNER
-                        [120, 600, 'Vertical Banner'] // VERTICAL BANNER
+                        [728, 90, 'Horizontal'], // HORIZONTAL BANNER
+                        [300, 250, 'Square'], // ALMOST SQUARE BANNER
+                        [120, 600, 'Vertical'] // VERTICAL BANNER
                     ]
+                    */
                 });
-
                 
-
             },
             initializeFileUpload : function() {
                 // CREATE FILEUPLOAD WIDGET
@@ -588,6 +589,14 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                             });//.render();
 
 
+                            var selectOption = self.$("[name='banner_size']").select2('data').element[0];
+                            var size = $(selectOption).data();
+
+                            if (_.has(size, 'width') && _.has(size, 'height')) {
+                                self.imageCropDialog.setAspectRatio(
+                                    size.width, size.height
+                                );
+                            }
 
                             //console.warn(self.model, data);
                             self.imageCropDialog.setModel(
@@ -604,8 +613,8 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                             });
                                 
                             self.listenTo(self.imageCropDialog, "file-crop:cancel", function(model) {
-                               
-                                viewObject.completeEvents();
+                                // ABORT UPLOAD
+                                viewObject.delete();
                             });
 
                             // viewObject.completeEvents();
