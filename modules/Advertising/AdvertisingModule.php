@@ -4,6 +4,7 @@ namespace Sysclass\Modules\Advertising;
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Dropbox\File;
 /**
  * Manage and control the advertising system strategy
  * @package Sysclass\Modules
@@ -23,7 +24,10 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         $adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
 
-        $items = $adsModel->getItems();
+        $items = $adsModel->addFilter(array(
+            'active' => true
+        ))->getItems();
+
         $widgetsData = array();
 
         foreach($items as $item) {
@@ -204,7 +208,55 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         );
         $this->putitem("view_types", $view_types);
 
+
+        $banner_sizes = array(
+            array('id' => 0, 'width' => 728, 'height' => 90, 'name' => 'Horizontal'),
+            array('id' => 1, 'width' => 300, 'height' => 250, 'name' => 'Square'),
+            array('id' => 2, 'width' => 120, 'height' => 600, 'name' => 'Vertical')
+        );
+
+        $this->putitem("banner_sizes", $banner_sizes);
+
+
+
+        $this->putBlock("dropbox.upload");
+
         parent::editPage($id);
+    }
+
+    public function beforeModelCreate($evt, $model, $data) {
+        if (array_key_exists("crop", $data)) {
+            if (array_key_exists("file", $data)) {
+                $file_id = $data['file']['id'];
+
+                $fileModel = File::findFirstById($file_id);
+
+                $stream = $this->storage->getFilestream($fileModel);
+
+                $image = new \Plico\Php\Image();
+                $croped = $image->resize($stream, $data['crop'], $data['crop']['w'], $data['crop']['h']);
+
+                $file_path = $this->storage->getFullFilePath($fileModel);
+                $file_full_path = $image->saveAsJpeg($croped, $file_path);
+
+                if ($file_full_path) {
+
+                    $path_info = pathinfo($file_full_path);
+
+                    $fileModel->name = $path_info['basename'];
+                    $fileModel->filename = $path_info['basename'];
+                    $fileModel->type = "image/jpeg";
+
+                    $fileModel->size = filesize($file_full_path);
+
+                    $fileModel->url = $this->storage->getFullFileUrl($fileModel);
+
+                    $path_info = pathinfo($file_path);
+
+                    $fileModel->save();
+                }
+            }
+        }
     }
 
     /**
@@ -472,4 +524,5 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
+
 }

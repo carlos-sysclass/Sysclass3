@@ -16,7 +16,7 @@
 	<ul class="message-recipient-group ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
 		<li class="active">
 			<a>
-				<i class="icon-{$T_DATA.icon}"></i>
+				<i class="{$T_DATA.icon}"></i>
 				{$T_DATA.header}
 			</a>
 		</li>
@@ -25,7 +25,7 @@
 			
 			<a href="javascript: void(0);" class="message-recipient-item dialogs-messages-send-action" data-group-id="{$item.id}">
 				{if isset($item.icon)}
-					<span class="text-{$item.color}"><i class="icon-{$item.icon}"></i></span>
+					<span class="text-{$item.color}"><i class="fa {$item.icon}"></i></span>
 				{/if}
 				{$item.text}
 			</a>

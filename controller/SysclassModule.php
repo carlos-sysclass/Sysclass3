@@ -44,8 +44,7 @@ abstract class SysclassModule extends BaseSysclassModule
         } else {
             $this->module_request = $this->context['basePath'];
         }
-
-        $this->module_folder = $this->environment["path/modules"] . ucfirst($this->module_id);
+        $this->module_folder = $this->environment["path/modules"] . str_replace("Module", "", $class_name);
 
         //$this->module_request = str_replace($this->getBasePath(), "", $this->context['urlMatch']);
 
@@ -90,7 +89,11 @@ abstract class SysclassModule extends BaseSysclassModule
 
     public function viewPage()
     {
-        if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
+
+        $model_info = $this->model_info['me'];
+
+        if ($this->isResourceAllowed("view", $model_info)) {
+        //if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
             $this->createClientContext("view");
             $this->display($this->template);
         } else {
@@ -105,8 +108,9 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function addPage()
     {
-        $depinject = Phalcon\DI::getDefault();
-        if ($depinject->get("acl")->isUserAllowed(null, $this->module_id, "Create")) {
+        $model_info = $this->model_info['me'];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
             if (!$this->createClientContext("add")) {
                 $this->entryPointNotFoundError($this->getSystemUrl('home'));
             }
@@ -124,7 +128,11 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function editPage($id)
     {
-        if ($this->acl->isUserAllowed(null, $this->module_id, "Edit")) {
+        $model_info = $this->model_info['me'];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
+
+        //if ($this->acl->isUserAllowed(null, $this->module_id, "Edit")) {
             $this->createClientContext("edit", array('entity_id' => $id));
             $this->display($this->template);
         } else {
@@ -378,6 +386,8 @@ abstract class SysclassModule extends BaseSysclassModule
             'object' => $itemModel
         ));
         $model_info = $this->model_info[$model];
+
+
         
         if ($this->isResourceAllowed("edit", $model_info)) {
 
@@ -395,8 +405,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     );
                     return true;
                 }
-
-                
+               
                 $model_info = $this->model_info[$model];
                 /*
                 $model_class = $model_info['class'];
@@ -436,6 +445,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $afterMessages = $itemModel->getMessages();
 
+
+
                     $modelMessages = array_merge($beforeMessages, $afterMessages);
 
                     if (count($modelMessages) > 0) {
@@ -465,6 +476,8 @@ abstract class SysclassModule extends BaseSysclassModule
                         $response = array_merge($response, $itemData);
                     }
                 } else {
+                                        var_dump($itemModel->getMessages());
+                    exit;
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
                     $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
@@ -633,7 +646,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 //$items = array_values($items);
                 $baseLink = $this->getBasePath();
 
-                $globalOptions = $this->getDatatableItemOptions($item);
+                $globalOptions = $this->getDatatableItemOptions($item, $model);
 
                 //$editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
                 //$deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
@@ -697,22 +710,28 @@ abstract class SysclassModule extends BaseSysclassModule
      * MUST return a options array, to bve applied to all finded records.
      * @return [array|null] [description]
      */
-    protected function getDatatableItemOptions() {
-        $editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
-        $deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
+    protected function getDatatableItemOptions($item, $model = 'me') {
+
+        $model_info = $this->model_info[$model];
+
+        $allowed = $this->isResourceAllowed("edit", $model_info);
+
+
+        $editAllowed = $this->isResourceAllowed("edit", $model_info);
+        $deleteAllowed = $this->isResourceAllowed("delete", $model_info);
 
         $options = array();
 
         if ($editAllowed) {
             $options['edit']  = array(
-                'icon'  => 'icon-edit',
+                'icon'  => 'fa fa-pencil',
                 'link'  => $baseLink . 'edit/%id$s',
                 'class' => 'btn-sm btn-primary'
             );
         }
         if ($deleteAllowed) {
             $options['remove']  = array(
-                'icon'  => 'icon-remove',
+                'icon'  => 'fa fa-remove',
                 'class' => 'btn-sm btn-danger'
             );
         }

@@ -35,6 +35,9 @@ class Lesson extends Model
     public function toFullLessonArray() {
         $result = $this->toArray();
 
+        $classe = $this->getClasse();
+        $result['classe'] = $classe->toArray();
+
         $contents = $this->getContents();
         $result['contents'] = array();
 
@@ -45,7 +48,11 @@ class Lesson extends Model
         }
         
         $progress = $this->getProgress();
-        $result['progress'] = $progress->toArray();
+        if ($progress) {
+            $result['progress'] = $progress->toArray();
+        } else {
+            $result['progress'] = array();
+        }
 
         return $result;
     }

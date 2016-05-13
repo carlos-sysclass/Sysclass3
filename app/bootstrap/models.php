@@ -85,7 +85,6 @@ $di->set('mongo', function () use ($environment, $di) {
     } else {
         $mongo = new Mongo();
     }
-
    
     return $mongo->selectDB($environment->mongo->database . "-" . $environment_name);
    

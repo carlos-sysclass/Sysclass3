@@ -7,17 +7,19 @@
 	DocumentRoot /var/www/sysclass/current/www
 
        <Directory /var/www/sysclass/current/www>
-                AllowOverride All
-		Require all granted
+            AllowOverride All
+        	#Order Allow,Deny
+	    	#Allow from all
+			Require all granted
         </Directory>
 
 	Alias /files /var/www/sysclass/current/files/
 
 	<Directory /var/www/sysclass/current/files/>
-        	#Order Allow,Deny
-	        #Allow from all
+        #Order Allow,Deny
+	    #Allow from all
 		Require all granted
-        	Options -Indexes
+        Options -Indexes
 	</Directory>
 
 	ErrorLog /var/www/sysclass/logs/error.log

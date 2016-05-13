@@ -18,12 +18,7 @@ use Phalcon\Mvc\Application;
 
 define("REAL_PATH", realpath(__DIR__ . "/../"));
 
-if ($_SERVER['HTTP_HOST'] == 'local.beta.sysclass.com') {
-    define("PLICOLIB_PATH", "/projects/repo/plico/plicolib.local/");
-} else {
-    define("PLICOLIB_PATH", __DIR__ . "/../../../../plicolib/current/");
-
-}
+define("PLICOLIB_PATH", __DIR__ . "/../plicolib/");
 
 define("APP_TYPE", "WEB");
 

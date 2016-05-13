@@ -1,0 +1,63 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    variables:
+      page_title: Calendar Sources
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      variables:
+        page_subtitle: Manage your calendar sources
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: class_name
+          sType: table-color
+          label: Color
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+    add:
+      components: ["validation", "wysihtml5", "select2"]
+      #blocks: ["messages.eventtypes.allow"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Create a new calendar source
+    'edit/{id}':
+      components: ["validation", "wysihtml5", "select2"]
+      #blocks: ["messages.eventtypes.allow"]
+      template: form.tpl
+      #scripts: ["models.users", "views.users.add"]
+      variables:
+        page_subtitle: Edit a calendar source        
+models:
+  me:
+    class: Sysclass\Models\Calendar\Sources
+    acl: 
+      view:
+        resource: Calendar
+        action: manage
+      create:
+        resource: Calendar
+        action: manage
+      edit:
+        resource: Calendar
+        action: manage
+      delete:
+        resource: Calendar
+        action: manage

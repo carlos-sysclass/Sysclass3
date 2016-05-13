@@ -67,7 +67,6 @@ class ContentFile extends Model
             $file->save();
         }
     }
-
 	/**
 	 * 
 	 */

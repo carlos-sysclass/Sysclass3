@@ -1,0 +1,95 @@
+<?php
+/**
+ * Module Class File
+ * @filesource
+ */
+namespace Sysclass\Modules\CalendarSource;
+
+use Sysclass\Models\System\Colors;
+
+use Sysclass\Models\Calendar\Sources as CalendarSource,
+    Sysclass\Models\Calendar\Event;
+/**
+ * [NOT PROVIDED YET]
+ * @package Sysclass\Modules
+ */
+/**
+ * @RoutePrefix("/module/calendarsource")
+ */
+class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, \IActionable
+{
+    /* IBreadcrumbable */
+    public function getBreadcrumb() {
+        $breadcrumbs = array(
+            array(
+                'icon'  => 'icon-home',
+                'link'  => $this->getSystemUrl('home'),
+                'text'  => $this->translate->translate("Home")
+            ),
+            array(
+                'icon'  => 'fa fa-calendar',
+                'link'  => $this->getBasePath() . "view",
+                'text'  => $this->translate->translate("Calendar Sources")
+            )
+        );
+
+        $request = $this->getMatchedUrl();
+        switch($request) {
+            case "add" : {
+                $breadcrumbs[] = array('icon' => 'fa fa-plus-circle', 'text'   => $this->translate->translate("New calendar source"));
+                break;
+            }
+            case "edit/{id}" : {
+                $breadcrumbs[] = array('icon' => 'fa fa-pencil', 'text'   => $this->translate->translate("Edit calendar source"));
+                break;
+            }
+        }
+        return $breadcrumbs;
+    }
+
+    /* IActionable */
+    public function getActions()
+    {
+        $request = $this->getMatchedUrl();
+
+        $actions = array
+        (
+            'view'  => array
+            (
+                array(
+                    'text'      => $this->translate->translate('New calendar source'),
+                    'link'      => $this->getBasePath() . "add",
+                    'class'     => "btn-primary",
+                    'icon'      => 'fa fa-plus-circle'
+                )
+            )
+        );
+
+        return $actions[$request];
+    }
+
+    public function beforeModelCreate($evt, $model, $data) {
+    }
+
+    /**
+     * Get the event according to the id
+     *
+     * @Get("/add")
+    */
+    public function addPage() {
+        $colors = Colors::find();
+        $this->putItem("colors", $colors->toArray());
+        return parent::addPage();
+    }
+
+    /**
+     * Get the event according to the id
+     *
+     * @Get("/edit/{id}")
+    */
+    public function editPage($id) {
+        $colors = Colors::find();
+        $this->putItem("colors", $colors->toArray());
+        return parent::editPage($id);
+    }
+}
