@@ -393,6 +393,9 @@ h4.border-bottom {
     padding: 0 22px 36px 22px;
     display: inline-block;
 }
+.tabbable-left .portlet-tabs > .nav-tabs > li > a:hover {
+	padding: 0 22px 33px 22px;\
+}
 
 /*
 .portlet-tabs {
@@ -1347,6 +1350,9 @@ button.calendar-news-item {
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {
     font-size: 16px;
 }
+.header .navbar-nav > li > a > i {
+	font-size: 16px !important;
+}
 
 .portlet-sidebar {
     background: #f8f8f8 none repeat scroll 0 0;
@@ -1812,7 +1818,7 @@ button.calendar-news-item {
 }
 
 .header .navbar-nav > li.menu-item .menu-link > i {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .header .navbar-nav .menu-link:hover {

@@ -450,7 +450,7 @@ Header and header elements.
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-menu > li > a > i {
@@ -2741,7 +2741,7 @@ Custom portlet tabs
   border-right: 0;
   background-color: none !important;
   border-top-color:transparent;
-  background-color: #fff;
+  background-color: #57b5e3;
 }
 
 .portlet-tabs > .nav-tabs > .active > a  {
