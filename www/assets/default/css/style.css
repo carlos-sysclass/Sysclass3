@@ -1589,7 +1589,7 @@ Box portlet
 }
 
 .portlet.box > .portlet-title > .tools {
-  margin-top: 3px;
+  margin-top: 6px;
 }
 
 .portlet.box > .portlet-title > .tools > a.remove,

@@ -14,13 +14,13 @@
 -->
 {if $T_DATA.data|@count > 0}
 	<ul class="portlet tabbable message-recipient-group ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
+		<li class="active">
+			<a>
+				<i class="{$T_DATA.icon}"></i>
+				{$T_DATA.header}
+			</a>
+		</li>
 		<div class="portlet-body">
-			<li class="active">
-				<a>
-					<i class="{$T_DATA.icon}"></i>
-					{$T_DATA.header}
-				</a>
-			</li>
 			{foreach $T_DATA.data as $item}
 			<li>
 				
