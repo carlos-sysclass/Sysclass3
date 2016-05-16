@@ -522,8 +522,8 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .courses-container {
 	margin-left: auto;
 	margin-right: auto;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 0;
+	padding-right: 0;
 }
 
 .extended.notification {
@@ -1826,7 +1826,7 @@ button.calendar-news-item {
 }
 
 #calendar {
-    margin-bottom: -46px;
+    margin-bottom: -69px;
     position: relative;
     top: -46px;
 }

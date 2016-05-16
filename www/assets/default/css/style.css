@@ -369,6 +369,14 @@ Dashboard resets
     text-align: center;
     width: 100%;
 }
+.navbar-lesson {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-left: 0 !important;
+    border-right: 0 !important;
+}
 
 /***
 Header and header elements.
@@ -1304,7 +1312,7 @@ Portlets
   display: inline-block;
   font-size: 18px;
   line-height: 18px;
-  font-weight: 400;
+  font-weight: 100;
   margin: 0;
   padding: 0;
   margin-bottom: 8px;
