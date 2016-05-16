@@ -771,6 +771,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 #courses-content .tabbable-custom  .tab-content > .tab-pane {
 	padding-bottom: 56%;
 	height: 0;
+	border-top: 1px solid #ddd;
 }
 /*
 #courses-widget .tab-content .nav.nav-tabs > li {

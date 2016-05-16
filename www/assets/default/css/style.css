@@ -2091,7 +2091,10 @@ Custom tables
   border-left-width: 0px;
 }
 .table-advance tr td:first-child {
-  border-left-width: 1px !important;
+  border-left-width: 0 !important;
+}
+.table-advance tr td:last-child {
+  border-left-width: 0 !important;
 }
 
 .table-advance tr td.highlight:first-child a {
@@ -2570,7 +2573,7 @@ Custom tabs
 ***/
 
 .tabbable-custom {
-  margin-bottom: 15px;
+  margin-bottom: 0;
   padding: 0px;
   overflow: hidden;
 }
@@ -2582,7 +2585,7 @@ Custom tabs
 
 .tabbable-custom > .tab-content {
    background-color: #fff;
-   border: 1px solid #ddd;
+   border: none;
    -webkit-border-radius: 0;
    -moz-border-radius: 0;
    border-radius: 0;
