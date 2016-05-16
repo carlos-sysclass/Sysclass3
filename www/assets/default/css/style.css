@@ -1612,8 +1612,7 @@ Box portlet
 /* portlet buttons */
 .portlet.box > .portlet-body {
   background-color: #fff;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 0;
 }
 
 .portlet.box > .portlet-title {
