@@ -2061,6 +2061,7 @@ Custom tables
 
 .table-advance {
   margin-bottom: 10px !important;
+  border: none;
 }
 
 .table-advance thead {
@@ -2092,9 +2093,11 @@ Custom tables
 }
 .table-advance tr td:first-child {
   border-left-width: 0 !important;
+  border-left: none;
 }
-.table-advance tr td:last-child {
+.table-advance tr td:first-child {
   border-left-width: 0 !important;
+  border-right: none;
 }
 
 .table-advance tr td.highlight:first-child a {
@@ -2581,6 +2584,8 @@ Custom tabs
 .tabbable-custom > .nav-tabs {
   border: none;
   margin: 0px;
+  margin-bottom: 0px;
+  border-bottom: 1px solid #ddd;
 }
 
 .tabbable-custom > .tab-content {
