@@ -41,18 +41,23 @@
 <script type="text/template" id="widget-chat-queue-template">
     <div class="row">
         <% if (model.online) { %>
-        <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
+        <a href="javascript: void(0);" class="pull-right start-chat-action">
                 {translateToken value="Online"}
         <% } else { %>
-        <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
+        <a href="javascript: void(0);" class="pull-right start-chat-action">
                 {translateToken value="Offline"}
         <% } %>
             <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
-
                 <% if (_.size(model.user.avatars) > 0) { %>
                     <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
                 <% } else { %>
                     <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
+                <% } %>
+
+                <% if (model.online) { %>
+                <span class="btn btn-success btn-sm">{translateToken value="Online"}</span>    
+                <% } else { %>
+                <span class="btn btn-success btn-sm">{translateToken value="Offline"}</span>
                 <% } %>
             </div>
             <div class="col-md-8 col-sm-8 col-xs-8">
