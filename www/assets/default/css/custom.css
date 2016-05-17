@@ -1822,6 +1822,9 @@ button.calendar-news-item {
 	padding-left: 0;
     padding-right: 0;
 }
+.header .navbar-nav > li.menu-item  i {
+	width: 16px !important;
+}
 .header .navbar-nav > li.menu-item  .fa.fa-question {
 	width: 9px !important;
 }
