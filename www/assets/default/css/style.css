@@ -2757,7 +2757,7 @@ Custom portlet tabs
   border-right: 0;
   background-color: none !important;
   border-top-color:transparent;
-  background-color: #57b5e3;
+  background-color: #eee;
 }
 
 .portlet-tabs > .nav-tabs > .active > a  {
