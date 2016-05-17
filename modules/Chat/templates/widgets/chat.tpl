@@ -68,8 +68,8 @@
             <p class="text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
                 <span class="text-default"><%= model.user.timezone %></span>
-            </p class="text-left margin-bottom-5">
-            <p><%= model.user.language.name %></p>
+            </p>
+            <p class="text-left margin-bottom-5"><%= model.user.language.name %></p>
         </div>
     </div>
     <hr />
