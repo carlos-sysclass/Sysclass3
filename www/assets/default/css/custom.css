@@ -1820,6 +1820,7 @@ button.calendar-news-item {
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
     padding: 10px 6px 11px;
+    height: 42px;
 }
 
 .header .navbar-nav > li.menu-item .menu-link > i {

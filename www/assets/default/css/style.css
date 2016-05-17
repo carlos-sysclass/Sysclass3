@@ -440,8 +440,8 @@ Header and header elements.
 
 .header .navbar-nav > li.dropdown,
 .header .navbar-nav > li.dropdown > a {
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .header .navbar-nav > li.dropdown > a:last-child {
@@ -455,6 +455,7 @@ Header and header elements.
 .header .navbar-nav > li.dropdown .dropdown-toggle {
   margin: 0px;
   padding: 15px 10px 7px 10px;
+  height: 42px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
