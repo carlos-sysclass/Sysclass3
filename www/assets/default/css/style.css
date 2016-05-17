@@ -380,8 +380,16 @@ Dashboard resets
     border-top: 1px solid #ddd;
 }
 .chat-panel-reset {
-  
+
 }
+.chat-panel-reset .btn {
+    width: 100%;
+    padding: 4px 4px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 /***
 Header and header elements.
 ***/
