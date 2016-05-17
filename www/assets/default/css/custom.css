@@ -1822,7 +1822,7 @@ button.calendar-news-item {
 	padding-left: 0;
     padding-right: 0;
 }
-.header .navbar-nav > li.menu-item i {
+.header .navbar-nav > li.menu-item  .fa.fa-question {
 	width: 9px !important;
 }
 .header .navbar-nav > li.menu-item .menu-link {
@@ -1833,9 +1833,6 @@ button.calendar-news-item {
 
 .header .navbar-nav > li.menu-item .menu-link > i {
     font-size: 16px;
-}
-.header .navbar-nav > li.menu-item .menu-link > .fa.fa-comments {
-    font-size: 16px !important;
 }
 .header .navbar-nav .menu-link:hover {
     background-color: #146a9d !important;
