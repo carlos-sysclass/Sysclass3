@@ -40,29 +40,29 @@
 
 <script type="text/template" id="widget-chat-queue-template">
     <div class="row">
-        <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
-            <% if (_.size(model.user.avatars) > 0) { %>
-                <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
-            <% } else { %>
-                <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
-            <% } %>
-            <% if (model.online) { %>
-            <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
+        <% if (model.online) { %>
+        <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
                 {translateToken value="Online"}
-            </a>
-            <% } else { %>
-            <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
+        <% } else { %>
+        <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
                 {translateToken value="Offline"}
-            </a>
-            <% } %>
-        </div>
-        <div class="col-md-8 col-sm-8 col-xs-8">
-            <h5><%= model.name %></h5>
-            <small><%= model.user.name %> <%= model.user.surname %></small>
-            <p>
-                <%= model.user.timezone %> <br>
-                <%= model.user.language.name %>
-            </p>
-        </div>
+        <% } %>
+            <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
+
+                <% if (_.size(model.user.avatars) > 0) { %>
+                    <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
+                <% } else { %>
+                    <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
+                <% } %>
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <h5><%= model.name %></h5>
+                <small><%= model.user.name %> <%= model.user.surname %></small>
+                <p>
+                    <%= model.user.timezone %> <br>
+                    <%= model.user.language.name %>
+                </p>
+            </div>
+        </a>
     </div>
 </script>
