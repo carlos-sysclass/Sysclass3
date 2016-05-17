@@ -1827,7 +1827,7 @@ button.calendar-news-item {
 }
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
-    padding: 10px 6px 11px;
+    padding: 10px 4px 11px;
     height: 42px;
 }
 
@@ -1934,7 +1934,7 @@ a.list-group-item,
 }
 
 .fc-unthemed .fc-today {
-	background: #3089c9 none repeat scroll 0 0 !important;
+	background: #00599A none repeat scroll 0 0 !important;
 	font-weight: bold;
 	color: #fff;
 }
