@@ -63,5 +63,4 @@
             </p>
         </div>
     </div>
-    <hr />
 </script>
