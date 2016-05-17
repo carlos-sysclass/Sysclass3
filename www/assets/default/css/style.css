@@ -1152,8 +1152,11 @@ Footer
 }
 
 .footer .footer-tools .go-top i {
-  font-size: 22px;
+  font-size: 16px;
   margin-bottom: 5px;
+}
+.footer .footer-tools .go-top i {
+    color: #fff !important;
 }
 
 
