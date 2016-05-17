@@ -1354,7 +1354,7 @@ button.calendar-news-item {
     width: 22px;
     height: 22px;
     float: left;
-    text-align: center;
+    text-align: right;
     margin-top: 3px;
 }
 .header .navbar-nav > li > a > span {
@@ -1819,7 +1819,9 @@ button.calendar-news-item {
 	padding-left: 0;
     padding-right: 0;
 }
-
+.header .navbar-nav > li.menu-item i {
+	width: 9px !important;
+}
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
     padding: 10px 6px 11px;
