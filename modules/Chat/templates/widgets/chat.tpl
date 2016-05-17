@@ -44,15 +44,6 @@
             <% } else { %>
                 <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
             <% } %>
-        </div>
-        <div class="col-md-8 col-sm-8 col-xs-8">
-            <p class="text-left margin-bottom-5">
-                <!-- <span class="pull-left hidden-xs">{translateToken value="Attendee"}:</span> -->
-                <strong class="text-default"><%= model.name %></strong>
-            </p>
-            <p class="text-left margin-bottom-5">
-                <%= model.user.name %> <%= model.user.surname %>
-            </p>
             <p class="text-left margin-bottom-5">
                 <%= model.user.language.name %>
                 <% if (model.online) { %>
@@ -65,6 +56,16 @@
                 </a>
                 <% } %>
             </p>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-8">
+            <p class="text-left margin-bottom-5">
+                <!-- <span class="pull-left hidden-xs">{translateToken value="Attendee"}:</span> -->
+                <strong class="text-default"><%= model.name %></strong>
+            </p>
+            <p class="text-left margin-bottom-5">
+                <%= model.user.name %> <%= model.user.surname %>
+            </p>
+            
             <p class="text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
                 <span class="text-default"><%= model.user.timezone %></span>
