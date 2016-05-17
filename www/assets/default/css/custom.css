@@ -435,10 +435,6 @@ h4.border-bottom {
     margin-top: 6px;
 }
 
-.dropdown.user img {
-	margin-right: 6px;
-}
-
 h3.course-title, h3.class-title, h3.lesson-title {
 	margin-top: 10px;
 	margin-bottom: 20px;
@@ -1251,11 +1247,12 @@ UI Loading
 }
 
 .header .navbar-nav > li.dropdown.user .dropdown-toggle .avatar-img {
-    height: 40px;
-    top: -9px;
-    width: 40px;
-    margin-right: 5px;
+    height: 42px;
+    top: -11px;
+    width: 42px;
+    margin-right: 8px;
     margin-bottom: -8px;
+    margin-left: -5px;
 }
 
 .input-icon i.checkunique-error {
