@@ -55,7 +55,7 @@
 			                <div class="inline-item">
 			                    <input name="duration_units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-helper="integer" />
 			                </div>
-			                <div class="inline-item">
+			                <div class="inline-item"> 
 			                    <select class="select2-me form-control input-block-level" name="duration_type" style="min-width: 150px;" data-rule-required="true">
 			                        <option value="">{translateToken value="Select a Period"}</option>
 			                        <option value="week">{translateToken value="Week(s)"}</option>
