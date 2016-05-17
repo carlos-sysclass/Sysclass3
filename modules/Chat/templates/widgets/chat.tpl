@@ -48,11 +48,11 @@
             <% } %>
             <% if (model.online) { %>
             <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
-                <i class="icon-ok-sign"></i> {translateToken value="Online"}
+                {translateToken value="Online"}
             </a>
             <% } else { %>
             <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
-                <i class="icon-ok-sign"></i> {translateToken value="Offline"}
+                {translateToken value="Offline"}
             </a>
             <% } %>
         </div>
