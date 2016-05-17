@@ -1357,6 +1357,9 @@ button.calendar-news-item {
     text-align: right;
     margin-top: 3px;
 }
+.header .navbar-nav > li:first-child > a > i {
+	width: 17px;
+}
 .header .navbar-nav > li > a > span {
 	float: left;
     padding: 0 3px;

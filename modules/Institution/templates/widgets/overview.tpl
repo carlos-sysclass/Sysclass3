@@ -6,36 +6,34 @@
 </div>
 <hr />
 <div class="row">
-        <div class="col-lg-6 col-md-12 col-xs-12">
-                {if $context.website}
-                        <a href="{$context.website}" target="_blank" class="btn btn-link btn-info">
-                                <span class="text"><i class="fa fa-laptop"></i> {translateToken value="Website"}</span>
-                        </a>
-                {/if}
-        </div>       
-     
-        <div class="col-lg-6 col-md-12 col-xs-12">
-                {if $context.facebook}
-                        <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-link btn-info">
-                                <span class="text"><i class="fa fa-facebook"></i> {translateToken value="Facebook"}</span>
-                        </a>
-                {/if}
-        </div>
-</div>
-<div class="row">
-        <div class="col-lg-6 col-md-12 col-xs-12">
-                {if $context.phone}
-                        <a href="tel://{$context.phone}" target="_blank" class="btn btn-link btn-info">
-                                <span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
-                        </a>
-                {/if}
-        </div>
-
-        <div class="col-lg-6 col-md-12 col-xs-12">
-                <a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-link btn-info">
-                        <span class="text"><i class="fa fa-map"></i> {translateToken value="View Map"}</span>
+    <div class="col-lg-6 col-md-12 col-xs-12">
+        {if $context.website}
+                <a href="{$context.website}" target="_blank" class="btn btn-link btn-info">
+                        <span class="text"><i class="fa fa-laptop"></i> {translateToken value="Website"}</span>
                 </a>
-        </div>
+        {/if}
+    </div>       
+ 
+    <div class="col-lg-6 col-md-12 col-xs-12">
+        {if $context.facebook}
+                <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-link btn-info">
+                        <span class="text"><i class="fa fa-facebook"></i> {translateToken value="Facebook"}</span>
+                </a>
+        {/if}
+    </div>
+    <div class="col-lg-6 col-md-12 col-xs-12">
+        {if $context.phone}
+                <a href="tel://{$context.phone}" target="_blank" class="btn btn-link btn-info">
+                        <span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
+                </a>
+        {/if}
+    </div>
+
+    <div class="col-lg-6 col-md-12 col-xs-12">
+        <a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-link btn-info">
+                <span class="text"><i class="fa fa-map"></i> {translateToken value="View Map"}</span>
+        </a>
+    </div>
 </div>
 
 
