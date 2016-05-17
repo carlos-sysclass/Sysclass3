@@ -379,7 +379,9 @@ Dashboard resets
     border-bottom: 1px solid #ddd;
     border-top: 1px solid #ddd;
 }
-
+.chat-panel-reset {
+  
+}
 /***
 Header and header elements.
 ***/

@@ -20,7 +20,7 @@
         </a>
     </li>
 </ul>
-<div class="panel-body">
+<div class="panel-body chat-panel-reset">
     <div class="queue-container">
         
     </div>
