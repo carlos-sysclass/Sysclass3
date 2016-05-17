@@ -401,6 +401,7 @@ Dashboard resets
     font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-top: -4px;
 }
 .queue-container {
     padding: 0 !important;
