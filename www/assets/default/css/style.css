@@ -403,10 +403,11 @@ Dashboard resets
     letter-spacing: 1px;
 }
 .queue-container {
-  padding: 0;
+    padding: 0 !important;
+    margin-bottom: -1px;
 }
 .queue-container li {
-  list-style: none;
+    list-style: none;
 }
 
 /***
