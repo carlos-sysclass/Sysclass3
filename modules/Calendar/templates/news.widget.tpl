@@ -1,4 +1,4 @@
-<div class="scroller list-group" data-height="200px" data-always-visible="1" data-rail-visible="1">
+<div class="scroller list-group" data-height="194px" data-always-visible="1" data-rail-visible="1">
 	<ul class="widget-block-view-container"></ul>
 </div>
 
