@@ -1962,7 +1962,13 @@ a.list-group-item,
 	background: white !important;
 }
 .ver-inline-menu li:nth-child(odd) a, .ver-inline-menu li:nth-child(odd) i  {
-	background: #EAF4FF !important;
+	background: transparent; !important;
+}
+.ver-inline-menu li  {
+	border-bottom: 1px solid #ddd;
+}
+.ver-inline-menu li:last-child  {
+	border-bottom: none;
 }
 
 .ver-inline-menu li a:hover, .ver-inline-menu li a:hover i {
