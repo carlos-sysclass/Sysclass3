@@ -45,7 +45,6 @@
                 <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
             <% } %>
             <p class="text-left margin-bottom-5">
-                <%= model.user.language.name %>
                 <% if (model.online) { %>
                 <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
                     <i class="icon-ok-sign"></i> {translateToken value="Online"}
@@ -69,7 +68,8 @@
             <p class="text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
                 <span class="text-default"><%= model.user.timezone %></span>
-            </p>
+            </p class="text-left margin-bottom-5">
+            <p><%= model.user.language.name %></p>
         </div>
     </div>
     <hr />
