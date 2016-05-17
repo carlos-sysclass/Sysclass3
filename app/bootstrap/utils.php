@@ -7,6 +7,7 @@ use
     Sysclass\Services\Loader\Adapter as LoaderAdapter,
     Sysclass\Services\Notifications\Manager as NotificationManager,
     Plico\Php\Helpers\Strings as stringsHelper,
+    Plico\Php\Helpers\Arrays as arrayHelper,
     Phalcon\Flash\Direct as FlashDirect,
     Phalcon\Flash\Session as FlashSession;
 
@@ -61,6 +62,13 @@ $di->setShared('stringsHelper', function () {
     //$crypt->setKey();
     return $strings;
 });
+
+$di->set('arrayHelper', function () {
+    $array = new arrayHelper();
+    // Set a global encryption key
+    //$crypt->setKey();
+    return $array;
+}, true);
 
 $session = new Session(array('uniqueId' => 'SYSCLASS'));
 if (!$session->isStarted()) {

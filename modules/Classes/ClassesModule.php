@@ -5,7 +5,8 @@ namespace Sysclass\Modules\Classes;
  * @filesource
  */
 use Sysclass\Models\Courses\Classe,
-    Sysclass\Models\Courses\Lesson;
+    Sysclass\Models\Courses\Lesson,
+    Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -100,14 +101,17 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
     public function registerBlocks() {
         return array(
-            'classes.lessons.edit' => function($data, $self) {
+            'courses.moreinfo' => function($data, $self) {
+                $self->putSectionTemplate("moreinfo", "blocks/moreinfo");
+            },
+            'courses.unit.edit' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
                 $self->putModuleScript("blocks.classes.lessons.edit");
 
-                $self->putSectionTemplate("lessons", "blocks/lessons.edit");
+                $self->putSectionTemplate("units", "blocks/units.edit");
 
                 return true;
             }
@@ -118,22 +122,12 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Get("/add")
      */
+    /*
     public function addPage()
     {
-        /*
-        $items = $this->model("courses/collection")->addFilter(array(
-            'active' => true
-        ))->getItems();
-        $this->putItem("courses", $items);
-        */
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
-
         parent::addPage($id);
-
     }
+    */
 
     /**
      * [ add a description ]
@@ -142,16 +136,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function editPage($id)
     {
-        /*
-        $items = $this->model("courses/collection")->addFilter(array(
-            'active' => true
-        ))->getItems();
-        $this->putItem("courses", $items);
-        */
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        // GET THE PROFESSORS
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
 
         parent::editPage($id);
     }

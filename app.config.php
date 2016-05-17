@@ -594,7 +594,10 @@ $di->set('stringsHelper', function () {
     // Set a global encryption key
     //$crypt->setKey();
     return $strings;
-});
+}, true);
+
+
+
 
 DI::setDefault($di);
 
