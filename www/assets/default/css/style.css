@@ -402,6 +402,12 @@ Dashboard resets
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+.queue-container {
+  padding: 0;
+}
+.queue-container li {
+  list-style: none;
+}
 
 /***
 Header and header elements.
