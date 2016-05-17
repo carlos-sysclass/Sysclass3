@@ -21,8 +21,10 @@
     </li>
 </ul>
 <div class="panel-body chat-panel-reset">
-    <div class="queue-container">
-        
+    <div>
+        <ul class="queue-container">
+            
+        </ul>
     </div>
     <div class="row" id="chat-action-container">
         <div class="col-md-12">

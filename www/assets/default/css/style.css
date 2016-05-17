@@ -380,7 +380,8 @@ Dashboard resets
     border-top: 1px solid #ddd;
 }
 .chat-panel-reset {
-  padding: 8px;
+  padding: 0;
+  border: 1px solid #ddd;
 
 }
 .chat-panel-reset h5 {
