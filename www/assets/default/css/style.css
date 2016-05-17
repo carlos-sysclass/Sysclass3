@@ -408,6 +408,11 @@ Dashboard resets
 }
 .queue-container li {
     list-style: none;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.queue-container li:last-child {
+    border: none;
 }
 
 /***
