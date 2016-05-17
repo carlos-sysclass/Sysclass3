@@ -1355,6 +1355,9 @@ button.calendar-news-item {
 .header .navbar-nav > li > a > i {
 	font-size: 16px !important;
 }
+.header .navbar-nav > li > a > span {
+	
+}
 
 .portlet-sidebar {
     background: #f8f8f8 none repeat scroll 0 0;
