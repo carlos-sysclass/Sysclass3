@@ -57,11 +57,8 @@
             </p>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
-            <h5><%= model.name %> <br><small><%= model.user.name %> <%= model.user.surname %></small></h5>
-            
-            <p class="text-left margin-bottom-5">
-                <%= model.user.name %> <%= model.user.surname %>
-            </p>
+            <h5><%= model.name %></h5>
+            <small><%= model.user.name %> <%= model.user.surname %></small>
             
             <p class="text-left margin-bottom-5">
                 <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
