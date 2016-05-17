@@ -395,7 +395,7 @@ Dashboard resets
     font-size: 10px;
     margin-top: 16px;
 }
-.chat-panel-reset .btn {
+.queue-container li .btn {
     width: 100%;
     padding: 2px 4px;
     font-size: 9px;
