@@ -42,10 +42,8 @@
     <div class="row">
         <% if (model.online) { %>
         <a href="javascript: void(0);" class="pull-right start-chat-action">
-                {translateToken value="Online"}
         <% } else { %>
         <a href="javascript: void(0);" class="pull-right start-chat-action">
-                {translateToken value="Offline"}
         <% } %>
             <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
                 <% if (_.size(model.user.avatars) > 0) { %>
@@ -57,7 +55,7 @@
                 <% if (model.online) { %>
                 <span class="btn btn-success btn-sm">{translateToken value="Online"}</span>    
                 <% } else { %>
-                <span class="btn btn-success btn-sm">{translateToken value="Offline"}</span>
+                <span class="btn btn-danger btn-sm">{translateToken value="Offline"}</span>
                 <% } %>
             </div>
             <div class="col-md-8 col-sm-8 col-xs-8">
