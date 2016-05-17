@@ -383,6 +383,13 @@ Dashboard resets
   padding: 8px;
 
 }
+.chat-panel-reset h5 {
+    margin: 3px 0 0 0;
+    font-weight: 400 !important;
+}
+.chat-panel-reset small {
+  font-size: 90%;
+}
 .chat-panel-reset .btn {
     width: 100%;
     padding: 2px 4px;

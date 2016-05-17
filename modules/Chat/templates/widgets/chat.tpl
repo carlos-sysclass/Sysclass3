@@ -44,27 +44,23 @@
             <% } else { %>
                 <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
             <% } %>
-            <p class="text-left margin-bottom-5">
-                <% if (model.online) { %>
-                <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
-                    <i class="icon-ok-sign"></i> {translateToken value="Online"}
-                </a>
-                <% } else { %>
-                <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
-                    <i class="icon-ok-sign"></i> {translateToken value="Offline"}
-                </a>
-                <% } %>
-            </p>
+            <% if (model.online) { %>
+            <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
+                <i class="icon-ok-sign"></i> {translateToken value="Online"}
+            </a>
+            <% } else { %>
+            <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
+                <i class="icon-ok-sign"></i> {translateToken value="Offline"}
+            </a>
+            <% } %>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-8">
             <h5><%= model.name %></h5>
             <small><%= model.user.name %> <%= model.user.surname %></small>
-            
-            <p class="text-left margin-bottom-5">
-                <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
-                <span class="text-default"><%= model.user.timezone %></span>
+            <p>
+                <%= model.user.timezone %> <br>
+                <%= model.user.language.name %>
             </p>
-            <p class="text-left margin-bottom-5"><%= model.user.language.name %></p>
         </div>
     </div>
     <hr />
