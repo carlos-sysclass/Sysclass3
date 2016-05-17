@@ -376,6 +376,8 @@ Dashboard resets
     border: 1px solid transparent;
     border-left: 0 !important;
     border-right: 0 !important;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
 
 /***
