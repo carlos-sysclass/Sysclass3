@@ -1,7 +1,9 @@
 <?php
 namespace Sysclass\Models\Acl;
 
-use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model,
+    Sysclass\Models\Acl\RolesGroups,
+    Sysclass\Models\Acl\RolesUsers;
 
 class Role extends Model
 {
@@ -35,7 +37,21 @@ class Role extends Model
             "id",
             array('alias' => 'Groups', 'reusable' => true)
         );
+    }
 
+    public function getAllUsers() {
+        $users = $this->getUsers()->toArray();
 
+        $groups = $this->getGroups($this->id);
+
+        foreach($groups as $group) {
+            $users = array_merge($users, $group->getUsers()->toArray());
+        }
+
+        $di = \Phalcon\DI::getDefault();
+
+        $users = $di->get('arrayHelper')->multiUnique($users, 'id');
+
+        return $users;
     }
 }
