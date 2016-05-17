@@ -4,8 +4,9 @@ namespace Sysclass\Modules\Courses;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\CourseUsers;
+use Sysclass\Models\Courses\Course as Course,
+    Sysclass\Models\Enrollments\CourseUsers,
+    Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -133,6 +134,9 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
     /* IBlockProvider */
     public function registerBlocks() {
         return array(
+            'programs.moreinfo' => function($data, $self) {
+                $self->putSectionTemplate("moreinfo", "blocks/moreinfo");
+            },
             'courses.list.table' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("data-tables");
@@ -259,10 +263,11 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_coordinator' => true
-        ))->getItems();
-        $this->putItem("coordinators", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
+
 
         parent::editPage($id);
     }
