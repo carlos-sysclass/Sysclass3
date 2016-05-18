@@ -116,7 +116,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     'c.active'     => 1,
                     'cp.course_id'  => $courses
                 ), array("operator" => "="))->getItems();
-                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
             } elseif ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
                 $itemsCollection = $this->model($modelRoute);
@@ -137,7 +136,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     'clp.period_id' => $filter['period_id']
                 )/*, array("operator" => "=")*/)->getItems();
 
-                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemsCollection = $this->model($modelRoute);
@@ -154,7 +152,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     'cg.course_id' => $courses
                 ), array("operator" => "="))->getItems();
 
-                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
             } elseif ($model ==  "courses") {
                 // GET USERS COURSES
                 $userCourses = EnrolledCourse::find(
@@ -170,7 +167,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
                 $itemsCollection = $this->model($modelRoute);
                 $itemsData = $itemsCollection->getItems();
-                $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             }
 
             //$currentUser    = $this->getCurrentUser(true);
