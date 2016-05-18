@@ -357,10 +357,8 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     $itemsCollection->addFilter($filter);
                 }
             }
-            //var_dump($filter);
-            //exit;
             $itemsData = $itemsCollection->getItems();
-            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+
         } elseif ($model == "lesson-and-test") {
             $modelRoute = "base/lessons";
             $optionsRoute = "edit";

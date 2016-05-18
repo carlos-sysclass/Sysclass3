@@ -6,25 +6,32 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
+			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
+			<li>
+				<a href="#tab_1_2" data-toggle="tab">
+					{translateToken value="More Info"}
+				</a>
+			</li>
+			{/if}
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Students"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Students"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Classes"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Classes"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Grouping"}</a>
+				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Grouping"}</a>
 			</li>
 			{/if}
 
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 			<li>
-				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Permissions"}</a>
+				<a href="#tab_1_6" data-toggle="tab">{translateToken value="Permissions"}</a>
 			</li>
 			{/if}
 		</ul>
@@ -43,12 +50,12 @@
 			        <div class="col-md-12">
 			            <div class="form-group form-group-inline">
 			                <div class="inline-item">
-			                    <label class="control-label">Maximum </label>
+			                    <label class="control-label">{translateToken value="Maximum"} </label>
 			                </div>
 			                <div class="inline-item">
 			                    <input name="duration_units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-helper="integer" />
 			                </div>
-			                <div class="inline-item">
+			                <div class="inline-item"> 
 			                    <select class="select2-me form-control input-block-level" name="duration_type" style="min-width: 150px;" data-rule-required="true">
 			                        <option value="">{translateToken value="Select a Period"}</option>
 			                        <option value="week">{translateToken value="Week(s)"}</option>
@@ -68,19 +75,20 @@
 			        <div class="col-md-12">
 			            <div class="form-group form-group-inline">
 			                <div class="inline-item">
-			                    <label class="control-label">Total Price </label>
+			                    <label class="control-label">{translateToken value="Total Price"}: </label>
 			                </div>
 			                <div class="inline-item">
 			                    <input name="price_total" value="" type="text" placeholder="{translateToken value="Price"}" class="form-control" data-rule-required="true" data-helper="float" />
 			                </div>
 			                <div class="inline-item">
-			                    <label class="control-label">Installments: </label>
+			                    <label class="control-label">
+			                    {translateToken value="Installments"}: </label>
 			                </div>
  							<div class="inline-item">
 			                    <input name="price_step_units" value="" type="text" placeholder="{translateToken value="Installments"}" class="form-control" data-rule-required="true" data-helper="integer" />
 			                </div>
 			                <div class="inline-item">
-			                    <label class="control-label">Period: </label>
+			                    <label class="control-label">{translateToken value="Period"}: </label>
 			                </div>
 			                <div class="inline-item">
 			                    <select class="select2-me form-control input-block-level" name="price_step_type" style="min-width: 150px;" data-rule-required="true">
@@ -130,29 +138,40 @@
 				</div>
 
 			</div>
-			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
+			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
+				    {foreach $T_SECTION_TPL['moreinfo'] as $template}
+				        {include file=$template}
+				    {/foreach}
+
+					<div class="form-actions nobg">
+						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+					</div>
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_3">
 				    {foreach $T_SECTION_TPL['users'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_USERS_BLOCK_CONTEXT T_MODULE_ID=$T_USERS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_3">
+				<div class="tab-pane fade in" id="tab_1_4">
 				    {foreach $T_SECTION_TPL['roadmap-classes'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_ROADMAP_BLOCK_CONTEXT T_MODULE_ID=$T_ROADMAP_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_4">
+				<div class="tab-pane fade in" id="tab_1_5">
 				    {foreach $T_SECTION_TPL['roadmap-grouping'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_ROADMAP_BLOCK_CONTEXT T_MODULE_ID=$T_ROADMAP_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_5">
+				<div class="tab-pane fade in" id="tab_1_6">
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
 				    {/foreach}
