@@ -415,6 +415,14 @@ Dashboard resets
 .queue-container li:last-child {
     border: none;
 }
+.queue-container li a:hover .btn-success {
+    background-color: #449d44;
+    border-color: #398439;
+}
+.queue-container li a:hover .btn-danger {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
 
 /***
 Header and header elements.
