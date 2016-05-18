@@ -14,7 +14,7 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
         "SELECT
             l.id, l.permission_access_mode, l.class_id, c.name as class, l.name, l.info, l.active, l.`type`,
             l.`has_text_content`, l.`text_content`, l.`text_content_language_id`, l.`has_video_content`,
-            IFNULL(l.instructor_id, c.instructor_id) as instructor_id
+            l.instructor_id as instructor_id
         FROM mod_lessons l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)";
 
