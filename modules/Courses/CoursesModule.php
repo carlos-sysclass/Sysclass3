@@ -57,7 +57,6 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             ))->getItems();
             */
             $count = Course::count("active = 1");
-            //$items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'content' => array(
@@ -310,7 +309,6 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
                 $itemsCollection = $this->model($modelRoute);
                 $itemsData = $itemsCollection->getItems();
-                //$itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             } else {
                 return $this->invalidRequestError();
             }
@@ -504,7 +502,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             'course_id'	=> $courses
         ), array("operator" => "="))->getItems();
 
-        $items = $this->module("permission")->checkRules($itemsData, "classes", 'permission_access_mode');
+        $items = $itemsData;
         /*
         if ($datatable === 'datatable') {
             $items = array_values($items);
@@ -1296,7 +1294,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             'course_id' => $courses
         ), array("operator" => "="))->getItems();
 
-        $items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+        $items = $itemsData;
         /*
         if ($datatable === 'datatable') {
             $items = array_values($items);

@@ -612,7 +612,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
         //$newsItens = $this->model("news")->getItems();
 
-        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
         $tokensModel = $this->model("translate");
 
         $itemsData = $tokensModel->getItems();
@@ -672,7 +671,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
         //$newsItens = $this->model("news")->getItems();
 
-        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
         $tokensModel = $this->model("translate/tokens");
 
         $itemsData = $tokensModel->getItemsGroupByToken();

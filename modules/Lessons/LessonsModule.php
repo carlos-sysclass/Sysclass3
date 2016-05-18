@@ -25,7 +25,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemsData = $this->model("lessons")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+            $items = $itemsData;
 
             return array(
                 'content' => array(
@@ -372,7 +372,6 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 }
             }
             $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
 
         } elseif ($model == "lesson-content") {
             $modelRoute = "lessons/content";
@@ -389,7 +388,6 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 "parent_id" => null*/
             ))->getItems();
 
-            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
         }
 
         //$currentUser    = $this->getCurrentUser(true);

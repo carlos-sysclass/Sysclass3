@@ -9,7 +9,6 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
 
         $this->selectSql = "SELECT
             l.`id`,
-            l.`permission_access_mode`,
             l.`class_id`,
             c.`name` as class,
             l.`name`,

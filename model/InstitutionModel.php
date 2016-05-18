@@ -8,7 +8,6 @@ class InstitutionModel extends AbstractSysclassModel implements ISyncronizableMo
         $this->mainTablePrefix = "i";
 
 		$this->selectSql = "SELECT i.`id`,
-            i.`permission_access_mode`,
             i.`name`,
             i.`formal_name`,
             i.`contact`,

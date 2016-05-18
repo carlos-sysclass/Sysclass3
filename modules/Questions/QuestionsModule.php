@@ -371,7 +371,6 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
         $itemsData = $itemsCollection->getItems();
 
 
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {

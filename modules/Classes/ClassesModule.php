@@ -24,7 +24,6 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemsData = $this->model("classes")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "classe", 'permission_access_mode');
             */
             return array(
                 'content' => array(
@@ -260,7 +259,6 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $itemsData = $itemsCollection->getItems();
 
 
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {
