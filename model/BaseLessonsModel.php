@@ -12,7 +12,7 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
 
         $this->selectSql =
         "SELECT
-            l.id, l.permission_access_mode, l.class_id, c.name as class, l.name, l.info, l.active, l.`type`,
+            l.id, l.class_id, c.name as class, l.name, l.info, l.active, l.`type`,
             l.`has_text_content`, l.`text_content`, l.`text_content_language_id`, l.`has_video_content`,
             l.instructor_id as instructor_id
         FROM mod_lessons l

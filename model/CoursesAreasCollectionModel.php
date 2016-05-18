@@ -13,7 +13,7 @@ class CoursesAreasCollectionModel extends AbstractSysclassModel implements ISync
 
         $this->selectSql =
             "SELECT
-                a.id, a.permission_access_mode, a.name, a.coordinator_id, u.name as coordinator, a.description, a.info, a.active,
+                a.id, a.name, a.coordinator_id, u.name as coordinator, a.description, a.info, a.active,
                 COUNT(c.id) as courses_count
             FROM mod_areas a
             LEFT JOIN users u ON (a.coordinator_id = u.id)

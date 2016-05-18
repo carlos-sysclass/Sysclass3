@@ -83,7 +83,6 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
             $itemsData = $this->model($this->_modelRoute)->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 
             return array(
                 'communication' => array(
