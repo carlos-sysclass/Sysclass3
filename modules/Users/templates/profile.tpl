@@ -64,8 +64,13 @@
 										</li>
 										<li ><a data-toggle="tab" href="#tab_1-2"><i class="icon-picture"></i> {translateToken value="Profile Picture"}</a></li>
 
+										{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
+											<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-picture"></i> {translateToken value="Address"}</a></li>
+										{/if}
+
+										
 										{if $canChangePassword}
-										<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
+										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
 										{/if}
 										<!--
 										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Your Courses"}</a></li>
@@ -105,7 +110,7 @@
 									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
 
 									<div class="tab-content margin-top-20">
-										<div id="tab_1-1" class="tab-pane active">
+										<div id="tab_1-1" class="tab-pane fade active">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 											</div>
@@ -113,14 +118,23 @@
 
 										{*include file="`$T_MODULE_TPLPATH`/profile/address.tpl"*}
 
-										<div id="tab_1-2" class="tab-pane">
+										<div id="tab_1-2" class="tab-pane fade">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 											</div>
 										</div>
 										
+										{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
+											<div class="tab-pane fade" id="tab_1-3">
+											    {foreach $T_SECTION_TPL['address'] as $template}
+											        {include file=$template}
+											    {/foreach}
+											</div>
+										{/if}
+
+
 										{if $canChangePassword}
-										<div id="tab_1-3" class="tab-pane">
+										<div id="tab_1-4" class="tab-pane fade">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
 											</div>
