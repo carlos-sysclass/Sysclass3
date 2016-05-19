@@ -423,9 +423,25 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
-				console.warn(this.model.toJSON());
 				console.info('portlet.courses/programCoordinatorTabViewClass::render');
-				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
+				this.$(".scroller").empty();
+
+				if (_.size(this.model.get("coordinator")) === 0) {
+					this.disable();
+				} else {
+					this.enable();
+					this.$(".scroller").html(this.template(this.model.toJSON()));
+				}
+			},
+			disable : function() {
+				//this.$el.hide();
+				var elId = this.$el.attr("id");
+				$("[href='#" + elId + "']").hide();
+			},
+			enable : function() {
+				//this.$el.show();
+				var elId = this.$el.attr("id");
+				$("[href='#" + elId + "']").show();
 			}
 		});
 
@@ -756,7 +772,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/classInstructorTabViewClass::render');
 				this.$(".scroller").empty();
 
-				if (_.size(this.model.get("class.instructors")) === 0) {
+				if (_.size(this.model.get("classe.professor")) === 0) {
 					this.disable();
 				} else {
 					this.enable();
