@@ -48,7 +48,7 @@
 					<select class="select2-me form-control" name="instructor_id" multiple="multiple">
 						<option value="">{translateToken value="Please Select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}
-							<option value="{$instructor.id}">{$instructor.name} {$instructor.surname}</option>
+							<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
 						{/foreach}
 					</select>
 				</div>

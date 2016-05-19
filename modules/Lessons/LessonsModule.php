@@ -6,7 +6,10 @@ namespace Sysclass\Modules\Lessons;
  */
 use Sysclass\Models\Courses\Contents\Exercise,
     Sysclass\Models\I18n\Language,
-    Sysclass\Models\Dropbox\File;
+    Sysclass\Models\Dropbox\File,
+    Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Acl\Role;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -188,17 +191,16 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     
     public function addPage()
     {
-        $items = $this->model("classes")->addFilter(array(
-            'active' => true
-        ))->getItems();
+        $classes = Classe::find(array(
+            'conditions' => 'active = 1'
+        ));
 
-        $this->putItem("classes", $items);
+        $this->putItem("classes", $classes->toArray());
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
 
+        $this->putItem("instructors", $users);
 
         parent::addPage($id);
     }
@@ -211,16 +213,16 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function editPage($id)
     {
-        $items = $this->model("classes")->addFilter(array(
-            'active' => true
-        ))->getItems();
+        $classes = Classe::find(array(
+            'conditions' => 'active = 1'
+        ));
 
-        $this->putItem("classes", $items);
+        $this->putItem("classes", $classes->toArray());
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
 
 
         parent::editPage($id);
