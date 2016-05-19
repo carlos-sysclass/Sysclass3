@@ -1,7 +1,7 @@
 <div id="address-block">
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Country"}</label>
-		<select class="select2-me form-control" name="country_code" data-format-as="country-list">
+		<select class="select2-me form-control" name="country" data-format-as="country-list">
 			{foreach $T_COUNTRY_CODES as $key => $code}
 				<option value="{$key}">{$code}</option>
 			{/foreach}
@@ -12,23 +12,22 @@
 		<input name="phone" value="" type="text" placeholder="{translateToken value="Phone Number"}" 	class="form-control" 
 		data-type-field="phone" data-country-selector=":input[name='country_code']" 
 		/>
-		<!--
-		data-country-field="country_code" 
-		data-country-value="US" 
-		-->
-
 	</div>
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Zipcode"}</label>
-		<input name="zip" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-zipcode="true" />
+		<input name="postal_code" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-zipcode="true" />
 	</div>
 	<div class="form-group">
-		<label class="control-label">{translateToken value="Address Line 1"}</label>
-		<input name="address" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+		<label class="control-label">{translateToken value="Street"}</label>
+		<input name="street" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 	</div>
 	<div class="form-group">
-		<label class="control-label">{translateToken value="Address Line 2"}</label>
-		<input name="address2" value="" type="text" placeholder="{translateToken value="Address Line 2"}" class="form-control" data-rule-minlength="3" />
+		<label class="control-label">{translateToken value="Street Number"}</label>
+		<input name="street_number" value="" type="text" placeholder="{translateToken value="Street Number"}" class="form-control" data-rule-required="true" data- data-rule-minlength="3" />
+	</div>
+	<div class="form-group">
+		<label class="control-label">{translateToken value="District"}</label>
+		<input name="district" value="" type="text" placeholder="{translateToken value="District"}" class="form-control" data-rule-minlength="3" />
 	</div>
 	<div class="form-group">
 		<label class="control-label">{translateToken value="City"}</label>

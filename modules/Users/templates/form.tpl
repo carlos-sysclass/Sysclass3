@@ -80,6 +80,7 @@
 						{/if}
 					</div>
 				{/if}
+				<!--
 				<h5 class="form-section margin-bottom-10">{translateToken value="Behavior"}</h5>
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
@@ -104,7 +105,7 @@
 		            </div>
 		        </div>
 				<div class="clearfix"></div>
-
+				-->
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
