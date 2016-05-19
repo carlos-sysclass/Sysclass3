@@ -34,6 +34,15 @@ class Course extends Model
                 )
             )
         );
+
+        $this->belongsTo(
+            "coordinator_id",
+            "Sysclass\Models\Users\User",
+            "id",
+            array(
+                'alias' => 'Coordinator',
+            )
+        );
     }
 
     public function calculateDuration(\DateTime $start) {

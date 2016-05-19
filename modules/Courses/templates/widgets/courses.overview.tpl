@@ -107,6 +107,12 @@
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_classes"><i class="fa fa-sitemap"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
 							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_course_moreinfo"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="More Info"}</span></a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_course_coordinator"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Coordinator"}</span></a>
+							</li>
 							<!--
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road Map"}</span></a>
@@ -122,6 +128,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div id="tab_course_classes" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
@@ -134,6 +141,24 @@
 										<tbody>
 										</tbody>
 									</table>
+								</div>
+							</div>
+
+							<div id="tab_course_moreinfo" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										{translateToken value="Ops! There's any info registered for this program"}
+									</div>
+								</div>
+							</div>
+
+							<div id="tab_course_coordinator" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										{translateToken value="Ops! There's any info registered for this program"}
+									</div>
 								</div>
 							</div>
 							<!--
@@ -511,7 +536,65 @@
 </div>
 
 <script type="text/template" id="tab_course_description-template">
-	<%= data.description %>
+	<%= model.description %>
+</script>
+<script type="text/template" id="tab_course_moreinfo-template">
+	<table class="table table-striped table-bordered table-advance table-hover">
+		<tbody>
+			<tr>
+				<td>{translateToken value="Objetives"}</td>
+				<td><%= model.objectives %></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Goals"}</td>
+				<td><%= model.goals %></td>
+			</tr>
+
+			<!--
+			<tr>
+				<td>{translateToken value="Credit Hours:"}</td>
+				<td><strong class="text-default pull-right">80h</strong></td>
+			</tr>
+
+			<tr>
+				<td>{translateToken value="Number of Classes:"}</td>
+				<td><strong class="text-default pull-right"><%= model.position %> of 24</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Tests:"}</td>
+				<td><strong class="text-default pull-right">1 of 3</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Papers:"}</td>
+				<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Exams:"}</td>
+				<td><strong class="text-default pull-right">0 of 4</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Books:"}</td>
+				<td><strong class="text-default pull-right">2</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Required Equipment:"}</td>
+				<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
+			</tr>
+			-->
+		</tbody>
+	</table>
+	<hr />
+</script>
+<script type="text/template" id="tab_course_coordinator-template">
+	<table class="table table-striped table-bordered table-advance table-hover">
+		<tbody>
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= model.coordinator.name %> <%= model.coordinator.surname %></td>
+			</tr>
+		</tbody>
+	</table>
+	<hr />
 </script>
 <script type="text/template" id="tab_course_classes-nofound-template">
 	<tr>

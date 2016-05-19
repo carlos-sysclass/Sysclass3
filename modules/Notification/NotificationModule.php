@@ -21,7 +21,8 @@ class NotificationModule extends \SysclassModule implements \IWidgetContainer
             $notifications = UserNotification::find(array(
                 'conditions' => "user_id = ?0 AND (viewed = 0 OR stick = 1)",
                 'bind' => array($this->user->id),
-                'order' => 'timestamp DESC'
+                'order' => 'timestamp DESC',
+                'limit' => 5
             ));
 
             $data = $notifications->toArray();
