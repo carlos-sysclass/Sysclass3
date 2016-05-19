@@ -918,7 +918,7 @@ Custom label and badges
 
 .label {
   font-size: 12px;
-  padding: 3px 6px 3px 6px;
+  padding: 4px 6px 4px 6px;
 }
 
 .label.label-sm {
@@ -943,9 +943,9 @@ h7 .label {
   background-color: #e02222;
   height: 18px;
   padding: 3px 6px 3px 6px;
-  -webkit-border-radius: 12px !important;
-     -moz-border-radius: 12px !important;
-          border-radius: 12px !important;
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
   text-shadow:none !important;
   text-align: center;
   vertical-align: middle;
@@ -1104,7 +1104,7 @@ wells
 
 .nav-tabs,
 .nav-pills {
-  margin-bottom: 10px;
+  margin-bottom: -6px;
 }
 
 .tabs-right > .nav-tabs,
