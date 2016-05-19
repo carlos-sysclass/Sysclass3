@@ -11,7 +11,7 @@
 	</div>
   	<div class="footer-tools">
   		<span class="go-top">
-    		<i class="icon-angle-up"></i>
+    		<i class="fa fa-arrow-up"></i>
      	</span>
   	</div>
 </div>

@@ -18,7 +18,9 @@ use Phalcon\Mvc\Application;
 
 define("REAL_PATH", realpath(__DIR__ . "/../"));
 
+
 define("PLICOLIB_PATH", __DIR__ . "/../plicolib/");
+
 
 define("APP_TYPE", "WEB");
 

@@ -20,9 +20,11 @@
         </a>
     </li>
 </ul>
-<div class="panel-body">
-    <div class="queue-container">
-        
+<div class="panel-body chat-panel-reset">
+    <div>
+        <ul class="queue-container">
+            
+        </ul>
     </div>
     <div class="row" id="chat-action-container">
         <div class="col-md-12">
@@ -38,38 +40,32 @@
 
 <script type="text/template" id="widget-chat-queue-template">
     <div class="row">
-        <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
-            <% if (_.size(model.user.avatars) > 0) { %>
-                <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
-            <% } else { %>
-                <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
-            <% } %>
-        </div>
-        <div class="col-md-8 col-sm-8 col-xs-8">
-            <p class="text-left margin-bottom-5">
-                <!-- <span class="pull-left hidden-xs">{translateToken value="Attendee"}:</span> -->
-                <strong class="text-default"><%= model.name %></strong>
-            </p>
-            <p class="text-left margin-bottom-5">
-                <%= model.user.name %> <%= model.user.surname %>
-            </p>
-            <p class="text-left margin-bottom-5">
-                <%= model.user.language.name %>
-                <% if (model.online) { %>
-                <a href="javascript: void(0);" class="btn btn-success btn-sm pull-right start-chat-action">
-                    <i class="icon-ok-sign"></i> {translateToken value="Online"}
-                </a>
+        <% if (model.online) { %>
+        <a href="javascript: void(0);" class="pull-right start-chat-action">
+        <% } else { %>
+        <a href="javascript: void(0);" class="pull-right start-chat-action">
+        <% } %>
+            <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
+                <% if (_.size(model.user.avatars) > 0) { %>
+                    <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
                 <% } else { %>
-                <a href="javascript: void(0);" class="btn btn-danger btn-sm pull-right start-chat-action">
-                    <i class="icon-ok-sign"></i> {translateToken value="Offline"}
-                </a>
+                    <img class="avatar img-responsive" alt="" src="{Plico_GetResource file='images/placeholder/avatar.png'}" style="width: 160px;" />
                 <% } %>
-            </p>
-            <p class="text-left margin-bottom-5">
-                <!-- <span class="pull-left hidden-xs">{translateToken value="Local Time"}:</span> -->
-                <span class="text-default"><%= model.user.timezone %></span>
-            </p>
-        </div>
+
+                <% if (model.online) { %>
+                <span class="btn btn-success btn-sm">{translateToken value="Online"}</span>    
+                <% } else { %>
+                <span class="btn btn-danger btn-sm">{translateToken value="Offline"}</span>
+                <% } %>
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <h5><%= model.name %></h5>
+                <small><%= model.user.name %> <%= model.user.surname %></small>
+                <p>
+                    <%= model.user.timezone %> <br>
+                    <%= model.user.language.name %>
+                </p>
+            </div>
+        </a>
     </div>
-    <hr />
 </script>

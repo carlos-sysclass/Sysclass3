@@ -24,7 +24,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 $menuItem = array(
                     'id'        => "chat-topbar-menu",
                     'icon'      => ' fa fa-comments',
-                    'text'      => $this->translate->translate('Programs'),
+                    'text'      => $this->translate->translate('Chat'),
                     /*
                     'external'  => array(
                         'link'  => $this->getBasePath(),
