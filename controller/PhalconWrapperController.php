@@ -544,6 +544,9 @@ abstract class PhalconWrapperController extends Controller
 			$cssHeaderAssets->addCss($file, true);
 		}
 
+		//var_dump($css);
+		//exit;
+
 		if ($this->environment->run->debug) {
 			$this->putItem('allstylesheets', $assets->outputCss("cssHeader"));
 		} else {

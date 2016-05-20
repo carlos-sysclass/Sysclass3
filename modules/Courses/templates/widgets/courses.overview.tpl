@@ -107,6 +107,12 @@
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_classes"><i class="fa fa-sitemap"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
 							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_course_moreinfo"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="More Info"}</span></a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_course_coordinator"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Coordinator"}</span></a>
+							</li>
 							<!--
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road Map"}</span></a>
@@ -122,6 +128,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div id="tab_course_classes" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
@@ -134,6 +141,24 @@
 										<tbody>
 										</tbody>
 									</table>
+								</div>
+							</div>
+
+							<div id="tab_course_moreinfo" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										{translateToken value="Ops! There's any info registered for this program"}
+									</div>
+								</div>
+							</div>
+
+							<div id="tab_course_coordinator" class="tab-pane active">
+								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
+									<div class="alert alert-info">
+										<span class="text-info"><i class="icon-warning-sign"></i></span>
+										{translateToken value="Ops! There's any info registered for this program"}
+									</div>
 								</div>
 							</div>
 							<!--
@@ -511,7 +536,65 @@
 </div>
 
 <script type="text/template" id="tab_course_description-template">
-	<%= data.description %>
+	<%= model.description %>
+</script>
+<script type="text/template" id="tab_course_moreinfo-template">
+	<table class="table table-striped table-bordered table-advance table-hover">
+		<tbody>
+			<tr>
+				<td>{translateToken value="Objetives"}</td>
+				<td><%= model.objectives %></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Goals"}</td>
+				<td><%= model.goals %></td>
+			</tr>
+
+			<!--
+			<tr>
+				<td>{translateToken value="Credit Hours:"}</td>
+				<td><strong class="text-default pull-right">80h</strong></td>
+			</tr>
+
+			<tr>
+				<td>{translateToken value="Number of Classes:"}</td>
+				<td><strong class="text-default pull-right"><%= model.position %> of 24</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Tests:"}</td>
+				<td><strong class="text-default pull-right">1 of 3</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Papers:"}</td>
+				<td><strong class="text-default pull-right"><span class="label label-success">None</span></strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Exams:"}</td>
+				<td><strong class="text-default pull-right">0 of 4</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Books:"}</td>
+				<td><strong class="text-default pull-right">2</strong></td>
+			</tr>
+			<tr>
+				<td>{translateToken value="Required Equipment:"}</td>
+				<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
+			</tr>
+			-->
+		</tbody>
+	</table>
+	<hr />
+</script>
+<script type="text/template" id="tab_course_coordinator-template">
+	<table class="table table-striped table-bordered table-advance table-hover">
+		<tbody>
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= model.coordinator.name %> <%= model.coordinator.surname %></td>
+			</tr>
+		</tbody>
+	</table>
+	<hr />
 </script>
 <script type="text/template" id="tab_course_classes-nofound-template">
 	<tr>
@@ -585,78 +668,16 @@
 </script>
 
 <script type="text/template" id="tab_classes-instructor-template">
-	<% var instructors = model['classe'].instructors; %>
-	<div id="instructor_accordion">
-	<% _.each(instructors, function(instructor, index) { %>
-		<h5 class="text-danger block">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#instructor_accordion" href="#instructor_details_<%= instructor.id %>">
-				<strong>Professor <%= instructor.name %> <%= instructor.surname %></strong>
-			</a>
-		</h5>
-		<!--
-			WARNING: There no info yet about the instructor, put them on user edit or profile
-		-->
-		<!--
-		<div id="instructor_details_<%= instructor.id %>"  class="<% if (_.size(instructors) === 1) { %>in<% } else { %>collapse<% } %>">
-			<ul class="media-list">
-				<li class="media">
-					<a href="#" class="pull-right">
-						<img class="media-object" src="holder.js/128x128" alt="No Photo">
-					</a>
-					<div class="media-body">
-						<p class="">
-							<span>{translateToken value="Position:"}</span>
-							<strong class="text-default pull-right">Emeritus Professor</strong>
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="Division/Portifolio:"}</span>
-							<strong class="text-default pull-right">Division of Education, Arts and Social Sciences</strong>
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="School Unit:"}</span>
-							<strong class="text-default pull-right">School of Education</strong>
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="Campus:"}</span>
-							<strong class="text-default pull-right">Mawson Lakes Campus</strong>
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="Office:"}</span>
-							<span class="text-default pull-right">G3-12</span >
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="Telephone:"}</span>
-							<span class="text-default pull-right">(555) 555-5555</span >
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="Fax:"}</span>
-							<span class="text-default pull-right">(555) 555-5555</span >
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="Email:"}</span>
-							<a href="javascript:void(0);" class="pull-right">joe.walters@lucent.edu</a>
-						</p>
-						<hr />
-						<p class="">
-							<span>{translateToken value="URL for Business Card:"}</span>
-							<a href="javascript:void(0);" class="pull-right">http://myname@myname.com</a>
-						</p>
-						<hr />
-
-					</div>
-				</li>
-			</ul>
-		</div>
-		-->
-	<% }) %>
-	</div>
+	<% var professor = model['classe'].professor; %>
+	<table class="table table-striped table-bordered table-advance table-hover">
+		<tbody>
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= professor.name %> <%= professor.surname %></td>
+			</tr>
+		</tbody>
+	</table>
+	<hr />
 </script>
 
 <script type="text/template" id="tab_class_child-nofound-template">

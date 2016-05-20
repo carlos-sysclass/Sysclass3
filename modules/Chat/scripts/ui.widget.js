@@ -65,7 +65,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			*/
 			initialize : function() {
-				alert(1);
 				this.listenTo(this.model, "change", this.render.bind(this));
 
 				//this.wrapperChat = this.$el.parents('.page-quick-sidebar-chat');
