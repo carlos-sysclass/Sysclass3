@@ -471,6 +471,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $userGroup->save();
             }
         }
+
+        if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {
+            
+            var_dump($data['curriculum']);
+            exit;
+        }
     }
 
     protected function getDatatableItemOptions() {
