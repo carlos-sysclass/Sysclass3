@@ -10,6 +10,6 @@ class UserCurriculum extends Model
     {
     	$this->setSource("user_curriculum");
 
-        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
+        $this->belongsTo("id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
     }
 }

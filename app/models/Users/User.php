@@ -28,7 +28,7 @@ class User extends Model
             array('alias' => 'UserCourses')
         );
 
-        $this->hasOne("id", "Sysclass\\Models\\Users\\UserCurriculum", "user_id",  array('alias' => 'curriculum'));
+        $this->hasOne("id", "Sysclass\\Models\\Users\\UserCurriculum", "id",  array('alias' => 'curriculum'));
 
         $this->hasMany(
             "id",
