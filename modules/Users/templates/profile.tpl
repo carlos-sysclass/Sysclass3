@@ -118,7 +118,7 @@
 									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
 
 									<div class="tab-content margin-top-20">
-										<div id="tab_1-1" class="tab-pane fade active">
+										<div id="tab_1-1" class="tab-pane fade active in">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 											</div>
