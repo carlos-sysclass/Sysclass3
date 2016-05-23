@@ -2599,7 +2599,7 @@ Vertical inline menu
 
 .ver-inline-menu li:hover i {
   color:#fff;
-  background:#c4d5df !important;
+  background:transparent !important;
 }
 
 .ver-inline-menu li.active a,
