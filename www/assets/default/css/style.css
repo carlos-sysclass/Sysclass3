@@ -376,6 +376,9 @@ Dashboard resets
     width: 100%;
     margin-bottom: 5px;
 }
+#institution-widget .row div:last-child a {
+   margin-bottom: 0 !important;
+}
 .navbar-lesson {
     position: relative;
     min-height: 50px;
