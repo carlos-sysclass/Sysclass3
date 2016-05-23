@@ -1965,7 +1965,7 @@ a.list-group-item,
 .ver-inline-menu li a {
 	border-left: none;
 }
-.ver-inline-menu li a, .ver-inline-menu li i {
+.ver-inline-menu li a {
 	background: white !important;
 }
 .ver-inline-menu li:nth-child(odd) a, .ver-inline-menu li:nth-child(odd) i  {
