@@ -1978,10 +1978,12 @@ a.list-group-item,
 	border-bottom: none;
 }
 
-.ver-inline-menu li a:hover, .ver-inline-menu li a:hover i {
-	background: #C4D5DF !important;
+.ver-inline-menu li a:hover {
+	background: #eee !important;
 }
-
+.ver-inline-menu li a:hover i {
+	color: #444;
+}
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
 	background: #005999 !important;
     color: #fff;
