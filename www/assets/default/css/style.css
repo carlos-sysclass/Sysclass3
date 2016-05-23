@@ -2580,7 +2580,7 @@ Vertical inline menu
   padding:12px 10px 10px 8px;
   margin:0;
   text-align: center;
-  background:#e0eaf0 !important;
+  background:transparent; !important;
 }
 
 .ver-inline-menu li a {
