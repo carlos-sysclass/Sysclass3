@@ -1988,8 +1988,7 @@ a.list-group-item,
     text-decoration: none;
 }
 .ver-inline-menu li.active a:hover i {
-	background: #005999 !important; 
-	cursor: pointer;
+	background: #005999 !important;
 }
 #calendar {
 	top: 0px;
