@@ -1989,6 +1989,7 @@ a.list-group-item,
 }
 .ver-inline-menu li.active a:hover i {
 	background: #005999 !important;
+	cursor: pointer;
 }
 #calendar {
 	top: 0px;
