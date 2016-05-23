@@ -1966,7 +1966,7 @@ a.list-group-item,
 	border-left: none;
 }
 .ver-inline-menu li a, .ver-inline-menu li i {
-	background: #444 !important;
+	background: white !important;
 }
 .ver-inline-menu li:nth-child(odd) a, .ver-inline-menu li:nth-child(odd) i  {
 	background: transparent; !important;
@@ -1983,8 +1983,8 @@ a.list-group-item,
 }
 
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
-	background: #005999 !important;
-    color: #fff;
+	background: #eee !important;
+    color: #444;
     text-decoration: none;
 }
 .ver-inline-menu li.active a:hover i {
