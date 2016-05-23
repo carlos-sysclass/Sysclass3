@@ -19,11 +19,11 @@
 	</div>
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Street"}</label>
-		<input name="street" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+		<input name="street" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-minlength="5" />
 	</div>
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Street Number"}</label>
-		<input name="street_number" value="" type="text" placeholder="{translateToken value="Street Number"}" class="form-control" data-rule-required="true" data- data-rule-minlength="3" />
+		<input name="street_number" value="" type="text" placeholder="{translateToken value="Street Number"}" class="form-control" data-rule-minlength="1" />
 	</div>
 	<div class="form-group">
 		<label class="control-label">{translateToken value="District"}</label>
