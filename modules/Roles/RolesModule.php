@@ -85,7 +85,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     'text'      => $this->translate->translate('New Attribution'),
                     'link'      => "javascript:void(0)",
                     'class'     => "btn-primary dialog-create-role-open-action",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus'
                 )/*,
                 array(
                     'separator' => true,
@@ -431,7 +431,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'class' => 'btn-sm btn-warning datatable-actionable'
             ),
             'remove'    => array(
-                'icon'  => 'icon-remove',
+                'icon'  => 'fa fa-remove',
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-danger'
             )
