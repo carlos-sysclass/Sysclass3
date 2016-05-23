@@ -1979,12 +1979,12 @@ a.list-group-item,
 }
 
 .ver-inline-menu li a:hover, .ver-inline-menu li a:hover i {
-	background: #eee !important;
+	background: #C4D5DF !important;
 }
 
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
-	background: #eee !important;
-    color: #444;
+	background: #005999 !important;
+    color: #fff;
     text-decoration: none;
 }
 .ver-inline-menu li.active a:hover i {
