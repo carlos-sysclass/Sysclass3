@@ -364,10 +364,17 @@ ie8 & ie9 modes
 /***
 Dashboard resets
 ***/
-.btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active {
+#institution-widget .btn-link, #institution-widget .btn-link:hover, #institution-widget .btn-link:focus, #institution-widget .btn-link:active {
     border-color: transparent;
     text-align: center;
     width: 100%;
+}
+
+#institution-widget .btn-primary, #institution-widget .btn-primary:hover, #institution-widget .btn-primary:focus, #institution-widget .btn-primary:active {
+    border-color: transparent;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 5px;
 }
 .navbar-lesson {
     position: relative;
