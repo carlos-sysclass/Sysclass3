@@ -3,6 +3,7 @@ namespace Sysclass\Modules\Translate;
 
 use Sysclass\Models\I18n\Language,
     Sysclass\Models\I18n\Tokens,
+    Sysclass\Models\I18n\Countries,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Services\Queue\AsyncCall;
 
@@ -248,13 +249,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      */
     public function addPage()
     {
-        $country_codes = $this->model("i18n/country")->getItems();
-        $this->putItem("country_codes", $country_codes);
+        $country_codes = Countries::find();
+        $this->putItem("country_codes", $country_codes->toArray());
 
         $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
         $this->putItem("language_codes", $bingTranslationsCodes);
 
-        //return array_values($news);
         parent::addPage($id);
     }
 
@@ -266,37 +266,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     
     public function editPage($id)
     {
-        $currentUser    = $this->getCurrentUser(true);
-
-        //$editItem = $this->model("translate")->getItem($id);
-        // TODO CHECK PERMISSION FOR OBJECT
-
-        //$this->putComponent("select2", "validation");
-        //his->putBlock("permission.add");
-
-        //$this->putModuleScript("models.translate");
-        //$this->putModuleScript("views.translate.edit", array('id' => $id));
-
-        
-        $country_codes = $this->model("i18n/country")->getItems();
-        $this->putItem("country_codes", $country_codes);
+        $country_codes = Countries::find();
+        $this->putItem("country_codes", $country_codes->toArray());
 
         $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
         $this->putItem("language_codes", $bingTranslationsCodes);
         
-        /*
-        if ($this->acl->isUserAllowed(null, $this->module_id, "Edit")) {
-            $this->createClientContext("edit", array('entity_id' => $id));
-            $this->display($this->template);
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }        
-        */
-        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-        //$this->putItem("form_action", $_SERVER['REQUEST_URI']);
-        //$this->putItem("entity", $editItem);
-
-        //return array_values($news);
         parent::editPage($id);
     }
 
@@ -612,7 +587,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
         //$newsItens = $this->model("news")->getItems();
 
-        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
         $tokensModel = $this->model("translate");
 
         $itemsData = $tokensModel->getItems();
@@ -672,7 +646,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
         //$newsItens = $this->model("news")->getItems();
 
-        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
         $tokensModel = $this->model("translate/tokens");
 
         $itemsData = $tokensModel->getItemsGroupByToken();

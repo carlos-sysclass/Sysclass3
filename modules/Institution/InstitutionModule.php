@@ -61,7 +61,6 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             $items = $this->model("institution")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
             return array(
                 'administration' => array(
@@ -230,7 +229,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
 
         $itemsCollection = $this->model("institution");
         $itemsData = $itemsCollection->getItems();
-        $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+        $items = $itemsData;
 
         if ($type === 'combo') {
             $q = $_GET['q'];
@@ -247,7 +246,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             return $result;
         } elseif ($type === 'datatable') {
             $itemsData = $this->model("institution")->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+            $items = $itemsData;
 
 
             $items = array_values($items);
@@ -288,7 +287,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             );
         }
         $itemsData = $this->model("institution")->getItems();
-        $items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
+        $items = $itemsData;
 
         return array_values($items);
     }

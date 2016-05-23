@@ -333,6 +333,16 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					model : this.model
 				});
 
+				this.programMoreinfoTabView 	= new programMoreinfoTabViewClass({
+					el : this.$("#tab_course_moreinfo"),
+					model : this.model
+				});
+
+				this.programCoordinatorTabView 	= new programCoordinatorTabViewClass({
+					el : this.$("#tab_course_coordinator"),
+					model : this.model
+				});
+
 				this.courseClassesTabView = new courseClassesTabViewClass({
 					el : this.$("#tab_course_classes table tbody"),
 					model : this.model/*,
@@ -381,14 +391,57 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		var courseDescriptionTabViewClass = Backbone.View.extend({
-			template : _.template($("#tab_course_description-template").html(), null, {variable : 'data'}),
+			template : _.template($("#tab_course_description-template").html(), null, {variable : 'model'}),
 			initialize: function() {
 				console.info('portlet.courses/courseDescriptionTabViewClass::initialize');
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
+				console.warn(this.model.toJSON());
 				console.info('portlet.courses/courseDescriptionTabViewClass::render');
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
+			}
+		});
+
+		var programMoreinfoTabViewClass = Backbone.View.extend({
+			template : _.template($("#tab_course_moreinfo-template").html(), null, {variable : 'model'}),
+			initialize: function() {
+				console.info('portlet.courses/programMoreinfoTabViewClass::initialize');
+				this.listenTo(this.model, 'sync', this.render.bind(this));
+			},
+			render : function(e) {
+				console.warn(this.model.toJSON());
+				console.info('portlet.courses/programMoreinfoTabViewClass::render');
+				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
+			}
+		});
+
+		var programCoordinatorTabViewClass = Backbone.View.extend({
+			template : _.template($("#tab_course_coordinator-template").html(), null, {variable : 'model'}),
+			initialize: function() {
+				console.info('portlet.courses/programCoordinatorTabViewClass::initialize');
+				this.listenTo(this.model, 'sync', this.render.bind(this));
+			},
+			render : function(e) {
+				console.info('portlet.courses/programCoordinatorTabViewClass::render');
+				this.$(".scroller").empty();
+
+				if (_.size(this.model.get("coordinator")) === 0) {
+					this.disable();
+				} else {
+					this.enable();
+					this.$(".scroller").html(this.template(this.model.toJSON()));
+				}
+			},
+			disable : function() {
+				//this.$el.hide();
+				var elId = this.$el.attr("id");
+				$("[href='#" + elId + "']").hide();
+			},
+			enable : function() {
+				//this.$el.show();
+				var elId = this.$el.attr("id");
+				$("[href='#" + elId + "']").show();
 			}
 		});
 
@@ -719,7 +772,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/classInstructorTabViewClass::render');
 				this.$(".scroller").empty();
 
-				if (_.size(this.model.get("class.instructors")) === 0) {
+				if (_.size(this.model.get("classe.professor")) === 0) {
 					this.disable();
 				} else {
 					this.enable();

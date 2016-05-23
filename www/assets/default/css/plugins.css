@@ -27,7 +27,7 @@ Calendar with full calendar
      -moz-text-shadow: none ;
           text-shadow: none ;
   border: 0 ;
-  padding: 6px 8px 30px 8px ;
+  padding: 8px 8px 27px 8px ;
   margin-left:2px;  
   border-top-style: none;
   border-bottom-style: none;
@@ -37,6 +37,7 @@ Calendar with full calendar
   background: transparent;
   color: #fff;
   top: -46px;
+  margin-bottom: 2px; 
 }
 
 .portlet.calendar .fc-header {

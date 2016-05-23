@@ -103,7 +103,6 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             //$items = $this->model("institution")->addFilter(array(
             //    'active'    => true
             //))->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
 
             return array(
                 'administration' => array(

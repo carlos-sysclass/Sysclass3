@@ -11,7 +11,6 @@ class CourseItemModel extends AbstractSysclassModel implements ISyncronizableMod
         //$this->fieldsMap = array();
 
         $this->selectSql = "SELECT `id`,
-            `permission_access_mode`,
             `ies_id`,
             `name`,
             `name` as course_name,

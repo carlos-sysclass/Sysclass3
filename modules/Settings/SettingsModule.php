@@ -146,7 +146,11 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
     }
 
     public function getSettings($mergeWithDefaults = false) {
-       if ($user = $this->getCurrentUser(true)) {
+       if ($user = $this->user) {
+            // GET USER LANGUAGE AND LOCALIZATION INFO
+            //language_id
+            //var_dump($user->getLanguage()->toArray());
+            //exit;
             // SAVE SETTINGS FOR CURRENT USER
             $settings = $user->getSettings();
 
@@ -159,6 +163,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 if ($mergeWithDefaults) {
                     $results = array_merge($this->defaults, $results);
                 }
+
+                $results['language'] = $user->getLanguage()->js_code;
 
                 return $results;
             }

@@ -14,7 +14,6 @@ class CoursesClassesCollectionModel extends AbstractSysclassModel implements ISy
         $this->selectSql = "
 			SELECT
 				cl.id,
-				cl.permission_access_mode,
 				cl.ies_id,
 				cl.area_id,
 				cl.name,

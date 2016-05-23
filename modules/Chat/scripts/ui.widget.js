@@ -51,6 +51,8 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				"click .start-chat-action" : "startChat"
 			},
+			tagName : "li",
+			className : "chat-li",
 			/*
 			events : {
 				"click .assign-to-me-action" : "assignToMeAction",

@@ -51,6 +51,8 @@ abstract class PhalconWrapperController extends Controller
 
 		$result = array();
 		foreach($files as $file) {
+			$file = $this->stringsHelper->vksprintf($file, ['locale' => $this->translate->getJsSource()]);
+
 			if (strpos($file, "/") === 0) {
 				$result[] = $file;
 			} else {
@@ -540,9 +542,11 @@ abstract class PhalconWrapperController extends Controller
 		}
 
 		foreach($css as $file) {
-		//	var_dump($file);
 			$cssHeaderAssets->addCss($file, true);
 		}
+
+		//var_dump($css);
+		//exit;
 
 		if ($this->environment->run->debug) {
 			$this->putItem('allstylesheets', $assets->outputCss("cssHeader"));
@@ -551,7 +555,6 @@ abstract class PhalconWrapperController extends Controller
 
 			$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
 		}
-
 
 		$scripts = $this->resolvePaths(self::$_scripts);
 
@@ -569,7 +572,7 @@ abstract class PhalconWrapperController extends Controller
 			    ->setTargetUri("resources/" . $filename)
 			    ->addFilter(new Phalcon\Assets\Filters\Jsmin());
 		}
-		
+
 		foreach($scripts as $file) {
 			$jsFooterAssets->addJs($file, true);
 		}
@@ -659,6 +662,8 @@ abstract class PhalconWrapperController extends Controller
             return sprintf($templatedPath, $this->environment['default/theme']);
         }
     }
+
+
 
 
 

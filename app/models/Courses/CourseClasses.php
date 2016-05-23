@@ -127,7 +127,7 @@ class CourseClasses extends Model
         $result['course'] = $course->toArray();
 
         $class = $this->getClasse();
-        $result['classe'] = $class->toArray();
+        $result['classe'] = $class->toFullArray();
 
         $lessons = $class->getLessons();
 

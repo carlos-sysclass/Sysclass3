@@ -4,8 +4,9 @@ namespace Sysclass\Modules\Courses;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\CourseUsers;
+use Sysclass\Models\Courses\Course as Course,
+    Sysclass\Models\Enrollments\CourseUsers,
+    Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -56,7 +57,6 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             ))->getItems();
             */
             $count = Course::count("active = 1");
-            //$items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'content' => array(
@@ -133,6 +133,9 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
     /* IBlockProvider */
     public function registerBlocks() {
         return array(
+            'programs.moreinfo' => function($data, $self) {
+                $self->putSectionTemplate("moreinfo", "blocks/moreinfo");
+            },
             'courses.list.table' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("data-tables");
@@ -259,10 +262,11 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_coordinator' => true
-        ))->getItems();
-        $this->putItem("coordinators", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
+
 
         parent::editPage($id);
     }
@@ -305,7 +309,6 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
                 $itemsCollection = $this->model($modelRoute);
                 $itemsData = $itemsCollection->getItems();
-                //$itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             } else {
                 return $this->invalidRequestError();
             }
@@ -499,7 +502,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             'course_id'	=> $courses
         ), array("operator" => "="))->getItems();
 
-        $items = $this->module("permission")->checkRules($itemsData, "classes", 'permission_access_mode');
+        $items = $itemsData;
         /*
         if ($datatable === 'datatable') {
             $items = array_values($items);
@@ -1291,7 +1294,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             'course_id' => $courses
         ), array("operator" => "="))->getItems();
 
-        $items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+        $items = $itemsData;
         /*
         if ($datatable === 'datatable') {
             $items = array_values($items);

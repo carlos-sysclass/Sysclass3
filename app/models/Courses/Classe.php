@@ -23,6 +23,13 @@ class Classe extends Model
             array('alias' => 'Progress')
         );
 
+        $this->belongsTo(
+            "professor_id",
+            "Sysclass\\Models\\Users\\User",
+            "id",
+            array('alias' => 'Professor')
+        );
+
         $this->hasManyToMany(
             "id",
             "Sysclass\Models\Courses\CourseClasses",

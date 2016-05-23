@@ -66,6 +66,7 @@ crud:
         page_subtitle: Config and edit user info
     profile:
       components: ["select2","validation","datepicker","pwstrength", "jquery-mask", "jquery-jcrop"]
+      blocks: ["address.book"]
       stylesheets: ["css/pages/profile"]
       base_scripts: ["scripts/ui.menu.translate"]
       scripts: ["views.profile"]

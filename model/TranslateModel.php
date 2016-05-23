@@ -14,7 +14,7 @@ class TranslateModel extends ModelManager
             "login"					=> 'users_LOGIN'
         );
         */
-        $this->selectSql = "SELECT `id`, `code`, `country_code`, `permission_access_mode`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
+        $this->selectSql = "SELECT `id`, `code`, `country_code`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
         //`lessons_ID`, `classe_id`,
 
         parent::init();

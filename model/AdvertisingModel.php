@@ -11,7 +11,7 @@ class AdvertisingModel extends AbstractSysclassModel implements ISyncronizableMo
         $this->mainTablePrefix = "a";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "SELECT id, placement, view_type, active FROM mod_advertising a";
+        $this->selectSql = "SELECT id, placement, view_type, banner_size, global_link, active FROM mod_advertising a";
 
         parent::init();
     }

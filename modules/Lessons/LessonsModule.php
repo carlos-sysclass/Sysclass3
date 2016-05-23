@@ -6,7 +6,10 @@ namespace Sysclass\Modules\Lessons;
  */
 use Sysclass\Models\Courses\Contents\Exercise,
     Sysclass\Models\I18n\Language,
-    Sysclass\Models\Dropbox\File;
+    Sysclass\Models\Dropbox\File,
+    Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Acl\Role;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -25,7 +28,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemsData = $this->model("lessons")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+            $items = $itemsData;
 
             return array(
                 'content' => array(
@@ -188,17 +191,16 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     
     public function addPage()
     {
-        $items = $this->model("classes")->addFilter(array(
-            'active' => true
-        ))->getItems();
+        $classes = Classe::find(array(
+            'conditions' => 'active = 1'
+        ));
 
-        $this->putItem("classes", $items);
+        $this->putItem("classes", $classes->toArray());
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
 
+        $this->putItem("instructors", $users);
 
         parent::addPage($id);
     }
@@ -211,16 +213,16 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function editPage($id)
     {
-        $items = $this->model("classes")->addFilter(array(
-            'active' => true
-        ))->getItems();
+        $classes = Classe::find(array(
+            'conditions' => 'active = 1'
+        ));
 
-        $this->putItem("classes", $items);
+        $this->putItem("classes", $classes->toArray());
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
 
 
         parent::editPage($id);
@@ -357,10 +359,8 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     $itemsCollection->addFilter($filter);
                 }
             }
-            //var_dump($filter);
-            //exit;
             $itemsData = $itemsCollection->getItems();
-            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
+
         } elseif ($model == "lesson-and-test") {
             $modelRoute = "base/lessons";
             $optionsRoute = "edit";
@@ -374,7 +374,6 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 }
             }
             $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
 
         } elseif ($model == "lesson-content") {
             $modelRoute = "lessons/content";
@@ -391,7 +390,6 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 "parent_id" => null*/
             ))->getItems();
 
-            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
         }
 
         //$currentUser    = $this->getCurrentUser(true);
