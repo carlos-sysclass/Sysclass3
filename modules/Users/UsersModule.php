@@ -4,6 +4,7 @@ namespace Sysclass\Modules\Users;
 use Phalcon\DI,
     Phalcon\Mvc\Model\Message,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Users\UserCurriculum,
     Sysclass\Models\Users\Group,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\I18n\Language,
@@ -459,8 +460,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     }
 
     public function afterModelUpdate($evt, $model, $data) {
-
-
         if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
             UsersGroups::find("user_id = {$model->id}")->delete();
             
@@ -470,6 +469,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $userGroup->group_id = $group['id'];
                 $userGroup->save();
             }
+        }
+
+        if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {
+            $curriculum = new UserCurriculum();
+            $data['curriculum']['id'] = $model->id;
+            $curriculum->assign($data['curriculum']);
+            $curriculum->save();
         }
     }
 

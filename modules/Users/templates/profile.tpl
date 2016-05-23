@@ -4,6 +4,10 @@
 
 {has_permission resource="Users" action="change-password" assign="canChangePassword"}
 
+{has_role role="Teacher" assign="isTeacher"}
+
+
+
 <!-- BEGIN PAGE CONTENT-->
 <form id="form-users" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
@@ -68,6 +72,10 @@
 											<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-picture"></i> {translateToken value="Address"}</a></li>
 										{/if}
 
+										{if $isTeacher}
+											<li ><a data-toggle="tab" href="#tab_curriculum"><i class="fa fa-male"></i>{translateToken value="Curriculum"}</a></li>
+										{/if}
+
 										
 										{if $canChangePassword}
 										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
@@ -110,7 +118,7 @@
 									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
 
 									<div class="tab-content margin-top-20">
-										<div id="tab_1-1" class="tab-pane fade active">
+										<div id="tab_1-1" class="tab-pane fade active in">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 											</div>
@@ -132,6 +140,11 @@
 											</div>
 										{/if}
 
+										{if $isTeacher}
+											<div class="tab-pane fade" id="tab_curriculum">
+											    {include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
+											</div>
+										{/if}
 
 										{if $canChangePassword}
 										<div id="tab_1-4" class="tab-pane fade">
