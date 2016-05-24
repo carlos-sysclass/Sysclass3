@@ -191,7 +191,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         if ($this->_args['model'] == 'courses') {
             return array(
                 'remove'  => array(
-                    'icon'  => 'icon-remove',
+                    'icon'  => 'fa fa-remove',
                     'class' => 'btn-sm btn-danger'
                 )
             );
