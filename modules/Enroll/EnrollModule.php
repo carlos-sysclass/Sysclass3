@@ -100,10 +100,6 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         
         if ($this->acl->isUserAllowed(null, "Enroll", "View")) {
 
-            //$items = $this->model("institution")->addFilter(array(
-            //    'active'    => true
-            //))->getItems();
-
             return array(
                 'administration' => array(
                     array(
