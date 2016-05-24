@@ -423,10 +423,16 @@ class LoginController extends \AbstractSysclassController
 			try {
 				// CHECK IF THE USER IS ALREADY LOGGED IN AND LOGOUT HIM...
 				try {
+					
 					$user = $di->get("authentication")->checkAccess();
+					
 					if ($user) {
 						$di->get("authentication")->logout($user);
+
+						$this->redirect(null);
+						exit;
 					}
+					
 				} catch (AuthenticationException $e) {
 					//AuthenticationException::NO_USER_LOGGED_IN
 				}
@@ -436,9 +442,11 @@ class LoginController extends \AbstractSysclassController
 	                'bind' => array($hash)
 	            ));
 
+	            //$di->get("authentication")->logout($user);
+
 	            if ($user) {
-            		$di->get("authentication")->login($user, array('disableBackends' => true));                                                 
-					
+        			$di->get("authentication")->login($user, array('disableBackends' => true));
+        		
 		       		$this->putCss("css/pages/login");
 					$this->putCss("css/bigvideo/bigvideo");
 
@@ -446,7 +454,7 @@ class LoginController extends \AbstractSysclassController
 					$this->putScript("scripts/pages/reset");
 
 					$this->putItem('form_action', "/confirm/{$hash}");
-					$this->putItem('user', $user->toArray());
+					$this->putItem('user', $di->get("user")->toArray());
 
 		            return parent::display('pages/auth/reset.tpl');
 	            } else {
@@ -506,7 +514,7 @@ class LoginController extends \AbstractSysclassController
 	                'bind' => array($hash)
 	            ));
 
-            	$postData = $this->request->getPost();
+	           	$postData = $this->request->getPost();
 
 				if ($user == $current_user) {
 
@@ -541,11 +549,13 @@ class LoginController extends \AbstractSysclassController
 						}
 					}
 				} else {
+					var_dump(2);
+					exit;
 					$di->get("authentication")->logout($user);
 					throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
 				}
 			} catch (AuthenticationException $e) {
-
+				var_dump($e);
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
 			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
@@ -575,7 +585,8 @@ class LoginController extends \AbstractSysclassController
 					}
 				}
 			}
-		
+		var_dump(3);
+		exit;
 		$this->redirect($url, $message, $message_type);
 	}
 
