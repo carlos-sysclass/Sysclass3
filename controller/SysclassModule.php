@@ -278,7 +278,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
 
-
             if (
                 array_key_exists('createMethod', $model_info)
             ) {
@@ -286,11 +285,6 @@ abstract class SysclassModule extends BaseSysclassModule
             } else {
                 $createMethod = "create";
             }
-
-            //$itemModel->user_id = $this->user->id;
-
-            //var_dump($itemModel->toArray());
-            //exit;
 
             if (call_user_func(array($itemModel, $createMethod))) {
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
@@ -476,8 +470,6 @@ abstract class SysclassModule extends BaseSysclassModule
                         $response = array_merge($response, $itemData);
                     }
                 } else {
-                                        var_dump($itemModel->getMessages());
-                    exit;
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
                     $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
@@ -633,14 +625,9 @@ abstract class SysclassModule extends BaseSysclassModule
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
-            //var_dump(array($model_info['class'], $model_info['listMethod']), $args);
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
-
-            //var_dump(array($model_info['class'], $model_info['listMethod']), $args);
-            //exit;
-            
 
             if ($type === 'datatable') {
                 //$items = array_values($items);
@@ -683,12 +670,9 @@ abstract class SysclassModule extends BaseSysclassModule
                 return true;
             } else {
                 $items = array();
-                //var_dump($resultRS->toArray());
-                //var_dump($model_info['exportMethod']);
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    //var_dump($item, $model_info['exportMethod'][0], $model_info['exportMethod'][1]);
                     $items[$key] = call_user_func(
                         array($item, $model_info['exportMethod'][0]),
                         count($model_info['exportMethod'][1]) > 0 ? $model_info['exportMethod'][1] : null
