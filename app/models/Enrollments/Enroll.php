@@ -74,6 +74,23 @@ class Enroll extends Model
             $enrollField->save();
         }
     }
+
+    public function afterUpdate() {
+        // CREATE THE SET OF FIELDS
+        $fields = FormFields::find("[name] = 'name' OR [name] = 'surname' OR [name] = 'email'");
+
+
+        foreach($fields as $field) {
+            $enrollField = new EnrollFields();
+            $enrollField->assign(array(
+                'enroll_id' => $this->id,
+                'field_id' => $field->id,
+                'label' => $field->name,
+                'required' => 1
+            ));
+            $enrollField->save();
+        }
+    }
     /**
      * Check if is allowed to enroll a new user!
      * @return boolean|object returns false if not possible, true if possible wihtout group, or a object containing the group for the user be allocated

@@ -322,10 +322,12 @@ class ApiController extends \AbstractSysclassController
 
     /**
      * Api Method to get enrollment info
-     * @Get("/enroll/{identifier}")
+     * @Get("/enroll")
      * 
      */
 	public function getEnrollRequest($identifier) {
+		$identifier = $this->request->getQuery("identifier");
+
 		//if (filter_var($identifier, FILTER_VALIDATE_)) {
 			$enroll = Enroll::findFirstByIdentifier($identifier);
 

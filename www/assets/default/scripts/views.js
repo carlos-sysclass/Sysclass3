@@ -25,18 +25,20 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	    	console.warn(moment.locale(), value, formatTo, formatFrom, value, value.valueOf());
 
-	    	if (formatTo == 'time') {
-	    		return value.format("hh:mm:ss");
-	    	} else if (formatTo == 'datetime') {
-	    		return value.format("L hh:mm");
-	    	} else if (formatTo == "isodate") {
-				return value.format("YYYY-MM-DD");
-	    	} else { // DEFAULTS TO date
-	    		return value.format("L");
-	    	}
+	    	if (value.isValid()) {
+		    	if (formatTo == 'time') {
+		    		return value.format("hh:mm:ss");
+		    	} else if (formatTo == 'datetime') {
+		    		return value.format("L hh:mm");
+		    	} else if (formatTo == "isodate") {
+					return value.format("YYYY-MM-DD");
+		    	} else { // DEFAULTS TO date
+		    		return value.format("L");
+		    	}
+		    }
+		    return null;
     	} else if (formatTo == 'unix-timestamp') {
     		if (formatFrom == 'date') {
-    			console.warn(moment.locale());
     			value = moment(value, "L");
     		} else if (formatFrom == 'time') {
     			value = moment(value, "hh:mm:ss");
@@ -45,7 +47,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	} else { // DEFAULTS TO date
 	    		value = moment(value);
 	    	}
-	    	return value.unix();
+	    	if (value.isValid()) {
+	    		return value.unix();
+	    	} else {
+	    		return null;
+	    	}
     	}
     	return value;
     };

@@ -33,6 +33,17 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Url"}</label>
+							<div class="input-group">
+								<span class="input-group-addon">https://signup-itaipu.sysclass.com/</span>
+								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+							</div>
+						</div>
+					</div>
+				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
 					{translateToken value="Open Period"}
@@ -48,8 +59,8 @@
 								{translateToken value="Start Date"}
 							</label>
 							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-								<input type="text" name="start_date" value="" data-format="date" data-format-from="unix-timestamp" class="form-control date-picker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" name="start_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 							</div>
 							
 						</div>
@@ -58,8 +69,8 @@
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Finish Date"}</label>
 							<div class="input-group">
-								<span class="input-group-addon"><i class="icon-calendar"></i></span>
-								<input type="text" name="end_date" value="" data-format="date" data-format-from="unix-timestamp" class="form-control date-picker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input type="text" name="end_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 							</div>
 						</div>
 					</div>
