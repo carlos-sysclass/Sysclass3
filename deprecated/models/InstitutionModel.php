@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0.203
+ */
 class InstitutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
