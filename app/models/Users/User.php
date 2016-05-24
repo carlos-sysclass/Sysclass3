@@ -83,7 +83,7 @@ class User extends Model
         if (empty($this->login)) {
             $this->login = $this->createNewLogin();
         }
-        if (empty($this->passwd)) {
+        if (empty($this->password)) {
             $password = $this->createRandomPass();
             // ENCRYPT PASS
             $this->password = $this->getDi()->get('security')->hash($password);
