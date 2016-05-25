@@ -316,9 +316,6 @@ h4.border-bottom {
 .ver-inline-menu li {
 	margin-bottom: 0px;
 }
-.ver-inline-menu li:fisrt-child a:hover i {
-	color: #fff;
-}
 .ver-inline-menu li.active i {
 	background-color: #005999 !important;
 }
@@ -1993,7 +1990,7 @@ a.list-group-item,
     text-decoration: none;
 }
 .ver-inline-menu li.active a:hover i {
-	background: #005999 !important;
+	background: #fff !important;
 	cursor: pointer;
 }
 #calendar {
