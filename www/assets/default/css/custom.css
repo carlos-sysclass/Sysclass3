@@ -1990,8 +1990,9 @@ a.list-group-item,
     text-decoration: none;
 }
 .ver-inline-menu li.active a:hover i {
-	background: #fff !important;
+	background: transparent !important;
 	cursor: pointer;
+	color: #fff;
 }
 #calendar {
 	top: 0px;
