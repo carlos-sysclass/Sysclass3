@@ -2627,7 +2627,7 @@ Vertical inline menu
   display: inline-block;
   border-bottom: 6px solid transparent;
   border-top: 6px solid transparent;
-  border-left: 6px solid #169ef4;
+  border-left: 6px solid #005999;
   position: absolute;
   top: 12px;
   right: -5px;
@@ -2790,6 +2790,10 @@ Custom portlet tabs
 
 .portlet-tabs > .nav-tabs > li {
   margin-left: 1px;
+}
+
+.portlet-tabs > .nav-tabs > li:first-child {
+  margin-left: 0px;
 }
 
 .portlet-tabs > .nav-tabs > li.active {
