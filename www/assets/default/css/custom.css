@@ -1363,6 +1363,7 @@ button.calendar-news-item {
 .header .navbar-nav > li > a > span {
 	float: left;
     padding: 0 3px;
+    font-weight: 100;
 }
 
 .portlet-sidebar {
