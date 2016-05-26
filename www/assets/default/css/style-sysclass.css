@@ -720,7 +720,7 @@ label {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
-  border-color: #999999;
+  border-color: #00eaff;
   outline: 0;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
