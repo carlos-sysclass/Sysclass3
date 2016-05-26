@@ -88,9 +88,7 @@
 			{if $T_CONFIGURATION.enable_forgot_form}
 			<div class="forget-password">
 				<!--<h4>{translateToken value="Forgot your password?"}</h4>-->
-				<p>
-					<a href="javascript:;" id="forget-password">{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}</a>
-				</p>
+				<a href="javascript:;" id="forget-password">{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}</a>
 			</div>
 			{/if}
 			{if $T_CONFIGURATION.signup_enable}
