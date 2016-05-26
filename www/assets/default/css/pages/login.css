@@ -26,7 +26,12 @@ Login page
   padding: 20px;
   position: relative;
 }
-
+.login .btn i {
+  font-size: 16px !important;
+  padding-left: 7px;
+  padding-right: 8px;
+  float: left;
+}
 .login .content h3 {
   color: #000;
 }
@@ -66,7 +71,7 @@ Login page
   clear: both;
   border: 0px;
   border-bottom: 1px solid #eee;
-  padding: 0px 30px 25px 30px;
+  padding: 10px 30px 0 30px;
   margin-left: -30px;
   margin-right: -30px;
 }
@@ -103,6 +108,7 @@ Login page
   left: -20px;
   float: left !important;
   text-align: left;
+  letter-spacing: 0.6px;
 }
 
 .login .content .forget-password {
