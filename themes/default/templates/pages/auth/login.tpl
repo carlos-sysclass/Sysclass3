@@ -48,7 +48,10 @@
 					<label class="checkbox">{translateToken value="Remember Me"}</label>
 					-->
 					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" >{translateToken value="Click to access"}
-						<i class="m-icon-swapright m-icon-white"></i>
+						<i class="arrow-right-circle"></i>
+					</button>
+					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" >{translateToken value="Click to access"}
+						<i class="arrow-right-circle"></i>
 					</button>
 				</div>
 			</div>
@@ -137,7 +140,7 @@
 		
 	</div>
 
-	<div class="content">
+	<div class="contentcopyright">
 		<div class="copyright">
 			&copy; 2016 • WiseFlex Knowledge Systems LLC. <br />
 			<span style="color: black">

@@ -85,6 +85,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/fa/css/font-awesome',
 		'plugins/fa/css/font-awesome',
 		'plugins/simple-line-icons/simple-line-icons',
+		'plugins/themify-icons/themify-icons',
 		'css/colors',
 		//<!-- END GLOBAL MANDATORY STYLES -->
 
