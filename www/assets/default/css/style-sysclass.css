@@ -989,6 +989,9 @@ h7 .label {
 .badge-warning {
   background-color: #fcb322;
   background-image: none !important;
+  height: 14px;
+  margin: 4px 0 5px 5px;
+  padding-top: 1px !important;
 }
 
 .label-danger,
