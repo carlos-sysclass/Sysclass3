@@ -707,6 +707,7 @@ label {
 .form-control {
   font-size: 12px;
   font-weight: lighter;
+  letter-spacing: 0.2px;
   color: #fff;
   background-color: transparent;
   border-bottom: 1px solid #fff;
