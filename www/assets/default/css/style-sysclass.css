@@ -685,20 +685,24 @@ label {
 }
 
 .form-control:-moz-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
 }
 .form-control::-moz-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
 }
 .form-control:-ms-input-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
 }
 .form-control::-webkit-input-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
 }
 .form-control {
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 12px;
+  font-weight: lighter;
   color: #333333;
   background-color: transparent;
   border-bottom: 1px solid #fff;
