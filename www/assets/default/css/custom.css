@@ -144,7 +144,7 @@ hr {
 }
 .chat-widget .send-block {
 	margin-top: 10px;
-	padding-right: 10px;
+	padding-right: 0;
 }
 .chat-widget .portlet-body {
 	padding-right: 0 !important;
