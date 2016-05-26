@@ -1372,9 +1372,9 @@ Portlets
 .portlet > .portlet-title > .caption {
   float: left;
   display: inline-block;
-  font-size: 18px;
+  font-size: 13px;
   line-height: 18px;
-  font-weight: 100;
+  font-weight: 400;
   margin: 0;
   padding: 0;
   margin-bottom: 8px;
@@ -1641,7 +1641,7 @@ Box portlet
 }
 
 .portlet.box > .portlet-title {
-   padding:8px 10px 2px 10px;
+   padding:9px 10px 6px 10px;
    border-bottom: 1px solid #eee;
    color: #fff !important;
 }
@@ -1651,7 +1651,7 @@ Box portlet
 }
 
 .portlet.box > .portlet-title > .tools {
-  margin-top: 6px;
+  margin-top: 0;
 }
 
 .portlet.box > .portlet-title > .tools > a.remove,
@@ -2850,8 +2850,13 @@ Custom portlet tabs
 }
 .portlet-body ul li {
   list-style: none;
+  padding: 10px;
+  float: left;
+  width: 100%;
 }
-
+.portlet-body ul li hr {
+  display: none;
+}
 .portlet-body ul li .list-group-item {
   border-bottom: 1px solid #ddd;
   border-right: none;
@@ -2865,6 +2870,21 @@ Custom portlet tabs
 .tab-pane > p:last-child {
   margin-bottom: 0px;
 }
+.portlet-body .subject {
+  float: left;
+  margin-top: 3px;
+}
+.portlet-body .message {
+  float: left;
+  background: #eee;
+  padding: 9px;
+  margin-top: 0px;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  font-weight: 100;
+  letter-spacing: 0.3px;  
+}
+
 
 /***
 Dashboard container
