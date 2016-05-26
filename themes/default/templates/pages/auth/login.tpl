@@ -47,11 +47,11 @@
 					<input type="checkbox" name="remeber" value="1"/>
 					<label class="checkbox">{translateToken value="Remember Me"}</label>
 					-->
-					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" >{translateToken value="Click to access"}
-						<i class="arrow-right-circle"></i>
+					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
+						
 					</button>
-					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" >{translateToken value="Click to access"}
-						<i class="arrow-right-circle"></i>
+					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" ><i class="ti-facebook"></i>{translateToken value="Click to access"}
+						
 					</button>
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 			<div class="forget-password">
 				<!--<h4>{translateToken value="Forgot your password?"}</h4>-->
 				<p>
-					{translateToken value="Click"} <a href="javascript:;" id="forget-password">{translateToken value="here"}</a> {translateToken value="to reset your password"}
+					<a href="javascript:;" id="forget-password">{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}</a>
 				</p>
 			</div>
 			{/if}
