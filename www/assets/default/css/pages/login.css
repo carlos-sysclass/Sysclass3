@@ -23,7 +23,7 @@ Login page
   width: 293px;
   margin: 0 auto;
   margin-bottom: 0px;
-  padding: 30px;
+  padding: 15px;
   padding-top: 20px;
   padding-bottom: 15px;
   position: relative;
@@ -153,10 +153,17 @@ Login page
 }
 
 .login .content .inside-logo {
-  margin: 5px 0;
+  margin: 15px 5px 35px 5px;
+  height: 70px;
+  position: relative;
 }
 .login .content .inside-logo img {
-  max-width: 100%;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 /* footer copyright */

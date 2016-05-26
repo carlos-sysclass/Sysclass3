@@ -8,7 +8,7 @@
 		<form class="login-form" action="/login" method="post">
 
 		<input type="hidden" name="requested_uri" value="{$T_REQUESTED_URI}" />
-			<h3 class="form-title">{translateToken value="Login to your account"}</h3>
+			<!--<h3 class="form-title">{translateToken value="Login to your account"}</h3>-->
 
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 				<div class="alert alert-{$T_MESSAGE.type}">
