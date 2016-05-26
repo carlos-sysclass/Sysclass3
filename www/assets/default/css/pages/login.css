@@ -109,12 +109,25 @@ Login page
   float: left !important;
   text-align: left;
   letter-spacing: 0.6px;
+  padding: 10px 14px;
+  opacity: 0.8;
 }
 
 .login .content .forget-password {
   margin-top: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 9px;
 }
-
+.login .content .forget-password a {
+  color: #fff;
+  font-weight: lighter;
+  text-decoration: none;
+  letter-spacing: 0.7px
+}
+.login .content .forget-password a:hover {
+  color: #7cc5e2;
+}
 .login .content .create-account {
   border-top: 1px dotted #eee;
   padding-top: 10px;

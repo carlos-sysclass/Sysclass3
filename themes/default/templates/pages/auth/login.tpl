@@ -50,7 +50,7 @@
 					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
 						
 					</button>
-					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" ><i class="ti-facebook"></i>{translateToken value="Click to access"}
+					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" ><i class="ti-facebook"></i>acessar utilizando o facebook
 						
 					</button>
 				</div>
