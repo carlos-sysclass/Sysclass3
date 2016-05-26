@@ -84,7 +84,7 @@
 			{/if}
 			{if $T_CONFIGURATION.enable_forgot_form}
 			<div class="forget-password">
-				<h4>{translateToken value="Forgot your password?"}</h4>
+				<!--<h4>{translateToken value="Forgot your password?"}</h4>-->
 				<p>
 					{translateToken value="Click"} <a href="javascript:;" id="forget-password">{translateToken value="here"}</a> {translateToken value="to reset your password"}
 				</p>
@@ -134,6 +134,10 @@
 		<!-- END FORGOT PASSWORD FORM -->
 
 		<!-- BEGIN COPYRIGHT -->
+		
+	</div>
+
+	<div class="content">
 		<div class="copyright">
 			&copy; 2016 • WiseFlex Knowledge Systems LLC. <br />
 			<span style="color: black">
