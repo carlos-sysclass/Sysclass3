@@ -589,9 +589,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .login .logo img {
     width: 360px;
 }
-.login .content {
+/*.login .content {
   background: url("../../img/bg-white-lock.png") repeat scroll 0 0 rgba(255, 255, 255, 0.8) !important;
-}
+}*/
 .login .content .form-actions {
   background-color: transparent !important;
   border: 0px !important;
