@@ -184,9 +184,9 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     }
 
     public function getDatatableItemOptions() {
-        var_dump($this->_args);
-        exit;
         if ($this->_args['model'] == 'courses') {
+            var_dump($this->_args);
+            exit;
             return array(
                 'enroll' => array(
                     'icon'  => 'fa fa-remove',
@@ -199,5 +199,28 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             );
         }
         return parent::getDatatableItemOptions();
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Put("/items/{model}/set-order/{enroll_id}")
+     */
+    public function setOrderRequest($model, $enroll_id)
+    {
+        if (array_key_exists($model, $this->model_info)) {
+            $model_info = $this->model_info[$model];
+
+            $class = $model_info['class'];
+
+            $position = $this->request->getPut('position');
+
+            $result = $class::setOrder($enroll_id, $position);
+
+            $response = $this->createAdviseResponse($this->translate->translate("Collection sorted successfully"), "success");
+            return $response;
+        } else {
+            return $this->invalidRequestError();
+        }
     }
 }

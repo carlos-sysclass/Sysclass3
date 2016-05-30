@@ -79,16 +79,22 @@ class Enroll extends Model
         // CREATE THE SET OF FIELDS
         $fields = FormFields::find("[name] = 'name' OR [name] = 'surname' OR [name] = 'email'");
 
-
         foreach($fields as $field) {
-            $enrollField = new EnrollFields();
-            $enrollField->assign(array(
-                'enroll_id' => $this->id,
-                'field_id' => $field->id,
-                'label' => $field->name,
-                'required' => 1
+            $exists = EnrollFields::count(array(
+                'conditions' => 'enroll_id = ?0 AND field_id = ?1',
+                'bind' => array($this->id, $field->id)
             ));
-            $enrollField->save();
+
+            if ($exists == 0) {
+                $enrollField = new EnrollFields();
+                $enrollField->assign(array(
+                    'enroll_id' => $this->id,
+                    'field_id' => $field->id,
+                    'label' => $field->name,
+                    'required' => 1
+                ));
+                $enrollField->create();
+            }
         }
     }
     /**
