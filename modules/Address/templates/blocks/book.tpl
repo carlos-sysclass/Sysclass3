@@ -35,6 +35,6 @@
 	</div>
 	<div class="form-group">
 		<label class="control-label">{translateToken value="State"}</label>
-		<input name="state" value="" type="text" placeholder="{translateToken value="State"}" class="form-control" data-rule-minlength="3" />
+		<input name="state" value="" type="text" placeholder="{translateToken value="State"}" class="form-control" />
 	</div>
 </div>

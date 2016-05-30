@@ -29,12 +29,12 @@ crud:
           label: Admittance Type
 
         - mData: start_date
-          sType: unix-moment-date
+          sType: datetime-moment
           sClass: text-center
           label: Start Date
 
         - mData: end_date
-          sType: unix-moment-date
+          sType: datetime-moment
           sClass: text-center
           label: End Date
 
