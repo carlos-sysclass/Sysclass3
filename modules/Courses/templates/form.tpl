@@ -13,27 +13,25 @@
 				</a>
 			</li>
 			{/if}
-			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
-			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Students"}</a>
-			</li>
-			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Classes"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Courses"}</a>
 			</li>
 			{/if}
+			
+			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
+			<li>
+				<a href="#tab_users" data-toggle="tab">{translateToken value="Students"}</a>
+			</li>
+			{/if}
+
 			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
 			<li>
 				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Grouping"}</a>
 			</li>
 			{/if}
 
-			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
-			<li>
-				<a href="#tab_1_6" data-toggle="tab">{translateToken value="Permissions"}</a>
-			</li>
-			{/if}
+
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
@@ -149,17 +147,17 @@
 					</div>
 				</div>
 			{/if}
-			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_3">
-				    {foreach $T_SECTION_TPL['users'] as $template}
-				        {include file=$template T_MODULE_CONTEXT=$T_USERS_BLOCK_CONTEXT T_MODULE_ID=$T_USERS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
-				    {/foreach}
-				</div>
-			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_4">
 				    {foreach $T_SECTION_TPL['roadmap-classes'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_ROADMAP_BLOCK_CONTEXT T_MODULE_ID=$T_ROADMAP_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+				    {/foreach}
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_users">
+				    {foreach $T_SECTION_TPL['users'] as $template}
+				        {include file=$template T_MODULE_CONTEXT=$T_USERS_BLOCK_CONTEXT T_MODULE_ID=$T_USERS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}

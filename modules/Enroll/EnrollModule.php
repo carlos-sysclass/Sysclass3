@@ -126,7 +126,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'fa fa-user',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
@@ -184,8 +184,14 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     }
 
     public function getDatatableItemOptions() {
+        var_dump($this->_args);
+        exit;
         if ($this->_args['model'] == 'courses') {
             return array(
+                'enroll' => array(
+                    'icon'  => 'fa fa-remove',
+                    'class' => 'btn-sm btn-primary'
+                ),
                 'remove'  => array(
                     'icon'  => 'fa fa-remove',
                     'class' => 'btn-sm btn-danger'

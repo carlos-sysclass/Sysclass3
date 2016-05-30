@@ -80,6 +80,7 @@ blocks:
         sType: table-options
         sClass: text-center
         label: Actions
+
   enroll.fields:
     context:
       id : "enroll_fields"
