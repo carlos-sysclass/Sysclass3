@@ -40,8 +40,8 @@ crud:
         page_subtitle: Create a new program
     'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "jquery-mask", "validation", "bootstrap-switch"]
-      #blocks: ["roadmap.classes", "roadmap.grouping", "users.list.table"]
-      blocks: ["programs.moreinfo", "roadmap.classes", "users.list.table"]
+      #blocks: ["programs.moreinfo", "roadmap.classes", "users.list.table"]
+      blocks: ["programs.moreinfo", "roadmap.classes"]
       scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
