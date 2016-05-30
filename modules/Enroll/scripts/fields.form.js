@@ -7,12 +7,12 @@ $SC.module("fields.form", function(mod, app, Backbone, Marionette, $, _) {
         this.started = true;
         this.modelClass = opt.modelClass;
 
-        console.warn(this.modelClass);
+        //console.warn(this.modelClass);
 
         this.getValue = function(callback) {
             var model = new mod.modelClass({});
 
-            console.warn(model);
+            //console.warn(model);
 
             callback(model.toJSON(), model);
         };

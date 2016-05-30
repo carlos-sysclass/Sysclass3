@@ -40,20 +40,36 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                         model.set("enroll_id", this.enroll_id);
                     }.bind(this));
                 },
+                /*
                 setOrder : function(order) {
                     console.warn(order);
 
                     for(var i in order) {
                         var item = this.get(order[i]);
                         item.set("position", parseInt(i) + 1);
+
                         item.save();
                     }
                     this.sort();
-
-
+                },
+                */
+                setOrder : function(order) {
+                    $.ajax(
+                        "/module/enroll/items/fields/set-order/" + this.enroll_id,
+                        {
+                            data: {
+                                position: order
+                            },
+                            method : "PUT"
+                        },
+                        function() {
+                            alert('fcjsklfjklsdfjksd');
+                        }
+                    );
                 },
                 comparator : function(first, last) {
-                    if (first.get("position") < last.get("position")) {
+                    console.warn("COMPARATOR", first.get("position"), last.get("position"), parseInt(first.get("position")) < parseInt(last.get("position")));
+                    if (parseInt(first.get("position")) < parseInt(last.get("position"))) {
                         return -1;
                     }
                     return 1;
