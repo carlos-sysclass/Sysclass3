@@ -126,7 +126,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-user',
+                    'icon'  => 'fa fa-list',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
@@ -135,21 +135,27 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             }
             case "add" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'fa fa-list',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Enrollment Guideline"));
+                $breadcrumbs[] = array(
+                    'text'   => $this->translate->translate("New Enrollment Guideline"),
+                    'icon'  => 'fa fa-add-circle',
+                    );
                 return $breadcrumbs;
                 break;
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'fa fa-list',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Enrollment Guideline"));
+                $breadcrumbs[] = array(
+                    'text'   => $this->translate->translate("Edit Enrollment Guideline"),
+                    'icon' => 'fa fa-pencil'
+                );
                 return $breadcrumbs;
                 break;
             }
