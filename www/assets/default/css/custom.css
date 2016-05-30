@@ -144,7 +144,7 @@ hr {
 }
 .chat-widget .send-block {
 	margin-top: 10px;
-	padding-right: 10px;
+	padding-right: 0;
 }
 .chat-widget .portlet-body {
 	padding-right: 0 !important;
@@ -589,9 +589,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .login .logo img {
     width: 360px;
 }
-.login .content {
+/*.login .content {
   background: url("../../img/bg-white-lock.png") repeat scroll 0 0 rgba(255, 255, 255, 0.8) !important;
-}
+}*/
 .login .content .form-actions {
   background-color: transparent !important;
   border: 0px !important;
@@ -1303,10 +1303,6 @@ button.calendar-news-item {
     padding: 10px;
 }
 
-.input-icon i {
-    margin: 9px 2px 4px 10px;
-}
-
 .header .navbar-nav > li.dropdown .dropdown-toggle {
     padding: 10px 4px 11px;
     color: #ddd;
@@ -1363,6 +1359,7 @@ button.calendar-news-item {
 .header .navbar-nav > li > a > span {
 	float: left;
     padding: 0 3px;
+    font-weight: 100;
 }
 
 .portlet-sidebar {
@@ -1965,7 +1962,7 @@ a.list-group-item,
 .ver-inline-menu li a {
 	border-left: none;
 }
-.ver-inline-menu li a, .ver-inline-menu li i {
+.ver-inline-menu li a {
 	background: white !important;
 }
 .ver-inline-menu li:nth-child(odd) a, .ver-inline-menu li:nth-child(odd) i  {
@@ -1978,17 +1975,21 @@ a.list-group-item,
 	border-bottom: none;
 }
 
-.ver-inline-menu li a:hover, .ver-inline-menu li a:hover i {
-	background: #C4D5DF !important;
+.ver-inline-menu li a:hover {
+	background: #eee !important;
 }
-
+.ver-inline-menu li a:hover i {
+	color: #444;
+}
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
 	background: #005999 !important;
     color: #fff;
     text-decoration: none;
 }
 .ver-inline-menu li.active a:hover i {
-	background: #005999 !important;
+	background: transparent !important;
+	cursor: pointer;
+	color: #fff;
 }
 #calendar {
 	top: 0px;

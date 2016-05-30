@@ -14,7 +14,7 @@
          </ul>
          <div class="send-block">
             <div class="input-icon right">
-               <i class="icon-signin"></i>
+               <i class="ti-check"></i>
                <input type="text" class="form-control" placeholder="{translateToken value="Type your message here..."}" />
             </div>
          </div>

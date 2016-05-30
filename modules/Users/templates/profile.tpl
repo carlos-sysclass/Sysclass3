@@ -61,7 +61,7 @@
 									<ul class="ver-inline-menu tabbable margin-bottom-10 profile-tabs">
 										<li class="active">
 											<a data-toggle="tab" href="#tab_1-1">
-											<i class="icon-cog"></i>
+											<i class="icon-user"></i>
 											{translateToken value="Personal info"}
 											</a>
 											<span class="after"></span>

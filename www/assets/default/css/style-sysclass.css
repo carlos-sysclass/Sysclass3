@@ -683,25 +683,79 @@ label {
   font-weight: 400;
   font-size: 14px;
 }
+.login .form-control:-moz-placeholder {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control::-moz-placeholder {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control:-ms-input-placeholder {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control::-webkit-input-placeholder {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control {
+  font-size: 12px;
+  font-weight: lighter;
+  letter-spacing: 0.2px;
+  color: #fff;
+  background-color: transparent;
+  border-bottom: 1px solid #fff;
+  border-left: none !important;
+  border-right: none;
+  border-top: none;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.login .form-control:focus {
+  border-color: #00eaff;
+  outline: 0;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
 
 .form-control:-moz-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control::-moz-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control:-ms-input-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control::-webkit-input-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control {
-  font-size: 14px;
-  font-weight: normal;
-  color: #333333;
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
+  font-size: 12px;
+  font-weight: lighter;
+  letter-spacing: 0.2px;
+  color: #444;
+  background-color: transparent;
+  border-bottom: none;
+  border-left: none !important;
+  border-right: none;
+  border-top: 1px solid #fff;
   border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -709,7 +763,7 @@ label {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
-  border-color: #999999;
+  border-color: #005999;
   outline: 0;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
@@ -977,6 +1031,9 @@ h7 .label {
 .badge-warning {
   background-color: #fcb322;
   background-image: none !important;
+  height: 14px;
+  margin: 4px 0 5px 5px;
+  padding-top: 1px !important;
 }
 
 .label-danger,
@@ -1104,7 +1161,7 @@ wells
 
 .nav-tabs,
 .nav-pills {
-  margin-bottom: -6px;
+  margin-bottom: 4px;
 }
 
 .tabs-right > .nav-tabs,
