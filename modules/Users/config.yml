@@ -59,7 +59,7 @@ crud:
         page_subtitle: Create a new User
     'edit/{id}':
       components: ["select2","validation", "bootstrap-switch","pwstrength"]
-      blocks: ["enroll.user.block"]
+      #blocks: ["enroll.user.block"]
       template: form.tpl
       scripts: ["edit"]
       variables:
@@ -102,11 +102,6 @@ blocks:
           sType: datetime-moment-since
           sClass: text-center
           label: User Since
-
-        - mData: options
-          sType: table-options
-          sClass: text-center
-          label: Actions
 
 models:
   me:
