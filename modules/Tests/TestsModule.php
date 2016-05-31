@@ -5,7 +5,9 @@ namespace Sysclass\Modules\Tests;
  * @filesource
  */
 use Phalcon\Acl\Adapter\Memory as AclList,
-    Phalcon\Acl\Resource;
+    Phalcon\Acl\Resource,
+    Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Acl\Role;
 
 /**
  * [NOT PROVIDED YET]
@@ -202,16 +204,17 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      */
     public function addPage()
     {
-        $items = $this->model("classes")->addFilter(array(
-            'active' => true
-        ))->getItems();
 
-        $this->putItem("classes", $items);
+        $classes = Classe::find(array(
+            'conditions' => 'active = 1'
+        ));
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        $this->putItem("classes", $classes->toArray());
+
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
 
         $items = $this->model("grades")->addFilter(array(
             'active' => true
@@ -219,9 +222,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         $this->putItem("grades", $items);
 
-
-
-        parent::addPage($id);
+        parent::addPage();
     }
 
     /**
@@ -231,16 +232,16 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      */
     public function editPage($identifier)
     {
-        $items = $this->model("classes")->addFilter(array(
-            'active' => true
-        ))->getItems();
+        $classes = Classe::find(array(
+            'conditions' => 'active = 1'
+        ));
 
-        $this->putItem("classes", $items);
+        $this->putItem("classes", $classes->toArray());
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
 
 
         $items = $this->model("grades")->addFilter(array(
@@ -672,6 +673,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      * @Get("/items/{model}/{type}")
      * @Get("/items/{model}/{type}/{filter}")
      */
+    /*
     public function getItemsRequest($model = "me", $type = "default", $filter = null)
     {
         // DEFAULT OPTIONS ROUTE
@@ -730,11 +732,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'method' => 'POST'
                 ),
 
-                /*,
-                'remove'    => array(
-                    'icon'  => 'icon-remove',
-                    'class' => 'btn-sm btn-danger'
-                )*/
             );
 
             $filter = filter_var($filter, FILTER_DEFAULT);
@@ -779,20 +776,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                     $itemsData[$key]['options'][$index] = $optItem;
                 }
-                /*
-
-                $itemsData[$key]['options'] = array(
-                    'edit'  => array(
-                        'icon'  => 'icon-edit',
-                        'link'  => $this->getBasePath() . $stringsHelper->vksprintf($optionsRoute, $item['id']),
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'remove'    => array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    )
-                );
-                */
             }
             return array(
                 'sEcho'                 => 1,
@@ -804,7 +787,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         return array_values($itemsData);
     }
-
+    */
 
     /**
      * The test execution itself

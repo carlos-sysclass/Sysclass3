@@ -567,10 +567,13 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $sort = @$model_info['sort'];
 
-            //$itemModel = new $model_class();
-            
-            //$args = $this->getparamentrs();
             $filter = filter_var($filter, FILTER_DEFAULT);
+
+            $modelFilters = $filterData = $args = array();
+
+            if (array_key_exists(1, $model_info['listMethod'])) {
+                $modelFilters = $model_info['listMethod'][1];
+            }
 
             if (!empty($filter)) {
 
@@ -588,6 +591,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 }
 
                 $index = 0;
+
                 foreach($filter as $key => $item) {
                     if (strpos($key, "_") === 0) {
                         $opt[$key] = $item;
@@ -611,17 +615,21 @@ abstract class SysclassModule extends BaseSysclassModule
                     }
                 }
 
-                $args = array(
-                    'conditions'    => implode(" AND ", $modelFilters),
-                    'bind' => $filterData,
-                    'args'  => $filter,
-                    'order'  => $sort
-                );
+                $args['args'] = $filter;
             } else {
+                /*
                 $args = array(
                     'order'  => $sort
                 );
+                */
             }
+
+            $args['conditions'] = implode(" AND ", $modelFilters);
+            $args['bind'] = $filterData;
+            $args['order'] = $sort;
+
+            //var_dump($args);
+            //exit;
             /**
              * @todo Get parameters to filter, if possibile, the info
              */

@@ -103,3 +103,8 @@ blocks:
           sType: table-options
           sClass: text-center
           label: Actions
+models:
+  me: 
+    class: Sysclass\Models\Courses\Lesson
+    listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
+    exportMethod: ["toExtendArray", ["EnrollFields"]]
