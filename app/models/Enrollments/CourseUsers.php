@@ -2,7 +2,9 @@
 namespace Sysclass\Models\Enrollments;
 
 use Plico\Mvc\Model,
-    Phalcon\Mvc\Model\Message as Message;
+    Phalcon\DI,
+    Phalcon\Mvc\Model\Message as Message,
+    Phalcon\Mvc\Model\Query;
 
 class CourseUsers extends Model
 {
@@ -174,6 +176,52 @@ class CourseUsers extends Model
         
 
         //$this->eventsManager;
+    }
+
+    public static function getUsersNotEnrolled($enroll_id, $search = null) {
+        if (is_null($search)) {
+            $sql = "SELECT u.* 
+            FROM Sysclass\\Models\\Users\\User u
+            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)
+            WHERE (cu.enroll_id <> :enroll_id: OR cu.enroll_id IS NULL)
+            ";
+            $query = new Query($sql, DI::getDefault());
+            $users   = $query->execute(array("enroll_id" => $role_id));
+        } else {
+            $sql = "SELECT u.*
+            FROM Sysclass\\Models\\Users\\User u
+            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)
+            WHERE (cu.enroll_id <> :enroll_id: OR cu.enroll_id IS NULL)
+            AND LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)
+            ";
+            $query = new Query($sql, DI::getDefault());
+            $users   = $query->execute(array("enroll_id" => $enroll_id, 'query' => '%' . $search . '%'));
+        }
+
+        return $users;
+    }
+
+    public static function getUsersEnrolled($enroll_id, $search = null) {
+        if (is_null($search)) {
+            $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active
+            FROM Sysclass\\Models\\Users\\User u
+            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)
+            WHERE (cu.enroll_id = :enroll_id:)
+            ";
+            $query = new Query($sql, DI::getDefault());
+            $users   = $query->execute(array("enroll_id" => $enroll_id));
+        } else {
+            $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active
+            FROM Sysclass\\Models\\Users\\User u
+            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)
+            WHERE (cu.enroll_id = :enroll_id:)
+            AND LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)
+            ";
+            $query = new Query($sql, DI::getDefault());
+            $users   = $query->execute(array("enroll_id" => $role_id, 'query' => '%' . $search . '%'));
+        }
+
+        return $users;
     }
 
 }

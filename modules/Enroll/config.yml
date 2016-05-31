@@ -69,7 +69,7 @@ blocks:
       sAjaxSource: /module/enroll/items/courses/datatable
       datatable_fields:
       - mData: course.name
-        label: User / Group
+        label: Program
 
       - mData: course.active
         sType: table-boolean
@@ -122,6 +122,26 @@ blocks:
           sType: table-options
           sClass: text-center
           label: Actions
+  enroll.users.dialog:
+    context:
+      block_id: "enroll_users"
+      datatable_fields:
+      - mData: icon
+        sType: table-icon
+        label: Type
+
+      - mData: fullname
+        label: User / Group
+
+      - mData: active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
 models:
   me: 
     class: Sysclass\Models\Enrollments\Enroll
@@ -135,5 +155,11 @@ models:
   courses: 
     class: Sysclass\Models\Enrollments\Courses
     exportMethod: ["toFullArray", ["Enroll", "Course"]]
-
+  users: 
+    class: Sysclass\Models\Enrollments\CourseUsers
+    exportMethod: ["toFullArray", ["User", "Course"]]
+    acl:
+      edit:
+        resource: Enroll
+        action: edit
 

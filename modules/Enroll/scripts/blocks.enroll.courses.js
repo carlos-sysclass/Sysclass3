@@ -64,6 +64,19 @@ $SC.module("blocks.enroll.courses", function(mod, app, Backbone, Marionette, $, 
                     model.save();
                     this.tableView.refresh();
                 }.bind(this));
+
+
+                this.listenTo(this.tableView, "action.datatable", function(data, item) {
+                    console.warn(data, item);
+
+                    if ($(item).hasClass("datatable-option-enroll")) {
+                        var itemModelClass = app.module("crud.models").itemModelClass;
+                        var model = new itemModelClass(data);
+                        app.module("dialogs.enroll.users").dialogView.setModel(model);
+                        app.module("dialogs.enroll.users").dialogView.open();
+                    }
+                }.bind(this));
+
             }
         });
 

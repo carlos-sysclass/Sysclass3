@@ -20,6 +20,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     /* IBlockProvider */
     public function registerBlocks() {
         return array(
+            /*
             'enroll.user.block' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("select2");
@@ -35,6 +36,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
                 return true;
             },
+            */
             'fixed_grouping.dialog' => function($data, $self) {
                 $self->putComponent("bootstrap-confirmation", "bootstrap-editable");
                 $self->putModuleScript("dialogs.fixed_grouping.form");
@@ -73,6 +75,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             'enroll.courses' => function($data, $self) {
                 // GET ALL THIS DATA FROM config.yml
                 //$self->putBlock('enroll.fields.dialog');
+                $self->putBlock("enroll.users.dialog");
                 $self->putModuleScript("blocks.enroll.courses");
 
                 $self->putComponent("data-tables");
@@ -89,6 +92,21 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
                 $self->putSectionTemplate("enroll.courses", "blocks/courses");
 
+                return true;
+            },
+            'enroll.users.dialog' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                $self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                $block_context = $self->getConfig("blocks\\enroll.users.dialog\\context");
+                $self->putItem("enroll_users_dialog_context", $block_context);
+
+                $self->putModuleScript("dialogs.enroll.users");
+
+                $self->putSectionTemplate("dialogs", "dialogs/users");
 
                 return true;
             }
@@ -191,12 +209,11 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
     public function getDatatableItemOptions() {
         if ($this->_args['model'] == 'courses') {
-            var_dump($this->_args);
-            exit;
             return array(
                 'enroll' => array(
-                    'icon'  => 'fa fa-remove',
-                    'class' => 'btn-sm btn-primary'
+                    'icon'  => 'fa fa-users',
+                    'link'  => 'javascript:void(0);',
+                    'class' => 'btn-sm btn-primary datatable-actionable',
                 ),
                 'remove'  => array(
                     'icon'  => 'fa fa-remove',
@@ -207,6 +224,137 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         return parent::getDatatableItemOptions();
     }
 
+    /**
+     * [ add a description ]
+     *
+     * @Get("/datasource/users")
+     * @Get("/datasource/users/{type}/{filter}")
+     */
+    public function getEnrolledUsersItemsRequest($type, $filter)
+    {
+        $filter = json_decode($filter, true);
+
+        if (is_array($filter)) {
+            if ($filter['exclude'] == TRUE) {
+                $usersRS = Enrollment::getUsersNotEnrolled($filter['enroll_id'], $_GET['q']);
+                //$groupsRS = RolesGroups::getGroupsWithoutARole($filter['role_id'], $_GET['q']);
+            } else {
+                $usersRS = Enrollment::getUsersEnrolled($filter['enroll_id']);
+                //$groupsRS = RolesGroups::getGroupsWithARole($filter['role_id']);
+            }
+        } else {
+            $usersRS = Enrollment::getUsersNotEnrolled(null, $_GET['q']);
+            //$groupsRS = RolesGroups::getGroupsWithoutARole(null, $_GET['q']);
+        }
+
+        // FILTER BY Query
+        $items = array();
+
+        if ($type === 'combo') {
+            $results = array();
+            
+            if ($usersRS->count()) {
+                $usersItems = array();
+                foreach($usersRS as $key => $item) {
+                    $usersItems[$key] = array(
+                        'id' => 'user:' . $item->id,
+                        'name' => $item->name . " " . $item->surname,
+                    );
+                }
+                $results[] = array(
+                    'text'  => $this->translate->translate("Users"),
+                    'children'  => $usersItems
+                );
+            }
+            /*
+            if ($groupsRS->count()) {
+                $groupItems = array();
+                foreach($groupsRS as $key => $item) {
+                    $groupItems[$key] = array(
+                        'id' => 'group:' . $item->id,
+                        'name' => $item->name,
+                    );
+                }
+                $results[] = array(
+                    'text'  => $this->translate->translate("Groups"),
+                    'children'  => $groupItems
+                );
+            }
+            */
+            return $results;
+
+        } elseif ($type === 'datatable') {
+
+            $items = array();
+            if ($usersRS->count() > 0) {
+                foreach($usersRS as $item) {
+                    $items[] = array_merge(
+                        $item->toArray(),
+                        array(
+                            'fullname' => $item->name . " " . $item->surname,
+                            'type'  => 'user',
+                            'icon'  => 'fa fa-user'
+                        )
+                    );
+                }
+            }
+            /*
+            if ($groupsRS->count()) {
+                foreach($groupsRS as $item) {
+                    $items[] = array_merge(
+                        $item->toArray(),
+                        array(
+                            'fullname' => $item->name,
+                            'type'  => 'group',
+                            'icon'  => 'fa fa-group'
+                        )
+                    );
+                }
+            }
+            */
+            $baseLink = $this->getBasePath();
+
+            foreach($items as $key => $item) {
+                // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                if (array_key_exists('block', $_GET)) {
+                    $items[$key]['options'] = array(
+                        'remove'  => array(
+                            'icon'  => 'fa fa-close',
+                            //'link'  => $baseLink . "block/" . $item['id'],
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                } else {
+                    $items[$key]['options'] = array(
+                        'edit'  => array(
+                            'icon'  => 'fa fa-edit',
+                            //'link'  => $baseLink . "edit/" . $item['id'],
+                            'class' => 'btn-sm btn-primary datatable-actionable'
+                        ),
+
+                        'permission'  => array(
+                            'icon'  => 'fa fa-lock',
+                            'link'  => $baseLink . "set-resources/" . $item['id'],
+                            'class' => 'btn-sm btn-warning'
+                        ),
+                        'remove'    => array(
+                            'icon'  => 'icon-remove',
+                            'class' => 'btn-sm btn-danger'
+                        )
+                    );
+                }
+
+            }
+
+            return array(
+                'sEcho'                 => 1,
+                'iTotalRecords'         => count($items),
+                'iTotalDisplayRecords'  => count($items),
+                'aaData'                => array_values($items)
+            );
+        }
+        return array_values($usersRS->toArray() /* + $groupsRS->toArray()*/);
+    }
     /**
      * [ add a description ]
      *
