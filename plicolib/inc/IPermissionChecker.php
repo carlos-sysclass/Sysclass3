@@ -1,6 +1,7 @@
 <?php
 /**
  * @package PlicoLib\Interfaces
+ * @deprecated 3.2.0.100 Use the role acl resource to permission check
  */
 interface IPermissionChecker {
 	/**

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0.203
+ */
 class InstitutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
@@ -8,7 +11,6 @@ class InstitutionModel extends AbstractSysclassModel implements ISyncronizableMo
         $this->mainTablePrefix = "i";
 
 		$this->selectSql = "SELECT i.`id`,
-            i.`permission_access_mode`,
             i.`name`,
             i.`formal_name`,
             i.`contact`,

@@ -21,7 +21,6 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
         //$depinject = Phalcon\DI::getDefault();
         if ($this->acl->isUserAllowed(null, "Areas", "View")) {
             $count = Departament::count("active = 1");
-            //$items = $this->module("permission")->checkRules($itemsData, "area", 'permission_access_mode');
 
             return array(
                 'content' => array(
@@ -187,7 +186,6 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
 
             $itemsCollection = $this->model($modelRoute);
             $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
         if ($type === 'combo') {
             $q = $_GET['q'];
             $itemsData = $itemsCollection->filterCollection($itemsData, $q);

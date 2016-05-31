@@ -287,7 +287,6 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         $itemsData = $itemsCollection->getItems();
 
 
-        // $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {

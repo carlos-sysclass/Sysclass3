@@ -59,7 +59,6 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
     public function getLinks() {
         if ($this->getCurrentUser(true)->getType() == 'administrator') {
             $itemsData = $this->model("tutoria")->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 
             return array(
                 'communication' => array(
@@ -287,7 +286,6 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         $itemsData = $itemsCollection->getItems();
 
 
-        // $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {

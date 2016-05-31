@@ -100,11 +100,6 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         
         if ($this->acl->isUserAllowed(null, "Enroll", "View")) {
 
-            //$items = $this->model("institution")->addFilter(array(
-            //    'active'    => true
-            //))->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "institution", 'permission_access_mode');
-
             return array(
                 'administration' => array(
                     array(
@@ -131,7 +126,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'fa fa-list',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
@@ -140,21 +135,27 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             }
             case "add" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'fa fa-list',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Enrollment Guideline"));
+                $breadcrumbs[] = array(
+                    'text'   => $this->translate->translate("New Enrollment Guideline"),
+                    'icon'  => 'fa fa-add-circle',
+                    );
                 return $breadcrumbs;
                 break;
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'icon-user',
+                    'icon'  => 'fa fa-list',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Enrollment Guideline"));
+                $breadcrumbs[] = array(
+                    'text'   => $this->translate->translate("Edit Enrollment Guideline"),
+                    'icon' => 'fa fa-pencil'
+                );
                 return $breadcrumbs;
                 break;
             }
@@ -190,13 +191,42 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
     public function getDatatableItemOptions() {
         if ($this->_args['model'] == 'courses') {
+            var_dump($this->_args);
+            exit;
             return array(
+                'enroll' => array(
+                    'icon'  => 'fa fa-remove',
+                    'class' => 'btn-sm btn-primary'
+                ),
                 'remove'  => array(
-                    'icon'  => 'icon-remove',
+                    'icon'  => 'fa fa-remove',
                     'class' => 'btn-sm btn-danger'
                 )
             );
         }
         return parent::getDatatableItemOptions();
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Put("/items/{model}/set-order/{enroll_id}")
+     */
+    public function setOrderRequest($model, $enroll_id)
+    {
+        if (array_key_exists($model, $this->model_info)) {
+            $model_info = $this->model_info[$model];
+
+            $class = $model_info['class'];
+
+            $position = $this->request->getPut('position');
+
+            $result = $class::setOrder($enroll_id, $position);
+
+            $response = $this->createAdviseResponse($this->translate->translate("Collection sorted successfully"), "success");
+            return $response;
+        } else {
+            return $this->invalidRequestError();
+        }
     }
 }

@@ -109,32 +109,34 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
                 self::$default->initialize($user);
             }
         }
+        if ($user) {
+            $groups = $user->getUserGroups();
 
-        $depinject = \Phalcon\DI::getDefault();
-        $stringHelper = $depinject->get("stringsHelper");
+            $depinject = \Phalcon\DI::getDefault();
+            $stringHelper = $depinject->get("stringsHelper");
 
-        $resource = $stringHelper->stripChars($resource);
-        $operation = $stringHelper->stripChars($operation);
+            $resource = $stringHelper->stripChars($resource);
+            $operation = $stringHelper->stripChars($operation);
 
-        $groups = $user->getUserGroups();
 
-        foreach($groups as $group) {
-            $groupRoles = $group->getRoles();
-            foreach($groupRoles as $role) {
-                //echo sprintf("CHECKING GROUP : %s %s %s<br />", $role->name, $resource, $operation);
+            foreach($groups as $group) {
+                $groupRoles = $group->getRoles();
+                foreach($groupRoles as $role) {
+                    //echo sprintf("CHECKING GROUP : %s %s %s<br />", $role->name, $resource, $operation);
+                    $status = $this->isAllowed($role->name, $resource, $operation);
+                    if ($status) {
+                        return $status;
+                    }
+                }
+            }
+
+            $roles = $user->getUserRoles();
+            foreach($roles as $role) {
+                //echo sprintf("CHECKING USER : %s %s %s<br />", $role->name, $resource, $operation);
                 $status = $this->isAllowed($role->name, $resource, $operation);
                 if ($status) {
                     return $status;
                 }
-            }
-        }
-
-        $roles = $user->getUserRoles();
-        foreach($roles as $role) {
-            //echo sprintf("CHECKING USER : %s %s %s<br />", $role->name, $resource, $operation);
-            $status = $this->isAllowed($role->name, $resource, $operation);
-            if ($status) {
-                return $status;
             }
         }
         return false;

@@ -12,7 +12,7 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 		$this->mainTablePrefix = "l";
 
 		$this->selectSql = sprintf('
-			SELECT %1$s.id, lc.courses_ID, %1$s.permission_access_mode, %1$s.name, %1$s.created, %1$s.archive, %1$s.active, previous_lessons_ID
+			SELECT %1$s.id, lc.courses_ID, %1$s.name, %1$s.created, %1$s.archive, %1$s.active, previous_lessons_ID
 			FROM lessons %1$s
 			LEFT OUTER JOIN lessons_to_courses lc ON (%1$s.id = lc.lessons_ID)
 			LEFT OUTER JOIN courses c ON (lc.courses_ID = c.id)

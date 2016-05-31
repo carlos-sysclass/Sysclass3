@@ -41,7 +41,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $itemsData = $this->model("tests")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
+            $items = $itemsData;
 
             return array(
                 'content' => array(
@@ -699,10 +699,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     $itemsCollection->addFilter($filter);
                 }
             }
-            //var_dump($filter);
-            //exit;
             $itemsData = $itemsCollection->getItems();
-            //$itemsData = $this->module("permission")->checkRules($itemsData, "lesson", 'permission_access_mode');
         } elseif ($model == "question") {
             $modelRoute = "tests/question";
 

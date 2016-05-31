@@ -11,6 +11,7 @@ class Translator extends Component
 {
 
     protected $source_lang;
+    protected $js_source_lang;
     protected $languages;
     protected $base_tokens;
     protected $source_tokens;
@@ -54,12 +55,24 @@ class Translator extends Component
 
     public function setSource($language_code)
     {
-        $langCodes = $this->getDisponibleLanguagesCodes();
+        //$langCodes = $this->getDisponibleLanguagesCodes();
 
-        if (in_array($language_code, $langCodes)) {
-            $this->source_lang = $language_code;
-        } else {
+        $languages = $this->languages->toArray();
+
+        foreach($this->languages as $lang) {
+            if ($language_code == $lang->code) {
+                $this->source_lang = $lang->code;
+                $this->js_source_lang = $lang->js_code;
+
+                $FOUND = true;
+
+                break;
+            }
+        }
+
+        if (!$FOUND) {
             $this->source_lang = $this->getSystemLanguageCode();
+            $this->js_source_lang = $this->getSystemLanguageCode();
         }
         // RECREATE TOKENS CACHE
         $this->recreateCache();
@@ -69,6 +82,16 @@ class Translator extends Component
         }
         return false;
     }
+
+    public function getJsSource()
+    {
+        if (!is_null($this->js_source_lang)) {
+            return $this->js_source_lang;
+        }
+        // TODO Include code to get default user language
+        return $this->getSystemLanguageCode();
+    }
+
 
     public function recreateCache() {
         $this->source_tokens = Tokens::find(array(
@@ -88,10 +111,10 @@ class Translator extends Component
         }
     }
 
-    public function getDisponibleLanguagesCodes()
+    public function getDisponibleLanguagesCodes($column = 'code')
     {
         // TODO Include code to get default user language
-        return \array_column($this->languages->toArray(), 'code');
+        return \array_column($this->languages->toArray(), $column);
         /*
         $cacheHash = __METHOD__;
 
@@ -284,7 +307,7 @@ class Translator extends Component
         $this->table_name = "mod_translate";
         $this->id_field = "id";
 
-        $this->selectSql = "SELECT `id`, `code`, `country_code`, `permission_access_mode`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
+        $this->selectSql = "SELECT `id`, `code`, `country_code`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
         //`lessons_ID`, `classe_id`,
 
         parent::init();

@@ -58,10 +58,18 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 }
 
                 if ($content['content_type'] == "file") {
-                    $widgetsData[$item['placement']]['data']['content'][] = array(
+
+
+                    $new_item = array(
                         'type' => 'image',
                         'url' => $content['file']['url']
                     );
+                    if (!empty($item['global_link'])) {
+                        $new_item['link'] = $item['global_link'];    
+                    }
+                    
+                    $widgetsData[$item['placement']]['data']['content'][] = $new_item;
+
                 } elseif ($content['content_type'] == "text") {
                     $widgetsData[$item['placement']]['data']['content'][] = array(
                         'type' => 'text',
@@ -83,7 +91,6 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
             $itemsData = $this->model($this->_modelRoute)->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
 
             return array(
                 'communication' => array(

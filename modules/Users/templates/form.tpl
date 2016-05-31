@@ -7,12 +7,11 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-			<li class="">
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled Courses"}</a>
-			</li>
-			<li class="">
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Enrolled Classes"}</a>
-			</li>
+			{if (isset($T_SECTION_TPL['enroll']) &&  ($T_SECTION_TPL['enroll']|@count > 0))}
+				<li class="">
+					<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled Courses"}</a>
+				</li>
+			{/if}
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
@@ -80,6 +79,7 @@
 						{/if}
 					</div>
 				{/if}
+				<!--
 				<h5 class="form-section margin-bottom-10">{translateToken value="Behavior"}</h5>
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
@@ -104,7 +104,7 @@
 		            </div>
 		        </div>
 				<div class="clearfix"></div>
-
+				-->
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
@@ -118,17 +118,6 @@
 				    {/foreach}
 				</div>
 			{/if}
-
-			<div class="tab-pane fade in" id="tab_1_3">
-	            <div class="row">
-	                <div class="col-md-12">
-	                    <div class="alert alert-warning" role="alert">
-	                        Not implemented yet!
-	                    </div>
-	                </div>
-	            </div>
-
-			</div>
 		</div>
 	</div>
 	<div class="form-actions nobg">

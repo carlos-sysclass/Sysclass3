@@ -12,7 +12,7 @@ class Image extends Component
 
         //imagejpeg($img_r, "/var/www/sysclass/develop/current/files/image/TESTE.jpeg", 90);
 
-        $dst_r = \imagecreatetruecolor($width, $height );
+        $dst_r = \imagecreatetruecolor($width, $height);
 
         \imagecopyresampled(
             $dst_r,
@@ -46,8 +46,4 @@ class Image extends Component
         return ($result) ? $full_path : FALSE;
     }
     
-    /*
-    public function __construct() {
-    }
-    */
 }

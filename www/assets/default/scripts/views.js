@@ -10,20 +10,33 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     		if (value == 0) {
     			return "";
     		}
+    		
+
 	    	if (formatFrom == 'unix-timestamp') {
 	    		value = moment.unix(value);
+	    	} else if (formatFrom == 'isodate') {
+	    		value = moment(value, "YYYY-MM-DD");
+			} else if (formatTo == 'date') {
+				value = moment(value, 'L');
 	    	} else {
 	    		value = moment(value);
 	    	}
-	    	if (formatTo == 'time') {
-	    		return value.format("hh:mm:ss");
-	    	} else if (formatTo == 'datetime') {
-	    		return value.format("L hh:mm");
-	    	} else if (formatTo == "isodate") {
-				return value.format("YYYY-MM-DD");
-	    	} else { // DEFAULTS TO date
-	    		return value.format("L");
-	    	}
+
+
+	    	console.warn(moment.locale(), value, formatTo, formatFrom, value, value.valueOf());
+
+	    	if (value.isValid()) {
+		    	if (formatTo == 'time') {
+		    		return value.format("hh:mm:ss");
+		    	} else if (formatTo == 'datetime') {
+		    		return value.format("L hh:mm");
+		    	} else if (formatTo == "isodate") {
+					return value.format("YYYY-MM-DD");
+		    	} else { // DEFAULTS TO date
+		    		return value.format("L");
+		    	}
+		    }
+		    return null;
     	} else if (formatTo == 'unix-timestamp') {
     		if (formatFrom == 'date') {
     			value = moment(value, "L");
@@ -34,7 +47,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	} else { // DEFAULTS TO date
 	    		value = moment(value);
 	    	}
-	    	return value.unix();
+	    	if (value.isValid()) {
+	    		return value.unix();
+	    	} else {
+	    		return null;
+	    	}
     	}
     	return value;
     };
@@ -239,7 +256,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                } else  {
 		                	
 							if (input.is("[data-format]")) {
+								console.warn(values[idx], input.data("format"), input.data("format-from"));
+								console.warn(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
 								input.val(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
+
 			    			} else {
 		                    	input.val(values[idx]);
 		                    }
@@ -463,6 +483,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if ($el.is("[data-format-from]")) {
+
 					value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 				}
 

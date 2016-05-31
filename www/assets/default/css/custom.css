@@ -395,7 +395,7 @@ h4.border-bottom {
     display: inline-block;
 }
 .tabbable-left .portlet-tabs > .nav-tabs > li > a:hover {
-	padding: 0 22px 33px 22px;\
+	padding: 0 22px 33px 22px;
 }
 
 /*
@@ -778,7 +778,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 #courses-widget .tab-content .nav.nav-tabs > li > a {
 	margin-bottom: 1px;
 }
-*/;
+*/
 @media (max-width: 767px) {
 	.nav > li > a {
 		padding-left: 10px;
@@ -1966,7 +1966,7 @@ a.list-group-item,
 	background: white !important;
 }
 .ver-inline-menu li:nth-child(odd) a, .ver-inline-menu li:nth-child(odd) i  {
-	background: transparent; !important;
+	background: transparent;
 }
 .ver-inline-menu li  {
 	border-bottom: 1px solid #ddd;

@@ -229,15 +229,18 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	};
 
 	this.handleDatepickers = function(context) {
+
 		// datepicker
 		if($('.date-picker', context).length > 0){
+            console.warn(moment.localeData().longDateFormat('L').toLowerCase());
+            
 			$('.date-picker', context).datepicker({
-                format: "mm/dd/yyyy",
-                //endDate: "07/19/1984",
+                format: moment.localeData().longDateFormat('L').toLowerCase(),
                 todayBtn: true,
                 autoclose: true,
                 todayHighlight: true,
-                toggleActive: true
+                toggleActive: true,
+                language : moment.locale()
             });
 
 

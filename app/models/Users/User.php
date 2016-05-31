@@ -28,6 +28,8 @@ class User extends Model
             array('alias' => 'UserCourses')
         );
 
+        $this->hasOne("id", "Sysclass\\Models\\Users\\UserCurriculum", "id",  array('alias' => 'curriculum'));
+
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Users\\UserPasswordRequest",
@@ -81,7 +83,7 @@ class User extends Model
         if (empty($this->login)) {
             $this->login = $this->createNewLogin();
         }
-        if (empty($this->passwd)) {
+        if (empty($this->password)) {
             $password = $this->createRandomPass();
             // ENCRYPT PASS
             $this->password = $this->getDi()->get('security')->hash($password);
@@ -153,6 +155,12 @@ class User extends Model
         return $roles;
     }
 
+    public function hasRole($role) {
+        $roles = $this->getRoles();
+        $rolesNames = array_map('strtolower', array_column($roles, 'name'));
+        return in_array(strtolower($role), $rolesNames);
+    }
+
     public function getDashboards() {
         $roles = $this->getRoles();
 
@@ -214,5 +222,6 @@ class User extends Model
     public function generateConfirmHash() {
         $this->reset_hash = $this->createRandomPass(16);
     }
+
 
 }

@@ -126,6 +126,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/jquery-ui/jquery-ui-1.10.3.custom',
 		'plugins/bootstrap/js/bootstrap.min',
 		'plugins/moment/moment.min',
+		'plugins/moment/locale/%locale$s',
 		'plugins/numeral/numeral',
 		'plugins/numeral/languages',
 		//'plugins/jquery.pulsate.min',
@@ -195,7 +196,7 @@ $di->setShared('environment', function() use ($di) {
 		'datepicker' => array(
 			'name'	=> 'datepicker',
 			'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
-			'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker')
+			'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker', 'plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.%locale$s')
 		),
 		'pwstrength' => array(
 			'name'	=> 'pwstrength',

@@ -1,5 +1,6 @@
 <?php
 use 
+    Phalcon\Mvc\Model\Transaction\Manager as TransactionManager,
     Phalcon\Logger,
 	Phalcon\Logger\Adapter\File as FileLogger,
 	Phalcon\Cache\Backend\Apc as BackendCache;
@@ -36,6 +37,12 @@ $eventsManager->attach('db', function ($event, $connection) use ($logger) {
     if ($event->getType() == 'beforeQuery') {
         $logger->log($connection->getSQLStatement(), Logger::INFO);
     }
+});
+
+
+
+$di->setShared('transactions', function () {
+    return new TransactionManager();
 });
 
 // Set a models manager

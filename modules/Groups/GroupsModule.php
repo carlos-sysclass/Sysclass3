@@ -22,7 +22,6 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             $groupItems = $this->model("users/groups/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'users' => array(
@@ -250,7 +249,6 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $itemsData = $itemsCollection->getItems();
 
 
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {

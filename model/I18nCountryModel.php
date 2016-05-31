@@ -1,4 +1,7 @@
 <?php 
+/**
+ * @deprecated 3.2.0.198
+ */
 class I18nCountryModel extends ModelManager {
 
 	protected $countryList = null;
