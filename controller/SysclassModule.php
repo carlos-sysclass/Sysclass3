@@ -571,8 +571,11 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $modelFilters = $filterData = $args = array();
 
-            if (array_key_exists(1, $model_info['listMethod'])) {
-                $modelFilters = $model_info['listMethod'][1];
+            if (is_array($model_info['listMethod'])) {
+                if (array_key_exists(1, $model_info['listMethod'])) {
+                    $modelFilters = $model_info['listMethod'][1];
+                    $model_info['listMethod'] = $model_info['listMethod'][0];
+                }
             }
 
             if (!empty($filter)) {

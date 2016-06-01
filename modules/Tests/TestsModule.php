@@ -7,7 +7,8 @@ namespace Sysclass\Modules\Tests;
 use Phalcon\Acl\Adapter\Memory as AclList,
     Phalcon\Acl\Resource,
     Sysclass\Models\Courses\Classe,
-    Sysclass\Models\Acl\Role;
+    Sysclass\Models\Acl\Role,
+    Sysclass\Models\Courses\Grades\Grade;
 
 /**
  * [NOT PROVIDED YET]
@@ -60,7 +61,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
     /* IBreadcrumbable */
     public function getBreadcrumb() {
-        $breadcrumbableViews = array("view", "add", "edit/:identifier", "execute/:identifier/:execution_id");
+        $breadcrumbableViews = array("view", "add", "edit/{identifier}", "execute/:identifier/:execution_id");
 
         $request = $this->getMatchedUrl();
 
@@ -73,7 +74,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'text'  => $this->translate->translate("Home")
                 ),
                 array(
-                    'icon'  => 'icon-bookmark',
+                    'icon'  => 'fa fa-list-ol',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Tests")
                 )
@@ -88,11 +89,11 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     $breadcrumbs[] = array('text'   => $this->translate->translate("New Test"));
                     break;
                 }
-                case "edit/:identifier" : {
+                case "edit/{identifier}" : {
                     $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
                     break;
                 }
-                case "execute/:identifier/:execution_id" : {
+                case "execute/{identifier}/{execution_id}" : {
                     // TODO A WAY TO INJECT DATA INTO BREADCRUMB FROM HERE (string substitution FROM variables in the route)
                     $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
                     $breadcrumbs[] = array('text'   => $this->translate->translate("View Execution"));
@@ -113,7 +114,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'text'      => $this->translate->translate('New Test'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus'
+                    'icon'      => 'fa fa-plus-circle'
                 )/*,
                 array(
                     'separator' => true,
@@ -204,11 +205,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      */
     public function addPage()
     {
-
         $classes = Classe::find(array(
             'conditions' => 'active = 1'
         ));
-
         $this->putItem("classes", $classes->toArray());
 
         $teacherRole = Role::findFirstByName('Teacher');
@@ -216,11 +215,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         $this->putItem("instructors", $users);
 
-        $items = $this->model("grades")->addFilter(array(
-            'active' => true
-        ))->getItems();
+        $items = Grade::find("active =1");
 
-        $this->putItem("grades", $items);
+        $this->putItem("grades", $items->toArray());
 
         parent::addPage();
     }
@@ -235,7 +232,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $classes = Classe::find(array(
             'conditions' => 'active = 1'
         ));
-
         $this->putItem("classes", $classes->toArray());
 
         $teacherRole = Role::findFirstByName('Teacher');
@@ -243,14 +239,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         $this->putItem("instructors", $users);
 
+        $items = Grade::find("active =1");
 
-        $items = $this->model("grades")->addFilter(array(
-            'active' => true
-        ))->getItems();
-
-        $this->putItem("grades", $items);
-
-
+        $this->putItem("grades", $items->toArray());
 
         parent::editPage($identifier);
     }
@@ -465,6 +456,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      *
      * @Get("/item/{model}/{identifier}")
      */
+    /*
     public function getItemRequest($model = "me", $identifier = null)
     {
         if ($model == "me") {
@@ -479,12 +471,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         return $editItem;
     }
-
-    /**
-     * [ add a description ]
-     *
-     * @Post("/item/{model}")
-     */
+    */
+    /*
     public function addItemRequest($model, $type)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -493,11 +481,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $advise = true;
 
             if ($model == "me") {
-                $itemModel = $this->model("tests");
-                $messages = array(
-                    'success' => "Lesson created with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
             } elseif ($model == "question") {
                 $itemModel = $this->model("tests/question");
                 $messages = array(
@@ -560,12 +543,13 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Put("/item/{model}/{identifier}")
      */
+    /*
     public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -627,21 +611,17 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Delete("/item/{model}/{identifier}")
      */
+    /*
     public function deleteItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
-                $itemModel = $this->model("tests");
-                $messages = array(
-                    'success' => "Lesson removed with success",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
-                );
             } elseif ($model == "question") {
                 $itemModel = $this->model("tests/question");
                 $messages = array(
@@ -665,130 +645,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             return $this->notAuthenticatedError();
         }
     }
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/items/{model}")
-     * @Get("/items/{model}/{type}")
-     * @Get("/items/{model}/{type}/{filter}")
-     */
-    /*
-    public function getItemsRequest($model = "me", $type = "default", $filter = null)
-    {
-        // DEFAULT OPTIONS ROUTE
-        $optionsRoute = array(
-            'edit'  => array(
-                'icon'  => 'icon-edit',
-                'link'  => 'edit/%id$s',
-                'class' => 'btn-sm btn-primary'
-            ),
-            'remove'    => array(
-                'icon'  => 'icon-remove',
-                'class' => 'btn-sm btn-danger'
-            )
-        );
-
-
-        if ($model == "me") {
-            $modelRoute = "tests";
-
-            $itemsCollection = $this->model($modelRoute);
-            if (!empty($filter)) {
-                $filter = json_decode($filter, true);
-                if (is_array($filter)) {
-                    // SANITIZE ARRAY
-                    $itemsCollection->addFilter($filter);
-                }
-            }
-            $itemsData = $itemsCollection->getItems();
-        } elseif ($model == "question") {
-            $modelRoute = "tests/question";
-
-            $itemsCollection = $this->model($modelRoute);
-
-            if (!empty($filter)) {
-                $filter = json_decode($filter, true);
-                if (is_array($filter)) {
-                    // SANITIZE ARRAY
-                    $itemsCollection->addFilter($filter);
-                }
-            }
-
-            $itemsData = $itemsCollection->getItems();
-        } elseif ($model ==  "execution") {
-            $modelRoute = "tests/execution";
-
-            $optionsRoute = array(
-                'view'  => array(
-                    'icon'  => 'icon-search',
-                    'link'  => 'execute/%test_id$s/%try_index$s',
-                    'class' => 'btn-sm btn-primary'
-                ),
-                'recalculate'  => array(
-                    'icon'  => 'fa fa-refresh',
-                    'class' => 'btn-sm btn-warning datatable-actionable',
-                    'action' => 'recalculate/%test_id$s/%try_index$s',
-                    'method' => 'POST'
-                ),
-
-            );
-
-            $filter = filter_var($filter, FILTER_DEFAULT);
-
-            if (!is_array($filter)) {
-                $filter = json_decode($filter, true);
-            }
-
-            $itemsCollection = $this->model($modelRoute);
-            $itemsData = $itemsCollection->addFilter($filter)->getItems();
-
-        } else {
-            return $this->invalidRequestError();
-        }
-
-        if ($type === 'combo') {
-            $query = $_GET['q'];
-            $itemsData = $itemsCollection->filterCollection($itemsData, $query);
-
-            $result = array();
-
-            foreach ($itemsData as $item) {
-                // @todo Group by course
-                $result[] = array(
-                    'id'    => intval($item['id']),
-                    'name'  => $item['name']
-                );
-            }
-            return $result;
-        } elseif ($type === 'datatable') {
-            $stringsHelper = $this->helper("strings");
-            $itemsData = array_values($itemsData);
-            foreach ($itemsData as $key => $item) {
-                $itemsData[$key]['options'] = array();
-                foreach($optionsRoute as $index => $optItem) {
-                    //var_dump($item);
-                    if (array_key_exists('link', $optItem)) {
-                        $optItem['link'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['link'], $item);
-                    } elseif (array_key_exists('action', $optItem)) {
-                        $optItem['action'] = $this->getBasePath() . $stringsHelper->vksprintf($optItem['action'], $item);
-                    }
-
-                    $itemsData[$key]['options'][$index] = $optItem;
-                }
-            }
-            return array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($itemsData),
-                'iTotalDisplayRecords'  => count($itemsData),
-                'aaData'                => array_values($itemsData)
-            );
-        }
-
-        return array_values($itemsData);
-    }
     */
-
     /**
      * The test execution itself
      *

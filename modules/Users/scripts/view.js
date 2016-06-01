@@ -12,7 +12,6 @@ $SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
 				if (data.pending == "0") {
 					$(row).find("[data-datatable-action='aprove']").remove();
 				}
-
 			});
 
 			this.listenTo(table, "action.datatables", function(el, data, action) {
@@ -20,7 +19,7 @@ $SC.module("views.users.view", function(mod, app, Backbone, Marionette, $, _) {
 					var userClass = app.module("models").users().user;
 
 					var user = new userClass(data);
-					
+
 					//user.set("id", data['id']);
 					user.set("pending", 0);
 					user.save();

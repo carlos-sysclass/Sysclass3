@@ -105,6 +105,6 @@ blocks:
           label: Actions
 models:
   me: 
-    class: Sysclass\Models\Courses\Lesson
+    class: Sysclass\Models\Courses\Tests\Lesson
     listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
-    exportMethod: ["toExtendArray", ["EnrollFields"]]
+    exportMethod: ["ToFullArray", ["Test"]]

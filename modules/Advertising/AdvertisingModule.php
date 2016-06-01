@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Advertising;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Dropbox\File;
+use Sysclass\Models\Dropbox\File,
+    Sysclass\Models\Advertising\Advertising;
 /**
  * Manage and control the advertising system strategy
  * @package Sysclass\Modules
@@ -90,12 +91,14 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-            $itemsData = $this->model($this->_modelRoute)->getItems();
+            
+
+            $total = Advertising::count();
 
             return array(
                 'communication' => array(
                     array(
-                        'count' => count($itemsData),
+                        'count' => $total,
                         'text'  => $this->translate->translate('Advertising'),
                         'icon'  => 'fa fa-money',
                         'link'  => $this->getBasePath() . 'view'
