@@ -628,8 +628,6 @@ abstract class SysclassModule extends BaseSysclassModule
             $args['bind'] = $filterData;
             $args['order'] = $sort;
 
-            //var_dump($args);
-            //exit;
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
