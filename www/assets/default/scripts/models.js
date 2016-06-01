@@ -1,5 +1,5 @@
 $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
-    this.baseModelClass = Backbone.DeepModel.extend({
+    var baseModelClass = Backbone.DeepModel.extend({
         response_type : "object",
         save: function(key, val, options) {
             this.trigger("before:save", this);
@@ -52,7 +52,23 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         }
     });
 
+    var models = {
+        base : {
+            default: baseModelClass
+        },
+        users : {
+            user : baseModelClass.extend({
+                urlRoot : "/module/users/item/me"
+            })
+        }
+    };
+
     this.getBaseModel = function() {
-       return this.baseModelClass; 
+       return models.base.default; 
     }
+
+    this.users = function() {
+        return models.users;
+    }
+
 });

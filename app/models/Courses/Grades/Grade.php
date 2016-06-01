@@ -13,22 +13,7 @@ class Grade extends Model
     }
 
     public function beforeSave() {
-    	//var_dump($this->grades);
-    	//$this->getRanges()->delete();
 
-
-    	/*
-    	foreach($this->getRanges() as $range) {
-    		$range->delete();
-    	}
-    	*/
-    	/*
-    	if () {
-
-    	}
-    	var_dump("dd", $this->toArray());
-    	exit;
-    	*/
     }
 }
 

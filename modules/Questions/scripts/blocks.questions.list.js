@@ -414,7 +414,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 if (this.get("id")) {
                     return "/module/" + module_id + "/item/" + model_id;
                 } else {
-                    return "/module/" + module_id + "/item/" + model_id + "?redirect=0";
+                    return "/module/" + module_id + "/item/" + model_id + "?object=1";
                 }
             }
         })
