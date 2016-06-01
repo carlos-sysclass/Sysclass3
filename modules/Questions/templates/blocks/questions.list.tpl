@@ -85,23 +85,23 @@
 
     <span class="btn btn-sm btn-circle btn-default disabled">
         <!-- <i class="fa fa-question"></i> -->
-        <%= model.question.type %>
+        <%= model.question.type.name %>
     </span>
-    <% if (model.question.difficulty == "Easy") { %>
+    <% if (model.question.difficulty.name == "Easy") { %>
         <span class="btn btn-sm btn-circle green disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
-    <% } else if (model.question.difficulty == "Normal") { %>
+    <% } else if (model.question.difficulty.name == "Normal") { %>
         <span class="btn btn-sm btn-circle yellow disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
-    <% } else if (model.question.difficulty == "Hard") { %>
+    <% } else if (model.question.difficulty.name == "Hard") { %>
         <span class="btn btn-sm btn-circle red disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
-    <% } else if (model.question.difficulty == "Very Hard") { %>
+    <% } else if (model.question.difficulty.name == "Very Hard") { %>
         <span class="btn btn-sm btn-circle dark disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
     <% } %>
 

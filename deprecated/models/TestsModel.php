@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0
+ */
 class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function init()
