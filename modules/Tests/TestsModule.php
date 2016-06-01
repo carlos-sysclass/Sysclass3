@@ -302,8 +302,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         }
     }
 
-
-
     /**
      * The test execution itself
      *

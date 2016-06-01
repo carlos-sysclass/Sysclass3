@@ -15,6 +15,15 @@ class Test extends Model
             "id",
             array('alias' => 'Lesson')
         );
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\TestQuestions",
+            "lesson_id", "question_id",
+            "Sysclass\\Models\\Courses\\Questions\Question",
+            "id",
+            array('alias' => 'Questions')
+        );
     }
 
 }

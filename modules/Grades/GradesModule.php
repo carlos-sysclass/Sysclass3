@@ -66,7 +66,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Grade Rule"));
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-briefcase',
                     'link'  => $this->getBasePath() . "view",

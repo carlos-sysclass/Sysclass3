@@ -19,6 +19,15 @@ class Lesson extends BaseLesson
             "id",
             array('alias' => 'Test')
         );
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\TestQuestions",
+            "lesson_id", "question_id",
+            "Sysclass\\Models\\Courses\\Questions\Question",
+            "id",
+            array('alias' => 'Questions')
+        );
     }
 
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {

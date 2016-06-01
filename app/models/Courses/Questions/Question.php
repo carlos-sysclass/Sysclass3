@@ -28,8 +28,11 @@ class Question extends Model
 
     public function toArray() {
     	$this->options = json_decode($this->options);
-
-		return parent::toArray();
+        return $this->toFullArray(array(
+            'Departament',
+            'Type',
+            'Difficulty'
+        ), parent::toArray());
     }
 
 }

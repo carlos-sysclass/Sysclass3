@@ -24,7 +24,7 @@ _lazy_init_functions.push(function() {
         el : "#view-{$T_MODULE_ID}",
         datatable : {
             "sAjaxSource": '{$T_TESTS_EXECUTION_CONTEXT.ajax_source}',
-            "aoColumns": {$T_TESTS_EXECUTION_CONTEXT.datatable_fields|@json_encode}
+            "aoColumns": {$T_TESTS_EXECUTION_CONTEXT.datatable_fields|@json_encode nofilter}
         }
     });
 });
