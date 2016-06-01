@@ -8,7 +8,8 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Phalcon\Acl\Resource,
     Sysclass\Models\Courses\Classe,
     Sysclass\Models\Acl\Role,
-    Sysclass\Models\Courses\Grades\Grade;
+    Sysclass\Models\Courses\Grades\Grade,
+    Sysclass\Models\Courses\Tests\Lesson as TestLesson;
 
 /**
  * [NOT PROVIDED YET]
@@ -41,15 +42,13 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Tests", "View")) {
-            $itemsData = $this->model("tests")->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            $items = $itemsData;
+
+            $total = TestLesson::count("type='test' AND active = 1");
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $total,
                         'text'  => $this->translate->translate('Tests'),
                         'icon'  => 'fa fa-list-ol ',
                         'link'  => $this->getBasePath() . 'view'
