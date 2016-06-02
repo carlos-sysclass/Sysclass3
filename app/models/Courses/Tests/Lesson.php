@@ -47,4 +47,41 @@ class Lesson extends BaseLesson
         
     }
 
+    protected function resetOrder($lesson_id) {
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        $phql = "UPDATE Sysclass\\Models\\Courses\\Tests\TestQuestions 
+            SET position = -1 WHERE lesson_id = :lesson_id:";
+
+        return $manager->executeQuery(
+            $phql,
+            array(
+                'lesson_id' => $this->id
+            )
+        );
+    }
+
+    public function setQuestionOrder(array $order_ids) {
+        $status = self::resetOrder();
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        foreach($order_ids as $index => $question_id) {
+            $phql = "UPDATE Sysclass\\Models\\Courses\\Tests\TestQuestions
+                SET position = :position: 
+                WHERE id = :id: AND lesson_id = :lesson_id:";
+
+            $status->success() && $status = $manager->executeQuery(
+                $phql,
+                array(
+                    'position' => $index + 1,
+                    'id' => $question_id,
+                    'lesson_id' => $this->id
+                )
+            );
+
+        }
+
+        return $status->success();
+    }
+
 }
