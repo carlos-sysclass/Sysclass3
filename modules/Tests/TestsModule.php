@@ -722,7 +722,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         }
     }
 
-
     /**
      * [ add a description ]
      *
@@ -730,34 +729,67 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      */
     public function setOrderRequest($model, $lesson_id)
     {
-        if ($model == "me") {
-            return $this->invalidRequestError();
-        } elseif ($model == "question") {
-            $modelRoute = "tests/question";
-            $optionsRoute = "edit";
+        if ($this->isUserAllowed("edit")) {
+            $data = $this->request->getPut();
+            
+            if ($model == "me") {
+                return $this->invalidRequestError();
+            } elseif ($model == "question") {
+                $messages = array(
+                    'success' => "Questions order updated with success",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                );
+
+                $itemModel = $this->getModelData("me", $lesson_id);
+
+                if ($itemModel->setQuestionOrder($data['position'])) {
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+                } else {
+                    $response = $this->invalidRequestError($this->translate->translate($messages['success']), "success");
+                }
+
+                
+                return $response;
+
+            } else {
+                return $this->invalidRequestError();
+            }
+
         } else {
-            return $this->invalidRequestError();
+            return $this->notAuthenticatedError();
         }
+    }
 
 
-        $itemsCollection = $this->model($modelRoute);
-        // APPLY FILTER
-        if (is_null($lesson_id) || !is_numeric($lesson_id)) {
-            return $this->invalidRequestError();
+    /**
+     * [ add a description ]
+     *
+     * @Put("/items/lessons/set-order/{class_id}")
+     */
+    public function setLessonOrderRequest($class_id)
+    {
+        if ($this->isUserAllowed("edit")) {
+            
+
+            $itemModel = $this->getModelData("me", $class_id);
+
+            $messages = array(
+                'success' => "Lesson order updated with success",
+                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+            );
+
+            if ($itemModel->setQuestionOrder($data['position'])) {
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+            } else {
+                $response = $this->invalidRequestError($this->translate->translate($messages['success']), "success");
+            }
+        } else {
+            $response = $this->notAuthenticatedError();
+        
         }
-
-        $messages = array(
-            'success' => "Question order updated with success",
-            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+        $this->response->setJsonContent(
+            $response
         );
-
-        $data = $this->getHttpData(func_get_args());
-
-        if ($itemsCollection->setOrder($lesson_id, $data['position'])) {
-            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
-        } else {
-            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
-        }
     }
 
 

@@ -441,6 +441,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
 
 
+
+
                     $modelMessages = array_merge($beforeMessages, $afterMessages);
 
                     if (count($modelMessages) > 0) {
@@ -470,9 +472,27 @@ abstract class SysclassModule extends BaseSysclassModule
                         $response = array_merge($response, $itemData);
                     }
                 } else {
+
+
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                    // ABORT WITH PROVIDED MESSAGES
+                    $afterMessages = $itemModel->getMessages();
+                    if (count($afterMessages) > 0) {
+                        foreach($afterMessages as $messageObject) {
+                            $message = $this->translate->translate($messageObject->getMessage());
+                            $type = $messageObject->getType();
+                            break;
+                        }
+                    } else {
+                        $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                        $type = "warning";
+                    }
+
+                    $response = $this->invalidRequestError($message, $type);
+                    $this->response->setJsonContent(
+                        array_merge($response, $data)
+                    );                
                 }
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);

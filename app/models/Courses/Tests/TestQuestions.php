@@ -16,4 +16,14 @@ class TestQuestions extends Model
         
     }
 
+    public function beforeValidationOnCreate() {
+    	if (is_null($this->points)) {
+    		$this->points = 10;
+    	}
+    	if (is_null($this->weight)) {
+    		$this->weight = 1;
+    	}
+
+    }
+
 }
