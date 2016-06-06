@@ -47,7 +47,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             readonly : false,
             initialize: function() {
                 console.info('tests.execute/testExecutionStatsViewClass::initialize');
-                baseFormClass.prototype.initialize.apply(this);
+                //baseFormClass.prototype.initialize.apply(this);
 
                 // THIS WILL STARTED OR RESUME THE TEST PROGRESS (AND UPDATE INTERFACE AS WELL)
                 var self = this;
@@ -182,7 +182,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             urlRoot : "/module/tests/item/me"
         }),
         test_execution : Backbone.DeepModel.extend({
-            urlRoot : "/module/tests/item/execution",
+            urlRoot : "/module/tests/datasource/execution",
         })
     };
 

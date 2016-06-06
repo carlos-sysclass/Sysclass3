@@ -129,9 +129,22 @@ class CourseClasses extends Model
         $class = $this->getClasse();
         $result['classe'] = $class->toFullArray();
 
-        $lessons = $class->getLessons();
+        $lessons = $class->getLessons(array(
+            'conditions' => "type = 'lesson'"
+        ));
 
         $result['classe']['lessons'] = $lessons->toArray();
+
+        $tests = $class->getTests(array(
+            'conditions' => "type = 'test'"
+        ));
+
+        $result['classe']['tests'] = array();
+
+        foreach($tests as $test) {
+            $result['classe']['tests'][] = $test->toFullArray(array("Test", "Questions"));
+        }
+
 
         return $result;
     }

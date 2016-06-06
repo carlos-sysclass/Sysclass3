@@ -702,33 +702,34 @@
 </script>
 
 <script type="text/template" id="tab_class_tests-item-template">
+	<% var total_questions = _.size(model.questions); %>
 	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
-	<td class="text-center"><%= model.total_questions %></td>
+	<td class="text-center"><%= total_questions %></td>
 	<td class="text-center">
 		<span class="label label-danger">
-		<%= _.size(model.executions) %>
-		<% if (model.test_repetition > 0) { %>
-			 / <%= model.test_repetition %>
+		<%= _.size(model.test.executions) %>
+		<% if (model.test.test_repetition > 0) { %>
+			 / <%= model.test.test_repetition %>
 		<% } %>
 		</span>
 	</td>
 	<td class="text-center">
 		<%
-		if (_.size(model.executions) > 0) {
-			 var execution = _.last(model.executions);
+		if (_.size(model.test.executions) > 0) {
+			 var execution = _.last(model.test.executions);
 		%>
 			<span class="label label-primary"><%= execution.user_grade %></span>
 			<small><%= execution.user_points %> {translateToken value="points"}</small>
 		<% } %>
 	</span></td>
 	<td class="text-center">
-		<% if (model.total_questions > 0 && (model.test_repetition <= 0 || _.size(model.executions) < model.test_repetition) ) { %>
+		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
 			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
 				{translateToken value="Do now!"}
 			</a>
 		<% } %>
-		<% if (model.total_questions > 0) { %>
+		<% if (total_questions > 0) { %>
 			<a href="javascript:void(0);" class="btn btn-xs btn-info view-test-action">
 				{translateToken value="Details"}
 			</a>

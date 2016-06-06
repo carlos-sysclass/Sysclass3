@@ -190,7 +190,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
     public function put($key, $value) {
        if ($user = $this->getCurrentUser()) {
             // SAVE SETTINGS FOR CURRENT USER
-            $this->db->StartTrans();
+            //$this->db->StartTrans();
             $this->db->Execute(sprintf(
                 "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
                 $user['id'],
@@ -202,7 +202,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 $key,
                 $value
             ));
-            $this->db->CompleteTrans();
+            //$this->db->CompleteTrans();
 
             return true;
         } else {

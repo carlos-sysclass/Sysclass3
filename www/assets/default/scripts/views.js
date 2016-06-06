@@ -544,7 +544,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
 
-            this.handleElements();
+	    	console.warn(this);
+
+            //this.handleElements();
             this.handleMasks();
 
 	    	this.initializeForm();
@@ -631,9 +633,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseFormClass::submit');
 	    	this.model.set("_add_another", true);
 	    	this.oForm.submit();
-	    },
-
-	    
+	    }
   	});
 
     this.dialogViewClass = this.baseFormClass.extend({
