@@ -765,6 +765,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .scroller {
 	padding-right: 0;
 }
+.scroller div {
+	padding: 0 10px;
+}
 #courses-content .tabbable-custom  .tab-content > .tab-pane {
 	padding-bottom: 56%;
 	height: 0;
