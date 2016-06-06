@@ -189,6 +189,9 @@ hr {
 .tabbable-custom .nav-tabs > li {
 	margin-right: 0px;
 }
+.tabbable-custom .nav-tabs > li:first-child a {
+	border: 0;
+}
 .icon-btn {
 	padding: 10px 0 0;
 	height: 80px;
@@ -769,7 +772,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding: 0 10px;
 }
 #courses-content .tabbable-custom  .tab-content > .tab-pane {
-	border-top: 1px solid #ddd;
+	border-top: 0;
 }
 /*
 #courses-widget .tab-content .nav.nav-tabs > li {
