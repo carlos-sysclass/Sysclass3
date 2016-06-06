@@ -6,7 +6,7 @@
 	<div class="col-md-3 col-sm-3 hidden-xs" id="users-avatar">
 
 		{if ({$user_details.avatars[0].url})}
-			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="90%" alt="">
+			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
 		{else}
 			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="100%" alt="">
 		{/if}
