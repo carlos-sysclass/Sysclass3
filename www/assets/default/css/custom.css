@@ -130,6 +130,15 @@ hr {
 	width: 250px;
 	min-height: 1px;
 }
+.chat-widget .portlet-body ul li {
+    list-style: none;
+    float: left;
+    width: 100%;
+    padding: 3px 0;
+}
+.chat-widget hr {
+	display: none;
+}
 .chat-widget .portlet > .portlet-title > .caption {
     float: left;
     display: inline-block;
@@ -155,7 +164,7 @@ hr {
 .chat-widget .subject {
 	position: relative;
     top: 3px;
-    padding: 0 7px 0 10px;
+    padding: 0 3px 0 6px;
 }
 
 .chat-widget .portlet {
@@ -165,10 +174,15 @@ hr {
 	width: 250px;
 	z-index: 101;
 }
-
 .chat-widget li:first-child {
 	padding-top: 5px;
 }
+.chat-widget li:first-child .message {
+	width: 100%;
+	text-align: center;
+	font-size: 10px;
+}
+
 .chat-widget .send-block {
 	margin-top: 10px;
 	padding-right: 0;
