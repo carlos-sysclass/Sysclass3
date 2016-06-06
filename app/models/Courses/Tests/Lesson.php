@@ -35,7 +35,10 @@ class Lesson extends BaseLesson
         return parent::assign($data, $dataColumnMap, $whiteList);
     }
 
-
+    public function beforeSave() {
+        $this->type = 'test';
+    }
+    
     public function afterSave() {
         // SAVE THE LINKED TEST
         if (array_key_exists('test', $this->assignedData) && is_array($this->assignedData['test'])) {
@@ -83,5 +86,25 @@ class Lesson extends BaseLesson
 
         return $status->success();
     }
+
+    public function calculateTestScore() {
+        $questions = $this->getQuestions();
+        /*
+        if (!array_key_exists('questions', $testData)) {
+            $testData['questions'] = $this->model("tests/question")->addFilter(array(
+                'lesson_id' => $testData['id']
+            ))->getItems();
+        }
+        */
+        $testScore = 0;
+        foreach($questions as $question) {
+            $testScore += $question->points * $question->weight;
+        }
+
+        return $testScore;
+        //return $testData;
+
+    }
+
 
 }

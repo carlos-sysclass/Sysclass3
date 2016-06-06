@@ -13,8 +13,21 @@ class Classe extends Model
         	"id",
         	"Sysclass\\Models\\Courses\\Lesson",
         	"class_id",
-        	array('alias' => 'Lessons')
+        	array(
+                'alias' => 'Lessons',
+                'conditions' => "type = 'lesson'"
+            )
         );
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\\Lesson",
+            "class_id",
+            array(
+                'alias' => 'Tests',
+                'conditions' => "type = 'test'"
+            )
+        );
+
 
 		$this->hasOne(
             "id",
