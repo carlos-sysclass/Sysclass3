@@ -43,16 +43,19 @@
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Class"}</label>
 					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select Class"}">
-						<option value=""></option>
 						{foreach $T_CLASSES as $classe}
 							<option value="{$classe.id}">{$classe.name}</option>
 						{/foreach}
 					</select>
 				</div>
 				<div class="form-group">
-					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-					<label class="control-label">{translateToken value="Grade Rule"}</label>
-					<select class="select2-me form-control" name="grade_id" data-placeholder="{translateToken value="Select Class"}">
+					<label class="control-label">{translateToken value="Grade Rule"}
+                        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='You can select a customized rule to show yours students grades in your prefered way. If you do not choose, the grades will be showed in the [0-100] standard'}">
+                            <i class="fa fa-question"></i>
+                        </span>
+                    </label>
+
+					<select class="select2-me form-control" name="test.grade_id" data-placeholder="{translateToken value="Select Class"}">
 						<option value="">{translateToken value="Select Grade Rule"}</option>
 						{foreach $T_GRADES as $grade}
 							<option value="{$grade.id}">{$grade.name}</option>
@@ -61,17 +64,16 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
-					<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
-					<select class="select2-me form-control" name="instructor_id" multiple="multiple">
+					<select class="select2-me form-control" name="instructor_id">
 						<option value="">{translateToken value="Please Select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}
-							<option value="{$instructor.id}">{$instructor.name} {$instructor.surname}</option>
+							<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
 						{/foreach}
 					</select>
 				</div>
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>
-					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
 				</div>
 			</div>
 
@@ -100,7 +102,7 @@
 			                            {translateToken value="Time limit in minutes?"}
 			                        </label>
 
-			                        <input name="time_limit" value="" type="text" placeholder="{translateToken value="Time Limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
+			                        <input name="test.time_limit" value="" type="text" placeholder="{translateToken value="Time Limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -109,7 +111,7 @@
 			                            {translateToken value="Allow pause the test?"}
 			                        </label>
 
-			                        <input type="checkbox" name="allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -117,7 +119,7 @@
 			                        <label class="control-label">
 			                            {translateToken value="How many times the user can have the test?"}
 			                        </label>
-			                        <input name="test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="1" data-rule-max="10" />
+			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="1" data-rule-max="10" />
 			                    </div>
 			                </div>
 			            </div>
@@ -140,7 +142,7 @@
 			                            {translateToken value="Show question weight?"}
 			                        </label>
 
-			                        <input type="checkbox" name="show_question_weight" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.show_question_weight" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -152,7 +154,7 @@
 			                            {translateToken value="Show question Difficulty?"}
 			                        </label>
 
-			                        <input type="checkbox" name="show_question_difficulty" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.show_question_difficulty" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -164,7 +166,7 @@
 			                            {translateToken value="Show question type?"}
 			                        </label>
 
-			                        <input type="checkbox" name="show_question_type" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.show_question_type" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			            </div>
@@ -178,7 +180,7 @@
 			                            {translateToken value="Show questions one by one?"}
 			                        </label>
 
-			                        <input type="checkbox" name="show_one_by_one" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.show_one_by_one" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -190,7 +192,7 @@
 			                            {translateToken value="Can navigate through the test?"}
 			                        </label>
 
-			                        <input type="checkbox" name="can_navigate_through" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.can_navigate_through" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -202,7 +204,7 @@
 			                            {translateToken value="Show correct answers?"}
 			                        </label>
 
-			                        <input type="checkbox" name="show_correct_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.show_correct_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			            </div>
@@ -216,7 +218,7 @@
 			                            {translateToken value="Randomize the order of questions?"}
 			                        </label>
 
-			                        <input type="checkbox" name="randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -228,7 +230,7 @@
 			                            {translateToken value="Shuffle questions alternatives?"}
 			                        </label>
 
-			                        <input type="checkbox" name="randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" checked="checked" value="1" data-value-unchecked="0">
+			                        <input type="checkbox" name="test.randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
 			            </div>

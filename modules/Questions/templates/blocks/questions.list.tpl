@@ -85,23 +85,23 @@
 
     <span class="btn btn-sm btn-circle btn-default disabled">
         <!-- <i class="fa fa-question"></i> -->
-        <%= model.question.type %>
+        <%= model.question.type.name %>
     </span>
-    <% if (model.question.difficulty == "Easy") { %>
+    <% if (model.question.difficulty.name == "Easy") { %>
         <span class="btn btn-sm btn-circle green disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
-    <% } else if (model.question.difficulty == "Normal") { %>
+    <% } else if (model.question.difficulty.name == "Normal") { %>
         <span class="btn btn-sm btn-circle yellow disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
-    <% } else if (model.question.difficulty == "Hard") { %>
+    <% } else if (model.question.difficulty.name == "Hard") { %>
         <span class="btn btn-sm btn-circle red disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
-    <% } else if (model.question.difficulty == "Very Hard") { %>
+    <% } else if (model.question.difficulty.name == "Very Hard") { %>
         <span class="btn btn-sm btn-circle dark disabled">
-            <%= model.question.difficulty %>
+            <%= model.question.difficulty.name %>
         </span>
     <% } %>
 
@@ -118,6 +118,10 @@
             </a>
             -->
             <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
+        <% } else { %>
+        <span class="label label-sm label-info">
+          <i class="fa fa-exclamation"></i>Not saved yet!
+        </span>
         <% } %>
         <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
             data-toggle="confirmation"
@@ -141,7 +145,7 @@
                 <label class="control-label">
                     {translateToken value="Question Points"} :
                 </label>
-                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
+                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
             </div>
         </div>
         <div class="col-md-6">

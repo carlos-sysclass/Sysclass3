@@ -441,6 +441,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
 
 
+
+
                     $modelMessages = array_merge($beforeMessages, $afterMessages);
 
                     if (count($modelMessages) > 0) {
@@ -470,9 +472,27 @@ abstract class SysclassModule extends BaseSysclassModule
                         $response = array_merge($response, $itemData);
                     }
                 } else {
+
+
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                    // ABORT WITH PROVIDED MESSAGES
+                    $afterMessages = $itemModel->getMessages();
+                    if (count($afterMessages) > 0) {
+                        foreach($afterMessages as $messageObject) {
+                            $message = $this->translate->translate($messageObject->getMessage());
+                            $type = $messageObject->getType();
+                            break;
+                        }
+                    } else {
+                        $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                        $type = "warning";
+                    }
+
+                    $response = $this->invalidRequestError($message, $type);
+                    $this->response->setJsonContent(
+                        array_merge($response, $data)
+                    );                
                 }
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
@@ -567,10 +587,16 @@ abstract class SysclassModule extends BaseSysclassModule
 
             $sort = @$model_info['sort'];
 
-            //$itemModel = new $model_class();
-            
-            //$args = $this->getparamentrs();
             $filter = filter_var($filter, FILTER_DEFAULT);
+
+            $modelFilters = $filterData = $args = array();
+
+            if (is_array($model_info['listMethod'])) {
+                if (array_key_exists(1, $model_info['listMethod'])) {
+                    $modelFilters = $model_info['listMethod'][1];
+                    $model_info['listMethod'] = $model_info['listMethod'][0];
+                }
+            }
 
             if (!empty($filter)) {
 
@@ -588,6 +614,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 }
 
                 $index = 0;
+
                 foreach($filter as $key => $item) {
                     if (strpos($key, "_") === 0) {
                         $opt[$key] = $item;
@@ -611,17 +638,19 @@ abstract class SysclassModule extends BaseSysclassModule
                     }
                 }
 
-                $args = array(
-                    'conditions'    => implode(" AND ", $modelFilters),
-                    'bind' => $filterData,
-                    'args'  => $filter,
-                    'order'  => $sort
-                );
+                $args['args'] = $filter;
             } else {
+                /*
                 $args = array(
                     'order'  => $sort
                 );
+                */
             }
+
+            $args['conditions'] = implode(" AND ", $modelFilters);
+            $args['bind'] = $filterData;
+            $args['order'] = $sort;
+
             /**
              * @todo Get parameters to filter, if possibile, the info
              */

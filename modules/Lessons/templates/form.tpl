@@ -45,7 +45,7 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
 					<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
-					<select class="select2-me form-control" name="instructor_id" multiple="multiple">
+					<select class="select2-me form-control" name="instructor_id">
 						<option value="">{translateToken value="Please Select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}
 							<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
@@ -57,9 +57,6 @@
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 				<div class="form-actions nobg">
-
-
-
 					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 
 					<button class="btn btn-warning save-and-add-action" type="button">{translateToken value="Save and Add another Lesson"}</button>

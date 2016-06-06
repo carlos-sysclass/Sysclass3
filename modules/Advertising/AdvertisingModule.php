@@ -4,7 +4,9 @@ namespace Sysclass\Modules\Advertising;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Dropbox\File;
+use Sysclass\Models\Dropbox\File,
+    Sysclass\Models\Advertising\Advertising,
+    Sysclass\Models\Advertising\Content as AdvertisingContent;
 /**
  * Manage and control the advertising system strategy
  * @package Sysclass\Modules
@@ -21,16 +23,19 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         $widgetsContext = $this->getConfig("widgets");
         // $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
 
-        $adsModel = $this->model($this->_modelRoute);
+        //$adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
 
+        $items = Advertising::find("active = 1");
+        /*
         $items = $adsModel->addFilter(array(
             'active' => true
         ))->getItems();
+        */
 
         $widgetsData = array();
 
-        foreach($items as $item) {
+        foreach($items->toArray() as $item) {
 
             if (!array_key_exists($item['placement'], $widgetsData)) {
                 $widgetItem = array(
@@ -47,12 +52,12 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 }
             }
 
-            $adsContentData = $adsContentModel->clear()->addFilter(array(
-                'active'    => 1,
-                'advertising_id' => $item['id']
-            ))->getItems();
+            $adsContentData = AdvertisingContent::find(array(
+                "conditions" => "advertising_id = ?0 AND active = 1",
+                "bind" => array($item['id'])
+            ));
 
-            foreach($adsContentData as $content) {
+            foreach($adsContentData->toArray() as $content) {
                 if (!is_array($widgetsData[$item['placement']]['data']['content'])) {
                     $widgetsData[$item['placement']]['data']['content'] = array();
                 }
@@ -90,12 +95,14 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-            $itemsData = $this->model($this->_modelRoute)->getItems();
+            
+
+            $total = Advertising::count();
 
             return array(
                 'communication' => array(
                     array(
-                        'count' => count($itemsData),
+                        'count' => $total,
                         'text'  => $this->translate->translate('Advertising'),
                         'icon'  => 'fa fa-money',
                         'link'  => $this->getBasePath() . 'view'

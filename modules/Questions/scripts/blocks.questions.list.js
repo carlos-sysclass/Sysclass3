@@ -57,10 +57,10 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 this.opened = opt.opened ? opt.opened : false;
 
                 this.listenTo(this.model, 'sync', this.render.bind(this));
-                this.listenTo(this.model, 'change:points change:weight', this.save.bind(this));
             },
             render : function() {
                 console.info('blocks.questions.list/blockItemViewClass::render');
+                
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.model.get("id")) {
                     if (this.model.get("active") == "0") {
@@ -72,9 +72,13 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                         this.$el.removeClass("blue-stripe");
                         this.$el.addClass("green-stripe");
                     }
+                    this.stopListening(this.model, 'sync');
+                    this.listenTo(this.model, 'sync', this.render.bind(this));
                 }
                 //this.$el.data("lessonId", this.model.get("id"));
                 this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
+
+                console.warn(this.el, this.model.get("id"));
 
                 if (this.$el.length) {
                     app.module("ui").refresh(this.$el);
@@ -105,6 +109,10 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 if (this.$el.length) {
                     app.module("ui").refresh(this.$el);
                 }
+
+                this.listenTo(this.model, 'change:points change:weight', this.save.bind(this));
+
+                this.$("[name='points[]']").focus();
             },
             save : function() {
                 // SHOW INNER LOADER
@@ -134,12 +142,11 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             },
             */
             toogleActive : function(e, state) {
-                //this.model.set("active", state);
+                this.model.set("active", state ? 1 : 0);
                 this.model.save();
                 mod.blockView.refreshScore();
             //    this.render();
             },
-
             delete: function() {
                 this.model.destroy();
                 this.trigger("grouping:removed", this.model);
@@ -298,7 +305,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
                     if (_.size(exists) === 0) {
                         this.collection.add(testQuestionModel);
-                        testQuestionModel.save();
+                        //testQuestionModel.save();
                     } else {
                         // already exists. Show message??
                     }
@@ -414,7 +421,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 if (this.get("id")) {
                     return "/module/" + module_id + "/item/" + model_id;
                 } else {
-                    return "/module/" + module_id + "/item/" + model_id + "?redirect=0";
+                    return "/module/" + module_id + "/item/" + model_id + "?object=1";
                 }
             }
         })
