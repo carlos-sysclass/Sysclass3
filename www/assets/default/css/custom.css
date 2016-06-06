@@ -182,6 +182,10 @@ hr {
 	text-align: center;
 	font-size: 10px;
 }
+.chat-widget li:first-child .message i {
+	font-style: normal;
+    color: #999;
+}
 
 .chat-widget .send-block {
 	margin-top: 10px;
