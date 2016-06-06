@@ -152,6 +152,11 @@ hr {
 	background: #eee;
     padding: 10px;
 }
+.chat-widget .subject {
+	position: relative;
+    top: 3px;
+    padding: 0 7px 0 10px;
+}
 
 .chat-widget .portlet {
 	bottom: 0;
