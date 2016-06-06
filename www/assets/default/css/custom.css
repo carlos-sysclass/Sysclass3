@@ -190,7 +190,7 @@ hr {
 	margin-right: 0px;
 }
 .tabbable-custom .nav-tabs > li:first-child a {
-	border: 0;
+	border-left: 0 !important;
 }
 .icon-btn {
 	padding: 10px 0 0;
