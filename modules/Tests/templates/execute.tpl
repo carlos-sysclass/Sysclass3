@@ -10,8 +10,10 @@
                 <div class="test-question-container">
                     <h5 class="section-title">
                         <span class="label label-primary">{translateToken value="Question"} #{$index+1}</span>
-                        <i>{$question.question}</i>
                     </h5>
+                    <div>
+                    <i>{$question.question nofilter}</i>
+                    </div>
 
                     {if $type == "combine"}
                         <script type="text/template" id="tab_lesson_exercises-question-combine-template">
@@ -85,7 +87,7 @@
                 {translateToken value="# Try"}:
             </span>
             <strong class="text-primary pull-right">
-                <span class="text-try-index-text">{$T_TEST.executions|@count}</span> / {$T_TEST.test_repetition}
+                <span class="text-try-index-text">{$T_TEST.executions|@count}</span> / {$T_TEST.test.test_repetition}
             </strong>
         </li>
         <li>
@@ -93,7 +95,7 @@
                 <i class="fa fa-lg fa-slack text-default "></i>
                 {translateToken value="Total Questions"}:
             </span>
-            <strong class="text-primary pull-right">{$T_TEST.total_questions}</strong>
+            <strong class="text-primary pull-right">{$T_TEST.questions|@count}</strong>
         </li>
         <li>
             <span class="pull-left">

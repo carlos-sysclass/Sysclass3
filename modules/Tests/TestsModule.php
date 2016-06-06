@@ -9,7 +9,9 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Courses\Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson;
+    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\Tests\Execution as TestExecution;
+    
 
 /**
  * [NOT PROVIDED YET]
@@ -252,22 +254,36 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      */
     public function openPage($identifier)
     {
-        if ($userData = $this->getCurrentUser()) {
-            $testData = $this->model("roadmap/tests")->getItem($identifier);
+        //if ($userData = $this->getCurrentUser()) {
+            $testModel = TestLesson::findFirstById($identifier);
+
+            $testData = $testModel->toArray();
+
+            $testData['test'] = $testModel->getTest()->toArray();
+            $testData['questions'] = $testModel->getQuestions()->toArray();
+            //$testData = $this->model("roadmap/tests")->getItem($identifier);
             /*
             echo "<pre>";
             var_dump($testData);
             echo "</pre>";
             */
-
-            $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+           
+            $testData['score'] = $testModel->calculateTestScore($testData);
             // LOAD USER PROGRESS ON THIS TEST
-            //
+            
+            $executions = TestExecution::find(array(
+                'conditions' => 'test_id = ?0 AND pending = 0 AND user_id = ?1',
+                'bind' => array($identifier, $this->user->id)
+            ));
+
+
+            $testData['executions'] = $executions->toArray();
+            /*
             $testData['executions'] = $this->model("tests/execution")->addFilter(array(
                 'test_id' => $identifier,
                 'pending' => 0,
                 'user_id' => $userData['id']
-            ))->getItems();
+            ))->getItems();*/
 
             // IF THE USER CANT'T TRY ANOTHER TIME, REDIRECT OR RENDER TEST STATUS VIEW
 
@@ -299,7 +315,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             }
 
             $this->display($this->template);
-        }
+        //}
     }
 
     /**
@@ -451,9 +467,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /**
      * [ add a description ]
      *
-     * @Get("/item/{model}/{identifier}")
+     * @Get("/datasource/{model}/{identifier}")
      */
-    /*
+    
     public function getItemRequest($model = "me", $identifier = null)
     {
         if ($model == "me") {
@@ -468,7 +484,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         return $editItem;
     }
-    */
+    
     /*
     public function addItemRequest($model, $type)
     {
@@ -544,9 +560,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /**
      * [ add a description ]
      *
-     * @Put("/item/{model}/{identifier}")
+     * @Put("/datasource/{model}/{identifier}")
      */
-    /*
+    
     public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -556,17 +572,21 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             //question_points
             //question_weights
             if ($model == "me") {
+                /*
                 $itemModel = $this->model("tests");
                 $messages = array(
                     'success' => "Lesson updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+                */
             } elseif ($model == "question") {
+                /*
                 $itemModel = $this->model("tests/question");
                 $messages = array(
                     'success' => "Question updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+                */
             } elseif ($model == "execution") {
                 $itemModel = $this->model("tests/execution");
 
@@ -608,7 +628,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             return $this->notAuthenticatedError();
         }
     }
-    */
+    
     /**
      * [ add a description ]
      *

@@ -1,5 +1,5 @@
 {assign var="last_try" value=$T_TEST.executions|@end}
-{if $T_TEST.test_repetition > 0 && $T_TEST.executions|@count >= $T_TEST.test_repetition}
+{if $T_TEST.test.test_repetition > 0 && $T_TEST.test.executions|@count >= $T_TEST.test.test_repetition}
     <div class="alert alert-warning alert-dismissable">
         <button data-dismiss="alert" class="close" type="button"></button>
         <i class="fa fa-warning"></i>
@@ -21,11 +21,11 @@
                     <strong class="text-primary">{$T_TEST.info}</strong>
                 </p>
             {/if}
-            {if $T_TEST.instructors|@count > 0}
+            {if $T_TEST.test.instructors|@count > 0}
             <p class="">
                 <span>{translateToken value="Instructors"}:</span>
                 <strong class="text-primary pull-right">
-                    {foreach $T_TEST.instructors as $instructor}
+                    {foreach $T_TEST.test.instructors as $instructor}
                         {$instructor.name} {$instructor.surname}
                         {if !$instructor@last}
                             ,&nbsp;
@@ -55,7 +55,7 @@
                             <i class="fa fa-lg fa-slack text-primary "></i>
                             {translateToken value="Total Questions"}:
                         </span>
-                        <strong class="text-primary pull-right">{$T_TEST.total_questions}</strong>
+                        <strong class="text-primary pull-right">{$T_TEST.questions|@count}</strong>
                     </p>
                     <hr />
                     <p class="">
@@ -65,7 +65,7 @@
                                 {translateToken value="Time limit"}:
                             </span>
                             <strong class="text-primary pull-right">
-                            {$T_TEST.time_limit} {translateToken value="minutes"}
+                            {$T_TEST.test.time_limit} {translateToken value="minutes"}
                             </strong>
                         {else}
                             <span>
@@ -84,7 +84,7 @@
                             {translateToken value="Repetition Limit"}:
                         </span>
                         <strong class="text-primary pull-right">
-                            {$T_TEST.executions|@count}/{$T_TEST.test_repetition}
+                            {$T_TEST.executions|@count}/{$T_TEST.test.test_repetition}
                         </strong>
                     </p>
                     <hr />
@@ -93,7 +93,7 @@
                             <i class="fa fa-lg fa-graduation-cap text-primary"></i>
                             {translateToken value="Maximum Score"}:
                         </span>
-                        <strong class="text-primary pull-right">{$T_TEST.score}</strong>
+                        <strong class="text-primary pull-right">{$T_TEST.test.score}</strong>
                     </p>
                 </div>
             </div>
