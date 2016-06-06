@@ -130,6 +130,23 @@ hr {
 	width: 250px;
 	min-height: 1px;
 }
+.chat-widget .portlet > .portlet-title > .caption {
+    float: left;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0;
+}
+.chat-widget .portlet.box > .portlet-title > .tools {
+    margin-bottom: 3px;
+    margin-top: 0;
+}
+.chat-widget .subject, .chat-widget .message {
+	float: left !important;
+}
 
 .chat-widget .portlet {
 	bottom: 0;
