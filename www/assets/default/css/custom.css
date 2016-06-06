@@ -147,6 +147,11 @@ hr {
 .chat-widget .subject, .chat-widget .message {
 	float: left !important;
 }
+.chat-widget .message {
+	word-wrap: break-word;
+	background: #eee;
+    padding: 10px;
+}
 
 .chat-widget .portlet {
 	bottom: 0;
@@ -1431,9 +1436,7 @@ button.calendar-news-item {
 	visibility: visible;
 }
 
-.chat-widget .message {
-	word-wrap: break-word;	
-}
+
 
 .btn-default:active, .btn-default.active {
 	background-color: #337ab7;
