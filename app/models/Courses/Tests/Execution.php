@@ -23,4 +23,5 @@ class Execution extends Model
             array('alias' => 'User')
         );
     }
+
 }

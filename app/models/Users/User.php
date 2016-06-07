@@ -223,5 +223,16 @@ class User extends Model
         $this->reset_hash = $this->createRandomPass(16);
     }
 
+    public function getSetting($name) {
+        $settings = $this->getSettings();
+
+        foreach($settings as $setting) {
+            if ($setting->item == $name) {
+                return $setting->value;
+            }
+        }
+        return false;
+    }
+
 
 }

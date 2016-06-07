@@ -10,4 +10,5 @@ class Settings extends Model
     {
         $this->setSource("user_settings");
     }
+
 }

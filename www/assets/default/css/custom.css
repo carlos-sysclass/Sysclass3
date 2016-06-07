@@ -130,6 +130,42 @@ hr {
 	width: 250px;
 	min-height: 1px;
 }
+.chat-widget .portlet-body ul li {
+    list-style: none;
+    float: left;
+    width: 100%;
+    padding: 3px 0;
+}
+.chat-widget hr {
+	display: none;
+}
+.chat-widget .portlet > .portlet-title > .caption {
+    float: left;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0;
+}
+.chat-widget .portlet.box > .portlet-title > .tools {
+    margin-bottom: 3px;
+    margin-top: 0;
+}
+.chat-widget .subject, .chat-widget .message {
+	float: left !important;
+}
+.chat-widget .message {
+	word-wrap: break-word;
+	background: #eee;
+    padding: 10px;
+}
+.chat-widget .subject {
+	position: relative;
+    top: 3px;
+    padding: 0 3px 0 6px;
+}
 
 .chat-widget .portlet {
 	bottom: 0;
@@ -138,10 +174,22 @@ hr {
 	width: 250px;
 	z-index: 101;
 }
-
+.chat-widget .input-icon i {
+	color: #444;
+}
 .chat-widget li:first-child {
 	padding-top: 5px;
 }
+.chat-widget li:first-child .message {
+	width: 100%;
+	text-align: center;
+	font-size: 10px;
+}
+.chat-widget li:first-child .message i {
+	font-style: normal;
+    color: #999;
+}
+
 .chat-widget .send-block {
 	margin-top: 10px;
 	padding-right: 0;
@@ -188,6 +236,9 @@ hr {
 }
 .tabbable-custom .nav-tabs > li {
 	margin-right: 0px;
+}
+.tabbable-custom .nav-tabs > li:first-child a {
+	border-left: 0 !important;
 }
 .icon-btn {
 	padding: 10px 0 0;
@@ -765,10 +816,11 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 .scroller {
 	padding-right: 0;
 }
+.scroller div {
+	padding: 0 10px;
+}
 #courses-content .tabbable-custom  .tab-content > .tab-pane {
-	padding-bottom: 56%;
-	height: 0;
-	border-top: 1px solid #ddd;
+	border-top: 0;
 }
 /*
 #courses-widget .tab-content .nav.nav-tabs > li {
@@ -1360,6 +1412,7 @@ button.calendar-news-item {
 	float: left;
     padding: 0 3px;
     font-weight: 100;
+    color: #fff;
 }
 
 .portlet-sidebar {
@@ -1409,9 +1462,7 @@ button.calendar-news-item {
 	visibility: visible;
 }
 
-.chat-widget .message {
-	word-wrap: break-word;	
-}
+
 
 .btn-default:active, .btn-default.active {
 	background-color: #337ab7;
