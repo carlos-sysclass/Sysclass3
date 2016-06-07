@@ -2,7 +2,7 @@
    <div class="portlet box dark-blue">
       <div class="portlet-title">
          <div class="caption">
-            <i class="icon-comments"></i>
+            <i class="ti-comments"></i>
             <%= model.subject %>
          </div>
          <div class="tools">
@@ -14,7 +14,7 @@
          </ul>
          <div class="send-block">
             <div class="input-icon right">
-               <i class="icon-signin"></i>
+               <i class="ti-angle-double-right"></i>
                <input type="text" class="form-control" placeholder="{translateToken value="Type your message here..."}" />
             </div>
          </div>
