@@ -25,7 +25,7 @@ crud:
         - mData: name
           label: Name
 
-        - mData: class
+        - mData: classe.name
           label: Class
 
         - mData: active
