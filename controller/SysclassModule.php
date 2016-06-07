@@ -210,7 +210,6 @@ abstract class SysclassModule extends BaseSysclassModule
      * @Get("/item/{model}/{identifier}")
     */
     public function getItemRequest($model, $identifier) {
-
         $editItem = $this->getModelData($model, $identifier);
 
         $this->response->setContentType('application/json', 'UTF-8');

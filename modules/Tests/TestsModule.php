@@ -12,13 +12,6 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Courses\Tests\Lesson as TestLesson,
     Sysclass\Models\Courses\Tests\Execution as TestExecution;
     
-
-/**
- * [NOT PROVIDED YET]
- * @package Sysclass\Modules
- */
-
-
 /**
  * @RoutePrefix("/module/tests")
  */
@@ -470,7 +463,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      * @Get("/datasource/{model}/{identifier}")
      */
     
-    public function getItemRequest($model = "me", $identifier = null)
+    public function getDatasourceRequest($model = "me", $identifier = null)
     {
         if ($model == "me") {
             $itemModel = $this->model("tests");
@@ -486,7 +479,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     }
     
     /*
-    public function addItemRequest($model, $type)
+    public function addDatasourceRequest($model, $type)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -563,7 +556,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      * @Put("/datasource/{model}/{identifier}")
      */
     
-    public function setItemRequest($model, $identifier)
+    public function setDatasourceRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -629,13 +622,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         }
     }
     
-    /**
-     * [ add a description ]
-     *
-     * @Delete("/item/{model}/{identifier}")
-     */
     /*
-    public function deleteItemRequest($model, $identifier)
+    public function deleteDatasourceRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
@@ -811,6 +799,5 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $response
         );
     }
-
 
 }

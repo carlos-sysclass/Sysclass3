@@ -14,13 +14,16 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                 // THIS WILL STARTED OR RESUME THE TEST PROGRESS (AND UPDATE INTERFACE AS WELL)
                 var self = this;
 
-                this.listenTo(this.model, "change:answers", this.saveProgress.bind(this));
+                //this.listenTo(this.model, "change:answers", this.saveProgress.bind(this));
                 this.listenTo(this.model, "change:pending", this.checkPending.bind(this));
+
+                $(window).on("unload", this.saveProgress.bind(this));
                 //this.model.save();
             },
             saveProgress : function() {
                 console.info('tests.execute/testExecutionViewClass::saveProgress');
 
+                console.warn(this.model.toJSON());
                 this.model.save();
             },
             onRender : function() {
