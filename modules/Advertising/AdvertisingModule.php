@@ -64,6 +64,11 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 
                 if ($content['content_type'] == "file") {
 
+                    $decoded = json_decode($content['info'], true);
+
+                    if ($decoded) {
+                        $content['file'] = $decoded;
+                    }
 
                     $new_item = array(
                         'type' => 'image',
