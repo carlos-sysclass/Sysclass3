@@ -15,5 +15,12 @@ class Execution extends Model
             "id",
             array('alias' => 'Test')
         );
+
+        $this->belongsTo(
+            "user_id",
+            "Sysclass\\Models\\Users\\User",
+            "id",
+            array('alias' => 'User')
+        );
     }
 }

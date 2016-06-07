@@ -113,3 +113,7 @@ models:
     #listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
     exportMethod: ["toExtendArray"]
     sort: "position ASC"
+  execution:
+    class: Sysclass\Models\Courses\Tests\Execution
+    exportMethod: ["toFullArray"]
+    #sort: "position ASC"
