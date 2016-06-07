@@ -21,17 +21,26 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
     /* ISummarizable */
     public function getSummary() {
-        $data = array(1);
+        // GET THE USER NOT DONE YET TESTS
+        $pendingTests = TestLesson::getUserPendingTests($this->user->id);
 
-        return array(
+
+        $summary = array(
             'type'  => 'primary',
-            'count' => $data[0],
-            'text'  => $this->translate->translate('New Tests'),
-            'link'  => array(
-                'text'  => $this->translate->translate('View'),
-                'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
-            )
+            'count' => $pendingTests->count(),
+            'text'  => $this->translate->translate('New Tests')
         );
+
+        if ($pendingTests->count() > 0) {
+            $test_id = $pendingTests[0]->id;
+
+            $summary['link'] = array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => $this->getBasePath() . "open/" . $test_id
+            );
+        }
+
+        return $summary;
     }
 
     /* ILinkable */

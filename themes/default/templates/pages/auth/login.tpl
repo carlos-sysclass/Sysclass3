@@ -140,7 +140,7 @@
 
 	<div class="contentcopyright">
 		<div class="copyright">
-			&copy; 2016 • WiseFlex Knowledge Systems LLC. {$T_SYSCONFIG.deploy.base_version} Build {$T_SYSCONFIG.deploy.build_number}
+			&copy; 2016 • WiseFlex Knowledge Systems LLC. <br>{$T_SYSCONFIG.deploy.base_version} Build {$T_SYSCONFIG.deploy.build_number}
 			<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
 		</div>
 	</div>

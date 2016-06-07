@@ -106,5 +106,38 @@ class Lesson extends BaseLesson
 
     }
 
+    public function getUserPendingTests() {
+        $di = $this->getDI();
+        $user_id = $di->get("user")->id;
+
+        $manager = $di->get("modelsManager");
+
+        $phql = "SELECT tl.*
+                FROM 
+                    Sysclass\\Models\\Enrollments\\CourseUsers ecu
+                LEFT JOIN Sysclass\\Models\\Courses\\Course cc
+                    ON (ecu.course_id = cc.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\CourseClasses ccc
+                    ON (ccc.course_id = cc.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\Classe ccl
+                    ON (ccc.class_id = ccl.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
+                    ON (tl.class_id = ccl.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Execution cte
+                    ON (tl.id = cte.test_id AND ecu.user_id = :user_id:)
+                WHERE ecu.user_id = :user_id: AND tl.type = 'test'
+                    AND (cte.user_id IS NULL OR cte.user_id <> :user_id:)";
+
+        $status = $manager->executeQuery(
+            $phql,
+            array(
+                'user_id' => $user_id
+            )
+        );
+        
+        return $status;
+
+    }
+
 
 }
