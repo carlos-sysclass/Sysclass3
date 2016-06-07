@@ -18,7 +18,7 @@ $di->set('view', function() use ($environment, $di) {
             $smarty = new SmartyEngine($view, $di);
 
             $smarty->setOptions(array(
-                'force_compile'     => false,
+                'force_compile'     => true,
                 'debugging'         => true,
                 'caching'           => false,
                 'cache_lifetime'    => 120,
