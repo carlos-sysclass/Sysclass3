@@ -549,13 +549,10 @@ class LoginController extends \AbstractSysclassController
 						}
 					}
 				} else {
-					var_dump(2);
-					exit;
 					$di->get("authentication")->logout($user);
 					throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
 				}
 			} catch (AuthenticationException $e) {
-				var_dump($e);
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
 			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
@@ -585,8 +582,6 @@ class LoginController extends \AbstractSysclassController
 					}
 				}
 			}
-		var_dump(3);
-		exit;
 		$this->redirect($url, $message, $message_type);
 	}
 
