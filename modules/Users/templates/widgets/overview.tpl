@@ -3,7 +3,7 @@
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
 <div class="row">
-	<div class="col-md-3 col-sm-3 hidden-xs" id="users-avatar">
+	<div class="col-md-4 col-lg-3 col-sm-3 hidden-xs" id="users-avatar">
 
 		{if ({$user_details.avatars[0].url})}
 			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
@@ -53,7 +53,7 @@
 
 		{/if}
 	</div>
-	<div class="col-md-4 col-sm-4 col-xs-3 vcenter" id="progress-user">
+	<div class="col-md-3 col-lg-4 col-sm-4 col-xs-3 vcenter" id="progress-user">
 		<div class="easy-pie-chart">
 			<div class="number unit" data-percent="0"><span>0</span></div>
 			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units Completed"}</a>
