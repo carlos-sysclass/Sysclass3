@@ -748,7 +748,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			onBlockableItemClick : function(e) {
 				$("[href='#course-tab']").click();
 				$("[href='#tab_course_classes']").click();
-
 			}
 		});
 		var classInfoTabViewClass = Backbone.View.extend({
