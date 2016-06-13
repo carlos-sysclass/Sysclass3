@@ -55,6 +55,8 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                header: h,
 	                slotMinutes: 15,
 	                editable: false,
+	                draggable : false,
+	                timezone : 'UTC',
                     eventSources: [
                         '/module/calendar/datasource/calendar'
 	                ],

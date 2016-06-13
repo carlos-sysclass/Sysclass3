@@ -26,7 +26,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
 
         $summary = array(
-            'type'  => 'primary',
+            'type'  => 'danger',
             'count' => $pendingTests->count(),
             'text'  => $this->translate->translate('New Tests')
         );
@@ -608,6 +608,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             if ($itemModel->setItem($data, $identifier) !== false) {
                 if ($model == "execution" && $data['complete'] == 1) {
+
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
                         $this->translate->translate("Test completed with success"),

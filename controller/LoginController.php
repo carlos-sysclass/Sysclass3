@@ -5,6 +5,7 @@ use Phalcon\DI,
 	Sysclass\Models\Users\User,
 	Sysclass\Models\I18n\Language,
 	Sysclass\Models\Users\UserPasswordRequest,
+	Sysclass\Models\Enrollments\Enroll,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class LoginController extends \AbstractSysclassController
@@ -67,6 +68,10 @@ class LoginController extends \AbstractSysclassController
 		if ($this->dispatcher->wasForwarded()) {
 			$this->putItem("requested_uri", $this->request-> getURI());
 		}
+
+		$enroll = Enroll::findFirst();
+
+		$this->putItem("default_enroll_link", $enroll->identifier);
 
 		parent::display('pages/auth/login.tpl');
 	}
