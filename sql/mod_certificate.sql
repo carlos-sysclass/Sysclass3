@@ -10,3 +10,6 @@ CREATE TABLE `mod_certificate` (
   KEY `user_id` (`user_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `sysclass_itaipu`.`mod_notification_to_users` 
+ADD COLUMN `unique_id` VARCHAR(100) NOT NULL AFTER `timestamp`;

@@ -98,7 +98,11 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                 var_dump($type);
 
                 if ($type == "test") {
-                    $this->createTestCertificate($data['user_id'], $data['entity_id']);
+                    if ($this->createTestCertificate($data['user_id'], $data['entity_id'])) {
+
+
+
+                    }
                 }
                 return array(
                     'status' => false,
@@ -142,6 +146,19 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
                     $certificate->vars = json_encode($vars);
                     if ($certificate->save()) {
+
+                        $this->notification->createForUser(
+                            $user,
+                            $this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
+                            'info',
+                            array(
+                                'text' => "View",
+                                'link' => $this->getBasePath() . "print/" . $certificate->id
+                            ),
+                            false,
+                            "CERTIFICATE:" . "U" . $certificate->user_id . "E" . $certificate->entity_id . "T" . $certificate->type
+                        );
+
                         return true;
                     }
                 }
