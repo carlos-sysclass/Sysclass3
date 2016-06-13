@@ -3,6 +3,8 @@ namespace Sysclass\Modules\Certificate;
 
 use Sysclass\Models\Courses\Course,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Certificates\Certificate,
+    Sysclass\Models\Courses\Tests\Lesson as LessonTest,
     Dompdf\Dompdf,
     Dompdf\Canvas,
     Sysclass\Models\Organizations\Organization,
@@ -23,17 +25,26 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
     /* ISummarizable */
     public function getSummary() {
-        $data = array(1);
+        $certificates = Certificate::find(array(
+            'conditions' => 'user_id = ?0',
+            'bind' => array($this->user->id),
+            'order' => 'id DESC'
+        ));
 
-        return array(
+        $info = array(
             'type'  => 'warning',
-            'count' => $data[0],
+            'count' => $certificates->count(),
             'text'  => $this->translate->translate('Certificates'),
-            'link'  => array(
-                'text'  => $this->translate->translate('View'),
-                'link'  => $this->getBasePath()
-            )
         );
+
+        if ($certificates->count() > 0) {
+            $info['link']  = array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => $this->getBasePath() . "print/" . $certificates->getFirst()->id
+            );
+        }
+
+        return $info;
     }
 
     /* INotifyable */
@@ -44,6 +55,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
     public function processNotification($action, Event $event) {
         switch($action) {
             case "make-avaliable" : {
+                /*
                 $data = $event->data;
                 $course = Course::findFirstById($data['course_id']);
                 $user = User::findFirstById($data['user_id']);
@@ -62,18 +74,177 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                         )
                     );
 
+                    // CREATE THE CERTIFICATE ON THE DATABASE
+
 
                     return array(
                         'status' => true
                     );
-
                 } else {
+                    */
                     return array(
                         'status' => false,
                         'unqueue' => true
                     );
+                //}
+                break;
+            }
+            case "create-certificate": {
+                $data = $event->data;
+                var_dump($data);
+
+                $type = $data['trigger'];
+
+                var_dump($type);
+
+                if ($type == "test") {
+                    $this->createTestCertificate($data['user_id'], $data['entity_id']);
+                }
+                return array(
+                    'status' => false,
+                    'unqueue' => false
+                );
+                exit;
+            }
+        }
+    }
+
+    public function createTestCertificate($user_id, $test_id) {
+        // GET CLASS AND COURSE NAME
+        $lessonTest = LessonTest::findFirstById($test_id);
+        $user = User::findFirstById($user_id);
+        if ($lessonTest && $user) {
+            $module = $lessonTest->getClasse();
+            if ($module) {
+                $courses = $module->getCourses();
+                if ($courses->count() > 0) {
+                    $course = $courses->getFirst();
+
+                    $vars = array(
+                        'username' => $user->name . " " . $user->surname,
+                        'coursename' => $course->name,
+                        'modulename' => $module->name,
+                        'date' => date("d/m/Y")
+                    );
+
+                    $certificate = Certificate::findFirst(array(
+                        'conditions' => "user_id = ?0 AND entity_id = ?1 AND type = 'test'",
+                        'bind' => array($user_id, $test_id)
+                    ));
+
+                    if (!$certificate) {
+                        $certificate = new Certificate();
+                        $certificate->user_id = $user_id;
+                        $certificate->entity_id = $test_id;
+                        $certificate->type = 'test';
+                    }
+                    $certificate->name = $module->name;
+
+                    $certificate->vars = json_encode($vars);
+                    if ($certificate->save()) {
+                        return true;
+                    }
                 }
             }
+        }
+        return false;
+    }
+
+    /**
+    * [ add a description ]
+    *
+    * @Get("/print/{id}")
+    */    
+    public function printCertificate($id)
+    {
+        //var_dump($courseModel->getCertificateTemplate($id)); // RETORNA template3
+
+        /*var_dump();
+        exit;
+        */
+        $canContinue = false;
+
+        $certificate = Certificate::findFirstById($id);
+
+        if ($certificate && $certificate->user_id == $this->user->id) {
+            // CHECK IF THE TEST IS ALREADY COMPLETED
+            $canContinue = true;
+        }
+        /*
+        $courses = $this->user->getUserCourses();
+
+        foreach($courses as $course) {
+            if ($course->course_id = $id) {
+                $canContinue = $course->isCompleted();
+                break;
+            }
+        }
+        */
+        if ($canContinue) {
+
+            $vars = json_decode($certificate->vars, true);
+
+            $this->view->setVars($vars);
+            //$course->complete();
+            //$this->view->setVar("course", $course->getCourse());    
+
+            $organization = Organization::findFirst();
+            $this->view->setVar("organization", $organization);
+
+            $this->assets
+                ->collection('header')
+                /*
+                ->setPrefix(sprintf(
+                    '%s://%s',
+                    $this->request->getScheme(),
+                    $this->request->getHttpHost()
+                ))
+                */
+                //->addCss('http://fonts.googleapis.com/css?family=Roboto', true)
+                //->addCss('/assets/default/plugins/bootstrap/css/bootstrap.css', true)
+                ->addCss('assets/default/css/certificate.css')
+                ->addCss('assets/default/css/certificates/itaipu.css');
+
+            $html = $this->view->render("certificate/" . $certificate->type . ".cert");
+            
+            $this->response->setContent($html);
+            //return true;
+
+            global $_dompdf_show_warnings;
+            //$_dompdf_show_warnings = true;
+
+            global $_dompdf_debug;
+            //$_dompdf_debug = true;
+            
+            $pdf = new \mPdf("","A4-L");
+
+            $pdf->WriteHTML($html, 0);
+            $br = rand(0, 100000);
+            $ispis = "Certificado-" . $id . ".pdf";
+
+            $pdf->Output($ispis, "I");
+            /*
+            $dompdf->set_base_path(REAL_PATH);
+            //$dompdf->set_option('isHtml5ParserEnabled', true);
+            $dompdf->set_option('isRemoteEnabled', true);
+            //$dompdf->set_option('debugCss', true);
+
+            $dompdf->load_html($html);
+            $dompdf->set_paper('letter', 'landscape');
+            $dompdf->render();
+            
+            //$dompdf->stream("$id");
+            $dompdf->stream(date('d/m/Y').'certificado.pdf', array('Attachment'=>true));
+            */
+        } else {
+            //$this->response->redirect();
+            $this->redirect(
+                '/dashboard',
+                $this->translate->translate("Warning: An error occured when the system is trying to complete your request!"),
+                'warning'
+            );
+            
+            return;
         }
     }
 
@@ -82,7 +253,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
     *
     * @Get("/view/{id}")
     */    
-    public function printCertificate($id)
+    public function viewCertificate($id)
     {
         //var_dump($courseModel->getCertificateTemplate($id)); // RETORNA template3
 

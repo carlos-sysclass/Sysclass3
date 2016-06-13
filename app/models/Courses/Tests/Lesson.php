@@ -28,6 +28,7 @@ class Lesson extends BaseLesson
             "id",
             array('alias' => 'Questions')
         );
+
     }
 
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {

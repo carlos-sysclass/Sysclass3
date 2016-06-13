@@ -13,7 +13,8 @@ class Manager extends Component
 		'user',
 		'api',
 		'course',
-		'unit'
+		'unit',
+		'certificate'
 	);
 
 	protected $listeners = array();
