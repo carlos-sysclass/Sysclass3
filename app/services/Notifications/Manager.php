@@ -38,8 +38,6 @@ class Manager extends Component
         
         $notifyUser->stick = $stick;
 
-        var_dump($notifyUser->create());
-
-        return true;
+        return $notifyUser->create();
     }
 }

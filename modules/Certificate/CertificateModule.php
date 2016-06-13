@@ -91,24 +91,21 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
             }
             case "create-certificate": {
                 $data = $event->data;
-                var_dump($data);
 
                 $type = $data['trigger'];
 
-                var_dump($type);
-
                 if ($type == "test") {
                     if ($this->createTestCertificate($data['user_id'], $data['entity_id'])) {
-
-
-
+                        return array(
+                            'status' => true,
+                            'unqueue' => true
+                        );
                     }
                 }
                 return array(
                     'status' => false,
                     'unqueue' => false
                 );
-                exit;
             }
         }
     }
