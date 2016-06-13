@@ -395,7 +395,7 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
             })
         };
 
-        var baseModelClass = $SC.module("models").baseModelClass;
+        var baseModelClass = $SC.module("models").getBaseModel();
         this.models = {
             event : baseModelClass.extend({
                 response_type : "object",
