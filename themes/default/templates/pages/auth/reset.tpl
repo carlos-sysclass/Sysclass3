@@ -28,7 +28,7 @@
 					<div class="form-group">
 						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
 						<div class="input-icon">
-							<i class="fa fa-user"></i>
+							<i class="ti-user"></i>
 							<input type="text" id="login" name="login" value="{$T_USER.login}" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 						</div>
 					</div>
@@ -36,8 +36,8 @@
 					<div class="form-group">
 						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
 						<div class="input-icon">
-							<i class="fa fa-user"></i>
-							<input type="text" value="" autocomplete="off" class="form-control placeholder-no-fix" readonly="readonly">
+							<i class="ti-user"></i>
+							<p class="form-control form-control-static"> {$T_USER.login} </p>
 						</div>
 					</div>
 				{/if}
