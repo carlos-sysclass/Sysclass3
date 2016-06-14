@@ -1306,7 +1306,7 @@ Input icons
 }
 
 
-.input-icon input {
+.input-icon input, .input-icon p.form-control-static {
    padding-left: 25px !important;
 }
 

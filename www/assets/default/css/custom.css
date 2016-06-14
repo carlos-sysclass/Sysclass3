@@ -2060,3 +2060,10 @@ a.list-group-item,
 	line-height: 1.42857;
 	text-align: center;
 }
+
+.login .content p.input-icon p.form-control-static {
+   padding-left: 25px !important;
+}
+.login .content p.form-control {
+	color: #fff;  
+}

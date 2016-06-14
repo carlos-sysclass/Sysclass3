@@ -620,7 +620,7 @@ class LoginController extends \AbstractSysclassController
 	            if ($passwordRequest) {
 	            	$user = $passwordRequest->getUser();
 
-	            	$this->putItem("T_USER", $user->toArray());
+	            	$this->putItem("user", $user->toArray());
 	            	//Date
 	            	//
 	            	$valid_until = new \DateTime($passwordRequest->valid_until);
@@ -722,7 +722,11 @@ class LoginController extends \AbstractSysclassController
 					$message = $this->translate->translate("Password updated with success! Please enter you login details below.");
 	            	$message_type = 'success';
 
+	            	$this->redirect("/login", $message, $message_type);
+
+
 					// USER IS LOGGED IN, SO...
+					/*
 					$di->get("authentication")->login($user, array('disableBackends' => true));
 					// 1.6 Check for license agreement
 					if ($user->viewed_license == 0) {
@@ -730,6 +734,7 @@ class LoginController extends \AbstractSysclassController
 					} else {
 						$this->redirect("/dashboard", $message, $message_type);
 					}
+					*/
 				}
 			} else {
 				$di->get("authentication")->logout($user);
