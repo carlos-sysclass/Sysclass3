@@ -123,7 +123,7 @@
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
                             {translateToken value="You Answered"}:
                         </span>
-                        <strong class="{$text_class} pull-right">{$last_try.total_questions_completed}</strong>
+                        <strong class="{$text_class} pull-right">{$last_try.answers|json_decode:true|array_filter:'strlen'|count}</strong>
                     </p>
                     <hr />
                     <p class="">

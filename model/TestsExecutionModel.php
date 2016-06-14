@@ -76,8 +76,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         $evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
         $evManager->fire("certificate:generate", $this, $evData);
-        var_dump($evData);
-        exit;
     }
 
     public function calculateUserScore($execution) {

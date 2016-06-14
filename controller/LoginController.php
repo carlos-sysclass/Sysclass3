@@ -619,6 +619,8 @@ class LoginController extends \AbstractSysclassController
 
 	            if ($passwordRequest) {
 	            	$user = $passwordRequest->getUser();
+
+	            	$this->putItem("T_USER", $user->toArray());
 	            	//Date
 	            	//
 	            	$valid_until = new \DateTime($passwordRequest->valid_until);
@@ -706,6 +708,8 @@ class LoginController extends \AbstractSysclassController
 			));
 
 			$user = $passwordRequest->getUser();
+
+			$postData = $this->request->getPost();
 
 			if ($postData['password'] === $postData['password-confirm']) {
 				$user->password = $this->authentication->hashPassword($postData['password'], $user);
@@ -822,7 +826,7 @@ class LoginController extends \AbstractSysclassController
 		if ($user) {
 			$this->putItem("LOGGED_USER", $user->toFullArray(array("Avatars")));
 
-			$this->putCss("css/pages/lock");
+			$this->putCss("css/pages/lock"); 
 			$this->putScript("scripts/lock");
 			parent::display('pages/auth/lock.tpl');
 		} else {
