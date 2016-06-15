@@ -223,7 +223,7 @@
 								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
+								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-clipboard"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
 							</li>
 
 							<!--

@@ -533,7 +533,7 @@ Header and header elements.
 }
 
 .header .navbar-nav > li.dropdown.user .dropdown-toggle .username {
-  color: #ddd;
+  color: #fff;
 }
 
 .header .navbar-nav li.dropdown.user .dropdown-toggle i {
