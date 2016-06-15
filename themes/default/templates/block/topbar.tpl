@@ -197,7 +197,12 @@
 		      		</ul>
 		      	</li>
 				{else}
-
+				<li>
+					<a href="" class="menu-link">
+						<i class="fa fa-search"></i>
+						<span>Buscar</span>
+					</a>
+				</li>
 				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
 					<a href="javascript:void(0);" 
 						{if $item.items}
@@ -232,7 +237,6 @@
 				</li>
 		        {/if}
 		   	{/foreach}
-		   	<li>Lorem Ipsum</li>
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
