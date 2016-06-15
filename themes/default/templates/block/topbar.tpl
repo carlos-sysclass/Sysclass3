@@ -334,6 +334,7 @@
 					</li>
 				</ul>
 			</li>
+			<li>Lorem Ipsum</li>
 		   <!-- END USER LOGIN DROPDOWN -->
 		   <!--
 		   <li class="dropdown dropdown-quick-sidebar-toggler">
