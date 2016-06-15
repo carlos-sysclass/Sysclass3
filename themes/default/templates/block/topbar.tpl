@@ -233,11 +233,18 @@
 		        {/if}
 		   	{/foreach}
 		   	<li class="menu-item">
-				<a class="menu-link search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-trigger="manual" data-inject-selector="courses-widget-search-form" href="javascript:;" data-original-title="" title="">
+				<a href="" class="menu-link" data-toggle="modal" data-target=".bs-example-modal-lg">
 					<i class="fa fa-search"></i>
 					<span>Buscar</span>
 				</a>
 			</li>
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			  <div class="modal-dialog modal-lg">
+			    <div class="modal-content">
+			      ...
+			    </div>
+			  </div>
+			</div>
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
