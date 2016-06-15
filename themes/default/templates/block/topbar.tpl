@@ -235,15 +235,18 @@
 		   	<li class="menu-item">
 				<a href="" class="menu-link" data-toggle="modal" data-target=".bs-example-modal-lg">
 					<i class="fa fa-search"></i>
-					<span>Buscar</span>
+					<span class="hidden-xs">Buscar</span>
 				</a>
 			</li>
 			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-			  <div class="modal-dialog modal-lg">
-			    <div class="modal-content">
-			      ...
-			    </div>
-			  </div>
+			  	<div class="modal-dialog modal-lg">
+			    	<div class="modal-content">
+			    		<form action="">
+			    			<input type="text" placeholder="Faça aqui a sua pesquisa">
+			    			<button class="btn btn-primary">Enviar</button>
+			    		</form>
+			    	</div>
+			  	</div>
 			</div>
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
