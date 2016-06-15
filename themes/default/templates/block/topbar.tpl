@@ -233,7 +233,7 @@
 		        {/if}
 		   	{/foreach}
 		   	<li class="menu-item">
-				<a href="" class="menu-link">
+				<a class="menu-link search glyphicon glyphicon-search" data-container="body" data-placement="left" data-html="true" data-trigger="manual" data-inject-selector="courses-widget-search-form" href="javascript:;" data-original-title="" title="">
 					<i class="fa fa-search"></i>
 					<span>Buscar</span>
 				</a>
