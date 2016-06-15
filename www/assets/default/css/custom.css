@@ -815,6 +815,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 /* COURSES-WIDGET.css */
 .scroller {
 	padding-right: 0;
+	min-height: 200px;
 }
 .scroller div {
 	padding: 0 10px;
