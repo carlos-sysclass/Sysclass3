@@ -241,9 +241,9 @@
 			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 			  	<div class="modal-dialog modal-lg">
 			    	<div class="modal-content">
-			    		<form action="">
+			    		<form action="" class="cs-search-all">
 			    			<input type="text" placeholder="Faça aqui a sua pesquisa">
-			    			<button class="btn btn-primary">Enviar</button>
+			    			<button class="btn btn-primary"><i class="fa fa-search"></i></button>
 			    		</form>
 			    	</div>
 			  	</div>

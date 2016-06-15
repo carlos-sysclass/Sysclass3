@@ -22,6 +22,25 @@
     color: #ffffff !important;
 }
 
+/* SEARCH */
+.cs-search-all input {
+	width: 100%;
+    padding: 10px;
+    font-size: 19px;
+    font-weight: 100;
+}
+.cs-search-all button {
+	position: absolute;
+    top: 0;
+    right: 0;
+    height: 51px;
+}
+.cs-search-all input[type="button"], .cs-search-all input[type="submit"] {
+	position: absolute;
+    top: 0;
+    right: 0;
+    height: 51px;
+}
 
 .portlet.box.dark-blue {
     border:none;
