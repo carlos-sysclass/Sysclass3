@@ -312,7 +312,7 @@
 						</div>
 					{/if}
 					<span class="username">{$T_CURRENT_USER.name}</span>
-					<i class="icon-angle-down"></i>
+					<!--<i class="icon-angle-down"></i>-->
 				</a>
 				<ul class="dropdown-menu">
 					<li>
