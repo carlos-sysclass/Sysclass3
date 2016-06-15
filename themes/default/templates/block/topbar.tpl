@@ -232,6 +232,7 @@
 				</li>
 		        {/if}
 		   	{/foreach}
+		   	<li>Lorem Ipsum</li>
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
@@ -334,7 +335,6 @@
 					</li>
 				</ul>
 			</li>
-			<li>Lorem Ipsum</li>
 		   <!-- END USER LOGIN DROPDOWN -->
 		   <!--
 		   <li class="dropdown dropdown-quick-sidebar-toggler">
