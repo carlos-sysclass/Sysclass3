@@ -1,15 +1,16 @@
-<!--
-<div id="courses-list">
-	<div class="scroller list-group" data-height="199px" data-always-visible="1">
-	</div>
-</div>
--->
+{assign var="widget_data" value=$T_DATA.data}
+<script>
+_before_init_functions.push(function() {
+    $SC.addResource("content_widget_data", {$widget_data|@json_encode nofilter});
+});
+</script>
+
 <div>
 	<div class="courses-container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
 				<li class="the-course-tab">
-					<a data-toggle="tab" href="#course-tab">
+					<a data-toggle="tab" href="#program-tab">
 						<div class="nav-title">
 							<span class="">
 								<i class="fa fa-graduation-cap"></i>&nbsp;
@@ -20,7 +21,7 @@
 					</a>
 				</li>
 				<li class="the-class-tab">
-					<a data-toggle="tab" href="#class-tab">
+					<a data-toggle="tab" href="#course-tab">
 						<div class="nav-title">
 							<span class="tab-title">
 								<i class="fa fa-sitemap"></i> 
@@ -31,7 +32,7 @@
 					</a>
 				</li>
 				<li class="the-lesson-tab active">
-					<a data-toggle="tab" href="#lesson-tab">
+					<a data-toggle="tab" href="#unit-tab">
 						<div class="nav-title">
 							<span class="tab-title">
 								<i class="fa fa-book"></i> 
@@ -44,7 +45,7 @@
 			</ul>
 			<div class="clearfix"></div>
 			<div class="tab-content">
-				<div id="course-tab" class="tab-pane">
+				<div id="program-tab" class="tab-pane">
 					<div class="clearfix"></div>
 					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
@@ -53,7 +54,7 @@
 								<strong>{translateToken value="You're in:"} </strong>
 							</a>
 							-->
-							<a href="#" class="navbar-brand course-title">
+							<a href="#" class="navbar-brand program-title">
 								 {translateToken value="Program"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
@@ -69,7 +70,7 @@
 								</li>
 								<li>
 									<a href="#" class="nav-info no-padding disabled">
-                    				<span class="courses-current"></span> / <span class="courses-count"></span>
+                    					<span class="entity-current"></span> / <span class="entity-count"></span>
 									</a>
 								</li>
 								<li>
@@ -79,39 +80,24 @@
 								</li>
 							</ul>
 						</div>
-						<!--
-						<div class="collapse navbar-collapse navbar-ex1-collapse">
-
-							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
-										<i class="icon-arrow-left"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-						-->
 					</div>
 					<div class="clearfix"></div>
 
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_description"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
+								<a data-toggle="tab" href="#tab_program_description"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_classes"><i class="fa fa-sitemap"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
+								<a data-toggle="tab" href="#tab_program_courses"><i class="fa fa-sitemap"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
 							</li>
+							<!--
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_moreinfo"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="More Info"}</span></a>
+								<a data-toggle="tab" href="#tab_program_moreinfo"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="More Info"}</span></a>
 							</li>
+							-->
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_coordinator"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Coordinator"}</span></a>
+								<a data-toggle="tab" href="#tab_program_coordinator"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Coordinator"}</span></a>
 							</li>
 							<!--
 							<li class="">
@@ -120,7 +106,7 @@
 							-->
 						</ul>
 						<div class="tab-content">
-							<div id="tab_course_description" class="tab-pane active">
+							<div id="tab_program_description" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -129,7 +115,7 @@
 								</div>
 							</div>
 
-							<div id="tab_course_classes" class="tab-pane">
+							<div id="tab_program_courses" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -143,7 +129,7 @@
 									</table>
 								</div>
 							</div>
-
+							<!-- 
 							<div id="tab_course_moreinfo" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
@@ -152,8 +138,8 @@
 									</div>
 								</div>
 							</div>
-
-							<div id="tab_course_coordinator" class="tab-pane active">
+							-->
+							<div id="tab_program_coordinator" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -172,7 +158,7 @@
 						</div>
 					 </div>
 				</div>
-				<div id="class-tab" class="tab-pane">
+				<div id="course-tab" class="tab-pane">
 
 					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
@@ -181,11 +167,11 @@
 								<strong>{translateToken value="You're in:"} </strong>
 							</a>
 							-->
-							<a href="#" class="navbar-brand course-title hidden-xs">
+							<a href="#" class="navbar-brand program-title hidden-xs">
 								{translateToken value="Program"}
 							</a>
 							<a href="#" class="navbar-brand hidden-xs">&raquo;</a>
-							<a href="#" class="navbar-brand class-title">
+							<a href="#" class="navbar-brand course-title">
 								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
@@ -414,7 +400,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="lesson-tab" class="tab-pane active">
+				<div id="unit-tab" class="tab-pane active">
 					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<!--
@@ -532,10 +518,9 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
-
 </div>
 
-<script type="text/template" id="tab_course_description-template">
+<script type="text/template" id="tab_program_description-template">
 	<%= model.description %>
 </script>
 <script type="text/template" id="tab_course_moreinfo-template">
@@ -585,7 +570,7 @@
 	</table>
 	<hr />
 </script>
-<script type="text/template" id="tab_course_coordinator-template">
+<script type="text/template" id="tab_program_coordinator-template">
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
@@ -596,7 +581,7 @@
 	</table>
 	<hr />
 </script>
-<script type="text/template" id="tab_course_classes-nofound-template">
+<script type="text/template" id="tab_program_courses-nofound-template">
 	<tr>
 		<td colspan="5"  class="alert alert-info">
 			<span class="text-info">
@@ -606,8 +591,9 @@
 		</td>
 	</tr>
 </script>
-<script type="text/template" id="tab_course_classes-item-template">
-	<td><a href="#class-tab" class="class-change-action"><%= model['classe'].name %></a></td>
+<script type="text/template" id="tab_program_courses-item-template">
+	<% console.warn(model); %>
+	<td><a href="#class-tab" class="class-change-action"><%= model.name %></a></td>
 
 	<td class="text-center">
 		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>

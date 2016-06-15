@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Courses\Unit instead.
+ */
 namespace Sysclass\Models\Courses;
 
 use Plico\Mvc\Model;
