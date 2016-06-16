@@ -28,12 +28,12 @@ class Unit extends Model
 
         $this->hasMany(
             "id",
-            "Sysclass\\Models\\Courses\\Contents\\Content",
+            "Sysclass\\Models\\Content\\UnitContent",
             "lesson_id",
             array(
                 'alias' => 'Contents',
                 'params' => array(
-                    'order' => '[Sysclass\Models\Courses\Contents\Content].position ASC, [Sysclass\Models\Courses\Contents\Content].id ASC'
+                    'order' => '[Sysclass\Models\Content\UnitContent].position ASC, [Sysclass\Models\Content\UnitContent].id ASC'
                 )
 
             )
@@ -169,7 +169,7 @@ class Unit extends Model
         $result['contents'] = array();
         $contents = $this->getContents();
         foreach($contents as $content) {
-            $result['contents'][] = $content->toArray();
+            $result['contents'][] = $content->getFullTree();
         }
 
         return $result;

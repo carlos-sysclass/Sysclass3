@@ -16,7 +16,7 @@ _before_init_functions.push(function() {
 								<i class="fa fa-graduation-cap"></i>&nbsp;
 								{translateToken value="Programs"}
 							</span>
-							<span class="label label-sm label-success"><strong><span class="courses-count"></span></strong></span>
+							<span class="label label-sm label-success"><strong><span class="program-count"></span></strong></span>
 						</div>
 					</a>
 				</li>
@@ -27,7 +27,7 @@ _before_init_functions.push(function() {
 								<i class="fa fa-sitemap"></i> 
 								{translateToken value="Courses"}
 							</span>
-							<span class="label label-sm label-success"><strong><span class="classes-count"></span></strong></span>
+							<span class="label label-sm label-success"><strong><span class="course-count"></span></strong></span>
 						</div>
 					</a>
 				</li>
@@ -38,7 +38,7 @@ _before_init_functions.push(function() {
 								<i class="fa fa-book"></i> 
 								{translateToken value="Units"}
 							</span>
-							<span class="label label-sm label-success"><strong><span class="lessons-count"></span></strong></span>
+							<span class="label label-sm label-success"><strong><span class="unit-count"></span></strong></span>
 						</div>
 					</a>
 				</li>
@@ -187,7 +187,7 @@ _before_init_functions.push(function() {
 								</li>
 								<li>
 									<a href="#" class="nav-info no-padding disabled">
-                    				<span class="classes-current"></span> / <span class="classes-count"></span>
+                    				<span class="entity-current"></span> / <span class="entity-count"></span>
 									</a>
 								</li>
 								<li>
@@ -203,13 +203,13 @@ _before_init_functions.push(function() {
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_class_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
+								<a data-toggle="tab" href="#tab_course_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
+								<a data-toggle="tab" href="#tab_course_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_class_lessons"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
+								<a data-toggle="tab" href="#tab_course_units"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
 							</li>
 
 							<!--
@@ -225,10 +225,11 @@ _before_init_functions.push(function() {
 							<li class="hidden-xxs hidden-md">
 								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Attendence"}</span></a>
 							</li>
-							-->
+							
 							<li class="hidden-xxs hidden-md">
 								<a data-toggle="tab" href="#tab_class_tests"><i class="fa fa-check-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
 							</li>
+							-->
 							<li class="visible-xxs visible-md">
 								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">{translateToken value="More"}</span></a>
 								<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="">
@@ -239,23 +240,24 @@ _before_init_functions.push(function() {
 									<li class="">
 										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="">{translateToken value="Attendence"}</span></a>
 									</li>
-									-->
+									
 									<li class="">
 										<a data-toggle="tab" href="#tab_class_tests"><i class="icon-pencil"></i> <span class="">{translateToken value="Tests"}</span></a>
 									</li>
+									-->
   								</ul>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div id="tab_class_info" class="tab-pane active">
+							<div id="tab_course_info" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="383px">
 							   	</div>
 							</div>
-							<div id="tab_class_instructor" class="tab-pane">
+							<div id="tab_course_instructor" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="383px">
 							   	</div>
 							</div>
-							<div id="tab_class_lessons" class="tab-pane">
+							<div id="tab_course_units" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -269,6 +271,7 @@ _before_init_functions.push(function() {
 									</table>
 								</div>
 							</div>
+							<!-- 							
 							<div id="tab_class_tests" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
@@ -283,7 +286,7 @@ _before_init_functions.push(function() {
 											</tr>
 										</thead>
 										<tbody>
-											<!--
+											
 											<tr>
 												<td>Test #1</td>
 												<td class="text-center">13rd March, 2014</td>
@@ -302,11 +305,11 @@ _before_init_functions.push(function() {
 												<td class="text-center"><span class="label label-warning">{translateToken value="Stand By"}</span></td>
 												<td class="text-center"></td>
 											</tr>
-											-->
+											
 										</tbody>
 									</table>
 								</div>
-							</div>
+							</div> -->
 							<!--
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
@@ -408,11 +411,11 @@ _before_init_functions.push(function() {
 								<strong>{translateToken value="You're in:"} </strong>
 							</a>
 							-->
-							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand class-title hidden-xs">
+							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand course-title hidden-xs">
 								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
-							<a href="javascript: void(0);" class="navbar-brand lesson-title">
+							<a href="javascript: void(0);" class="navbar-brand unit-title">
 								{translateToken value="Unit"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
@@ -428,7 +431,7 @@ _before_init_functions.push(function() {
 								</li>
 								<li>
 									<a href="#" class="nav-info no-padding disabled">
-                    				<span class="lessons-current"></span> / <span class="lessons-count"></span>
+                    				<span class="entity-current"></span> / <span class="entity-count"></span>
 									</a>
 								</li>
 								<li>
@@ -451,14 +454,14 @@ _before_init_functions.push(function() {
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_video"><i class="fa fa-youtube-play"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video"}</span></a>
+								<a data-toggle="tab" href="#tab_unit_video"><i class="fa fa-youtube-play"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_materials"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
+								<a data-toggle="tab" href="#tab_unit_materials"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
 							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
-							</li>
+							<!-- <li class="">
+								<a data-toggle="tab" href="#tab_unit_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
+							</li> -->
 							<!--
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_search"><i class="icon-search"></i> Search</a>
@@ -466,9 +469,9 @@ _before_init_functions.push(function() {
 							-->
 						</ul>
 						<div class="tab-content">
-							<div id="tab_lesson_video" class="tab-pane active">
+							<div id="tab_unit_video" class="tab-pane active">
 							</div>
-							<div id="tab_lesson_materials" class="tab-pane">
+							<div id="tab_unit_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -484,7 +487,8 @@ _before_init_functions.push(function() {
 									</table>
 								</div>
 							</div>
-						    <div id="tab_lesson_exercises" class="tab-pane">
+							
+						    <!-- <div id="tab_unit_exercises" class="tab-pane">
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -500,7 +504,7 @@ _before_init_functions.push(function() {
 									</table>
 									<div class="exercises-container"></div>
 							   	</div>
-						   	</div>
+						   	</div> -->
 						   	<!--
 						   	<div id="tab_lesson_search" class="tab-pane">
 						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
@@ -519,6 +523,17 @@ _before_init_functions.push(function() {
 		</div>
 	</div>
 </div>
+
+<script type="text/template" id="tab_all_child-nofound-template">
+	<tr>
+		<td colspan="6"  class="alert alert-info">
+			<span class="text-info">
+				<i class="icon-warning-sign"></i>
+				{translateToken value="Ops! There's no data registered for this course"}
+			</span>
+		</td>
+	</tr>
+</script>
 
 <script type="text/template" id="tab_program_description-template">
 	<%= model.description %>
@@ -605,7 +620,12 @@ _before_init_functions.push(function() {
 </script>
 
 
-<script type="text/template" id="tab_classes-info-template">
+
+
+
+
+
+<script type="text/template" id="tab_courses_info-template">
 	<% if (!_.isEmpty(model['classe'].description)) { %>
 	<h5>{translateToken value="During this course you will..."}</h5>
 	<%= model['classe'].description %>
@@ -653,7 +673,7 @@ _before_init_functions.push(function() {
 	<hr />
 </script>
 
-<script type="text/template" id="tab_classes-instructor-template">
+<script type="text/template" id="tab_courses_instructor-template">
 	<% var professor = model['classe'].professor; %>
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
@@ -666,7 +686,7 @@ _before_init_functions.push(function() {
 	<hr />
 </script>
 
-<script type="text/template" id="tab_class_child-nofound-template">
+<script type="text/template" id="tab_courses_child-nofound-template">
 	<tr>
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
@@ -676,7 +696,7 @@ _before_init_functions.push(function() {
 		</td>
 	</tr>
 </script>
-<script type="text/template" id="tab_class_lessons-item-template">
+<script type="text/template" id="tab_courses_units-item-template">
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
 	<td class="text-center">
 		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
@@ -687,7 +707,7 @@ _before_init_functions.push(function() {
 	</td>
 </script>
 
-<script type="text/template" id="tab_class_tests-item-template">
+<script type="text/template" id="tab_courses_tests-item-template">
 	<% var total_questions = _.size(model.questions); %>
 	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
@@ -723,7 +743,11 @@ _before_init_functions.push(function() {
 	</td>
 </script>
 
-<script type="text/template" id="tab_lessons_video-nofound-template">
+
+
+
+
+<script type="text/template" id="tab_unit_video-nofound-template">
 	<div class="alert alert-info">
 		<span class="text-info"><i class="icon-warning-sign"></i></span>
 		{translateToken value="Ops! There's any content for this lesson"}
@@ -731,9 +755,9 @@ _before_init_functions.push(function() {
 </script>
 
 
-<script type="text/template" id="tab_lessons_video-item-template">
+<script type="text/template" id="tab_unit_video-item-template">
 	<div class="videocontent">
-		<video id="lesson-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered"
+		<video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered"
 			width="auto"  height="auto"
 			<% if (!_.has(model, 'poster')) { %>
 				poster="{Plico_GetResource file='images/default-poster.jpg'}"
@@ -754,7 +778,7 @@ _before_init_functions.push(function() {
 	</div>
 </script>
 
-<script type="text/template" id="tab_lessons_materials-nofound-template">
+<script type="text/template" id="tab_unit_materials-nofound-template">
 	<tr>
 		<td colspan="5"  class="alert alert-info">
 			<span class="text-info">
@@ -764,7 +788,7 @@ _before_init_functions.push(function() {
 		</td>
 	</tr>
 </script>
-<script type="text/template" id="tab_lessons_materials-item-template">
+<script type="text/template" id="tab_unit_materials-item-template">
     <%
         var file_type = "other";
 
@@ -804,7 +828,7 @@ _before_init_functions.push(function() {
 	</td>
 </script>
 
-<script type="text/template" id="tab_lesson_exercises-nofound-template">
+<script type="text/template" id="tab_unit_exercises-nofound-template">
 	<tr>
 		<td colspan="4"  class="alert alert-info">
 			<span class="text-info">
@@ -814,7 +838,7 @@ _before_init_functions.push(function() {
 		</td>
 	</tr>
 </script>
-<script type="text/template" id="tab_lesson_exercises-item-template">
+<script type="text/template" id="tab_unit_exercises-item-template">
 	<td class="text-center"><%= model.model_index+1 %></th>
 	<td class="text-center"><%= _.size(model.exercise) %></td>
 	<td class="text-center">
@@ -835,109 +859,3 @@ _before_init_functions.push(function() {
 		</a>
 	</td>
 </script>
-
-<!--
-<script type="text/template" id="tab_roadmap-season-template">
-	<h5>
-		<i class="icon-angle-down"></i>
-		<a data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= id %>"> <%= name %> </a>
-		<small>
-		<% if (typeof max_classes == 'undefined') { %>
-			<span class="size-counter"><%= _.size(classes) %></span> {translateToken value="total classes"}
-		<% } else { %>
-			<span class="size-counter"><%= _.size(classes) %></span> / <%= max_classes %> {translateToken value="classes selected"}
-		<% } %>
-		</small>
-	</h5>
-	<div id="season-<%= id %>" class="in">
-		<ul class="list-group <% if (_.size(classes)== 0) { %>empty-list-group<% } %>">
-			<% if (_.size(classes)== 0) { %>
-			<% } else { %>
-				<% _.each(classes, function (classe, i) { %>
-				<li class="list-group-item draggable btn btn-block btn-default red-stripe" data-class-id="<%= classe.id %>">
-					<p class="list-group-item-text">
-						<a href="#class-tab" class="class-change-action" data-ref-id="<%= classe.id %>" >
-							<%= classe.name %>
-						</a>
-					</p>
-				</li>
-				<% }) %>
-			<% } %>
-		</ul>
-	</div>
-</script>
-
-<script type="text/template" id="courses-list-item-template">
-<a href="javascript: void(0);" class="list-group-item" data-entity-id="<%= id %>">
-	<% if (stats.completed == 1) { %>
-	<span class="text-success"><i class="icon-ok-sign"></i></span>
-	<% } else { %>
-	<span class="text-danger"><i class="icon-remove-sign"></i></span>
-	<% } %>
-	<%= name %>
-	<% if (typeof lessons != 'undefined') { %>
-		<span class="badge badge-info"><%= lessons.length %></span>
-	<% } %>
-	<% if (typeof stats.completed_lessons != 'undefined' && stats.total_lessons != undefined) { %>
-		<span class="badge badge-info"><%= stats.completed_lessons %> / <%= stats.total_lessons %></span>
-	<% } %>
-	<% if (typeof stats.overall_progress != 'undefined') { %>
-		<%
-			if (stats.overall_progress < 40) {
-				classe = "danger";
-			} else if (stats.overall_progress < 70) {
-				classe = "warning";
-			} else if (stats.overall_progress < 100) {
-				classe = "info";
-			} else {
-				classe = "success";
-			}
-		%>
-		<span class="badge badge-<%= classe %>"><%= stats.overall_progress %> %</span>
-	<% } %>
-
-</a>
-</script>
-
-<script type="text/template" id="courses-content-navigation-template">
-
-</script>
-
-<script type="text/template" id="courses-content-generic-template">
-	<p><%= data.data %></p>
-</script>
-
-<script type="text/template" id="courses-content-video-template">
-<div class="videocontent">
-	<video id="courses-content-video-<%= id %>" class="video-js vjs-default-skin vjs-big-play-centered" width="auto"  height="auto">
-		<% _.each(data.data.video.sources, function(src, type){ %>
-			<source src="<%= src %>" type='<%= type %>' />
-		<% }); %>
-		<% _.each(data.data.video.tracks, function(item, kind){ %>
-			<track kind="<%= kind %>" src="<%= item.file.url %>" srclang="<%= item.language_code %>" label="<%= item.language_code %>" <% if (item.default != undefined) { %>default="<%= item.default %>"<% } %>></track>
-		<% }); %>
-	</video>
-</div>
-</script>
-
-<script type="text/template" id="courses-content-materials-template">
-	<div class="tree tree-plus-minus tree-no-line tree-unselectable">
-		<div class = "tree-folder" style="display:none;">
-			<div class="tree-folder-header">
-				<i class="icon-folder-close"></i>
-				<div class="tree-folder-name"></div>
-			</div>
-			<div class="tree-folder-content"></div>
-			<div class="tree-loader" style="display:none"></div>
-		</div>
-		<div class="tree-item" style="display:none;">
-			<i class="tree-dot"></i>
-			<div class="tree-item-name"></div>
-			<div class="pull-right">
-				<a class="btn btn-sm btn-danger" href="javascript: void(0);">{translateToken value="View"}</a>
-				<a class="btn btn-sm btn-success" href="javascript: void(0);">{translateToken value="Download"}</a>
-			</div>
-		</div>
-	</div>
-</script>
--->

@@ -35,10 +35,9 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			//$this->putModuleScript("models.courses");
-			$this->putModuleScript("widget.courses");
+			$this->putModuleScript("portlet.content");
 
             $this->putBlock("tests.info.dialog");
-
             $this->putBlock("lessons.dialogs.exercises");
 
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
