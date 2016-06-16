@@ -620,11 +620,13 @@
 
 
 <script type="text/template" id="tab_classes-info-template">
-	<% if (!_.isEmpty(model['classe'].description)) { %>
-	<h5>{translateToken value="During this course you will..."}</h5>
-	<%= model['classe'].description %>
-	<hr />
+	<div>
+		<% if (!_.isEmpty(model['classe'].description)) { %>
+		<h5>{translateToken value="During this course you will..."}</h5>
+		<%= model['classe'].description %>
 	<% } %>
+	</div>
+	
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
