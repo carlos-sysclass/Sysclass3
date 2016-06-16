@@ -249,23 +249,43 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			prevItem : function(e) {
 				console.info('portlet.content/navigationViewClass::prevItem');
+				this.pointer--;
+
 				e.preventDefault();
+
 				this.collection.prev();
-				if (this.pointer == 0) {
+
+				if (this.pointer <= 0) {
+					this.pointer = 0;
 					this.$(".nav-prev-action").addClass("btn-disabled");
 				}
+				this.render();
 			},
 			nextItem : function(e) {
 				console.info('portlet.content/navigationViewClass::nextItem');
+				this.pointer++;
+
 				e.preventDefault();
+
 				this.collection.next();
+
 				if (this.pointer >= this.collection.size()) {
+					this.pointer = this.collection.size() - 1;
 					this.$(".nav-next-action").addClass("btn-disabled");
 				}
+				this.render();
 			},
 		});
 
-		var baseChildTabViewClass = Backbone.View.extend({
+		var baseChangeModelViewClass = Backbone.View.extend({
+			//portlet: $('#courses-widget'),
+			setModel : function(model) {
+				this.model = model;
+				this.render();
+			}
+		});
+
+		var baseChildTabViewClass = baseChangeModelViewClass.extend({
 			nofoundTemplate : _.template($("#tab_all_child-nofound-template").html()),
 			initialize: function(opt) {
 				console.info('portlet.content/baseChildTabViewClass::initialize');
@@ -306,7 +326,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		/* COURSE TABS VIEW CLASSES */
-		var blockableTabViewClass = Backbone.View.extend({
+		var blockableTabViewClass = baseChangeModelViewClass.extend({
 			events : {
 				"click .blockable-item" : "onBlockableItemClick"
 			},
@@ -492,7 +512,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			template : _.template($("#tab_program_courses-item-template").html(), null, {variable: "model"}),
 			setClassId : function(e) {
 				//app.userSettings.set("class_id", this.model.get("id"));
-				console.warn("CHANGE-CLASS-ID");
+				console.warn(this.model.get("id"));
+				mod.programsCollection.moveToCourse(this.model.get("id"));
 			},
 		})
 
@@ -676,6 +697,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		*/
 
 		/* CLASSES TABS VIEW CLASSES */
+
 		
 		var courseTabViewClass = blockableTabViewClass.extend({
 			initialize: function(opt) {
@@ -687,14 +709,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					collection : mod.programsCollection.getCurrentCourses(),
 					pointer : mod.programsCollection.getCourseIndex()
 				});
-				this.navigationView.render();
 
-				console.warn({
-					el : this.$(".navbar-lesson"),
-					collection : mod.programsCollection.getCurrentCourses(),
-					pointer : mod.programsCollection.getCourseIndex()
-				});
-
+				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 				this.courseInfoTabView = new courseInfoTabViewClass({
 					el : this.$("#tab_course_info"),
 					model : this.model
@@ -720,11 +736,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.updateCollectionIndex();
 			},
-			focus : function() {
-				$("[href='#course-tab']").tab('show');
-			},
-			render : function(e) {
-				console.info('portlet.content/classTabViewClass::render');
+			render : function() {
+				console.info('portlet.content/courseTabViewClass::render');
+
+				this.navigationView.render();
+				this.courseInfoTabView.render();
+				this.courseInstructorTabView.render();
+				this.courseUnitsTabView.render();
 
 				var factor = this.model.get("progress.factor");
 				if (factor >= 1) {
@@ -735,30 +753,34 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.unBlockUi();
 			},
+			focus : function() {
+				$("[href='#course-tab']").tab('show');
+			},
 			onBlockableItemClick : function(e) {
 				$("[href='#course-tab']").click();
 				$("[href='#tab_course_units']").click();
 			}
 		});
 		
-		var courseInfoTabViewClass = Backbone.View.extend({
+		var courseInfoTabViewClass = baseChangeModelViewClass.extend({
 			//portlet: $('#courses-widget'),
 			template : _.template($("#tab_courses_info-template").html(), null, {variable : 'model'}),
 			initialize: function() {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
-				this.listenTo(this.model, 'sync', this.render.bind(this));
+				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 			},
 			render : function(e) {
 				console.info('portlet.content/classInfoTabViewClass::render');
+				console.warn(this.model.toJSON());
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
 		});
-		var courseInstructorTabViewClass = Backbone.View.extend({
+		var courseInstructorTabViewClass = baseChangeModelViewClass.extend({
 			//portlet: $('#courses-widget'),
 			template : _.template($("#tab_courses_instructor-template").html(), null, {variable : 'model'}),
 			initialize: function() {
 				console.info('portlet.content/classInstructorTabViewClass::initialize');
-				this.listenTo(this.model, 'sync', this.render.bind(this));
+				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 			},
 			render : function(e) {
 				console.info('portlet.content/classInstructorTabViewClass::render');
@@ -790,13 +812,23 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			template : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
 			setLessonId : function(e) {
-				app.userSettings.set("lesson_id", this.model.get("id"));
+				//app.userSettings.set("lesson_id", this.model.get("id"));
+				//app.userSettings.set("class_id", this.model.get("id"));
+				console.warn(this.model.get("id"));
+				mod.programsCollection.moveToUnit(this.model.get("id"));
 			}
 		});
 
 		var courseUnitsTabViewClass = baseChildTabViewClass.extend({
 			nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
 			childViewClass : courseUnitsTabViewItemClass,
+			initialize: function() {
+				console.info('portlet.content/classInfoTabViewClass::initialize');
+
+				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
+
+				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
+			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			}
@@ -853,7 +885,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					collection : mod.programsCollection.getCurrentUnits(),
 					pointer : mod.programsCollection.getUnitIndex()
 				});
-				this.navigationView.render();
+
+				this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
+				
 
 				// TODO CREATE SUB VIEWS!!
 				//
@@ -884,6 +918,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(e) {
 				console.info('portlet.content/unitTabViewClass::render');
 				this.unBlockUi();
+
+
+				this.navigationView.render();
+
+				this.unitVideoTabView.render();
+				this.unitMaterialsTabView.render();
 				
 				var factor = this.model.get("progress.factor");
 				if (factor >= 1) {
@@ -906,15 +946,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
-		var unitVideoTabViewClass = Backbone.View.extend({
+		var unitVideoTabViewClass = baseChangeModelViewClass.extend({
 			videoJS : null,
 			nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 			template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
 			initialize: function(opt) {
 				console.info('portlet.content/unitVideosTabViewClass::initialize');
-				//this.listenTo(this.model, 'sync', this.render.bind(this));
 
-				this.render();
+				this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
 			},
 			render : function(e) {
 				console.info('portlet.content/unitVideosTabViewClass::render');
@@ -1264,22 +1303,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		this.widgetViewClass = parent.widgetViewClass.extend({
-			programModel : null,
-			courseModel : null,
-			unitModel : null,
-
 			programTabView : null,
 			courseTabView : null,
 			unitTabView : null,
-
-
-			coursesCollection : null,
-			programTabView : null,
-			classesCollection : null,
-			classTabView : null,
-			lessonsCollection : null,
-			lessonModel : null,
-			lessonTabView : null,
 			start : function() {
 				console.info('portlet.content/widgetViewClass::start');
 				Marionette.triggerMethodOn(this, "beforeStart");
@@ -1293,35 +1319,36 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				Marionette.triggerMethodOn(this, "start");
 
-				this.render();
+				this.listenTo(this.collection, "program.changed", this.renderProgram.bind(this));
+				this.listenTo(this.collection, "course.changed", this.renderCourse.bind(this));
+				this.listenTo(this.collection, "unit.changed", this.renderUnit.bind(this));
+
+				this.renderProgram();
+				this.renderCourse();
+				this.renderUnit();
 			},
-			render : function() {
+			renderProgram : function() {
 				console.info('portlet.content/widgetViewClass::render');
-				this.$(".program-title").html(this.programModel.get("name"));
-				this.$(".course-title").html(this.courseModel.get("name"));
-				this.$(".unit-title").html(this.unitModel.get("name"));
-
-
-
+				this.$(".program-title").html(this.collection.getCurrentProgram().get("name"));
 				this.$(".program-count").html(this.collection.getCurrentPrograms().size());
-				this.$(".course-count").html(this.collection.getCurrentCourses().size());
-				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
-
-
 			},
+			renderCourse : function() {
+				this.$(".course-title").html(this.collection.getCurrentCourse().get("name"));
+				this.$(".course-count").html(this.collection.getCurrentCourses().size());
+			},
+			renderUnit : function() {
+				this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
+				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
+			},			
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
 			},
 			startProgramView : function() {
 				console.info('portlet.content/widgetViewClass::startProgramView');
 
-				if (_.isNull(this.programModel)) {
-					this.programModel = this.collection.getCurrentProgram();
-				}
-
 				if (_.isNull(this.programTabView)) {
 					this.programTabView = new programTabViewClass({
-						model : this.programModel,
+						model : this.collection.getCurrentProgram(),
 						//collection : this.collection,
 						el : this.$("#program-tab"),
             			portlet : this.$el
@@ -1332,13 +1359,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			startCourseView : function() {
 				console.info('portlet.content/widgetViewClass::startCourseView');
 
-				if (_.isNull(this.courseModel)) {
-					this.courseModel = this.collection.getCurrentCourse();
-				}
-
 				if (_.isNull(this.courseTabView)) {
 					this.courseTabView = new courseTabViewClass({
-						model : this.courseModel,
+						model : this.collection.getCurrentCourse(),
 						el : this.$("#course-tab"),
             			portlet : this.$el
 					});
@@ -1348,13 +1371,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			startUnitView : function() {
 				console.info('portlet.content/widgetViewClass::startUnitView');
 
-				if (_.isNull(this.unitModel)) {
-					this.unitModel = this.collection.getCurrentUnit();
-				}
-
 				if (_.isNull(this.unitTabView)) {
 					this.unitTabView = new unitTabViewClass({
-						model : this.unitModel,
+						model : this.collection.getCurrentUnit(),
 						//collection : this.collection,
 						el : this.$("#unit-tab"),
             			portlet : this.$el
@@ -1434,35 +1453,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	};
 
 	var navigableCollection = Backbone.Collection.extend({
-		initialize : function(data) {
-			this.pointer = -1;
-			if (_.size(data) > 0) {
-				this.pointer = 0;
-			}
-		},
-		getPointer : function() {
-			return this.pointer;
-		},
-		setPointer : function(pointer) {
-			this.pointer = pointer;
-		},
 		prev : function() {
-			var newPointer = _.max([0, this.pointer-1]);
-			if (newPointer != this.pointer) {
-				this.pointer = newPointer;
-				this.trigger("prevModel", this.at(this.pointer), this.pointer, this);
-				
-			}
-			return this.pointer;
-
+			this.trigger("previous");
 		},
 		next : function() {
-			var newPointer = _.min([this.size()-1, this.pointer+1]);
-			if (newPointer != this.pointer) {
-				this.pointer = newPointer;
-				this.trigger("nextModel", this.at(this.pointer), this.pointer, this);
-			}
-			return this.pointer;
+			this.trigger("next");
 		}
 	});
 
@@ -1478,20 +1473,36 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			initialize : function(opt) {
 				this.current = opt.current;
 
-				this.listenTo(this, "reset", this.flatenTree.bind(this));
+				//this.listenTo(this, "reset", this.flatenTree.bind(this));
+				//this.listenTo(this, "course.changed", this.recalculateUnitIndex.bind(this));
 			},
-			flatenTree : function() {
-				/*
-				this.programs = this;
+			updateCourseIndex : function() {
+				// DESTROY DEPENDENT COLLECTIONS
+				this.units = null;
+				this.contents = null;
 
-				var program = this.getCurrentProgram();
-				this.courses = new mod.collections.courses(program.get("courses"));
+				// CREATE NEW ONES
+				
+				// UPDATE THE SERVER TO RECEIVE NEW VARS
+				console.warn(this.current);
 
-				var course = this.getCurrentCourse();
-				var units = new mod.collections.units(course.get("units"));
+				$.ajax(
+					"/module/content/set-pointer",
+					{
+						async : false,
+						method : 'POST',
+						data : {
+							scope : 'course',
+							entity_id : this.current.course_id
+						},
+						dataType : 'json',
+						success : function(data, textStatus, jqXHR) {
+							this.current = data;
 
-				return units;
-				*/
+							this.trigger("unit.changed", this.getCurrentUnit());
+						}.bind(this)
+					}
+				);
 			},
 			// MODELS
 			getCurrentProgram : function() {
@@ -1521,11 +1532,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				);
 			},
 			getCourseIndex : function() {
-				console.warn(this.getCurrentCourses());
-				console.warn(this.getCurrentCourse());
-				console.warn(this.getCurrentCourses().indexOf(
-  					this.getCurrentCourse()
-				));
 				return this.getCurrentCourses().indexOf(
   					this.getCurrentCourse()
 				);
@@ -1535,6 +1541,74 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   					this.getCurrentUnit()
 				);
 			},
+			moveToCourse : function(course_id) {
+				var model = this.courses.findWhere({id : course_id});
+				var courseIndex = this.getCurrentCourses().indexOf(model);
+				if (courseIndex >= 0) {
+					// CALCULATE NEW POINTERS
+					this.current.course_id = course_id;
+					this.updateCourseIndex();
+
+					this.trigger("course.changed", model, courseIndex);
+
+				}
+			},
+			toPreviousCourseIndex : function() {
+				var courseIndex = this.getCourseIndex();
+				if (courseIndex <= 0) {
+					return false;
+				}
+				courseIndex--;
+				var model = this.getCurrentCourses().at(courseIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToCourse(model.get("id"));
+				}
+
+			},
+			toNextCourseIndex : function() {
+				var courseIndex = this.getCourseIndex();
+				if (courseIndex >= this.getCurrentCourses().size()) {
+					return false;
+				}
+				courseIndex++;
+				var model = this.getCurrentCourses().at(courseIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToCourse(model.get("id"));
+				}
+			},
+			moveToUnit : function(unit_id) {
+				var model = this.units.findWhere({id : unit_id});
+				var unitIndex = this.getCurrentUnits().indexOf(model);
+				if (unitIndex >= 0) {
+					this.current.unit_id = unit_id;
+					this.trigger("unit.changed", model, unitIndex);
+				}
+			},
+			toPreviousUnitIndex : function() {
+				var unitIndex = this.getUnitIndex();
+				if (unitIndex <= 0) {
+					return false;
+				}
+				unitIndex--;
+				var model = this.getCurrentUnits().at(unitIndex);
+				if (!_.isUndefined(model)) {
+					this.current.unit_id = model.get("id");
+					this.trigger("unit.changed", model, unitIndex);
+				}
+
+			},
+			toNextUnitIndex : function() {
+				var unitIndex = this.getUnitIndex();
+				if (unitIndex >= this.getCurrentUnits().size()) {
+					return false;
+				}
+				unitIndex++;
+				var model = this.getCurrentUnits().at(unitIndex);
+				if (!_.isUndefined(model)) {
+					this.current.unit_id = model.get("id");
+					this.trigger("unit.changed", model, unitIndex);
+				}
+			},
 			// COLLECTIONS
 			getCurrentPrograms : function() {
 				return this;
@@ -1543,6 +1617,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.isNull(this.courses)) {
 					var program = this.getCurrentProgram();
 					this.courses = new mod.collections.courses(program.get("courses"));
+
+					this.listenTo(this.courses, "previous", this.toPreviousCourseIndex.bind(this));
+					this.listenTo(this.courses, "next", this.toNextCourseIndex.bind(this));
 				}
 				
 				return this.courses;
@@ -1551,6 +1628,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.isNull(this.units)) {
 					var course = this.getCurrentCourse();
 					this.units = new mod.collections.units(course.get("units"));
+
+					this.listenTo(this.units, "previous", this.toPreviousUnitIndex.bind(this));
+					this.listenTo(this.units, "next", this.toNextUnitIndex.bind(this));
 				}
 
 				return this.units;
@@ -1579,7 +1659,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		}),
 		courses : navigableCollection.extend({
-			model : this.models.course,
+			model : this.models.course
 		}),
 		units : navigableCollection.extend({
 			model : this.models.unit,

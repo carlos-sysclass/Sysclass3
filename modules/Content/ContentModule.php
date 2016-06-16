@@ -7,6 +7,7 @@ namespace Sysclass\Modules\Content;
 use Sysclass\Models\Content\Program,
     Sysclass\Models\Content\Unit,
     Sysclass\Models\Enrollments\CourseUsers,
+    Sysclass\Models\Users\Settings as UserSettings,
     Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
@@ -43,8 +44,29 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);
 
+            $fields = array(
+                'content',
+                'unit',
+                'course',
+                'program'
+            );
+
+            $checkScope = null;
+            foreach($fields as $field) {
+                if (is_numeric($settings[$field . "_id"])) {
+                    $checkScope = $field;
+                    $checkValue = $settings[$field . "_id"];
+                    break;
+                }
+            }
+
             // LOAD THE CURRENT 
-            $userPointers = Unit::getContentPointers();
+            if (!is_null($checkScope)) {
+                $userPointers = Unit::getContentPointers(null, $checkScope, $checkValue);    
+            } else {
+                $userPointers = Unit::getContentPointers();
+            }
+            
 
             $tree = Program::getUserContentTree();
 
@@ -58,57 +80,55 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
                     ),
                     'tree' => array_values($tree)
                 );
-            }
 
-
-
-            //var_dump($settings);
-            //exit;
-            /*
-            if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
-                // GET FIRST COURSE FORM USER LIST
-                $enrollment = CourseUsers::findFirst(array(
-                    'conditions'    => 'user_id = ?0 AND status_id = 1',
-                    'bind' => array($currentUser->id)
-                    //'bind' => '123456'
-                ));
-
-                if (!is_object($enrollment)) {
-                    // CHECK FOR CLASS-ONLY ENROLLMENTS
-                } else {
-                    $this->db->Execute(sprintf(
-                        "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
-                        $currentUser->id,
-                        'course_id'
+                //var_dump($settings);
+                //exit;
+                /*
+                if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
+                    // GET FIRST COURSE FORM USER LIST
+                    $enrollment = CourseUsers::findFirst(array(
+                        'conditions'    => 'user_id = ?0 AND status_id = 1',
+                        'bind' => array($currentUser->id)
+                        //'bind' => '123456'
                     ));
-                    $this->db->Execute(sprintf(
-                        "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
-                        $currentUser->id,
-                        'course_id',
-                        $enrollment->course_id
-                    ));
-                    if (@isset($settings['class_id'])) {
-                        // GET THE FIRST CLASS FROM COURSE
+
+                    if (!is_object($enrollment)) {
+                        // CHECK FOR CLASS-ONLY ENROLLMENTS
+                    } else {
+                        $this->db->Execute(sprintf(
+                            "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
+                            $currentUser->id,
+                            'course_id'
+                        ));
+                        $this->db->Execute(sprintf(
+                            "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
+                            $currentUser->id,
+                            'course_id',
+                            $enrollment->course_id
+                        ));
+                        if (@isset($settings['class_id'])) {
+                            // GET THE FIRST CLASS FROM COURSE
+
+                        }
 
                     }
 
                 }
-
+                */
+    			return array(
+    				'content.overview' => array(
+    					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
+    					'id'        => 'content-widget',
+    					'template'	=> $this->template("widgets/overview"),
+    					'box'       => 'dark-blue tabbable tabbable-left',
+    					'tools'     => array(
+    						//'search'        => true,
+    						'fullscreen'    => true
+    					),
+                        'data' => $data
+    				)
+    			);
             }
-            */
-			return array(
-				'content.overview' => array(
-					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
-					'id'        => 'content-widget',
-					'template'	=> $this->template("widgets/overview"),
-					'box'       => 'dark-blue tabbable tabbable-left',
-					'tools'     => array(
-						'search'        => true,
-						'fullscreen'    => true
-					),
-                    'data' => $data
-				)
-			);
 
 		}
 
@@ -167,5 +187,36 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
         return array_merge($response, $info);
     }
 
+    /**
+     * [ add a description ]
+     *
+     * @Post("/set-pointer")
+     */
+    public function setContentPointer() {
+        $data = $this->request->getPost();
 
+        $scopes = array('program', 'course', 'unit', 'content');
+
+        if (in_array($data['scope'], $scopes)) {
+            $userPointers = Unit::getContentPointers(null, $data['scope'], $data['entity_id']);
+ 
+            $result = array(
+                'program_id'    => $userPointers['program']->id,
+                'course_id'     => $userPointers['course']->id,
+                'unit_id'       => $userPointers['unit']->id,
+                'content_id'    => $userPointers['content']->id
+            );
+
+            foreach($scopes as $scope) {
+                $userSetting = new UserSettings();
+                $userSetting->user_id = $this->user->id;
+                $userSetting->item = $scope . '_id';
+                $userSetting->value = $userPointers[$scope]->id;
+
+                $userSetting->save();
+            }
+
+            return $result;
+        }
+    }
 }

@@ -11,7 +11,7 @@ class UnitContent extends Model
 
         $this->belongsTo(
             "lesson_id",
-            "Sysclass\Models\Courses\Unit",
+            "Sysclass\Models\Content\Unit",
             "id",
             array("alias" => 'Unit')
         );

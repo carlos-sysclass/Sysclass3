@@ -2,7 +2,7 @@
 namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model,
-    Sysclass\Models\Courses\Contents\Content,
+    Sysclass\Models\Content\UnitContent as Content,
     Sysclass\Models\Content\Course,
     Sysclass\Models\Content\Program;
 

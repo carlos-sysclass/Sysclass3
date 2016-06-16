@@ -626,9 +626,9 @@ _before_init_functions.push(function() {
 
 
 <script type="text/template" id="tab_courses_info-template">
-	<% if (!_.isEmpty(model['classe'].description)) { %>
-	<h5>{translateToken value="During this course you will..."}</h5>
-	<%= model['classe'].description %>
+
+	<% if (!_.isEmpty(model.description)) { %>
+	<%= model.description %>
 	<hr />
 	<% } %>
 	<table class="table table-striped table-bordered table-advance table-hover">
@@ -674,7 +674,8 @@ _before_init_functions.push(function() {
 </script>
 
 <script type="text/template" id="tab_courses_instructor-template">
-	<% var professor = model['classe'].professor; %>
+	<% var professor = model.professor; %>
+	<% if (_.size(professor) > 0) { %>
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
@@ -683,6 +684,7 @@ _before_init_functions.push(function() {
 			</tr>
 		</tbody>
 	</table>
+	<% } %>
 	<hr />
 </script>
 
