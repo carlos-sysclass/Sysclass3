@@ -209,7 +209,8 @@ _before_init_functions.push(function() {
 								<a data-toggle="tab" href="#tab_course_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_units"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
+
+								<a data-toggle="tab" href="#tab_course_units"><i class="fa fa-clipboard"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
 							</li>
 
 							<!--
@@ -627,10 +628,14 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_info-template">
 
+
 	<% if (!_.isEmpty(model.description)) { %>
+	<!-- <h5>{translateToken value="During this course you will..."}</h5> -->
 	<%= model.description %>
 	<hr />
 	<% } %>
+	</div>
+	
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
