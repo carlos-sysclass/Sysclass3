@@ -808,15 +808,51 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
-				"click .lesson-change-action" : "setLessonId"
+				"click .lesson-change-action" : "setLessonId",
+				"click .view-test-action" : "openDialog",
+				"click .open-test-action" : "doTest"
 			},
-			template : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
+			testInfoModule : app.module("dialogs.tests.info"),
+			lessonTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
+            testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
 			setLessonId : function(e) {
 				//app.userSettings.set("lesson_id", this.model.get("id"));
 				//app.userSettings.set("class_id", this.model.get("id"));
-				console.warn(this.model.get("id"));
+				console.warn(this.model.toJSON());
 				mod.programsCollection.moveToUnit(this.model.get("id"));
-			}
+			},
+			render : function(e) {
+				console.info('portlet.content/courseUnitsTabViewItemClass::render');
+				if (this.model.get("type") == "lesson") {
+					this.$el.html(
+						this.lessonTemplate(this.model.toJSON())
+					);
+				} else {
+					console.warn(this.model.toJSON());
+					this.$el.html(
+						this.testTemplate(this.model.toJSON())
+					);
+				}
+				return this;
+			},
+            openDialog : function() {
+                if (!this.testInfoModule.started) {
+                    this.testInfoModule.start();
+
+                    this.listenTo(this.testInfoModule, "action:do-test", this.doTest.bind(this));
+                }
+
+                app.module("dialogs.tests.info").setInfo({
+                	model : this.model
+                });
+
+                app.module("dialogs.tests.info").open();
+            },
+            doTest : function(model) {
+            	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
+            	//alert("Doing Test " + this.model.get("id"));
+            	// START TEST EXECUTION this.model
+            }
 		});
 
 		var courseUnitsTabViewClass = baseChildTabViewClass.extend({
@@ -960,6 +996,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var self = this;
 
 				var videos = mod.programsCollection.getCurrentContents('video');
+
+				console.warn(this.model.toJSON());
 
 				if (_.size(videos) == 0) {
 					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
@@ -1504,6 +1542,33 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				);
 			},
+			updateUnitIndex : function() {
+				// DESTROY DEPENDENT COLLECTIONS
+				this.contents = null;
+
+				// CREATE NEW ONES
+				
+				// UPDATE THE SERVER TO RECEIVE NEW VARS
+
+				$.ajax(
+					"/module/content/set-pointer",
+					{
+						async : false,
+						method : 'POST',
+						data : {
+							scope : 'unit',
+							entity_id : this.current.unit_id
+						},
+						dataType : 'json',
+						success : function(data, textStatus, jqXHR) {
+							this.current = data;
+
+							this.trigger("content.changed", this.getCurrentContent());
+						}.bind(this)
+					}
+				);
+			},
+
 			// MODELS
 			getCurrentProgram : function() {
 				var program = this.findWhere({id : this.current.program_id});
@@ -1523,6 +1588,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				var unit = this.units.findWhere({id : this.current.unit_id});
 				return unit;
+			},
+			getCurrentContent : function() {
+				if (_.isNull(this.contents)) {
+					this.contents = this.getCurrentContents();
+				}
+
+				var unit = this.contents.findWhere({id : this.current.content_id});
+				return content;
 			},
 
 			// INDEXES
@@ -1581,6 +1654,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var unitIndex = this.getCurrentUnits().indexOf(model);
 				if (unitIndex >= 0) {
 					this.current.unit_id = unit_id;
+					this.updateUnitIndex();
+
 					this.trigger("unit.changed", model, unitIndex);
 				}
 			},
@@ -1592,8 +1667,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				unitIndex--;
 				var model = this.getCurrentUnits().at(unitIndex);
 				if (!_.isUndefined(model)) {
-					this.current.unit_id = model.get("id");
-					this.trigger("unit.changed", model, unitIndex);
+					this.moveToUnit(model.get("id"));
+
+					//this.current.unit_id = model.get("id");
+					//this.trigger("unit.changed", model, unitIndex);
 				}
 
 			},
@@ -1605,8 +1682,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				unitIndex++;
 				var model = this.getCurrentUnits().at(unitIndex);
 				if (!_.isUndefined(model)) {
-					this.current.unit_id = model.get("id");
-					this.trigger("unit.changed", model, unitIndex);
+					this.moveToUnit(model.get("id"));
+
+					//this.current.unit_id = model.get("id");
+					//this.trigger("unit.changed", model, unitIndex);
 				}
 			},
 			// COLLECTIONS

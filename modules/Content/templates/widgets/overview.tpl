@@ -262,10 +262,16 @@ _before_init_functions.push(function() {
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
+												<th>{translateToken value="#"}</th>
 												<th>{translateToken value="Name"}</th>
+												<th class="text-center">{translateToken value="# Questions"}</th>
+												<th class="text-center">{translateToken value="Times done"}</th>
+												<th class="text-center">{translateToken value="Grade"}</th>
 												<th class="text-center">{translateToken value="Completed"}</th>
+												<th class="text-center">{translateToken value="Options"}</th>
 											</tr>
 										</thead>
+
 										<tbody>
 										</tbody>
 									</table>
@@ -619,12 +625,6 @@ _before_init_functions.push(function() {
 	</td>
 </script>
 
-
-
-
-
-
-
 <script type="text/template" id="tab_courses_info-template">
 
 	<% if (!_.isEmpty(model.description)) { %>
@@ -699,7 +699,11 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
+	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
+	<td class="text-center"></td>
+	<td class="text-center"></td>
+	<td class="text-center"></td>
 	<td class="text-center">
 		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
 			<span class="label label-success">{translateToken value="Yes"}</span>
@@ -707,30 +711,43 @@ _before_init_functions.push(function() {
 			<span class="label label-danger">{translateToken value="No"}</span>
 		<% } %>
 	</td>
+	<td class="text-center"></td>
 </script>
 
 <script type="text/template" id="tab_courses_tests-item-template">
+
 	<% var total_questions = _.size(model.questions); %>
 	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
 	<td class="text-center"><%= total_questions %></td>
 	<td class="text-center">
-		<span class="label label-danger">
-		<%= _.size(model.test.executions) %>
-		<% if (model.test.test_repetition > 0) { %>
-			 / <%= model.test.test_repetition %>
+		<% if (_.has(model, 'test')) { %>
+			<span class="label label-danger">
+			<%= _.size(model.test.executions) %>
+			<% if (model.test.test_repetition > 0) { %>
+				 / <%= model.test.test_repetition %>
+			<% } %>
+			</span>
 		<% } %>
-		</span>
 	</td>
 	<td class="text-center">
-		<%
-		if (_.size(model.test.executions) > 0) {
-			 var execution = _.last(model.test.executions);
-		%>
-			<span class="label label-primary"><%= execution.user_grade %></span>
-			<small><%= execution.user_points %> {translateToken value="points"}</small>
+		<% if (_.has(model, 'test')) { %>
+			<%
+			if (_.size(model.test.executions) > 0) {
+				 var execution = _.last(model.test.executions);
+			%>
+				<span class="label label-primary"><%= execution.user_grade %></span>
+				<small><%= execution.user_points %> {translateToken value="points"}</small>
+			<% } %>
 		<% } %>
 	</span></td>
+	<td class="text-center">
+		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+			<span class="label label-success">{translateToken value="Yes"}</span>
+		<% } else { %>
+			<span class="label label-danger">{translateToken value="No"}</span>
+		<% } %>
+	</td>
 	<td class="text-center">
 		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
 			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">

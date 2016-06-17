@@ -25,6 +25,7 @@ class UnitContent extends Model
             array('alias' => 'Files')
         );
     }
+    
     public function toFullContentArray() {
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
