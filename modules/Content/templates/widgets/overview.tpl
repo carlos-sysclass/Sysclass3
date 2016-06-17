@@ -209,7 +209,8 @@ _before_init_functions.push(function() {
 								<a data-toggle="tab" href="#tab_course_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_units"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
+
+								<a data-toggle="tab" href="#tab_course_units"><i class="fa fa-clipboard"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
 							</li>
 
 							<!--
@@ -627,10 +628,14 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_info-template">
 
+
 	<% if (!_.isEmpty(model.description)) { %>
+	<!-- <h5>{translateToken value="During this course you will..."}</h5> -->
 	<%= model.description %>
 	<hr />
 	<% } %>
+	</div>
+	
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
@@ -715,8 +720,13 @@ _before_init_functions.push(function() {
 </script>
 
 <script type="text/template" id="tab_courses_tests-item-template">
-
-	<% var total_questions = _.size(model.questions); %>
+	<%
+	if (_.has(model, 'test')) {
+		var total_questions = _.size(model.test.questions);
+	} else {
+		var total_questions = 0; 
+	} 
+	%>
 	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
 	<td class="text-center"><%= total_questions %></td>
@@ -742,7 +752,7 @@ _before_init_functions.push(function() {
 		<% } %>
 	</span></td>
 	<td class="text-center">
-		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+		<% if (_.has(model, 'test') && _.size(model.test.executions) > 0) { %>
 			<span class="label label-success">{translateToken value="Yes"}</span>
 		<% } else { %>
 			<span class="label label-danger">{translateToken value="No"}</span>

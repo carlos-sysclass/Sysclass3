@@ -24,8 +24,12 @@ class UnitContent extends Model
             "id",
             array('alias' => 'Files')
         );
+
+
+
+
     }
-    
+
     public function toFullContentArray() {
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
@@ -41,6 +45,7 @@ class UnitContent extends Model
     public function getFullTree() {
         $result = $this->toFullContentArray();
         $result['info'] = json_decode($result['info']);
+
         return $result;
     }
 }

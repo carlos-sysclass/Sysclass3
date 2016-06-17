@@ -22,6 +22,30 @@
     color: #ffffff !important;
 }
 
+/* SEARCH */
+.cs-search-all input {
+	width: 100%;
+    padding: 10px;
+    font-size: 19px;
+    font-weight: 100;
+}
+.cs-search-all button {
+	position: absolute;
+    top: 0;
+    right: 0;
+    height: 51px;
+    padding: 16px 23px;
+}
+.cs-search-all input[type="button"], .cs-search-all input[type="submit"] {
+	position: absolute;
+    top: 0;
+    right: 0;
+    height: 51px;
+    padding: 16px 23px;
+}
+.cs-search-all button i {
+	font-size: 20px !important;
+}
 
 .portlet.box.dark-blue {
     border:none;
@@ -815,6 +839,7 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 /* COURSES-WIDGET.css */
 .scroller {
 	padding-right: 0;
+	min-height: 450px;
 }
 .scroller div {
 	padding: 0 10px;
