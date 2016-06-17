@@ -1,9 +1,9 @@
 <?php
-namespace Sysclass\Models\Courses\Contents;
+namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model;
 
-class Content extends Model
+class UnitContent extends Model
 {
     public function initialize()
     {
@@ -11,7 +11,7 @@ class Content extends Model
 
         $this->belongsTo(
             "lesson_id",
-            "Sysclass\Models\Courses\Unit",
+            "Sysclass\Models\Content\Unit",
             "id",
             array("alias" => 'Unit')
         );
@@ -25,6 +25,7 @@ class Content extends Model
             array('alias' => 'Files')
         );
     }
+    
     public function toFullContentArray() {
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
@@ -33,7 +34,14 @@ class Content extends Model
             'limit' => '1'
         ));
         $item['file'] = $files->getFirst()->toArray();
+
         return $item;
+    }
+
+    public function getFullTree() {
+        $result = $this->toFullContentArray();
+        $result['info'] = json_decode($result['info']);
+        return $result;
     }
 }
 

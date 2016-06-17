@@ -1,8 +1,5 @@
 <?php
-/**
- * @deprecated 3.3.0 Use the Sysclass\Models\Content\Departament
- */
-namespace Sysclass\Models\Courses;
+namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model;
 
@@ -14,9 +11,9 @@ class Departament extends Model
 
 		$this->hasMany(
             "id",
-            "Sysclass\Models\Courses\Course",
+            "Sysclass\Models\Content\Program",
             "area_id",
-            array('alias' => 'Courses')
+            array('alias' => 'Programs')
         );
 
         $this->belongsTo(

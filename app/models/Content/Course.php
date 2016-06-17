@@ -1,12 +1,9 @@
 <?php
-/**
- * @deprecated 3.3.0 Use the Sysclass\Models\Content\Course
- */
-namespace Sysclass\Models\Courses;
+namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model;
 
-class Classe extends Model
+class Course extends Model
 {
     public function initialize()
     {
@@ -14,20 +11,27 @@ class Classe extends Model
 
         $this->hasMany(
             "id",
-            "Sysclass\\Models\\Courses\\Unit",
+            "Sysclass\\Models\\Content\\Unit",
             "class_id",
             array(
-                'alias' => 'Units'
+                'alias' => 'Units',
+                'params' => array(
+                    'order' => '[Sysclass\Models\Content\Unit].position ASC, [Sysclass\Models\Content\Unit].id ASC'
+                )
             )
         );
 
         $this->hasMany(
         	"id",
-        	"Sysclass\\Models\\Courses\\Lesson",
+        	"Sysclass\\Models\\Content\\Unit",
         	"class_id",
         	array(
                 'alias' => 'Lessons',
-                'conditions' => "type = 'lesson'"
+                'params' => array(
+                    'conditions' => "type = 'lesson'",
+                    'order' => '[Sysclass\Models\Content\Unit].position ASC, [Sysclass\Models\Content\Unit].id ASC'
+                )
+                
             )
         );
         $this->hasMany(
@@ -36,7 +40,10 @@ class Classe extends Model
             "class_id",
             array(
                 'alias' => 'Tests',
-                'conditions' => "type = 'test'"
+                'params' => array(
+                    'conditions' => "type = 'test'",
+                    'order' => '[Sysclass\Models\Courses\Lesson].position ASC, [Sysclass\Models\Courses\Lesson].id ASC'
+                )
             )
         );
 
@@ -53,6 +60,20 @@ class Classe extends Model
             "Sysclass\\Models\\Users\\User",
             "id",
             array('alias' => 'Professor')
+        );
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\Models\Content\ProgramCourses",
+            "class_id", "course_id", 
+            "Sysclass\Models\Content\Program",
+            "id",
+            array(
+                'alias' => 'Programs',
+                'params' => array(
+                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
+                )
+            )
         );
 
         $this->hasManyToMany(
@@ -120,8 +141,7 @@ class Classe extends Model
             $result['units'][] = $unit->getFullTree();
         }
 
-        var_dump($result);
-        exit;
+        return $result;
     }
 
 }

@@ -1,20 +1,18 @@
-<?php/**
- * @deprecated 3.3.0 Use the Sysclass\Models\Content\ProgramCourses
- */
-namespace Sysclass\Models\Courses;
+<?php
+namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model,
-    Sysclass\Models\Courses\Classe;
+    Sysclass\Models\Content\Course;
 
-class CourseClasses extends Model
+class ProgramCourses extends Model
 {
     protected $assignedData = null;
     public function initialize()
     {
         $this->setSource("mod_roadmap_courses_to_classes");
         
-        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
-        $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
+        $this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id",  array('alias' => 'Program'));
+        $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
 
         //$this->hasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
@@ -29,7 +27,7 @@ class CourseClasses extends Model
         if (is_null($this->class_id)) {
             // CREATE A NEW CLASS
             if (array_key_exists('classe', $this->assignedData)) {
-                $classe = new Classe();
+                $classe = new Course();
                 $classe->assign($this->assignedData['classe']);
                 $classe->save();
                 $this->class_id = $classe->id;

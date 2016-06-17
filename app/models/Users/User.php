@@ -52,6 +52,15 @@ class User extends Model
 
         $this->hasManyToMany(
             "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id", "course_id",
+            "Sysclass\\Models\\Content\\Program",
+            "id",
+            array('alias' => 'Programs')
+        );
+
+        $this->hasManyToMany(
+            "id",
             "Sysclass\\Models\\Users\\UserAvatar",
             "user_id", "file_id",
             "Sysclass\\Models\\Dropbox\\File",
