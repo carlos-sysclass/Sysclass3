@@ -1,11 +1,11 @@
-<?php/**
- * @deprecated 3.3.0 Use the Sysclass\Models\Content\ProgramCourses
- */
+<?php
 namespace Sysclass\Models\Courses;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Courses\Classe;
-
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Content\ProgramCourses
+ */
 class CourseClasses extends Model
 {
     protected $assignedData = null;
