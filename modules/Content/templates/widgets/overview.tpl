@@ -752,7 +752,7 @@ _before_init_functions.push(function() {
 		<% } %>
 	</span></td>
 	<td class="text-center">
-		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+		<% if (_.has(model, 'test') && _.size(model.test.executions) > 0) { %>
 			<span class="label label-success">{translateToken value="Yes"}</span>
 		<% } else { %>
 			<span class="label label-danger">{translateToken value="No"}</span>

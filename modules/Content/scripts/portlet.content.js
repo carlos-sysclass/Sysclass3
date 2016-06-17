@@ -514,6 +514,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//app.userSettings.set("class_id", this.model.get("id"));
 				console.warn(this.model.get("id"));
 				mod.programsCollection.moveToCourse(this.model.get("id"));
+
+				$("[href='#course-tab']").tab('show');
 			},
 		})
 
@@ -820,6 +822,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//app.userSettings.set("class_id", this.model.get("id"));
 				console.warn(this.model.toJSON());
 				mod.programsCollection.moveToUnit(this.model.get("id"));
+
+				$("[href='#unit-tab']").tab('show');
 			},
 			render : function(e) {
 				console.info('portlet.content/courseUnitsTabViewItemClass::render');
@@ -1003,6 +1007,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
 					this.disableView();
 				} else {
+					this.enableView();
 					this.videoModel = videos.getMainVideo();
 
 					if (!_.isNull(this.videoJS)) {
@@ -1081,7 +1086,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			disableView : function() {
+				$("[href='#tab_unit_video'").hide();
+				$("[href='#tab_unit_materials']").tab('show');
 				//this.$el.hide();
+			},
+			enableView : function() {
+				$("[href='#tab_unit_video'").show().tab('show');
+				//this.$el.show();
 			}
 		});
 		/*
