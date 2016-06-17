@@ -25,8 +25,12 @@ class UnitContent extends Model
             array('alias' => 'Files')
         );
 
-
-
+        $this->hasOne(
+            "id",
+            "Sysclass\Models\Courses\Contents\Progress",
+            "content_id",
+            array('alias' => 'Progress')
+        );
 
     }
 
@@ -45,6 +49,22 @@ class UnitContent extends Model
     public function getFullTree() {
         $result = $this->toFullContentArray();
         $result['info'] = json_decode($result['info']);
+        
+        $user_id = $this->getDI()->get("user")->id;
+
+        $progress = $this->getProgress(array(
+            'conditions' => "user_id = ?0",
+            'bind' => array($user_id)
+        ));
+
+        if ($progress) {
+            $result['progress'] = $progress->toArray();   
+            $result['progress']['factor'] = floatval($result['progress']['factor']);
+        } else {
+            $result['progress'] = array(
+                'factor' => 0
+            );
+        }
 
         return $result;
     }
