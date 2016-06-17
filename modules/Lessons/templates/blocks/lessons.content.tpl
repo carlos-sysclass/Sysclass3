@@ -19,11 +19,12 @@
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Text"}</span>
         </span>
-        -->
+        
         <span class="btn btn-sm btn-link timeline-addexercise">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Exercises"}</span>
         </span>
+        -->
     </div>
     <div class="pull-right">
         <a class="btn btn-sm btn-primary timeline-expand" href="javascript:void(0);">
