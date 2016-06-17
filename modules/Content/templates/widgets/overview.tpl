@@ -715,8 +715,13 @@ _before_init_functions.push(function() {
 </script>
 
 <script type="text/template" id="tab_courses_tests-item-template">
-
-	<% var total_questions = _.size(model.questions); %>
+	<%
+	if (_.has(model, 'test')) {
+		var total_questions = _.size(model.test.questions);
+	} else {
+		var total_questions = 0; 
+	} 
+	%>
 	<td class="text-center"><%= model.id %></td>
 	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
 	<td class="text-center"><%= total_questions %></td>

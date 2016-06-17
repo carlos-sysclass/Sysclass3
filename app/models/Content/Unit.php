@@ -39,12 +39,21 @@ class Unit extends Model
             )
         );
 
+        $this->hasOne(
+            "id",
+            "Sysclass\\Models\\Content\\UnitTest",
+            "id",
+            array('alias' => 'Test')
+        );
+
         $this->belongsTo(
             "instructor_id",
             "Sysclass\\Models\\Users\\User",
             "id",
             array('alias' => 'Professor')
         );
+
+
 
     }
 
@@ -172,6 +181,16 @@ class Unit extends Model
             $result['contents'][] = $content->getFullTree();
         }
 
+        if ($this->type == "test" && ($test = $this->getTest())) {
+            $user_id = $this->getDI()->get("user")->id;
+            // LOAD TEST DETAILS
+            $result['test'] = $test->toArray();
+            $result['test']['executions'] = $test->getExecutions(array(
+                'conditions' => "user_id = ?0",
+                'bind' => array($user_id)
+            ))->toArray();
+            $result['test']['questions'] = $test->getQuestions()->toArray();
+        }
         return $result;
     }
 
