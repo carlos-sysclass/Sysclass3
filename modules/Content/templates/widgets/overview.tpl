@@ -614,7 +614,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-	<% console.warn(model); %>
 	<td><a href="#class-tab" class="class-change-action"><%= model.name %></a></td>
 
 	<td class="text-center">
@@ -818,6 +817,7 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_unit_materials-item-template">
+	<% console.warn(model); %>
     <%
         var file_type = "other";
 

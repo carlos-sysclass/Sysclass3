@@ -91,15 +91,16 @@ class Unit extends Model
     public static function getContentPointers($user = null, $by = 'default', $entity_id = false) {
         if (is_null($user)) {
             $user = \Phalcon\DI::getDefault()->get('user');
-            $courses = $user->getPrograms();
-            $course_ids = array_column($courses->toArray(), 'id');
         }
+        $courses = $user->getPrograms();
+        $course_ids = array_column($courses->toArray(), 'id');
+
         switch($by) {
             case 'content' : {
                 // FROM CONTENT, LOAD ALL PARENTS
                 $content = Content::findFirstById($entity_id);
                 if (!$content) {
-                    return false;
+                    return self::getContentPointers($user, 'default');
                 }
                 $unit = $content->getUnit();
                 $course = $unit->getCourse();
@@ -111,7 +112,7 @@ class Unit extends Model
                 // FROM CONTENT, LOAD ALL PARENTS
                 $unit = Unit::findFirstById($entity_id);
                 if (!$unit) {
-                    return false;
+                    return self::getContentPointers($user, 'default');
                 }
                 $content = $unit->getContents()->getFirst();
                 $course = $unit->getCourse();
@@ -124,7 +125,7 @@ class Unit extends Model
                 // FROM CONTENT, LOAD ALL PARENTS
                 $course = Course::findFirstById($entity_id);
                 if (!$course) {
-                    return false;
+                    return self::getContentPointers($user, 'default');
                 }
                 $unit = $course->getLessons()->getFirst();
                 $content = $unit->getContents()->getFirst();
@@ -138,7 +139,7 @@ class Unit extends Model
                 // FROM CONTENT, LOAD ALL PARENTS
                 $program = Program::findFirstById($entity_id);
                 if (!$program) {
-                    return false;
+                    return self::getContentPointers($user, 'default');
                 }
                 $course = $program->getClasses()->getFirst();
                 $unit = $course->getLessons()->getFirst();
@@ -191,6 +192,23 @@ class Unit extends Model
             ))->toArray();
             $result['test']['questions'] = $test->getQuestions()->toArray();
         }
+
+        $user_id = $this->getDI()->get("user")->id;
+
+        $progress = $this->getProgress(array(
+            'conditions' => "user_id = ?0",
+            'bind' => array($user_id)
+        ));
+
+        if ($progress) {
+            $result['progress'] = $progress->toArray();   
+            $result['progress']['factor'] = floatval($result['progress']['factor']);
+        } else {
+            $result['progress'] = array(
+                'factor' => 0
+            );
+        }
+
         return $result;
     }
 

@@ -469,7 +469,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function(e) {
-				console.warn(this.model.toJSON());
 				console.info('portlet.content/programDescriptionTabViewClass::render');
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
@@ -512,7 +511,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			template : _.template($("#tab_program_courses-item-template").html(), null, {variable: "model"}),
 			setClassId : function(e) {
 				//app.userSettings.set("class_id", this.model.get("id"));
-				console.warn(this.model.get("id"));
 				mod.programsCollection.moveToCourse(this.model.get("id"));
 
 				$("[href='#course-tab']").tab('show');
@@ -536,7 +534,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
-				console.warn(this.model.toJSON());
 				console.info('portlet.content/programMoreinfoTabViewClass::render');
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
@@ -773,7 +770,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function(e) {
 				console.info('portlet.content/classInfoTabViewClass::render');
-				console.warn(this.model.toJSON());
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
 		});
@@ -820,7 +816,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			setLessonId : function(e) {
 				//app.userSettings.set("lesson_id", this.model.get("id"));
 				//app.userSettings.set("class_id", this.model.get("id"));
-				console.warn(this.model.toJSON());
 				mod.programsCollection.moveToUnit(this.model.get("id"));
 
 				$("[href='#unit-tab']").tab('show');
@@ -832,7 +827,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						this.lessonTemplate(this.model.toJSON())
 					);
 				} else {
-					console.warn(this.model.toJSON());
 					this.$el.html(
 						this.testTemplate(this.model.toJSON())
 					);
@@ -966,6 +960,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.unitMaterialsTabView.render();
 				
 				var factor = this.model.get("progress.factor");
+				console.warn(this.model.get("progress.factor"));
 				if (factor >= 1) {
 					this.$(".viewed-status").removeClass("hidden");
 				} else {
@@ -1000,8 +995,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var self = this;
 
 				var videos = mod.programsCollection.getCurrentContents('video');
-
-				console.warn(this.model.toJSON());
 
 				if (_.size(videos) == 0) {
 					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
@@ -1119,7 +1112,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var progressModel = new mod.models.content_progress();
 				progressModel.setAsViewed(this.model);
 
-				//e.preventDefault();
 			}
 		});
 
@@ -1178,7 +1170,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
 				this.collection = contentsCollection.getExercises();
 
-				console.warn(this.collection);
 			},
 			loadExerciseDetails : function(model) {*/
 				/*
@@ -1533,8 +1524,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				// CREATE NEW ONES
 				
 				// UPDATE THE SERVER TO RECEIVE NEW VARS
-				console.warn(this.current);
-
 				$.ajax(
 					"/module/content/set-pointer",
 					{
@@ -1728,7 +1717,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getCurrentContents : function(type) {
 				if (_.isNull(this.contents)) {
 					var unit = this.getCurrentUnit();
-					console.warn(unit);
 					this.contents = new mod.collections.contents(unit.get("contents"));
 				}
 
@@ -1937,7 +1925,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	mod.on("start", function() {
 		//var userSettingsModel = new userSettingsModelClass();
 		//
-		//console.warn($SC.getResource("content_widget_current"));
 		var contentInfo = $SC.getResource("content_widget_data");
 
 		mod.programsCollection = new this.collections.programs({
@@ -1945,13 +1932,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		mod.programsCollection.reset(contentInfo.tree);
-		/*
-		contentCollection.each(function(a,b) {
-			console.warn(a, a.get("courses.1"),b);
-		})
-		*/
+
 		//for(var i in contentCollection)
-		//console.warn(contentCollection.toJSON());
 
 		//this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 
