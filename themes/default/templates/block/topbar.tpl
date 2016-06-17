@@ -30,8 +30,6 @@
 		{*$T_TOPBAR_MENU|@json_encode*}
 		<ul class="nav navbar-nav pull-right">
 
-
-
 			{foreach $T_TOPBAR_MENU as $key => $item}
 				{if $item.type == "mega"}
 					{if $item.items|count > 0 } 
@@ -232,6 +230,7 @@
 				</li>
 		        {/if}
 		   	{/foreach}
+		   	<!--
 		   	<li class="menu-item">
 				<a href="" class="menu-link" data-toggle="modal" data-target=".bs-example-modal-lg">
 					<i class="fa fa-search"></i>
@@ -248,6 +247,7 @@
 			    	</div>
 			  	</div>
 			</div>
+			-->
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
