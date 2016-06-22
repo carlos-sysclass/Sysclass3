@@ -2092,3 +2092,7 @@ a.list-group-item,
 .login .content p.form-control {
 	color: #fff;  
 }
+
+.header .navbar-nav > li.dropdown .fa.fa-user {
+	width: 12px !important;
+}

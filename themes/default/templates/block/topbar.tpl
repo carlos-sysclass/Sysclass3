@@ -316,8 +316,9 @@
 		   <!-- END TODO DROPDOWN -->
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 		   {* MOVE TO MENU SYSTEM *}
-			<li class="dropdown user">
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+					<i class="fa fa-user visible-xs"></i>
 					{if ({$T_CURRENT_USER.avatars[0].url})}
 						<div class="avatar-img vertical-align hidden-xs">
 							{if ({$T_CURRENT_USER.avatars[0].url})}
@@ -328,7 +329,6 @@
 						</div>
 					{/if}
 					<span class="username">{$T_CURRENT_USER.name}</span>
-					<!--<i class="icon-angle-down"></i>-->
 				</a>
 				<ul class="dropdown-menu">
 					<li>
