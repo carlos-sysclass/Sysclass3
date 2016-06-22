@@ -272,7 +272,7 @@ $di->setShared('environment', function() use ($di) {
 		'fullcalendar' => array(
 			'name'	=> 'fullcalendar',
 			'css'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar'),
-			'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar')
+			'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar', 'plugins/fullcalendar/fullcalendar/lang-all')
 		),
 		'bootstrap-editable' => array(
 			'name'	=> 'bootstrap-editable',
