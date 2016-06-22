@@ -187,7 +187,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
+     * @Post("/item/me");
      */
     public function addItemAction($id)
     {

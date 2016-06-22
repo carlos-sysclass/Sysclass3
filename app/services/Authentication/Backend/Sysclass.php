@@ -11,13 +11,19 @@ class Sysclass extends Component implements IAuthentication
 {
     public function login($info, $options = null)
     {
+        $options = is_null($options) ? array() : $options;
+
         if ($info instanceof User) {
             $user = $info;
             $password = @isset($options['password']) ? $options['password'] : null;
             $secret_key = @isset($options['secret_key']) ? $options['secret_key'] : null;
         } else {
             if (array_key_exists('login', $info)) {
-                $user = User::findFirstByLogin($info['login']);
+                if (array_key_exists('isEmail', $options) && $options['isEmail']) {
+                    $user = User::findFirstByEmail($info['login']);
+                } else {
+                    $user = User::findFirstByLogin($info['login']);
+                }
             } elseif (array_key_exists('id', $info)) {
                 $user = User::findFirstById($info['id']);
             }

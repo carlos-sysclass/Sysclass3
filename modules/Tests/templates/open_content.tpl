@@ -45,7 +45,7 @@
                     <div class="caption">
                         <i class="fa fa-list-ol"></i>
                         <span class="hidden-480">
-                        Test Details </span>
+                        {translateToken value="Test Details"} </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -114,7 +114,7 @@
                     <div class="caption">
                         <i class="fa fa-user"></i>
                         <span class="hidden-480">
-                        Your last execution </span>
+                         {translateToken value="Your last execution"} </span>
                     </div>
                 </div>
                 <div class="portlet-body">

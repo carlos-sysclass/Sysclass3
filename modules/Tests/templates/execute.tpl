@@ -76,7 +76,7 @@
         </div>
         {if $T_EXECUTION.pending == 1}
             <div class="form-actions nobg">
-                <button class="btn btn-success finish-test-action" type="button">{translateToken value="Save Changes"}</button>
+                <button class="btn btn-success finish-test-action" type="button">{translateToken value="Complete Test"}</button>
             </div>
         {/if}
     </form>
