@@ -727,7 +727,7 @@ _before_init_functions.push(function() {
 	} 
 	%>
 	<td class="text-center"><%= model.id %></td>
-	<td><a href="javascript:void(0)" class="test-change-action"><%= model.name %></a></td>
+	<td><a href="javascript:void(0)" class="view-test-action"><%= model.name %></a></td>
 	<td class="text-center"><%= total_questions %></td>
 	<td class="text-center">
 		<% if (_.has(model, 'test')) { %>

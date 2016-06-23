@@ -249,12 +249,19 @@ class LoginController extends \AbstractSysclassController
 		// DEFINE AUTHENTICATION BACKEND
 
 		//$authBackend = $di->get("authentication")->getBackend($data['login']);
-		//
+		
+
+
 		try {
+			$is_email = filter_var($data['login'], FILTER_VALIDATE_EMAIL);
+
 			$user = $di->get("authentication")->login(
 				array(
 					'login' => $data['login'],
 					'password' => $data['password']
+				),
+				array(
+					'isEmail' => (bool)$is_email
 				)
 			);
 
@@ -457,6 +464,8 @@ class LoginController extends \AbstractSysclassController
 
 					$this->putScript("plugins/bigvideo/bigvideo");
 					$this->putScript("scripts/pages/reset");
+
+					$this->putItem('is_confirmation', true);
 
 					$this->putItem('form_action', "/confirm/{$hash}");
 					$this->putItem('user', $di->get("user")->toArray());

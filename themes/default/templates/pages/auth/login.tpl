@@ -28,10 +28,10 @@
 
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login or Email"}</label>
 				<div class="input-icon">
 					<i class="ti-user"></i>
-					<input type="text" id="login" name="login" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control" data-rule-required="true">
+					<input type="text" id="login" name="login" placeholder="{translateToken value="Login or Email"}" autocomplete="off" class="form-control" data-rule-required="true">
 				</div>
 			</div>
 			<div class="form-group">

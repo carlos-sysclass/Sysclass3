@@ -63,7 +63,12 @@
 			<div class="form-actions nobg">
 				<button class="btn btn-primary pull-right" type="submit">
 					<i class="m-icon-swapup m-icon-white"></i>
-					{translateToken value="Reset my Pass"}
+					{if ($T_IS_CONFIRMATION)}
+						{translateToken value="Define my password"}
+					{else}
+						{translateToken value="Reset my Pass"}
+					{/if}
+
 				</button>
 			</div>
 		</form>
