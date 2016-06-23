@@ -83,9 +83,15 @@
                             <i class="fa fa-lg fa-repeat text-primary "></i>
                             {translateToken value="Repetition Limit"}:
                         </span>
+                        {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
                             {$T_TEST.executions|@count}/{$T_TEST.test.test_repetition}
                         </strong>
+                        {else}
+                        <strong class="text-primary pull-right">
+                            {translateToken value="No repetition limit"}
+                        </strong>
+                        {/if}                        
                     </p>
                     <hr />
                     <p class="">
@@ -93,7 +99,7 @@
                             <i class="fa fa-lg fa-graduation-cap text-primary"></i>
                             {translateToken value="Maximum Score"}:
                         </span>
-                        <strong class="text-primary pull-right">{$T_TEST.test.score}</strong>
+                        <strong class="text-primary pull-right">{$T_TEST.score}</strong>
                     </p>
                 </div>
             </div>

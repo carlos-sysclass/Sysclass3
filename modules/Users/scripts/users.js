@@ -27,7 +27,11 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	this.listenTo(this.statsModel, "sync", this.injectCourseDetails.bind(this));
 
 	    	//this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
-	    	this.statsModel.set("id", this.model.get("course_id"));
+
+	    	var user_pointer = app.getResource("user_pointer");
+	    	console.warn(user_pointer);
+
+	    	this.statsModel.set("id", user_pointer.program_id);
 
 	    	this.statsModel.fetch();
 

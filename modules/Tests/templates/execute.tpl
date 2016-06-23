@@ -87,7 +87,10 @@
                 {translateToken value="# Try"}:
             </span>
             <strong class="text-primary pull-right">
-                <span class="text-try-index-text">{$T_TEST.executions|@count}</span> / {$T_TEST.test.test_repetition}
+                <span class="text-try-index-text">{$T_TEST.executions|@count}</span> 
+                {if $T_TEST.test.test_repetition > 0}
+                / {$T_TEST.test.test_repetition}
+                {/if}
             </strong>
         </li>
         <li>
@@ -106,6 +109,20 @@
                 {$T_TEST.score} {translateToken value="points"}
             </strong>
         </li>
+        {if $T_EXECUTION.pending == 0}
+        <li>
+            <span class="pull-left">
+                <i class="fa fa-lg fa-graduation-cap text-default"></i>
+                {translateToken value="Your Score"}:
+            </span>
+            <strong class="text-primary pull-right">
+                <span class="label label-primary">{$T_EXECUTION.user_grade}</span>
+                <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
+            </strong>
+        </li>
+        {$T_EXECUTION|json_encode}
+        {/if}
+
         {if $T_TEST.time_limit > 0}
            <li>
                 <span class="pull-left">

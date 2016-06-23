@@ -27,7 +27,7 @@ class Question extends Model
     }
 
     public function toArray() {
-    	$this->options = json_decode($this->options);
+    	$this->options = json_decode($this->options, true);
         return $this->toFullArray(array(
             'Departament',
             'Type',

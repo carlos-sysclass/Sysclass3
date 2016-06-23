@@ -29,8 +29,10 @@ class Progress extends Model
     }
 
     public function afterSave() {
-        $evManager = $this->getDI()->get("eventsManager");
-        $evManager->fire("unit:progress", $this, $this->toArray());
+        //$evManager = $this->getDI()->get("eventsManager");
+        //$evManager->fire("unit:progress", $this, $this->toArray());
+
+        $this->updateProgress();
     }
 
     public function updateProgress() {
@@ -42,6 +44,13 @@ class Progress extends Model
             'conditions' => 'user_id = ?0 AND lesson_id = ?1',
             'bind' => array($this->user_id, $content->lesson_id)
         ));
+
+        if (!$lessonProgress) {
+            $lessonProgress = new ClasseProgress();
+            $lessonProgress->user_id = $this->user_id;
+            $lessonProgress->lesson_id = $content->lesson_id;
+            $lessonProgress->save();
+        }
 
         $messages = $lessonProgress->updateProgress();
 

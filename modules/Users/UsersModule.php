@@ -8,6 +8,7 @@ use Phalcon\DI,
     Sysclass\Models\Users\Group,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\I18n\Language,
+    Sysclass\Models\Content\Unit,
     Sysclass\Services\I18n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\UserPasswordRequest,
@@ -190,6 +191,17 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				->sortModules("users.overview.notification.order", $data['notification']);
 
 			$this->putModuleScript("users");
+
+                
+            $userPointers = $userPointers = Unit::getContentPointers();
+
+
+            $data['pointer'] = array(
+                'program_id'    => $userPointers['program']->id,
+                'course_id'     => $userPointers['course']->id,
+                'unit_id'       => $userPointers['unit']->id,
+                'content_id'    => $userPointers['content']->id
+            );
 
 			return array(
 				'users.overview' => array(

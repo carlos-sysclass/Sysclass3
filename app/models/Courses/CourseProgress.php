@@ -20,17 +20,35 @@ class CourseProgress extends Model
         // GET RELATED UNIT, AND CALL AN UPDATE
         // CALCULATE BASED ON CONTENTS
         $manager = $this->getDI()->get("modelsManager");
+        /*
         $phql = "SELECT AVG(factor) as factor
             FROM Sysclass\\Models\\Courses\\ClasseProgress
             WHERE class_id IN (
                 SELECT CourseClasses.class_id FROM Sysclass\Models\Courses\CourseClasses as CourseClasses WHERE course_id = ?0
             )
         ";
+        */
+
+        $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
+            FROM Sysclass\\Models\\Courses\\Classe as c
+            LEFT JOIN Sysclass\\Models\\Courses\\ClasseProgress as cp
+                ON (c.id = cp.class_id)
+            WHERE class_id IN (
+                SELECT CourseClasses.class_id FROM Sysclass\Models\Courses\CourseClasses as CourseClasses WHERE CourseClasses.course_id = ?0
+            )
+            AND (cp.user_id = ?1 OR cp.user_id IS NULL)
+        ";
+
 
         $log = array();
 
-        $data = $manager->executeQuery($phql, array($this->course_id));
+        $data = $manager->executeQuery($phql, array($this->course_id, $this->user_id));
+
         $this->factor = $data[0]->factor;
+
+        if ($this->factor == 1) {
+            $this->completed = 1;
+        }
         
         if ($this->save()) {
             $log[] = array(
@@ -38,6 +56,8 @@ class CourseProgress extends Model
                 'message' => sprintf('Progress for Course #%s for user #%s updated.', $this->course_id, $this->user_id),
                 'status' => true
             );
+
+
         } else {
             $log[] = array(
                 'type' => 'error',

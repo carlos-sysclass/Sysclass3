@@ -270,7 +270,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             echo "</pre>";
             */
            
-            $testData['score'] = $testModel->calculateTestScore($testData);
+            $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
+
             // LOAD USER PROGRESS ON THIS TEST
             
             $executions = TestExecution::find(array(
@@ -331,19 +332,61 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         //
         if ($userData = $this->getCurrentUser()) {
             // START PROGRESS
+
+            $testModel = TestLesson::findFirstById($identifier);
+
+            $testData = $testModel->toArray();
+
+            $testData['test'] = $testModel->getTest()->toArray();
+            //$testData['questions'] = $testModel->getQuestions()->toArray();
+            $testQuestions = $testModel->getTestQuestions();
+
+            $testData['questions'] = array();
+
+            foreach($testQuestions as $i => $question) {
+                $testData['questions'][$i] = $question->toArray();
+                $testData['questions'][$i]['question'] = $question->getQuestion()->toArray();
+            }
+
+            //$testData = $this->model("roadmap/tests")->getItem($identifier);
+            
+            // echo "<pre>";
+            // print_r($testData);
+            // echo "</pre>";
+            
+           //exit;
+            $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
+
+            // LOAD USER PROGRESS ON THIS TEST
+            
+            $executions = TestExecution::find(array(
+                'conditions' => 'test_id = ?0 AND pending = 0 AND user_id = ?1',
+                'bind' => array($identifier, $this->user->id)
+            ));
+
+
+            $testData['executions'] = $executions->toArray();
+
+            /*            
             $testData = $this->model("roadmap/tests")->getItem($identifier);
 
-            $executionModel = $this->model("tests/execution");
+            var_dump($testData);
+            exit;
+
+            
 
             $testData['executions'] = $executionModel->addFilter(array(
                 'test_id' => $identifier,
                 'user_id' => $userData['id']
             ))->getItems();
+            */
+
+            $executionModel = $this->model("tests/execution");
 
             // PREPARE TEST TO EXECUTE
             $executionId = $executionModel->addItem(array(
                 'test_id' => $identifier,
-                'user_id' => $userData['id']
+                'user_id' => $this->user->id
             ));
 
 
