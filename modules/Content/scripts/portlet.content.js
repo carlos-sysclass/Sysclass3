@@ -242,35 +242,35 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function() {
 				this.$(".entity-count")
-					.html(this.collection.size());
+					.html(this.collection().size());
 					//cnsole.warn(this.$(".entity-current"), this.pointer);
 				this.$(".entity-current")
-					.html(this.pointer + 1);
+					.html(this.pointer() + 1);
 			},
 			prevItem : function(e) {
 				console.info('portlet.content/navigationViewClass::prevItem');
-				this.pointer--;
+				//this.pointer--;
 
 				e.preventDefault();
 
-				this.collection.prev();
+				this.collection().prev();
 
-				if (this.pointer <= 0) {
-					this.pointer = 0;
+				if (this.pointer() <= 0) {
+					//this.pointer = 0;
 					this.$(".nav-prev-action").addClass("btn-disabled");
 				}
 				this.render();
 			},
 			nextItem : function(e) {
 				console.info('portlet.content/navigationViewClass::nextItem');
-				this.pointer++;
+				//this.pointer++;
 
 				e.preventDefault();
 
-				this.collection.next();
+				this.collection().next();
 
-				if (this.pointer >= this.collection.size()) {
-					this.pointer = this.collection.size() - 1;
+				if (this.pointer() >= this.collection().size()) {
+					//this.pointer = this.collection.size() - 1;
 					this.$(".nav-next-action").addClass("btn-disabled");
 				}
 				this.render();
@@ -382,8 +382,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				// TODO CREATE SUB VIEWS!!
 				this.navigationView 	= new navigationViewClass({
 					el : this.$(".navbar-lesson"),
-					collection : mod.programsCollection.getCurrentPrograms(),
-					pointer : mod.programsCollection.getProgramIndex()
+					collection : mod.programsCollection.getCurrentPrograms.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getProgramIndex.bind(mod.programsCollection)
 				});
 				this.navigationView.render();
 
@@ -705,11 +705,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				// TODO CREATE SUB VIEWS!!
 				this.navigationView 	= new navigationViewClass({
 					el : this.$(".navbar-lesson"),
-					collection : mod.programsCollection.getCurrentCourses(),
-					pointer : mod.programsCollection.getCourseIndex()
+					collection : mod.programsCollection.getCurrentCourses.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getCourseIndex.bind(mod.programsCollection)
 				});
-
+				/*
+				this.listenTo(mod.programsCollection, "course.changed", function() {
+					this.navigationView.pointer = mod.programsCollection.getCourseIndex();
+					this.navigationView.render();
+				});
+				*/
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
+
+
 				this.courseInfoTabView = new courseInfoTabViewClass({
 					el : this.$("#tab_course_info"),
 					model : this.model
@@ -916,15 +923,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				// TODO CREATE SUB VIEWS!!
 				this.navigationView 	= new navigationViewClass({
 					el : this.$(".navbar-lesson"),
-					collection : mod.programsCollection.getCurrentUnits(),
-					pointer : mod.programsCollection.getUnitIndex()
+					collection : mod.programsCollection.getCurrentUnits.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getUnitIndex.bind(mod.programsCollection)
 				});
 
 				this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
-				
 
 				// TODO CREATE SUB VIEWS!!
-				//
 				this.unitVideoTabView 	= new unitVideoTabViewClass({
 					el : this.$("#tab_unit_video"),
 					model : this.model,
@@ -945,22 +950,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                 	portlet : this.$el
 				});
 				*/
-
 				this.blockUi('No Unit Selected');
-
 			},
 			render : function(e) {
 				console.info('portlet.content/unitTabViewClass::render');
 				this.unBlockUi();
 
-
 				this.navigationView.render();
-
 				this.unitVideoTabView.render();
 				this.unitMaterialsTabView.render();
 				
 				var factor = this.model.get("progress.factor");
-				console.warn(this.model.get("progress.factor"));
+
 				if (factor >= 1) {
 					this.$(".viewed-status").removeClass("hidden");
 				} else {
@@ -1001,7 +1002,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.disableView();
 				} else {
 					this.enableView();
-					this.videoModel = videos.getMainVideo();
+					this.videoModel = mod.programsCollection.getCurrentContents().getMainVideo(videos.at(0));
+
+					console.warn(this.videoModel);
 
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
@@ -1123,116 +1126,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return mod.programsCollection.getCurrentContents('material');
 			}
 		});
-
-		/*
-		var unitExercisesTabViewItemClass = parent.blockViewItemClass.extend({
-			events : {
-				"click .open-exercise-action" : "openDialog"
-			},
-			tagName : "tr",
-			dialogExercisesModule : app.module("dialogs.exercises"),
-			//nofoundTemplate : _.template($("#tab_lesson_exercises-nofound-template").html()),
-			template : _.template($("#tab_lesson_exercises-item-template").html(), null, {variable : 'model'}),
-			//childViewClass : lessonExercisesTabViewItemQuestionClass,
-			openExercise : function(e) {
-				this.parent.loadExerciseDetails(this.model);
-			},
-            openDialog : function() {
-                if (!this.dialogExercisesModule.started) {
-                    this.dialogExercisesModule.start();
-
-                    this.listenTo(
-                    	this.dialogExercisesModule.getView(),
-                    	"complete:save",
-                    	function() {
-                    		this.dialogExercisesModule.close();
-                    	}.bind(this)
-                    );
-                }
-                
-                this.dialogExercisesModule.setInfo({
-                	model : this.model
-                });
-
-                this.dialogExercisesModule.open();
-            },
-		});
-		*/
-
-
-		/*var lessonExercisesTabViewClass = parent.blockViewClass.extend({
-			nofoundTemplate : _.template($("#tab_lesson_exercises-nofound-template").html()),
-			childViewClass : lessonExercisesTabViewItemClass,
-			childContainer : "table tbody",
-			//exerciseTemplate : _.template($("#tab_lesson_exercises-details-template").html(), null, {variable: "model"}),
-			onBeforeRender : function(e) {
-				console.info('portlet.content/lessonExercisesTabViewClass::onBeforeRender');
-				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
-				this.collection = contentsCollection.getExercises();
-
-			},
-			loadExerciseDetails : function(model) {*/
-				/*
-				var self = this;
-
-				this.$(".exercises-container").html(
-					this.exerciseTemplate(model.toJSON())
-				);
-
-				_.each(model.get("exercise"), function(data, index) {
-					var innermodel = new mod.models.questions(data);
-
-					var questionView = new lessonExercisesQuestionItemClass({
-						model : innermodel,
-						model_index : index
-					});
-					this.$(".question-container").append(questionView.render().el);
-				}.bind(this));
-
-				app.module("ui").refresh(this.$(".exercises-container"));
-				*/
-			//}
-		//});
-
-		/*
-		var classDropboxTabViewClass = Backbone.View.extend({
-			//portlet: $('#courses-widget'),
-			//template: _.template($('#courses-content-materials-template').html()),
-			initialize: function() {
-				//this.$el.empty();
-				console.info('portlet.content/contentMaterialsViewClass::initialize');
-				//this.listenTo(this.model, 'sync', this.render.bind(this));
-
-				this.render();
-			},
-			render : function() {
-				console.info('portlet.content/contentMaterialsViewClass::render');
-
-				//var entityData = this.model.get("data");
-				//var sources = entityData['sources'];
-				//if (typeof sources['materials'] != undefined) {
-					var fileTreeCollectionClass = app.module("models.courses").fileTreeCollectionClass;
-					// GET HERE SEND AND RECEIVED FILES FROM DROPBOX, BASED ON THIS CLASS
-					this.fileTree = new fileTreeCollectionClass({source: "/module/courses/materials/list/47/188/4297"});
-					//this.fileTree.fetch();
-				//} else {
-
-				//}
-	            this.$('.tree-professor').tree({
-	                selectable: false,
-	                dataSource: this.fileTree,
-	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
-	            });
-	            this.$('.tree-student').tree({
-	                selectable: false,
-	                dataSource: this.fileTree,
-	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
-	            });
-
-	            return this;
-			}
-		});
-		*/
 
 		var overallProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),
@@ -1472,8 +1365,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			isImage : function() {
 				return /^image\/.*$/.test(this.get("file.type"));
 			},
+			isSubtitle : function() {
+				return this.get("content_type") == "subtitle";
+			},
 			isMaterial : function() {
-				return !this.isVideo() && !this.isAudio() && !this.isImage();
+				return !this.isVideo() && !this.isSubtitle() && !this.isAudio() && !this.isImage();
 			}
 		}),
 		content_progress : baseModel.extend({
@@ -1656,6 +1552,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.current.unit_id = unit_id;
 					this.updateUnitIndex();
 
+					unitIndex = this.getCurrentUnits().indexOf(model);
+
 					this.trigger("unit.changed", model, unitIndex);
 				}
 			},
@@ -1744,32 +1642,38 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		}),
 		contents : navigableCollection.extend({
 			model : this.models.content,
-			getMainVideo : function() {
-				var filteredCollection = this.where({
-					content_type : "file"
-				});
-
-				var filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-					return model.isVideo();
-				});
-
-				if (_.size(filteredVideoCollection) === 0) {
-					filteredCollection = this.where({
-						content_type : "url"
+			getMainVideo : function(videoModel) {
+				var mainVideo = null;				
+				if (_.isUndefined(videoModel)) {
+					var filteredCollection = this.where({
+						content_type : "file"
 					});
-					filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-						return model.isRemoteVideo();
+
+					var filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
+						return model.isVideo();
 					});
+
 					if (_.size(filteredVideoCollection) === 0) {
-						return false;
+						filteredCollection = this.where({
+							content_type : "url"
+						});
+						filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
+							return model.isRemoteVideo();
+						});
+						if (_.size(filteredVideoCollection) === 0) {
+							return false;
+						}
 					}
-				}
 
-				var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
+					var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
 
-				if (_.size(mainVideo) === 0) {
-					mainVideo = _.first(filteredVideoCollection);
+					if (_.size(mainVideo) === 0) {
+						mainVideo = _.first(filteredVideoCollection);
+					}
+				} else {
+					mainVideo = videoModel;
 				}
+				
 
 				// GET CHILDS OBJECTS
 				var poster = _.map(
@@ -1783,7 +1687,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				);
 
 				if (_.size(poster) > 0) {
-
 					mainVideo.set("poster", _.first(poster));
 				}
 
