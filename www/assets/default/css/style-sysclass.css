@@ -684,22 +684,22 @@ label {
   font-size: 14px;
 }
 .login .form-control:-moz-placeholder {
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
   font-size: 11px;
 }
 .login .form-control::-moz-placeholder {
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
   font-size: 11px;
 }
 .login .form-control:-ms-input-placeholder {
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
   font-size: 11px;
 }
 .login .form-control::-webkit-input-placeholder {
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
   font-size: 11px;
 }
@@ -707,9 +707,9 @@ label {
   font-size: 12px;
   font-weight: lighter;
   letter-spacing: 0.2px;
-  color: #fff;
+  color: #000;
   background-color: transparent;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #000;
   border-left: none !important;
   border-right: none;
   border-top: none;
@@ -720,7 +720,7 @@ label {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .login .form-control:focus {
-  border-color: #00eaff;
+  border-color: #999;
   outline: 0;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
