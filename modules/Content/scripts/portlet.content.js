@@ -927,14 +927,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					pointer : mod.programsCollection.getUnitIndex.bind(mod.programsCollection)
 				});
 
-				this.listenTo(mod.programsCollection, "unit.changed", function(a,b,c) {
-					console.warn(a,b,c);
-				});
 				this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
-				
 
 				// TODO CREATE SUB VIEWS!!
-				//
 				this.unitVideoTabView 	= new unitVideoTabViewClass({
 					el : this.$("#tab_unit_video"),
 					model : this.model,
@@ -1007,7 +1002,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.disableView();
 				} else {
 					this.enableView();
-					this.videoModel = videos.getMainVideo();
+					this.videoModel = mod.programsCollection.getCurrentContents().getMainVideo(videos.at(0));
+
+					console.warn(this.videoModel);
 
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
@@ -1368,8 +1365,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			isImage : function() {
 				return /^image\/.*$/.test(this.get("file.type"));
 			},
+			isSubtitle : function() {
+				return this.get("content_type") == "subtitle";
+			},
 			isMaterial : function() {
-				return !this.isVideo() && !this.isAudio() && !this.isImage();
+				return !this.isVideo() && !this.isSubtitle() && !this.isAudio() && !this.isImage();
 			}
 		}),
 		content_progress : baseModel.extend({
@@ -1642,32 +1642,38 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		}),
 		contents : navigableCollection.extend({
 			model : this.models.content,
-			getMainVideo : function() {
-				var filteredCollection = this.where({
-					content_type : "file"
-				});
-
-				var filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-					return model.isVideo();
-				});
-
-				if (_.size(filteredVideoCollection) === 0) {
-					filteredCollection = this.where({
-						content_type : "url"
+			getMainVideo : function(videoModel) {
+				var mainVideo = null;				
+				if (_.isUndefined(videoModel)) {
+					var filteredCollection = this.where({
+						content_type : "file"
 					});
-					filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-						return model.isRemoteVideo();
+
+					var filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
+						return model.isVideo();
 					});
+
 					if (_.size(filteredVideoCollection) === 0) {
-						return false;
+						filteredCollection = this.where({
+							content_type : "url"
+						});
+						filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
+							return model.isRemoteVideo();
+						});
+						if (_.size(filteredVideoCollection) === 0) {
+							return false;
+						}
 					}
-				}
 
-				var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
+					var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
 
-				if (_.size(mainVideo) === 0) {
-					mainVideo = _.first(filteredVideoCollection);
+					if (_.size(mainVideo) === 0) {
+						mainVideo = _.first(filteredVideoCollection);
+					}
+				} else {
+					mainVideo = videoModel;
 				}
+				
 
 				// GET CHILDS OBJECTS
 				var poster = _.map(
@@ -1681,7 +1687,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				);
 
 				if (_.size(poster) > 0) {
-
 					mainVideo.set("poster", _.first(poster));
 				}
 
