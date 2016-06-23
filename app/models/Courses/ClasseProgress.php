@@ -17,16 +17,18 @@ class ClasseProgress extends Model
         // GET RELATED UNIT, AND CALL AN UPDATE
         // CALCULATE BASED ON CONTENTS
         $manager = $this->getDI()->get("modelsManager");
-        $phql = "SELECT AVG(factor) as factor
-        	FROM Sysclass\\Models\\Courses\\LessonProgress
-        	WHERE lesson_id IN (
-        		SELECT Lesson.id FROM Sysclass\\Models\\Courses\\Lesson as Lesson WHERE class_id = ?0
-        	)
+        $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
+            FROM Sysclass\\Models\\Courses\\Lesson as l
+        	LEFT JOIN Sysclass\\Models\\Courses\\LessonProgress as lp
+                ON (l.id = lp.lesson_id)
+            WHERE l.class_id = ?0 
+                AND (lp.user_id = ?1 OR lp.user_id IS NULL)
         ";
 
         $log = array();
 
-        $data = $manager->executeQuery($phql, array($this->class_id));
+        $data = $manager->executeQuery($phql, array($this->class_id, $this->user_id));
+
         $this->factor = $data[0]->factor;
         
         if ($this->save()) {
@@ -60,6 +62,12 @@ class ClasseProgress extends Model
 	            'bind' => array($this->user_id, $program->id)
 	        ));
 
+            if (!$courseProgress) {
+                $courseProgress = new ProgramProgress();
+                $courseProgress->user_id = $this->user_id;
+                $courseProgress->course_id = $program->id;
+                $courseProgress->save();
+            }
 	        $course_log = array_merge($course_log, $courseProgress->updateProgress());
         }
 

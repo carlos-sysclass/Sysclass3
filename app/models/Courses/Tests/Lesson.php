@@ -20,6 +20,13 @@ class Lesson extends BaseLesson
             array('alias' => 'Test')
         );
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\TestQuestions",
+            "lesson_id", 
+            array('alias' => 'TestQuestions')
+        );
+
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
@@ -89,14 +96,7 @@ class Lesson extends BaseLesson
     }
 
     public function calculateTestScore() {
-        $questions = $this->getQuestions();
-        /*
-        if (!array_key_exists('questions', $testData)) {
-            $testData['questions'] = $this->model("tests/question")->addFilter(array(
-                'lesson_id' => $testData['id']
-            ))->getItems();
-        }
-        */
+        $questions = $this->getTestQuestions();
         $testScore = 0;
         foreach($questions as $question) {
             $testScore += $question->points * $question->weight;
