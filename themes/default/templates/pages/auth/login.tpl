@@ -126,11 +126,10 @@
 				</div>
 			</div>
 			<div class="form-actions">
-				<button type="button" id="back-btn" class="btn btn-default">
-					<i class="m-icon-swapleft"></i> {translateToken value="Back"}
+				<button type="button" id="back-btn" class="btn btn-default pull-right">
+					<i class="ti-arrow-left"></i> {translateToken value="Back"}
 				</button>
-				<button type="submit" class="btn green pull-right">
-					{translateToken value="Submit"} <i class="m-icon-swapright m-icon-white"></i>
+				<button type="submit" class="btn green pull-right" value="Submit" ><i class="ti-arrow-right"></i>{translateToken value="Submit"}
 				</button>
 			</div>
 		</form>
