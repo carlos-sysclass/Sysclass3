@@ -249,12 +249,19 @@ class LoginController extends \AbstractSysclassController
 		// DEFINE AUTHENTICATION BACKEND
 
 		//$authBackend = $di->get("authentication")->getBackend($data['login']);
-		//
+		
+
+
 		try {
+			$is_email = filter_var($data['login'], FILTER_VALIDATE_EMAIL);
+
 			$user = $di->get("authentication")->login(
 				array(
 					'login' => $data['login'],
 					'password' => $data['password']
+				),
+				array(
+					'isEmail' => (bool)$is_email
 				)
 			);
 
@@ -458,6 +465,8 @@ class LoginController extends \AbstractSysclassController
 					$this->putScript("plugins/bigvideo/bigvideo");
 					$this->putScript("scripts/pages/reset");
 
+					$this->putItem('is_confirmation', true);
+
 					$this->putItem('form_action', "/confirm/{$hash}");
 					$this->putItem('user', $di->get("user")->toArray());
 
@@ -619,6 +628,8 @@ class LoginController extends \AbstractSysclassController
 
 	            if ($passwordRequest) {
 	            	$user = $passwordRequest->getUser();
+
+	            	$this->putItem("user", $user->toArray());
 	            	//Date
 	            	//
 	            	$valid_until = new \DateTime($passwordRequest->valid_until);
@@ -707,6 +718,8 @@ class LoginController extends \AbstractSysclassController
 
 			$user = $passwordRequest->getUser();
 
+			$postData = $this->request->getPost();
+
 			if ($postData['password'] === $postData['password-confirm']) {
 				$user->password = $this->authentication->hashPassword($postData['password'], $user);
 
@@ -718,7 +731,11 @@ class LoginController extends \AbstractSysclassController
 					$message = $this->translate->translate("Password updated with success! Please enter you login details below.");
 	            	$message_type = 'success';
 
+	            	$this->redirect("/login", $message, $message_type);
+
+
 					// USER IS LOGGED IN, SO...
+					/*
 					$di->get("authentication")->login($user, array('disableBackends' => true));
 					// 1.6 Check for license agreement
 					if ($user->viewed_license == 0) {
@@ -726,6 +743,7 @@ class LoginController extends \AbstractSysclassController
 					} else {
 						$this->redirect("/dashboard", $message, $message_type);
 					}
+					*/
 				}
 			} else {
 				$di->get("authentication")->logout($user);
@@ -822,7 +840,7 @@ class LoginController extends \AbstractSysclassController
 		if ($user) {
 			$this->putItem("LOGGED_USER", $user->toFullArray(array("Avatars")));
 
-			$this->putCss("css/pages/lock");
+			$this->putCss("css/pages/lock"); 
 			$this->putScript("scripts/lock");
 			parent::display('pages/auth/lock.tpl');
 		} else {

@@ -118,9 +118,9 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="How many times the user can have the test?"}
+			                            {translateToken value="How many times the user can have the test? Leave '0' (zero) for unlimited times"}
 			                        </label>
-			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="1" data-rule-max="10" />
+			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
 			                </div>
 			            </div>

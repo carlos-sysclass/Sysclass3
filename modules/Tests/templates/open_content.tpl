@@ -45,7 +45,7 @@
                     <div class="caption">
                         <i class="fa fa-list-ol"></i>
                         <span class="hidden-480">
-                        Test Details </span>
+                        {translateToken value="Test Details"} </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -83,9 +83,15 @@
                             <i class="fa fa-lg fa-repeat text-primary "></i>
                             {translateToken value="Repetition Limit"}:
                         </span>
+                        {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
                             {$T_TEST.executions|@count}/{$T_TEST.test.test_repetition}
                         </strong>
+                        {else}
+                        <strong class="text-primary pull-right">
+                            {translateToken value="No repetition limit"}
+                        </strong>
+                        {/if}                        
                     </p>
                     <hr />
                     <p class="">
@@ -93,7 +99,7 @@
                             <i class="fa fa-lg fa-graduation-cap text-primary"></i>
                             {translateToken value="Maximum Score"}:
                         </span>
-                        <strong class="text-primary pull-right">{$T_TEST.test.score}</strong>
+                        <strong class="text-primary pull-right">{$T_TEST.score}</strong>
                     </p>
                 </div>
             </div>
@@ -114,7 +120,7 @@
                     <div class="caption">
                         <i class="fa fa-user"></i>
                         <span class="hidden-480">
-                        Your last execution </span>
+                         {translateToken value="Your last execution"} </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -123,7 +129,7 @@
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
                             {translateToken value="You Answered"}:
                         </span>
-                        <strong class="{$text_class} pull-right">{$last_try.total_questions_completed}</strong>
+                        <strong class="{$text_class} pull-right">{$last_try.answers|json_decode:true|array_filter:'strlen'|count}</strong>
                     </p>
                     <hr />
                     <p class="">

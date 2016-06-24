@@ -30,8 +30,6 @@
 		{*$T_TOPBAR_MENU|@json_encode*}
 		<ul class="nav navbar-nav pull-right">
 
-
-
 			{foreach $T_TOPBAR_MENU as $key => $item}
 				{if $item.type == "mega"}
 					{if $item.items|count > 0 } 
@@ -197,7 +195,7 @@
 		      		</ul>
 		      	</li>
 				{else}
-
+				
 				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
 					<a href="javascript:void(0);" 
 						{if $item.items}
@@ -232,6 +230,24 @@
 				</li>
 		        {/if}
 		   	{/foreach}
+		   	<!--
+		   	<li class="menu-item">
+				<a href="" class="menu-link" data-toggle="modal" data-target=".bs-example-modal-lg">
+					<i class="fa fa-search"></i>
+					<span class="hidden-xs">Buscar</span>
+				</a>
+			</li>
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			  	<div class="modal-dialog modal-lg">
+			    	<div class="modal-content">
+			    		<form action="" class="cs-search-all">
+			    			<input type="text" placeholder="Faça aqui a sua pesquisa">
+			    			<button class="btn btn-primary"><i class="fa fa-search"></i></button>
+			    		</form>
+			    	</div>
+			  	</div>
+			</div>
+			-->
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
@@ -300,8 +316,9 @@
 		   <!-- END TODO DROPDOWN -->
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 		   {* MOVE TO MENU SYSTEM *}
-			<li class="dropdown user">
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+					<i class="fa fa-user visible-xs"></i>
 					{if ({$T_CURRENT_USER.avatars[0].url})}
 						<div class="avatar-img vertical-align hidden-xs">
 							{if ({$T_CURRENT_USER.avatars[0].url})}
@@ -312,7 +329,6 @@
 						</div>
 					{/if}
 					<span class="username">{$T_CURRENT_USER.name}</span>
-					<i class="icon-angle-down"></i>
 				</a>
 				<ul class="dropdown-menu">
 					<li>

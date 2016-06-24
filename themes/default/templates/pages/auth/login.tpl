@@ -28,10 +28,10 @@
 
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login or Email"}</label>
 				<div class="input-icon">
 					<i class="ti-user"></i>
-					<input type="text" id="login" name="login" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control" data-rule-required="true">
+					<input type="text" id="login" name="login" placeholder="{translateToken value="Login or Email"}" autocomplete="off" class="form-control" data-rule-required="true">
 				</div>
 			</div>
 			<div class="form-group">
@@ -50,9 +50,11 @@
 					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
 						
 					</button>
+					{if	$T_CONFIGURATION.enable_facebook_login}
 					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" ><i class="ti-facebook"></i>acessar utilizando o facebook
 						
 					</button>
+					{/if}
 				</div>
 			</div>
 			{if
@@ -60,7 +62,7 @@
 				$T_CONFIGURATION.enable_linkedin_login ||
 				$T_CONFIGURATION.enable_googleplus_login
 			}
-			<div class="login-options">
+<!-- 			<div class="login-options">
 				<h4>Or login with</h4>
 				<ul class="social-icons">
 					{if $T_CONFIGURATION.enable_facebook_login}
@@ -84,7 +86,7 @@
 					{/if}
 				</ul>
 			</div>
-			{/if}
+ -->			{/if}
 			{if $T_CONFIGURATION.enable_forgot_form}
 			<div class="forget-password">
 				<!--<h4>{translateToken value="Forgot your password?"}</h4>-->
@@ -95,7 +97,7 @@
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
-						<a href="http://signup.{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Create an account"}</a>
+						<a href="https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Create an account"}</a>
 					</p>
 				</div>
 			{/if}
@@ -124,11 +126,10 @@
 				</div>
 			</div>
 			<div class="form-actions">
-				<button type="button" id="back-btn" class="btn btn-default">
-					<i class="m-icon-swapleft"></i> {translateToken value="Back"}
+				<button type="button" id="back-btn" class="btn btn-default pull-right">
+					<i class="ti-arrow-left"></i> {translateToken value="Back"}
 				</button>
-				<button type="submit" class="btn green pull-right">
-					{translateToken value="Submit"} <i class="m-icon-swapright m-icon-white"></i>
+				<button type="submit" class="btn green pull-right" value="Submit" ><i class="ti-arrow-right"></i>{translateToken value="Submit"}
 				</button>
 			</div>
 		</form>

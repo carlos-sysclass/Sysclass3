@@ -2,13 +2,22 @@
 	{assign var="notifications" value=$T_DATA.data.notification}
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
+
+{assign var="pointer" value=$T_DATA.data.pointer}
+
+<script>
+_before_init_functions.push(function() {
+    $SC.addResource("user_pointer", {$pointer|@json_encode nofilter});
+});
+</script>
+
 <div class="row">
-	<div class="col-md-4 col-lg-3 col-sm-3 hidden-xs" id="users-avatar">
+	<div class="col-md-4 col-lg-3 col-sm-3 hidden-xs" id="users-avatar" style="padding-right:0;">
 
 		{if ({$user_details.avatars[0].url})}
-			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="100%" alt="">
+			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="86%" alt="">
 		{else}
-			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="100%" alt="">
+			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="86%" alt="">
 		{/if}
 	
 	</div>

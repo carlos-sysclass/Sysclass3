@@ -533,7 +533,7 @@ Header and header elements.
 }
 
 .header .navbar-nav > li.dropdown.user .dropdown-toggle .username {
-  color: #ddd;
+  color: #fff;
 }
 
 .header .navbar-nav li.dropdown.user .dropdown-toggle i {
@@ -1306,12 +1306,12 @@ Input icons
 }
 
 
-.input-icon input {
+.input-icon input, .input-icon p.form-control-static {
    padding-left: 25px !important;
 }
 
 .input-icon i {
-  color: #fff;
+  color: #000;
   display: block;
   position: absolute;
   margin: 9px 2px 4px 1px;

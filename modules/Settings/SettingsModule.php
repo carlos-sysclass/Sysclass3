@@ -18,15 +18,17 @@ use Sysclass\Models\System\Settings as SystemSettings,
 class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkable
 {
     protected $legalValues = array(
+        'content_id',
+        'unit_id',
         'course_id',
-        'class_id',
-        'lesson_id'
+        'program_id'
     );
+    
     protected $defaults = array(
+        'content_id' => null,
+        'unit_id' => null,
         'course_id' => null,
-        'class_id' => null,
-        'lesson_id' => null,
-        'teste_execution_id' => null,
+        'program_id' => null,
         // @todo Create a hierachical method to get and save values
         // THIS IS NOT SAVED ON POST SETTINGS, BECAUSE THESE VALUES ARE NOT ON $this->legalValues ARRAY
         'js_date_fmt'   => 'mm/dd/yyyy',
