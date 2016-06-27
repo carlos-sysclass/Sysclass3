@@ -25,13 +25,12 @@ Login page
   /*background: linear-gradient(to bottom,  rgba(52,170,218,0.8) 0%,rgba(138,202,229,0.8) 25%,rgba(72,143,186,0.8) 51%,rgba(50,54,58,0.8) 100%); *//* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc34aada', endColorstr='#cc32363a',GradientType=0 );*/ /* IE6-9 */
 
-
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+100;White+3D */
   background: rgb(255,255,255); /* Old browsers */
-  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */  
+  background: -moz-linear-gradient(top, rgba(255,255,255,0.55) 0%, rgba(229,229,229,0.9) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0.55) 0%,rgba(255,255,255,0.9) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,0.55) 0%,rgba(255,255,255,0.9) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */  
 
   width: 293px;
   margin: 0 auto;
