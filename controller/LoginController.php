@@ -935,7 +935,7 @@ class LoginController extends \AbstractSysclassController
 			} else {
 				$this->redirect(
 					"login/reset",
-					$this->translate->translate('The system can\'t found the provided e-mail address.'),
+					$this->translate->translate('The system can\'t find the provided e-mail address.'),
 					'warning'
 				);
 			}
