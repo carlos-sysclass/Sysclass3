@@ -355,6 +355,15 @@ abstract class PhalconWrapperController extends Controller
 		return $this->createResponse(200, $message, $type, "advise");
 	}
 
+	protected function entryPointNotFoundError($redirect = null)
+	{
+		if (!is_null($redirect)) {
+			return $this->redirect($redirect, "Rota não encontrada", "error", 404);
+		}
+		return $this->createResponse(404, "Não encontrado", "error", "advise");
+	}
+
+
 
 	public function getHttpData($args)
 	{

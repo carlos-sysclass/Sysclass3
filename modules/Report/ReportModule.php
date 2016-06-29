@@ -4,9 +4,7 @@ namespace Sysclass\Modules\Report;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course,
-    Sysclass\Models\Enrollments\CourseUsers as Enrollment,
-    Sysclass\Models\Forms\Fields;
+use Sysclass\Models\Reports\Report;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -131,26 +129,6 @@ class ReportModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         }
     }
 
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/manage")
-     * @allow(resource=report, action=edit)
-     */
-
-    public function managePage($route)
-    {
-        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
-        //$this->createClientContext("manage");
-        if (!$this->createClientContext("manage")) {
-            $this->entryPointNotFoundError($this->getSystemUrl('home'));
-        }
-
-        $this->display($this->template);
-    }
-
-
     /* IBreadcrumbable */
     public function getBreadcrumb() {
         $breadcrumbs = array(
@@ -243,6 +221,94 @@ class ReportModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             );
         }
         return parent::getDatatableItemOptions();
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/manage")
+     * @allow(resource=report, action=edit)
+     */
+
+    public function managePage()
+    {
+        print_r($this->getConfig('reports'));
+        exit;
+        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
+        //$this->createClientContext("manage");
+        if (!$this->createClientContext("manage")) {
+            $this->entryPointNotFoundError($this->getSystemUrl('home'));
+        }
+
+        $this->display($this->template);
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/view/{identifier}")
+     * @allow(resource=report, action=view)
+     */
+
+    public function viewReportPage($identifier)
+    {
+
+        $report = Report::findFirstById($identifier);
+
+
+        if (!$report) {
+            $this->entryPointNotFoundError($this->getBasePath() . "manage");
+        }
+
+        $datasources = $this->getConfig('reports');
+
+        if (array_key_exists($report->datasource, $datasources)) {
+            $report_options = $report->mergeOptions($datasources[$report->datasource]);
+        } else {
+            $report_options = json_decode($report->options);
+        }
+
+        if (!is_array($report_options)) {
+            return $this->invalidRequestError();
+        }
+
+        // LOAD CONDITIONS, FILTER, AND FILEDS 
+        $context = array(
+            'datatable_fields' => array()
+        );
+        // GENERATE DATATABLE CONTEXT
+        foreach($report_options['fields'] as $field) {
+            $context['datatable_fields'][] = $report_options['datafields'][$field];
+        }
+
+        $this->report_id = $this->random->uuid(); 
+
+        $this->setCache("report_config/" . $this->report_id , $report_options);
+        $context['model-id'] = $this->report_id;
+        
+
+        $this->createClientContext("view", $context, 'view/{identifier}');
+        
+        $this->putItem('module_context', $context);
+
+        $this->display($this->template);
+    }
+
+    /**
+     * [ add a description ]
+     * 
+     * @Get("/items/{model}")
+     * @Get("/items/{model}/{type}")
+     * @Get("/items/{model}/{type}/{filter}")
+     */
+    public function getItemsRequest($model, $type, $filter) {
+        $cache = $this->getCache("report_config/" . $model);
+
+        if (is_null($cache)) {
+            return parent::getItemsRequest($model, $type, $filter);
+        } else {
+            return parent::getItemsRequest($cache['model'], $type, $filter, $cache['fields']);
+        }
     }
 
 }
