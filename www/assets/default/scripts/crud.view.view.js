@@ -3,16 +3,23 @@ $SC.module("crud.views.edit", function(mod, app, Backbone, Marionette, $, _) {
     this.module_id = this.config.module_id;
     this.route = this.config['route'];
     this.modelPrefix = this.config['model-prefix'];
+    this.modelId = this.config['model-id'];
 
 	// MODELS
 	mod.addInitializer(function() {
         //var tableViewClass = app.module("views").baseDatatableViewClass;
         var tableViewClass = $SC.module("utils.datatables").tableViewClass;
 
-        if (typeof this.modelPrefix == "undefined") {
-        	var sAjaxSource = "/module/" + this.module_id + "/items/me/datatable";
+        if (typeof this.modelId == "undefined") {
+            var model = "me";
         } else {
-        	var sAjaxSource = "/module/" + this.module_id + "/" + this.modelPrefix + "/items/me/datatable";
+            var model = this.modelId;
+        }
+
+        if (typeof this.modelPrefix == "undefined") {
+        	var sAjaxSource = "/module/" + this.module_id + "/items/" + model + "/datatable";
+        } else {
+        	var sAjaxSource = "/module/" + this.module_id + "/" + this.modelPrefix + "/items/" + model + "/datatable";
         }
 
         this.tableView = new tableViewClass({

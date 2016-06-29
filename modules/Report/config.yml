@@ -9,22 +9,60 @@ crud:
       page_title: Reports 
       # BASE VALUES.. USED ON ALL ROUTES
   routes:
+    'view/{identifier}':
+      components: ["validation", "select2","data-tables"]
+      template: view.tpl
     manage:
-      components: ["fullcalendar", "validation", "select2", "wysihtml5", "datepicker", "timepicker"]
-      base_scripts : ["plugins/fullcalendar/fullcalendar/gcal"]
-      scripts: ["views.manage"]
+      components: ["validation", "select2", "wysihtml5"]
+      #base_scripts : ["plugins/fullcalendar/fullcalendar/gcal"]
+      #scripts: ["views.manage"]
       template: manage.tpl
       variables:
         page_subtitle: View and manage system reports
-    "event-source/add":
-      components: ["validation", "wysihtml5"]
-      #blocks: ["messages.eventtypes.allow"]
-      template: event-source.tpl
-      #scripts: ["models.users", "views.users.add"]
-      variables:
-        page_subtitle: Create a new Event Source
 
 models:
   me: 
     class: Sysclass\Models\Enrollments\Enroll
     exportMethod: ["toExtendArray", ["EnrollFields"]]
+  users:
+    class: Sysclass\Models\Users\User
+    #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    #findMethod: findFirstById
+reports:
+  users:
+    model: users
+    fields: [name, surname, how_did_you_know]
+    datafields:
+      id:
+          mData: id
+          sClass: text-center
+          label: "#"
+      name:
+          mData: name
+          label: Name
+      surname:
+          mData: surname
+          label: Surname
+      login:
+          mData: login
+          label: Login
+      pending:
+          mData: pending
+          sType: table-boolean
+          sClass: text-center
+          label: Pending aproval
+      viewed_license:
+          mData: viewed_license
+          sType: table-boolean
+          sClass: text-center
+          label: License Viewed
+      active:
+          mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+      how_did_you_know: 
+          mData: how_did_you_know
+          sType: table-array
+          sClass: text-center
+          label: How did you know?

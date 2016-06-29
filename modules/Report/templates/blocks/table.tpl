@@ -14,6 +14,21 @@
             </tr>
         </thead>
         <tbody></tbody>
+        <!--
+        <tfoot>
+            <tr>
+                {foreach $T_MODULE_CONTEXT.datatable_fields as $field}
+                    <th class="{$field.sClass} {if isset($field.sType)}{$field.sType}{/if}">
+                        {if !isset($field.label)}
+                            {$field.mData}
+                        {else}
+                            {translateToken value=$field.label}
+                        {/if}
+                    </th>
+                {/foreach}
+            </tr>
+        </tfoot>
+        -->
     </table>
 </div>
 <script>
