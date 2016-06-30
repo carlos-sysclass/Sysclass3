@@ -48,7 +48,7 @@
                         {translateToken value="Test Details"} </span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body test-details">
 
                     <p class="">
                         <span>
@@ -101,6 +101,7 @@
                         </span>
                         <strong class="text-primary pull-right">{$T_TEST.score}</strong>
                     </p>
+                    <hr />
                 </div>
             </div>
         </div>
@@ -123,7 +124,7 @@
                          {translateToken value="Your last execution"} </span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body test-details">
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack {$text_class}"></i>

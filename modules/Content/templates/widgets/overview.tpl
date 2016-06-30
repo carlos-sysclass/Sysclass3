@@ -466,6 +466,9 @@ _before_init_functions.push(function() {
 							<li class="">
 								<a data-toggle="tab" href="#tab_unit_materials"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
 							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_unit_tests"><i class="fa fa-list-ol"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+							</li>
 							<!-- <li class="">
 								<a data-toggle="tab" href="#tab_unit_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
 							</li> -->
@@ -493,6 +496,8 @@ _before_init_functions.push(function() {
 										</tbody>
 									</table>
 								</div>
+							</div>
+							<div id="tab_unit_tests" class="tab-pane">
 							</div>
 							
 						    <!-- <div id="tab_unit_exercises" class="tab-pane">
