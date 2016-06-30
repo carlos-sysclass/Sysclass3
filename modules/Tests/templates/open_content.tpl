@@ -82,7 +82,7 @@
                         <span>
                             <i class="fa fa-lg fa-repeat text-primary "></i>
                             {translateToken value="Repetition Limit"}:
-                        </span>
+                        </span> 
                         {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
                             {$T_TEST.executions|@count}/{$T_TEST.test.test_repetition}
