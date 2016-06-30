@@ -116,13 +116,25 @@ class ReportModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         
         if ($this->acl->isUserAllowed(null, "Report", "View")) {
 
+            $total = Report::count("active = 1");
+            $report = Report::FindFirst();
+
+            if ($total == 1) {
+                $report = Report::FindFirst("active = 1");
+                $link = 'view/' . $report->id;
+            } elseif ($total > 1) {
+                $link = 'manage';
+            } else {
+                return false;
+            }
+
             return array(
                 'administration' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $total,
                         'text'  => $this->translate->translate('Reports'),
                         'icon'  => 'fa fa-cogs',
-                        'link'  => $this->getBasePath() . 'manage'
+                        'link'  => $this->getBasePath() . $link
                     )
                 )
             );
