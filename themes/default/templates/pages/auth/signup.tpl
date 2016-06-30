@@ -46,11 +46,11 @@
 			</div>
 			<div class="form-actions nobg">
 				<a href="/" class="btn btn-default">
-					<i class="m-icon-swapleft"></i> {translateToken value="Back"}
+					<i class="ti-arrow-left"></i> {translateToken value="Back"}
 				</a>
 
 				<button class="btn btn-primary pull-right" type="submit">
-					<i class="m-icon-swapup m-icon-white"></i>
+					<i class="ti-arrow-up"></i>
 					{translateToken value="Create my account"}
 				</button>
 			</div>

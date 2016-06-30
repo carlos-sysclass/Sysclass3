@@ -6,7 +6,9 @@
 		</div>
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
-			<h4 class="form-title">{translateToken value="Please type login and password below"}</h4>
+			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
+				<small class="form-title">{translateToken value="Please type login and password below"}</small>
+			</h4>
 			<div class="form-body">
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 					<div class="alert alert-{$T_MESSAGE.type}">
@@ -25,6 +27,7 @@
 				{/if}
 
 				{if !$T_DISABLE_LOGIN}
+					<!--
 					<div class="form-group">
 						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
 						<div class="input-icon">
@@ -32,6 +35,7 @@
 							<input type="text" id="login" name="login" value="{$T_USER.login}" placeholder="{translateToken value="Login"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 						</div>
 					</div>
+					-->
 				{else}
 					<div class="form-group">
 						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
@@ -62,7 +66,7 @@
 			</div>
 			<div class="form-actions nobg">
 				<button class="btn btn-primary pull-right" type="submit">
-					<i class="m-icon-swapup m-icon-white"></i>
+					<i class="ti-arrow-up"></i>
 					{if ($T_IS_CONFIRMATION)}
 						{translateToken value="Define my password"}
 					{else}
