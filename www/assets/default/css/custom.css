@@ -2096,3 +2096,7 @@ a.list-group-item,
 .header .navbar-nav > li.dropdown .fa.fa-user {
 	width: 12px !important;
 }
+
+.test-details {
+	padding: 10px !important;
+}
