@@ -218,7 +218,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             $test_repetition = intval($test_repetition);
 
-            if ($test_repetition == -1 || $test_repetition > count($executions)) {
+            if ($test_repetition <= 0 || $test_repetition > count($executions)) {
                 return count($executions)+1;
             } else {
                 return false;
