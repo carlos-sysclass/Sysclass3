@@ -242,7 +242,7 @@ class ApiController extends \AbstractSysclassController
  					// CREATE TRANSACTION
  					$this->db->begin();
 
- 					$user = $this->authentication->signup($postdata);
+					$user = $this->authentication->signup($postdata);
 
  					if ($user) {
  						$user->refresh();

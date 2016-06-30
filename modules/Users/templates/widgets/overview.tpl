@@ -17,7 +17,7 @@ _before_init_functions.push(function() {
 		{if ({$user_details.avatars[0].url})}
 			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="86%" alt="">
 		{else}
-			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="86%" alt="">
+			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.jpg'}" width="86%" alt="">
 		{/if}
 	
 	</div>

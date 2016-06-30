@@ -164,6 +164,15 @@ class User extends Model
         return $roles;
     }
 
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        parent::assign($data, $dataColumnMap, $whiteList);
+
+        if (array_key_exists('how_did_you_know', $data)) {
+            $this->how_did_you_know = implode(",", $data['how_did_you_know']);
+        }
+        return $this;
+    }
+
     public function hasRole($role) {
         $roles = $this->getRoles();
         $rolesNames = array_map('strtolower', array_column($roles, 'name'));

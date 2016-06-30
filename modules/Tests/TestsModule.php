@@ -389,7 +389,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'user_id' => $this->user->id
             ));
 
-
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
 
