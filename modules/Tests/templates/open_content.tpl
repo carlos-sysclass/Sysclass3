@@ -101,7 +101,6 @@
                         </span>
                         <strong class="text-primary pull-right">{$T_TEST.score}</strong>
                     </p>
-                    <hr />
                 </div>
             </div>
         </div>
