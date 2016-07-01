@@ -330,6 +330,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     {
         // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
         //
+        $this->disableSection('title');
+
         if ($userData = $this->getCurrentUser()) {
             // START PROGRESS
 

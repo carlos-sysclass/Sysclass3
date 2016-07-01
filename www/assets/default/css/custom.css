@@ -1155,18 +1155,22 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 }
 
 ul.test-sidebar-info {
+	/*
     position: fixed;
     right: 10px;
     top: 100px;
+    */
+    padding: 0;
 }
 ul.test-sidebar-info > li {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
-    display: block;
+    display: inline-block;
     margin: 0 0 10px;
     padding: 5px;
     min-height: 32px;
     vertical-align: middle;
+    width: 33%;
 }
 ul.test-sidebar-info > li span.pull-left {
     margin-right: 10px;
@@ -2099,4 +2103,7 @@ a.list-group-item,
 
 .test-details {
 	padding: 10px !important;
+}
+.no-border {
+	border-width: 0;
 }
