@@ -70,7 +70,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
         $pass = $this->calculateUserScore($test_try);
 
-        $evManager = \Phalcon\DI::getDefault()->get("eventsManager");
+        //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
 
         $lessonProgress = LessonProgress::findFirst(array(
@@ -103,32 +103,22 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
         if (!$classProgress) {
             $classProgress = new ClasseProgress();
-            $classProgress->user_id = $this->user_id;
+            $classProgress->user_id = $test_try['user_id'];
             $classProgress->class_id = $unit->class_id;
             $classProgress->save();
         }
-        
+
         $status = $classProgress->updateProgress();
 
-        var_dump($status);
-
-        exit;
-
+        /*
         $evData = array(
             'entity_id' => $test_try['test_id'],
             'user_id' => $test_try['user_id'],
             'trigger' => 'test'
         );
-
-        
-
         $evManager->fire("certificate:generate", $this, $evData);
-
-
         $evManager->fire("certificate:generate", $this, $evData);
-
-
-
+        */
     }
 
     public function calculateUserScore($execution) {

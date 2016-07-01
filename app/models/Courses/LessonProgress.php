@@ -50,7 +50,7 @@ class LessonProgress extends Model
 
     	// CALL UPDATE ON CLASS
         $unit = $this->getUnit();
-        
+
         $classProgress = ClasseProgress::findFirst(array(
             'conditions' => 'user_id = ?0 AND class_id = ?1',
             'bind' => array($this->user_id, $unit->class_id)

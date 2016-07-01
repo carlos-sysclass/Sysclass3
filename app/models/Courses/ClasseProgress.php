@@ -30,24 +30,34 @@ class ClasseProgress extends Model
         $data = $manager->executeQuery($phql, array($this->class_id, $this->user_id));
 
         $this->factor = $data[0]->factor;
+
+        $evManager = \Phalcon\DI::getDefault()->get("eventsManager");
+
+        $evData = array(
+            'entity_id' => $this->class_id,
+            'user_id' => $this->user_id,
+            'factor' => $this->factor,
+            'trigger' => 'course'
+        );
+        $evManager->fire("course:progress", $this, $evData);
         
         if ($this->save()) {
 	        $log[] = array(
 	        	'type' => 'success',
-	        	'message' => sprintf('Progress for Class #%s for user #%s updated.', $this->class_id, $this->user_id),
+	        	'message' => sprintf('Progress for Course #%s for user #%s updated.', $this->class_id, $this->user_id),
 	        	'status' => true
 	        );
+
+            if (floatval($this->factor) == 1) {
+                $evManager->fire("course:completed", $this, $evData);
+            }
         } else {
 	        $log[] = array(
 	        	'type' => 'error',
-	        	'message' => sprintf('Error when trying to update progress for Class #%s for user #%s updated.', $this->class_id, $this->user_id),
+	        	'message' => sprintf('Error when trying to update progress for Course #%s for user #%s updated.', $this->class_id, $this->user_id),
 	        	'status' => false
 	        );
-
         }
-
-        
-
         
     	// CALL UPDATE ON CLASS
         $classe = $this->getClasse();
