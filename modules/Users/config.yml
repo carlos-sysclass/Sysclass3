@@ -28,8 +28,8 @@ crud:
         - mData: surname
           label: Surname
 
-        - mData: login
-          label: Login
+        - mData: email
+          label: Email
 
         - mData: pending
           sType: table-boolean

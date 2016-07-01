@@ -14,7 +14,7 @@ Login page
   text-align: center;
 }
 .contentcopyright {
-  width: 440px;
+  /*width: 440px;*/
   margin: 0 auto;
   position: relative;
 }
@@ -203,12 +203,12 @@ Login page
 .login .copyright {
   text-align: center;
   margin: 0 auto;
-  padding: 30px 10px 10px 10px;
-  color: #fff;
-  font-size: 14px;
+  padding: 30px 0 10px 0;
+  font-size: 12px;
+  color: #000;
   border-top: none;
   font-weight: lighter;
-  text-shadow: 1px 1px 0px #000;
+/*  text-shadow: 1px 1px 0px #000; */
 }
 
 @media (max-width: 480px) {
