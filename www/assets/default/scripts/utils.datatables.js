@@ -26,6 +26,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        this.options = opt;
 		        var view = this;
 		        var datatableOpt = {
+		        	dom : "<'row'<'col-lg-4 col-md-4 col-sm-12'l><'col-lg-4 col-md-4 col-sm-12 text-center'B><'col-lg-4 col-md-4 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
 		        	rowCallback: function( row, data ) {
 						mod.trigger("datatable:item:draw", row, data);
 
@@ -78,7 +79,17 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 						  );
 						  
 						});
-					}
+					},
+					colReorder : true,
+					language: {
+			            buttons: {
+			                colvis: 'Colunas'
+			            }
+			        },
+				    buttons: [
+				        'colvis', 'excel', 'pdf', 'csv'
+				    ],
+				    fixedHeader: true
 		        };
 
 		        if (opt.datatable != undefined) {

@@ -10,7 +10,7 @@ crud:
       # BASE VALUES.. USED ON ALL ROUTES
   routes:
     'view/{identifier}':
-      components: ["validation", "select2","data-tables"]
+      components: ["validation", "select2", "datatables"]
       template: view.tpl
     manage:
       components: ["validation", "select2", "wysihtml5"]
@@ -31,7 +31,7 @@ models:
 reports:
   users:
     model: users
-    fields: [name, surname, how_did_you_know]
+    fields: [id, name, surname, email, pending, viewed_license, active,  how_did_you_know]
     datafields:
       id:
           mData: id
@@ -43,6 +43,9 @@ reports:
       surname:
           mData: surname
           label: Surname
+      email:
+          mData: email
+          label: Email
       login:
           mData: login
           label: Login
