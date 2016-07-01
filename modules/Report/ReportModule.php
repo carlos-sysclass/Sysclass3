@@ -172,7 +172,6 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
         $report = Report::findFirstById($identifier);
 
-
         if (!$report) {
             $this->entryPointNotFoundError($this->getBasePath() . "manage");
         }
@@ -202,11 +201,16 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
         $this->setCache("report_config/" . $this->report_id , $report_options);
         $context['model-id'] = $this->report_id;
+
         
 
         $this->createClientContext("view", $context, 'view/{identifier}');
         
         $this->putItem('module_context', $context);
+
+        $this->putItem('page_title', $this->translate->translate($report->name));
+        $this->putItem('page_subtitle', $this->translate->translate($report->description));
+
 
         $this->display($this->template);
     }

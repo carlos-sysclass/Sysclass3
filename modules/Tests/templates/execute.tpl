@@ -41,7 +41,6 @@
                 <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
             </strong>
         </li>
-        {$T_EXECUTION|json_encode}
         {/if}
 
         {if $T_TEST.time_limit > 0}

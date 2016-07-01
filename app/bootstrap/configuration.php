@@ -188,6 +188,12 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/data-tables/DT_bootstrap'),
 			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
+		'datatables' => array(
+			'name'	=> 'datatables',
+			'css'	=> array('plugins/datatables/datatables'),
+			'js'	=> array('plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
+		),
+
 		'bootstrap-switch' => array(
 			'name'	=> 'bootstrap-switch',
 			'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
