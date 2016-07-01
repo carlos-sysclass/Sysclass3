@@ -46,7 +46,7 @@ class Progress extends Model
         ));
 
         if (!$lessonProgress) {
-            $lessonProgress = new ClasseProgress();
+            $lessonProgress = new LessonProgress();
             $lessonProgress->user_id = $this->user_id;
             $lessonProgress->lesson_id = $content->lesson_id;
             $lessonProgress->save();

@@ -53,7 +53,7 @@ class CourseProgress extends Model
         if ($this->save()) {
             $log[] = array(
                 'type' => 'success',
-                'message' => sprintf('Progress for Course #%s for user #%s updated.', $this->course_id, $this->user_id),
+                'message' => sprintf('Progress for Program #%s for user #%s updated.', $this->course_id, $this->user_id),
                 'status' => true
             );
 
@@ -61,7 +61,7 @@ class CourseProgress extends Model
         } else {
             $log[] = array(
                 'type' => 'error',
-                'message' => sprintf('Error when trying to update progress for Course #%s for user #%s updated.', $this->course_id, $this->user_id),
+                'message' => sprintf('Error when trying to update progress for Program #%s for user #%s updated.', $this->course_id, $this->user_id),
                 'status' => false
             );
 
