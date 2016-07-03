@@ -189,7 +189,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                     'username' => $user->name . " " . $user->surname,
                     'coursename' => $course->name,
                     'modulename' => $module->name,
-                    'date' => date("d/m/Y")
+                    'date' => now()
                 );
 
                 $certificate = Certificate::findFirst(array(
@@ -262,6 +262,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
             $vars = json_decode($certificate->vars, true);
 
+            $vars['timestamp'] = \DateTime::CreateFromFormat("Y-m-d", $vars['date']);
             $this->view->setVars($vars);
             //$course->complete();
             //$this->view->setVar("course", $course->getCourse());    

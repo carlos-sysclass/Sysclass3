@@ -203,7 +203,7 @@ _before_init_functions.push(function() {
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
+								<a data-toggle="tab" href="#tab_course_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
@@ -639,14 +639,13 @@ _before_init_functions.push(function() {
 	<hr />
 	<% } %>
 	</div>
-	
+	<!--
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
 				<td>{translateToken value="Prerequisite(s):"}</td>
 				<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 			</tr>
-			<!--
 			<tr>
 				<td>{translateToken value="Credit Hours:"}</td>
 				<td><strong class="text-default pull-right">80h</strong></td>
@@ -676,10 +675,11 @@ _before_init_functions.push(function() {
 				<td>{translateToken value="Required Equipment:"}</td>
 				<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 			</tr>
-			-->
 		</tbody>
 	</table>
+
 	<hr />
+	-->
 </script>
 
 <script type="text/template" id="tab_courses_instructor-template">

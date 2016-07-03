@@ -316,6 +316,7 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
             } catch (AuthenticationException $e) {
                 // JUST BY-PASS THE EXCEPTION
                 throw new AuthenticationException($e->getMessage(), $e->getCode());
+                return false;
             }
 
             // CHECK FOR DEFAULT GROUP FOR USERS

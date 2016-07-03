@@ -17,6 +17,7 @@ class Exception extends \Phalcon\Exception
     const API_TOKEN_TIMEOUT = 950;
     const API_TOKEN_INVALID = 951;
     const API_TOKEN_NOT_FOUND = 952;
+    const SIGNUP_EMAIL_ALREADY_EXISTS = 953;
 
     
     
