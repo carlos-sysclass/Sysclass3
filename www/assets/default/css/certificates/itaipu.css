@@ -1,5 +1,5 @@
-* {
-	font-family: 'Roboto', sans-serif;
+*, body {
+	font-family: 'freesans', sans-serif;
 }
 table {
     width: 100%;
@@ -47,6 +47,7 @@ table {
     line-height: 40px;
     padding: 30px 40px 20px;
     text-align: center;
+    font-weight: bold;
 }
 .inner-text span {
     font-size: 35px;
