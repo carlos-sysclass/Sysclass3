@@ -5,7 +5,8 @@ use Phalcon\Mvc\User\Component,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Users\UserApiTokens;
+    Sysclass\Models\Users\UserApiTokens,
+    Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class Sysclass extends Component implements IAuthentication
 {
@@ -66,6 +67,20 @@ class Sysclass extends Component implements IAuthentication
             $user = new User();
             $user->assign($info);
         }
+
+        // OPTIONS NOT PUT IN SYSTEM ALREADY
+        //if ($this->configuration->get("block_multiple_signup_for_same_email")) {
+            $exists = User::count(array(
+                'conditions' => "email = ?0",
+                'bind' => array($user->email)
+            ));
+
+            if ($exists > 0) {
+                throw new AuthenticationException("SIGNUP_EMAIL_ALREADY_EXISTS", AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS);
+                return false;
+            }
+        //}
+
         /*
         if (empty($user->login)) {
             $user->login = $user->createNewLogin();
