@@ -21,30 +21,25 @@
             {% block header %}
             <table class="page-header" align="center" style="width: 100%;background: #fff;">
                   <tr>
-                        <td class="center" align="left">
+                        <td class="center" align="center">
                               <!-- BEGIN: Header Container -->
-                              <table class="container" align="left">
+                              <table class="container content">
                               <tr>
-                                    <td>
-                                          <table class="row ">
+                                    <td class="wrapper vertical-middle" align="center" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;width:100%">
+                                          <!-- BEGIN: Logo -->
+                                          <table class="twelve columns">
                                           <tr>
-                                                <td class="wrapper vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
-                                                      <!-- BEGIN: Logo -->
-                                                      <table class="six columns">
-                                                      <tr>
-                                                            <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
-                                                                  <a href="index.html">
-                                                                  <img src="{{ mail.attachInline("img/logo.png") }}" width="185"border="0" alt="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;height: auto;max-width: 100%;float: left;clear: both;display: block;">
-                                                                  </a>
-                                                            </td>
-                                                      </tr>
-                                                      </table>
-                                                      <!-- END: Logo -->
-                                                </td>
-                                                <td class="wrapper vertical-middle last" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;">
+                                                <td class="vertical-middle center" align="center" style="padding-top: 0;padding-bottom: 0;text-align:center;">
+                                                      
+                                                      <img src="{{ mail.attachInline("img/logo.png") }}" width="185" border="0" alt="" align="center" style="float:none;display:inline-block;">
+                                                      
+                                                      <!--
+                                                      <img src="http://local.sysclass.com/assets/sysclass.itaipu/img/logo.png" width="185" border="0" alt="" align="center" style="float:none;display:inline-block;">
+                                                      -->
                                                 </td>
                                           </tr>
                                           </table>
+                                          <!-- END: Logo -->
                                     </td>
                               </tr>
                               </table>
@@ -101,10 +96,16 @@
                                           <!-- BEGIN: Unsubscribet -->
                                           <table class="row">
                                           <tr>
-                                                <td class="wrapper last" style="vertical-align: middle;color: #666;">
-                                                      <span style="font-size:12px;">
-                                                      <i>{{ translate.translate("This ia a system generated email and reply is not required.") }}</i>
-                                                      </span>
+                                                <td class="wrapper last" style="vertical-align: middle;">
+                                                      <table class="twelve columns">
+                                                            <tr>
+                                                                  <td class="center">
+                                                                        <span style="font-size:12px;color: #666;">
+                                                                        <i>{{ translate.translate("This is a system generated email and reply is not required.") }}</i>
+                                                                        </span>
+                                                                  </td>
+                                                            </tr>
+                                                      </table>
                                                 </td>
                                           </tr>
                                           </table>
@@ -113,9 +114,9 @@
                                           <table class="row">
                                           <tr>
                                                 <td class="wrapper" style="vertical-align: middle;color: #666;">
-                                                      <table class="four columns">
+                                                      <table class="twelve columns">
                                                       <tr>
-                                                            <td class="vertical-middle" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;color: #666;">
+                                                            <td class="vertical-middle center" style="padding-top: 0;padding-bottom: 0;vertical-align: middle;color: #666;">
                                                                    &copy; {{ configuration.get("site_title")}} - {{ configuration.get("site_subtitle")}} {{date ("Y")}}.
                                                             </td>
                                                       </tr>
@@ -130,6 +131,7 @@
                         </td>
                   </tr>
             </table>
+
             {% endblock %}
       </td>
 </tr>

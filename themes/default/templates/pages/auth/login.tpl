@@ -56,7 +56,7 @@
 					</button>
 					{/if}
 					{if $T_CONFIGURATION.enable_forgot_form}
-					<button name="submit_login" type="submit" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}
+					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}
 					</button>
 
 					{/if}
