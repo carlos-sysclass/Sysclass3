@@ -1323,7 +1323,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				var unit = this.contents.findWhere({id : this.current.content_id});
-				return content;
+				return unit;
 			},
 
 			// INDEXES
