@@ -103,7 +103,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         return false;
     }
 
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller= null) {
         if (in_array('dashboard.linkable.view', $widgetsIndexes)) {
             $modules = $this->getModules("ILinkable");
             $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
@@ -202,7 +202,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         $this->clearWidgets();
         foreach($modules as $index => $module) {
             //var_dump($index);
-            $mod_widgets = $module->getWidgets($widgetsIndexes);
+            $mod_widgets = $module->getWidgets($widgetsIndexes, $this);
             //var_dump($mod_widgets);
             if ($mod_widgets) {
                 $this->widgets = array_merge($this->widgets, $mod_widgets);

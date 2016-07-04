@@ -46,6 +46,9 @@ abstract class AbstractToolsController extends PhalconWrapperController
     }
 
     protected function getResource($resourceID) {
+    	if (is_null($this->config)) {
+    		$this->loadConfig();
+    	}
         return $this->config['global']['resources'][$resourceID];
     }
 
@@ -75,7 +78,6 @@ abstract class AbstractToolsController extends PhalconWrapperController
 
     public function sortModules($sortId, $data, $preserveUncontainedKey = false) {
         $resource = $this->getResource($sortId);
-
 
         $dataArray = array();
         if ($resource) {

@@ -26,7 +26,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
     }
 
     /* IWidgetContainer */
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         if (in_array('kbase.widget', $widgetsIndexes)) {
             $this->putScript("plugins/jquery.pulsate.min");
 

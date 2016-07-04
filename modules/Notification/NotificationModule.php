@@ -14,7 +14,7 @@ use Sysclass\Models\Notifications\User as UserNotification;
 class NotificationModule extends \SysclassModule implements \IWidgetContainer
 {
     
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         if (in_array('notification.lastest', $widgetsIndexes)) {
             $currentUser    = $this->user;
 
