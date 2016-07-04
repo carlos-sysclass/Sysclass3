@@ -103,6 +103,23 @@ class User extends Model
         }
     }
 
+    public function beforeDelete() {
+        // MOVE ALL DROPBOX FILES TO ADMINISTRATOR
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        $phql = "UPDATE Sysclass\\Models\\Dropbox\\File
+            SET owner_id = :owner_id: 
+            WHERE owner_id = :user_id:";
+
+        $status = $manager->executeQuery(
+            $phql,
+            array(
+                'owner_id' => 1,
+                'user_id' => $this->id
+            )
+        );
+    }
+
     public static function specialFind($filters) {
         $users = array();
         foreach($filters as $filter => $value) {

@@ -38,10 +38,10 @@
 					-->
 				{else}
 					<div class="form-group">
-						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login"}</label>
+						<label class="control-label visible-ie8 visible-ie9">{translateToken value="Email"}</label>
 						<div class="input-icon">
 							<i class="ti-user"></i>
-							<p class="form-control form-control-static"> {$T_USER.login} </p>
+							<p class="form-control form-control-static" style="color:#000;"> {$T_USER.email} </p>
 						</div>
 					</div>
 				{/if}

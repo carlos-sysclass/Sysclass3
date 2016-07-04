@@ -29,7 +29,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         );
     }
 
-    public function getWidgets($widgetsIndexes = array())
+    public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
 
 

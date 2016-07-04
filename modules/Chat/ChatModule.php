@@ -85,7 +85,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
     }
 
     // IWidgetContainer
-    public function getWidgets($widgetsIndexes = array())
+    public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
         $widgets = array();
 

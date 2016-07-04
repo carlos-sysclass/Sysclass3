@@ -18,7 +18,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 {
     protected $_modelRoute = "advertising";
     /* IWidgetContainer */
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
 
         $widgetsContext = $this->getConfig("widgets");
         // $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");

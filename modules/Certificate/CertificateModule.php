@@ -43,6 +43,11 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                 'link'  => $this->getBasePath() . "print/" . $certificates->getFirst()->id,
                 'target' => '_blank'
             );
+        } else {
+            $info['link']  = array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => "javascript:void(0);"
+            );
         }
 
         return $info;

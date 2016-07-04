@@ -10,7 +10,7 @@
 class ProctoringModule extends SysclassModule implements IWidgetContainer
 {
 
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         if (in_array('proctoring.overview', $widgetsIndexes)) {
             $data = array();
             // GET USER POLO

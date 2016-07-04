@@ -153,7 +153,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
     }
 
     /* IWidgetContainer */
-	public function getWidgets($widgetsIndexes = array()) {
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
         
 		if (in_array('courses.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 

@@ -19,7 +19,7 @@ use Sysclass\Models\Content\Program,
 class ContentModule extends \SysclassModule implements \IWidgetContainer
 {
     /* IWidgetContainer */
-	public function getWidgets($widgetsIndexes = array()) {
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
         
 		if (in_array('content.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 
