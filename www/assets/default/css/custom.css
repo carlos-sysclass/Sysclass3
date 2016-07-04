@@ -1341,7 +1341,7 @@ UI Loading
     top: 0;
 }
 
-.header .navbar-nav > li.dropdown.user .dropdown-toggle .avatar-img {
+.header .navbar-nav > li.dropdown .dropdown-toggle .avatar-img {
     height: 42px;
     top: -11px;
     width: 42px;
