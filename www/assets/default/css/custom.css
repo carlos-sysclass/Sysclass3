@@ -2154,3 +2154,7 @@ a.list-group-item,
 .dt-button-collection .buttons-columnVisibility.active a {
 	background: #fff;
 }
+
+#tab_program_description,#tab_course_info {
+	margin: 10px 10px 0 10px;
+}
