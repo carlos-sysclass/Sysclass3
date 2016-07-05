@@ -197,10 +197,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					model : this.model
 				});
 				*/
+				/*
 				this.programCoordinatorTabView 	= new programCoordinatorTabViewClass({
 					el : this.$("#tab_program_coordinator"),
 					model : this.model
 				});
+				*/
 				this.programCoursesTabView = new programCoursesTabViewClass({
 					el : this.$("#tab_program_courses table tbody"),
 					model : this.model/*,
