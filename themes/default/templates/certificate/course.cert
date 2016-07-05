@@ -62,12 +62,14 @@
             <div class="row" align="center">
                   <div class="col-md-12 inner-text">
                         A Superintendência de Compras da Itaipu Binacional<br /> certifica que<br />
-                        <span>{{ username|upper }}</span><br />
+                        <span style="color: #1E345D;"><i>{{ username|upper }}</i></span><br />
                         Participou do <br />
-                        <span>{{ modulename|upper }}</span>
+                        <span><i>{{ modulename|upper }}</i></span>,
                         <br />
+                        na modalidade de Ensino a Distância do Programa de Desenvolvimento de Fornecedores.
+                        
                         <br />
-                        Estado do Paraná, <span>{{ timestamp.format("d") }} de {{ strftime("%B", timestamp.format("u") ) }} de {{ timestamp.format("Y") }} </span>.
+                        Curitiba, <span>{{ timestamp.format("d") }} de {{ strftime("%B", timestamp.format("u") ) }} de {{ timestamp.format("Y") }} </span>.
                         <br />
                   </div>
             </div>
