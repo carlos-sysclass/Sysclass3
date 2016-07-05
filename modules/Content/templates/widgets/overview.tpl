@@ -58,7 +58,9 @@ _before_init_functions.push(function() {
 								 {translateToken value="Program"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -175,7 +177,9 @@ _before_init_functions.push(function() {
 								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -426,7 +430,9 @@ _before_init_functions.push(function() {
 								{translateToken value="Unit"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
