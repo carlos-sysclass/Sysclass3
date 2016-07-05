@@ -58,7 +58,9 @@ _before_init_functions.push(function() {
 								 {translateToken value="Program"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -95,11 +97,11 @@ _before_init_functions.push(function() {
 							<li class="">
 								<a data-toggle="tab" href="#tab_program_moreinfo"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="More Info"}</span></a>
 							</li>
-							-->
+							
 							<li class="">
 								<a data-toggle="tab" href="#tab_program_coordinator"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Coordinator"}</span></a>
 							</li>
-							<!--
+
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road Map"}</span></a>
 							</li>
@@ -138,8 +140,8 @@ _before_init_functions.push(function() {
 									</div>
 								</div>
 							</div>
-							-->
-							<div id="tab_program_coordinator" class="tab-pane active">
+							
+							<div id="tab_program_coordinator" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -147,6 +149,7 @@ _before_init_functions.push(function() {
 									</div>
 								</div>
 							</div>
+							-->
 							<!--
 							<div id="tab_course_roadmap" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
@@ -175,7 +178,9 @@ _before_init_functions.push(function() {
 								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -426,7 +431,9 @@ _before_init_functions.push(function() {
 								{translateToken value="Unit"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -549,14 +556,26 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_program_description-template">
 	<%= model.description %>
+	<% if (!_.isEmpty(model.objectives)) { %>
+		<hr />
+		<h5>{translateToken value="Objetives"}</h5>
+		
+		<%= model.objectives %>
+	<% } %>
+	<% if (!_.isEmpty(model.coordinator)) { %>
+		<hr />
+		<h5>{translateToken value="Coordinator"}</h5>
+		<table class="table table-striped table-bordered table-advance table-hover">
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= model.coordinator.name %> <%= model.coordinator.surname %></td>
+			</tr>
+		</table>
+	<% } %>
 </script>
 <script type="text/template" id="tab_course_moreinfo-template">
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
-			<tr>
-				<td>{translateToken value="Objetives"}</td>
-				<td><%= model.objectives %></td>
-			</tr>
 			<tr>
 				<td>{translateToken value="Goals"}</td>
 				<td><%= model.goals %></td>
@@ -632,13 +651,23 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_info-template">
 
-
-	<% if (!_.isEmpty(model.description)) { %>
-	<!-- <h5>{translateToken value="During this course you will..."}</h5> -->
 	<%= model.description %>
-	<hr />
+	<% if (!_.isEmpty(model.objectives)) { %>
+		<hr />
+		<h5>{translateToken value="Objetives"}</h5>
+		
+		<%= model.objectives %>
 	<% } %>
-	</div>
+	<% if (!_.isEmpty(model.professor)) { %>
+		<hr />
+		<h5>{translateToken value="Coordinator"}</h5>
+		<table class="table table-striped table-bordered table-advance table-hover">
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= model.professor.name %> <%= model.professor.surname %></td>
+			</tr>
+		</table>
+	<% } %>
 	<!--
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>

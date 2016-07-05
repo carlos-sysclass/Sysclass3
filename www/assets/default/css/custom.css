@@ -1,4 +1,8 @@
 /* here you can put your own css to customize and override the theme */
+#content-widget .portlet-body  {
+	min-height: 550px;
+}
+
 .page-content {
     padding: 20px 20px 20px;
 }
@@ -469,9 +473,11 @@ h4.border-bottom {
     padding: 0 22px 36px 22px;
     display: inline-block;
 }
+/*
 .tabbable-left .portlet-tabs > .nav-tabs > li > a:hover {
 	padding: 0 22px 33px 22px;
 }
+*/
 
 /*
 .portlet-tabs {
