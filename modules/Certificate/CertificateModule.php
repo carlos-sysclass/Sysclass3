@@ -194,7 +194,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                     'username' => $user->name . " " . $user->surname,
                     'coursename' => $course->name,
                     'modulename' => $module->name,
-                    'date' => time()
+                    'date' => date("Y-m-d")
                 );
 
                 $certificate = Certificate::findFirst(array(
