@@ -67,7 +67,7 @@
                         <span><i>{{ modulename|upper }}</i></span>,
                         <br />
                         na modalidade de Ensino a Distância do Programa de Desenvolvimento de Fornecedores.
-                        
+
                         <br />
                         Curitiba, <span>{{ timestamp.format("d") }} de {{ strftime("%B", timestamp.format("u") ) }} de {{ timestamp.format("Y") }} </span>.
                         <br />

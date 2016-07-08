@@ -5,7 +5,7 @@
         <li>
             <span class="pull-left">
                 <i class="fa fa-lg fa-slack text-default "></i>
-                {translateToken value="# Try"}:
+                {translateToken value="Try"}:
             </span>
             <strong class="text-primary pull-right">
                 <span class="text-try-index-text">{$T_TEST.executions|@count}</span> 
@@ -14,6 +14,7 @@
                 {/if}
             </strong>
         </li>
+        {if $T_EXECUTION.pending == 1}
         <li>
             <span class="pull-left">
                 <i class="fa fa-lg fa-slack text-default "></i>
@@ -21,6 +22,7 @@
             </span>
             <strong class="text-primary pull-right">{$T_TEST.questions|@count}</strong>
         </li>
+        {/if}
         <li>
             <span class="pull-left">
                 <i class="fa fa-lg fa-graduation-cap text-default"></i>
@@ -37,10 +39,28 @@
                 {translateToken value="Your Score"}:
             </span>
             <strong class="text-primary pull-right">
-                <span class="label label-primary">{$T_EXECUTION.user_grade}</span>
+                {if ($T_EXECUTION.pass == 0)}
+                    <span class="label label-danger">{$T_EXECUTION.user_grade}</span>
+                {else}
+                    <span class="label label-primary">{$T_EXECUTION.user_grade}</span>
+                {/if}
                 <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
             </strong>
         </li>
+        <li>
+            <span class="pull-left">
+                <i class="fa fa-lg fa-graduation-cap text-default"></i>
+                {translateToken value="Approved"}:
+            </span>
+            <strong class="text-primary pull-right">
+                {if ($T_EXECUTION.pass == 0)}
+                    <span class="label label-danger">{translateToken value="No"}</span>
+                {else}
+                    <span class="label bg-green font-green">{translateToken value="Yes"}</span>
+                {/if}
+            </strong>
+        </li>
+
         {/if}
 
         {if $T_TEST.time_limit > 0}

@@ -2489,7 +2489,7 @@ Custom color buttons
 
 .btn.blue-sharp-stripe {
   border-left: 4px solid #5C9BD1 !important; }
-
+/*
 .btn.green:not(.btn-outline) {
   color: #FFFFFF;
   background-color: #32c5d2;
@@ -2562,7 +2562,7 @@ Custom color buttons
     border-color: #32c5d2;
     color: #FFFFFF;
     background-color: #32c5d2; }
-
+*/
 .btn.green-stripe {
   border-left: 4px solid #32c5d2 !important; }
 
@@ -9139,7 +9139,7 @@ Custom colored portlets
 
 .portlet.solid.green > .portlet-title > .tools > a.fullscreen {
   color: #fdfdfd; }
-
+/*
 .portlet.box.green {
   border: 1px solid #5cd1db;
   border-top: 0; }
@@ -9162,7 +9162,7 @@ Custom colored portlets
       .portlet.box.green > .portlet-title > .actions .btn-default.active {
         border: 1px solid #b8ebef;
         color: #cdf1f4; }
-
+*/
 .portlet > .portlet-body.green-meadow,
 .portlet.green-meadow {
   background-color: #1BBC9B; }
@@ -15160,7 +15160,7 @@ Custom color buttons
 
 .bg-hover-green:hover {
   background: #32c5d2; }
-
+/*
 .font-green {
   color: #32c5d2 !important; }
 
@@ -15181,7 +15181,7 @@ Custom color buttons
 
 .border-right-green {
   border-right-color: #32c5d2 !important; }
-
+*/
 .bg-green-meadow {
   background: #1BBC9B; }
 
