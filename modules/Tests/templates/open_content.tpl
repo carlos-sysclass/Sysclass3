@@ -165,7 +165,6 @@
                                     {$last_try.user_grade}
                                 {else}
                                     {($last_try.user_score*100)|round:2}%
-
                                 {/if}
                             </span>
                         </strong>

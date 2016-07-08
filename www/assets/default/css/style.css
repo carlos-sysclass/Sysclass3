@@ -1725,11 +1725,11 @@ Box portlet
    border: 1px solid #fccb7e;
    border-top: 0;
 }
-
+/*
 .portlet.box.green > .portlet-title {
   background-color: #35aa47;
 }
-
+*/
 .portlet.box.green {
    border: 1px solid #77e588;
    border-top: 0;
