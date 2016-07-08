@@ -191,10 +191,13 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                 $course = $courses->getFirst();
 
                 $vars = array(
-                    'username' => $user->name . " " . $user->surname,
-                    'coursename' => $course->name,
-                    'modulename' => $module->name,
-                    'date' => date("Y-m-d")
+                    //'username' => $user->name . " " . $user->surname,
+                    //'coursename' => $course->name,
+                    //'modulename' => $module->name,
+                    'timestamp' => time(),
+                    'type' => 'course',
+                    'entity_id' => $course_id,
+                    'user_id' => $user_id
                 );
 
                 $certificate = Certificate::findFirst(array(
@@ -202,28 +205,37 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                     'bind' => array($user_id, $course_id)
                 ));
 
+                $notify = false;
+
                 if (!$certificate) {
                     $certificate = new Certificate();
                     $certificate->user_id = $user_id;
                     $certificate->entity_id = $course_id;
                     $certificate->type = 'course';
+
+                    $notify = true;
                 }
                 $certificate->name = $module->name;
 
                 $certificate->vars = json_encode($vars);
                 if ($certificate->save()) {
 
-                    $this->notification->createForUser(
-                        $user,
-                        $this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
-                        'info',
-                        array(
-                            'text' => "View",
-                            'link' => $this->getBasePath() . "print/" . $certificate->id
-                        ),
-                        false,
-                        "CERTIFICATE:" . "U" . $certificate->user_id . "E" . $certificate->entity_id . "T" . $certificate->type
-                    );
+                    if ($notify) {
+                        $this->notification->createForUser(
+                            $user,
+                            $this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
+                            'info',
+                            array(
+                                'text' => "View",
+                                'link' => $this->getBasePath() . "print/" . $certificate->id
+                            ),
+                            false,
+                            "CERTIFICATE:" . "U" . $certificate->user_id . "E" . $certificate->entity_id . "T" . $certificate->type
+                        );
+                    } else {
+                        // UPDATE NOTIFICATION
+
+                    }
 
                     return true;
                 }
@@ -267,7 +279,30 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
             $vars = json_decode($certificate->vars, true);
 
-            $vars['timestamp'] = \DateTime::CreateFromFormat("Y-m-d", $vars['date']);
+            // CALCULATE
+            switch($certificate->type) {
+                case 'course' : {
+                    $module = Course::findFirstById($certificate->entity_id);
+                    if ($module) {
+                        $user = User::findFirstById($certificate->user_id);
+
+                        $vars['modulename'] = $module->name;
+                        $vars['username'] = $user->name . " " . $user->surname;
+                    } else {
+                        $this->redirect(
+                            '/dashboard',
+                            $this->translate->translate("Warning: An error occured when the system is trying to complete your request!"),
+                            'warning'
+                        );
+                        
+                        return;
+                    }
+                    break;
+                }
+            }
+
+
+            $vars['datetime'] = \DateTime::CreateFromFormat("U", $vars['timestamp']);
             $this->view->setVars($vars);
             //$course->complete();
             //$this->view->setVar("course", $course->getCourse());    
