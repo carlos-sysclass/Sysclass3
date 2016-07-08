@@ -804,8 +804,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.enableView();
 					this.videoModel = mod.programsCollection.getCurrentContents().getMainVideo(videos.at(0));
 
-					console.warn(this.videoModel);
-
 					if (!_.isNull(this.videoJS)) {
 						this.videoJS.dispose();
 					}
@@ -943,7 +941,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function(e) {
 				console.info('portlet.content/unitTestTabViewClass::render');
-				console.warn(this.model.toJSON());
 				if (this.model.get("type") == "test") {
 					this.enableView();
                 	this.$el.load("/module/tests/open/" + this.model.get("id") + "?dialog");
@@ -1200,10 +1197,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return /^image\/.*$/.test(this.get("file.type"));
 			},
 			isSubtitle : function() {
-				return this.get("content_type") == "subtitle";
+				return this.get("content_type") == "subtitle" || this.get("content_type") == "subtitle-translation";
 			},
 			isMaterial : function() {
 				return !this.isVideo() && !this.isSubtitle() && !this.isAudio() && !this.isImage();
+
 			}
 		}),
 		content_progress : baseModel.extend({
