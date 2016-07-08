@@ -14,7 +14,7 @@
       {% endblock %}
 </head>
 
-<body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;direction: ltr;background: #f6f8f1;width: 100% !important;">
+<body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;direction: ltr;background: #ffffff;width: 100% !important;">
 <table class="body">
 <tr>
       <td class="center" align="center" valign="top">
@@ -101,7 +101,7 @@
                                                             <tr>
                                                                   <td class="center">
                                                                         <span style="font-size:12px;color: #666;">
-                                                                        <i>{{ translate.translate("This is a system generated email and reply is not required.") }}</i>
+                                                                        {{ translate.translate("This is a system generated email and reply is not required.") }}
                                                                         </span>
                                                                   </td>
                                                             </tr>
