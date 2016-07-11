@@ -66,7 +66,7 @@ _before_init_functions.push(function() {
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
@@ -76,7 +76,7 @@ _before_init_functions.push(function() {
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -186,7 +186,7 @@ _before_init_functions.push(function() {
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Class"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
@@ -196,7 +196,7 @@ _before_init_functions.push(function() {
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Class"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -439,7 +439,7 @@ _before_init_functions.push(function() {
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
@@ -449,7 +449,7 @@ _before_init_functions.push(function() {
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
