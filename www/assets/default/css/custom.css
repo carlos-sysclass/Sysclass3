@@ -631,6 +631,14 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 }
 
 /* PAGEGUIDE RESPONSIVE */
+@media (max-width:768px) {
+	.tabbable-left .portlet-tabs > .nav-tabs > li .nav-title  {
+		font-size: 0;
+	}
+	.tabbable-left .portlet-tabs > .nav-tabs > li .nav-title i  {
+		font-size: 14px !important;
+	}
+}
 @media (max-width:991px) {
 	.tlyPageGuideStepIndex {
 		background: rgba(0, 89, 153, 1);
