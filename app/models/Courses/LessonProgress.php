@@ -24,6 +24,7 @@ class LessonProgress extends Model
         	LEFT JOIN Sysclass\\Models\\Courses\\Contents\\Progress as cp
                 ON (c.id = cp.content_id)
             WHERE c.lesson_id = ?0 AND (user_id = ?1 OR user_id IS NULL)
+            AND c.content_type NOT IN ('subtitle', 'poster', 'subtitle-translation')
         ";
         $data = $manager->executeQuery($phql, array($this->lesson_id, $this->user_id));
 

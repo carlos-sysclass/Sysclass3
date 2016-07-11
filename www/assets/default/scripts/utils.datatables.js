@@ -87,7 +87,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 			            }
 			        },
 				    buttons: [
-				        'colvis', 'excel', 'pdf', 'csv'
+				        'colvis', 'excel', 'csv'
 				    ],
 				    fixedHeader: true
 		        };

@@ -25,13 +25,16 @@ models:
     class: Sysclass\Models\Enrollments\Enroll
     exportMethod: ["toExtendArray", ["EnrollFields"]]
   users:
-    class: Sysclass\Models\Users\User
+    class: Sysclass\Models\Reports\User
     #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
     #findMethod: findFirstById
 reports:
   users:
     model: users
-    fields: [id, name, surname, email, pending, viewed_license, active,  how_did_you_know]
+    fields: [id, name, surname, email, birthday, timezone, last_login, is_supplier, supplier_name, cnpj, postal_code, street, street2, street_number, district, city, state, country, pending, viewed_license, active, how_did_you_know]
+
+
+
     datafields:
       id:
           mData: id
@@ -66,6 +69,71 @@ reports:
           label: Active
       how_did_you_know: 
           mData: how_did_you_know
-          sType: table-array
+          #sType: table-array
           sClass: text-center
           label: How did you know?
+      #language_id:
+      birthday:
+          mData: birthday
+          sType: datetime-moment
+          sClass: text-center
+          label: Birthday
+      timezone:
+          mData: timezone
+          #sType: datetime-moment
+          sClass: text-center
+          label: Timezone
+      last_login:
+          mData: last_login
+          sType: datetime-moment
+          sClass: text-center
+          label: Birthday
+      #phone:
+      is_supplier:
+          mData: is_supplier
+          sType: table-boolean
+          sClass: text-center
+          label: Is Supplier
+      supplier_name:
+          mData: supplier_name
+          sClass: text-center
+          label: Supplier Name
+      cnpj:
+          mData: cnpj
+          sClass: text-center
+          label: CNPJ
+      postal_code:
+          mData: postal_code
+          sClass: text-center
+          label: Postal Code
+      street:
+          mData: street
+          sClass: text-left
+          label: Address
+      street2:
+          mData: street2
+          sClass: text-left
+          label: Address 2
+
+      street_number:
+          mData: street_number
+          sClass: text-center
+          label: Street Number
+      district:
+          mData: district
+          sClass: text-left
+          label: District
+      city:
+          mData: city
+          sClass: text-left
+          label: City
+      state:
+          mData: state
+          sClass: text-left
+          label: State
+      country:
+          mData: country
+          sClass: text-left
+          label: Country
+
+

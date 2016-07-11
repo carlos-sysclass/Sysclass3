@@ -302,7 +302,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
             }
 
 
-            $vars['datetime'] = \DateTime::CreateFromFormat("U", $vars['timestamp']);
+            $vars['datetime'] = \DateTime::createFromFormat("U", $vars['timestamp']);
             $this->view->setVars($vars);
             //$course->complete();
             //$this->view->setVar("course", $course->getCourse());    

@@ -66,10 +66,10 @@
                         Participou do curso <br />
                         <span><i>{{ modulename|upper }}</i></span>,
                         <br />
-                        na modalidade de Ensino a Distância do Programa de Desenvolvimento de Fornecedores.
-
+                        na modalidade de Ensino a Distância do <br />
+                        Programa de Desenvolvimento de Fornecedores.
                         <br />
-                        Curitiba, <span>{{ timestamp.format("d") }} de {{ strftime("%B", timestamp.format("u") ) }} de {{ timestamp.format("Y") }} </span>.
+                        Curitiba, {{ datetime.format("d") }} de {{ strftime("%B", datetime.format("U") ) }} de {{ datetime.format("Y") }}.
                         <br />
                   </div>
             </div>

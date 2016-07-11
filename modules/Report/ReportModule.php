@@ -38,7 +38,7 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     array(
                         'count' => $total,
                         'text'  => $this->translate->translate('Reports'),
-                        'icon'  => 'fa fa-cogs',
+                        'icon'  => 'fa fa-table',
                         'link'  => $this->getBasePath() . $link
                     )
                 )
