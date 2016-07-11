@@ -913,6 +913,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var progressModel = new mod.models.content_progress();
 				progressModel.setAsViewed(this.model);
 
+				this.model.set("progress", progressModel.toJSON());
+
+				this.render();
+
 			}
 		});
 
