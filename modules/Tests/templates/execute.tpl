@@ -108,7 +108,7 @@
                         <span class="label label-primary">{translateToken value="Question"} #{$index+1}</span>
                     </h5>
                     <div>
-                    <i>{$question.question nofilter}</i>
+                    {$question.question nofilter}
                     </div>
 
                     {if $type == "combine"}
