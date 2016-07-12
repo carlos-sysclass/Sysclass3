@@ -64,7 +64,7 @@
                         A Superintendência de Compras da Itaipu Binacional<br /> certifica que<br />
                         <span style="color: #1E345D;"><i>{{ username|upper }}</i></span><br />
                         Participou do curso <br />
-                        <span><i>{{ modulename|upper }}</i></span>,
+                        <span style="color: #1E345D;"><i>{{ modulename|upper }}</i></span>,
                         <br />
                         na modalidade de Ensino a Distância do <br />
                         Programa de Desenvolvimento de Fornecedores.

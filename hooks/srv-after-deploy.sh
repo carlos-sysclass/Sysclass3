@@ -51,6 +51,8 @@ chmod 777 "$DIRNAME/../logs" -R
 mkdir -p "$DIRNAME/../www/resources"
 chmod 777 "$DIRNAME/../www/resources" -R
 
+chmod 777 "$DIRNAME/../vendor/mpdf/mpdf/ttfontdata" -R
+
 # INJECT VERSION INSIDE DATABASE
 #full_version=$1
 #branch=$2
