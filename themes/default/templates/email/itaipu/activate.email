@@ -55,9 +55,18 @@
                               <table class="row note">
                               <tr>
                                     <td class="wrapper last">
-                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">{{translate.translate("Thank you for joining %s!", [configuration.get("site_title")]) }}</h4>
+                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">
+                                          Bem-Vindo ao Programa de Desenvolvimento de Fornecedores da ITAIPU (DESFOR).
+                                          </h4>
                                           <p>
-                                                 {{translate.translate("We received your signin request and now we only need to confirm your email. Please click on the link below to active your account") }}
+                                          Estamos felizes pela oportunidade de mostrar como você pode se tornar um fornecedor da Itaipu e como nossos atuais fornecedores podem aprimorar a qualidade de seus serviços e produtos. 
+                                          </p>
+                                          <p>
+                                          O Programa de Desenvolvimento de Fornecedores da ITAIPU é gratuito. Os Cursos são 100% online e poderão ser realizados conforme sua disponibilidade. Ao concluir todas as unidades dos cursos, seu certificado será disponibilizado automaticamente pelo sistema.
+                                          </p>
+                                          
+                                          <p>
+                                                Por favor, clique sobre o link abaixo para confirmar a sua matrícula
                                           </p>
                                           <!-- BEGIN: Note Panel -->
                                           <table class="twelve columns" style="margin-bottom: 10px">
@@ -72,10 +81,11 @@
                                           </tr>
                                           </table>
                                           <p>
-                                                {{translate.translate("If clicking the URL above does not work, copy and paste the URL into a browser window.") }}
-                                                 
+                                          Se clicar sobre a URL acima não funcionar, por favor copie e cole em seu navegador.
                                           </p>
                                           <!-- END: Note Panel -->
+                                          <p>Esperamos trabalhar juntos no futuro produzindo energia limpa e renovável,</p>
+                                          <p>Equipe da Superintendência de Compras Programa DESFOR</p>
                                     </td>
                               </tr>
                               </table>
@@ -101,7 +111,7 @@
                                                             <tr>
                                                                   <td class="center">
                                                                         <span style="font-size:12px;color: #666;text-align:center;">
-                                                                        {{ translate.translate("This is a system generated email and reply is not required.") }}
+                                                                        Este é um e-mail gerado automaticamente e não é necessário respondê-lo.
                                                                         </span>
                                                                   </td>
                                                             </tr>
