@@ -655,7 +655,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             foreach($itemsData as $key => $item) {
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
-                        'icon'  => 'fa fa-pencil',
+                        'icon'  => 'fa fa-pencil', 
                         //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
