@@ -105,6 +105,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		var baseChildTabViewItemClass = Backbone.View.extend({
 			tagName : "tr",
 			//template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
+			initialize : function() {
+				this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
+			},
 			render : function(e) {
 				console.info('portlet.content/baseChildTabViewItemClass::render');
 				this.$el.html(
@@ -306,6 +309,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				$("[href='#course-tab']").tab('show');
 			},
+			checkProgress : function(model) {
+				var progress = _.findWhere(model.get("courses"), {class_id : this.model.get("id")});
+				if (!_.isUndefined(progress)) {
+					this.model.set("progress", progress);
+					this.render();
+				}
+			}
 		})
 
 		var programCoursesTabViewClass = baseChildTabViewClass.extend({
@@ -507,6 +517,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				*/
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 
+				this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
+
 
 				this.courseInfoTabView = new courseInfoTabViewClass({
 					el : this.$("#tab_course_info"),
@@ -533,6 +545,21 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.updateCollectionIndex();
 			},
+			checkProgress : function(model) {
+				var progress = _.findWhere(model.get("courses"), {class_id : this.model.get("id")});
+				var factor = null;
+				if (!_.isUndefined(progress)) {
+					factor = progress.factor;
+				} else {
+					factor = this.model.get("progress.factor");
+				}
+
+				if (factor == 1) {
+					this.$(".viewed-status").removeClass("hidden");
+				} else {
+					this.$(".viewed-status").addClass("hidden");
+				}
+			},
 			render : function() {
 				console.info('portlet.content/courseTabViewClass::render');
 
@@ -541,12 +568,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.courseInstructorTabView.render();
 				this.courseUnitsTabView.render();
 
+				this.checkProgress(mod.progressCollection);
+				/*
 				var factor = this.model.get("progress.factor");
 				if (factor >= 1) {
 					this.$(".viewed-status").removeClass("hidden");
 				} else {
 					this.$(".viewed-status").addClass("hidden");
 				}
+				*/
 
 				this.unBlockUi();
 			},
@@ -644,6 +674,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
                 app.module("dialogs.tests.info").open();
             },
+			checkProgress : function(model) {
+				var progress = _.findWhere(model.get("units"), {lesson_id : this.model.get("id")});
+				if (!_.isUndefined(progress)) {
+					this.model.set("progress", progress);
+					this.render();
+				}
+
+			},
+
             doTest : function(model) {
             	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
             	//alert("Doing Test " + this.model.get("id"));
@@ -660,6 +699,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
 
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
+
+
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
@@ -742,6 +783,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 
+				this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
+
+
 				/*
 				this.unitExercisesTabView 	= new unitExercisesTabViewClass({
 					el : this.$("#tab_unit_exercises"),
@@ -750,6 +794,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				});
 				*/
 				this.blockUi('No Unit Selected');
+			},
+			checkProgress : function(model) {
+				var progress = _.findWhere(model.get("units"), {lesson_id : this.model.get("id")});
+				if (!_.isUndefined(progress)) {
+					if (progress.factor == 1) {
+						this.$(".viewed-status").removeClass("hidden");
+					} else {
+						this.$(".viewed-status").addClass("hidden");
+					}
+				} else {
+					this.$(".viewed-status").addClass("hidden");
+				}
 			},
 			render : function(e) {
 				console.info('portlet.content/unitTabViewClass::render');
@@ -773,7 +829,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#unit-tab']").tab('show');
 			},
 			setViewed : function() {
-				this.$(".viewed-status").removeClass("hidden");
+				
 			},
 			onBlockableItemClick : function(e) {
 				$("[href='#class-tab']").click();
@@ -916,6 +972,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.model.set("progress", progressModel.toJSON());
 
 				this.render();
+			},
+			checkProgress : function(model) {
+				var progress = _.findWhere(model.get("contents"), {content_id : this.model.get("id")});
+				if (!_.isUndefined(progress)) {
+					this.model.set("progress", progress);
+					this.render();
+				}
 
 			}
 		});
@@ -1219,9 +1282,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.set("factor", factor);
 				this.save();
 
+				if (factor == 1) {
+					mod.progressCollection.fetch();
+				}
+
 				model.set("progress", this.toJSON());
 			}
-		})
+		}),
+		progress : Backbone.Model.extend({
+			url : "/module/content/datasource/progress"
+		})	
 	};
 
 	var navigableCollection = Backbone.Collection.extend({
@@ -1554,7 +1624,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				return mainVideo;
 			}
-		}),
+		})
+		
 		/*
 		courses : navigableCollection.extend({
 			//model : fullCourseModelClass,
@@ -1671,6 +1742,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		mod.programsCollection.reset(contentInfo.tree);
+
+		mod.progressCollection = new this.models.progress();
+		//mod.progressCollection.fetch();
 
 		//for(var i in contentCollection)
 

@@ -62,7 +62,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
 
             // LOAD THE CURRENT 
             if (!is_null($checkScope)) {
-                $userPointers = Unit::getContentPointers(null, $checkScope, $checkValue);    
+                $userPointers = Unit::getContentPointers(null, $checkScope, $checkValue);
             } else {
                 $userPointers = Unit::getContentPointers();
             }
@@ -121,10 +121,13 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
     					'id'        => 'content-widget',
     					'template'	=> $this->template("widgets/overview"),
     					'box'       => 'dark-blue tabbable tabbable-left',
+                        'title'     => '',
+                        /*
     					'tools'     => array(
     						//'search'        => true,
-    						'fullscreen'    => true
+    						//'fullscreen'    => true
     					),
+                        */
                         'data' => $data
     				)
     			);
@@ -219,4 +222,62 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
             return $result;
         }
     }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/datasource/progress")
+     */
+    public function getUserProgressRequest() {
+        $userPointers = Unit::getContentPointers();
+        $result = array();
+
+        if ($userPointers['program']) {
+
+            $result['courses'] = array();
+            $result['units'] = array();
+            $result['contents'] = array();
+
+            foreach($userPointers['program']->getCourses() as $course) {  
+                if ($progress = $course->getProgress(array(
+                    'conditions' => 'user_id = ?0',
+                    'bind' => array($this->user->id)
+                ))) {
+                    $result['courses'][] = $progress->toArray();
+                } else {
+                    $result['courses'][] = array(
+                        'user_id' => $this->user->_id,
+                        'class_id' => $course->id,
+                        'factor' => 0
+                    );
+                }
+                foreach($course->getUnits() as $unit) {
+                    if ($progress = $unit->getProgress(array(
+                        'conditions' => 'user_id = ?0',
+                        'bind' => array($this->user->id)
+                    ))) {
+                        $result['units'][] = $progress->toArray();
+                    } else {
+                        $result['courses'][] = array(
+                            'user_id' => $this->user->_id,
+                            'class_id' => $course->id,
+                            'factor' => 0
+                        );
+                    }
+
+                    
+                    foreach($unit->getContents() as $content) {
+                        if ($progress = $content->getProgress(array(
+                            'conditions' => 'user_id = ?0',
+                            'bind' => array($this->user->id)
+                        ))) {
+                            $result['contents'][] = $progress->toArray();
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+
 }

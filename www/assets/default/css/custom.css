@@ -2158,3 +2158,7 @@ a.list-group-item,
 #tab_program_description,#tab_course_info {
 	margin: 10px 10px 0 10px;
 }
+
+#content-widget .portlet-title {
+	height: 37px;
+}
