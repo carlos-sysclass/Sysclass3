@@ -1744,6 +1744,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		mod.programsCollection.reset(contentInfo.tree);
 
 		mod.progressCollection = new this.models.progress();
+
+
+		app.trigger("progress.started");
+
 		//mod.progressCollection.fetch();
 
 		//for(var i in contentCollection)

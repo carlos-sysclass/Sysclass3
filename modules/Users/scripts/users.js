@@ -274,15 +274,21 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		}
 	});
 
-
-
-
 	mod.on("start", function() {
+
 		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 			this.usersWidgetView = new usersWidgetViewClass({
 				el: '#users-panel',
 				model : app.userSettings,
 			});
 		}.bind(this));
+	});
+
+	this.listenTo(app, "progress.started", function() {
+		this.listenTo(app.module("portlet.content").progressCollection, "sync", function() {
+			if (this.usersWidgetView) {
+				this.usersWidgetView.statsModel.fetch();
+			}
+		});
 	});
 });
