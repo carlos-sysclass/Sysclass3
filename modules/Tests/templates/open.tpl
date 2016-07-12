@@ -5,7 +5,7 @@
 
     {include file="./open_content.tpl" T_TEST=$T_TEST }
 
-    <div class="form-actions nobg">
+    <div class="form-actions nobg text-center">
         {if $T_TEST.test_repetition <= 0 || $T_TEST.executions|@count < $T_TEST.test_repetition}
         <button class="btn btn-primary" type="submit">
             {if $last_try}
