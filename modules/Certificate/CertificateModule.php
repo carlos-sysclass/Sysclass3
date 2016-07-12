@@ -223,10 +223,11 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                     if ($notify) {
                         $this->notification->createForUser(
                             $user,
-                            $this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
+                            //$this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
+                            'Você tem um certificado disponível para o módulo %s', array($module->name)),
                             'info',
                             array(
-                                'text' => "View",
+                                'text' => "Visualizar",
                                 'link' => $this->getBasePath() . "print/" . $certificate->id
                             ),
                             false,
