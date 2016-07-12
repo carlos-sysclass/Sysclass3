@@ -19,7 +19,7 @@ class ClasseProgress extends Model
         $manager = $this->getDI()->get("modelsManager");
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
             FROM Sysclass\\Models\\Courses\\Lesson as l
-        	LEFT JOIN Sysclass\\Models\\Courses\\LessonProgress as lp
+        	LEFT OUTER JOIN Sysclass\\Models\\Courses\\LessonProgress as lp
                 ON (l.id = lp.lesson_id)
             WHERE l.class_id = ?0 
                 AND (lp.user_id = ?1 OR lp.user_id IS NULL)

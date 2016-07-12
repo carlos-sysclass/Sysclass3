@@ -31,7 +31,7 @@ class CourseProgress extends Model
 
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
             FROM Sysclass\\Models\\Courses\\Classe as c
-            LEFT JOIN Sysclass\\Models\\Courses\\ClasseProgress as cp
+            LEFT OUTER JOIN Sysclass\\Models\\Courses\\ClasseProgress as cp
                 ON (c.id = cp.class_id)
             WHERE class_id IN (
                 SELECT CourseClasses.class_id FROM Sysclass\Models\Courses\CourseClasses as CourseClasses WHERE CourseClasses.course_id = ?0
