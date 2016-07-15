@@ -21,7 +21,7 @@ _before_init_functions.push(function() {
 		{/if}
 	
 	</div>
-	<div class="col-md-5 col-sm-5 col-xs-9">
+	<div class="col-md-5 col-sm-5 col-xs-12">
 		<h4 class="users-panel-username">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
