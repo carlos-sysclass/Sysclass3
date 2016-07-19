@@ -17,11 +17,11 @@ _before_init_functions.push(function() {
 		{if ({$user_details.avatars[0].url})}
 			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="86%" alt="">
 		{else}
-			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="86%" alt="">
+			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.jpg'}" width="86%" alt="">
 		{/if}
 	
 	</div>
-	<div class="col-md-5 col-sm-5 col-xs-9">
+	<div class="col-md-5 col-sm-5 col-xs-12">
 		<h4 class="users-panel-username">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
@@ -49,7 +49,7 @@ _before_init_functions.push(function() {
 							<!--
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 							-->
-							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.count nofilter}</a>
+							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}" {if isset($notif.link.target)}target="{$notif.link.target}"{/if}>{$notif.count nofilter}</a>
 						{/if}
 						</div>
 					</div>

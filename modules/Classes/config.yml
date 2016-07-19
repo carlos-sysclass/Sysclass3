@@ -24,9 +24,6 @@ crud:
         - mData: name
           label: Name
 
-        - mData: description
-          label: Course
-
         - mData: active
           sType: table-boolean
           sClass: text-center

@@ -58,13 +58,15 @@ _before_init_functions.push(function() {
 								 {translateToken value="Program"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
@@ -74,7 +76,7 @@ _before_init_functions.push(function() {
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -95,11 +97,11 @@ _before_init_functions.push(function() {
 							<li class="">
 								<a data-toggle="tab" href="#tab_program_moreinfo"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="More Info"}</span></a>
 							</li>
-							-->
+							
 							<li class="">
 								<a data-toggle="tab" href="#tab_program_coordinator"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Coordinator"}</span></a>
 							</li>
-							<!--
+
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road Map"}</span></a>
 							</li>
@@ -138,8 +140,8 @@ _before_init_functions.push(function() {
 									</div>
 								</div>
 							</div>
-							-->
-							<div id="tab_program_coordinator" class="tab-pane active">
+							
+							<div id="tab_program_coordinator" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -147,6 +149,7 @@ _before_init_functions.push(function() {
 									</div>
 								</div>
 							</div>
+							-->
 							<!--
 							<div id="tab_course_roadmap" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
@@ -175,13 +178,15 @@ _before_init_functions.push(function() {
 								{translateToken value="Course"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Completed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Class"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
@@ -191,7 +196,7 @@ _before_init_functions.push(function() {
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Class"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -203,7 +208,7 @@ _before_init_functions.push(function() {
 					<div class="tabbable-custom">
 						<ul class="nav nav-tabs">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_course_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Info"}</span></a>
+								<a data-toggle="tab" href="#tab_course_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_course_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
@@ -426,13 +431,15 @@ _before_init_functions.push(function() {
 								{translateToken value="Unit"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
+								<span class="label label-success">
+									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+								</span>
 							</a>
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
@@ -442,7 +449,7 @@ _before_init_functions.push(function() {
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -465,6 +472,9 @@ _before_init_functions.push(function() {
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_unit_materials"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
+							</li>
+							<li class="">
+								<a data-toggle="tab" href="#tab_unit_tests"><i class="fa fa-list-ol"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
 							</li>
 							<!-- <li class="">
 								<a data-toggle="tab" href="#tab_unit_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
@@ -493,6 +503,8 @@ _before_init_functions.push(function() {
 										</tbody>
 									</table>
 								</div>
+							</div>
+							<div id="tab_unit_tests" class="tab-pane">
 							</div>
 							
 						    <!-- <div id="tab_unit_exercises" class="tab-pane">
@@ -544,14 +556,26 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_program_description-template">
 	<%= model.description %>
+	<% if (!_.isEmpty(model.objectives)) { %>
+		<hr />
+		<h5>{translateToken value="Objetives"}</h5>
+		
+		<%= model.objectives %>
+	<% } %>
+	<% if (!_.isEmpty(model.coordinator)) { %>
+		<hr />
+		<h5>{translateToken value="Coordinator"}</h5>
+		<table class="table table-striped table-bordered table-advance table-hover">
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= model.coordinator.name %> <%= model.coordinator.surname %></td>
+			</tr>
+		</table>
+	<% } %>
 </script>
 <script type="text/template" id="tab_course_moreinfo-template">
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
-			<tr>
-				<td>{translateToken value="Objetives"}</td>
-				<td><%= model.objectives %></td>
-			</tr>
 			<tr>
 				<td>{translateToken value="Goals"}</td>
 				<td><%= model.goals %></td>
@@ -627,21 +651,30 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_info-template">
 
-
-	<% if (!_.isEmpty(model.description)) { %>
-	<!-- <h5>{translateToken value="During this course you will..."}</h5> -->
 	<%= model.description %>
-	<hr />
+	<% if (!_.isEmpty(model.objectives)) { %>
+		<hr />
+		<h5>{translateToken value="Objetives"}</h5>
+		
+		<%= model.objectives %>
 	<% } %>
-	</div>
-	
+	<% if (!_.isEmpty(model.professor)) { %>
+		<hr />
+		<h5>{translateToken value="Coordinator"}</h5>
+		<table class="table table-striped table-bordered table-advance table-hover">
+			<tr>
+				<td>{translateToken value="Name"}</td>
+				<td><%= model.professor.name %> <%= model.professor.surname %></td>
+			</tr>
+		</table>
+	<% } %>
+	<!--
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
 				<td>{translateToken value="Prerequisite(s):"}</td>
 				<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 			</tr>
-			<!--
 			<tr>
 				<td>{translateToken value="Credit Hours:"}</td>
 				<td><strong class="text-default pull-right">80h</strong></td>
@@ -671,10 +704,11 @@ _before_init_functions.push(function() {
 				<td>{translateToken value="Required Equipment:"}</td>
 				<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 			</tr>
-			-->
 		</tbody>
 	</table>
+
 	<hr />
+	-->
 </script>
 
 <script type="text/template" id="tab_courses_instructor-template">

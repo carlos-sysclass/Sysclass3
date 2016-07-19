@@ -531,7 +531,7 @@ class LoginController extends \AbstractSysclassController
 	           	$postData = $this->request->getPost();
 
 				if ($user == $current_user) {
-
+					/*
 					if ($postData['login'] != $user->login) {
 						// CHECK IF EXISTS
 			            $exists = User::count(array(
@@ -543,6 +543,7 @@ class LoginController extends \AbstractSysclassController
 			            }
 			            $user->login = $postData['login'];
 					}
+					*/
 					if ($postData['password'] === $postData['password-confirm']) {
 						$user->password = $this->authentication->hashPassword($postData['password'], $user);
 
@@ -550,11 +551,14 @@ class LoginController extends \AbstractSysclassController
 						$user->reset_hash = null;
 
 						if ($user->save()) {
-							$message = $this->translate->translate("Password updated with success!");
+							$message = $this->translate->translate("Password updated with success! You can access the system using your e-mail and password");
 			            	$message_type = 'success';
 
 							// USER IS LOGGED IN, SO...
 							// 1.6 Check for license agreement
+							//$di->get("authentication")->logout($current_user);
+
+
 							if ($user->viewed_license == 0) {
 								$this->redirect("/agreement", $message, $message_type);
 							} else {
@@ -935,7 +939,7 @@ class LoginController extends \AbstractSysclassController
 			} else {
 				$this->redirect(
 					"login/reset",
-					$this->translate->translate('The system can\'t found the provided e-mail address.'),
+					$this->translate->translate('The system can\'t find the provided e-mail address.'),
 					'warning'
 				);
 			}

@@ -1,9 +1,9 @@
 <?php
 namespace Sysclass\Modules\Certificate;
 
-use Sysclass\Models\Courses\Course,
-    Sysclass\Models\Users\User,
+use Sysclass\Models\Users\User,
     Sysclass\Models\Certificates\Certificate,
+    Sysclass\Models\Content\Course,
     Sysclass\Models\Courses\Tests\Lesson as LessonTest,
     Dompdf\Dompdf,
     Dompdf\Canvas,
@@ -40,7 +40,13 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
         if ($certificates->count() > 0) {
             $info['link']  = array(
                 'text'  => $this->translate->translate('View'),
-                'link'  => $this->getBasePath() . "print/" . $certificates->getFirst()->id
+                'link'  => $this->getBasePath() . "print/" . $certificates->getFirst()->id,
+                'target' => '_blank'
+            );
+        } else {
+            $info['link']  = array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => "javascript:void(0);"
             );
         }
 
@@ -101,6 +107,16 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                             'unqueue' => true
                         );
                     }
+                } elseif ($type == "course") {
+                    if ($this->createCourseCertificate($data['user_id'], $data['entity_id'])) {
+                        return array(
+                            'status' => true,
+                            'unqueue' => true
+                        );
+                    } else {
+                        var_dump($data);
+                    }
+
                 }
                 return array(
                     'status' => false,
@@ -164,6 +180,72 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
         return false;
     }
 
+    // PREVIOUSLY CLASS!!!
+    public function createCourseCertificate($user_id, $course_id) {
+        // GET CLASS AND COURSE NAME
+        $module = Course::findFirstById($course_id);
+        $user = User::findFirstById($user_id);
+        if ($module && $user) {
+            $courses = $module->getCourses();
+            if ($courses->count() > 0) {
+                $course = $courses->getFirst();
+
+                $vars = array(
+                    //'username' => $user->name . " " . $user->surname,
+                    //'coursename' => $course->name,
+                    //'modulename' => $module->name,
+                    'timestamp' => time(),
+                    'type' => 'course',
+                    'entity_id' => $course_id,
+                    'user_id' => $user_id
+                );
+
+                $certificate = Certificate::findFirst(array(
+                    'conditions' => "user_id = ?0 AND entity_id = ?1 AND type = 'course'",
+                    'bind' => array($user_id, $course_id)
+                ));
+
+                $notify = false;
+
+                if (!$certificate) {
+                    $certificate = new Certificate();
+                    $certificate->user_id = $user_id;
+                    $certificate->entity_id = $course_id;
+                    $certificate->type = 'course';
+
+                    $notify = true;
+                }
+                $certificate->name = $module->name;
+
+                $certificate->vars = json_encode($vars);
+                if ($certificate->save()) {
+
+                    if ($notify) {
+                        $this->notification->createForUser(
+                            $user,
+                            //$this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
+                            'Você tem um certificado disponível para o módulo %s', array($module->name),
+                            'info',
+                            array(
+                                'text' => "Visualizar",
+                                'link' => $this->getBasePath() . "print/" . $certificate->id
+                            ),
+                            false,
+                            "CERTIFICATE:" . "U" . $certificate->user_id . "E" . $certificate->entity_id . "T" . $certificate->type
+                        );
+                    } else {
+                        // UPDATE NOTIFICATION
+
+                    }
+
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
     /**
     * [ add a description ]
     *
@@ -198,6 +280,30 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
             $vars = json_decode($certificate->vars, true);
 
+            // CALCULATE
+            switch($certificate->type) {
+                case 'course' : {
+                    $module = Course::findFirstById($certificate->entity_id);
+                    if ($module) {
+                        $user = User::findFirstById($certificate->user_id);
+
+                        $vars['modulename'] = $module->name;
+                        $vars['username'] = $user->name . " " . $user->surname;
+                    } else {
+                        $this->redirect(
+                            '/dashboard',
+                            $this->translate->translate("Warning: An error occured when the system is trying to complete your request!"),
+                            'warning'
+                        );
+                        
+                        return;
+                    }
+                    break;
+                }
+            }
+
+
+            $vars['datetime'] = \DateTime::createFromFormat("U", $vars['timestamp']);
             $this->view->setVars($vars);
             //$course->complete();
             //$this->view->setVar("course", $course->getCourse());    
@@ -266,6 +372,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
     * [ add a description ]
     *
     * @Get("/view/{id}")
+    * @deprecated 3.2.0.150
     */    
     public function viewCertificate($id)
     {

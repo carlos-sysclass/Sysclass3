@@ -27,7 +27,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
     }
     */
     /* IWidgetContainer */
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         if (in_array('tutoria.widget', $widgetsIndexes)) {
             $this->putScript("plugins/jquery.pulsate.min");
 

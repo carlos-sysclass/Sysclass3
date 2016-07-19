@@ -160,7 +160,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      * @param  array  $widgetsIndexes [description]
      * @return [type]                 [description]
      */
-	public function getWidgets($widgetsIndexes = array()) {
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
     	if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->user;
 
@@ -186,9 +186,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					$data['notification'][$key] = $mod->getSummary();
 				}
 			}
+//                var_dump($data['notification']);
 
-			$data['notification'] = $this->module("dashboard")
-				->sortModules("users.overview.notification.order", $data['notification']);
+			$data['notification'] = $caller->sortModules("users.overview.notification.order", $data['notification']);
 
 			$this->putModuleScript("users");
 

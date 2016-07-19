@@ -655,7 +655,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             foreach($itemsData as $key => $item) {
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
-                        'icon'  => 'icon-edit',
+                        'icon'  => 'fa fa-pencil', 
                         //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
@@ -664,7 +664,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         )
                     ),
                     'translate-windows'  => array(
-                        'icon'  => 'icon-reorder',
+                        'icon'  => 'fa fa-reorder',
                         //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(

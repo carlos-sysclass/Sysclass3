@@ -30,7 +30,7 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
     }
 
     // IWidgetContainer
-    public function getWidgets($widgetsIndexes = array())
+    public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
     	$widgets = array();
 

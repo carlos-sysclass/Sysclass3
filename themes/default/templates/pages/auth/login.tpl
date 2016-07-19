@@ -47,13 +47,18 @@
 					<input type="checkbox" name="remeber" value="1"/>
 					<label class="checkbox">{translateToken value="Remember Me"}</label>
 					-->
-					<button name="submit_login" type="submit" class="btn green pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
+					<button name="submit_login" type="submit" class="btn btn-success pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
 						
 					</button>
 					{if	$T_CONFIGURATION.enable_facebook_login}
 					<button name="submit_login" type="submit" class="btn btn-primary" value="Click to access" ><i class="ti-facebook"></i>acessar utilizando o facebook
 						
 					</button>
+					{/if}
+					{if $T_CONFIGURATION.enable_forgot_form}
+					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}
+					</button>
+
 					{/if}
 				</div>
 			</div>
@@ -87,12 +92,6 @@
 				</ul>
 			</div>
  -->			{/if}
-			{if $T_CONFIGURATION.enable_forgot_form}
-			<div class="forget-password">
-				<!--<h4>{translateToken value="Forgot your password?"}</h4>-->
-				<a href="javascript:;" id="forget-password">{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}</a>
-			</div>
-			{/if}
 			{if $T_CONFIGURATION.signup_enable}
 				<div class="create-account">
 					<p>
@@ -136,15 +135,15 @@
 		<!-- END FORGOT PASSWORD FORM -->
 
 		<!-- BEGIN COPYRIGHT -->
-		
-	</div>
-
-	<div class="contentcopyright">
-		<div class="copyright">
-			&copy; 2016 • WiseFlex Knowledge Systems LLC. <br>{$T_SYSCONFIG.deploy.base_version} Build {$T_SYSCONFIG.deploy.build_number}
-			<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
+		<div class="contentcopyright">
+			<div class="copyright">
+				&copy; 2016 • WiseFlex Knowledge Systems LLC. <br>{$T_SYSCONFIG.deploy.base_version} Build {$T_SYSCONFIG.deploy.build_number}
+				<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
+			</div>
 		</div>
 	</div>
+
+
 	
 	{if $T_OPEN_LOGIN_SECTION == 'reset'}
 		<style type="text/css">

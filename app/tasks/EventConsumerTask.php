@@ -36,7 +36,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                 //
                 $status = $this->mail->send(
                     $user->email, 
-                    "Confirmação de Matrícula Projeto Itaitu Envolve",
+                    "Confirmação de Matrícula Projeto Itaipu Envolve",
                     "email/" . $this->sysconfig->deploy->environment . "/activate.email",
                     true,
                     array(

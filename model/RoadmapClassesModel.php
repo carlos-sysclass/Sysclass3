@@ -24,7 +24,6 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
             cl.`area_id` as 'classe#area_id',
             cl.`name` as 'classe#name',
             cl.`description` as 'classe#description',
-            cl.`instructor_id` as 'classe#instructor_id',
             COUNT(l.id) as 'classe#total_lessons',
             cl.`active` as 'classe#active',
             c.`id` as 'course#id',

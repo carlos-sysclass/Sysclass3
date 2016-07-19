@@ -48,7 +48,7 @@
                         {translateToken value="Test Details"} </span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body test-details">
 
                     <p class="">
                         <span>
@@ -82,7 +82,7 @@
                         <span>
                             <i class="fa fa-lg fa-repeat text-primary "></i>
                             {translateToken value="Repetition Limit"}:
-                        </span>
+                        </span> 
                         {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
                             {$T_TEST.executions|@count}/{$T_TEST.test.test_repetition}
@@ -123,7 +123,7 @@
                          {translateToken value="Your last execution"} </span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body test-details">
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
@@ -165,7 +165,6 @@
                                     {$last_try.user_grade}
                                 {else}
                                     {($last_try.user_score*100)|round:2}%
-
                                 {/if}
                             </span>
                         </strong>

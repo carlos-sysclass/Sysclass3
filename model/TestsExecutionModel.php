@@ -26,13 +26,14 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             te.user_score,
             te.user_points,
             te.user_grade,
+            te.pass,
             u.name as 'user#name',
             u.surname as 'user#surname',
             u.login as 'user#login',
             t.time_limit as 'test#timelimit',
             t.grade_id as 'test#grade_id',
-            t.test_repetition as 'test#test_repetition'/*,
-            t.**/
+            t.minimum_score as 'test#minimum_score',
+            t.test_repetition as 'test#test_repetition'
         FROM `mod_tests_execution` te
         LEFT JOIN mod_tests t ON (t.id = te.test_id)
         LEFT JOIN users u ON (u.id = te.user_id)";
@@ -56,6 +57,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         if ($now - $progress['started'] > $progress['time_elapsed']) {
             $progress['time_elapsed'] = $now - $progress['started'];
         }
+        
         $this->update(
             array(
                 'pending' => '0',
@@ -67,10 +69,11 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
                 'pending' => 1
             )
         );
+        
 
         $pass = $this->calculateUserScore($test_try);
 
-        $evManager = \Phalcon\DI::getDefault()->get("eventsManager");
+        //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
 
         $lessonProgress = LessonProgress::findFirst(array(
@@ -103,32 +106,22 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
         if (!$classProgress) {
             $classProgress = new ClasseProgress();
-            $classProgress->user_id = $this->user_id;
+            $classProgress->user_id = $test_try['user_id'];
             $classProgress->class_id = $unit->class_id;
             $classProgress->save();
         }
-        
+
         $status = $classProgress->updateProgress();
 
-        var_dump($status);
-
-        exit;
-
+        /*
         $evData = array(
             'entity_id' => $test_try['test_id'],
             'user_id' => $test_try['user_id'],
             'trigger' => 'test'
         );
-
-        
-
         $evManager->fire("certificate:generate", $this, $evData);
-
-
         $evManager->fire("certificate:generate", $this, $evData);
-
-
-
+        */
     }
 
     public function calculateUserScore($execution) {
@@ -183,7 +176,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             }
 
-            $pass = $userScore > ($testData->minimum_score / 100);
+            $pass = $userScore > (floatval($testData['minimum_score']) / 100);
 
             $this->update(
                 array(
@@ -218,7 +211,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             $test_repetition = intval($test_repetition);
 
-            if ($test_repetition == -1 || $test_repetition > count($executions)) {
+            if ($test_repetition <= 0 || $test_repetition > count($executions)) {
                 return count($executions)+1;
             } else {
                 return false;
@@ -339,14 +332,24 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         } else {
             $this->rollProgress($test_try, $progress);
 
-            $data['answers'] = json_encode($data['answers']);
-
             if ($data['complete'] == "1") {
                 $this->completeTest($data, $progress);
-                return true;
             }
+            $data['answers'] = json_encode($data['answers']);
 
-            return parent::setItem($data, $identifier);
+            unset($data['user_score']);
+            unset($data['user_points']);
+            unset($data['user_grade']);
+            unset($data['user_grade']);
+            unset($data['pending']);
+            unset($data['completed']);
+            unset($data['time_elapsed']);
+            unset($data['pass']);
+
+            $status =  parent::setItem($data, $identifier);
+
+            return true;            
+            
         }
         //var_dump($data);
         //exit;

@@ -13,6 +13,15 @@ $di->setShared("user", function() use ($di, $eventsManager) {
     try {
         $user = $di->get("authentication")->checkAccess();
 
+        if ($user) {
+            $userlanguage = $user->getLanguage();
+
+            if ($userlanguage) {
+                $locale = $userlanguage->code . "_" . $userlanguage->country_code . "." . "utf8";
+                setlocale(LC_ALL, $locale);
+            }
+        }
+
         return $user;
     } catch (AuthenticationException $e) {
         return false;

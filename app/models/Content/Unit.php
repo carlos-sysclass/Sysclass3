@@ -93,80 +93,84 @@ class Unit extends Model
             $user = \Phalcon\DI::getDefault()->get('user');
         }
         $courses = $user->getPrograms();
-        $course_ids = array_column($courses->toArray(), 'id');
 
-        switch($by) {
-            case 'content' : {
-                // FROM CONTENT, LOAD ALL PARENTS
-                $content = Content::findFirstById($entity_id);
-                if (!$content) {
-                    return self::getContentPointers($user, 'default');
-                }
-                $unit = $content->getUnit();
-                $course = $unit->getCourse();
-                $program = $course->getPrograms()->getFirst();
-                break;
-            }
-            case 'unit' : {
-                // FROM UNIT, LOAD ALL PARENTS AND GET THE FIRST CONTENT
-                // FROM CONTENT, LOAD ALL PARENTS
-                $unit = Unit::findFirstById($entity_id);
-                if (!$unit) {
-                    return self::getContentPointers($user, 'default');
-                }
-                $content = $unit->getContents()->getFirst();
-                $course = $unit->getCourse();
-                $program = $course->getPrograms()->getFirst();
-                break;
-            }
-            case 'course' : {
-                // FROM COURSE, LOAD THE PROGRAM AND GET THE FIRST UNIT, AND FIRST CONTENT
-                // FROM UNIT, LOAD ALL PARENTS AND GET THE FIRST CONTENT
-                // FROM CONTENT, LOAD ALL PARENTS
-                $course = Course::findFirstById($entity_id);
-                if (!$course) {
-                    return self::getContentPointers($user, 'default');
-                }
-                $unit = $course->getLessons()->getFirst();
-                $content = $unit->getContents()->getFirst();
-                $program = $course->getPrograms()->getFirst();
-                break;
-            }
-            case 'program' : {
-                // FROM COURSE, GET THE FIRST COURSE, AND THE FIRST UNIT, AND THE FIRST CONTENT
-                // FROM COURSE, LOAD THE PROGRAM AND GET THE FIRST UNIT, AND FIRST CONTENT
-                // FROM UNIT, LOAD ALL PARENTS AND GET THE FIRST CONTENT
-                // FROM CONTENT, LOAD ALL PARENTS
-                $program = Program::findFirstById($entity_id);
-                if (!$program) {
-                    return self::getContentPointers($user, 'default');
-                }
-                $course = $program->getClasses()->getFirst();
-                $unit = $course->getLessons()->getFirst();
-                $content = $unit->getContents()->getFirst();
+        if ($courses->count() > 0) {
+            $course_ids = array_column($courses->toArray(), 'id');
 
-                break;
+            switch($by) {
+                case 'content' : {
+                    // FROM CONTENT, LOAD ALL PARENTS
+                    $content = Content::findFirstById($entity_id);
+                    if (!$content) {
+                        return self::getContentPointers($user, 'default');
+                    }
+                    $unit = $content->getUnit();
+                    $course = $unit->getCourse();
+                    $program = $course->getPrograms()->getFirst();
+                    break;
+                }
+                case 'unit' : {
+                    // FROM UNIT, LOAD ALL PARENTS AND GET THE FIRST CONTENT
+                    // FROM CONTENT, LOAD ALL PARENTS
+                    $unit = Unit::findFirstById($entity_id);
+                    if (!$unit) {
+                        return self::getContentPointers($user, 'default');
+                    }
+                    $content = $unit->getContents()->getFirst();
+                    $course = $unit->getCourse();
+                    $program = $course->getPrograms()->getFirst();
+                    break;
+                }
+                case 'course' : {
+                    // FROM COURSE, LOAD THE PROGRAM AND GET THE FIRST UNIT, AND FIRST CONTENT
+                    // FROM UNIT, LOAD ALL PARENTS AND GET THE FIRST CONTENT
+                    // FROM CONTENT, LOAD ALL PARENTS
+                    $course = Course::findFirstById($entity_id);
+                    if (!$course) {
+                        return self::getContentPointers($user, 'default');
+                    }
+                    $unit = $course->getLessons()->getFirst();
+                    $content = $unit->getContents()->getFirst();
+                    $program = $course->getPrograms()->getFirst();
+                    break;
+                }
+                case 'program' : {
+                    // FROM COURSE, GET THE FIRST COURSE, AND THE FIRST UNIT, AND THE FIRST CONTENT
+                    // FROM COURSE, LOAD THE PROGRAM AND GET THE FIRST UNIT, AND FIRST CONTENT
+                    // FROM UNIT, LOAD ALL PARENTS AND GET THE FIRST CONTENT
+                    // FROM CONTENT, LOAD ALL PARENTS
+                    $program = Program::findFirstById($entity_id);
+                    if (!$program) {
+                        return self::getContentPointers($user, 'default');
+                    }
+                    $course = $program->getClasses()->getFirst();
+                    $unit = $course->getLessons()->getFirst();
+                    $content = $unit->getContents()->getFirst();
+
+                    break;
+                }
+                case 'default' :
+                default : {
+                    $program = $user->getPrograms()->getFirst();
+                    $course = $program->getCourses()->getFirst();
+                    $unit = $course->getLessons()->getFirst();
+                    $content = $unit->getContents()->getFirst();
+                    break;
+                }
             }
-            case 'default' :
-            default : {
-                $program = $user->getPrograms()->getFirst();
-                $course = $program->getCourses()->getFirst();
-                $unit = $course->getLessons()->getFirst();
-                $content = $unit->getContents()->getFirst();
-                break;
+
+            if (!in_array($program->id, $course_ids)) {
+                return false;
             }
+
+            return array(
+                'program'   => $program,
+                'course'    => $course,
+                'unit'      => $unit,
+                'content'   => $content
+            );
         }
-
-        if (!in_array($program->id, $course_ids)) {
-            return false;
-        }
-
-        return array(
-            'program'   => $program,
-            'course'    => $course,
-            'unit'      => $unit,
-            'content'   => $content
-        );
+        return false;
     }
 
     public function getFullTree() {

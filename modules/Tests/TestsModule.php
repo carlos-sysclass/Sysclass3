@@ -332,6 +332,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         //
         if ($userData = $this->getCurrentUser()) {
             // START PROGRESS
+            $this->disableSection('title');
 
             $testModel = TestLesson::findFirstById($identifier);
 
@@ -389,7 +390,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'user_id' => $this->user->id
             ));
 
-
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
 
@@ -428,6 +428,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
         //
         if ($userData = $this->getCurrentUser()) {
+            $this->disableSection('title');
+
             // WHO CAN VIEW THE TEST????
             // 1 - THE USER ITSELF
             // 2 - THE TEST INSTRUCTOR

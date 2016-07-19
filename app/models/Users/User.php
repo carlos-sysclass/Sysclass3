@@ -103,6 +103,23 @@ class User extends Model
         }
     }
 
+    public function beforeDelete() {
+        // MOVE ALL DROPBOX FILES TO ADMINISTRATOR
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        $phql = "UPDATE Sysclass\\Models\\Dropbox\\File
+            SET owner_id = :owner_id: 
+            WHERE owner_id = :user_id:";
+
+        $status = $manager->executeQuery(
+            $phql,
+            array(
+                'owner_id' => 1,
+                'user_id' => $this->id
+            )
+        );
+    }
+
     public static function specialFind($filters) {
         $users = array();
         foreach($filters as $filter => $value) {
@@ -162,6 +179,15 @@ class User extends Model
             $roles = array_map("unserialize", array_unique(array_map("serialize", $roles)));
         }
         return $roles;
+    }
+
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        parent::assign($data, $dataColumnMap, $whiteList);
+
+        if (array_key_exists('how_did_you_know', $data) && is_array($data['how_did_you_know'])) {
+            $this->how_did_you_know = implode(",", $data['how_did_you_know']);
+        }
+        return $this;
     }
 
     public function hasRole($role) {
