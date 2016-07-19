@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Content\Course
+ */
 namespace Sysclass\Models\Courses;
 
 use Plico\Mvc\Model;
@@ -10,11 +13,33 @@ class Classe extends Model
         $this->setSource("mod_classes");
 
         $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Unit",
+            "class_id",
+            array(
+                'alias' => 'Units'
+            )
+        );
+
+        $this->hasMany(
         	"id",
         	"Sysclass\\Models\\Courses\\Lesson",
         	"class_id",
-        	array('alias' => 'Lessons')
+        	array(
+                'alias' => 'Lessons',
+                'conditions' => "type = 'lesson'"
+            )
         );
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\\Lesson",
+            "class_id",
+            array(
+                'alias' => 'Tests',
+                'conditions' => "type = 'test'"
+            )
+        );
+
 
 		$this->hasOne(
             "id",
@@ -80,6 +105,23 @@ class Classe extends Model
         }
 
         return $status->success();
+    }
+
+    public function getFullTree() {
+        $result = $this->toArray();
+        if ($professor =  $this->getProfessor()) {
+            $result['professor'] = $professor->toArray();
+        } else {
+            $result['professor'] = array();
+        }
+        $result['units'] = array();
+        $units = $this->getUnits();
+        foreach($units as $unit) {
+            $result['units'][] = $unit->getFullTree();
+        }
+
+        var_dump($result);
+        exit;
     }
 
 }

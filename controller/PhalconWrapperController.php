@@ -19,6 +19,8 @@ abstract class PhalconWrapperController extends Controller
 	public static $t = null;
 	protected static $db;
 
+	protected $disabledSections = array();
+
     public function initialize()
     {
 		//if (is_null(self::$t)) {
@@ -314,6 +316,7 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function notAuthenticatedError()
 	{
+		debug_print_backtrace();
 		return $this->createResponse(403, "You don't have access to this resource", "error", "advise");
 	}
 
@@ -353,6 +356,15 @@ abstract class PhalconWrapperController extends Controller
 		}
 		return $this->createResponse(200, $message, $type, "advise");
 	}
+
+	protected function entryPointNotFoundError($redirect = null)
+	{
+		if (!is_null($redirect)) {
+			return $this->redirect($redirect, "Rota não encontrada", "error", 404);
+		}
+		return $this->createResponse(404, "Não encontrado", "error", "advise");
+	}
+
 
 
 	public function getHttpData($args)
@@ -614,6 +626,8 @@ abstract class PhalconWrapperController extends Controller
 			'logout_url'	=> $this->getBasePath() . "logout.html"
 		));
 		*/
+
+		$this->putItem("disabled_sections", $this->disabledSections);
 	
 		return true;
 	}
@@ -794,6 +808,8 @@ abstract class PhalconWrapperController extends Controller
 	}
 
 
-
+	public function disableSection($section_id) {
+		$this->disabledSections[$section_id] = true;
+	}
 
 }

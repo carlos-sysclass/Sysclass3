@@ -5,19 +5,26 @@ use Phalcon\Mvc\User\Component,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Services\Authentication\Interfaces\IAuthentication,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Users\UserApiTokens;
+    Sysclass\Models\Users\UserApiTokens,
+    Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class Sysclass extends Component implements IAuthentication
 {
     public function login($info, $options = null)
     {
+        $options = is_null($options) ? array() : $options;
+
         if ($info instanceof User) {
             $user = $info;
             $password = @isset($options['password']) ? $options['password'] : null;
             $secret_key = @isset($options['secret_key']) ? $options['secret_key'] : null;
         } else {
             if (array_key_exists('login', $info)) {
-                $user = User::findFirstByLogin($info['login']);
+                if (array_key_exists('isEmail', $options) && $options['isEmail']) {
+                    $user = User::findFirstByEmail($info['login']);
+                } else {
+                    $user = User::findFirstByLogin($info['login']);
+                }
             } elseif (array_key_exists('id', $info)) {
                 $user = User::findFirstById($info['id']);
             }
@@ -60,6 +67,20 @@ class Sysclass extends Component implements IAuthentication
             $user = new User();
             $user->assign($info);
         }
+
+        // OPTIONS NOT PUT IN SYSTEM ALREADY
+        //if ($this->configuration->get("block_multiple_signup_for_same_email")) {
+            $exists = User::count(array(
+                'conditions' => "email = ?0",
+                'bind' => array($user->email)
+            ));
+
+            if ($exists > 0) {
+                throw new AuthenticationException("SIGNUP_EMAIL_ALREADY_EXISTS", AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS);
+                return false;
+            }
+        //}
+
         /*
         if (empty($user->login)) {
             $user->login = $user->createNewLogin();
@@ -71,6 +92,8 @@ class Sysclass extends Component implements IAuthentication
             $user->password = $this->hashPassword($password, $user);
         }
         */
+        $user->language_id = 0;
+        
         if ($this->configuration->get("signup_must_accept_license")) {
             $user->viewed_license = 0;
         } else {

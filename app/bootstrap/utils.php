@@ -9,7 +9,8 @@ use
     Plico\Php\Helpers\Strings as stringsHelper,
     Plico\Php\Helpers\Arrays as arrayHelper,
     Phalcon\Flash\Direct as FlashDirect,
-    Phalcon\Flash\Session as FlashSession;
+    Phalcon\Flash\Session as FlashSession,
+    Phalcon\Security\Random;
 
 
 /**
@@ -46,7 +47,10 @@ $di->setShared("resourceUrl", function() use ($di, $environment) {
     return $url;
 });
 
-
+$di->setShared("random", function() {
+    $random = new Random();
+    return $random;
+});
 
 
 

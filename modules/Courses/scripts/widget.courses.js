@@ -697,6 +697,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					model : this.model
 				});
 
+				console.warn(this.model.toJSON());
+
 				this.blockUi('No Class Selected');
 
 				this.updateCollectionIndex();
@@ -746,7 +748,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			onBlockableItemClick : function(e) {
 				$("[href='#course-tab']").click();
 				$("[href='#tab_course_classes']").click();
-
 			}
 		});
 		var classInfoTabViewClass = Backbone.View.extend({
@@ -822,6 +823,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			testInfoModule : app.module("dialogs.tests.info"),
 			tagName : "tr",
 			template : _.template($("#tab_class_tests-item-template").html(), null, {variable: "model"}),
+
 			setLessonId : function(e) {
 				app.userSettings.set("lesson_id", this.model.get("id"));
 			},
@@ -882,7 +884,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		var classTestsTabViewClass = classLessonsTabViewClass.extend({
 			childViewClass : classTestsTabViewItemClass,
 			makeCollection: function() {
-				var collection = new mod.collections.tests(this.model.get("tests"));
+				var collection = new mod.collections.lessons(this.model.get("classe.tests"));
+				//var collection = new mod.collections.tests(this.model.get("tests"));
 				return collection;
 			}
 		});

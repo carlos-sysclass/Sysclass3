@@ -18,7 +18,7 @@ $di->set('view', function() use ($environment, $di) {
             $smarty = new SmartyEngine($view, $di);
 
             $smarty->setOptions(array(
-                'force_compile'     => false,
+                'force_compile'     => true,
                 'debugging'         => true,
                 'caching'           => false,
                 'cache_lifetime'    => 120,
@@ -79,6 +79,23 @@ $di->set('view', function() use ($environment, $di) {
                 'compiledPath' => __DIR__ . "/../../cache/view/volt/compiled/",
                 //'compileAlways'     => true, // performance decrease
             ));
+
+
+            $volt->getCompiler()->addFunction('strftime', 'strftime');
+            /*
+            $volt->getCompiler()->addFunction(
+                'strftime',
+                function($key, $params) {
+                    foreach($params as $param) {
+                        $values[] = $param['expr']['value'];
+                    }
+                    print_r($params);
+                    exit;
+                    return "\\strftime({$format}, {$timestamp})";
+                }
+            );
+            */
+
             // Set some options here
             return $volt;
         }

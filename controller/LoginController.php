@@ -5,6 +5,7 @@ use Phalcon\DI,
 	Sysclass\Models\Users\User,
 	Sysclass\Models\I18n\Language,
 	Sysclass\Models\Users\UserPasswordRequest,
+	Sysclass\Models\Enrollments\Enroll,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class LoginController extends \AbstractSysclassController
@@ -67,6 +68,10 @@ class LoginController extends \AbstractSysclassController
 		if ($this->dispatcher->wasForwarded()) {
 			$this->putItem("requested_uri", $this->request-> getURI());
 		}
+
+		$enroll = Enroll::findFirst();
+
+		$this->putItem("default_enroll_link", $enroll->identifier);
 
 		parent::display('pages/auth/login.tpl');
 	}
@@ -244,12 +249,19 @@ class LoginController extends \AbstractSysclassController
 		// DEFINE AUTHENTICATION BACKEND
 
 		//$authBackend = $di->get("authentication")->getBackend($data['login']);
-		//
+		
+
+
 		try {
+			$is_email = filter_var($data['login'], FILTER_VALIDATE_EMAIL);
+
 			$user = $di->get("authentication")->login(
 				array(
 					'login' => $data['login'],
 					'password' => $data['password']
+				),
+				array(
+					'isEmail' => (bool)$is_email
 				)
 			);
 
@@ -453,6 +465,8 @@ class LoginController extends \AbstractSysclassController
 					$this->putScript("plugins/bigvideo/bigvideo");
 					$this->putScript("scripts/pages/reset");
 
+					$this->putItem('is_confirmation', true);
+
 					$this->putItem('form_action', "/confirm/{$hash}");
 					$this->putItem('user', $di->get("user")->toArray());
 
@@ -517,7 +531,7 @@ class LoginController extends \AbstractSysclassController
 	           	$postData = $this->request->getPost();
 
 				if ($user == $current_user) {
-
+					/*
 					if ($postData['login'] != $user->login) {
 						// CHECK IF EXISTS
 			            $exists = User::count(array(
@@ -529,6 +543,7 @@ class LoginController extends \AbstractSysclassController
 			            }
 			            $user->login = $postData['login'];
 					}
+					*/
 					if ($postData['password'] === $postData['password-confirm']) {
 						$user->password = $this->authentication->hashPassword($postData['password'], $user);
 
@@ -536,11 +551,14 @@ class LoginController extends \AbstractSysclassController
 						$user->reset_hash = null;
 
 						if ($user->save()) {
-							$message = $this->translate->translate("Password updated with success!");
+							$message = $this->translate->translate("Password updated with success! You can access the system using your e-mail and password");
 			            	$message_type = 'success';
 
 							// USER IS LOGGED IN, SO...
 							// 1.6 Check for license agreement
+							//$di->get("authentication")->logout($current_user);
+
+
 							if ($user->viewed_license == 0) {
 								$this->redirect("/agreement", $message, $message_type);
 							} else {
@@ -549,13 +567,10 @@ class LoginController extends \AbstractSysclassController
 						}
 					}
 				} else {
-					var_dump(2);
-					exit;
 					$di->get("authentication")->logout($user);
 					throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
 				}
 			} catch (AuthenticationException $e) {
-				var_dump($e);
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
 			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
@@ -585,8 +600,6 @@ class LoginController extends \AbstractSysclassController
 					}
 				}
 			}
-		var_dump(3);
-		exit;
 		$this->redirect($url, $message, $message_type);
 	}
 
@@ -619,6 +632,8 @@ class LoginController extends \AbstractSysclassController
 
 	            if ($passwordRequest) {
 	            	$user = $passwordRequest->getUser();
+
+	            	$this->putItem("user", $user->toArray());
 	            	//Date
 	            	//
 	            	$valid_until = new \DateTime($passwordRequest->valid_until);
@@ -707,6 +722,8 @@ class LoginController extends \AbstractSysclassController
 
 			$user = $passwordRequest->getUser();
 
+			$postData = $this->request->getPost();
+
 			if ($postData['password'] === $postData['password-confirm']) {
 				$user->password = $this->authentication->hashPassword($postData['password'], $user);
 
@@ -718,7 +735,11 @@ class LoginController extends \AbstractSysclassController
 					$message = $this->translate->translate("Password updated with success! Please enter you login details below.");
 	            	$message_type = 'success';
 
+	            	$this->redirect("/login", $message, $message_type);
+
+
 					// USER IS LOGGED IN, SO...
+					/*
 					$di->get("authentication")->login($user, array('disableBackends' => true));
 					// 1.6 Check for license agreement
 					if ($user->viewed_license == 0) {
@@ -726,6 +747,7 @@ class LoginController extends \AbstractSysclassController
 					} else {
 						$this->redirect("/dashboard", $message, $message_type);
 					}
+					*/
 				}
 			} else {
 				$di->get("authentication")->logout($user);
@@ -822,7 +844,7 @@ class LoginController extends \AbstractSysclassController
 		if ($user) {
 			$this->putItem("LOGGED_USER", $user->toFullArray(array("Avatars")));
 
-			$this->putCss("css/pages/lock");
+			$this->putCss("css/pages/lock"); 
 			$this->putScript("scripts/lock");
 			parent::display('pages/auth/lock.tpl');
 		} else {
@@ -917,7 +939,7 @@ class LoginController extends \AbstractSysclassController
 			} else {
 				$this->redirect(
 					"login/reset",
-					$this->translate->translate('The system can\'t found the provided e-mail address.'),
+					$this->translate->translate('The system can\'t find the provided e-mail address.'),
 					'warning'
 				);
 			}

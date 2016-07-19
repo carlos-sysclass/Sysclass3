@@ -1,5 +1,5 @@
 {assign var="last_try" value=$T_TEST.executions|@end}
-{if $T_TEST.test_repetition > 0 && $T_TEST.executions|@count >= $T_TEST.test_repetition}
+{if $T_TEST.test.test_repetition > 0 && $T_TEST.test.executions|@count >= $T_TEST.test.test_repetition}
     <div class="alert alert-warning alert-dismissable">
         <button data-dismiss="alert" class="close" type="button"></button>
         <i class="fa fa-warning"></i>
@@ -21,11 +21,11 @@
                     <strong class="text-primary">{$T_TEST.info}</strong>
                 </p>
             {/if}
-            {if $T_TEST.instructors|@count > 0}
+            {if $T_TEST.test.instructors|@count > 0}
             <p class="">
                 <span>{translateToken value="Instructors"}:</span>
                 <strong class="text-primary pull-right">
-                    {foreach $T_TEST.instructors as $instructor}
+                    {foreach $T_TEST.test.instructors as $instructor}
                         {$instructor.name} {$instructor.surname}
                         {if !$instructor@last}
                             ,&nbsp;
@@ -45,17 +45,17 @@
                     <div class="caption">
                         <i class="fa fa-list-ol"></i>
                         <span class="hidden-480">
-                        Test Details </span>
+                        {translateToken value="Test Details"} </span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body test-details">
 
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack text-primary "></i>
                             {translateToken value="Total Questions"}:
                         </span>
-                        <strong class="text-primary pull-right">{$T_TEST.total_questions}</strong>
+                        <strong class="text-primary pull-right">{$T_TEST.questions|@count}</strong>
                     </p>
                     <hr />
                     <p class="">
@@ -65,7 +65,7 @@
                                 {translateToken value="Time limit"}:
                             </span>
                             <strong class="text-primary pull-right">
-                            {$T_TEST.time_limit} {translateToken value="minutes"}
+                            {$T_TEST.test.time_limit} {translateToken value="minutes"}
                             </strong>
                         {else}
                             <span>
@@ -82,10 +82,16 @@
                         <span>
                             <i class="fa fa-lg fa-repeat text-primary "></i>
                             {translateToken value="Repetition Limit"}:
-                        </span>
+                        </span> 
+                        {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
-                            {$T_TEST.executions|@count}/{$T_TEST.test_repetition}
+                            {$T_TEST.executions|@count}/{$T_TEST.test.test_repetition}
                         </strong>
+                        {else}
+                        <strong class="text-primary pull-right">
+                            {translateToken value="No repetition limit"}
+                        </strong>
+                        {/if}                        
                     </p>
                     <hr />
                     <p class="">
@@ -114,16 +120,16 @@
                     <div class="caption">
                         <i class="fa fa-user"></i>
                         <span class="hidden-480">
-                        Your last execution </span>
+                         {translateToken value="Your last execution"} </span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body test-details">
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
                             {translateToken value="You Answered"}:
                         </span>
-                        <strong class="{$text_class} pull-right">{$last_try.total_questions_completed}</strong>
+                        <strong class="{$text_class} pull-right">{$last_try.answers|json_decode:true|array_filter:'strlen'|count}</strong>
                     </p>
                     <hr />
                     <p class="">
@@ -159,7 +165,6 @@
                                     {$last_try.user_grade}
                                 {else}
                                     {($last_try.user_score*100)|round:2}%
-
                                 {/if}
                             </span>
                         </strong>

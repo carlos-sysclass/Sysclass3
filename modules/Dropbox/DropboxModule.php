@@ -53,7 +53,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
             $stream = $this->storage->getFilestream($model);
 
             $image = new \Plico\Php\Image();
-            $croped = $image->resize($stream, $data['crop'], 150, 150);
+            $croped = $image->resize($stream, $data['crop'], 250, 250);
 
             $file_path = $this->storage->getFullFilePath($model);
             $file_full_path = $image->saveAsJpeg($croped, $file_path);

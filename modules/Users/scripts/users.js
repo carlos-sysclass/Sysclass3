@@ -27,7 +27,11 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	this.listenTo(this.statsModel, "sync", this.injectCourseDetails.bind(this));
 
 	    	//this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
-	    	this.statsModel.set("id", this.model.get("course_id"));
+
+	    	var user_pointer = app.getResource("user_pointer");
+	    	console.warn(user_pointer);
+
+	    	this.statsModel.set("id", user_pointer.program_id);
 
 	    	this.statsModel.fetch();
 
@@ -270,15 +274,21 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		}
 	});
 
-
-
-
 	mod.on("start", function() {
+
 		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 			this.usersWidgetView = new usersWidgetViewClass({
 				el: '#users-panel',
 				model : app.userSettings,
 			});
 		}.bind(this));
+	});
+
+	this.listenTo(app, "progress.started", function() {
+		this.listenTo(app.module("portlet.content").progressCollection, "sync", function() {
+			if (this.usersWidgetView) {
+				this.usersWidgetView.statsModel.fetch();
+			}
+		});
 	});
 });

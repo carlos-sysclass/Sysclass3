@@ -26,11 +26,70 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        this.options = opt;
 		        var view = this;
 		        var datatableOpt = {
-		        	"rowCallback": function( row, data ) {
+		        	dom : "<'row'<'col-lg-4 col-md-4 col-sm-12'l><'col-lg-4 col-md-4 col-sm-12 text-center'B><'col-lg-4 col-md-4 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+		        	rowCallback: function( row, data ) {
 						mod.trigger("datatable:item:draw", row, data);
 
 						view.trigger("draw.datatables", row, data);
-		        	}
+		        	},
+					fnFooterCallback: function ( row, data, start, end, display ) {
+			            var api = this.api(), data;
+			 
+			            // Remove the formatting to get integer data for summation
+			            var intVal = function ( i ) {
+			                return typeof i === 'string' ?
+			                    i.replace(/[\$,]/g, '')*1 :
+			                    typeof i === 'number' ?
+			                        i : 0;
+			            };
+
+
+						//var columns = api.columns("[data-totals='sum']", { page: 'current'});
+						var columns = api.columns("[data-totals='sum']");
+
+						columns.every( function () {
+						  var data = this.data();
+						  var index = this.index();
+						  
+						  total = this.data()
+						    .reduce( function (a, b) {
+								return parseFloat(a) + parseFloat(b);
+						    }, 0 );
+
+						  // Update footer
+						  $( this.footer() ).html(
+						    total // +' ( '+ total +' total)'
+						  );
+						  
+						});
+						var columns = api.columns("[data-totals='percent']");
+
+						columns.every( function () {
+						  var data = this.data();
+						  var index = this.index();
+						  
+						  total = this.data()
+						    .reduce( function (a, b) {
+								return parseFloat(a) + parseFloat(b);
+						    }, 0 );
+
+						  // Update footer
+						  $( this.footer() ).html(
+						  	app.module("views").formatValue(total, 'percent-custom', '0.##')
+						  );
+						  
+						});
+					},
+					colReorder : true,
+					language: {
+			            buttons: {
+			                colvis: 'Colunas'
+			            }
+			        },
+				    buttons: [
+				        'colvis', 'excel', 'csv'
+				    ],
+				    fixedHeader: true
 		        };
 
 		        if (opt.datatable != undefined) {

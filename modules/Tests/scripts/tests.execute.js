@@ -14,13 +14,16 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                 // THIS WILL STARTED OR RESUME THE TEST PROGRESS (AND UPDATE INTERFACE AS WELL)
                 var self = this;
 
-                this.listenTo(this.model, "change:answers", this.saveProgress.bind(this));
+                //this.listenTo(this.model, "change:answers", this.saveProgress.bind(this));
                 this.listenTo(this.model, "change:pending", this.checkPending.bind(this));
+
+                $(window).on("unload", this.saveProgress.bind(this));
                 //this.model.save();
             },
             saveProgress : function() {
                 console.info('tests.execute/testExecutionViewClass::saveProgress');
 
+                console.warn(this.model.toJSON());
                 this.model.save();
             },
             onRender : function() {
@@ -47,7 +50,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             readonly : false,
             initialize: function() {
                 console.info('tests.execute/testExecutionStatsViewClass::initialize');
-                baseFormClass.prototype.initialize.apply(this);
+                //baseFormClass.prototype.initialize.apply(this);
 
                 // THIS WILL STARTED OR RESUME THE TEST PROGRESS (AND UPDATE INTERFACE AS WELL)
                 var self = this;
@@ -182,7 +185,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             urlRoot : "/module/tests/item/me"
         }),
         test_execution : Backbone.DeepModel.extend({
-            urlRoot : "/module/tests/item/execution",
+            urlRoot : "/module/tests/datasource/execution",
         })
     };
 

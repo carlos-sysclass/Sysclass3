@@ -9,6 +9,12 @@ class Content extends Model
     {
         $this->setSource("mod_lessons_content");
 
+        $this->belongsTo(
+            "lesson_id",
+            "Sysclass\Models\Courses\Unit",
+            "id",
+            array("alias" => 'Unit')
+        );
         
 		$this->hasManyToMany(
             "id",

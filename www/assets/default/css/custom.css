@@ -1,4 +1,8 @@
 /* here you can put your own css to customize and override the theme */
+#content-widget > .portlet-body  {
+	min-height: 550px;
+}
+
 .page-content {
     padding: 20px 20px 20px;
 }
@@ -469,9 +473,11 @@ h4.border-bottom {
     padding: 0 22px 36px 22px;
     display: inline-block;
 }
+/*
 .tabbable-left .portlet-tabs > .nav-tabs > li > a:hover {
 	padding: 0 22px 33px 22px;
 }
+*/
 
 /*
 .portlet-tabs {
@@ -1173,19 +1179,37 @@ li [class^="fa-"], li [class^="glyphicon-"], li [class^="icon-"], li [class*=" f
 }
 
 ul.test-sidebar-info {
+	/*
     position: fixed;
     right: 10px;
     top: 100px;
+    */
+    padding: 0;
 }
 ul.test-sidebar-info > li {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
-    display: block;
+    display: inline-block;
     margin: 0 0 10px;
     padding: 5px;
     min-height: 32px;
     vertical-align: middle;
+    width: 24%;
 }
+
+@media (min-width: 601px) and (max-width: 1198px) {
+	ul.test-sidebar-info > li {
+		width: 49%;	
+	}
+}
+
+@media (max-width: 600px) {
+	ul.test-sidebar-info > li {
+		width: 100%;	
+	}
+}
+
+
 ul.test-sidebar-info > li span.pull-left {
     margin-right: 10px;
 }
@@ -1341,7 +1365,7 @@ UI Loading
     top: 0;
 }
 
-.header .navbar-nav > li.dropdown.user .dropdown-toggle .avatar-img {
+.header .navbar-nav > li.dropdown .dropdown-toggle .avatar-img {
     height: 42px;
     top: -11px;
     width: 42px;
@@ -2102,4 +2126,57 @@ a.list-group-item,
 .pagination > li > a, .pagination > li > span, .pagination > li i.fa {
 	line-height: 1.42857;
 	text-align: center;
+}
+
+.login .content p.input-icon p.form-control-static {
+   padding-left: 25px !important;
+}
+.login .content p.form-control {
+	color: #fff;  
+}
+
+.header .navbar-nav > li.dropdown .fa.fa-user {
+	width: 12px !important;
+}
+
+.test-details {
+	padding: 10px !important;
+}
+.no-border {
+	border-width: 0;
+}
+.dt-button-collection.dropdown-menu:before {
+	border-bottom: 7px solid rgba(0, 0, 0, 0.2);
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	content: "";
+	display: inline-block !important;
+	position: absolute;
+	left: 2px;
+	top: -7px;
+}
+
+.dt-button-collection .buttons-columnVisibility {
+	margin: 1px;
+	border: 1px solid transparent;
+
+}
+
+.dt-button-collection .buttons-columnVisibility.active {
+	border: 1px solid #ddd;
+}
+
+.dt-button-collection .buttons-columnVisibility a {
+	background: #fff;
+}
+.dt-button-collection .buttons-columnVisibility.active a {
+	background: #fff;
+}
+
+#tab_program_description,#tab_course_info {
+	margin: 10px 10px 0 10px;
+}
+
+#content-widget .portlet-title {
+	height: 37px;
 }

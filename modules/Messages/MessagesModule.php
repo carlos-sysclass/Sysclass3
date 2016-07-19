@@ -132,7 +132,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
     	return false;
     }
     // IWidgetContainer
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
 
         if (
@@ -187,7 +187,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
+     * @Post("/item/me");
      */
     public function addItemAction($id)
     {

@@ -9,14 +9,9 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Courses\Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson;
-
-/**
- * [NOT PROVIDED YET]
- * @package Sysclass\Modules
- */
-
-
+    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\Tests\Execution as TestExecution;
+    
 /**
  * @RoutePrefix("/module/tests")
  */
@@ -26,17 +21,26 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
     /* ISummarizable */
     public function getSummary() {
-        $data = array(1);
+        // GET THE USER NOT DONE YET TESTS
+        $pendingTests = TestLesson::getUserPendingTests($this->user->id);
 
-        return array(
-            'type'  => 'primary',
-            'count' => $data[0],
-            'text'  => $this->translate->translate('New Tests'),
-            'link'  => array(
-                'text'  => $this->translate->translate('View'),
-                'link'  => "javascript:App.scrollTo($('#calendar-widget'))"
-            )
+
+        $summary = array(
+            'type'  => 'danger',
+            'count' => $pendingTests->count(),
+            'text'  => $this->translate->translate('New Tests')
         );
+
+        if ($pendingTests->count() > 0) {
+            $test_id = $pendingTests[0]->id;
+
+            $summary['link'] = array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => $this->getBasePath() . "open/" . $test_id
+            );
+        }
+
+        return $summary;
     }
 
     /* ILinkable */
@@ -252,22 +256,37 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      */
     public function openPage($identifier)
     {
-        if ($userData = $this->getCurrentUser()) {
-            $testData = $this->model("roadmap/tests")->getItem($identifier);
+        //if ($userData = $this->getCurrentUser()) {
+            $testModel = TestLesson::findFirstById($identifier);
+
+            $testData = $testModel->toArray();
+
+            $testData['test'] = $testModel->getTest()->toArray();
+            $testData['questions'] = $testModel->getQuestions()->toArray();
+            //$testData = $this->model("roadmap/tests")->getItem($identifier);
             /*
             echo "<pre>";
             var_dump($testData);
             echo "</pre>";
             */
+           
+            $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
 
-            $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
             // LOAD USER PROGRESS ON THIS TEST
-            //
+            
+            $executions = TestExecution::find(array(
+                'conditions' => 'test_id = ?0 AND pending = 0 AND user_id = ?1',
+                'bind' => array($identifier, $this->user->id)
+            ));
+
+
+            $testData['executions'] = $executions->toArray();
+            /*
             $testData['executions'] = $this->model("tests/execution")->addFilter(array(
                 'test_id' => $identifier,
                 'pending' => 0,
                 'user_id' => $userData['id']
-            ))->getItems();
+            ))->getItems();*/
 
             // IF THE USER CANT'T TRY ANOTHER TIME, REDIRECT OR RENDER TEST STATUS VIEW
 
@@ -299,7 +318,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             }
 
             $this->display($this->template);
-        }
+        //}
     }
 
     /**
@@ -313,21 +332,63 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         //
         if ($userData = $this->getCurrentUser()) {
             // START PROGRESS
+            $this->disableSection('title');
+
+            $testModel = TestLesson::findFirstById($identifier);
+
+            $testData = $testModel->toArray();
+
+            $testData['test'] = $testModel->getTest()->toArray();
+            //$testData['questions'] = $testModel->getQuestions()->toArray();
+            $testQuestions = $testModel->getTestQuestions();
+
+            $testData['questions'] = array();
+
+            foreach($testQuestions as $i => $question) {
+                $testData['questions'][$i] = $question->toArray();
+                $testData['questions'][$i]['question'] = $question->getQuestion()->toArray();
+            }
+
+            //$testData = $this->model("roadmap/tests")->getItem($identifier);
+            
+            // echo "<pre>";
+            // print_r($testData);
+            // echo "</pre>";
+            
+           //exit;
+            $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
+
+            // LOAD USER PROGRESS ON THIS TEST
+            
+            $executions = TestExecution::find(array(
+                'conditions' => 'test_id = ?0 AND pending = 0 AND user_id = ?1',
+                'bind' => array($identifier, $this->user->id)
+            ));
+
+
+            $testData['executions'] = $executions->toArray();
+
+            /*            
             $testData = $this->model("roadmap/tests")->getItem($identifier);
 
-            $executionModel = $this->model("tests/execution");
+            var_dump($testData);
+            exit;
+
+            
 
             $testData['executions'] = $executionModel->addFilter(array(
                 'test_id' => $identifier,
                 'user_id' => $userData['id']
             ))->getItems();
+            */
+
+            $executionModel = $this->model("tests/execution");
 
             // PREPARE TEST TO EXECUTE
             $executionId = $executionModel->addItem(array(
                 'test_id' => $identifier,
-                'user_id' => $userData['id']
+                'user_id' => $this->user->id
             ));
-
 
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
@@ -367,6 +428,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         // CHECK IF THE USER IS ENROLLED IN THIS CLASS, AND IF HE CAN EXECUTE THE TEST NOW
         //
         if ($userData = $this->getCurrentUser()) {
+            $this->disableSection('title');
+
             // WHO CAN VIEW THE TEST????
             // 1 - THE USER ITSELF
             // 2 - THE TEST INSTRUCTOR
@@ -451,10 +514,10 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /**
      * [ add a description ]
      *
-     * @Get("/item/{model}/{identifier}")
+     * @Get("/datasource/{model}/{identifier}")
      */
-    /*
-    public function getItemRequest($model = "me", $identifier = null)
+    
+    public function getDatasourceRequest($model = "me", $identifier = null)
     {
         if ($model == "me") {
             $itemModel = $this->model("tests");
@@ -468,9 +531,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         return $editItem;
     }
-    */
+    
     /*
-    public function addItemRequest($model, $type)
+    public function addDatasourceRequest($model, $type)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -544,10 +607,10 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /**
      * [ add a description ]
      *
-     * @Put("/item/{model}/{identifier}")
+     * @Put("/datasource/{model}/{identifier}")
      */
-    /*
-    public function setItemRequest($model, $identifier)
+    
+    public function setDatasourceRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -556,17 +619,21 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             //question_points
             //question_weights
             if ($model == "me") {
+                /*
                 $itemModel = $this->model("tests");
                 $messages = array(
                     'success' => "Lesson updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+                */
             } elseif ($model == "question") {
+                /*
                 $itemModel = $this->model("tests/question");
                 $messages = array(
                     'success' => "Question updated with success",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+                */
             } elseif ($model == "execution") {
                 $itemModel = $this->model("tests/execution");
 
@@ -586,6 +653,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             if ($itemModel->setItem($data, $identifier) !== false) {
                 if ($model == "execution" && $data['complete'] == 1) {
+
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
                         $this->translate->translate("Test completed with success"),
@@ -608,14 +676,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             return $this->notAuthenticatedError();
         }
     }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @Delete("/item/{model}/{identifier}")
-     */
+    
     /*
-    public function deleteItemRequest($model, $identifier)
+    public function deleteDatasourceRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
@@ -791,6 +854,5 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $response
         );
     }
-
 
 }

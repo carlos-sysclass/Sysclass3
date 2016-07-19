@@ -43,7 +43,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
     	return false;
     }
     */
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         if (in_array('forum', $widgetsIndexes)) {
         	return array(
         		'forum' => array(

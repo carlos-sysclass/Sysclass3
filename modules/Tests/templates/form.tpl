@@ -43,6 +43,7 @@
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Class"}</label>
 					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select Class"}">
+						<option value="">{translateToken value="Select Class"}</option>
 						{foreach $T_CLASSES as $classe}
 							<option value="{$classe.id}">{$classe.name}</option>
 						{/foreach}
@@ -117,9 +118,9 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="How many times the user can have the test?"}
+			                            {translateToken value="How many times the user can have the test? Leave '0' (zero) for unlimited times"}
 			                        </label>
-			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="1" data-rule-max="10" />
+			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
 			                </div>
 			            </div>

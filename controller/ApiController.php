@@ -230,94 +230,114 @@ class ApiController extends \AbstractSysclassController
 
 		$messages = $data = array();
 
-		if (is_null($postdata)) {
-			$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
-		} else {
-
-			$enroll = Enroll::findFirstByIdentifier($postdata['_package_id']);
-			
-			if($enroll) {
- 				$check = $enroll->isAllowed();
- 				if (!$check['error']) {
- 					// CREATE TRANSACTION
- 					$this->db->begin();
-
- 					$user = $this->authentication->signup($postdata);
-
- 					if ($user) {
- 						$user->refresh();
- 						$messages[] = $this->createResponse(200, "User created with success!", "success");
-
- 						$data['user'] = array(
- 							'id' => $user->id,
- 							'name' => $user->name,
- 							'surname' => $user->surname,
- 							'email' => $user->email,
- 							'login' => $user->login
- 						);
-
- 						if (count($postdata['courses']) > 0) {
- 							$data['courses'] = array();
-	 						foreach($postdata['courses'] as $course_id) {
-								$course = Course::findFirstById($course_id);
-								if ($course) {
-									$result = $enroll->enrollUser($user, $course);
-
-									if (count($result) == 0) {
-										$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name} with success!", "success");
-
-										$data['courses'][] = array(
-											'id' => $course->id,
-											'name' => $course->name
-										);
-									} else {
-
-										$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
-										$error = true;
-										break;
-									}
-								} else {
-									$messages[] = $this->createResponse(400, "Course does not exists!", "error");
-									$error = true;
-								}
-							}
-						} else {
-							$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");
-							$error = true;
-						}
-
- 					} else {
-						$messages[] = $this->createResponse(400, "Your data sent appers to be imcomplete. Please check your info and try again!", "error");
-						$error = true;
- 					}
- 				} else {
- 					$messages[] = $this->invalidRequestError($check['reason'], "warning");
- 					$error = true;
- 				}
-			} else {
-				// ENROLL DOES NOT EXISTS
+		try {
+			if (is_null($postdata)) {
 				$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
-				$error = true;
-			}
-
-			if ($error) {
-				// ROLLBACK TRANSACTION
-				$this->db->rollback();
 			} else {
-				$this->db->commit();
 
-				// PUBLISH SYSTEM EVENT FOR ENROLLMENT
-				$this->eventsManager->fire("user:signup", $this, $user->toArray());
+				$enroll = Enroll::findFirstByIdentifier($postdata['_package_id']);
+				
+				if($enroll) {
+	 				$check = $enroll->isAllowed();
+	 				if (!$check['error']) {
+	 					// CREATE TRANSACTION
+	 					$this->db->begin();
+
+						$user = $this->authentication->signup($postdata);
+
+	 					if ($user) {
+	 						$user->refresh();
+	 						$messages[] = $this->createResponse(200, "User created with success!", "success");
+
+	 						$data['user'] = array(
+	 							'id' => $user->id,
+	 							'name' => $user->name,
+	 							'surname' => $user->surname,
+	 							'email' => $user->email,
+	 							'login' => $user->login
+	 						);
+
+	 						if (count($postdata['courses']) > 0) {
+	 							$data['courses'] = array();
+		 						foreach($postdata['courses'] as $course_id) {
+									$course = Course::findFirstById($course_id);
+									if ($course) {
+										$result = $enroll->enrollUser($user, $course);
+
+										if (count($result) == 0) {
+											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name} with success!", "success");
+
+											$data['courses'][] = array(
+												'id' => $course->id,
+												'name' => $course->name
+											);
+										} else {
+
+											$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
+											$error = true;
+											break;
+										}
+									} else {
+										$messages[] = $this->createResponse(400, "Course does not exists!", "error");
+										$error = true;
+									}
+								}
+							} else {
+								$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");
+								$error = true;
+							}
+
+	 					} else {
+							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please check your info and try again!"), "error");
+							$error = true;
+	 					}
+	 				} else {
+	 					$messages[] = $this->invalidRequestError($check['reason'], "warning");
+	 					$error = true;
+	 				}
+				} else {
+					// ENROLL DOES NOT EXISTS
+					$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+					$error = true;
+				}
+
+				if ($error) {
+					// ROLLBACK TRANSACTION
+					$this->db->rollback();
+				} else {
+					$this->db->commit();
+
+					// PUBLISH SYSTEM EVENT FOR ENROLLMENT
+					$this->eventsManager->fire("user:signup", $this, $user->toArray());
+				}
 			}
 
-			$this->response->setJsonContent(array(
-				'messages' => $messages,
-				'error' => $error,
-				'data' => $data
-			));
-
-			return true;
+		} catch (AuthenticationException $e) {
+			$error = true;
+			switch($e->getCode()) {
+				case AuthenticationException :: SIGNUP_EMAIL_ALREADY_EXISTS: {
+					$messages[] = $this->createResponse($e->getCode(), $this->translate->translate("There is already a registration made with this email! Would you like to login?"), "error");
+		            break;
+				}
+				case AuthenticationException :: USER_DATA_IS_INVALID_OR_INCOMPLETE : {
+		            $messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+		            break;
+				}
+				default : {
+					$messages[] = $this->invalidRequestError($this->translate->translate($e->getMessage()), "warning");
+		            break;
+				}
+			}
 		}
+
+		$this->response->setJsonContent(array(
+			'messages' => $messages,
+			'error' => $error,
+			'data' => $data
+		));
+
+		return true;
+
 	}
 
     /**

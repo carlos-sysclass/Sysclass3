@@ -3,7 +3,9 @@ namespace Sysclass\Models\Courses;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Courses\Classe;
-
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Content\ProgramCourses
+ */
 class CourseClasses extends Model
 {
     protected $assignedData = null;
@@ -129,9 +131,22 @@ class CourseClasses extends Model
         $class = $this->getClasse();
         $result['classe'] = $class->toFullArray();
 
-        $lessons = $class->getLessons();
+        $lessons = $class->getLessons(array(
+            'conditions' => "type = 'lesson'"
+        ));
 
         $result['classe']['lessons'] = $lessons->toArray();
+
+        $tests = $class->getTests(array(
+            'conditions' => "type = 'test'"
+        ));
+
+        $result['classe']['tests'] = array();
+
+        foreach($tests as $test) {
+            $result['classe']['tests'][] = $test->toFullArray(array("Test", "Questions"));
+        }
+
 
         return $result;
     }

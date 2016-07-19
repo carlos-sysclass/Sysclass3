@@ -210,7 +210,6 @@ abstract class SysclassModule extends BaseSysclassModule
      * @Get("/item/{model}/{identifier}")
     */
     public function getItemRequest($model, $identifier) {
-
         $editItem = $this->getModelData($model, $identifier);
 
         $this->response->setContentType('application/json', 'UTF-8');
@@ -569,7 +568,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * @Get("/items/{model}/{type}")
      * @Get("/items/{model}/{type}/{filter}")
      */
-    public function getItemsRequest($model, $type, $filter)
+    public function getItemsRequest($model, $type, $filter, $columns = null)
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
@@ -645,6 +644,10 @@ abstract class SysclassModule extends BaseSysclassModule
                     'order'  => $sort
                 );
                 */
+            }
+
+            if (!is_null($columns) && is_array($columns)) {
+                $args['columns'] = implode(",", $columns);
             }
 
             $args['conditions'] = implode(" AND ", $modelFilters);

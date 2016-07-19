@@ -13,7 +13,6 @@
                 </a>
         {/if}
     </div>       
- 
     <div class="col-lg-12 col-md-12 col-xs-12">
         {if $context.facebook}
                 <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-primary">
@@ -28,7 +27,6 @@
                 </a>
         {/if}
     </div>
-
     <div class="col-lg-12 col-md-12 col-xs-12">
         <a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-primary">
                 <span class="text"><i class="fa fa-map"></i> {translateToken value="View Map"}</span>

@@ -20,6 +20,13 @@ class Lesson extends BaseLesson
             array('alias' => 'Test')
         );
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\TestQuestions",
+            "lesson_id", 
+            array('alias' => 'TestQuestions')
+        );
+
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
@@ -28,6 +35,7 @@ class Lesson extends BaseLesson
             "id",
             array('alias' => 'Questions')
         );
+
     }
 
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
@@ -35,7 +43,10 @@ class Lesson extends BaseLesson
         return parent::assign($data, $dataColumnMap, $whiteList);
     }
 
-
+    public function beforeSave() {
+        $this->type = 'test';
+    }
+    
     public function afterSave() {
         // SAVE THE LINKED TEST
         if (array_key_exists('test', $this->assignedData) && is_array($this->assignedData['test'])) {
@@ -83,5 +94,51 @@ class Lesson extends BaseLesson
 
         return $status->success();
     }
+
+    public function calculateTestScore() {
+        $questions = $this->getTestQuestions();
+        $testScore = 0;
+        foreach($questions as $question) {
+            $testScore += $question->points * $question->weight;
+        }
+
+        return $testScore;
+        //return $testData;
+
+    }
+
+    public function getUserPendingTests() {
+        $di = $this->getDI();
+        $user_id = $di->get("user")->id;
+
+        $manager = $di->get("modelsManager");
+
+        $phql = "SELECT tl.*
+                FROM 
+                    Sysclass\\Models\\Enrollments\\CourseUsers ecu
+                LEFT JOIN Sysclass\\Models\\Courses\\Course cc
+                    ON (ecu.course_id = cc.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\CourseClasses ccc
+                    ON (ccc.course_id = cc.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\Classe ccl
+                    ON (ccc.class_id = ccl.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
+                    ON (tl.class_id = ccl.id)
+                LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Execution cte
+                    ON (tl.id = cte.test_id AND ecu.user_id = :user_id:)
+                WHERE ecu.user_id = :user_id: AND tl.type = 'test'
+                    AND (cte.user_id IS NULL OR cte.user_id <> :user_id:)";
+
+        $status = $manager->executeQuery(
+            $phql,
+            array(
+                'user_id' => $user_id
+            )
+        );
+        
+        return $status;
+
+    }
+
 
 }

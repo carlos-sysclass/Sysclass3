@@ -11,8 +11,8 @@ $SC.module("ui.pages", function(mod, app, Backbone, Marionette, $, _){
 		//	sources['video/ogg'] = '/files/login-background.ogv';
 		//}
 		//if (Modernizr.video.h264 || !isMobile) { // @todo Check for flash support
-		    sources['video/mp4'] = '/assets/sysclass.itaipu/video/login-background.mp4';
-			sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.webm';
+		    //sources['video/mp4'] = '/assets/sysclass.itaipu/video/login-background.mp4';
+			//sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.webm';
 		//}
 		//sources['video/flv'] = '/login-background.flv';
 

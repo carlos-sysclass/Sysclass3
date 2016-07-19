@@ -50,7 +50,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         }
     }
 
-    public function getWidgets($widgetsIndexes = array())
+    public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
         $this->putComponent("select2");
         $this->putComponent("wysihtml5");

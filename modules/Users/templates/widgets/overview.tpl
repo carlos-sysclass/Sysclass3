@@ -2,13 +2,22 @@
 	{assign var="notifications" value=$T_DATA.data.notification}
 {/if}
 {assign var="user_details" value=$T_DATA.data.user_details}
+
+{assign var="pointer" value=$T_DATA.data.pointer}
+
+<script>
+_before_init_functions.push(function() {
+    $SC.addResource("user_pointer", {$pointer|@json_encode nofilter});
+});
+</script>
+
 <div class="row">
 	<div class="col-md-4 col-lg-3 col-sm-3 hidden-xs" id="users-avatar" style="padding-right:0;">
 
 		{if ({$user_details.avatars[0].url})}
 			<img class="page-lock-img" src="{$user_details.avatars[0].url}" width="86%" alt="">
 		{else}
-			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.png'}" width="86%" alt="">
+			<img class="page-lock-img" src="{Plico_GetResource file='images/placeholder/avatar.jpg'}" width="86%" alt="">
 		{/if}
 	
 	</div>
@@ -40,7 +49,7 @@
 							<!--
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 							-->
-							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.count nofilter}</a>
+							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}" {if isset($notif.link.target)}target="{$notif.link.target}"{/if}>{$notif.count nofilter}</a>
 						{/if}
 						</div>
 					</div>

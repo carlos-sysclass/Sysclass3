@@ -1306,12 +1306,12 @@ Input icons
 }
 
 
-.input-icon input {
+.input-icon input, .input-icon p.form-control-static {
    padding-left: 25px !important;
 }
 
 .input-icon i {
-  color: #fff;
+  color: #000;
   display: block;
   position: absolute;
   margin: 9px 2px 4px 1px;
@@ -1725,11 +1725,11 @@ Box portlet
    border: 1px solid #fccb7e;
    border-top: 0;
 }
-
+/*
 .portlet.box.green > .portlet-title {
   background-color: #35aa47;
 }
-
+*/
 .portlet.box.green {
    border: 1px solid #77e588;
    border-top: 0;

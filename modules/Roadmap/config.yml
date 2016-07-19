@@ -12,7 +12,7 @@ models:
     exportParams: [null, true]
   course-classes:
     class: Sysclass\Models\Courses\CourseClasses
-    exportMethod: ["toFullClassArray", ["Classe"]]
+    exportMethod: ["toFullClassArray", ["Classe",]]
     acl:
       view: 
         resource: Courses

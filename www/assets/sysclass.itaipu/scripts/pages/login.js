@@ -5,11 +5,11 @@ $SC.module("ui.pages", function(mod, app, Backbone, Marionette, $, _){
 		var isMobile = app.module("ui").mobile;
 		var sources = {};
 		if (Modernizr.video.h264 || !isMobile) { // @todo Check for flash support
-			sources['video/mp4'] = '/assets/sysclass.itaipu/video/login-background.mp4';
+			//sources['video/mp4'] = '/assets/sysclass.itaipu/video/login-background.mp4';
 		}
 
 		if (Modernizr.video.webm) {
-			sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.webm';
+			//sources['video/webm'] = '/assets/sysclass.itaipu/video/login-background.webm';
 		}
 		//if (Modernizr.video.ogg) {
 		//	sources['video/ogg'] = '/files/login-background.ogv';

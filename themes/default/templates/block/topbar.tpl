@@ -30,8 +30,6 @@
 		{*$T_TOPBAR_MENU|@json_encode*}
 		<ul class="nav navbar-nav pull-right">
 
-
-
 			{foreach $T_TOPBAR_MENU as $key => $item}
 				{if $item.type == "mega"}
 					{if $item.items|count > 0 } 
@@ -232,6 +230,7 @@
 				</li>
 		        {/if}
 		   	{/foreach}
+		   	<!--
 		   	<li class="menu-item">
 				<a href="" class="menu-link" data-toggle="modal" data-target=".bs-example-modal-lg">
 					<i class="fa fa-search"></i>
@@ -248,6 +247,7 @@
 			    	</div>
 			  	</div>
 			</div>
+			-->
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
@@ -316,8 +316,9 @@
 		   <!-- END TODO DROPDOWN -->
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
 		   {* MOVE TO MENU SYSTEM *}
-			<li class="dropdown user">
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+					<i class="fa fa-user visible-xs"></i>
 					{if ({$T_CURRENT_USER.avatars[0].url})}
 						<div class="avatar-img vertical-align hidden-xs">
 							{if ({$T_CURRENT_USER.avatars[0].url})}
@@ -328,7 +329,6 @@
 						</div>
 					{/if}
 					<span class="username">{$T_CURRENT_USER.name}</span>
-					<!--<i class="icon-angle-down"></i>-->
 				</a>
 				<ul class="dropdown-menu">
 					<li>
@@ -338,13 +338,14 @@
 				        {if isset($item.link)}
 						{/if}
 					{/foreach}
+
 					<li class="divider visible-xs"></li>
+					<!--
 					<li class="hidden-sm hidden-xs">
 						<a href="javascript:;" id="trigger_fullscreen"><i class="ti-fullscreen"></i> {translateToken value="Full Screen"}</a>
 					</li>
-					<li>
-						<a href="/lock"><i class="icon-lock"></i> {translateToken value="Lock Screen"}</a>
-					</li>
+					<li><a href="/lock"><i class="icon-lock"></i> {translateToken value="Lock Screen"}</a></li>
+					-->
 					<li>
 						<a href="/logout"><i class="icon-key"></i> {translateToken value="Log Out"}</a>
 					</li>

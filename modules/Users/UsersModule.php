@@ -8,6 +8,7 @@ use Phalcon\DI,
     Sysclass\Models\Users\Group,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\I18n\Language,
+    Sysclass\Models\Content\Unit,
     Sysclass\Services\I18n\Timezones,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\UserPasswordRequest,
@@ -159,7 +160,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      * @param  array  $widgetsIndexes [description]
      * @return [type]                 [description]
      */
-	public function getWidgets($widgetsIndexes = array()) {
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
     	if (in_array('users.overview', $widgetsIndexes)) {
 			$currentUser    = $this->user;
 
@@ -185,11 +186,22 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					$data['notification'][$key] = $mod->getSummary();
 				}
 			}
+//                var_dump($data['notification']);
 
-			$data['notification'] = $this->module("dashboard")
-				->sortModules("users.overview.notification.order", $data['notification']);
+			$data['notification'] = $caller->sortModules("users.overview.notification.order", $data['notification']);
 
 			$this->putModuleScript("users");
+
+                
+            $userPointers = $userPointers = Unit::getContentPointers();
+
+
+            $data['pointer'] = array(
+                'program_id'    => $userPointers['program']->id,
+                'course_id'     => $userPointers['course']->id,
+                'unit_id'       => $userPointers['unit']->id,
+                'content_id'    => $userPointers['content']->id
+            );
 
 			return array(
 				'users.overview' => array(
