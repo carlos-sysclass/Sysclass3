@@ -142,6 +142,7 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
 
     }
     protected function correctSingleChoice($questionData, $answer) {
+
         $options = $questionData['question']['options'];
         foreach($options as $opt) {
             if ($opt['answer'] === TRUE && $answer == $opt['index']) {

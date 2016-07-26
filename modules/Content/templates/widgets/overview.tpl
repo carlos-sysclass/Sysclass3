@@ -755,7 +755,11 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_courses_tests-item-template">
 	<%
 	if (_.has(model, 'test')) {
-		var total_questions = _.size(model.test.questions);
+		if (model.test.test_max_questions == 0) {
+			var total_questions = _.size(model.test.questions);
+		} else {
+			var total_questions = model.test.test_max_questions;
+		}
 	} else {
 		var total_questions = 0; 
 	} 
