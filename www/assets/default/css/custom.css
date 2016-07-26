@@ -665,6 +665,24 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	.tabbable-left .portlet-tabs > .nav-tabs > li > a {
 	    padding: 0 5px;
 	}
+	.tabbable-left .portlet-tabs > .nav-tabs > li .nav-title  {
+		font-size: 0;
+	}
+	.tabbable-left .portlet-tabs > .nav-tabs > li .nav-title i  {
+		font-size: 14px !important;
+	}
+	.tabbable-left .portlet-tabs > .nav-tabs > li > a {
+	    padding: 5px 23px 29px 23px;
+	}
+	.tabbable-left .portlet-tabs > .nav-tabs > li > a:hover {
+	    padding: 5px 23px 29px 23px;
+	}
+	.label.label-sm {
+	    margin-left: 8px;
+	}
+	#progress-user {
+	    display: none;
+	}
 }
 
 .login .logo img {
