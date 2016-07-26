@@ -241,6 +241,46 @@
 
 			{if (isset($T_SECTION_TPL['questions-list']) &&  ($T_SECTION_TPL['questions-list']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
+			            <div class="row">
+			                <div class="col-md-4">
+			                    <div class="form-group">
+			                        <label class="control-label">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show only a set of questions? Leave "0" to show all questions'}">
+			                                <i class="fa fa-question"></i>
+			                            </span>
+			                            {translateToken value="How many Questions?"}
+			                        </label>
+
+			                        <input name="test.test_max_questions" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="form-group">
+			                        <label class="control-label">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='It allows the user to navigate through the test\'s questions'}">
+			                                <i class="fa fa-question"></i>
+			                            </span>
+			                            {translateToken value="Can navigate through the test?"}
+			                        </label>
+
+			                        <input type="checkbox" name="test.can_navigate_through" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="form-group">
+			                        <label class="control-label">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shows the correct answer after user response. This feature will block the question after the user response.'}">
+			                                <i class="fa fa-question"></i>
+			                            </span>
+			                            {translateToken value="Show correct answers?"}
+			                        </label>
+
+			                        <input type="checkbox" name="test.show_correct_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
+			                    </div>
+			                </div>
+			            </div>
+
+
 				    {foreach $T_SECTION_TPL['questions-list'] as $template}
 				        {include file=$template}
 				    {/foreach}
