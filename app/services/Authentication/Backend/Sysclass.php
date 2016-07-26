@@ -92,6 +92,8 @@ class Sysclass extends Component implements IAuthentication
             $user->password = $this->hashPassword($password, $user);
         }
         */
+        $user->language_id = $this->configuration->get("default_user_language");
+
         if ($this->configuration->get("signup_must_accept_license")) {
             $user->viewed_license = 0;
         } else {
