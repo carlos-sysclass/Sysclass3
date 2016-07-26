@@ -2180,3 +2180,7 @@ a.list-group-item,
 #content-widget .portlet-title {
 	height: 37px;
 }
+
+.fileupload {
+  margin-bottom: 0;
+ }

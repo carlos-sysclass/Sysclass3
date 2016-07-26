@@ -268,7 +268,7 @@ _before_init_functions.push(function() {
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
 											<tr>
-												<th>{translateToken value="#"}</th>
+												<!-- <th>{translateToken value="#"}</th> -->
 												<th>{translateToken value="Name"}</th>
 												<th class="text-center">{translateToken value="# Questions"}</th>
 												<th class="text-center">{translateToken value="Times done"}</th>
@@ -737,7 +737,7 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-	<td class="text-center"><%= model.id %></td>
+	<!-- <td class="text-center"><%= model.id %></td> -->
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
@@ -764,7 +764,7 @@ _before_init_functions.push(function() {
 		var total_questions = 0; 
 	} 
 	%>
-	<td class="text-center"><%= model.id %></td>
+	<!-- <td class="text-center"><%= model.id %></td>  -->
 	<td><a href="javascript:void(0)" class="view-test-action"><%= model.name %></a></td>
 	<td class="text-center"><%= total_questions %></td>
 	<td class="text-center">
