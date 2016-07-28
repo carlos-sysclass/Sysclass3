@@ -264,11 +264,11 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $testData['test'] = $testModel->getTest()->toArray();
             $testData['questions'] = $testModel->getQuestions()->toArray();
             //$testData = $this->model("roadmap/tests")->getItem($identifier);
-            /*
-            echo "<pre>";
-            var_dump($testData);
-            echo "</pre>";
-            */
+            
+            //echo "<pre>";
+            //var_dump($testData);
+            //echo "</pre>";
+            //exit;
            
             $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
 
@@ -334,13 +334,21 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             // START PROGRESS
             $this->disableSection('title');
 
+            $executionModel = $this->model("tests/execution");
+
+            // PREPARE TEST TO EXECUTE
+            $executionId = $executionModel->addItem(array(
+                'test_id' => $identifier,
+                'user_id' => $this->user->id
+            ));
+
             $testModel = TestLesson::findFirstById($identifier);
 
             $testData = $testModel->toArray();
 
             $testData['test'] = $testModel->getTest()->toArray();
             //$testData['questions'] = $testModel->getQuestions()->toArray();
-            $testQuestions = $testModel->getTestQuestions();
+            $testQuestions = $testModel->shuffleTestQuestions($executionId);
 
             $testData['questions'] = array();
 
@@ -382,13 +390,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             ))->getItems();
             */
 
-            $executionModel = $this->model("tests/execution");
 
-            // PREPARE TEST TO EXECUTE
-            $executionId = $executionModel->addItem(array(
-                'test_id' => $identifier,
-                'user_id' => $this->user->id
-            ));
+
+            /// SAVE THE TEST QUESTIONS USED
 
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
@@ -466,31 +470,51 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             $executionModel = $this->model("tests/execution");
 
-            $executions = array();
-
             if (!is_null($execution_id)) {
+                $executions = TestExecution::find(array(
+                    'conditions' => 'test_id = ?0 AND pending = 0 AND user_id = ?1 AND id = ?2',
+                    'bind' => array($identifier, $this->user->id, $execution_id)
+                ));
+                /*
                 $executions = $executionModel->addFilter(array(
                     'test_id' => $identifier,
                     //'user_id' => $userData['id'],
                     'id' => $execution_id
                 ))->getItems();
-
+                */
             }
-            if (count($executions) == 0) {
-                $executions = $executionModel->clear()->addFilter(array(
-                    'test_id' => $identifier,
-                    'user_id' => $userData['id']
-                ))->getItems();
+
+            if (!$executions) {
+                $executions = TestExecution::find(array(
+                    'conditions' => 'test_id = ?0 AND pending = 0 AND user_id = ?1',
+                    'bind' => array($identifier, $this->user->id)
+                ));
             }
-            $execution = end($executions);
+            $execution = $executions->getLast();
 
+            if ($executions->count() > 0) {
+                $executionId = $execution->id;
+                $executionData = $execution->toArray();
 
+                $testObject = TestLesson::findFirstById($identifier);
 
+                $testData = $testObject->toArray();
 
+                $testData['test'] = $testObject->getTest()->toArray();
 
-            if (count($executions) > 0) {
-                $execution_id = $execution['id'];
-                $executionData = $executionModel->getItem($execution['id']);
+                $testQuestions = $testObject->shuffleTestQuestions($executionId);
+
+                $testData['questions'] = array();
+
+                foreach($testQuestions as $i => $question) {
+                    $testData['questions'][$i] = $question->toArray();
+                    $testData['questions'][$i]['question'] = $question->getQuestion()->toArray();
+                }
+
+                $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
+
+                // LOAD USER PROGRESS ON THIS TEST
+                
 
                 $this->module("settings")->put("test_execution_id", $execution_id);
 

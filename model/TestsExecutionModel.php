@@ -141,6 +141,13 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             $testData = $testModel->getTest()->toArray();
 
+            //var_dump($executionData);
+
+            $testQuestions = $testModel->shuffleTestQuestions($executionData['id']);
+
+            //var_dump($testQuestions);
+
+
             $questionsData = $questionModel->addFilter(array(
                 'lesson_id' => $executionData['test_id']
             ))->getItems();
@@ -148,9 +155,12 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             $testPoints = 0;
             $totalPoints = 0;
 
-            foreach($questionsData as $question) {
-                $testPoints += $question['points'] * $question['weight'];
-                $totalPoints += $questionModel->correct($question, $executionData['answers'][$question['id']]);
+            foreach($testQuestions as $question) {
+                $questionData = $question->toArray();
+                $questionData['question'] = $question->getQuestion()->toArray();
+
+                $testPoints += $question->points * $question->weight;
+                $totalPoints += $questionModel->correct($questionData, $executionData['answers'][$question->id]);
             }
 
             $userScore = $totalPoints / $testPoints;

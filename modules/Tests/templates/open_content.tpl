@@ -55,7 +55,13 @@
                             <i class="fa fa-lg fa-slack text-primary "></i>
                             {translateToken value="Total Questions"}:
                         </span>
-                        <strong class="text-primary pull-right">{$T_TEST.questions|@count}</strong>
+                        <strong class="text-primary pull-right">
+                        {if ($T_TEST.test.test_max_questions <= 0)}
+                            {$T_TEST.questions|@count}
+                        {else}
+                            {$T_TEST.test.test_max_questions}
+                        {/if}
+                        </strong>
                     </p>
                     <hr />
                     <p class="">
