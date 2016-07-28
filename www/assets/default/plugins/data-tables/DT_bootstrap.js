@@ -205,7 +205,10 @@ $.extend( true, $.fn.dataTable.defaults, {
 		 */
 		{
 			"mRender": function ( data, type, row ) {
-				return row.user.name + " " + row.user.surname;
+				if (_.has(row, 'user') && !_.isNull(row.user)) {
+					return row.user.name + " " + row.user.surname;
+				}
+				return "";
 			},
 			"aTargets": [ 'concatenate-user' ]
 		},
