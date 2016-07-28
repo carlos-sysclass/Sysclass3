@@ -67,7 +67,7 @@ $SC.module("dialogs.questions.select", function(mod, app, Backbone, Marionette, 
         this.tableView = new tableViewClass({
             el : "#questions-select-table",
             datatable : config
-        });        
+        });
 
     });
     /*

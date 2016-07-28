@@ -92,6 +92,12 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				    fixedHeader: true
 		        };
 
+		        if ($.fn.dataTable.isDataTable(this.$el)) {
+		        	//alert(1);
+		        	this.$el.DataTable().destroy();
+		        }
+
+
 		        if (opt.datatable != undefined) {
 		        	opt.datatable = _.extend(datatableOpt, opt.datatable);
 		        	this.oTable = this.$el.dataTable(opt.datatable);

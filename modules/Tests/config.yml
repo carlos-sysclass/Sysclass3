@@ -44,6 +44,7 @@ crud:
         page_subtitle: Create a new test
     'edit/{identifier}':
       components: ["select2", "validation", "bootstrap-switch"]
+      scripts : ["views.test.edit"]
       blocks:
       #- "questions.create.dialog"
       - "questions.list"
