@@ -2,6 +2,7 @@
 namespace Sysclass\Models\Courses\Tests;
 
 use Sysclass\Models\Courses\Lesson as BaseLesson;
+use Sysclass\Models\Courses\Tests\ExecutionQuestions;
 
 class Lesson extends BaseLesson
 {
@@ -27,6 +28,13 @@ class Lesson extends BaseLesson
             array('alias' => 'TestQuestions')
         );
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Tests\ExecutionQuestions",
+            "lesson_id", 
+            array('alias' => 'ExecutionQuestions')
+        );
+
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
@@ -36,6 +44,52 @@ class Lesson extends BaseLesson
             array('alias' => 'Questions')
         );
 
+    }
+
+    public function shuffleTestQuestions($executionId) {
+        $test = $this->getTest();
+        $questions = $this->getTestQuestions();
+        $executionQuestions = $this->getExecutionQuestions(array(
+            'conditions' => 'execution_id = ?0',
+            'bind' => array($executionId),
+            'order' => "position ASC"
+        ));
+        $result = array();
+
+        $questions_size = $test->test_max_questions == 0 ? $questions->count() : $test->test_max_questions;
+
+        if ($executionQuestions->count() == 0) {
+
+
+            $questions_indexes = array_rand($questions->toArray(), $questions_size);
+
+
+            
+            foreach($questions as $i => $question) {
+                if (in_array($i, $questions_indexes)) {
+                    $result[] = $question;
+                }
+            }
+
+            foreach($result as $index => $question) {
+                $object = new ExecutionQuestions();
+                $object->execution_id = $executionId;
+                $object->lesson_id = $this->id;
+                $object->question_id = $question->question_id;
+                $object->position = $index+1;
+                $object->save();
+            }
+        } else {
+            foreach($executionQuestions as $executionQuestion) {
+                foreach($questions as $question) {
+                    if ($question->question_id == $executionQuestion->question_id) {
+                        $result[] = $question;
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
@@ -55,7 +109,6 @@ class Lesson extends BaseLesson
             $testModel->id = $this->id;
             $testModel->save();
         }
-        
     }
 
     protected function resetOrder($lesson_id) {

@@ -1,5 +1,5 @@
 $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
-    this.startWithParent = false;
+    this.startWithParent = true;
 
     this._chatViews = [];
     this._canStart = false;
@@ -32,13 +32,14 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         })
     };
 
-    mod.initialize = function() {
+    mod.initialize = function(settings) {
 
         if (window.location.protocol == 'https:') {
             this._wsUri = 'wss://' + window.location.hostname +':' + app.userSettings.get("websocket_ssl_port");
         } else {
             this._wsUri = 'ws://' + window.location.hostname +':' + app.userSettings.get("websocket_port");
         }
+        console.warn(this._wsUri);
 
         this.on("errorConnection.chat", this.startRetryMode.bind(this));
 
@@ -51,6 +52,13 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     mod.onChatConnected = function(result) {
     }
     */
+    mod.isConnected = function() {
+        if (!_.isNull(this._conn)) {
+            session_id = this._conn.sessionid();
+            return !_.isNull(session_id);
+        }
+        return false;
+    }
     mod.startConnection = function(force_close) {
         if (_.isNull(app.userSettings.get("websocket_key"))) {
             return false;
@@ -68,6 +76,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                     console.warn('WebSocket connection open');
                     var websocket_key = app.userSettings.get("websocket_key");
                     var session_key = $.cookie("SESSIONID");
+                    if (_.isEmpty(session_key)) {
+                        session_key = $.cookie("PHPSESSID");
+                    }
 
                     this._options.tryCount = 0;
 
@@ -186,6 +197,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             this.trigger("notConnected.chat");
             return false;
         }
+
+        console.warn(this._subscribedChats, topic);
+
         if (!_.has(this._subscribedChats, topic) || _.isNull(this._subscribedChats[topic])) {
             // CALL A FUNCTION TO CREATE THE TOPIC
             this._conn
@@ -203,7 +217,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                     console.warn("error", error);
                 }.bind(this));
         } else {
-            console.warn("receiveChat-error");
+            //console.warn("receiveChat-error");
             callback();
         }
     };
@@ -242,6 +256,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             }
 
             var model = new this.models.message(data);
+            console.warn("receiveMessage.chat", topic, model);
             this.trigger("receiveMessage.chat", topic, model);
         }.bind(this));
 
@@ -342,14 +357,13 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
     */
 
-    mod.on("start", function() {
-        if (!_.isUndefined(app.userSettings)) {
-            this.initialize();
-        } else {
-            //var userSettingsModel = new userSettingsModelClass();
-            this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
-                mod.initialize();
-            }.bind(this));
-        }
-    });
+    if (app.hasSettings) {
+        this.initialize(app.userSettings);
+    } else {
+        mod.listenTo(app, "settings.sysclass", function( model,data, xhR) {
+            //console.warn( model,data, xhR);
+            this.initialize(model);
+        });
+    }        
+
 });
