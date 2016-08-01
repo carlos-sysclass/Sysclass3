@@ -23,9 +23,9 @@ dashboard:
         #2: ["institution.overview", "advisor.chat", "payment.overview", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         2: ["institution.overview", "advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         3: ["calendar"]
-        1: []
-        2: ["advisor.chat"]
-        3: []
+        #1: []
+        #2: ["advisor.chat"]
+        #3: []
     sortable: false
     resources:
         users.overview.notification.order: ["Calendar", "Tests", "certificate"]
