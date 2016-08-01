@@ -8,6 +8,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Models\Chat\Message,
     Sysclass\Models\Users\UserTimes,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Acl\Resource,
     Sysclass\Models\Users\Group;
 
 class Queue extends Component implements WampServerInterface
@@ -134,11 +135,15 @@ class Queue extends Component implements WampServerInterface
         echo "FUNCTION CALL: {$topic->getId()} (#{$conn->resourceId})\n";
         switch($topic->getId()) {
             case "authentication" : {
+                var_dump($params);
                 if ($userTimes = UserTimes::findFirst([
                         'conditions' => 'session_id = ?0 AND expired = 0',
                         'bind' => [$params[1]]
                     ])) {
                     $user = $userTimes->getUser();
+
+                    var_dump($user->toArray());
+
                     if ($user && !is_null($user->websocket_key) && $user->websocket_key == $params[0]) {
                         //var_dump($userTimes->toArray());
 
@@ -331,14 +336,26 @@ class Queue extends Component implements WampServerInterface
             }
             case "getAvaliableQueues" : {
                 // GET ALL USERS 
+                // GET ROLES WITH CHAT SUPPORT ACL RESOURCE
+                $resource = Resource::findFirst(array(
+                    'conditions' => '[group] = ?0 AND name = ?1',
+                    'bind' => array("Chat", "Support")
+                ));
+
+                if ($resource) {
+                    $technical_users = User::findByPermissionId($resource->id);
+                }
+
+
+
                 $coordinator_group_id = $this->configuration->get('chat_role_coordinator');
-                $technical_group_id = $this->configuration->get('chat_role_technical_support');
+                //$technical_group_id = $this->configuration->get('chat_role_technical_support');
 
                 $coordinator_group = Group::findFirstById($coordinator_group_id);
-                $technical_group = Group::findFirstById($technical_group_id);
+                //$technical_group = Group::findFirstById($technical_group_id);
 
                 $coordinator_users = $coordinator_group->getUsers();
-                $technical_users = $technical_group->getUsers();
+                //$technical_users = $technical_group->getUsers();
 
                 $result = array();
                 if ($coordinator_users->count() > 0) {
@@ -364,14 +381,16 @@ class Queue extends Component implements WampServerInterface
                         }
                     }
                 }
-                if ($technical_users->count() > 0) {
+                if (count($technical_users) > 0) {
                     $result['technical'] = array(
                         'topic' => 'technical-support',
                         'name' => 'Technical Support'
                     );
 
-                    foreach($technical_users as $user) {
-                        $item = $user->toArray();
+                    foreach($technical_users as $item) {
+                        //$item = $user->toArray();
+
+                        $user = User::findFirstById($item['id']);
 
                         $item['language'] = $user->getLanguage()->toArray();
                         $item['avatars'] = $user->getAvatars()->toArray();

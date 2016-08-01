@@ -31,19 +31,30 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.on("start", function() {
 
+		/*
 	    $('#chat-topbar-menu a, .page-quick-sidebar-toggler').click(function (e) {
 	        $('body').toggleClass('page-quick-sidebar-open'); 
 
 	       	this.startChatSidebar();
 	    }.bind(this));
+	    */
 
-		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
+	    mod.chatModule = app.module("utils.chat");
+
+		this.listenTo(this.chatModule, "afterConnection.chat", function(topic, model) {
 			this.canStart = true;
+			alert(1);
 
 			this.startChatBlock();
 		}.bind(this));
 
-		mod.chatModule = app.module("utils.chat");
+		//this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
+			
+
+			
+		//});
+
+		
 
 		this.blockChatQueueViewClass = Backbone.View.extend({
 			chatModule : mod.chatModule,
@@ -374,14 +385,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 			initialize : function() {
 				//this.initializeScrolls();
 
-				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
-					this.$el.unblock();
-					this.chatModule.getAvaliableQueues(this.renderAvaliableQueues.bind(this));
-
-					//this.chatModule.getQueues(this.renderChatQueues.bind(this));
-					this.chatModule.subscribe("chat-events", this.receiveChatUpdates.bind(this));
-				}.bind(this));
-
 				//this.listenTo(this.collection, "reset", this.renderChatQueues.bind(this));
 
 				this.listenTo(this.chatModule, "beforeConnection.chat", function(status) {
@@ -422,6 +425,23 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.listenTo(this.collection, "reset", this.render);
 				*/
+
+				if (this.chatModule.isConnected()) {
+					this.$el.unblock();
+					this.chatModule.getAvaliableQueues(this.renderAvaliableQueues.bind(this));
+
+					//this.chatModule.getQueues(this.renderChatQueues.bind(this));
+					this.chatModule.subscribe("chat-events", this.receiveChatUpdates.bind(this));
+				} else {
+					this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
+						this.$el.unblock();
+						this.chatModule.getAvaliableQueues(this.renderAvaliableQueues.bind(this));
+
+						//this.chatModule.getQueues(this.renderChatQueues.bind(this));
+						this.chatModule.subscribe("chat-events", this.receiveChatUpdates.bind(this));
+					}.bind(this));
+				}
+				
 				if (!this.chatModule.started) {
 					this.chatModule.start();
 				}
