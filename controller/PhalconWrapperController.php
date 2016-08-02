@@ -452,12 +452,14 @@ abstract class PhalconWrapperController extends Controller
 		}
 
 		// IF CHAT MODULE IS ENABLED
-		if ($this->acl->isUserAllowed(null, "Chat", "Support")) {
+		$depInject = DI::getDefault();
+		/*
+		$acl = $depInject->get("acl");
+		if ($acl->isUserAllowed(null, "Chat", "Support")) {
 			$this->putBlock("chat.quick-sidebar");
 		}
+		*/
 
-		
-		$depInject = DI::getDefault();
 		$assets = $depInject->get("assets");
 
 		$plico = PlicoLib::instance();
