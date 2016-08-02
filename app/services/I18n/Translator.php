@@ -206,8 +206,11 @@ class Translator extends Component
             $translated = vsprintf($token, $vars);
         }
         $this->session_tokens[$token] = $translated;
-
-        $this->cache->save("session_tokens", $this->session_tokens);
+        try {
+            $this->cache->save("session_tokens", $this->session_tokens);
+        } catch(Exception $e) {
+            return $translated;
+        }
 
         return $translated;
     }

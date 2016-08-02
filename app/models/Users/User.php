@@ -135,7 +135,7 @@ class User extends Model
         return $users;
     }
 
-    protected static function findByPermissionId($permission_id) {
+    public static function findByPermissionId($permission_id) {
         $resource = Resource::findFirstById($permission_id);
         $roles = $resource->getRoles();
 
