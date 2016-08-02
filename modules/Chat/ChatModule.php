@@ -17,7 +17,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
     public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
             // CHECK PERMISSION
-            if ($this->acl->isUserAllowed($this->user, "Chat", "View")) {               
+            if ($this->acl->isUserAllowed($this->user, "Chat", "Support")) {               
 
                 $this->putBlock("chat.quick-sidebar");
 
@@ -50,29 +50,33 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
     public function registerBlocks() {
         return array(
             'chat.quick-sidebar' => function($data, $self) {
-                $self->putComponent("autobahn");
-                $self->putComponent("bootstrap-confirmation");
-                
-                //$self->putScript("scripts/utils.chat");
-                $self->putmoduleScript("chat");
-                $self->putModuleScript("ui.sidebar");
+                 if ($self->acl->isUserAllowed(null, "Chat", "Support")) {
 
-                $self->putScript("plugins/sprintf/sprintf.min");
+                    $self->putComponent("autobahn");
+                    $self->putComponent("bootstrap-confirmation");
+                    
+                    //$self->putScript("scripts/utils.chat");
+                    $self->putmoduleScript("chat");
+                    $self->putModuleScript("ui.sidebar");
 
-                $resource = Resource::findFirst([
-                    'conditions' => '[group] = ?0 AND [name] = ?1',
-                    'bind' => ["Chat", "Receive"]
-                ]);
+                    $self->putScript("plugins/sprintf/sprintf.min");
 
-                $self->putBlock("users.select.dialog", array(
-                    "special-filters" => array(
-                        "permission_id" => $resource->id
-                    )
-                ));
+                    $resource = Resource::findFirst([
+                        'conditions' => '[group] = ?0 AND [name] = ?1',
+                        'bind' => ["Chat", "Receive"]
+                    ]);
 
-                $self->putSectionTemplate("foot", "blocks/chat");
-                $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
-                return true;
+                    $self->putBlock("users.select.dialog", array(
+                        "special-filters" => array(
+                            "permission_id" => $resource->id
+                        )
+                    ));
+
+                    $self->putSectionTemplate("foot", "blocks/chat");
+                    $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
+                    return true;
+                }
+                return false;
             },
             'chat' => function($data, $self) {
                 // CREATE BLOCK CONTEXT

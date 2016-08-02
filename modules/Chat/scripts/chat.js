@@ -4,6 +4,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     this._chatViews = [];
     this._canStart = false;
     this._conn = null;
+    this._session_key = null;
     this._token = null;
     this._started = moment().unix();
     this._subscribedTopics = {};
@@ -87,6 +88,11 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                         .then(function (result) {
                             this._token = result.token;
                             this._started = result.started;
+
+                            this._session_key = session_key;
+
+                            // ALWAYS SUBSCRIBE TO A PRIVATE 
+                            this._conn.subscribe(this._session_key, this.parseReceivedTopic.bind(this));
 
                             this.trigger("afterConnection.chat", result);
                         }.bind(this), function (error) {
@@ -246,21 +252,29 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
     this.parseReceivedTopic = function(topic, data) {
         // CHECK IF IS A COMMAND OR A MESSAGE
-        console.warn("RECEIVE", topic, data);
-        
-        this.receiveChat(topic, function() {
-            if (data.origin == this._token) {
-                data.mine = true;
-            } else {
-                data.mine = false;
-            }
+        if (topic == this._session_key) { // PRIVATE CHANNEL
+            this.parseCommandTopic(data);
+        } else {
+            this.receiveChat(topic, function() {
+                if (data.origin == this._token) {
+                    data.mine = true;
+                } else {
+                    data.mine = false;
+                }
 
-            var model = new this.models.message(data);
-            console.warn("receiveMessage.chat", topic, model);
-            this.trigger("receiveMessage.chat", topic, model);
-        }.bind(this));
-
+                var model = new this.models.message(data);
+                console.warn("receiveMessage.chat", topic, model);
+                this.trigger("receiveMessage.chat", topic, model);
+            }.bind(this));
+        }
     }
+
+    this.parseCommandTopic = function(data) {
+        if (data.command == "subscribe") {
+            console.warn(data);
+            this.subscribeToChat(data.data.topic);
+        }
+    };
 
     this.sendMessage = function(topic, message) {
         if (_.isNull(this._token)) {

@@ -43,7 +43,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 		this.listenTo(this.chatModule, "afterConnection.chat", function(topic, model) {
 			this.canStart = true;
-			alert(1);
 
 			this.startChatBlock();
 		}.bind(this));
