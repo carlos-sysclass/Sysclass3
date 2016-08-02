@@ -50,33 +50,29 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
     public function registerBlocks() {
         return array(
             'chat.quick-sidebar' => function($data, $self) {
-                 if ($self->acl->isUserAllowed(null, "Chat", "Support")) {
+                $self->putComponent("autobahn");
+                $self->putComponent("bootstrap-confirmation");
+                
+                //$self->putScript("scripts/utils.chat");
+                $self->putmoduleScript("chat");
+                $self->putModuleScript("ui.sidebar");
 
-                    $self->putComponent("autobahn");
-                    $self->putComponent("bootstrap-confirmation");
-                    
-                    //$self->putScript("scripts/utils.chat");
-                    $self->putmoduleScript("chat");
-                    $self->putModuleScript("ui.sidebar");
+                $self->putScript("plugins/sprintf/sprintf.min");
 
-                    $self->putScript("plugins/sprintf/sprintf.min");
+                $resource = Resource::findFirst([
+                    'conditions' => '[group] = ?0 AND [name] = ?1',
+                    'bind' => ["Chat", "Receive"]
+                ]);
 
-                    $resource = Resource::findFirst([
-                        'conditions' => '[group] = ?0 AND [name] = ?1',
-                        'bind' => ["Chat", "Receive"]
-                    ]);
+                $self->putBlock("users.select.dialog", array(
+                    "special-filters" => array(
+                        "permission_id" => $resource->id
+                    )
+                ));
 
-                    $self->putBlock("users.select.dialog", array(
-                        "special-filters" => array(
-                            "permission_id" => $resource->id
-                        )
-                    ));
-
-                    $self->putSectionTemplate("foot", "blocks/chat");
-                    $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
-                    return true;
-                }
-                return false;
+                $self->putSectionTemplate("foot", "blocks/chat");
+                $self->putSectionTemplate("sidebar", "blocks/quick-sidebar");
+                return true;
             },
             'chat' => function($data, $self) {
                 // CREATE BLOCK CONTEXT

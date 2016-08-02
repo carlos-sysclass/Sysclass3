@@ -452,7 +452,9 @@ abstract class PhalconWrapperController extends Controller
 		}
 
 		// IF CHAT MODULE IS ENABLED
-		$this->putBlock("chat.quick-sidebar");
+		if ($this->acl->isUserAllowed(null, "Chat", "Support")) {
+			$this->putBlock("chat.quick-sidebar");
+		}
 
 		
 		$depInject = DI::getDefault();
