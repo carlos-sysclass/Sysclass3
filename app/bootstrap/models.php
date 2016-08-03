@@ -69,20 +69,42 @@ $di->set('modelsCache', function () {
 $di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
     'metaDataDir' => __DIR__ . '/../../cache/metadata/'
 )));
-$di->set('cache', function() {
 
-    //Cache data for 1 hour
-    $frontCache = new \Phalcon\Cache\Frontend\Data(array(
-        'lifetime' => 3600
-    ));
 
-    $cache = new BackendCache($frontCache, array(
-        'prefix' => 'SYSCLASS'
-    ));
+if (APP_TYPE === "WEBSOCKET") {
+    $di->set('cache', function() use ($environment, $di) {
+        $environment_name = $di->get("sysconfig")->deploy->environment;
 
-    return $cache;
-});
+        //Cache data for 1 hour
+        $frontCache = new \Phalcon\Cache\Frontend\Data(array(
+            'lifetime' => 3600
+        ));
 
+
+        //Create a MongoDB cache
+        $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, array(
+            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : $environment->mongo->server,
+            'db' => $environment->mongo->database . "-" . $environment_name,
+            'collection' => 'cache'
+        ));
+
+        return $cache;
+    });
+} else {
+    $di->set('cache', function() {
+
+        //Cache data for 1 hour
+        $frontCache = new \Phalcon\Cache\Frontend\Data(array(
+            'lifetime' => 3600
+        ));
+
+        $cache = new BackendCache($frontCache, array(
+            'prefix' => 'SYSCLASS'
+        ));
+
+        return $cache;
+    });
+}
 
 $di->set('mongo', function () use ($environment, $di) {
     $environment_name = $di->get("sysconfig")->deploy->environment;

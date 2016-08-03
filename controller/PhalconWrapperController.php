@@ -450,8 +450,16 @@ abstract class PhalconWrapperController extends Controller
 		if ($this->translate->inTranslationMode()) {
 			$this->putBlock("translate.page.editor");
 		}
-		
+
+		// IF CHAT MODULE IS ENABLED
 		$depInject = DI::getDefault();
+		/*
+		$acl = $depInject->get("acl");
+		if ($acl->isUserAllowed(null, "Chat", "Support")) {
+			$this->putBlock("chat.quick-sidebar");
+		}
+		*/
+
 		$assets = $depInject->get("assets");
 
 		$plico = PlicoLib::instance();

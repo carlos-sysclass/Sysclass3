@@ -6,6 +6,7 @@
 	  	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	  {/if}
 	  {$note.message}
+	  <!--
 	  {if isset($note.link_href)}
 	  <div class="pull-right">
 	  	<a href="{$note.link_href}">
@@ -13,5 +14,6 @@
 	  	</a>
 	  </div>
 	  {/if}
+	  -->
 	</div>
 {/foreach}

@@ -32,19 +32,44 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.on("start", function() {
 
+	    mod.chatModule = app.module("utils.chat");
+
+		this.listenTo(this.chatModule, "afterConnection.chat", function(topic, model) {
+			this.canStart = true;
+
+			this.startChatSidebar();
+		}.bind(this));
+		
 	    $('#chat-topbar-menu a, .page-quick-sidebar-toggler').click(function (e) {
 	        $('body').toggleClass('page-quick-sidebar-open'); 
+	        this.canStart = true;
 
 	       	this.startChatSidebar();
 	    }.bind(this));
 
+	    this.listenTo(this.chatModule, "receiveMessage.chat", function(topic, model) {
+	    	if (!this.started) {
+	    		this.canStart = true;
+	    		this.startChatSidebar();
+	    	}
+	    	console.warn(topic, model);
+
+			$("#chat-topbar-menu i.fa-comments").css("color", 'red');
+
+	    }.bind(this));
+	    
+
+	    /*
 		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 			this.canStart = true;
 
 			this.startChatSidebar();
 		}.bind(this));
+		*/
 
-		mod.chatModule = app.module("utils.chat");
+		//mod.chatModule = app.module("utils.chat");
+
+		//console.warn(mod.chatModule);
 
 		//mod.userSelectDialog = 
 		this.sidebarChatQueueViewClass = Backbone.View.extend({
@@ -171,6 +196,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 		this.sidebarChatConversationViewClass = Backbone.View.extend({
 			chatModule : mod.chatModule,
 			baseHeight:  0,
+			started : false,
 			template : _.template($("#sidebar-conversation-item-template").html(), null, {variable : 'model'}),
 			events : {
 				"keyup .page-quick-sidebar-chat-user-form input" : "keyenter",
@@ -307,8 +333,12 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 	            }
 			},
 			start : function() {
-				this.$el.removeClass("hidden");
-				this.listenTo(this.chatModule, "receiveMessage.chat", this.addOne.bind(this));
+				if (!this.started) {
+					this.started = true;
+					console.warn("conversation-started");
+					this.$el.removeClass("hidden");
+					this.listenTo(this.chatModule, "receiveMessage.chat", this.addOne.bind(this));
+				}
 			},
 
 			// FUNCTIONS TO START THE TRIGGER
@@ -316,6 +346,8 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				console.info("menu.chat/sidebarChatConversationViewClass::stopAction", this);
 				this.$el.addClass("hidden");
 				this.stopListening(this.chatModule);
+
+				this.started = false;
 
 				mod.trigger("stopChat.sidebar", this.model);
 			},
@@ -398,6 +430,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	            this.conversationHeight = chatUsersHeight;
 
+
 	            /*
 	            chatMessages
 	            	.attr("data-height", chatMessagesHeight)
@@ -407,16 +440,10 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 	            */
 			},
+			test : function() {
+			},
 			initialize : function() {
 				this.initializeScrolls();
-
-				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
-					this.$el.unblock();
-					this.chatModule.getQueues(this.renderChatQueues.bind(this));
-					this.chatModule.subscribe("chat-events", this.receiveChatUpdates.bind(this));
-				}.bind(this));
-
-				//this.listenTo(this.collection, "reset", this.renderChatQueues.bind(this));
 
 				this.listenTo(this.chatModule, "beforeConnection.chat", function(status) {
 					var html = '<i class="fa">' +
@@ -443,6 +470,18 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(mod, "assignToUser.sidebar", this.assignToUser.bind(this));
 				this.listenTo(mod, "resolve.sidebar", this.resolve.bind(this));
 				this.listenTo(mod, "delete.sidebar", this.delete.bind(this));
+
+				if (this.chatModule.isConnected()) {
+					this.$el.unblock();
+					this.chatModule.getQueues(this.renderChatQueues.bind(this));
+					//this.chatModule.subscribe("chat-events", this.receiveChatUpdates.bind(this));
+				} else {
+					this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
+						this.$el.unblock();
+						this.chatModule.getQueues(this.renderChatQueues.bind(this));
+						//this.chatModule.subscribe("chat-events", this.receiveChatUpdates.bind(this));
+					}.bind(this));
+				}
 
 				/*
 				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {

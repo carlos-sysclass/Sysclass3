@@ -1,6 +1,7 @@
 var $SC = new Backbone.Marionette.Application();
 
 jQuery(document).ready(function() {
+    $SC.hasSettings = false;
     $SC.on("before:start", function(options){
         options.theme_app.init(options.theme_path);
 
@@ -9,7 +10,13 @@ jQuery(document).ready(function() {
         });
 
         this.userSettings = new userSettingsModelClass();
-        this.userSettings.fetch();
+        this.userSettings.fetch({
+          success: function(model,data, xhR) {
+            // SETTINGS DEPLOYED
+            $SC.trigger("settings.sysclass", model,data, xhR);
+            $SC.hasSettings = true;
+          }
+        });
 
         this.userSettings.on("change", function(a,b,c,d,e) {
             this.save(null, {silent : true});
