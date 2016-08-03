@@ -24,7 +24,6 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         // GET THE USER NOT DONE YET TESTS
         $pendingTests = TestLesson::getUserPendingTests($this->user->id);
 
-
         $summary = array(
             'type'  => 'danger',
             'count' => $pendingTests->count(),
