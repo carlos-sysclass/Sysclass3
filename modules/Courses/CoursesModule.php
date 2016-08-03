@@ -4,8 +4,9 @@ namespace Sysclass\Modules\Courses;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course;
-use Sysclass\Models\Enrollments\Course as Enrollment;
+use Sysclass\Models\Courses\Course as Course,
+    Sysclass\Models\Enrollments\CourseUsers,
+    Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -13,18 +14,35 @@ use Sysclass\Models\Enrollments\Course as Enrollment;
 /**
  * @RoutePrefix("/module/courses")
  */
-class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
+class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider, \IWidgetContainer
 {
     /* ISummarizable */
     public function getSummary() {
+        $progress = CourseUsers::getUserProgress(true);
+
+        foreach($progress as $progCourse) {
+            $completed += $progCourse['lessons']['completed'];
+            $expected += $progCourse['lessons']['expected'];
+            $total += $progCourse['lessons']['total'];
+        }
+
+        if ($completed > $expected) {
+            $type = 'success';
+            $count = '<i class="icon-arrow-up"></i>';
+        } elseif ($completed < $expected) {
+            $type = 'danger';
+            $count = '<i class="icon-arrow-down"></i>';
+        } else {
+            $type = 'info';
+            $count = '<i class="icon-arrow-right"></i>';
+        }
 
         return array(
-            'type'  => 'danger',
-            'count' => '<i class="icon-arrow-down"></i>',
+            'type'  => $type,
+            'count' => $count,
             'text'  => $this->translate->translate('Progress'),
             'link'  => array(
-                'text'  => '35%',
-                'link'  => $this->getBasePath() . 'all'
+                'text'  => $completed . "/" . $total
             )
         );
     }
@@ -33,17 +51,19 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     public function getLinks() {
 
         if ($this->acl->isUserAllowed(null, "Courses", "View")) {
+            /*
             $itemsData = $this->model("courses")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
+            */
+            $count = Course::count("active = 1");
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
-                        'text'  => $this->translate->translate('Courses'),
-                        'icon'  => 'fa fa-cube',
+                        'count' => $count,
+                        'text'  => $this->translate->translate('Programs'),
+                        'icon'  => 'fa fa-graduation-cap',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -62,7 +82,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             array(
                 'icon'  => 'fa fa-cube',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => $this->translate->translate("Courses")
+                'text'  => $this->translate->translate("Programs")
             )
         );
 
@@ -73,11 +93,11 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Course"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Program"));
                 break;
             }
-            case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Course"));
+            case "edit/{id}" : {
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Program"));
                 break;
             }
         }
@@ -113,6 +133,9 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     /* IBlockProvider */
     public function registerBlocks() {
         return array(
+            'programs.moreinfo' => function($data, $self) {
+                $self->putSectionTemplate("moreinfo", "blocks/moreinfo");
+            },
             'courses.list.table' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("data-tables");
@@ -130,7 +153,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     }
 
     /* IWidgetContainer */
-	public function getWidgets($widgetsIndexes = array()) {
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
         
 		if (in_array('courses.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 
@@ -158,7 +181,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             
             if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
                 // GET FIRST COURSE FORM USER LIST
-                $enrollment = Enrollment::findFirst(array(
+                $enrollment = CourseUsers::findFirst(array(
                     'conditions'    => 'user_id = ?0 AND status_id = 1',
                     'bind' => array($currentUser->id)
                     //'bind' => '123456'
@@ -208,9 +231,9 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
-    public function addPage($id)
+    public function addPage()
     {
         $knowledgeAreas = $this->model("courses/areas/collection")->addFilter(array(
             'active' => 1
@@ -232,17 +255,18 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      * @Get("/edit/{id}")
      */
     public function editPage($id)
-    {
+    {        
         $knowledgeAreas = $this->model("courses/areas/collection")->addFilter(array(
             'active' => 1
         ))->getItems();
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_coordinator' => true
-        ))->getItems();
-        $this->putItem("coordinators", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
+
 
         parent::editPage($id);
     }
@@ -273,7 +297,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
                     $index++;
                 }
 
-                $modelRS = Enrollment::find(array(
+                $modelRS = CourseUsers::find(array(
                     'conditions'    => implode(" AND ", $modelFilters),
                     'bind' => $filterData
                 ));
@@ -285,7 +309,6 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
 
                 $itemsCollection = $this->model($modelRoute);
                 $itemsData = $itemsCollection->getItems();
-                //$itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             } else {
                 return $this->invalidRequestError();
             }
@@ -436,54 +459,23 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
      */
     public function getCourseStatsRequest($identifier)
     {
-        $user = $this->getCurrentUser(true);
-        $enrollments = Enrollment::find(array(
-            'conditions'    => "user_id = ?0",
-            'bind' => array($user->id)
+        //$user = $this->getCurrentUser(true);
+        $enrollmentCourse = CourseUsers::findFirst(array(
+            'conditions'    => "user_id = ?0 AND course_id = ?1",
+            'bind' => array($this->user->id, $identifier)
         ));
 
-        $enrollmentCourse = $enrollments->filter(function($item) use ($identifier) {
-            if ($item->course_id == $identifier) {
-                return $item;
-            }
-        });
-
         if (count($enrollmentCourse) > 0) {
+            // CALCULATE COURSE PROGRESS
+            $progress = $enrollmentCourse->getProgress(true);
 
-            $enrollmentCourse = reset($enrollmentCourse);
-
-            $classes = $enrollmentCourse->getCourse()->getClasses();
-            
-            $lessons = array();
-            $total_lessons = 0;
-
-            foreach($classes as $classe) {
-                //$lessons[] = $classe->getLessons()->count();
-                $total_lessons = $classe->getLessons()->count();
-            }
-
-            return array(
-                "id" => $identifier,
-                //'total_courses' => $enrollments->count(),
-                'total_classes' => $classes->count(),
-                'total_lessons' => $total_lessons,
-                'progress' => array(
-                    // TRIGGER RECALCULATION ???
-                    'course' => floatval($enrollmentCourse->getCourseProgress()->factor),
-                    'classes' => -1,
-                    'lessons' => -1
-                )
-            );
+            $this->response->setJsonContent($progress);
+            return true;
         } else {
             // USER NOT ENROLLED IN REQUESTED COURSE
-            return $this->invalidRequestError();
+            $this->response->setJsonContent($this->invalidRequestError());
         }
-
-
     }
-
-
-
     /**
      * @todo Move all /items routes to above
      */
@@ -510,7 +502,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             'course_id'	=> $courses
         ), array("operator" => "="))->getItems();
 
-        $items = $this->module("permission")->checkRules($itemsData, "classes", 'permission_access_mode');
+        $items = $itemsData;
         /*
         if ($datatable === 'datatable') {
             $items = array_values($items);
@@ -608,9 +600,8 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
     /**
      * [ add a description ]
      *
-     * @url POST /item/users/switch
-     * @deprecated 3.0.0.18
-    */
+     * @Post("/item/users/toggle")
+     */
     public function switchUserInGroup() {
         $data = $this->getHttpData(func_get_args());
 
@@ -624,11 +615,11 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course with success"), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course with success"), "error");
         }
         return array_merge($response, $info);
     }
@@ -1303,7 +1294,7 @@ class CoursesModule extends \SysclassModule implements \ISummarizable, \ILinkabl
             'course_id' => $courses
         ), array("operator" => "="))->getItems();
 
-        $items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
+        $items = $itemsData;
         /*
         if ($datatable === 'datatable') {
             $items = array_values($items);

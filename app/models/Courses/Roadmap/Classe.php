@@ -9,4 +9,9 @@ class Classe extends Model
     {
         $this->setSource("v_roadmap_classes");
     }
+
+    public function beforeSave() {
+    	var_dump(1);
+    	exit;
+    }
 }

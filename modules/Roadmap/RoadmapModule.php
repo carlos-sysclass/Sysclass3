@@ -4,7 +4,11 @@ namespace Sysclass\Modules\Roadmap;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Enrollments\Course as EnrolledCourse;
+use Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event,
+    Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse,
+    Sysclass\Models\Courses\Contents\Progress as ContentProgress;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -12,7 +16,7 @@ use Sysclass\Models\Enrollments\Course as EnrolledCourse;
 /**
  * @RoutePrefix("/module/roadmap")
  */
-class RoadmapModule extends \SysclassModule implements \IBlockProvider
+class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifyable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -52,6 +56,41 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
         );
     }
 
+    // INotifyable
+    public function getAllActions() {
+
+    }
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "calculate-progress" : {
+                $data = $event->data;
+                /**
+                 * @todo  Recalculate all progress based on following variables
+                 * user_id
+                 * content_id OR lesson_id OR class_id OR course_id
+                 */
+                if (array_key_exists('user_id', $data)) {
+                    if (array_key_exists('content_id', $data)) {
+                        $progressObject = ContentProgress::findFirst(array(
+                            'conditions' => 'user_id = ?0 AND content_id =?1',
+                            'bind' => array($data['user_id'], $data['content_id'])
+                        ));
+                    } elseif (array_key_exists('lesson_id', $data)) {
+                        return false;
+                    } else {
+                        return false;
+                    }
+                    return $progressObject->updateProgress();
+                }
+
+                return false;
+                break;
+            }
+
+        }
+    }
+
     /**
      * [ add a description ]
      *
@@ -77,7 +116,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
                     'c.active'     => 1,
                     'cp.course_id'  => $courses
                 ), array("operator" => "="))->getItems();
-                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
             } elseif ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
                 $itemsCollection = $this->model($modelRoute);
@@ -98,7 +136,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
                     'clp.period_id' => $filter['period_id']
                 )/*, array("operator" => "=")*/)->getItems();
 
-                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemsCollection = $this->model($modelRoute);
@@ -115,7 +152,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
                     'cg.course_id' => $courses
                 ), array("operator" => "="))->getItems();
 
-                //$items = $this->module("permission")->checkRules($itemsData, "seasons", 'permission_access_mode');
             } elseif ($model ==  "courses") {
                 // GET USERS COURSES
                 $userCourses = EnrolledCourse::find(
@@ -131,7 +167,6 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
 
                 $itemsCollection = $this->model($modelRoute);
                 $itemsData = $itemsCollection->getItems();
-                $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
             }
 
             //$currentUser    = $this->getCurrentUser(true);
@@ -184,11 +219,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
         }
     }
 
-    /**
-     * [ add a description ]
-     *
-     * @Get("/item/{model}/{identifier}")
-    */
+   /*
     public function getItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser(true)) {
@@ -211,16 +242,18 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             }
 
             $itemModel = $this->model($modelRoute);
-            $editItem = $itemModel->setUserFilter($userData->id)->getItem($identifier);
+            $editItem = $itemModel->setUserFilter($this->user->id)->getItem($identifier);
 
             $this->response->setJsonContent($editItem);
         }
     }
+    */
     /**
      * [ add a description ]
      *
      * @Post("/item/{model}")
      */
+    /*
     public function addItemRequest($model)
     {
 
@@ -291,16 +324,18 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Put("/item/{model}/{id}")
      */    
+    /*
     public function setItemRequest($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
-            $data = $this->request->getPut();
+            //$data = $this->request->getPut();
+            $data = $this->getHttpData(func_get_args());
 
             if ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
@@ -355,7 +390,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *

@@ -97,9 +97,7 @@
 					<!-- NO DATA NEEDED -->
 
 					<div class="question-types-item question-type-free_text">
-	                    <div class="alert alert-warning" role="alert">
-	                        Not implemented yet!
-	                    </div>
+	                    
 					</div>
 
 					<div class="question-types-item question-type-true_or_false">
@@ -204,7 +202,7 @@
         <div class="input-group-btn">
         	<% if (!model.answer) { %>
             <a class="btn btn-success select-choice-action" type="button">
-                {translateToken value="This is correct!"}
+                {translateToken value="Mark as correct!"}
             </a>
             <% } %>
 	        <a class="btn btn-danger remove-choice-action">

@@ -1,16 +1,17 @@
 <?php
 use 
+    Phalcon\Mvc\Model\Transaction\Manager as TransactionManager,
     Phalcon\Logger,
 	Phalcon\Logger\Adapter\File as FileLogger,
 	Phalcon\Cache\Backend\Apc as BackendCache;
 
 $di->set('db', function () use ($environment, $eventsManager) {
-    $class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($environment->database->dbtype);
+    $class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($environment->database->adapter);
     if (class_exists($class)) {
         $database = new $class(array(
-            "host"     => $environment->database->dbhost,
-            "username" => $environment->database->dbuser,
-            "password" => $environment->database->dbpass,
+            "host"     => $environment->database->host,
+            "username" => $environment->database->username,
+            "password" => $environment->database->password,
             "dbname"   => $environment->database->dbname,
             "charset"  => 'utf8'
         ));
@@ -38,6 +39,12 @@ $eventsManager->attach('db', function ($event, $connection) use ($logger) {
     }
 });
 
+
+
+$di->setShared('transactions', function () {
+    return new TransactionManager();
+});
+
 // Set a models manager
 $di->set('modelsManager', function ()  use ($eventsManager) {
     $modelsManager = new Plico\Mvc\Model\Manager();
@@ -62,16 +69,56 @@ $di->set('modelsCache', function () {
 $di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
     'metaDataDir' => __DIR__ . '/../../cache/metadata/'
 )));
-$di->set('cache', function() {
 
-    //Cache data for 1 hour
-    $frontCache = new \Phalcon\Cache\Frontend\Data(array(
-        'lifetime' => 3600
-    ));
 
-    $cache = new BackendCache($frontCache, array(
-        'prefix' => 'SYSCLASS'
-    ));
+if (APP_TYPE === "WEBSOCKET") {
+    $di->set('cache', function() use ($environment, $di) {
+        $environment_name = $di->get("sysconfig")->deploy->environment;
 
-    return $cache;
-});
+        //Cache data for 1 hour
+        $frontCache = new \Phalcon\Cache\Frontend\Data(array(
+            'lifetime' => 3600
+        ));
+
+
+        //Create a MongoDB cache
+        $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, array(
+            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : $environment->mongo->server,
+            'db' => $environment->mongo->database . "-" . $environment_name,
+            'collection' => 'cache'
+        ));
+
+        return $cache;
+    });
+} else {
+    $di->set('cache', function() {
+
+        //Cache data for 1 hour
+        $frontCache = new \Phalcon\Cache\Frontend\Data(array(
+            'lifetime' => 3600
+        ));
+
+        $cache = new BackendCache($frontCache, array(
+            'prefix' => 'SYSCLASS'
+        ));
+
+        return $cache;
+    });
+}
+
+$di->set('mongo', function () use ($environment, $di) {
+    $environment_name = $di->get("sysconfig")->deploy->environment;
+
+    if (class_exists("MongoClient")) {
+        $mongo = new MongoClient();    
+    } else {
+        $mongo = new Mongo();
+    }
+   
+    return $mongo->selectDB($environment->mongo->database . "-" . $environment_name);
+   
+}, true);
+
+$di->set('collectionManager', function(){
+    return new Phalcon\Mvc\Collection\Manager();
+}, true);

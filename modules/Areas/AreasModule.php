@@ -4,7 +4,9 @@ namespace Sysclass\Modules\Areas;
  * Module Class File
  * @filesource
  */
-use \Sysclass\Models\Users\User;
+use 
+    Sysclass\Models\Courses\Departament,
+    Sysclass\Models\Users\User;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -18,15 +20,12 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     public function getLinks() {
         //$depinject = Phalcon\DI::getDefault();
         if ($this->acl->isUserAllowed(null, "Areas", "View")) {
-            $itemsData = $this->model("courses/areas/collection")->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "area", 'permission_access_mode');
+            $count = Departament::count("active = 1");
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $count,
                         'text'  => $this->translate->translate('Departments'),
                         'icon'  => 'fa fa-cubes',
                         'link'  => $this->getBasePath() . 'view'
@@ -61,7 +60,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Department"));
                 break;
             }
-            case "edit/:id" : {
+            case "edit/{id}" : {
                 $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Department"));
                 break;
             }
@@ -99,7 +98,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {
@@ -115,7 +114,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     /**
      * [ add a description ]
      *
-     * @url GET /edit/:id
+     * @Get("/edit/{id}")
      */
     public function editPage($id)
     {
@@ -187,7 +186,6 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
 
             $itemsCollection = $this->model($modelRoute);
             $itemsData = $itemsCollection->getItems();
-            $itemsData = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
         if ($type === 'combo') {
             $q = $_GET['q'];
             $itemsData = $itemsCollection->filterCollection($itemsData, $q);

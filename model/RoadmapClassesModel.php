@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0.152
+ */
 class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
@@ -18,12 +21,11 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
             c2c.`end_date`,
             c2c.`position`,
             c2c.`active`,
-            cl.`area_id` as 'class#area_id',
-            cl.`name` as 'class#name',
-            cl.`description` as 'class#description',
-            cl.`instructor_id` as 'class#instructor_id',
-            COUNT(l.id) as 'class#total_lessons',
-            cl.`active` as 'class#active',
+            cl.`area_id` as 'classe#area_id',
+            cl.`name` as 'classe#name',
+            cl.`description` as 'classe#description',
+            COUNT(l.id) as 'classe#total_lessons',
+            cl.`active` as 'classe#active',
             c.`id` as 'course#id',
             c.`name` as 'course#name',
             c.`active` as 'course#active',
@@ -123,6 +125,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
 
     public function setItem($data, $identifier, $quote = true) {
         $classModel = $this->model("classes");
+
         if (array_key_exists('class_id', $data)) {
             $classModel->setItem($data['class'], $data['class_id']);
         }

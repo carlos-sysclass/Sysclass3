@@ -28,8 +28,8 @@ crud:
         - mData: surname
           label: Surname
 
-        - mData: login
-          label: Login
+        - mData: email
+          label: Email
 
         - mData: pending
           sType: table-boolean
@@ -59,13 +59,14 @@ crud:
         page_subtitle: Create a new User
     'edit/{id}':
       components: ["select2","validation", "bootstrap-switch","pwstrength"]
-      blocks: ["enroll.user.block"]
+      #blocks: ["enroll.user.block"]
       template: form.tpl
       scripts: ["edit"]
       variables:
         page_subtitle: Config and edit user info
     profile:
       components: ["select2","validation","datepicker","pwstrength", "jquery-mask", "jquery-jcrop"]
+      blocks: ["address.book"]
       stylesheets: ["css/pages/profile"]
       base_scripts: ["scripts/ui.menu.translate"]
       scripts: ["views.profile"]
@@ -101,11 +102,6 @@ blocks:
           sType: datetime-moment-since
           sClass: text-center
           label: User Since
-
-        - mData: options
-          sType: table-options
-          sClass: text-center
-          label: Actions
 
 models:
   me:

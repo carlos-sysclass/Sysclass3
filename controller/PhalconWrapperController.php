@@ -19,6 +19,8 @@ abstract class PhalconWrapperController extends Controller
 	public static $t = null;
 	protected static $db;
 
+	protected $disabledSections = array();
+
     public function initialize()
     {
 		//if (is_null(self::$t)) {
@@ -51,6 +53,8 @@ abstract class PhalconWrapperController extends Controller
 
 		$result = array();
 		foreach($files as $file) {
+			$file = $this->stringsHelper->vksprintf($file, ['locale' => $this->translate->getJsSource()]);
+
 			if (strpos($file, "/") === 0) {
 				$result[] = $file;
 			} else {
@@ -82,6 +86,7 @@ abstract class PhalconWrapperController extends Controller
 
 	public function module($module, $noCached=FALSE)
 	{
+		return $this->loader->module($module);
 		$module = strtolower($module);
 
 		//var_dump($module, self::$resourceCache["module"]);
@@ -311,6 +316,7 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function notAuthenticatedError()
 	{
+		debug_print_backtrace();
 		return $this->createResponse(403, "You don't have access to this resource", "error", "advise");
 	}
 
@@ -339,12 +345,26 @@ abstract class PhalconWrapperController extends Controller
 		return $this->createResponse(200, $message, $type, "advise");
 	}
 
+	protected function createNonAdviseResponse($message, $type = "ACK")
+	{
+		return $this->createResponse(200, $message, $type, 'info');
+	}
+
 	protected function invalidRequestError($message = "", $type = "warning") {
 		if (empty($message)) {
 			$message = $this->translate->translate("There's a problem with your request. Please try again.");
 		}
 		return $this->createResponse(200, $message, $type, "advise");
 	}
+
+	protected function entryPointNotFoundError($redirect = null)
+	{
+		if (!is_null($redirect)) {
+			return $this->redirect($redirect, "Rota não encontrada", "error", 404);
+		}
+		return $this->createResponse(404, "Não encontrado", "error", "advise");
+	}
+
 
 
 	public function getHttpData($args)
@@ -401,6 +421,8 @@ abstract class PhalconWrapperController extends Controller
 			$this->view->setVar("T_" . strtoupper($key), $item);
 		}
 
+		$this->view->setVar("T_TRACKING_TAG_SCRIPT", $this->tracking->generateTrackingTag());
+
  		if (is_null($template)) {
 			$this->view->render($this->template);
 
@@ -428,8 +450,16 @@ abstract class PhalconWrapperController extends Controller
 		if ($this->translate->inTranslationMode()) {
 			$this->putBlock("translate.page.editor");
 		}
-		
+
+		// IF CHAT MODULE IS ENABLED
 		$depInject = DI::getDefault();
+		/*
+		$acl = $depInject->get("acl");
+		if ($acl->isUserAllowed(null, "Chat", "Support")) {
+			$this->putBlock("chat.quick-sidebar");
+		}
+		*/
+
 		$assets = $depInject->get("assets");
 
 		$plico = PlicoLib::instance();
@@ -519,16 +549,31 @@ abstract class PhalconWrapperController extends Controller
 		// UNCOMMENT TO PROVIDE CSS MINIFICATION (MUST ADJUST @import inside)
 		$filename = md5(implode(":", $css)) . ".css";
 
-		$cssHeaderAssets
-			->join(true)
-		    // The name of the final output
-		    ->setTargetPath("resources/" . $filename)
-		    // The script tag is generated with this URI
-		    ->setTargetUri("resources/" . $filename)
-		    ->addFilter(new Phalcon\Assets\Filters\Cssmin());
+		
+		if (!$this->environment->run->debug) {
+		
+			$cssHeaderAssets
+				->join(true)
+			    // The name of the final output
+			    ->setTargetPath("resources/" . $filename)
+			    // The script tag is generated with this URI
+			    ->setTargetUri("resources/" . $filename)
+			    ->addFilter(new Phalcon\Assets\Filters\Cssmin());
+		}
 
 		foreach($css as $file) {
 			$cssHeaderAssets->addCss($file, true);
+		}
+
+		//var_dump($css);
+		//exit;
+
+		if ($this->environment->run->debug) {
+			$this->putItem('allstylesheets', $assets->outputCss("cssHeader"));
+		} else {
+			$assets->outputCss("cssHeader");
+
+			$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
 		}
 
 		$scripts = $this->resolvePaths(self::$_scripts);
@@ -538,32 +583,33 @@ abstract class PhalconWrapperController extends Controller
 		// UNCOMMENT TO PROVIDE CSS MINIFICATION (MUST ADJUST @import inside)
 		$filename = md5(implode(":", $scripts)) . ".js";
 		
-		$jsFooterAssets
-			->join(true)
-		    // The name of the final output
-		    ->setTargetPath("resources/" . $filename)
-		    // The script tag is generated with this URI
-		    ->setTargetUri("resources/" . $filename)
-		    ->addFilter(new Phalcon\Assets\Filters\Jsmin());
-		
+		if (!$this->environment->run->debug) {
+			$jsFooterAssets
+				->join(true)
+			    // The name of the final output
+			    ->setTargetPath("resources/" . $filename)
+			    // The script tag is generated with this URI
+			    ->setTargetUri("resources/" . $filename)
+			    ->addFilter(new Phalcon\Assets\Filters\Jsmin());
+		}
+
 		foreach($scripts as $file) {
 			$jsFooterAssets->addJs($file, true);
 		}
 
-		$assets->outputCss("cssHeader");
+		if ($this->environment->run->debug) {
+			$this->putItem('allscripts', $assets->outputJs("jsFooter"));
+		} else {
+			$assets->outputJs("jsFooter");
+
+			$this->putItem("script_target", $jsFooterAssets->getTargetUri());
+		}
 
 		$this->putData(array(
-			//'scripts'			=> self::$_scripts,
-			//'stylesheets'		=> $assets->outputCss("cssHeader"),
-			'scripts'			=> $assets->outputJs("jsFooter"),
 			'module_scripts'	=> self::$_moduleScripts,
-			//'stylesheets'		=> self::$_css,
 			'links'				=> $this->_links,
 			'section_tpl'		=> self::$_sections_tpl
 		));
-
-		$this->putItem("stylesheet_target", $cssHeaderAssets->getTargetUri());
-		$this->putItem("script_target", $jsFooterAssets->getTargetUri());
 
 		$message = $this->getMessage();
 
@@ -588,6 +634,8 @@ abstract class PhalconWrapperController extends Controller
 			'logout_url'	=> $this->getBasePath() . "logout.html"
 		));
 		*/
+
+		$this->putItem("disabled_sections", $this->disabledSections);
 	
 		return true;
 	}
@@ -636,6 +684,8 @@ abstract class PhalconWrapperController extends Controller
             return sprintf($templatedPath, $this->environment['default/theme']);
         }
     }
+
+
 
 
 
@@ -766,6 +816,8 @@ abstract class PhalconWrapperController extends Controller
 	}
 
 
-
+	public function disableSection($section_id) {
+		$this->disabledSections[$section_id] = true;
+	}
 
 }

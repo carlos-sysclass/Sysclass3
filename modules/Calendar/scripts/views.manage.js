@@ -19,7 +19,7 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                 this.$el.modal({
                     autoShow : false
                 });
-*/
+                */
                 /*
                 this.on("after:save", function(model) {
                     self.model = new mod.models.tutoria({
@@ -395,8 +395,10 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
             })
         };
 
+        var baseModelClass = $SC.module("models").getBaseModel();
         this.models = {
-            event : Backbone.DeepModel.extend({
+            event : baseModelClass.extend({
+                response_type : "object",
                 urlRoot : "/module/calendar/item/me"
             })
         };

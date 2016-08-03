@@ -1,7 +1,10 @@
 <?php
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Courses\Unit instead.
+ */
 namespace Sysclass\Models\Courses;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Lesson extends Model
 {
@@ -9,23 +12,52 @@ class Lesson extends Model
     {
         $this->setSource("mod_lessons");
 
-		$this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
-    }
-    /*
-    public static function findFirst($parameters=null)
-    {
-    	if (is_null($parameters)) {
-    		$parameters['conditions'] = "type"
-    	}
-        return parent::findFirst($parameters);
+		$this->belongsTo(
+			"class_id", 
+			"Sysclass\\Models\\Courses\\Classe", 
+			"id",
+			array('alias' => 'Classe')
+		);
+
+		$this->hasOne(
+            "id",
+            "Sysclass\\Models\\Courses\\LessonProgress",
+            "lesson_id",
+            array('alias' => 'Progress')
+        );
+
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Courses\\Contents\\Content",
+            "lesson_id",
+            array('alias' => 'Contents')
+        );
+
     }
 
-    public static function find($parameters=null)
-    {
-        // ...
-        var_dump($parameters);
-        exit;
-        return parent::find($parameters);
+    public function toFullLessonArray() {
+        $result = $this->toArray();
+
+        $classe = $this->getClasse();
+        $result['classe'] = $classe->toArray();
+
+        $contents = $this->getContents();
+        $result['contents'] = array();
+
+        foreach($contents as $content) {
+            $item = $content->toFullContentArray();
+            
+            $result['contents'][] = $item;
+        }
+        
+        $progress = $this->getProgress();
+        if ($progress) {
+            $result['progress'] = $progress->toArray();
+        } else {
+            $result['progress'] = array();
+        }
+
+        return $result;
     }
-    */
+
 }

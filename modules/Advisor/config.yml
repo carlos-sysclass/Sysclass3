@@ -1,0 +1,29 @@
+widgets:
+  advisor.queue.list:
+    context:
+      block_id: "advisor_queue_list"
+      ajax_source: "/module/chat/items/me/datatable?block"
+      datatable_fields:
+#        - mData: online
+#          sType: table-boolean
+#          sClass: text-center
+#          label: "Status"
+
+        - mData: requester.name
+          label: Name
+
+        - mData: requester.surname
+          label: Surname
+
+        - mData: requester.email
+          label: Email
+
+        - mData: ping
+          sType: unix-moment-since
+          sClass: text-center
+          label: Last Message
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions

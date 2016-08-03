@@ -5,7 +5,8 @@ namespace Sysclass\Modules\Settings;
  * @filesource
  */
 use Sysclass\Models\System\Settings as SystemSettings, 
-    Sysclass\Models\Users\Settings;
+    Sysclass\Models\Users\Settings,
+    Sysclass\Models\Courses\Course;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -14,24 +15,47 @@ use Sysclass\Models\System\Settings as SystemSettings,
 /**
  * @RoutePrefix("/module/settings")
  */
-class SettingsModule extends \SysclassModule implements \ILinkable
+class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkable
 {
     protected $legalValues = array(
+        'content_id',
+        'unit_id',
         'course_id',
-        'class_id',
-        'lesson_id'
+        'program_id'
     );
+    
     protected $defaults = array(
+        'content_id' => null,
+        'unit_id' => null,
         'course_id' => null,
-        'class_id' => null,
-        'lesson_id' => null,
-        'teste_execution_id' => null,
+        'program_id' => null,
         // @todo Create a hierachical method to get and save values
         // THIS IS NOT SAVED ON POST SETTINGS, BECAUSE THESE VALUES ARE NOT ON $this->legalValues ARRAY
         'js_date_fmt'   => 'mm/dd/yyyy',
         'php_date_fmt'  => 'm/d/Y'
     );
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
 
+            // INJECT THE HELP BUTTON
+
+            $this->putCss('css/pageguide/pageguide');
+            $this->putScript('plugins/pageguide/pageguide.min');
+
+            $this->putScript("scripts/ui.menu.settings");
+
+            $menuItem = array(
+                'id'        => "open-pageguide-action",
+                'icon'      => ' fa fa-question',
+                'text'      => $this->translate->translate('Help'),
+                'type'      => ''
+            );
+
+            return $menuItem;
+        }
+        return false;
+    }
 
     /* ILinkable */
     public function getLinks() {
@@ -42,7 +66,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
                 'administration' => array(
                     array(
                         //'count' => count($items),
-                        'text'  => $this->translate->translate('System Settings'),
+                        'text'  => $this->translate->translate('Settings'),
                         'icon'  => 'fa fa-code-fork',
                         'link'  => $this->getBasePath() . 'manage'
                     )
@@ -60,13 +84,25 @@ class SettingsModule extends \SysclassModule implements \ILinkable
      * @Get("/")
      */
     public function getRequest() {
-        if ($user = $this->getCurrentUser(true)) {
+        if ($user = $this->user) {
             $this->response->setContentType('application/json', 'UTF-8');
             
             if ($results = $this->getSettings(true)) {
+                $results['user_id'] = $user->id;
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;
                 }
+
+                $results['websocket_port'] = $this->environment->websocket->port;
+                $results['websocket_ssl_port'] = $this->environment->websocket->ssl_port;
+
+                $course = Course::findFirst(array(
+                    'conditions' => "id = ?0",
+                    'columns' => 'name',
+                    'bind' => array($results['course_id'])
+                ));
+                $results['course_name'] = $course->name;
+
                 $this->response->setJsonContent($results);
                 return $results;
             } else {
@@ -112,7 +148,11 @@ class SettingsModule extends \SysclassModule implements \ILinkable
     }
 
     public function getSettings($mergeWithDefaults = false) {
-       if ($user = $this->getCurrentUser(true)) {
+       if ($user = $this->user) {
+            // GET USER LANGUAGE AND LOCALIZATION INFO
+            //language_id
+            //var_dump($user->getLanguage()->toArray());
+            //exit;
             // SAVE SETTINGS FOR CURRENT USER
             $settings = $user->getSettings();
 
@@ -125,6 +165,8 @@ class SettingsModule extends \SysclassModule implements \ILinkable
                 if ($mergeWithDefaults) {
                     $results = array_merge($this->defaults, $results);
                 }
+
+                $results['language'] = $user->getLanguage()->js_code;
 
                 return $results;
             }
@@ -150,7 +192,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
     public function put($key, $value) {
        if ($user = $this->getCurrentUser()) {
             // SAVE SETTINGS FOR CURRENT USER
-            $this->db->StartTrans();
+            //$this->db->StartTrans();
             $this->db->Execute(sprintf(
                 "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
                 $user['id'],
@@ -162,7 +204,7 @@ class SettingsModule extends \SysclassModule implements \ILinkable
                 $key,
                 $value
             ));
-            $this->db->CompleteTrans();
+            //$this->db->CompleteTrans();
 
             return true;
         } else {
@@ -174,11 +216,9 @@ class SettingsModule extends \SysclassModule implements \ILinkable
      * Returns a JSON string object to the browser when hitting the root of the domain
      *
      * @Get("/manage")
-     * @allow(resource=settings, action=manage)
      */
     public function managePage() {
-        // THE ANNOUTATION PERMISSION IS NOT NOW WORKING NOW.
-        if ($this->isResourceAllowed()) {
+        if ($this->isResourceAllowed("manage")) {
 
             $settingsRS = SystemSettings::find(
                 array(
@@ -232,7 +272,9 @@ class SettingsModule extends \SysclassModule implements \ILinkable
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
-        if ($this->isResourceAllowed()) {
+        $model_info = $this->model_info[$model];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
             
             $data = $this->request->getJsonRawBody(true);

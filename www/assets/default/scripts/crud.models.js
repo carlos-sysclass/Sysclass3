@@ -4,6 +4,7 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
     this.route = this.config['route'];
     this.modelPrefix = this.config['model-prefix'];
 
+    /*
     this.baseItemModelClass = Backbone.DeepModel.extend({
         response_type : "object",
         save: function(key, val, options) {
@@ -53,6 +54,10 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
             }
             return Backbone.sync(method, model, options);
         }
+    });
+    */
+    this.baseItemModelClass = app.module("models").getBaseModel({
+        
     });
 
     //mod.addInitializer(function() {

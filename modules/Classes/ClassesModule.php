@@ -4,7 +4,9 @@ namespace Sysclass\Modules\Classes;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Classe;
+use Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Courses\Lesson,
+    Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -22,14 +24,13 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemsData = $this->model("classes")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "classe", 'permission_access_mode');
             */
             return array(
                 'content' => array(
                     array(
                         'count' => $count,
-                        'text'  => $this->translate->translate('Classes'),
-                        'icon'  => 'fa fa-folder',
+                        'text'  => $this->translate->translate('Courses'),
+                        'icon'  => 'fa fa-sitemap',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -99,14 +100,17 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
     public function registerBlocks() {
         return array(
-            'classes.lessons.edit' => function($data, $self) {
+            'courses.moreinfo' => function($data, $self) {
+                $self->putSectionTemplate("moreinfo", "blocks/moreinfo");
+            },
+            'courses.unit.edit' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
                 $self->putModuleScript("blocks.classes.lessons.edit");
 
-                $self->putSectionTemplate("lessons", "blocks/lessons.edit");
+                $self->putSectionTemplate("units", "blocks/units.edit");
 
                 return true;
             }
@@ -117,22 +121,12 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Get("/add")
      */
+    /*
     public function addPage()
     {
-        /*
-        $items = $this->model("courses/collection")->addFilter(array(
-            'active' => true
-        ))->getItems();
-        $this->putItem("courses", $items);
-        */
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
-
         parent::addPage($id);
-
     }
+    */
 
     /**
      * [ add a description ]
@@ -141,16 +135,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function editPage($id)
     {
-        /*
-        $items = $this->model("courses/collection")->addFilter(array(
-            'active' => true
-        ))->getItems();
-        $this->putItem("courses", $items);
-        */
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_instructor' => true
-        ))->getItems();
-        $this->putItem("instructors", $items);
+        // GET THE PROFESSORS
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
 
         parent::editPage($id);
     }
@@ -270,7 +259,6 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $itemsData = $itemsCollection->getItems();
 
 
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {
@@ -306,28 +294,30 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Put("/items/lessons/set-order/{class_id}")
      */
-    public function setLessonOrderAction($class_id)
+    public function setLessonOrderRequest($class_id)
     {
-        $modelRoute = "base/lessons";
+        if ($this->isUserAllowed("edit")) {
+            $data = $this->request->getPut();
 
-        $itemsCollection = $this->model($modelRoute);
-        // APPLY FILTER
-        if (is_null($class_id) || !is_numeric($class_id)) {
-            return $this->invalidRequestError();
-        }
+            $itemModel = $this->getModelData("me", $class_id);
 
-        $messages = array(
-            'success' => "Lesson order updated with success",
-            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-        );
+            $messages = array(
+                'success' => "Lesson order updated with success",
+                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+            );
 
-        $data = $this->getHttpData(func_get_args());
-
-        if ($itemsCollection->setOrder($class_id, $data['position'])) {
-            return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+            if ($itemModel->setLessonOrder($data['position'])) {
+                $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+            } else {
+                $response = $this->invalidRequestError($this->translate->translate($messages['success']), "success");
+            }
         } else {
-            return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
+            $response = $this->notAuthenticatedError();
+        
         }
+        $this->response->setJsonContent(
+            $response
+        );
     }
 
 }

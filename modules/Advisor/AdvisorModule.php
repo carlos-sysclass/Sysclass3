@@ -30,45 +30,67 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
     }
 
     // IWidgetContainer
-    public function getWidgets($widgetsIndexes = array())
+    public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
-        if (in_array('advisor.chat', $widgetsIndexes) || in_array('advisor.schedule', $widgetsIndexes)) {
-        	$widgets = array();
+    	$widgets = array();
 
-            if (in_array('advisor.chat', $widgetsIndexes)) {
-                // START CHART ON CLICK
-                //
-                $this->putModuleScript("widget.chat.advisor");
+        if (in_array('advisor.schedule', $widgetsIndexes)) {
+            $widgets['advisor.schedule'] = array(
+                'id'        => 'advisor-schedule-widget',
+                'template'  => $this->template("widgets/schedule"),
+                'header'     => $this->translate->translate("Queue List"),
+                'panel'     => true
 
-                $this->putBlock("advisor.chat");
-
-                $widgets['advisor.chat'] = array(
-                    'id'        => 'advisor-chat-widget',
-       				'template'	=> $this->template("widgets/chat"),
-                    'header'     => $this->translate->translate("Talk to us"),
-                    'body'      => false,
-                    'icon'      => "fa fa-comment",
-                    'panel'     => 'dark-blue'
-        		);
-            }
-
-            if (in_array('advisor.schedule', $widgetsIndexes)) {
-                $widgets['advisor.schedule'] = array(
-                    'id'        => 'advisor-schedule-widget',
-                    'template'  => $this->template("widgets/schedule"),
-                    'panel'     => true
-
-                );
-            }
-
-            return $widgets;
+            );
         }
-        return false;
+
+        if (in_array('advisor.queue.list', $widgetsIndexes)) {
+            $this->putModuleScript("widget.queue.list");
+
+            $block_context = $this->getConfig("widgets\advisor.queue.list\context");
+            $this->putItem("advisor_queue_list_context", $block_context);
+
+            $this->putComponent("data-tables");
+
+            $this->putBlock("advisor.chat");
+
+            $widgets['advisor.queue.list'] = array(
+                'id'        => 'advisor-queue-list',
+                'template'  => $this->template("widgets/queue.list"),
+                'header'     => $this->translate->translate("Chat List"),
+                'body'      => false,
+                'icon'      => "fa fa-comment",
+                'panel'     => false
+
+            );
+        }
+        if (in_array('advisor.queue.filter', $widgetsIndexes)) {
+            //$this->putModuleScript("widget.queue.list");
+
+            //$block_context = $this->getConfig("widgets\advisor.queue.list\context");
+            //$this->putItem("advisor_queue_list_context", $block_context);
+
+            $this->putComponent("data-tables");
+
+            //$this->putBlock("advisor.chat");
+
+            $widgets['advisor.queue.filter'] = array(
+                'id'        => 'advisor-queue-filter',
+                'template'  => $this->template("widgets/queue.filter"),
+                'title'     => $this->translate->translate("Filters"),
+                'body'      => false,
+                'icon'      => "fa fa-filter",
+                'panel'     => false
+            );
+        }
+
+        return count($widgets) > 0 ? $widgets : false;
     }
 
     // IBlockProvider
     public function registerBlocks() {
         return array(
+            /*
             'chat.views' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putModuleScript("chat.views");
@@ -78,6 +100,7 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 return true;
 
             },
+            */
             'advisor.chat' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("autobahn");
@@ -85,7 +108,6 @@ class AdvisorModule extends \SysclassModule implements /* ISummarizable, */\IWid
                 $self->putSectionTemplate("foot", "blocks/chat");
 
                 return true;
-
             }
         );
     }

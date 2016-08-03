@@ -69,6 +69,7 @@
     </div>
 {/if}
 
+{$T_ALLSCRIPTS nofilter}
 <script type="text/javascript" src="/{$T_SCRIPT_TARGET}"></script>
 
 <!-- END CORE PLUGINS -->
@@ -85,14 +86,10 @@
 {/foreach}
 <!-- END JAVASCRIPTS -->
 
+{$T_TRACKING_TAG_SCRIPT nofilter}
+
 <script>
     jQuery(document).ready(function() {
-        // pageguide init
-        tl.pg.init({
-            /* pg_caption : "" */
-            custom_open_button : "#open-pageguide-action"
-        });
-
         var options = {
             theme_path : "{$T_PATH.resource}",
             theme_app  : App

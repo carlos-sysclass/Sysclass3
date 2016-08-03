@@ -16,7 +16,7 @@ use Sysclass\Models\Announcements\Announcement;
 class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummarizable, ILinkable, \ISectionMenu, */ \IBreadcrumbable, \IActionable
 {
 	/* IWidgetContainer */
-	public function getWidgets($widgetsIndexes = array()) {
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
 		if (in_array('news.latest', $widgetsIndexes)) {
 			//$this->putModuleScript("models.news");
 			$this->putModuleScript("widget.news");
@@ -297,7 +297,6 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 		}
 		//$news = $this->model("news")->getItems();
 
-		//$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
 
 		if ($type === 'datatable') {
 			$news = array_values($news);

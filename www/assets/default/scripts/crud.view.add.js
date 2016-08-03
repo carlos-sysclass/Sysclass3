@@ -6,6 +6,7 @@ $SC.module("crud.views.add", function(mod, app, Backbone, Marionette, $, _) {
     mod.addInitializer(function() {
         var itemModelClass = $SC.module("crud.models").itemModelClass;
         var itemModel = new itemModelClass();
+        itemModel.response_type = "redirect";
 
         var baseFormClass = app.module("views").baseFormClass;
         mod.formView = new baseFormClass({el : "#form-" + this.module_id, model: itemModel});

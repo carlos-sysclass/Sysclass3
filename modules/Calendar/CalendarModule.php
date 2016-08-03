@@ -50,7 +50,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         }
     }
 
-    public function getWidgets($widgetsIndexes = array())
+    public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
         $this->putComponent("select2");
         $this->putComponent("wysihtml5");
@@ -71,15 +71,15 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $widgets['calendar'] = array(
                 'type'      => 'calendar', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                 'id'        => 'calendar-widget',
-                'title'     => $this->translate->translate('Calendar'),
+                'title'     => '',
                 'template'  => $this->template("widgets/calendar"),
                 'icon'      => 'calendar',
                 'box'       => 'dark-blue calendar', 
                 'tools'     => array(
-                    'filter'        => true
+                    'filter'        => true,
                     //'reload'      => 'javascript:void(0);',
                     //'collapse'      => true,
-                    //'fullscreen'    => true
+                    'fullscreen'    => true
                 )
             );
         }
@@ -153,11 +153,18 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             'manage'  => array
             (
                 array(
-                    'text'      => $this->translate->translate('New Event Source'),
-                    'link'      => $this->getBasePath() . "event-source/add",
-                    'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
-                )
+                    'text'      => $this->translate->translate('View calendar sources'),
+                    'link'      => $this->loader->module('CalendarSource')->getBasePath() . "view",
+                    'icon'      => 'fa fa-list'
+                ),
+                array(
+                    'separator' => true
+                ),
+                array(
+                    'text'  => $this->translate->translate('Add calendar source'),
+                    'link'  => $this->loader->module('CalendarSource')->getBasePath() . "add",
+                    'icon'      => 'fa fa-plus-circle'
+                ),
             )
         );
 
@@ -181,22 +188,6 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         $eventSources = CalendarSource::find()->toArray();
         $this->putItem("event_sources", $eventSources);
 
-        $this->display($this->template);
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/event-source/add")
-     */
-
-    public function addEventSourcePage()
-    {
-        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
-        //$this->createClientContext("event-source/add");
-        if (!$this->createClientContext("event-source/add")) {
-            $this->entryPointNotFoundError($this->getSystemUrl('home'));
-        }
         $this->display($this->template);
     }
 

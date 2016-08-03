@@ -94,7 +94,8 @@ class DashboardController extends \AbstractSysclassController
 
         $this->putItem("page_layout", $pageLayout);
 
-        $this->putBlock("institution.social-gadgets");
+//        $this->putBlock("institution.social-gadgets");
+//        $this->putBlock("chat.quick-sidebar");
 
         $widgets = array_slice($widgets, 0, 1);
 

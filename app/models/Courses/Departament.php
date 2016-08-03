@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Content\Departament
+ */
 namespace Sysclass\Models\Courses;
 
 use Plico\Mvc\Model;
@@ -25,4 +28,6 @@ class Departament extends Model
 
         
     }
+
+    
 }

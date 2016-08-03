@@ -46,18 +46,18 @@
 			</div>
 			<div class="form-actions nobg">
 				<a href="/" class="btn btn-default">
-					<i class="m-icon-swapleft"></i> {translateToken value="Back"}
+					<i class="ti-arrow-left"></i> {translateToken value="Back"}
 				</a>
 
 				<button class="btn btn-primary pull-right" type="submit">
-					<i class="m-icon-swapup m-icon-white"></i>
+					<i class="ti-arrow-up"></i>
 					{translateToken value="Create my account"}
 				</button>
 			</div>
 		</form>
 		<!-- END LOGIN FORM -->
 		<div class="copyright">
-			&copy; 2015 • WiseFlex Knowledge Systems LLC. <br />
+			&copy; 2016 • WiseFlex Knowledge Systems LLC. <br />
 			<span style="color: black">
 				{$T_SYSCONFIG.deploy.base_version} 
 				Build {$T_SYSCONFIG.deploy.build_number}

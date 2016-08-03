@@ -4,19 +4,27 @@
     </ul>
     -->
     <div class="pull-left">
+        <span class="btn btn-sm btn-link timeline-addurl">
+            <i class="fa fa-plus"></i>
+            <span>{translateToken value="Add Url"}</span>
+        </span>
+        
         <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/lesson">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add File"}</span>
             <input type="file" name="files[]">
         </span>
+        <!--
         <span class="btn btn-sm btn-link timeline-addtext">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Text"}</span>
         </span>
+        
         <span class="btn btn-sm btn-link timeline-addexercise">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Exercises"}</span>
         </span>
+        -->
     </div>
     <div class="pull-right">
         <a class="btn btn-sm btn-primary timeline-expand" href="javascript:void(0);">
@@ -99,6 +107,64 @@
                 </div>
                 <div class="preview hidden">
 
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="url-timeline-item">
+    <div class="timeline-badge">
+        <div class="timeline-icon">
+            <i class="fa fa-align-left"></i>
+        </div>
+    </div>
+    <div class="timeline-body">
+        <div class="timeline-body-arrow"></div>
+        <div class="timeline-body-head">
+            <div class="timeline-body-head-caption">
+                <span class="timeline-body-alerttitle text-primary">
+                    <span class="btn btn-sm btn-default hidden-sm hidden-md hidden-lg">
+                        <i class="fa fa-file-video-o"></i>
+                    </span>
+                     <span class="btn btn-sm btn-default drag-handler tooltips" data-original-title="{translateToken value="Click here to move content"}">
+                        <i class="fa fa-arrows"></i>
+                    </span>
+                    {translateToken value="Insert a url"}
+                </span>
+                <span class="timeline-body-time font-grey-cascade"></span>
+            </div>
+            <div class="timeline-body-head-actions">
+                <span class="btn btn-sm btn-default text-loading hidden">
+                    <i class="fa fa-spinner fa-spin"></i>
+                    {translateToken value="Saving"}
+                </span>
+
+                <a class="btn btn-sm btn-primary save-url-content" href="javascript: void(0);">
+                    <i class="fa fa-save"></i>
+                    Save
+                </a>
+                <a class="btn btn-sm btn-danger delete-url-content" href="javascript: void(0);"
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+                    >
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        <div class="timeline-body-content">
+            <div class="timeline-body-content-wrapper">
+                <div class="form-group">
+                    <input value="<%= model.content %>" type="text" placeholder="{translateToken value="Insert your own URL, from youtube, s3, etc..."}" class="form-control" data-rule-required="true" data-rule-minlength="3" data-rule-url="true" />
                 </div>
             </div>
         </div>

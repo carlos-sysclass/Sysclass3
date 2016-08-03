@@ -11,7 +11,7 @@ class AgreementController extends \AbstractSysclassController
 	{
         $currentUser = $this->getCurrentUser(true);
 
-        $this->putComponent("validation", "icheck");
+        $this->putComponent("validation", "icheck", "select2");
         $this->putScript("scripts/pages/agreement");
 
         $user_language = $currentUser->getLanguage()->code;

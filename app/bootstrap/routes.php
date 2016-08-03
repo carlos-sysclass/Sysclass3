@@ -27,8 +27,9 @@ if (APP_TYPE === "WEB") {
 
             $resource = sprintf("Sysclass\\Modules\\%s\\%sModule", $mod, $mod);
             $prefix = sprintf("/module/%s", strtolower($mod));
-            //var_dump($resource , $prefix);
             $router->addResource($resource , $prefix);
+
+
         }
 
     	return $router;
@@ -40,6 +41,7 @@ if (APP_TYPE === "WEB") {
         // Attach a listener for type "dispatch"
         // 
         $eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("authentication"));
+        //$eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("queue"));
 
         $eventsManager->attach('dispatch:afterExecuteRoute', function ($event, $dispatcher) use ($di) {
             // Possible controller class name

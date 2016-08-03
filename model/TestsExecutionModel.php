@@ -1,4 +1,8 @@
 <?php
+use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\ClasseProgress,
+    Sysclass\Models\Courses\LessonProgress;
+
 class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
@@ -22,13 +26,14 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             te.user_score,
             te.user_points,
             te.user_grade,
+            te.pass,
             u.name as 'user#name',
             u.surname as 'user#surname',
             u.login as 'user#login',
             t.time_limit as 'test#timelimit',
             t.grade_id as 'test#grade_id',
-            t.test_repetition as 'test#test_repetition'/*,
-            t.**/
+            t.minimum_score as 'test#minimum_score',
+            t.test_repetition as 'test#test_repetition'
         FROM `mod_tests_execution` te
         LEFT JOIN mod_tests t ON (t.id = te.test_id)
         LEFT JOIN users u ON (u.id = te.user_id)";
@@ -52,6 +57,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         if ($now - $progress['started'] > $progress['time_elapsed']) {
             $progress['time_elapsed'] = $now - $progress['started'];
         }
+        
         $this->update(
             array(
                 'pending' => '0',
@@ -63,8 +69,59 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
                 'pending' => 1
             )
         );
+        
 
-        $this->calculateUserScore($test_try);
+        $pass = $this->calculateUserScore($test_try);
+
+        //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
+
+
+        $lessonProgress = LessonProgress::findFirst(array(
+            'conditions' => 'user_id = ?0 and lesson_id = ?1',
+            'bind' => array($test_try['user_id'], $test_try['test_id'])
+        ));
+
+        if (!$lessonProgress) {
+            $lessonProgress = new LessonProgress();
+            $lessonProgress->factor = 0;
+            $lessonProgress->user_id = $test_try['user_id'];
+            $lessonProgress->lesson_id = $test_try['test_id'];
+        }
+
+        if ($pass) {
+            // COMPLETE UNIT
+            $lessonProgress->factor = 1;
+        } else {
+            if ($lessonProgress->factor != 1) {
+                $lessonProgress->factor = 0;
+            }
+        }
+        $lessonProgress->save();
+        $unit = $lessonProgress->getUnit();
+
+        $classProgress = ClasseProgress::findFirst(array(
+            'conditions' => 'user_id = ?0 AND class_id = ?1',
+            'bind' => array($lessonProgress->user_id, $unit->class_id)
+        ));
+
+        if (!$classProgress) {
+            $classProgress = new ClasseProgress();
+            $classProgress->user_id = $test_try['user_id'];
+            $classProgress->class_id = $unit->class_id;
+            $classProgress->save();
+        }
+
+        $status = $classProgress->updateProgress();
+
+        /*
+        $evData = array(
+            'entity_id' => $test_try['test_id'],
+            'user_id' => $test_try['user_id'],
+            'trigger' => 'test'
+        );
+        $evManager->fire("certificate:generate", $this, $evData);
+        $evManager->fire("certificate:generate", $this, $evData);
+        */
     }
 
     public function calculateUserScore($execution) {
@@ -76,58 +133,78 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
         $questionModel = $this->model("tests/question");
 
-        $testData = $this->model("tests")->getItem($executionData['test_id']);
+        //$testData = $this->model("tests")->getItem($executionData['test_id']);
 
-        $questionsData = $questionModel->addFilter(array(
-            'lesson_id' => $executionData['test_id']
-        ))->getItems();
+        $testModel = TestLesson::findFirstById($executionData['test_id']);
 
-        $testPoints = 0;
-        $totalPoints = 0;
+        if ($testModel) {
 
-        foreach($questionsData as $question) {
-            $testPoints += $question['points'] * $question['weight'];
-            $totalPoints += $questionModel->correct($question, $executionData['answers'][$question['id']]);
-        }
+            $testData = $testModel->getTest()->toArray();
 
-        $userScore = $totalPoints / $testPoints;
+            //var_dump($executionData);
 
-        if (@isset($executionData['test']['grade_id']) && is_numeric($executionData['test']['grade_id'])) {
-            $gradeId = $executionData['test']['grade_id'];
-            $gradesModel = $this->model("grades");
-            $gradeData = $gradesModel->getItem($gradeId);
+            $testQuestions = $testModel->shuffleTestQuestions($executionData['id']);
 
-            if (count($gradeData) > 0 && count($gradeData['grades']) > 0) {
+            //var_dump($testQuestions);
 
-                $checkScore = $userScore * 100;
 
-                //var_dump($checkScore, $gradeData);
+            $questionsData = $questionModel->addFilter(array(
+                'lesson_id' => $executionData['test_id']
+            ))->getItems();
 
-                foreach ($gradeData['grades'] as $key => $value) {
-                    var_dump($checkScore >= $value['range'][0] && $checkScore <= $value['range'][1], $value);
-                    if ($checkScore >= $value['range'][0] && $checkScore <= $value['range'][1]) {
-                        $userGrade = $value['grade'];
-                        break;
-                    }
-                }
+            $testPoints = 0;
+            $totalPoints = 0;
+
+            foreach($testQuestions as $question) {
+                $questionData = $question->toArray();
+                $questionData['question'] = $question->getQuestion()->toArray();
+
+                $testPoints += $question->points * $question->weight;
+                $totalPoints += $questionModel->correct($questionData, $executionData['answers'][$question->id]);
             }
 
+            $userScore = $totalPoints / $testPoints;
+
+            if (@isset($executionData['test']['grade_id']) && is_numeric($executionData['test']['grade_id'])) {
+                $gradeId = $executionData['test']['grade_id'];
+                $gradesModel = $this->model("grades");
+                $gradeData = $gradesModel->getItem($gradeId);
+
+                if (count($gradeData) > 0 && count($gradeData['grades']) > 0) {
+
+                    $checkScore = $userScore * 100;
+
+                    //var_dump($checkScore, $gradeData);
+
+                    foreach ($gradeData['grades'] as $key => $value) {
+                        if ($checkScore >= $value['range'][0] && $checkScore <= $value['range'][1]) {
+                            $userGrade = $value['grade'];
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            $pass = $userScore > (floatval($testData['minimum_score']) / 100);
+
+            $this->update(
+                array(
+                    'user_points' => $totalPoints,
+                    'user_score'  => $userScore,
+                    'user_grade'  => isset($userGrade) ? $userGrade : $userScore * 100,
+                    'pass'        => $pass
+                ),
+                array(
+                    'id' => $executionData['id'],
+                )
+            );
+
+            return $pass;
+
         }
 
-        $this->update(
-            array(
-                'user_points' => $totalPoints,
-                'user_score'  => $userScore,
-                'user_grade'  => isset($userGrade) ? $userGrade : $userScore * 100
-            ),
-            array(
-                'id' => $executionData['id'],
-            )
-        );
-
-
-
-        return true;
+        return false;
     }
 
 
@@ -144,7 +221,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             $test_repetition = intval($test_repetition);
 
-            if ($test_repetition > count($executions)) {
+            if ($test_repetition <= 0 || $test_repetition > count($executions)) {
                 return count($executions)+1;
             } else {
                 return false;
@@ -265,14 +342,24 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         } else {
             $this->rollProgress($test_try, $progress);
 
-            $data['answers'] = json_encode($data['answers']);
-
             if ($data['complete'] == "1") {
                 $this->completeTest($data, $progress);
-                return true;
             }
+            $data['answers'] = json_encode($data['answers']);
 
-            return parent::setItem($data, $identifier);
+            unset($data['user_score']);
+            unset($data['user_points']);
+            unset($data['user_grade']);
+            unset($data['user_grade']);
+            unset($data['pending']);
+            unset($data['completed']);
+            unset($data['time_elapsed']);
+            unset($data['pass']);
+
+            $status =  parent::setItem($data, $identifier);
+
+            return true;            
+            
         }
         //var_dump($data);
         //exit;

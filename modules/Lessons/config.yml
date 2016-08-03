@@ -40,7 +40,7 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Create a new lessons
-    'edit/:id':
+    'edit/{id}':
       components: ["validation", "bootstrap-switch", "wysihtml5", "select2"]
       blocks: ["lessons.content", "questions.select.dialog", "questions.create.dialog"]
       stylesheets: ["css/components", "css/pages/timeline"]
@@ -50,3 +50,7 @@ crud:
       template: form.tpl
       variables:
         page_subtitle: Edit your lesson info
+models:
+  me: 
+    class: Sysclass\Models\Courses\Lesson
+    exportMethod: ["toFullArray", ["Classe"]]

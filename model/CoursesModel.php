@@ -9,7 +9,6 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
 
         $this->selectSql = "SELECT
             c.`id`,
-            c.`permission_access_mode`,
             c.`ies_id`,
             c.`name`,
             c.`description`,
@@ -73,10 +72,11 @@ class CoursesModel extends AbstractSysclassModel implements ISyncronizableCollec
         }
 
         if ($this->getUserFilter()) {
+            /*
             $this->model("courses/progress")
                 ->setUserFilter($this->getUserFilter())
                 ->recalculateProgress($item['id']);
-
+            */
             $progress = $this->model("courses/progress")->clear()->addFilter(array(
                 'user_id'       => $this->getUserFilter(),
                 'course_id'    => $item['id']

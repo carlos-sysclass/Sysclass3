@@ -21,7 +21,7 @@ crud:
           sClass: text-center
           label: "#"
 
-        - mData: placement_name
+        - mData: placement
           label: Placement
 
         - mData: view_type
@@ -37,8 +37,8 @@ crud:
           sClass: text-center
           label: Actions
 
-    'edit/:identifier':
-      components: ["select2","validation", "bootstrap-switch", 'wysihtml5']
+    'edit/{id}':
+      components: ["select2","validation", "bootstrap-switch", 'wysihtml5', "jquery-jcrop"]
       template: form.tpl
       stylesheets: ["css/components", "css/pages/timeline"]
       blocks: ["advertising.banners"]
@@ -49,3 +49,14 @@ widgets:
   ads.leftbar.banner:
   ads.rightbar.banner:
     panel : true
+models:
+  me:
+    class: Sysclass\Models\Advertising\Advertising
+  content:
+    class: Sysclass\Models\Advertising\Content
+    #listMethod: "listByAdvertisingId"
+    exportMethod: ["toFullArray", ["Files"]]
+    acl:
+      delete:
+        resource: Advertising
+        action: edit

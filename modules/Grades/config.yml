@@ -37,15 +37,15 @@ crud:
           label: Actions
 
     add:
-      components: ["validation", "wysihtml5", "bootstrap-switch", "noui-slider", "bootstrap-confirmation"]
+      components: ["validation", "wysihtml5", "bootstrap-switch", "noui-slider", "select2", "bootstrap-confirmation"]
       #blocks: ["messages.group.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       scripts: ["grades.form"]
       variables:
         page_subtitle: Create a new grade
-    'edit/:id':
-      components: ["validation", "wysihtml5", "bootstrap-switch", "noui-slider", "bootstrap-confirmation"]
+    'edit/{id}':
+      components: ["validation", "wysihtml5", "bootstrap-switch", "noui-slider", "select2", "bootstrap-confirmation"]
       #blocks: ["users.list.table"]
       template: form.tpl
       scripts: ["grades.form"]
@@ -97,4 +97,6 @@ crud:
     #  variables:
     #    page_subtitle: Config and edit the grade group
 models:
-  me: Sysclass\Models\Courses\Grades\Grade
+  me: 
+    class: Sysclass\Models\Courses\Grades\Grade
+    exportMethod: ["toFullArray", ["Ranges"]]

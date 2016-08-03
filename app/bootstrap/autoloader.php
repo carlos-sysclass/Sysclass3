@@ -30,12 +30,16 @@ $loader->registerNamespaces(array(
     "Sysclass\Controllers" => __DIR__ . "/../../controller/", 
     "Sysclass\Modules" => __DIR__ . "/../../modules/", 
     "Sysclass\Models" => __DIR__ . "/../models/",
+    "Sysclass\Collections" => __DIR__ . "/../collections/",
     "Sysclass\Services" => __DIR__ . "/../services/",
     "Sysclass\Tasks" => __DIR__ . "/../tasks/",
-    "Sysclass\Websockets" => __DIR__ . "/../websockets/",
+    "Sysclass\Sockets" => __DIR__ . "/../sockets/",
     "Plico" => __DIR__ . "/../plico/", // TODO: Move code to plicolib itself
     "Sysclass" => __DIR__ . "/../sysclass/",
-    "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/'
+    "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/',
+    'Phalcon\Script' => __DIR__ . '/../../vendor/phalcon/devtools/scripts/Phalcon/Script',
+    "Dompdf" => __DIR__ . '/../../vendor/dompdf/dompdf/src/',
+    "FontLib" => __DIR__ . '/../../vendor/phenx/php-font-lib/src/FontLib/'
     /*
     "Ratchet" => __DIR__ . '/../../vendor/cboden/ratchet/src/Ratchet/',
     "React\EventLoop" => __DIR__ . '/../../vendor/react/event-loop/',
@@ -43,12 +47,18 @@ $loader->registerNamespaces(array(
     "React\Stream" => __DIR__ . '/../../vendor/react/stream/src/',
     "Evenement" => __DIR__ . '/../../vendor/evenement/evenement/src/Evenement/',
     */
-    
 ));
 
 $loader-> registerClasses(array(
     'Smarty'    => __DIR__ . "/../../vendor/smarty/smarty/libs/Smarty.class.php",
-    'Kint'    => __DIR__ . "/../../vendor/raveren/kint/Kint.class.php"
+    'Cpdf'    => __DIR__ . "/../../vendor/dompdf/dompdf/lib/Cpdf.php",
+    'Kint'    => __DIR__ . "/../../vendor/raveren/kint/Kint.class.php",
+    'PiwikTracker' => __DIR__ . "/../../vendor/piwik/piwik-php-tracker/PiwikTracker.php",
+    "mPdf" => __DIR__ . '/../../vendor/mpdf/mpdf/mpdf.php',
+    "HTML5_Tokenizer" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/Tokenizer.php',
+    "HTML5_InputStream" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/InputStream.php',
+    "HTML5_TreeBuilder" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/TreeBuilder.php',
+    "HTML5_Data" => __DIR__ . '/../../vendor/dompdf/dompdf/lib/html5lib/Data.php'
 ));
 
 

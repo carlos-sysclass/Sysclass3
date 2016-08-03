@@ -4,6 +4,8 @@ namespace Sysclass\Controllers;
 use Phalcon\DI,
 	Sysclass\Models\Users\User,
 	Sysclass\Models\I18n\Language,
+	Sysclass\Models\Users\UserPasswordRequest,
+	Sysclass\Models\Enrollments\Enroll,
 	Sysclass\Services\Authentication\Exception as AuthenticationException;
 
 class LoginController extends \AbstractSysclassController
@@ -66,6 +68,10 @@ class LoginController extends \AbstractSysclassController
 		if ($this->dispatcher->wasForwarded()) {
 			$this->putItem("requested_uri", $this->request-> getURI());
 		}
+
+		$enroll = Enroll::findFirst();
+
+		$this->putItem("default_enroll_link", $enroll->identifier);
 
 		parent::display('pages/auth/login.tpl');
 	}
@@ -232,7 +238,6 @@ class LoginController extends \AbstractSysclassController
      * Authenticate the user
      * @Post("/")
      * @Post("/login")
-     * @Post("/login/{reset}")
      * 
      */
 	public function login()
@@ -244,12 +249,19 @@ class LoginController extends \AbstractSysclassController
 		// DEFINE AUTHENTICATION BACKEND
 
 		//$authBackend = $di->get("authentication")->getBackend($data['login']);
-		//
+		
+
+
 		try {
+			$is_email = filter_var($data['login'], FILTER_VALIDATE_EMAIL);
+
 			$user = $di->get("authentication")->login(
 				array(
 					'login' => $data['login'],
 					'password' => $data['password']
+				),
+				array(
+					'isEmail' => (bool)$is_email
 				)
 			);
 
@@ -412,6 +424,372 @@ class LoginController extends \AbstractSysclassController
 	/**
 	 * Create login and reset password forms
 	 *
+	 * @Get("/confirm/{hash}")
+	 */
+	public function confirmPage($hash)
+	{
+		$url = "/login";
+		//if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
+
+			$di = DI::getDefault();
+			try {
+				// CHECK IF THE USER IS ALREADY LOGGED IN AND LOGOUT HIM...
+				try {
+					
+					$user = $di->get("authentication")->checkAccess();
+					
+					if ($user) {
+						$di->get("authentication")->logout($user);
+
+						$this->redirect(null);
+						exit;
+					}
+					
+				} catch (AuthenticationException $e) {
+					//AuthenticationException::NO_USER_LOGGED_IN
+				}
+
+	            $user = User::findFirst(array(
+	            	'conditions' => "reset_hash = ?0 AND active = 1",
+	                'bind' => array($hash)
+	            ));
+
+	            //$di->get("authentication")->logout($user);
+
+	            if ($user) {
+        			$di->get("authentication")->login($user, array('disableBackends' => true));
+        		
+		       		$this->putCss("css/pages/login");
+					$this->putCss("css/bigvideo/bigvideo");
+
+					$this->putScript("plugins/bigvideo/bigvideo");
+					$this->putScript("scripts/pages/reset");
+
+					$this->putItem('is_confirmation', true);
+
+					$this->putItem('form_action', "/confirm/{$hash}");
+					$this->putItem('user', $di->get("user")->toArray());
+
+		            return parent::display('pages/auth/reset.tpl');
+	            } else {
+	            	throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+	            }
+			} catch (AuthenticationException $e) {
+				switch($e->getCode()) {
+					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: MAINTENANCE_MODE : {
+
+			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
+			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message_type = 'warning';
+						break;
+					}
+					case AuthenticationException :: LOCKED_DOWN : {
+			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message_type = 'warning';
+						break;
+					}
+					default : {
+			            $message = $this->translate->translate($e->getMessage());
+			            $message_type = 'danger';
+			            break;
+					}
+				}
+			}
+		
+		$this->redirect($url, $message, $message_type);
+	}
+
+	/**
+	 * Create login and reset password forms
+	 *
+	 * @Post("/confirm/{hash}")
+	 */
+	public function confirmRequest($hash)
+	{
+		$url = "/confirm/{$hash}";
+		//if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
+
+			$di = DI::getDefault();
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND LOGOUT HIM...
+			try {
+				$current_user = $di->get("authentication")->checkAccess();
+
+	            $user = User::findFirst(array(
+	            	'conditions' => "reset_hash = ?0 AND active = 1",
+	                'bind' => array($hash)
+	            ));
+
+	           	$postData = $this->request->getPost();
+
+				if ($user == $current_user) {
+					/*
+					if ($postData['login'] != $user->login) {
+						// CHECK IF EXISTS
+			            $exists = User::count(array(
+			            	'conditions' => "login = ?0 AND id <> ?1",
+			                'bind' => array($postData['login'], $user->id)
+			            ));
+			            if ($exists > 0) {
+							throw new AuthenticationException("This username is not avaliable. Please select another one.");
+			            }
+			            $user->login = $postData['login'];
+					}
+					*/
+					if ($postData['password'] === $postData['password-confirm']) {
+						$user->password = $this->authentication->hashPassword($postData['password'], $user);
+
+						$user->pending = 0;
+						$user->reset_hash = null;
+
+						if ($user->save()) {
+							$message = $this->translate->translate("Password updated with success! You can access the system using your e-mail and password");
+			            	$message_type = 'success';
+
+							// USER IS LOGGED IN, SO...
+							// 1.6 Check for license agreement
+							//$di->get("authentication")->logout($current_user);
+
+
+							if ($user->viewed_license == 0) {
+								$this->redirect("/agreement", $message, $message_type);
+							} else {
+								$this->redirect("/dashboard", $message, $message_type);
+							}
+						}
+					}
+				} else {
+					$di->get("authentication")->logout($user);
+					throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+				}
+			} catch (AuthenticationException $e) {
+				switch($e->getCode()) {
+					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: MAINTENANCE_MODE : {
+
+			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
+			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message_type = 'warning';
+						break;
+					}
+					case AuthenticationException :: LOCKED_DOWN : {
+			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message_type = 'warning';
+						break;
+					}
+					default : {
+			            $message = $this->translate->translate($e->getMessage());
+			            $message_type = 'warning';
+			            break;
+					}
+				}
+			}
+		$this->redirect($url, $message, $message_type);
+	}
+
+	/**
+	 * Create login and reset password forms
+	 *
+	 * @Get("/password-reset/{hash}")
+	 */
+	public function passwordResetPage($hash)
+	{
+		$url = "/login";
+		//if (isset($hash) && ($hash == 'demo-user' || $hash == 'admin-user' || $this->_checkParameter($hash, 'hex'))) {
+
+			$di = DI::getDefault();
+			try {
+				// CHECK IF THE USER IS ALREADY LOGGED IN AND LOGOUT HIM...
+				try {
+					$user = $di->get("authentication")->checkAccess();
+					if ($user) {
+						$di->get("authentication")->logout($user);
+					}
+				} catch (AuthenticationException $e) {
+					//AuthenticationException::NO_USER_LOGGED_IN
+				}
+
+				$passwordRequest = UserPasswordRequest::findFirst(array(
+					'conditions' => 'reset_hash = ?0 AND active = 1',
+					'bind' => array($hash)
+				));
+
+	            if ($passwordRequest) {
+	            	$user = $passwordRequest->getUser();
+
+	            	$this->putItem("user", $user->toArray());
+	            	//Date
+	            	//
+	            	$valid_until = new \DateTime($passwordRequest->valid_until);
+
+	            	if ($valid_until < new \DateTime('today')) {
+	            		$url = "/login/reset";
+	            		throw new AuthenticationException("Your request isn't valid anymore. Please generate a new request.", AuthenticationException::RESET_HASH_ISNT_VALID_ANYMORE);
+	            	}
+
+            		//$di->get("authentication")->login($user, array('disableBackends' => true));
+					
+		       		$this->putCss("css/pages/login");
+					$this->putCss("css/bigvideo/bigvideo");
+
+					$this->putScript("plugins/bigvideo/bigvideo");
+					$this->putScript("scripts/pages/reset");
+
+					$this->putItem('form_action', "/password-reset/{$hash}");
+					$this->putItem('user', $user->toArray());
+					$this->putItem("disable_login", true);
+					
+
+		            return parent::display('pages/auth/reset.tpl');
+	            } else {
+	            	throw new AuthenticationException("Your request isn't valid anymore. Please generate a new request.", AuthenticationException::RESET_HASH_ISNT_VALID_ANYMORE);
+	            }
+			} catch (AuthenticationException $e) {
+				switch($e->getCode()) {
+					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: MAINTENANCE_MODE : {
+
+			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message_type = 'warning';
+			            break;
+					}
+					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
+			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message_type = 'warning';
+						break;
+					}
+					case AuthenticationException :: LOCKED_DOWN : {
+			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message_type = 'warning';
+						break;
+					}
+					default : {
+			            $message = $this->translate->translate($e->getMessage());
+			            $message_type = 'danger';
+			            break;
+					}
+				}
+			}
+		
+		$this->redirect($url, $message, $message_type);
+	}
+
+	/**
+	 * Create login and reset password forms
+	 *
+	 * @Post("/password-reset/{hash}")
+	 */
+	public function passwordResetUpdateRequest($hash)
+	{
+		$url = "/password-reset/{$hash}";
+
+		$di = DI::getDefault();
+		try {
+			// CHECK IF THE USER IS ALREADY LOGGED IN AND LOGOUT HIM...
+			try {
+				$user = $di->get("authentication")->checkAccess();
+				if ($user) {
+					$di->get("authentication")->logout($user);
+				}
+			} catch (AuthenticationException $e) {
+				//AuthenticationException::NO_USER_LOGGED_IN
+			}
+
+			$passwordRequest = UserPasswordRequest::findFirst(array(
+				'conditions' => 'reset_hash = ?0 AND active = 1',
+				'bind' => array($hash)
+			));
+
+			$user = $passwordRequest->getUser();
+
+			$postData = $this->request->getPost();
+
+			if ($postData['password'] === $postData['password-confirm']) {
+				$user->password = $this->authentication->hashPassword($postData['password'], $user);
+
+				$user->reset_hash = null;
+
+				$passwordRequest->active = 0;
+
+				if ($user->save() && $passwordRequest->save()) {
+					$message = $this->translate->translate("Password updated with success! Please enter you login details below.");
+	            	$message_type = 'success';
+
+	            	$this->redirect("/login", $message, $message_type);
+
+
+					// USER IS LOGGED IN, SO...
+					/*
+					$di->get("authentication")->login($user, array('disableBackends' => true));
+					// 1.6 Check for license agreement
+					if ($user->viewed_license == 0) {
+						$this->redirect("/agreement", $message, $message_type);
+					} else {
+						$this->redirect("/dashboard", $message, $message_type);
+					}
+					*/
+				}
+			} else {
+				$di->get("authentication")->logout($user);
+				throw new AuthenticationException("Error Processing Request", AuthenticationException::INVALID_USERNAME_OR_PASSWORD);
+			}
+		} catch (AuthenticationException $e) {
+
+			switch($e->getCode()) {
+				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
+		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message_type = 'warning';
+		            break;
+				}
+				case AuthenticationException :: MAINTENANCE_MODE : {
+
+		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message_type = 'warning';
+		            break;
+				}
+				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
+		            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+		            $message_type = 'warning';
+					break;
+				}
+				case AuthenticationException :: LOCKED_DOWN : {
+		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message_type = 'warning';
+					break;
+				}
+				default : {
+		            $message = $this->translate->translate($e->getMessage());
+		            $message_type = 'warning';
+		            break;
+				}
+			}
+		}
+	
+		$this->redirect($url, $message, $message_type);
+	}
+	/**
+	 * Create login and reset password forms
+	 *
 	 * @Get("/lock")
 	 */
 	public function lockPage($reset)
@@ -466,7 +844,7 @@ class LoginController extends \AbstractSysclassController
 		if ($user) {
 			$this->putItem("LOGGED_USER", $user->toFullArray(array("Avatars")));
 
-			$this->putCss("css/pages/lock");
+			$this->putCss("css/pages/lock"); 
 			$this->putScript("scripts/lock");
 			parent::display('pages/auth/lock.tpl');
 		} else {
@@ -480,13 +858,14 @@ class LoginController extends \AbstractSysclassController
 	 *
 	 * @Get("/login/reset")
 	 */
+	/*
 	public function loginResetRequest()
 	{
 
 		$message = $this->translate->translate("The system doesn't provides this function yet.Please came back in a while.");
 		$message_type = 'warning';
 		$this->redirect("/login", $message, $message_type);
-		/*
+		
 		if ($GLOBALS['configuration']['password_reminder'] && !$GLOBALS['configuration']['only_ldap']) { //The user asked to display the contact form
 			$form = $this->createResetPasswordForm();
 
@@ -527,8 +906,48 @@ class LoginController extends \AbstractSysclassController
 		} else {
 			return false;
 		}
-		*/
 	}
+	*/
+
+	/**
+	 * [Add a description]
+	 *
+	 * @Post("/password-reset")
+	 */
+	public function passwordResetRequest() {
+		$email = $this->request->getPost('email');
+
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$this->redirect(
+				"login/reset",
+				$this->translate->translate('Please provide a valid e-mail address.'),
+				'warning'
+			);
+		} else {
+			// GET THE USER, FIRE THE EVENT, AND LET THE BACKEND SYSTEM DO THE REST! :)
+			$user = User::findFirstByEmail($email);
+
+			if ($user) {
+
+				$this->eventsManager->fire("user:password-reset", $this, $user->toArray());
+
+				$this->redirect(
+					"login/reset",
+					$this->translate->translate("We'll send you an e-mail containing a link to reset your password. Please check your inbox."),
+					'success'
+				);
+			} else {
+				$this->redirect(
+					"login/reset",
+					$this->translate->translate('The system can\'t find the provided e-mail address.'),
+					'warning'
+				);
+			}
+		}
+
+	}
+
+
 
 
 }

@@ -26,5 +26,9 @@ crud:
 models:
   me:
     class: Sysclass\Models\System\Settings
+    acl:
+      create:
+        resource: Settings
+        action: manage
     #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
     #findMethod: findFirstById

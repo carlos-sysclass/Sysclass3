@@ -1,16 +1,11 @@
 <?php
-/**
- * Module Class File
- * @filesource
- */
 namespace Sysclass\Modules\Translate;
-/**
- * [NOT PROVIDED YET]
- * @package Sysclass\Modules
- */
+
 use Sysclass\Models\I18n\Language,
     Sysclass\Models\I18n\Tokens,
-    Phalcon\Mvc\Model\Resultset;
+    Sysclass\Models\I18n\Countries,
+    Phalcon\Mvc\Model\Resultset,
+    Sysclass\Services\Queue\AsyncCall;
 
 /**
  * @RoutePrefix("/module/translate")
@@ -254,13 +249,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      */
     public function addPage()
     {
-        $country_codes = $this->model("i18n/country")->getItems();
-        $this->putItem("country_codes", $country_codes);
+        $country_codes = Countries::find();
+        $this->putItem("country_codes", $country_codes->toArray());
 
         $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
         $this->putItem("language_codes", $bingTranslationsCodes);
 
-        //return array_values($news);
         parent::addPage($id);
     }
 
@@ -272,40 +266,32 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     
     public function editPage($id)
     {
-        $currentUser    = $this->getCurrentUser(true);
-
-        //$editItem = $this->model("translate")->getItem($id);
-        // TODO CHECK PERMISSION FOR OBJECT
-
-        //$this->putComponent("select2", "validation");
-        //his->putBlock("permission.add");
-
-        $this->putModuleScript("models.translate");
-        $this->putModuleScript("views.translate.edit", array('id' => $id));
-
-        
-        $country_codes = $this->model("i18n/country")->getItems();
-        $this->putItem("country_codes", $country_codes);
+        $country_codes = Countries::find();
+        $this->putItem("country_codes", $country_codes->toArray());
 
         $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
         $this->putItem("language_codes", $bingTranslationsCodes);
         
-        /*
-        if ($this->acl->isUserAllowed(null, $this->module_id, "Edit")) {
-            $this->createClientContext("edit", array('entity_id' => $id));
-            $this->display($this->template);
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }        
-        */
-        // $this->putBlock("block-name") or $this->putCrossModuleBlock("permission", "block-name")
-        //$this->putItem("form_action", $_SERVER['REQUEST_URI']);
-        //$this->putItem("entity", $editItem);
-
-        //return array_values($news);
         parent::editPage($id);
     }
-    
+
+    public function afterModelCreate($evt, $model, $data) {
+        $task = new AsyncCall("translate", "translateTokens", array(
+            $this->translate->getSystemLanguageCode(),
+            $model->code
+        ));
+        $this->queue->send($task);
+        return true;
+    }
+
+    public function afterModelUpdate($evt, $model, $data) {
+        $task = new AsyncCall("translate", "translateTokens", array(
+            $this->translate->getSystemLanguageCode(),
+            $model->code
+        ));
+        $this->queue->send($task);
+        return true;
+    }
     /**
      * Get all translation visible to the current user
      *
@@ -593,6 +579,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
      * @Get("/datasources/me")
      * @Get("/datasources/me/{datatable}")
      */
+    /*
     public function getItemsRequest($datatable)
     {
         //$currentUser    = $this->getCurrentUser(true);
@@ -600,7 +587,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
         //$newsItens = $this->model("news")->getItems();
 
-        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
         $tokensModel = $this->model("translate");
 
         $itemsData = $tokensModel->getItems();
@@ -622,6 +608,10 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                             "data-placement"        => "top",
                             'data-original-title'   => "Edit Language"
                         )
+                    ),
+                    'remove'  => array(
+                        'icon'  => 'icon-remove',
+                        'class' => 'btn-sm btn-danger'
                     )
                 );
             }
@@ -639,6 +629,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         $this->response->setJsonContent(array_values($itemsData));
         return true;
     }
+    */
 
     // TODO MOVE THIS FUNCTION TO FRAMWORK (ALIAS TO {Plico_GetResource file=""})
 
@@ -655,7 +646,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
         //$newsItens = $this->model("news")->getItems();
 
-        //$news = $this->module("permission")->checkRules($newsItens, "news", 'permission_access_mode');
         $tokensModel = $this->model("translate/tokens");
 
         $itemsData = $tokensModel->getItemsGroupByToken();
@@ -665,7 +655,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             foreach($itemsData as $key => $item) {
                 $itemsData[$key]['options'] = array(
                     'edit'  => array(
-                        'icon'  => 'icon-edit',
+                        'icon'  => 'fa fa-pencil', 
                         //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
@@ -674,7 +664,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         )
                     ),
                     'translate-windows'  => array(
-                        'icon'  => 'icon-reorder',
+                        'icon'  => 'fa fa-reorder',
                         //'link'  => "#translate-edit-token-modal",
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(

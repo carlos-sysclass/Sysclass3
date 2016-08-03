@@ -6,6 +6,7 @@ namespace Sysclass\Modules\Questions;
  */
 
 use Sysclass\Models\Courses\Departament,
+    Sysclass\Models\Courses\Questions\Question,
     Sysclass\Models\Courses\Questions\Type as QuestionType,
     Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;
 
@@ -23,15 +24,12 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Questions", "View")) {
 
-            $itemsData = $this->model($this->_modelRoute)->addFilter(array(
-                'active'    => true
-            ))->getItems();
-            $items = $this->module("permission")->checkRules($itemsData, "classe", 'permission_access_mode');
+            $count = Question::count("active = 1");
 
             return array(
                 'content' => array(
                     array(
-                        'count' => count($items),
+                        'count' => $count,
                         'text'  => $this->translate->translate('Questions'),
                         'icon'  => 'fa fa-question',
                         'link'  => $this->getBasePath() . 'view'
@@ -66,7 +64,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 $breadcrumbs[] = array('text'   => $this->translate->translate("New Question"));
                 break;
             }
-            case "edit/:identifier" : {
+            case "edit/{identifier}" : {
                 $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Question"));
                 break;
             }
@@ -84,7 +82,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                     'text'      => $this->translate->translate('New Question'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus'
+                    'icon'      => 'fa fa-plus-circle'
                 )
             )
         );
@@ -169,24 +167,20 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
     /**
      * [ add a description ]
      *
-     * @url GET /add
+     * @Get("/add")
      */
     public function addPage()
     {
-        $items = $this->model("courses/areas/collection")->addFilter(array(
-            'active' => 1
-        ))->getItems();
+        $items = Departament::find("active = 1");
+        $this->putitem("knowledge_areas", $items->toArray());
 
-        $this->putitem("knowledge_areas", $items);
+        $items = QuestionType::find();
+        $this->putItem("questions_types", $items->toArray());
 
-        $items = $this->model("questions/types")->getItems();
-        $this->putItem("questions_types", $items);
-
-        $items =  $this->model("questions/difficulties")->getItems();
-        $this->putItem("questions_difficulties", $items);
+        $items = QuestionDifficulty::find();
+        $this->putItem("questions_difficulties", $items->toArray());
 
         parent::addPage($id);
-
     }
 
     /**
@@ -209,198 +203,19 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
         parent::editPage($identifier);
     }
 
-    /**
-     * [ add a description ]
-     *
-     * @url GET /item/:model/:id
-     */
-    /*
-    public function getItemAction($model, $id) {
-        if ($model == "me") {
-            $modelRoute = $this->_modelRoute;
-        } else {
-            return $this->invalidRequestError();
-        }
-        $editItem = $this->model($modelRoute)->getItem($id);
-        // TODO CHECK IF CURRENT USER CAN VIEW THE NEWS
 
-        return $editItem;
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url POST /item/:model
-     */
-    /*
-    public function addItemAction($model)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            if ($model == "me") {
-                $modelRoute = $this->_modelRoute;
-            } else {
-                return $this->invalidRequestError();
-            }
-
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model($modelRoute);
-            $data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
-                if ($_GET['object'] == "1") {
-                    $response = $this->createAdviseResponse(
-                        $this->translate->translate("Question created with success"),
-                        "success"
-                    );
-
-                    return array_merge($itemModel->getItem($data['id']), $response);
-
-                } else {
-                    return $this->createRedirectResponse(
-                        $this->getBasePath() . "edit/" . $data['id'],
-                        $this->translate->translate("Question created with success"),
-                        "success"
-                    );
-
-                }
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url PUT /item/:model/:id
-     */
-    /*
-    public function setItemAction($model, $id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            if ($model == "me") {
-                $modelRoute = $this->_modelRoute;
-            } else {
-                return $this->invalidRequestError();
-            }
-
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model($modelRoute);
-
-            if ($itemModel->setItem($data, $id) !== FALSE) {
-
-                $modelData = $this->model($modelRoute)->getItem($id);
-                $data = array_merge($data, $modelData);
-
-                $response = $this->createAdviseResponse($this->translate->translate("Question updated with success"), "success");
-                return array_merge($response, $data);
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url DELETE /item/:model/:id
-     */
-    /*
-    public function deleteItemAction($model, $id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model($this->_modelRoute);
-            if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Question removed with success"), "success");
-                return $response;
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url GET /items/:model
-     * @url GET /items/:model/:type
-     * @url GET /items/:model/:type/:data
-     */
-    public function getItemsAction($model, $type)
-    {
-        if ($model == "me") {
-            $modelRoute = $this->_modelRoute;
-            $optionsRoute = "edit";
-        } elseif ($model == "lesson-content") {
-            $modelRoute = $this->_modelRoute;
-
-        } else {
-            return $this->invalidRequestError();
-        }
-
-
-        $currentUser    = $this->getCurrentUser(true);
-        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-        //$modelRoute = "users/groups/collection";
-        $baseLink = $this->getBasePath();
-
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
-
-
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
-        $items = $itemsData;
-
-        if ($type === 'combo') {
-        } elseif ($type === 'datatable') {
-
-            $items = array_values($items);
-            foreach($items as $key => $item) {
-                if ($model == "me") {
-                    $items[$key]['options'] = array(
-                        'edit'  => array(
-                            'icon'  => 'icon-edit',
-                            'link'  => $baseLink . $optionsRoute . "/" . $item['id'],
-                            'class' => 'btn-sm btn-primary'
-                        ),
-                        'remove'    => array(
-                            'icon'  => 'icon-remove',
-                            'class' => 'btn-sm btn-danger'
-                        )
-                    );
-                } elseif ($model == "lesson-content") {
-                    $items[$key]['options'] = array(
-                        'select'  => array(
-                            'icon'  => 'icon-check',
-                            'class' => 'btn-sm btn-primary'
-                        )
-                    );
-                }
-            }
-            return array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
+    public function getDatatableItemOptions() {
+        if ($this->_args['model'] == 'lesson-content') {
+            $options['select'] = array(
+                'icon'  => 'icon-check',
+                'class' => 'btn-sm btn-primary'
             );
+
+            return $options;
+
+        } else {
+            return parent::getDatatableItemOptions();
         }
-
-        return array_values($items);
     }
-
-
 
 }

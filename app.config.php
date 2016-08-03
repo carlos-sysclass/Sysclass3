@@ -33,7 +33,7 @@ $configurationDefaults = array(
 		'dbhost'	=> 'localhost',
 		'dbuser'	=> 'sysclass',
 		'dbpass'	=> 'WXubN7Ih',
-		'dbname'	=> 'sysclass_demo',
+		'dbname'	=> 'sysclass_clean',
 		'dbprefix'	=> '',
 		'root_path'	=> str_replace("\\", "/", dirname(dirname(__FILE__)))."/",
 		'version'	=> '3.0.0',
@@ -50,6 +50,11 @@ $configurationDefaults = array(
 		'overrideTheme'	=> (isset($_SESSION['new-theme']) ? $_SESSION['new-theme'] : 'sysclass.default')
 	),
 	*/
+	'alpha.sysclass.com'	=> array(
+		'dbname'	=> 'sysclass_alpha',
+		'theme'		=> 'sysclass.default',
+		'https'		=> 'required',
+	),
 	'develop.sysclass.com'	=> array(
 		'dbname'	=> 'sysclass_develop',
 		'theme'		=> 'sysclass.default',
@@ -207,21 +212,6 @@ $plicoLib->add("resources/components", array(
 	'css'	=> array('css/jquery-multi-select/multi-select'),
 	'js'	=> array('plugins/jquery-multi-select/jquery.multi-select')
 ));
-
-$plicoLib->add("resources/components", array(
-	'name'	=> 'icheck',
-	'css'	=> array('plugins/icheck/skins/all'),
-	'js'	=> array('plugins/icheck/icheck')
-));
-
-$plicoLib->add("resources/components", array(
-	'name'	=> 'noui-slider',
-	'css'	=> array('plugins/nouislider/nouislider'),
-	'js'	=> array('plugins/nouislider/nouislider')
-));
-
-
-
 
 $plicoLib->add("resources/components", array(
 	'name'	=> 'jquery-file-upload',
@@ -604,7 +594,10 @@ $di->set('stringsHelper', function () {
     // Set a global encryption key
     //$crypt->setKey();
     return $strings;
-});
+}, true);
+
+
+
 
 DI::setDefault($di);
 

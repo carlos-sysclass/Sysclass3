@@ -6,6 +6,9 @@ use Sysclass\Models\Users\User,
 
 interface IStorage {
     public function getFilestream(File $struct);
+
     public function getFullFilePath(File $struct);
     public function getFullFileUrl(File $struct);
+
+    public function putFilestream(File $struct, $fileStream = null);
 }

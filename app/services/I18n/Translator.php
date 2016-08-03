@@ -11,6 +11,7 @@ class Translator extends Component
 {
 
     protected $source_lang;
+    protected $js_source_lang;
     protected $languages;
     protected $base_tokens;
     protected $source_tokens;
@@ -54,22 +55,43 @@ class Translator extends Component
 
     public function setSource($language_code)
     {
-        $langCodes = $this->getDisponibleLanguagesCodes();
+        //$langCodes = $this->getDisponibleLanguagesCodes();
 
-        if (in_array($language_code, $langCodes)) {
-            $this->source_lang = $language_code;
+        $languages = $this->languages->toArray();
 
-            // RECREATE TOKENS CACHE
-            $this->recreateCache();
+        foreach($this->languages as $lang) {
+            if ($language_code == $lang->code) {
+                $this->source_lang = $lang->code;
+                $this->js_source_lang = $lang->js_code;
 
-            if ($this->source_tokens->count() > 0) {
-                $this->session->set("session_language", $this->source_lang);
+                $FOUND = true;
+
+                break;
             }
+        }
 
-            return true;
+        if (!$FOUND) {
+            $this->source_lang = $this->getSystemLanguageCode();
+            $this->js_source_lang = $this->getSystemLanguageCode();
+        }
+        // RECREATE TOKENS CACHE
+        $this->recreateCache();
+
+        if ($this->source_tokens->count() > 0) {
+            $this->session->set("session_language", $this->source_lang);
         }
         return false;
     }
+
+    public function getJsSource()
+    {
+        if (!is_null($this->js_source_lang)) {
+            return $this->js_source_lang;
+        }
+        // TODO Include code to get default user language
+        return $this->getSystemLanguageCode();
+    }
+
 
     public function recreateCache() {
         $this->source_tokens = Tokens::find(array(
@@ -89,10 +111,10 @@ class Translator extends Component
         }
     }
 
-    public function getDisponibleLanguagesCodes()
+    public function getDisponibleLanguagesCodes($column = 'code')
     {
         // TODO Include code to get default user language
-        return \array_column($this->languages->toArray(), 'code');
+        return \array_column($this->languages->toArray(), $column);
         /*
         $cacheHash = __METHOD__;
 
@@ -184,8 +206,11 @@ class Translator extends Component
             $translated = vsprintf($token, $vars);
         }
         $this->session_tokens[$token] = $translated;
-
-        $this->cache->save("session_tokens", $this->session_tokens);
+        try {
+            $this->cache->save("session_tokens", $this->session_tokens);
+        } catch(Exception $e) {
+            return $translated;
+        }
 
         return $translated;
     }
@@ -218,7 +243,7 @@ class Translator extends Component
      * @param  array $tokens [description]
      * @return array         [description]
      */
-    public function translateTokens($source, $dest, $tokens, $source_column = null, $dest_column = "translated")
+    public function translateTokens($source, $dest, $tokens = null, $source_column = null, $dest_column = "translated")
     {
         /*
         if ($force === 'false' || $force === "0") {
@@ -227,9 +252,25 @@ class Translator extends Component
             $force = true;
         }
         */
+
         $langCodes = $this->getDisponibleLanguagesCodes();
 
         if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
+            if (is_null($tokens)) {
+
+                $sourcesTokens = Tokens::find(array(
+                    'columns' => 'text',
+                    'conditions' => "language_code = ?0 AND token NOT IN (
+                        SELECT token FROM Sysclass\Models\I18n\Tokens WHERE 
+                            language_code = ?1 AND 
+                            (edited = 1 OR (UNIX_TIMESTAMP() - timestamp) < 300)
+                    )",
+                    'bind' => array($source, $dest)
+                ));
+
+                $tokens = array_column($sourcesTokens->toArray(), 'text');
+            }
+
             // VALIDATE TOKEN
             //$bingTranslateModel = $this->model("bing/translate");
             if (is_string($source_column)) {
@@ -237,6 +278,7 @@ class Translator extends Component
             } else {
                 $translateTokens = array_values($tokens);
             }
+
             $translatedTerms = $this->getBackend("bing")->translateArray($translateTokens, $source, $dest);
 
             if (is_string($source_column)) {
@@ -268,7 +310,7 @@ class Translator extends Component
         $this->table_name = "mod_translate";
         $this->id_field = "id";
 
-        $this->selectSql = "SELECT `id`, `code`, `country_code`, `permission_access_mode`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
+        $this->selectSql = "SELECT `id`, `code`, `country_code`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
         //`lessons_ID`, `classe_id`,
 
         parent::init();

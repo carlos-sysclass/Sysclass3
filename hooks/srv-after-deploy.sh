@@ -51,6 +51,8 @@ chmod 777 "$DIRNAME/../logs" -R
 mkdir -p "$DIRNAME/../www/resources"
 chmod 777 "$DIRNAME/../www/resources" -R
 
+chmod 777 "$DIRNAME/../vendor/mpdf/mpdf/ttfontdata" -R
+
 # INJECT VERSION INSIDE DATABASE
 #full_version=$1
 #branch=$2
@@ -61,3 +63,6 @@ echo "full_version=$full_version" >> RELEASE
 echo "build_number=$build_number" >> RELEASE
 echo "branch=$branch" >> RELEASE
 echo "environment=$environment" >> RELEASE
+
+# UPDATE THE SYSCLASS SERVICE AND LET HIM THERE (MANUAL UPDATE)
+dirname=`readlink -f .`; cat hooks/service.sh | sed "s#{base_path}#$dirname#g" | sed "s#{environment}#$environment#g" > sysclassd-$environment

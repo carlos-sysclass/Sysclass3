@@ -2,11 +2,11 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
     // MODELS
     this.startWithParent = false;
     mod.addInitializer(function() {
-//        this.config = $SC.module("crud.config").getConfig();
+        this.config = $SC.module("crud.config").getConfig();
+//        console.warn(this.config);
 //        mod.entity_id = mod.config.entity_id;
 
         var entityModel = app.module("crud.views.edit").itemModel;
-
         /**
          * SUB VIEW BASE CLASS
          *
@@ -144,13 +144,19 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     _.each(this.uploadClass, function(item) {
                         self.$el.removeClass(item);
                     });
-
+                    /*-
+                    console.warn(this.downloadTemplate({
+                        model: this.model.toJSON(),
+                        //file : this.fuploadFile,
+                        opt  : { formatFileSize : this.formatFileSize }
+                    }));
+                    */
                     console.warn({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
                         opt  : { formatFileSize : this.formatFileSize }
                     });
-
+                    
                     this.$el.html(this.downloadTemplate({
                         model: this.model.toJSON(),
                         //file : this.fuploadFile,
@@ -242,6 +248,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         return rows;
                     })
                     .bind('fileuploaddone', function (e, data) {
+                        console.warn("fileuploaddone");
                         var files = data.getFilesFromResponse(data);
                         var rows = $();
                         var viewObject = data.context.data("viewObject");
@@ -268,10 +275,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         return rows;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        //console.warn("fileuploadfail");
+                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
+                        console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -318,6 +325,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 this.listenTo(fileContentTimelineView, "timeline-file-content:save", function(model) {
                     var self = this;
 
+                    console.warn('saving')
                     model.save(null, {
                         success : function() {
                             var childs = self.model.get("childs");
@@ -486,6 +494,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                 this.initializeSortable();
                 this.initializeFileUpload();
+                this.initializeImageCropDialog();
 
                 //this.listenToOnce(this.collection, "sync", this.render.bind(this));
 
@@ -511,6 +520,20 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         self.collection.setContentOrder(contentOrder);
                     }
                 });
+            },
+            initializeImageCropDialog : function() {
+                var imageCropDialogViewClass = app.module("blocks.dropbox.upload").imageCropDialogViewClass;
+                 
+                this.imageCropDialog = new imageCropDialogViewClass({
+                    /*
+                    sizes : [
+                        [728, 90, 'Horizontal'], // HORIZONTAL BANNER
+                        [300, 250, 'Square'], // ALMOST SQUARE BANNER
+                        [120, 600, 'Vertical'] // VERTICAL BANNER
+                    ]
+                    */
+                });
+                
             },
             initializeFileUpload : function() {
                 // CREATE FILEUPLOAD WIDGET
@@ -553,17 +576,48 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     })
                     .bind('fileuploaddone', function (e, data) {
                         var files = data.getFilesFromResponse(data);
+
                         var viewObject = data.context.data("viewObject");
 
                         $.each(files, function (index, file) {
                             viewObject.model.mergeWithinFileObject(file);
+                            console.warn("OBJECT", file, viewObject.model.toJSON());
                             viewObject.setOptions({
                                 upload : false,
                                 file: file,
                                 opt : data
                             });//.render();
 
-                            viewObject.completeEvents();
+
+                            var selectOption = self.$("[name='banner_size']").select2('data').element[0];
+                            var size = $(selectOption).data();
+
+                            if (_.has(size, 'width') && _.has(size, 'height')) {
+                                self.imageCropDialog.setAspectRatio(
+                                    size.width, size.height
+                                );
+                            }
+
+                            //console.warn(self.model, data);
+                            self.imageCropDialog.setModel(
+                                new Backbone.Model(viewObject.model.get("file"))
+                            );
+                            self.imageCropDialog.open();
+
+                            self.listenTo(self.imageCropDialog, "file-crop:save", function(model) {
+
+                                viewObject.model.mergeWithinFileObject(model.toJSON());
+                                viewObject.model.set('crop', model.get('crop'));
+
+                                viewObject.completeEvents();
+                            });
+                                
+                            self.listenTo(self.imageCropDialog, "file-crop:cancel", function(model) {
+                                // ABORT UPLOAD
+                                viewObject.delete();
+                            });
+
+                            // viewObject.completeEvents();
                         });
                         self.jqXHR = null;
 
@@ -646,10 +700,11 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     options = {};
                 }
 
-
+                /*
                 console.warn(_.extend(options, {
                     model : model
                 }));
+                */
 
 
                 var bannerAdvertisingContentView = new bannerAdvertisingContentViewClass(_.extend(options, {
@@ -661,6 +716,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                 this.listenTo(bannerAdvertisingContentView, "timeline-file-content:save", function(model) {
                     self.collection.add(model);
+                    console.warn('saved!');
                     model.save();
                 });
 
@@ -681,7 +737,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     bannerAdvertisingContentView.remove();
                     //self.collection.add(model, "text");
                 });
-                console.warn(3);
 
                 return bannerAdvertisingContentView;
             },
@@ -732,6 +787,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             entity_id :  entityModel.get("id")
         });
 
+        if (entityModel.get("id")) {
+            contentCollection.fetch();
+        }
+
         this.listenTo(entityModel, "sync", function(a,b,c,d,e) {
             contentCollection.fetch();
         });
@@ -743,7 +802,12 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
         });
     });
 
-    var baseAdvertisingContentModelClass = Backbone.Model.extend({
+    this.baseItemModelClass = app.module("models").getBaseModel({
+        
+    });
+
+    var baseAdvertisingContentModelClass = this.baseItemModelClass.extend({
+        response_type : "object",
         defaults : function() {
             return {
                 id              : null,
@@ -755,7 +819,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 active          : 1
             };
         },
-        urlRoot: "/module/advertising/item/content/"
+        urlRoot: "/module/advertising/item/content"
     });
 
     this.models = {
@@ -807,14 +871,14 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             */
         },
         url: function() {
-            return "/module/advertising/items/content/default/" + this.entity_id;
+            return "/module/advertising/items/content/default/" + JSON.stringify({ advertising_id:this.entity_id });
         },
         model: function(attrs, options) {
             if (options.add) {
                 if (attrs.content_type == "file") {
 
                     return new mod.models.advertising.file(attrs, _.extend(options, {
-                        collection: this,
+                        collection: this
                     }));
                 /*
                 } else if (attrs.content_type == "subtitle") {
@@ -856,7 +920,5 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
     $SC.module("crud.views.edit").on("start", function() {
         mod.start();
-
-
     });
 });

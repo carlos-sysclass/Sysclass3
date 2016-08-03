@@ -1,10 +1,22 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=304180646448346";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="header navbar-inverse navbar-fixed-top">
 	<!-- BEGIN TOP NAVIGATION BAR -->
 	<div class="header-inner container">
 		<!-- BEGIN LOGO -->
 		<a class="navbar-brand" href="/dashboard">
-			<img src="{Plico_GetResource file='img/logo.png'}" alt="logo" class="img-responsive" />
+			<img src="{Plico_GetResource file='img/logo-sysclass.png'}" alt="logo" class="img-responsive hidden-xs" />
+			<img src="{Plico_GetResource file='img/logo-sysclass-small.png'}" alt="logo" class="img-responsive visible-xs" />
 		</a>
+
+		<div class="navbar-text fb-like" data-href="https://www.facebook.com/sysclass" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 		<!--
@@ -15,10 +27,8 @@
 		<!-- END RESPONSIVE MENU TOGGLER -->
 
 		<!-- BEGIN TOP NAVIGATION MENU -->
-		{* $T_TOPBAR_MENU|@json_encode *}
+		{*$T_TOPBAR_MENU|@json_encode*}
 		<ul class="nav navbar-nav pull-right">
-
-
 
 			{foreach $T_TOPBAR_MENU as $key => $item}
 				{if $item.type == "mega"}
@@ -28,15 +38,15 @@
 								{if $item.icon}
 					      		<i class="{$item.icon}"></i>
 					      		{/if}
-								{$item.text}
+					      		<span class="hidden-xs">{$item.text}</span>
 							</a>
-							<ul class="dropdown-menu" style="min-width: 700px;">
+							<ul class="dropdown-menu mega-menu-container">
 								<li>
 									<!-- Content container to add padding -->
 									<div class="mega-menu-content">
 										<div class="row">
 											{foreach $item.items as $subkey => $subitems}
-												<div class="col-md-3">
+												<div class="col-md-3  col-sm-3">
 													<ul class="mega-menu-submenu">
 														<li>
 															<h3>{$subkey}</h3>
@@ -166,8 +176,10 @@
 							     		{elseif $item.type == 'notification'}
 											<li>
 							                  	<a href="{$subitem.link}">
-							                  		<span class="label label-sm label-icon label-info"><i class="icon-warning-sign"></i></span>
-							                  		{$subitem.text}
+							                  		<span class="label label-sm label-icon label-info">
+							                  			<i class="fa fa-book"></i>
+							                  		</span>
+							                  		{$subitem.name}
 							                  	</a>
 							               </li>
 							     		{/if}
@@ -183,26 +195,59 @@
 		      		</ul>
 		      	</li>
 				{else}
-				<li class="dropdown hidden-xs">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+				
+				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
+					<a href="javascript:void(0);" 
+						{if $item.items}
+						class="dropdown-toggle" data-toggle="dropdown" data-close-others="true"
+						{else}
+						class="menu-link"
+						{/if}
+					>
 						{if $item.icon}
 			      		<i class="{$item.icon}"></i>
 			      		{/if}
-			      		{$item.text}
+			      		{if $item.text}
+			      			<span class="hidden-xs">{$item.text}</span>
+			      		{/if}
 						{if isset($item.notif)}
 			      		<span class="badge">{$item.notif}</span>
 			      		{/if}
 			      	</a>
-			      	<ul class="dropdown-menu {$item.type}">
-					{foreach $item.items as $subitem}
-						<li>
-							<a href="{$subitem.link}">{$subitem.text}</a>
-						</li>
-				    {/foreach}
-				    </ul>
+			      	{if $item.items}
+				      	<ul class="dropdown-menu {$item.type}">
+						{foreach $item.items as $subitem}
+							<li>
+								<a href="{$subitem.link}"
+									{foreach $subitem.attrs as $attr => $attr_value}
+										{$attr}="{$attr_value}" 
+									{/foreach}
+								>{$subitem.text}</a>
+							</li>
+					    {/foreach}
+					    </ul>
+				    {/if}
 				</li>
 		        {/if}
-		   {/foreach}
+		   	{/foreach}
+		   	<!--
+		   	<li class="menu-item">
+				<a href="" class="menu-link" data-toggle="modal" data-target=".bs-example-modal-lg">
+					<i class="fa fa-search"></i>
+					<span class="hidden-xs">Buscar</span>
+				</a>
+			</li>
+			<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+			  	<div class="modal-dialog modal-lg">
+			    	<div class="modal-content">
+			    		<form action="" class="cs-search-all">
+			    			<input type="text" placeholder="Faça aqui a sua pesquisa">
+			    			<button class="btn btn-primary"><i class="fa fa-search"></i></button>
+			    		</form>
+			    	</div>
+			  	</div>
+			</div>
+			-->
 		   <!-- BEGIN CALENDAR DROPDOWN -->
 		   <!--
 		   <li class="dropdown" id="header_notification_bar">
@@ -270,10 +315,12 @@
 			-->
 		   <!-- END TODO DROPDOWN -->
 		   <!-- BEGIN USER LOGIN DROPDOWN -->
-			<li class="dropdown user">
+		   {* MOVE TO MENU SYSTEM *}
+			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+					<i class="fa fa-user visible-xs"></i>
 					{if ({$T_CURRENT_USER.avatars[0].url})}
-						<div class="avatar-img vertical-align">
+						<div class="avatar-img vertical-align hidden-xs">
 							{if ({$T_CURRENT_USER.avatars[0].url})}
 								<img src="{$T_CURRENT_USER.avatars[0].url}" alt="" class="user-profile-image">
 							{else}
@@ -282,39 +329,39 @@
 						</div>
 					{/if}
 					<span class="username">{$T_CURRENT_USER.name}</span>
-					<i class="icon-angle-down"></i>
 				</a>
 				<ul class="dropdown-menu">
 					<li>
 						<a href="/module/users/profile"><i class="icon-user"></i> {translateToken value="My Profile"}</a>
 					</li>
-					<li class="divider"></li>
 					{foreach $T_TOPBAR_MENU as $key => $item}
 				        {if isset($item.link)}
-							<li class="visible-xs">
-								<a href="{$item.link.link}">
-						      		<i class="icon-{$item.icon}"></i>
-						      		<span class="badge">{$item.notif}</span>
-						      		{$item.link.text}
-						      	</a>
-							</li>
 						{/if}
 					{/foreach}
+
 					<li class="divider visible-xs"></li>
+					<!--
 					<li class="hidden-sm hidden-xs">
-						<a href="javascript:;" id="trigger_fullscreen"><i class="icon-move"></i> {translateToken value="Full Screen"}</a>
+						<a href="javascript:;" id="trigger_fullscreen"><i class="ti-fullscreen"></i> {translateToken value="Full Screen"}</a>
 					</li>
-					<li>
-						<a href="/lock"><i class="icon-lock"></i> {translateToken value="Lock Screen"}</a>
-					</li>
+					<li><a href="/lock"><i class="icon-lock"></i> {translateToken value="Lock Screen"}</a></li>
+					-->
 					<li>
 						<a href="/logout"><i class="icon-key"></i> {translateToken value="Log Out"}</a>
 					</li>
 				</ul>
 			</li>
 		   <!-- END USER LOGIN DROPDOWN -->
+		   <!--
+		   <li class="dropdown dropdown-quick-sidebar-toggler">
+                <a class="dropdown-toggle" href="javascript:;">
+                    <i class="fa fa-comments"></i>
+                </a>
+			</li>
+			-->
 		</ul>
 		<!-- END TOP NAVIGATION MENU -->
 	</div>
 	<!-- END TOP NAVIGATION BAR -->
 </div>
+<div class="clearfix"></div>

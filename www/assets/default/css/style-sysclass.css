@@ -683,25 +683,79 @@ label {
   font-weight: 400;
   font-size: 14px;
 }
+.login .form-control:-moz-placeholder {
+  color: #000;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control::-moz-placeholder {
+  color: #000;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control:-ms-input-placeholder {
+  color: #000;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control::-webkit-input-placeholder {
+  color: #000;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.login .form-control {
+  font-size: 12px;
+  font-weight: lighter;
+  letter-spacing: 0.2px;
+  color: #000;
+  background-color: transparent;
+  border-bottom: 1px solid #000;
+  border-left: none !important;
+  border-right: none;
+  border-top: none;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.login .form-control:focus {
+  border-color: #999;
+  outline: 0;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
 
 .form-control:-moz-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control::-moz-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control:-ms-input-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control::-webkit-input-placeholder {
-  color: #999999;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .form-control {
-  font-size: 14px;
-  font-weight: normal;
-  color: #333333;
-  background-color: #ffffff;
-  border: 1px solid #e5e5e5;
+  font-size: 12px;
+  font-weight: lighter;
+  letter-spacing: 0.2px;
+  color: #444;
+  background-color: transparent;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
   border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -709,7 +763,7 @@ label {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
-  border-color: #999999;
+  border-color: #005999;
   outline: 0;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
@@ -918,7 +972,7 @@ Custom label and badges
 
 .label {
   font-size: 12px;
-  padding: 3px 6px 3px 6px;
+  padding: 4px 6px 4px 6px;
 }
 
 .label.label-sm {
@@ -943,9 +997,9 @@ h7 .label {
   background-color: #e02222;
   height: 18px;
   padding: 3px 6px 3px 6px;
-  -webkit-border-radius: 12px !important;
-     -moz-border-radius: 12px !important;
-          border-radius: 12px !important;
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
   text-shadow:none !important;
   text-align: center;
   vertical-align: middle;
@@ -977,6 +1031,9 @@ h7 .label {
 .badge-warning {
   background-color: #fcb322;
   background-image: none !important;
+  height: 14px;
+  margin: 4px 0 5px 5px;
+  padding-top: 1px !important;
 }
 
 .label-danger,
@@ -1104,7 +1161,7 @@ wells
 
 .nav-tabs,
 .nav-pills {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 .tabs-right > .nav-tabs,
@@ -1227,9 +1284,9 @@ Bootstrap modal
   font-weight: 300;
 }
 
-.modal-wide {
+/*.modal-wide {
   width: 60% !important;
-}
+}*/
 
 .modal-full {
   width: 100% !important;

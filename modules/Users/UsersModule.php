@@ -4,31 +4,22 @@ namespace Sysclass\Modules\Users;
 use Phalcon\DI,
     Phalcon\Mvc\Model\Message,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Users\UserCurriculum,
     Sysclass\Models\Users\Group,
     Sysclass\Models\Users\UsersGroups,
     Sysclass\Models\I18n\Language,
+    Sysclass\Models\Content\Unit,
     Sysclass\Services\I18n\Timezones,
-    Sysclass\Services\Authentication\Exception as AuthenticationException;
+    Sysclass\Services\Authentication\Exception as AuthenticationException,
+    Sysclass\Models\Users\UserPasswordRequest,
+    Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event;
 
 /**
  * @RoutePrefix("/module/users")
  */
-class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IPermissionChecker, \IWidgetContainer
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, \ISectionMenu, INotifyable
 {
-    /*
-    public function getSummary() {
-
-        $user = $this->getCurrentUser(true);
-
-
-        return array(
-            'type'  => 'success',
-            'count' => '<i class="fa fa-mortar-board"></i>',
-            'text'  => "ID : " . str_pad($user->id, 11, "0", STR_PAD_LEFT)
-        );
-    }
-    */
-   
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
@@ -63,6 +54,31 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
                 return true;
 
+            },
+            'users.select.dialog' =>  function($data, $self) {
+                if (is_array($data) && array_key_exists('special-filters', $data)) {
+
+                    $self->putItem("load_by_ajax", false);
+                    $users = User::specialFind($data['special-filters']);
+
+                    $self->putItem("dialog_user_select_users", $users);
+
+
+                } else {
+                    $self->putItem("load_by_ajax", true);
+                }
+                // CREATE BLOCK CONTEXT
+                //$self->putComponent("data-tables");
+                $self->putModuleScript("dialogs.users.select");
+
+
+
+                //$block_context = $self->getConfig("blocks\\users.list.table\context");
+                //$self->putItem("users_block_context", $block_context);
+
+                $self->putSectionTemplate("dialogs", "dialogs/select");
+
+                return true;
             }
         );
     }
@@ -143,12 +159,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
      * [getWidgets description]
      * @param  array  $widgetsIndexes [description]
      * @return [type]                 [description]
-     * @implemen
      */
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
+    	if (in_array('users.overview', $widgetsIndexes)) {
+			$currentUser    = $this->user;
 
-	public function getWidgets($widgetsIndexes = array()) {
-		if (in_array('users.overview', $widgetsIndexes)) {
-			$currentUser    = $this->getCurrentUser(true);
+            $this->putComponent("easy-pie-chart");
 
 			$modules = $this->getModules("ISummarizable");
 
@@ -170,11 +186,22 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					$data['notification'][$key] = $mod->getSummary();
 				}
 			}
+//                var_dump($data['notification']);
 
-			$data['notification'] = $this->module("dashboard")
-				->sortModules("users.overview.notification.order", $data['notification']);
+			$data['notification'] = $caller->sortModules("users.overview.notification.order", $data['notification']);
 
 			$this->putModuleScript("users");
+
+                
+            $userPointers = $userPointers = Unit::getContentPointers();
+
+
+            $data['pointer'] = array(
+                'program_id'    => $userPointers['program']->id,
+                'course_id'     => $userPointers['course']->id,
+                'unit_id'       => $userPointers['unit']->id,
+                'content_id'    => $userPointers['content']->id
+            );
 
 			return array(
 				'users.overview' => array(
@@ -183,6 +210,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					//'title' 	=> 'User Overview',
 					'template'	=> $this->template("widgets/overview"),
 					'panel'		=> true,
+                    'body'      => 'no-padding',
 					'data'      => $data
 					//'box'       => 'blue'
 				)
@@ -190,13 +218,126 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		}
 	}
 
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+
+            $this->putScript("scripts/ui.menu.users");
+
+            $courses = $this->user->getCourses();
+
+            $items = array();
+            foreach($courses as $course) {
+                $items[] = array(
+                    'link' => "javascript:void(0);",
+                    'text' => sprintf("#%s %s", $course->id, $course->name),
+                    'attrs' => array(
+                        'data-entity-id' => $course->id
+                    )
+                );
+            }
+
+            if (count($courses) > 0) {
+                $menuItem = array(
+                    'id'        => "users-topbar-menu",
+                    'icon'      => ' fa fa-graduation-cap',
+                    'text'      => $this->translate->translate('Programs'),
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    */
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    'type'      => '',
+                    'items'     => $items,
+                    'extended'  => false,
+                );
+
+                return $menuItem;
+            }
+        }
+        return false;
+    }
+
+    /* INotifyable */
+    public function getAllActions() {
+
+    }
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "start-password-request" : {
+                // SEND EMAIL PASSWORD RESET 
+                $data = $event->data;
+                // var_dump($event->timestamp);
+
+                $user = User::findFirstById($data['id']);
+
+                if ($user) {
+                    // REMOVE PREVIOUS REQUESTS
+                    $requests = $user->getPasswordRequests();
+                    foreach ($requests as $request) {
+                        $request->active = 0;
+                        $request->save();
+                    }
+
+                    $passwordRequest = new UserPasswordRequest();
+                    $passwordRequest->user_id = $user->id;
+                    $passwordRequest->reset_hash = $user->createRandomPass(16);
+
+                    $date = \DateTime::createFromFormat('U', $event->timestamp);
+                    $date->add(new \DateInterval('PT6H'));
+                    $passwordRequest->valid_until = $date->format('Y-m-d H:i:s');
+
+                    if ($passwordRequest->save()) {
+                        $status = $this->mail->send(
+                            $user->email, 
+                            "Solicitação de troca de senha. Email automático, não é necessário responder.",
+                            "email/" . $this->sysconfig->deploy->environment . "/password-reset.email",
+                            true,
+                            array(
+                                'user' => $user->toArray(),
+                                'reset_link' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/password-reset/" . $passwordRequest->reset_hash
+                            )
+                        );
+
+
+                        $this->notification->createForUser(
+                            $user,
+                            sprintf(
+                                'You request a password reset.', 
+                                $course->name
+                            ),
+                            'activity',
+                            array(
+                                'text' => "View",
+                                'link' => $this->getBasePath() . "view/" . $course->id
+                            )
+                        );
+
+                        return array(
+                            'status' => true
+                        );
+                    }
+                }
+                return array(
+                    'status' => false,
+                    'unqueue' => true
+                );
+            }
+        }
+    }
 
     /**
      * [ add a description ]
      *
      * @Get("/add")
      */
-    public function addPage($id)
+    public function addPage()
     {
         $languages = Language::find("active = 1");
         $this->putitem("languages", $languages->toArray());
@@ -223,8 +364,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
         parent::editPage($id);
     }
-
-
 
     public function beforeModelCreate($evt, $model, $data) {
         if (
@@ -267,28 +406,39 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         ) {
             if ($data['new-password'] === $data['new-password-confirm']) {
                 // CHECK PASSWORD
-                if ($this->acl->isUserAllowed(null, "users", "change-password")) {
+                if ($this->isUserAllowed("change-password")) {
                     // DEFINE AUTHENTICATION BACKEND
-
                     if (
-                        array_key_exists('old-password-confirm', $data) &&
-                        !empty($data['old-password'])
+                        array_key_exists('old-password', $data) &&
+                        !empty($data['old-password']) &&
+                        $this->authentication->checkPassword($data['old-password'], $model)
                     ) {
-                        $continue = $this->authentication->checkPassword($data['old-password'], $model);
+                        $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+                    } elseif ($this->isUserAllowed("edit")) {
+                        $model->password = $this->authentication->hashPassword($data['new-password'], $model);
                     } else {
-                        $continue = true;
-                    }
+                        $message = new Message(
+                            "Please provide your current password",
+                            "password",
+                            "warning"
+                        );
+                        $model->appendMessage($message);
 
-                    $model->password = $this->authentication->hashPassword($data['new-password'], $model);
+                        return false;
+                    }
                 }
             } else {
                 $message = new Message(
-                    "User Password does not match",
+                    "Password confimation does not match",
                     "password",
                     "warning"
                 );
                 $model->appendMessage($message);
+
+                return false;
             }
+        } else {
+            // NO PASSWD CHANGE, JUST LET HIM GO.. (BECAUSE ITS UPDATING SOME ANOTHER INFO)
         }
 
         if (array_key_exists('avatar', $data) && is_array($data['avatar']) ) {
@@ -302,27 +452,28 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
     public function afterModelUpdate($evt, $model, $data) {
         if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
-            UsersGroups::find("user_id = {$userModel->id}")->delete();
+            UsersGroups::find("user_id = {$model->id}")->delete();
             
             foreach($data['usergroups'] as $group) {
                 $userGroup = new UsersGroups();
-                $userGroup->user_id = $userModel->id;
+                $userGroup->user_id = $model->id;
                 $userGroup->group_id = $group['id'];
                 $userGroup->save();
             }
+        }
+
+        if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {
+            $curriculum = new UserCurriculum();
+            $data['curriculum']['id'] = $model->id;
+            $curriculum->assign($data['curriculum']);
+            $curriculum->save();
         }
     }
 
     protected function getDatatableItemOptions() {
         if ($this->request->hasQuery('block')) {
-            return array(
-                /*
-                'check'  => array(
-                    'icon'  => 'icon-check',
-                    'link'  => $baseLink . 'block/%id$s',
-                    'class' => 'btn-sm btn-danger'
-                )
-                */
+            return array();
+            /*
                 'check'  => array(
                     //'icon'        => 'icon-check',
                     //'link'        => $baseLink . "block/" . $item['id'],
@@ -338,6 +489,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     )
                 )
             );
+            */
         } else {
             return parent::getDatatableItemOptions();
         }
@@ -348,8 +500,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return array(
                 'aprove' => array(
                     'icon'  => 'fa fa-lock',
-                    //'link'  => $baseLink . "block/" . $item['id'],
-                    'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                    //'link'  => $this->getBasePath() . $baseLink . "block/" . $item->id,
+                    'class' => 'btn-sm btn-info tooltips',
                     'attrs' => array(
                         'data-datatable-action' => "aprove",
                         'data-original-title' => 'Aprove User'
@@ -360,13 +512,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         return false;
     }
 
-    protected function isUserAllowed($action, $args) {
+    protected function isUserAllowed($action, $module_id = null) {
         $allowed = parent::isUserAllowed($action);
         if (!$allowed) {
             switch($action) {
                 case "edit" : {
                     // ALLOW IF THE USER IS UPDATING HIMSELF
-                    return $this->_args['id'] == $this->getCurrentUser(true)->id;
+                    return $this->_args['id'] == $this->user->id;
                 }
             }
         }
@@ -376,172 +528,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     /**
      * [ add a description ]
      *
-     * @Get("/item/me/{id}")
-    */
-    /*
-    public function getItemRequest($id) {
-        $request = $this->getMatchedUrl();
-
-        // TODO: CHECK PERMISSIONS
-
-        if (strpos($request, "groups/") === 0) {
-            $editItem = $this->model("users/groups/collection")->getItem($id);
-        } else {
-            $editItem = \Sysclass\Models\Users\User::findFirstById($id);
-
-            return $editItem->toFullArray(array('Avatars', 'UserGroups'));
-        }
-        return $editItem;
-    }
-    */
-
-    /**
-     * [ add a description ]
-     *
-     * @Post("/item/me")
-     */
-    /*
-    public function addItemRequest($id)
-    {
-        $request = $this->getMatchedUrl();
-
-        if ($userData = $this->getCurrentUser()) {
-            //$itemModel = $this->model("user/item");
-            // TODO CHECK IF CURRENT USER CAN DO THAT
-            $data = $this->getHttpData(func_get_args());
-            $userModel = new User();
-            $userModel->assign($data);
-
-            $di = DI::getDefault();
-
-            if ($userModel->save()) {
-                if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
-                    //UsersGroups::find("user_id = {$userModel->id}")->delete();
-                    
-                    foreach($data['usergroups'] as $group) {
-                        $userGroup = new UsersGroups();
-                        $userGroup->user_id = $userModel->id;
-                        $userGroup->group_id = $group['id'];
-                        $userGroup->save();
-                    }
-                }
-
-
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $userModel->id,
-                    $this->translate->translate("User created with success"),
-                    "success"
-                );
-            } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
-                return array_merge($response, $userModel->toFullArray());
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-   
-
-    /*
-    public function beforeModelDelete($evt, $model) {
-    }
-    */
-
-    /**
-     * [ add a description ]
-     *
-     * @Put("/item/me/{id}")
-     */
-    /*
-    public function setItemRequest($id)
-    {
-        //$request = $this->getMatchedUrl();
-        $ACL = \Phalcon\DI::getDefault()->get("acl");
-        $allowed = $ACL->isUserAllowed(null, "users", "edit");
-
-        if ($userModel = $this->getCurrentUser(true)) {
-            $data = $this->getHttpData(func_get_args());
-
-            if ($userModel->id == $id || $allowed) {
-                if ($userModel->id == $id) {
-                } else {
-                    $userModel = new \Sysclass\Models\Users\User();
-                }
-                //unset($data['password']);
-                $userModel->assign($data);
-                
-                // CHECK FOR PASSWORD CHANGING
-                if (
-                    array_key_exists('new-password', $data) &&
-                    array_key_exists('new-password-confirm', $data) &&
-                    !empty($data['new-password']) &&
-                    !empty($data['new-password-confirm']) &&
-                    $data['new-password'] === $data['new-password-confirm']
-                ) {
-                    // CHECK PASSWORD
-                    if ($ACL->isUserAllowed(null, "users", "change-password")) {
-                        // DEFINE AUTHENTICATION BACKEND
-                        $AUTH = DI::getDefault()->get("authentication");
-
-                        if (
-                            array_key_exists('old-password-confirm', $data) &&
-                            !empty($data['old-password'])
-                        ) {
-                            $continue = $AUTH->checkPassword($data['old-password'], $userModel);
-                        } else {
-                            $continue = true;
-                        }
-
-                        $userModel->password = $AUTH->hashPassword($data['new-password'], $userModel);
-                    }
-                }
-
-                if (array_key_exists('avatar', $data) && is_array($data['avatar']) ) {
-                    $userAvatarModel = new \Sysclass\Models\Users\UserAvatar();
-                    $userAvatarModel->assign($data['avatar']);
-                    $userModel->avatar = $userAvatarModel;
-                }
-                
-                if ($userModel->save()) {
-                    if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
-                        UsersGroups::find("user_id = {$userModel->id}")->delete();
-                        
-                        foreach($data['usergroups'] as $group) {
-                            $userGroup = new UsersGroups();
-                            $userGroup->user_id = $userModel->id;
-                            $userGroup->group_id = $group['id'];
-                            $userGroup->save();
-                        }
-                    }
-
-                    if ($_GET['redirect'] == "1") {
-                        $response = $this->createRedirectResponse(
-                            null,
-                            $this->translate->translate("User updated with success"),
-                            "success"
-                        );    
-                    } else {
-                        $response = $this->createAdviseResponse($this->translate->translate("User updated with success"), "success");
-                    }
-                    return array_merge($response, $userModel->toFullArray('UserGroups'));
-                } else {
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
-                    return array_merge($response, $userModel->toFullArray());
-                }
-            } else {
-                return $this->invalidRequestError($this->translate->translate("You don't have the permission to update these info."), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-
-    /**
-     * [ add a description ]
-     *
-     * @Put("/item/agreement/{id}")
+     * @Put("/datasource/agreement/{id}")
      * @todo MOVE TO AGREEMENT CONTROLLER
      */
     public function setAgreementRequest($id)
@@ -557,6 +544,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 }
 
                 $userModel->viewed_license = is_array($data['viewed_license']) ? reset($data['viewed_license']) : $data['viewed_license'];
+
+
 
                 // CHECK FOR PASSWORD CHANGING
                 if ($userModel->update()) {
@@ -576,11 +565,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         );
                     }
                 } else {
-
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warninig");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {
+                var_dump("Sem permissão");
+                exit;
                 return $this->invalidRequestError($this->translate->translate("You don't have the permission to update these info."), "error");
             }
         } else {
@@ -588,113 +578,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
     }
     
-
-    /**
-     * [ add a description ]
-     *
-     * @Delete("/item/me/{id}")
-     */
-    /*
-    public function deleteItemRequest($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model("user/item");
-            if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
-                return $response;
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    /**
-     * [ add a description ]
-     * 
-     * @Get("/items/me")
-     * @Get("/items/me/{type}")
-     */
-    /*
-    public function getItemsRequest($type)
-    {
-
-        $currentUser    = $this->getCurrentUser(true);
-        //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-        $modelRS = User::find();
-        foreach($modelRS as $key => $item) {
-            $items[$key] = $item->toArray();
-            //$news[$key]['user'] = $item->getUser()->toArray();;
-        }
-
-        if ($type === 'datatable') {
-            $items = array_values($items);
-            $baseLink = $this->getBasePath();
-
-            foreach($items as $key => $item) {
-                // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                if (array_key_exists('block', $_GET)) {
-                    $items[$key]['options'] = array(
-                        'check'  => array(
-                            'icon'  => 'icon-check',
-                            'link'  => $baseLink . "block/" . $item['id'],
-                            'class' => 'btn-sm btn-danger'
-                        )
-                    );
-                } else {
-                    $items[$key]['options'] = array(
-                        'edit'  => array(
-                            'icon'  => 'icon-edit',
-                            'link'  => $baseLink . "edit/" . $item['id'],
-                            'class' => 'btn-sm btn-primary'
-                        ),
-
-                    );
-                    if ($item['pending'] == 1) {
-                        $items[$key]['options']['aprove'] = array(
-                            'icon'  => 'fa fa-lock',
-                            //'link'  => $baseLink . "block/" . $item['id'],
-                            'class' => 'btn-sm btn-info datatable-actionable tooltips',
-                            'attrs' => array(
-                                'data-datatable-action' => "aprove",
-                                'data-original-title' => 'Aprove User'
-                            )
-                        );
-                    }
-
-                    $items[$key]['options']['remove'] = array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
-                    );
-                }
-            }
-            $this->response->setContentType('application/json', 'UTF-8');
-            $this->response->setJsonContent(array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
-            ));
-            //$this->view->disable();
-            //return $response;
-
-            
-            return array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
-            );
-        }
-        return array_values($items);
-    }
-    */
-
 	/**
 	 * [ add a description ]
 	 *
@@ -829,8 +712,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->display("profile.tpl");
 	}
 
-
-/**
+    /**
      * [ add a description ]
      *
      * @Get("/check-login")
@@ -859,343 +741,4 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             return $this->invalidRequestError();
         }
     }
-
-
-
-
-	/**
-	 * [ add a description ]
-	 *
-	 * @url POST /profile/personal
-     * @deprecated 3.0.0.34
-	 */
-	public function profilePersonalSaveRequest()
-	{
-		$this->redirect($this->getSystemUrl("home"), $this->translate->translate("The profile change is disabled on demo enviroment!"), "warning");
-		exit;
-		/*
-		["name"]=> string(8) "VINICIOS"
-		["surname"]=> string(13) "CUTRIM MENDES"
-		["email"]=> string(28) "vinicioscmendes@yahoo.com.br"
-		["language"]=> string(10) "portuguese"
-		["timezone"]=> string(20) "America/Buenos_Aires"
-		["short_description"]=> string(31) "dfdfdfsdfsdfsdfsdfdfsdfsdfsdfdf"
-		// EXTENDED USER PROFILE
-		["data_nascimento"]=> string(10) "07/19/1984"
-		*/
-		$values = $_POST;
-		// PUT ALL THIS DATA UNDER A MODEL, PLEASE!!!!!!
-		// VALIDATE VALUES
-
-		$currentUser    = $this->getCurrentUser(true);
-
-		$currentUser->user['name'] = $values['name'];
-		$currentUser->user['surname'] = $values['surname'];
-		$currentUser->user['email'] = $values['email'];
-		$currentUser->user['languages_NAME'] = $values['languages_NAME'];
-		$currentUser->user['timezone'] = $values['timezone'];
-		$currentUser->user['short_description'] = $values['short_description'];
-
-		$status = $currentUser->persist();
-
-		$extProperties = array();
-
-		$date_fmt = $this->module("settings")->get("php_date_fmt");
-		$data_nascimento = date_create_from_format($date_fmt, $values['data_nascimento']);
-		if ($data_nascimento != false) {
-			$extProperties['data_nascimento'] = $data_nascimento->format("Y-m-d");
-			$this->_updateTableData("module_xuser", $extProperties, "id = " . $currentUser->user['id']);
-		}
-
-		$this->redirect(
-			$this->getBasePath() . "profile",
-			$this->translate->translate("Your personal info has been saved successfully!"),
-			"success"
-		);
-		exit;
-	}
-	/**
-	 * [ add a description ]
-	 *
-	 * @url POST /profile/password
-     * @deprecated 3.0.0.34
-	 */
-	public function profilePasswordSaveRequest()
-	{
-		//$this->redirect($this->getSystemUrl("home"), $this->translate->translate("The profile change is disabled on demo enviroment!"), "warning");
-		//exit;
-
-		$currentUser = $this->getCurrentUser(true);
-		$values = $_POST;
-
-		$password = MagesterUser::createPassword($values['password']);
-		if ($password != $currentUser->user['password']) {
-			$this->redirect(
-				$this->getBasePath() . "profile",
-				$this->translate->translate("Your old password is incorrect!"),
-				"danger"
-			);
-			exit;
-		}
-		if ($values['new-password'] !== $values['new-password-confirm']) {
-			$this->redirect(
-				$this->getBasePath() . "profile",
-				$this->translate->translate("Your new password doesn't match!"),
-				"warning"
-			);
-			exit;
-		}
-		$currentUser->user['password'] = MagesterUser::createPassword($values['new-password']);
-		$currentUser->persist();
-
-		$this->redirect(
-			$this->getBasePath() . "profile",
-			$this->translate->translate("Your password has been changed successfully!"),
-			"success"
-		);
-		exit;
-
-	}
-
-    /**
-     * Entry point for 'select2' request data
-     *
-     * @url GET /combo/items
-     * @url GET /combo/items/:type
-     * @deprecated 3.0.0.0
-     */
-    public function comboItensRequest($type) {
-        $q = $_GET['q'];
-
-        switch ($type) {
-            case 'user_types':
-            default : {
-                $roles = MagesterUser::GetRoles(true);
-                $result = array();
-                foreach($roles as $key => $value) {
-                    $result[] = array(
-                        'id'    => $key,
-                        'name'  => $value
-                    );
-                }
-                if (!empty($q)) {
-                    $result = sC_filterData($result, $q);
-                }
-                return array_values($result);
-            }
-        }
-    }
-
-    /*
-    public function getLinks() {
-        //if ($this->getCurrentUser(true)->getType() == 'administrator') {
-            return array(
-                'users' => array(
-                    array(
-                        //'count' => count($data),
-                        'text'  => $this->translate->translate('My Profile'),
-                        'link'  => $this->getBasePath() . 'profile'
-                    ),
-                    array(
-                        //'count' => count($data),
-                        'text'  => $this->translate->translate('Users'),
-                        'link'  => $this->getBasePath() . 'view'
-                    ),
-                    array(
-                        //'count' => count($data),
-                        'text'  => $this->translate->translate('Users Types'),
-                        'link'  => $this->getBasePath() . 'view/types'
-                    ),
-                    array(
-                        //'count' => count($data),
-                        'text'  => $this->translate->translate('Users Types'),
-                        'link'  => $this->getBasePath() . 'view/groups'
-                    )
-                )
-            );
-        //}
-    }
-    */
-   
-
-  
-    const PERMISSION_IN_LESSON      = "PERMISSION_IN_LESSON";
-    const PERMISSION_IN_COURSE      = "PERMISSION_IN_COURSE";
-    const PERMISSION_SPECIFIC_TYPE  = "PERMISSION_SPECIFIC_TYPE";
-
-    public static $permissions = null;
-
-    /* IPermissionChecker */
-    public function getName() {
-        return $this->translate->translate("Users");
-    }
-    public function getPermissions($index = null) {
-        if (is_null(self::$permissions)) {
-            self::$permissions = array(
-                self::PERMISSION_IN_LESSON => array(
-                    'name'  => "All students enrolled in a lesson",
-                    'token' => "All students enrolled in the lesson '%s'"
-                ),
-                self::PERMISSION_IN_COURSE => array(
-                    'name'  => "All students enrolled in a course",
-                    'token' => "All students enrolled in the course '%s'"
-                ),
-                self::PERMISSION_SPECIFIC_TYPE => array(
-                    'name'  => "All users from specific type",
-                    'token' => "All users of type '%s'"
-                )
-            );
-        }
-        if (!array_key_exists($index, self::$permissions)) {
-            return self::$permissions;
-        } else {
-            return self::$permissions[$index];
-        }
-    }
-
-    /**
-     * [getConditionText description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-    public function getConditionText($condition_id, $data) {
-
-        $condition = $this->getPermissions($condition_id);
-
-        switch($condition_id) {
-            case self::PERMISSION_IN_LESSON : {
-                $lessonObject = $this->model("course/lessons")->getItem($data);
-                return $this->translate->translate($condition['token'], $lessonObject->lesson['name']);
-            }
-            case self::PERMISSION_IN_COURSE : {
-                $course = $this->model("course/item")->getItem($data);
-                return $this->translate->translate($condition['token'], $course['name']);
-            }
-            case self::PERMISSION_SPECIFIC_TYPE : {
-                $roles = MagesterUser::GetRoles(true);
-                return $this->translate->translate($condition['token'], $roles[$data]);
-            }
-            default : {
-                return "Permission Unknown";
-            }
-        }
-    }
-
-    /**
-     * [checkCondition description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-    public function checkCondition($condition_id, $data) {
-        $entity = $this->getCurrentUser();
-        return $this->checkConditionByEntityId($entity['id'], $condition_id, $data);
-    }
-
-    /**
-     * [checkConditionByEntityId description]
-     * @param  [type] $entity_id    [description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-    public function checkConditionByEntityId($entity_id, $condition_id, $data) {
-        $userModel = $this->model("users");
-        $userObject = $userModel->getItem($entity_id);
-
-        switch($condition_id) {
-            case self::PERMISSION_IN_LESSON : {
-                // CHECK IF
-                $checkIDs = explode(";", $data);
-                if ($userObject->getType() == 'administrator') {
-                    return true;
-                }
-                $userLessons = $userObject->getUserLessons(array("return_objects" => false));
-                $userLessonsId = array_keys($userLessons);
-
-                foreach($checkIDs as $lesson_id) {
-                    if (!in_array($lesson_id, $userLessonsId)) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            case self::PERMISSION_IN_COURSE : {
-                // CHECK IF
-                $checkIDs = explode(";", $data);
-                if ($userObject->getType() == 'administrator') {
-                    return true;
-                }
-                $userCourses = $userObject->getUserCourses(array("return_objects" => false));
-                $userCoursesId = array_keys($userCourses);
-
-                foreach($checkIDs as $course_id) {
-                    if (!in_array($course_id, $userCoursesId)) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            case self::PERMISSION_SPECIFIC_TYPE : {
-                // CHECK IF
-                $userType = $userObject->user['user_types_ID'] != 0 ? $userObject->user['user_types_ID'] : $userObject->getType();
-
-                if ($userType == $data) {
-                    return true;
-                }
-                return false;
-            }
-
-            default : {
-                return true;
-            }
-        }
-    }
-
-    /**
-     * [getPermissionForm description]
-     * @param  [type] $condition_id [description]
-     * @param  array  $data         [description]
-     * @return [type]               [description]
-     */
-    public function getPermissionForm($condition_id, $data = array()) {
-        if (array_key_exists($condition_id, $this->getPermissions())) {
-            $this->putItem("data", $data);
-            return $this->fetch("permission/" . $condition_id . ".tpl");
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * [parseFormData description]
-     * @param  [type] $condition_id [description]
-     * @param  [type] $data         [description]
-     * @return [type]               [description]
-     */
-    public function parseFormData($condition_id, $data) {
-        switch($condition_id) {
-            case self::PERMISSION_IN_LESSON : {
-                // CHECK IF
-                $lesson_ids = explode(";", $data['lesson_id']);
-                return implode(";", $lesson_ids);
-            }
-            case self::PERMISSION_IN_COURSE : {
-                // CHECK IF
-                $course_ids = explode(";", $data['course_id']);
-                return implode(";", $course_ids);
-            }
-            case self::PERMISSION_SPECIFIC_TYPE : {
-                // CHECK IF
-                $user_type = explode(";", $data['user_type']);
-                return implode(";", $user_type);
-            }
-            default : {
-                return json_encode($data);
-            }
-        }
-    }
-
-
 }

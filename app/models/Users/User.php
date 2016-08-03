@@ -2,6 +2,7 @@
 namespace Sysclass\Models\Users;
 
 use Plico\Mvc\Model,
+    Sysclass\Models\Acl\Resource,
     Sysclass\Models\Acl\RolesUsers;
 
 class User extends Model
@@ -20,13 +21,42 @@ class User extends Model
 
         $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
 
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id",
+            array('alias' => 'UserCourses')
+        );
+
+        $this->hasOne("id", "Sysclass\\Models\\Users\\UserCurriculum", "id",  array('alias' => 'curriculum'));
+
+        $this->hasMany(
+            "id",
+            "Sysclass\\Models\\Users\\UserPasswordRequest",
+            "user_id",
+            array(
+                'alias' => 'PasswordRequests',
+                'conditions' => 'valid_until > ?0 AND active = 1',
+                'bind' => (new \DateTime('now'))->format('Y-m-d H:i:s')
+            )
+        );
+
         $this->hasManyToMany(
             "id",
-            "Sysclass\\Models\\Enrollments\\Course",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
             "user_id", "course_id",
             "Sysclass\\Models\\Courses\\Course",
             "id",
             array('alias' => 'Courses')
+        );
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id", "course_id",
+            "Sysclass\\Models\\Content\\Program",
+            "id",
+            array('alias' => 'Programs')
         );
 
         $this->hasManyToMany(
@@ -58,7 +88,79 @@ class User extends Model
 
     }
 
+    public function beforeValidationOnCreate() {
+        if (empty($this->login)) {
+            $this->login = $this->createNewLogin();
+        }
+        if (empty($this->password)) {
+            $password = $this->createRandomPass();
+            // ENCRYPT PASS
+            $this->password = $this->getDi()->get('security')->hash($password);
+        }
+        if (is_null($this->websocket_key)) {
+            $websocket_key = $this->createRandomPass();
+            $this->websocket_key = $this->getDi()->get('security')->hash($websocket_key);
+        }
+    }
 
+    public function beforeDelete() {
+        // MOVE ALL DROPBOX FILES TO ADMINISTRATOR
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        $phql = "UPDATE Sysclass\\Models\\Dropbox\\File
+            SET owner_id = :owner_id: 
+            WHERE owner_id = :user_id:";
+
+        $status = $manager->executeQuery(
+            $phql,
+            array(
+                'owner_id' => 1,
+                'user_id' => $this->id
+            )
+        );
+    }
+
+    public static function specialFind($filters) {
+        $users = array();
+        foreach($filters as $filter => $value) {
+            switch($filter) {
+                case "permission_id" : {
+                    // LOAD ALL USERS HAVING THE DEFINED(S) PERMISSSION(S)
+                    $users = array_merge($users, self::findByPermissionId($value));
+                    break;
+                }
+            }
+        }
+        $users = array_map("unserialize", array_unique(array_map("serialize", $users)));
+        return $users;
+    }
+
+    public static function findByPermissionId($permission_id) {
+        $resource = Resource::findFirstById($permission_id);
+        $roles = $resource->getRoles();
+
+        $users = array();
+
+        foreach($roles as $role) {
+            // GET DIRECT USERS
+            $roleUsers = $role->getUsers();
+            if ($roleUsers) {
+                $users = array_merge($users, $roleUsers->toArray());
+            }
+
+            foreach($role -> getGroups () as $group) {
+                
+                $groupUsers = $role->getUsers();
+                if ($groupUsers) {
+                    $users = array_merge($users, $groupUsers->toArray());
+                }
+            };
+        }
+
+        $users = array_map("unserialize", array_unique(array_map("serialize", $users)));
+
+        return $users;
+    }
 
     public function getType() {
         return $this->user_type;
@@ -79,8 +181,24 @@ class User extends Model
         return $roles;
     }
 
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        parent::assign($data, $dataColumnMap, $whiteList);
+
+        if (array_key_exists('how_did_you_know', $data) && is_array($data['how_did_you_know'])) {
+            $this->how_did_you_know = implode(",", $data['how_did_you_know']);
+        }
+        return $this;
+    }
+
+    public function hasRole($role) {
+        $roles = $this->getRoles();
+        $rolesNames = array_map('strtolower', array_column($roles, 'name'));
+        return in_array(strtolower($role), $rolesNames);
+    }
+
     public function getDashboards() {
         $roles = $this->getRoles();
+
         $dashboards = array_map("strtolower", \array_column($roles, "name"));
 
         return $dashboards;
@@ -135,5 +253,21 @@ class User extends Model
     public function createRandomPass($len = 8) {
         return substr(md5(rand().rand()), 0, $len);
     }
+
+    public function generateConfirmHash() {
+        $this->reset_hash = $this->createRandomPass(16);
+    }
+
+    public function getSetting($name) {
+        $settings = $this->getSettings();
+
+        foreach($settings as $setting) {
+            if ($setting->item == $name) {
+                return $setting->value;
+            }
+        }
+        return false;
+    }
+
 
 }

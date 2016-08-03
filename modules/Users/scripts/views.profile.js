@@ -17,6 +17,13 @@ $SC.module("views.profile", function(mod, app, Backbone, Marionette, $, _) {
             //this.formView.$("[href='#tab_1-2']").click();
         }.bind(this));
 
+
+        // store the currently selected tab in the hash value
+        $(".profile-tabs > li > a").on("shown.bs.tab", function (e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });        
+
         this.listenTo(this.formView, "before:save", function(model) {
             model.setResponseType("redirect");
         });

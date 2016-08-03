@@ -11,8 +11,22 @@ namespace Sysclass\Modules\Dropbox;
 /**
  * @RoutePrefix("/module/dropbox")
  */
-class DropboxModule extends \SysclassModule implements \IBlockProvider
+class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider
 {
+    public function getSummary() {
+        //$data = Dropbox::count(); // FAKE, PUT HERE DUE PAYMENTS
+
+        return array(
+            'type'  => 'primary',
+            'count' => 0,
+            'text'  => $this->translate->translate('Dropbox'),
+            
+            'link'  => array(
+                'text'  => $this->translate->translate('View'),
+                'link'  => 'javascript: void(0)'
+            )
+        );
+    }
 
     public function registerBlocks() {
         return array(
@@ -39,7 +53,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
             $stream = $this->storage->getFilestream($model);
 
             $image = new \Plico\Php\Image();
-            $croped = $image->resize($stream, $data['crop'], 150, 150);
+            $croped = $image->resize($stream, $data['crop'], 250, 250);
 
             $file_path = $this->storage->getFullFilePath($model);
             $file_full_path = $image->saveAsJpeg($croped, $file_path);
@@ -256,6 +270,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                     }
                 } else {
                     $filedata['id'] = $this->model("dropbox")->addItem($filedata);
+
                 }
 
                 switch($type) {
@@ -273,14 +288,12 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                     }
                 }
 
-                $filedata = $this->model("dropbox")->getItem($filedata['id']);
+                $filedata = $this->model("dropbox")->clear()->getItem($filedata['id']);
 
                 $file_result[$param_name][] = $filedata;
             }
         }
         $this->response->setJsonContent($file_result);
-
-
 
         return $file_result;
     }
@@ -313,7 +326,7 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
         }
     }
 
-    protected function isUserAllowed($action, $args) {
+    protected function isUserAllowed($action, $module_id = null) {
         $allowed = parent::isUserAllowed($action);
         if ($allowed) {
             switch($action) {
@@ -322,6 +335,8 @@ class DropboxModule extends \SysclassModule implements \IBlockProvider
                     // Check if the user is the owner of the file.
                     if (is_object($this->_args['object'])) {
                         return is_null($this->_args['object']->owner_id) || $this->_args['object']->owner_id == $this->user->id;
+                    } else {
+                        return false;
                     }
                 }
             }

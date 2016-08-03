@@ -8,7 +8,7 @@ $SC.module("portlet.news", function(mod, app, Backbone, Marionette, $, _) {
 			events: {
 			  "click a.list-group-item": "viewDetails"
 			},
-			tagName : "div",
+			tagName : "li",
 			template : _.template($("#news-item-template").html(), null, {variable: "model"}),
 			viewDetails : function(e) {
 

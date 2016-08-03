@@ -1,6 +1,6 @@
 <div class="footer">
 	<div class="footer-inner">
-		&copy; Copyright 2015 • WiseFlex Knowledge Systems LLC. 
+		&copy; Copyright 2016 • WiseFlex Knowledge Systems LLC. 
 		<span style="color: black">
 			[ Current Version: {$T_SYSCONFIG.deploy.base_version} 
 			Build {$T_SYSCONFIG.deploy.build_number} ]
@@ -11,7 +11,7 @@
 	</div>
   	<div class="footer-tools">
   		<span class="go-top">
-    		<i class="icon-angle-up"></i>
+    		<i class="fa fa-arrow-up"></i>
      	</span>
   	</div>
 </div>

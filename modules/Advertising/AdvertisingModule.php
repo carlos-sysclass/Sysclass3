@@ -4,6 +4,9 @@ namespace Sysclass\Modules\Advertising;
  * Module Class File
  * @filesource
  */
+use Sysclass\Models\Dropbox\File,
+    Sysclass\Models\Advertising\Advertising,
+    Sysclass\Models\Advertising\Content as AdvertisingContent;
 /**
  * Manage and control the advertising system strategy
  * @package Sysclass\Modules
@@ -15,18 +18,24 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 {
     protected $_modelRoute = "advertising";
     /* IWidgetContainer */
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
 
         $widgetsContext = $this->getConfig("widgets");
         // $rightbar_data = $this->getConfig("widgets\ads.rightbar.banner\context");
 
-        $adsModel = $this->model($this->_modelRoute);
+        //$adsModel = $this->model($this->_modelRoute);
         $adsContentModel = $this->model("advertising/content");
 
-        $items = $adsModel->getItems();
+        $items = Advertising::find("active = 1");
+        /*
+        $items = $adsModel->addFilter(array(
+            'active' => true
+        ))->getItems();
+        */
+
         $widgetsData = array();
 
-        foreach($items as $item) {
+        foreach($items->toArray() as $item) {
 
             if (!array_key_exists($item['placement'], $widgetsData)) {
                 $widgetItem = array(
@@ -43,28 +52,46 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 }
             }
 
-            $adsContentData = $adsContentModel->clear()->addFilter(array(
-                'active'    => 1,
-                'advertising_id' => $item['id']
-            ))->getItems();
+            $adsContentData = AdvertisingContent::find(array(
+                "conditions" => "advertising_id = ?0 AND active = 1",
+                "bind" => array($item['id'])
+            ));
 
-            foreach($adsContentData as $content) {
+            foreach($adsContentData->toArray() as $content) {
                 if (!is_array($widgetsData[$item['placement']]['data']['content'])) {
                     $widgetsData[$item['placement']]['data']['content'] = array();
                 }
 
                 if ($content['content_type'] == "file") {
-                    $widgetsData[$item['placement']]['data']['content'][] = array(
+
+                    $decoded = json_decode($content['info'], true);
+
+                    if ($decoded) {
+                        $content['file'] = $decoded;
+                    }
+
+                    $new_item = array(
                         'type' => 'image',
                         'url' => $content['file']['url']
                     );
+                    if (!empty($item['global_link'])) {
+                        $new_item['link'] = $item['global_link'];    
+                    }
+                    
+                    $widgetsData[$item['placement']]['data']['content'][] = $new_item;
+
                 } elseif ($content['content_type'] == "text") {
                     $widgetsData[$item['placement']]['data']['content'][] = array(
                         'type' => 'text',
                         'html' => $content['info']
                     );
                 }
+
+                $widgetsData[$item['placement']]['panel'] = 'no-border';
+                $widgetsData[$item['placement']]['body'] = 'no-padding';
+                
             }
+
         }
 
         return $widgetsData;
@@ -73,13 +100,14 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /* ILinkable */
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-            $itemsData = $this->model($this->_modelRoute)->getItems();
-            //$items = $this->module("permission")->checkRules($itemsData, "test", 'permission_access_mode');
+            
+
+            $total = Advertising::count();
 
             return array(
                 'communication' => array(
                     array(
-                        'count' => count($itemsData),
+                        'count' => $total,
                         'text'  => $this->translate->translate('Advertising'),
                         'icon'  => 'fa fa-money',
                         'link'  => $this->getBasePath() . 'view'
@@ -110,7 +138,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             case "view":
                 $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
-            case "edit/:id":
+            case "edit/{id}":
                 $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Advertising"));
                 break;
         }
@@ -183,9 +211,9 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     /**
      * [ add a description ]
      *
-     * @Get("/edit/{identifier}")
+     * @Get("/edit/{id}")
      */
-    public function editPage($identifier)
+    public function editPage($id)
     {
         $placements = array(
             array('id' => 'ads.leftbar.banner', 'name' => $this->translate->translate('Left Side')),
@@ -199,28 +227,77 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         );
         $this->putitem("view_types", $view_types);
 
-        parent::editPage($identifier);
+
+        $banner_sizes = array(
+            array('id' => 0, 'width' => 728, 'height' => 90, 'name' => 'Horizontal'),
+            array('id' => 1, 'width' => 300, 'height' => 250, 'name' => 'Square'),
+            array('id' => 2, 'width' => 120, 'height' => 600, 'name' => 'Vertical')
+        );
+
+        $this->putitem("banner_sizes", $banner_sizes);
+
+
+
+        $this->putBlock("dropbox.upload");
+
+        parent::editPage($id);
+    }
+
+    public function beforeModelCreate($evt, $model, $data) {
+        if (array_key_exists("crop", $data)) {
+            if (array_key_exists("file", $data)) {
+                $file_id = $data['file']['id'];
+
+                $fileModel = File::findFirstById($file_id);
+
+                $stream = $this->storage->getFilestream($fileModel);
+
+                $image = new \Plico\Php\Image();
+                $croped = $image->resize($stream, $data['crop'], $data['crop']['w'], $data['crop']['h']);
+
+                $file_path = $this->storage->getFullFilePath($fileModel);
+                $file_full_path = $image->saveAsJpeg($croped, $file_path);
+
+                if ($file_full_path) {
+
+                    $path_info = pathinfo($file_full_path);
+
+                    $fileModel->name = $path_info['basename'];
+                    $fileModel->filename = $path_info['basename'];
+                    $fileModel->type = "image/jpeg";
+
+                    $fileModel->size = filesize($file_full_path);
+
+                    $fileModel->url = $this->storage->getFullFileUrl($fileModel);
+
+                    $path_info = pathinfo($file_path);
+
+                    $fileModel->save();
+                }
+            }
+        }
     }
 
     /**
      * [ add a description ]
      *
-     * @url GET 
      * @Get("/item/{model}/{identifier}")
      */
+    /*
     public function getItemAction($model = "me", $identifier = null)
     {
         $editItem = $this->model($this->_modelRoute)->getItem($identifier);
 
         return $editItem;
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Post("/item/{model}")
      */
-    public function addItemAction($model)
+    /*
+    public function addItemRequest($model)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
@@ -238,20 +315,9 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $data['language_code'] = $this->translate->getUserLanguageCode();
+                $data['language_code'] = $this->translate->getSource();
 
                 $_GET['redirect'] = "0";
-            /*
-            } elseif ($model == "question-content") {
-                $itemModel = $this->model("lessons/content/question");
-                $messages = array(
-                    'success' => "Question included with success",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-
-                $_GET['redirect'] = "0";
-            }
-            */
             } else {
                 return $this->invalidRequestError();
             }
@@ -277,13 +343,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
-     * @url PUT /item/:model/:id
      * @Put("/item/{model}/{id}")
      */
+    /*
     public function setItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -317,12 +383,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Delete("/item/{model}/{id}")
      */
+    /*
     public function deleteItemAction($model, $id)
     {
         if ($userData = $this->getCurrentUser()) {
@@ -353,13 +420,15 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->notAuthenticatedError();
         }
     }
+    */
     /**
      * [ add a description ]
      *
-     * @Get("/item/{model}")
-     * @Get("/item/{model}/{type}")
-     * @Get("/item/{model}/{type}/{filter}")
+     * @Get("/items/{model}")
+     * @Get("/items/{model}/{type}")
+     * @Get("/items/{model}/{type}/{filter}")
      */
+    /*
     public function getItemsAction($model = "me", $type = "default", $filter = null)
     {
         // DEFAULT OPTIONS ROUTE
@@ -399,8 +468,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             }
             $itemsData = $itemsCollection->addFilter(array(
                 'active'    => 1,
-                'advertising_id' => $filter/*,
-                "parent_id" => null*/
+                'advertising_id' => $filter
             ))->getItems();
         }
 
@@ -442,13 +510,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 
         return array_values($itemsData);
     }
-
+    */
     /**
      * [ add a description ]
      *
      * @Put("/items/content/set-order/{advertising_id}")
      */
-    public function setContentOrderAction($advertising_id)
+    public function setContentOrderRequest($advertising_id)
     {
         $modelRoute = "advertising/content";
 
@@ -475,4 +543,5 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
         }
     }
+
 }

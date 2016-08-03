@@ -1,10 +1,14 @@
 <?php
 namespace Sysclass\Models\Courses;
 
-use Plico\Mvc\Model;
-
+use Plico\Mvc\Model,
+    Sysclass\Models\Courses\Classe;
+/**
+ * @deprecated 3.3.0 Use the Sysclass\Models\Content\ProgramCourses
+ */
 class CourseClasses extends Model
 {
+    protected $assignedData = null;
     public function initialize()
     {
         $this->setSource("mod_roadmap_courses_to_classes");
@@ -12,9 +16,32 @@ class CourseClasses extends Model
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
         $this->belongsTo("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
-        $this->HasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
+        //$this->hasMany("class_id", "Sysclass\\Models\\Courses\\Classe", "id",  array('alias' => 'Classe'));
 
     }
+
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        $this->assignedData = $data;
+        return parent::assign($data, $dataColumnMap, $whiteList);
+    }
+
+    public function beforeValidationOnCreate() {
+        if (is_null($this->class_id)) {
+            // CREATE A NEW CLASS
+            if (array_key_exists('classe', $this->assignedData)) {
+                $classe = new Classe();
+                $classe->assign($this->assignedData['classe']);
+                $classe->save();
+                $this->class_id = $classe->id;
+            }
+        }
+        return true;
+    }
+
+    public function beforeValidation() {
+        $this->active = (int) $this->active;
+    }
+
 
     public function findFull() {
     	$args = func_get_arg(0);
@@ -93,5 +120,34 @@ class CourseClasses extends Model
         $rows = $query->execute();
 
         //print_r($rows);
+    }
+
+    public function toFullClassArray() {
+        $result = $this->toArray();
+
+        $course = $this->getCourse();
+        $result['course'] = $course->toArray();
+
+        $class = $this->getClasse();
+        $result['classe'] = $class->toFullArray();
+
+        $lessons = $class->getLessons(array(
+            'conditions' => "type = 'lesson'"
+        ));
+
+        $result['classe']['lessons'] = $lessons->toArray();
+
+        $tests = $class->getTests(array(
+            'conditions' => "type = 'test'"
+        ));
+
+        $result['classe']['tests'] = array();
+
+        foreach($tests as $test) {
+            $result['classe']['tests'][] = $test->toFullArray(array("Test", "Questions"));
+        }
+
+
+        return $result;
     }
 }

@@ -1,9 +1,13 @@
 {
     "require": {
         "phalcon/incubator": "dev-master",
+        "phalcon/devtools": "^2.0",
         "smarty/smarty": "3.1.13",
         "raveren/kint": "^1.0",
         "cboden/ratchet": "^0.3.3",
-        "react/zmq": "^0.3.0"
+        "react/zmq": "^0.3.0",
+        "dompdf/dompdf": "dev-master",
+        "piwik/piwik-php-tracker": "^1.0",
+        "mpdf/mpdf": "^6.0"
     }
 }

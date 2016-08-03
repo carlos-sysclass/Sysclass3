@@ -10,20 +10,33 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     		if (value == 0) {
     			return "";
     		}
+    		
+
 	    	if (formatFrom == 'unix-timestamp') {
 	    		value = moment.unix(value);
+	    	} else if (formatFrom == 'isodate') {
+	    		value = moment(value, "YYYY-MM-DD");
+			} else if (formatTo == 'date') {
+				value = moment(value, 'L');
 	    	} else {
 	    		value = moment(value);
 	    	}
-	    	if (formatTo == 'time') {
-	    		return value.format("hh:mm:ss");
-	    	} else if (formatTo == 'datetime') {
-	    		return value.format("L hh:mm");
-	    	} else if (formatTo == "isodate") {
-				return value.format("YYYY-MM-DD");
-	    	} else { // DEFAULTS TO date
-	    		return value.format("L");
-	    	}
+
+
+	    	console.warn(moment.locale(), value, formatTo, formatFrom, value, value.valueOf());
+
+	    	if (value.isValid()) {
+		    	if (formatTo == 'time') {
+		    		return value.format("hh:mm:ss");
+		    	} else if (formatTo == 'datetime') {
+		    		return value.format("L hh:mm");
+		    	} else if (formatTo == "isodate") {
+					return value.format("YYYY-MM-DD");
+		    	} else { // DEFAULTS TO date
+		    		return value.format("L");
+		    	}
+		    }
+		    return null;
     	} else if (formatTo == 'unix-timestamp') {
     		if (formatFrom == 'date') {
     			value = moment(value, "L");
@@ -34,7 +47,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	} else { // DEFAULTS TO date
 	    		value = moment(value);
 	    	}
-	    	return value.unix();
+	    	if (value.isValid()) {
+	    		return value.unix();
+	    	} else {
+	    		return null;
+	    	}
     	}
     	return value;
     };
@@ -239,7 +256,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                } else  {
 		                	
 							if (input.is("[data-format]")) {
+								console.warn(values[idx], input.data("format"), input.data("format-from"));
+								console.warn(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
 								input.val(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
+
 			    			} else {
 		                    	input.val(values[idx]);
 		                    }
@@ -263,8 +283,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	            }
 	        }
-	        this.trigger("form:rendered");
-
 	    },
         renderViewItens : function(inputList) {
             // TEMPORARLY DISABLE UPDATE METHOD
@@ -392,12 +410,16 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				this.renderViewItens(this.$(":input"));
 	    	} else {
 	    		var values = model.toJSON();
+	    		console.warn(values);
 				this.renderItens(values);
 	    	}
 
             this.renderUiItems();
 
 	    	Marionette.triggerMethodOn(this, "render", model);
+
+	    	this.trigger("form:rendered");
+	    	
 	        return this;
 	    },
 	    setReadonly : function(toogle) {
@@ -443,12 +465,14 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 					var values = [];
 					brothers.each(function() {
+
 						if (!$(this).is(":checked") && $(this).is("[data-value-unchecked]")) {
-							values.push($(this).data("valueUnchecked"));
+							values.push($(this).data("value-unchecked"));
 						} else if ($(this).is(":checked")) {
 							values.push($(this).val());
 						}
 					});
+					console.warn(values);
 					// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
 					this.model.unset(prop, {silent: true});
                     if ($el.is("[data-update-single]")) {
@@ -457,15 +481,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                     } else {
                         value = values;
                     }
-
-
-
-				//} else if ($el.is("[type='checkbox']") && !$el.is(":checked") && $el.is("[data-value-unchecked]"))  {
-					//value = -1;
-				//	value = $el.data("valueUnchecked");
 				}
 
 				if ($el.is("[data-format-from]")) {
+
 					value = this.formatValue(value, $el.data("format-from"), $el.data("format"));
 				}
 
@@ -501,10 +520,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		}
 	    	});
 
+	    	this.renderUiItems();
+
             self.trigger("complete:save", this.model);
 	    },
 	    setModel : function(model) {
-	    	console.warn(this, model);
+	    	//console.warn(this, model);
 	    	this.model = model;
 	    	this.render(model);
 	    }
@@ -512,23 +533,52 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.baseFormClass = this.baseClass.extend({
 		//tagName : "form",
-	    events : {
-	    	"change :input"			: "update",
-	    	"click .save-action" 	: "submit"
-	    },
+		oForm : null,
+	    events : function() {
+	    	return {
+		    	"change :input"			: "update",
+		    	"click .save-action" 	: "submit",
+		    	"click .save-and-add-action" 	: "submitAndAddAnother"
+	    	};
+    	},
 	    initialize: function() {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
 
-	    	if (this.$el.is("form") || this.$("form").size() > 0) {
-	    		if (this.$el.is("form")) {
-	    			this.oForm = this.$el;
-	    		} else {
-	    			this.oForm = this.$("form");
-	    		}
+	    	console.warn(this);
 
-	    		this.handleValidation();
-	    	}
+            //this.handleElements();
+            this.handleMasks();
+
+	    	this.initializeForm();
+	    },
+        handleElements : function() {
+            this.$('[data-helper]').each(function(i, el) {
+                if (_.isEmpty($(el).data('helper'))) {
+                    return;
+                }
+                var helper = $(el).data('helper');
+
+                app.module("fields").handle(helper, el);
+            }.bind(this));
+        },
+        handleMasks : function() {
+        	if ($.applyDataMask) {
+            	$.applyDataMask();
+            }
+        },
+	    initializeForm : function() {
+	    	if (_.isNull(this.oForm)) {
+		    	if (this.$el.is("form") || this.$("form").size() > 0) {
+		    		if (this.$el.is("form")) {
+		    			this.oForm = this.$el;
+		    		} else {
+		    			this.oForm = this.$("form");
+		    		}
+
+		    		this.handleValidation();
+		    	}
+		    }
 	    },
 	    handleValidation : function() {
 	    	console.info('views/baseFormClass::handleValidation');
@@ -571,12 +621,157 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			});
 		},
+		onRender: function(model) {
+	    	console.info('views/baseFormClass::onRender');
+
+	    	this.initializeForm();
+	    },
 	    submit : function(e) {
 	    	console.info('views/baseFormClass::submit');
+	    	this.oForm.submit();
+	    },
+	    submitAndAddAnother : function(e) {
+	    	console.info('views/baseFormClass::submit');
+	    	this.model.set("_add_another", true);
 	    	this.oForm.submit();
 	    }
   	});
 
+    this.dialogViewClass = this.baseFormClass.extend({
+        renderType : "byView",
+        /*
+        initialize : function() {
+			this.baseFormClass.initialize.apply(this);
+		},
+		*/
+        open : function() {
+            this.$el.modal("show");
+        },
+        close : function() {
+            this.$el.modal("hide");
+            this.trigger("hide.dialog");
+        }
+    });
+
+    this.listManagerCreatorViewClass = Backbone.View.extend({
+        dialogModule : null,
+        itemViewClass : null,
+        modelClass : Backbone.Model,
+        sortableOptions : {},
+        events : {
+            "click .add-item-action" : "addItem"
+        },
+        initialize : function() {
+            this.listenToOnce(this.collection, 'sync', this.updateView.bind(this));
+            this.listenTo(this.collection, 'reset', this.updateView.bind(this));
+            this.listenTo(this.collection, 'add', this.addOne.bind(this));
+            //this.listenTo(this.collection, 'add', this.refreshCounters.bind(this));
+            this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
+
+            this.initializeSortable();
+        },
+        initializeSortable : function() {
+            var self = this;
+
+            this.$(".list-group").sortable(_.extend({
+                items: "li.list-file-item.draggable",
+                opacity: 0.8,
+                placeholder: 'list-file-item placeholder',
+                dropOnEmpty : true,
+                forceHelperSize : true,
+                forcePlaceholderSize: true,
+                tolerance: "intersect",
+                update : function( event, ui ) {
+                    var order = $(this).sortable("toArray", {attribute : "data-roadmap-grouping-id"});
+
+                    self.collection.setOrder(order);
+
+                    self.refreshCounters();
+                },
+                over : function( event, ui ) {
+                    $(this).addClass("ui-sortable-hover");
+                },
+                out  : function( event, ui ) {
+                    $(this).removeClass("ui-sortable-hover");
+                }
+            }, this.sortableOptions));
+        },
+        addItem : function() {
+            var self = this;
+            var itemModel = new this.modelClass();
+
+            this.listenToOnce(itemModel, "sync", function(model) {
+                //self.addOne(model);
+                self.refreshCounters();
+            });
+
+            if (!this.dialogModule.started) {
+                this.dialogModule.start({
+                    modelClass : this.modelClass
+                });
+            }
+
+            this.dialogModule.getValue(function(item, model) {
+            	this.collection.add(model);
+                //self.addOne(model);
+                this.refreshCounters();
+            }.bind(this));
+        },
+        addOne : function(model) {
+            console.info('views/baseMultiListCreator::addOne');
+
+            var self = this;
+
+            var itemView = new this.itemViewClass({
+                model : model
+            });
+
+            $(itemView.render().el).appendTo(this.$("ul.items-container"));
+            itemView.start();
+            /*
+            this.listenTo(itemView, "grouping:updated", function(model) {
+                self.refreshCounters();
+            });
+			*/
+        },
+        refreshCounters : function() {
+            console.info('views/baseMultiListCreator::refreshCounters');
+            var total = this.collection.size();
+            this.$("ul.items-container > li.list-file-item .total").html(total);
+
+            this.$("ul.items-container > li.list-file-item").each(function(i, item) {
+                $(this).find(".counter").html(i+1);
+            });
+        },
+        updateView: function(item) {
+        	if (item instanceof Backbone.Collection) {
+	            console.info('view/baseMultiListCreator::updateView');
+
+	            this.$("ul.items-container ").empty();
+
+	            var self = this;
+
+	            this.collection.each(function(model, i) {
+	                self.addOne(model, i);
+	            });
+	            //this.refreshCounters();
+	            app.module("ui").refresh( this.$("ul.items-container ") );
+
+	            this.refreshCounters();
+	        }
+        }/*,
+        remove : function(e) {
+            var fileId = $(e.currentTarget).data("fileId");
+            var fileObject = new mod.lessonFileModelClass();
+            fileObject.set("id", fileId);
+            fileObject.destroy();
+            $(e.currentTarget).parents("li").remove();
+        }
+        */
+    });
+
+
+    
 	this.baseInsertableCollectionViewClass = Backbone.View.extend({
 		events : {
 			"click .add-action" : "insertModel"

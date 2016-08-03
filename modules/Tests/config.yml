@@ -1,0 +1,120 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    #base_scripts: ["scripts/crud.models.js"]
+    stylesheets: ["css/components"]
+    variables:
+      page_title: Tests
+  # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      #blocks: ["tests.create.dialog"]
+      variables:
+        page_subtitle: Manage your tests and exams
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: classe.name
+          label: Class
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+    add:
+      components: ["select2", "validation", "bootstrap-switch"]
+      template: form.tpl
+      variables:
+        page_subtitle: Create a new test
+    'edit/{identifier}':
+      components: ["select2", "validation", "bootstrap-switch"]
+      scripts : ["views.test.edit"]
+      blocks:
+      #- "questions.create.dialog"
+      - "questions.list"
+      - "tests.execution.list.table":
+          filter:
+            test_id: "%entity_id$s"
+      template: form.tpl
+      variables:
+        page_subtitle: Edit your test info
+    'open':
+      components: ["select2", "validation", "bootstrap-switch"]
+      template: open.tpl
+      variables:
+        page_subtitle: Details about your tests
+    'execute':
+      components: ["select2", "validation", "bootstrap-switch", "icheck", "wysihtml5"]
+      scripts : ["tests.execute"]
+      template: execute.tpl
+      variables:
+        page_subtitle: Edit your test info
+blocks:
+  tests.execution.list.table:
+    context:
+      block_id: "users"
+      ajax_source: "/module/tests/items/execution/datatable/%filter$s"
+      datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: try_index
+          sClass: text-center
+          label: "# Try"
+
+        - mData: "user.name, user.surname"
+          sType: concatenate-user
+          label: Name
+
+        - mData: start_timestamp
+          sType: unix-moment-datetime
+          label: "Started"
+
+        - mData: progress.time_elapsed
+          sType: unix-moment-duration
+          label: "Time to Complete"
+
+        - mData: user_score
+          sClass: text-center
+          sType: float-as-percentage
+          label: "Score Achieved"
+
+        - mData: user_grade
+          sClass: text-center
+          label: "Grade"
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+models:
+  me: 
+    class: Sysclass\Models\Courses\Tests\Lesson
+    listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
+    exportMethod: ["ToFullArray", ["Test"]]
+  question: 
+    class: Sysclass\Models\Courses\Tests\TestQuestions
+    #listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
+    exportMethod: ["toExtendArray"]
+    sort: "position ASC"
+  execution:
+    class: Sysclass\Models\Courses\Tests\Execution
+    exportMethod: ["toFullArray"]
+    #sort: "position ASC"

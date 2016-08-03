@@ -4,17 +4,56 @@ use
     Sysclass\Services\I18n\Translator,
     Sysclass\Services\Mail\Adapter as MailAdapter,
     Sysclass\Services\Debug\Adapter as DebugAdapter,
+    Sysclass\Services\Loader\Adapter as LoaderAdapter,
+    Sysclass\Services\Notifications\Manager as NotificationManager,
     Plico\Php\Helpers\Strings as stringsHelper,
+    Plico\Php\Helpers\Arrays as arrayHelper,
     Phalcon\Flash\Direct as FlashDirect,
-    Phalcon\Flash\Session as FlashSession;
+    Phalcon\Flash\Session as FlashSession,
+    Phalcon\Security\Random;
 
-$di->setShared("url", function() use ($di) {
+
+/**
+ * Component to provide module/model/controller cold loading (used when manually loading is need)
+ */
+$di->setShared("loader", function() use ($di, $environment) {
+    $loader = new LoaderAdapter();
+    return $loader;
+});
+
+$di->setShared("notification", function() use ($di, $environment) {
+    $notification = new NotificationManager();
+    return $notification;
+});
+
+$di->setShared("url", function() use ($di, $environment) {
     $url = new Phalcon\Mvc\Url();
     $url->setDI($di);
-    $url->setBasePath(realpath(__DIR__ . "/../../www"));
+    $url->setBasePath(realpath(REAL_PATH . "/www"));
 
     return $url;
 });
+
+$di->setShared("resourceUrl", function() use ($di, $environment) {
+    $url = new Plico\Mvc\ResourceUrl(array(
+        $environment->view->theme,
+        'default'
+    ));
+    $url->setDI($di);
+    $url->setBasePath(realpath(REAL_PATH . "/www/assets/"));
+    $url->setBaseUri("/assets");
+    $url->setStaticBaseUri("/assets");
+
+    return $url;
+});
+
+$di->setShared("random", function() {
+    $random = new Random();
+    return $random;
+});
+
+
+
 
 $di->setShared("escaper", function() {
     $escaper = new \Phalcon\Escaper();
@@ -27,6 +66,13 @@ $di->setShared('stringsHelper', function () {
     //$crypt->setKey();
     return $strings;
 });
+
+$di->set('arrayHelper', function () {
+    $array = new arrayHelper();
+    // Set a global encryption key
+    //$crypt->setKey();
+    return $array;
+}, true);
 
 $session = new Session(array('uniqueId' => 'SYSCLASS'));
 if (!$session->isStarted()) {
@@ -93,6 +139,18 @@ if (APP_TYPE === "WEB") {
     });
 }
 
+$di->setShared('queue', function () {
+    $queue = new Sysclass\Services\Queue\Adapter();
+
+    return $queue;
+});
+
+$messagebus = new Sysclass\Services\MessageBus\Manager();
+$messagebus->setEventsManager($eventsManager);
+$messagebus->initialize();
+$di->setShared('messagebus', $messagebus);
+
+
 $di->setShared('mail', function () {
     require_once REAL_PATH . "/vendor/swiftmailer/swiftmailer/lib/swift_required.php";
 
@@ -147,4 +205,13 @@ $di->setShared('flash', function () {
 
 
     return $flash;
+});
+
+
+$di->setShared("payment", function() use ($eventsManager) {
+    $storage = new Sysclass\Services\Payment\Adapter();
+    $storage->setEventsManager($eventsManager);
+    $storage->initialize();
+    //$storage
+    return $storage;
 });

@@ -2,10 +2,10 @@
 // FOR BACKWARD COMPATILITY
 $db_dsn = sprintf(
     '%s://%s:%s@%s/%s?persist',
-    $environment->database->dbtype,
-    $environment->database->dbuser,
-    $environment->database->dbpass,
-    $environment->database->dbhost,
+    $environment->database->adapter,
+    $environment->database->username,
+    $environment->database->password,
+    $environment->database->host,
     $environment->database->dbname
 );
 

@@ -6,7 +6,7 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Roles
+      page_title: Attributions
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
@@ -15,7 +15,7 @@ crud:
       blocks: ["roles.create.dialog", "roles.resources.dialog", "roles.users.dialog"]
       scripts: ["views.roles.view"]
       variables:
-        page_subtitle: Manage your Roles
+        page_subtitle: Manage your Attributions
       context:
         datatable_fields:
         - mData: id
@@ -30,15 +30,15 @@ crud:
           sClass: text-center
           label: Active
 
-        - mData: in_course
-          sType: table-boolean
-          sClass: text-center
-          label: Course Role
+        #- mData: in_course
+        #  sType: table-boolean
+        #  sClass: text-center
+        #  label: Course Role
 
-        - mData: in_class
-          sType: table-boolean
-          sClass: text-center
-          label: Class Role
+        #- mData: in_class
+        #  sType: table-boolean
+        #  sClass: text-center
+        #  label: Class Role
 
 
         - mData: options

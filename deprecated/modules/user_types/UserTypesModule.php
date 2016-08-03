@@ -21,7 +21,6 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
             $items = $this->model("users/types/collection")->addFilter(array(
                 'active'    => true
             ))->getItems();
-            // $items = $this->module("permission")->checkRules($itemsData, "course", 'permission_access_mode');
 
             return array(
                 'users' => array(
@@ -174,8 +173,6 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
         $itemsCollection = $this->model($modelRoute);
         $itemsData = $itemsCollection->getItems();
 
-
- 		// $items = $this->module("permission")->checkRules($itemsData, "users", 'permission_access_mode');
         $items = $itemsData;
 
         if ($type === 'combo') {

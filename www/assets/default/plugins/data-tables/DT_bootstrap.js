@@ -5,6 +5,10 @@ var dataTableOptionTemplates = {
 };
 //console.log($("#datatables-options-template").html());
 //
+jQuery.fn.dataTableExt.sErrMode = function( settings, tn, msg ) {
+	console.error("DATATABLE ERROR: " + msg);
+};
+
 jQuery.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
 {
     // DataTables 1.10 compatibility - if 1.10 then `versionCheck` exists.
@@ -106,6 +110,20 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"aTargets": [ 'datetime-moment-since' ]
 		},
 		{
+			"mRender": function ( data, type, row) {
+				if (!_.isNull(data)) {
+					if (type == 'display' || type == 'filter') {
+						return moment(data).format("L");
+					} else {
+						return moment(data).unix();
+					}
+				}	
+				return data;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'datetime-moment' ]
+		},
+		{
 			"mRender": function ( data, type, row ) {
 				if (type == 'display' || type == 'filter') {
 					if (data != 0) {
@@ -187,7 +205,10 @@ $.extend( true, $.fn.dataTable.defaults, {
 		 */
 		{
 			"mRender": function ( data, type, row ) {
-				return row.user.name + " " + row.user.surname;
+				if (_.has(row, 'user') && !_.isNull(row.user)) {
+					return row.user.name + " " + row.user.surname;
+				}
+				return "";
 			},
 			"aTargets": [ 'concatenate-user' ]
 		},
@@ -286,6 +307,16 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-boolean' ]
 		},
+		{
+			"mRender": function ( data, type, row ) {
+				// TODO GET THE MAP FROM TRANSLATION MODEL
+				return '<span style="display:inline-block;" class="label '+  data + '">' + data + '</span>';
+			},
+			"bSearchable" 	: true,
+			"bSortable"		: true,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-color' ]
+		},
 	],
 	"aaSorting": [[0, 'asc']],
 	/*
@@ -358,8 +389,8 @@ $.extend( $.fn.dataTableExt.oPagination, {
 			// pagination with prev, next link icons
 			$(nPaging).append(
 				'<ul class="pagination">'+
-					'<li class="prev disabled"><a href="#" title="'+oLang.sPrevious+'"><i class="icon-angle-left"></i></a></li>'+
-					'<li class="next disabled"><a href="#" title="'+oLang.sNext+'"><i class="icon-angle-right"></i></a></li>'+
+					'<li class="prev disabled"><a href="#" title="'+oLang.sPrevious+'"><i class="fa fa-angle-left"></i></a></li>'+
+					'<li class="next disabled"><a href="#" title="'+oLang.sNext+'"><i class="fa fa-angle-right"></i></a></li>'+
 				'</ul>'
 			);
 

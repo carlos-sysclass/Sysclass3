@@ -143,12 +143,22 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         };
 						opt.formatResult = function (item, container, query, escapeMarkup) {
 							///console.log(item, container, query, escapeMarkup);
+                            //console.warn(this, item);
+
+
+                            var formatAsCallback = jQuery(this.element).data('format-as');
+                            if (!_.has(mod.select2FormatFunctions, formatAsCallback)) {
+                                formatAsCallback = "default";
+                            }
+                            var formatCallback = mod.select2FormatFunctions[formatAsCallback];
+
             				var markup=[];
             				var terms = query.term.split("%");
             				if (item.text) {
 								return item.text;
             				} else {
-	            				var text = item.name;
+                                var text = formatCallback.bind(this, item).apply();
+	            				//var text = item.name;
 
 	            				for(q in terms) {
 	            					term_markup = [];
@@ -158,7 +168,11 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
             				}
 					        return markup.join("") + text;
 						}
-						opt.formatSelection = function (item) { return item.name; }
+                        var formatAsCallback = jQuery(this).data('format-as');
+                        if (!_.has(mod.select2FormatFunctions, formatAsCallback)) {
+                            formatAsCallback = "default";
+                        }
+                        opt.formatSelection = mod.select2FormatFunctions[formatAsCallback];
                         //opt.minimumResultsForSearch = 3;
                         //console.warn(opt);
 						$el.select2(opt);
@@ -185,6 +199,21 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	};
 
 	this.select2FormatFunctions = {
+        "default" : function (item) { 
+            if (_.isFunction(sprintf)) {
+                var formatString = jQuery(this.element).data('format-as-template');
+                if (!_.isUndefined(formatString)) {
+                    return sprintf(formatString, item);
+                }
+            }
+            return item.name; 
+        },
+        "attr" : function(item) {
+            var prop = jQuery(this.element).data('format-as-value');
+            var model = new Backbone.DeepModel(item);
+
+            return model.get(prop);
+        },
 		"country-list" : function (state) {
             if (!state.id) return state.text; // optgroup
             return "<img class='flag' src='/assets/default/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
@@ -200,15 +229,18 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	};
 
 	this.handleDatepickers = function(context) {
+
 		// datepicker
 		if($('.date-picker', context).length > 0){
+            console.warn(moment.localeData().longDateFormat('L').toLowerCase());
+            
 			$('.date-picker', context).datepicker({
-                format: "mm/dd/yyyy",
-                //endDate: "07/19/1984",
+                format: moment.localeData().longDateFormat('L').toLowerCase(),
                 todayBtn: true,
                 autoclose: true,
                 todayHighlight: true,
-                toggleActive: true
+                toggleActive: true,
+                language : moment.locale()
             });
 
 
@@ -322,6 +354,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
             $(this).slimScroll({
                 size: '7px',
+                wrapperClass: $(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : "slimScrollDiv",
                 color: ($(this).attr("data-handle-color")  ? $(this).attr("data-handle-color") : '#a1b2bd'),
                 railColor: ($(this).attr("data-rail-color")  ? $(this).attr("data-rail-color") : '#333'),
                 position: App.isRTL() ? 'left' : 'right',
@@ -329,7 +362,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                 alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
                 railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
                 disableFadeOut: true,
-                allowPageScroll : true
+                allowPageScroll : true,
+                wheelStep : 2,
             });
         });
     }

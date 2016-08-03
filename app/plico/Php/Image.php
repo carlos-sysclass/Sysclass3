@@ -12,7 +12,7 @@ class Image extends Component
 
         //imagejpeg($img_r, "/var/www/sysclass/develop/current/files/image/TESTE.jpeg", 90);
 
-        $dst_r = \imagecreatetruecolor($width, $height );
+        $dst_r = \imagecreatetruecolor($width, $height);
 
         \imagecopyresampled(
             $dst_r,
@@ -29,6 +29,7 @@ class Image extends Component
 
         return $dst_r;
     }
+
     public function saveAsPng($resource, $file_path, $quality = 9) {
         $file_info = \pathinfo($file_path);
         $full_path = $file_info['dirname'] . "/" . $file_info['filename'] . ".png";
@@ -40,14 +41,9 @@ class Image extends Component
     public function saveAsJpeg($resource, $file_path, $quality = 90) {
         $file_info = \pathinfo($file_path);
         $full_path = $file_info['dirname'] . "/" . $file_info['filename'] . ".jpeg";
-
         $result = \imagejpeg($resource, $full_path, $quality);
 
         return ($result) ? $full_path : FALSE;
     }
     
-    /*
-    public function __construct() {
-    }
-    */
 }

@@ -1,12 +1,11 @@
 <script type="text/template" id="chat-template">
-   <div class="portlet box dark-blue" style="display:hide;">
+   <div class="portlet box dark-blue">
       <div class="portlet-title">
          <div class="caption">
             <i class="icon-comments"></i>
-            <%= model.title %>
+            <%= model.subject %>
          </div>
          <div class="tools">
-            <a class="collapse" href="javascript:;"></a>
             <a class="remove" href="javascript:;"></a>
          </div>
       </div>
@@ -15,7 +14,7 @@
          </ul>
          <div class="send-block">
             <div class="input-icon right">
-               <i class="icon-signin"></i>
+               <i class="ti-check"></i>
                <input type="text" class="form-control" placeholder="{translateToken value="Type your message here..."}" />
             </div>
          </div>
@@ -32,10 +31,20 @@
          <% } %>
       </span>
       <!--
-      <span class="badge badge-primary badge-roundless pull-right">Just Now</span>
+      <span class="badge badge-info badge-roundless pull-right"><%= moment.unix(model.timestamp).fromNow() %></span>
       -->
    </div>
-   <div class="message"><%= model.message %></div>
+   <% if (model.type == 'info') { %>
+      <div class="message"><i><%= model.message %></i></div>
+   <% } else { %>
+      <div class="message"><%= model.message %></div>
+   <% } %>
+   
+   <hr />
+</script>
+
+<script type="text/template" id="chat-item-info-template">
+   <div class="message"><i><%= model.message %></i></div>
    <hr />
 </script>
 

@@ -62,11 +62,11 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
             ))->getItems();
 
         if ($this->getUserFilter()) {
-
+            /*
             $this->model("lessons/progress")
                 ->setUserFilter($this->getUserFilter())
                 ->recalculateProgress($identifier);
-
+            */
             $progress = $this->model("lessons/progress")->clear()
                 ->setUserFilter($this->getUserFilter())
                 ->addFilter(array(

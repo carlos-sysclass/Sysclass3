@@ -129,6 +129,9 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
             $user = $info;
         } else {
             $user = User::findFirstByLogin($info['login']);
+            if (!$user) {
+                $user = User::findFirstByEmail($info['login']);
+            }
         }
 
         if ($user) {
@@ -178,6 +181,7 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
         $backend = $this->getBackend($info);
         if ($backend) {
             // 1.1 Check for username/pass sent
+
 
             if (!array_key_exists('disableBackends', $options) || $options['disableBackends'] == FALSE) {
                 if (($user = $backend->login($info, $options)) === FALSE) {
@@ -312,6 +316,7 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
             } catch (AuthenticationException $e) {
                 // JUST BY-PASS THE EXCEPTION
                 throw new AuthenticationException($e->getMessage(), $e->getCode());
+                return false;
             }
 
             // CHECK FOR DEFAULT GROUP FOR USERS

@@ -2,61 +2,105 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
     // MODELS
     this.startWithParent = false;
 
+    var imageCropDialogViewClass = Backbone.View.extend({
+        el : "#dropbox-image-crop",
+        jCropApi : null,
+        events : {
+            "shown.bs.modal" : "startJCrop",
+            "click .save-action" : "saveCrop",
+            "click .close-action" : "cancelCrop",
+            "change [name='default_sizes']" : "changeAspectRatio"
+        },
+        aspectRatio : 1,
+        cropSizes : null,
+        initialize : function(opt) {
+            console.warn(opt);
+
+            if (_.has(opt, 'sizes')) {
+                this.cropSizes = opt.sizes;
+
+                this.$("[name='default_sizes']").empty();
+
+                for (var i in this.cropSizes) {
+                    $option = jQuery("<option value=" + i + ">"+ this.cropSizes[i][2] + "</option>");
+                    this.$("[name='default_sizes']").append($option);
+                }
+                //this.$("[name='default_sizes']").
+                this.$(".size-container").show();
+
+                this.$("[name='default_sizes']").select2();
+                this.$("[name='default_sizes']").select2('val', 0);
+            } else {
+                this.$(".size-container").hide();
+            }
+
+            this.$el.modal({
+                show : false
+            });
+
+            //"file-crop:save"
+            //"file-crop:cancel"
+        },
+        setAspectRatio : function(width, height) {
+            this.aspectRatio = width / height;
+            if (!_.isNull(this.jCropApi)) {
+                this.jCropApi.setOptions(
+                {
+                    aspectRatio: width / height
+                });
+            }
+        },
+        changeAspectRatio : function(e) {
+            //console.warn(e, this.jCropApi);
+            var id = e.added.id;
+            this.setAspectRatio(this.cropSizes[id][0], this.cropSizes[id][1]);
+        },
+        saveCrop : function() {
+            this.trigger("file-crop:save", this.model);
+        },
+        cancelCrop : function() {
+            this.trigger("file-crop:cancel", this.model);
+        },
+        setModel : function(model) {
+            this.model = model;
+        },
+        startJCrop : function(e) {
+            this.$(".crop-container").attr("src", this.model.get("url"));
+            //console.warn(this.jCropApi);
+            //
+            if (!_.isNull(this.jCropApi)) {
+                this.jCropApi.destroy();
+            }
+
+            var self = this;
+            this.$(".crop-container").Jcrop({
+                aspectRatio: this.aspectRatio,
+                setSelect:   [ 0, 0, 4096, 4096 ],
+                boxWidth: this.$(".modal-dialog .modal-body").width(),
+                boxHeight: 900,
+                onSelect: function (c) {
+                    this.model.set("crop", c);
+                    /*
+                    $('#crop_x').val(c.x);
+                    $('#crop_y').val(c.y);
+                    $('#crop_w').val(c.w);
+                    $('#crop_h').val(c.h);
+                    */
+                }.bind(this)
+            }, function() {
+                self.jCropApi = this;
+            });
+        },
+        open : function() {
+            this.$el.modal("show");
+        }
+    });
+
     mod.addInitializer(function() {
         var dropboxItemModelClass = Backbone.Model.extend({
             urlRoot: "/module/dropbox/item/me/"
         });
-        var imageCropDialogViewClass = Backbone.View.extend({
-            el : "#dropbox-image-crop",
-            jCropApi : null,
-            events : {
-                "click .save-action" : "saveCrop",
-                "click .close-action" : "cancelCrop"
-            },
-            initialize : function() {
-                this.$el.modal({
-                    show : false
-                });
 
-                //"file-crop:save"
-                //"file-crop:cancel"
-
-            },
-            saveCrop : function() {
-                this.trigger("file-crop:save", this.model);
-            },
-            cancelCrop : function() {
-                this.trigger("file-crop:cancel", this.model);
-            },
-            setModel : function(model) {
-                var self = this;
-                this.model = model;
-                this.$(".crop-container").attr("src", this.model.get("url"));
-
-                console.warn(this.jCropApi);
-                if (!_.isNull(this.jCropApi)) {
-                    this.jCropApi.destroy();
-                }
-
-                this.$(".crop-container").Jcrop({
-                    aspectRatio: 1,
-                    onSelect: function (c) {
-                        this.model.set("crop", c);
-                        /*
-                        $('#crop_x').val(c.x);
-                        $('#crop_y').val(c.y);
-                        $('#crop_w').val(c.w);
-                        $('#crop_h').val(c.h);
-                        */
-                    }.bind(this)
-                }, function() {
-                   self.jCropApi = this;
-                });
-            },
-            open : function() {
-                this.$el.modal("show");
-            }
-        });
         var fileContentViewClass = Backbone.View.extend({
             uploadTemplate : _.template($("#block-dropbox-upload-upload").html()),
             downloadTemplate : _.template($("#block-dropbox-upload-download").html()),
@@ -175,7 +219,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 this.render();
             },
             initializeImageCropDialog : function() {
-//                console.warn("CREATING");
                 this.imageCropDialog = new imageCropDialogViewClass();
             },
             initializeFileUpload : function() {
@@ -243,8 +286,8 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                                     //console.warn(model.toJSON());
                                     //model.save();
                                     viewObject.completeEvents();
-                                    
                                 });
+
                                 self.listenTo(self.imageCropDialog, "file-crop:cancel", function(model) {
                                     
                                     viewObject.completeEvents();
@@ -354,25 +397,17 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 dropboxItemModel.fetch();
             }
         });
+
+
+
     });
-/*
-    this.loadFileContent = function(file_id) {
-        // GET REMOTE FILE FROM ID
-
-        var dropboxItemModel = new dropboxItemModelClass({
-            id : file_id
-        });
-
-
-
-
-    }
-*/
-
 
     $SC.module("crud.views.edit").on("start", function() {
         mod.listenTo(this.getForm(), "form:rendered", function() {
             mod.start();
         });
     });
+
+    // EXPORTS
+    mod.imageCropDialogViewClass = imageCropDialogViewClass;
 });

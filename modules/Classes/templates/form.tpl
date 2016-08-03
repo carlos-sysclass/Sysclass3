@@ -6,21 +6,27 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-
-			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
+			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Lessons"}</a>
+				<a href="#tab_1_2" data-toggle="tab">
+					{translateToken value="More Info"}
+				</a>
+			</li>
+			{/if}
+			{if (isset($T_SECTION_TPL['units']) &&  ($T_SECTION_TPL['units']|@count > 0))}
+			<li>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Units"}</a>
 			</li>
 			{/if}
 			{if ((isset($T_SECTION_TPL['tests']) &&  ($T_SECTION_TPL['tests']|@count > 0)) || (isset($T_SECTION_TPL['grades']) &&  ($T_SECTION_TPL['grades']|@count > 0)))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
 			</li>
 			{/if}
 
 			{if (isset($T_SECTION_TPL['communications']) &&  ($T_SECTION_TPL['communications']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
+				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
 			</li>
 			{/if}
             <!--
@@ -32,7 +38,7 @@
             -->
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 			<li>
-				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Permissions"}</a>
+				<a href="#tab_1_6" data-toggle="tab">{translateToken value="Permissions"}</a>
 			</li>
 			{/if}
 		</ul>
@@ -47,9 +53,9 @@
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
 				</div>
+				<!--
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
-					<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
 					<select class="select2-me form-control" name="instructor_id" multiple="multiple">
 						<option value="">{translateToken value="Please Select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}
@@ -57,6 +63,7 @@
 						{/foreach}
 					</select>
 				</div>
+				-->
 
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Active"}</label>
@@ -66,19 +73,30 @@
 					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 				</div>
 			</div>
-			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
+			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-				    {foreach $T_SECTION_TPL['lessons'] as $template}
+				    {foreach $T_SECTION_TPL['moreinfo'] as $template}
+				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+				    {/foreach}
+
+					<div class="form-actions nobg">
+						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+					</div>
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['units']) &&  ($T_SECTION_TPL['units']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_3">
+				    {foreach $T_SECTION_TPL['units'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}
 			{if ((isset($T_SECTION_TPL['tests']) &&  ($T_SECTION_TPL['tests']|@count > 0)) || (isset($T_SECTION_TPL['grades']) &&  ($T_SECTION_TPL['grades']|@count > 0)))}
-				<div class="tab-pane fade in" id="tab_1_3">
+				<div class="tab-pane fade in" id="tab_1_4">
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['communications']) &&  ($T_SECTION_TPL['communications']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_4">
+				<div class="tab-pane fade in" id="tab_1_5">
 				</div>
 			{/if}
             <!--
@@ -89,7 +107,7 @@
 			{/if}
             -->
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
-				<div class="tab-pane fade in" id="tab_1_5">
+				<div class="tab-pane fade in" id="tab_1_6">
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
 				    {/foreach}

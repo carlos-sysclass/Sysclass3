@@ -15,18 +15,18 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockProvider, \ISectionMenu, \IWidgetContainer
+class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider, \ISectionMenu, \IWidgetContainer
 {
     // ISummarizable
     public function getSummary() {
         //$data = $this->dataAction();
-        return false;
-        $total = $this->getTotalUnviewed();
+        //return false;
+        //$total = $this->getTotalUnviewed();
         return array(
             'type'  => 'primary',
             //'count' => count($data),
-            'count' => $total,
-            'text'  => $this->translate->translate('Messages'),
+            'count' => 0,
+            'text'  => $this->translate->translate('Emails'),
             'link'  => array(
                 'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . 'inbox'
@@ -132,7 +132,7 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
     	return false;
     }
     // IWidgetContainer
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller = null) {
         $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
 
         if (
@@ -187,7 +187,7 @@ class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockP
     /**
      * [ add a description ]
      *
-     * @url POST /item/me
+     * @Post("/item/me");
      */
     public function addItemAction($id)
     {

@@ -69,15 +69,18 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
 
             // ADD ENVIROMENT SELECTION
             $dashboards = $currentUser->getDashboards();
-            if (count($dashboards) > 1) {
 
+            if (count($dashboards) > 1) {
                 $items = array();
 
                 foreach($dashboards as $dashboard) {
-                    $items[] = array(
-                        'link'  => "/dashboard/" . $dashboard,
-                        'text'  => $this->translate->translate(ucfirst($dashboard))
-                    );
+                    if ($this->layoutExists($dashboard)) {
+
+                        $items[] = array(
+                            'link'  => "/dashboard/" . $dashboard,
+                            'text'  => $this->translate->translate(ucfirst($dashboard))
+                        );
+                    }
                 }
 
                 $links[$this->translate->translate('Environment')] = $items;
@@ -100,7 +103,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         return false;
     }
 
-    public function getWidgets($widgetsIndexes = array()) {
+    public function getWidgets($widgetsIndexes = array(), $caller= null) {
         if (in_array('dashboard.linkable.view', $widgetsIndexes)) {
             $modules = $this->getModules("ILinkable");
             $modulesKeys = array_combine(array_keys($modules), array_keys($modules));
@@ -199,7 +202,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
         $this->clearWidgets();
         foreach($modules as $index => $module) {
             //var_dump($index);
-            $mod_widgets = $module->getWidgets($widgetsIndexes);
+            $mod_widgets = $module->getWidgets($widgetsIndexes, $this);
             //var_dump($mod_widgets);
             if ($mod_widgets) {
                 $this->widgets = array_merge($this->widgets, $mod_widgets);

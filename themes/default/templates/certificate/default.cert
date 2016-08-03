@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <meta name="viewport" content="width=device-width"/>
+      
+      {{ assets.outputCss('header') }}
+
+      <title>{% block title %}{{ configuration.get("site_title") }} - {{ configuration.get("site_subtitle") }}{% endblock %}</title>
+
+</head>
+<body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;direction: ltr;background: #f6f8f1;width: 100% !important;">
+      <table border='15' align='center' width='100%' cellspacing='0' cellpadding='0'>
+            <tr>
+                  <td>
+                        <table border='0' align='center' width='100%' cellspacing='0' cellpadding='0'>
+                              <tr>
+                                    <td colspan='3' align='center' style='height:150px; font-size:35px'>{{ translate.translate('Certificate of Completion') }}
+                                    </td>
+                              </tr>
+                              <tr>
+                                    <td colspan='3' align='center' style='height:50px'>Checked the <span class="underline">{{ user.name }} {{user.surname }}</span> This certificate</td>
+                              </tr>    
+                              <tr><td colspan='3' align='center' style='height:50px'>for participation in the online course <span class="underline">{{ course.name }}</span></td></tr>    
+                              <tr><td colspan='3' align='center' style='height:50px'>with a workload of ________ hours.</td></tr>
+                              <tr>
+                                    <td align='center' style='height:200px'>_______________<p>{{ translate.translate('Instructor') }}</td>
+                                    <td align='center' style='height:200px'>_______________<p>{{ translate.translate('Institution') }}</td>
+                                    <td align='center' style='height:200px'>_______________<p>{{ translate.translate('Student') }}</td>
+                              </tr>    
+                        </table>
+                  </td>
+            </tr>
+      </table>
+</body>
+</html>

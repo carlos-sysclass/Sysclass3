@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated 3.2.0
+ */
 class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function init()
@@ -9,7 +12,6 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
 
         $this->selectSql = "SELECT
             l.`id`,
-            l.`permission_access_mode`,
             l.`class_id`,
             c.`name` as class,
             l.`name`,

@@ -1,7 +1,106 @@
 #######################
 # GENERAL DEFINITIONS #
 #######################
+crud:
+  # BASE VALUES.. USED ON ALL ROUTES
+  base_route:
+    stylesheets: ["css/components"]
+    variables:
+      page_title: Enrollment 
+      # BASE VALUES.. USED ON ALL ROUTES
+  routes:
+    view:
+      components: ["select2","data-tables"]
+      template: view.tpl
+      #blocks: ["group.add"]
+      scripts: ["view"]
+      variables:
+        page_subtitle: Manage the way student get into the system
+      context:
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: name
+          label: Name
+
+        - mData: admittance_type
+          label: Admittance Type
+
+        - mData: start_date
+          sType: datetime-moment
+          sClass: text-center
+          label: Start Date
+
+        - mData: end_date
+          sType: datetime-moment
+          sClass: text-center
+          label: End Date
+
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+
+    add:
+      components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
+      template: form.tpl
+      scripts: ["form"]
+      variables:
+        page_subtitle: Create Enrollment Guidelines
+    'edit/{id}':
+      components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
+      template: form.tpl
+      scripts: ["form"]
+      blocks: ["fixed_grouping.dialog", "enroll.courses", "enroll.fields"]
+      variables:
+        page_subtitle: Edit Enrollment Guidelines
+
 blocks:
+  enroll.courses:
+    context:
+      id : "enroll_courses"
+      sAjaxSource: /module/enroll/items/courses/datatable
+      datatable_fields:
+      - mData: course.name
+        label: Program
+
+      - mData: course.active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
+
+  enroll.fields:
+    context:
+      id : "enroll_fields"
+      datatable_fields:
+      - mData: icon
+        sType: table-icon
+        label: Type
+
+      - mData: fullname
+        label: User / Group
+
+      - mData: active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
   enroll.user.block:
     context:
       block_id: "enroll_users"
@@ -23,8 +122,44 @@ blocks:
           sType: table-options
           sClass: text-center
           label: Actions
+  enroll.users.dialog:
+    context:
+      block_id: "enroll_users"
+      datatable_fields:
+      - mData: icon
+        sType: table-icon
+        label: Type
+
+      - mData: fullname
+        label: User / Group
+
+      - mData: active
+        sType: table-boolean
+        sClass: text-center
+        label: Active
+
+      - mData: options
+        sType: table-options
+        sClass: text-center
+        label: Actions
 models:
   me: 
-    class: Sysclass\Models\Enrollments\Course
+    class: Sysclass\Models\Enrollments\Enroll
+    exportMethod: ["toExtendArray", ["EnrollFields"]]
+  course: 
+    class: Sysclass\Models\Enrollments\CourseUsers
     exportMethod: ["toFullArray", ["User", "Course"]]
+  fields: 
+    class: Sysclass\Models\Enrollments\Fields
+    exportMethod: ["toFullArray", ["Field"]]
+  courses: 
+    class: Sysclass\Models\Enrollments\Courses
+    exportMethod: ["toFullArray", ["Enroll", "Course"]]
+  users: 
+    class: Sysclass\Models\Enrollments\CourseUsers
+    exportMethod: ["toFullArray", ["User", "Course"]]
+    acl:
+      edit:
+        resource: Enroll
+        action: edit
 
