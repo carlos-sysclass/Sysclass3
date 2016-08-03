@@ -190,6 +190,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 			$data['notification'] = $caller->sortModules("users.overview.notification.order", $data['notification']);
 
+            //var_dump($data['notification']);
+            //exit;
+
 			$this->putModuleScript("users");
 
                 
