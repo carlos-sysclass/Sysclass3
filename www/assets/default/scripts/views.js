@@ -410,6 +410,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				this.renderViewItens(this.$(":input"));
 	    	} else {
 	    		var values = model.toJSON();
+	    		console.warn(values);
 				this.renderItens(values);
 	    	}
 

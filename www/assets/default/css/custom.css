@@ -865,6 +865,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-right: 0;
 	min-height: 450px;
 }
+.scroller.chat-contents {
+	min-height: 200px;
+}
 .scroller div {
 	padding: 0 10px;
 }
@@ -2180,3 +2183,7 @@ a.list-group-item,
 #content-widget .portlet-title {
 	height: 37px;
 }
+
+.fileupload {
+  margin-bottom: 0;
+ }

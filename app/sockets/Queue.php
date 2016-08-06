@@ -8,6 +8,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Models\Chat\Message,
     Sysclass\Models\Users\UserTimes,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Acl\Resource,
     Sysclass\Models\Users\Group;
 
 class Queue extends Component implements WampServerInterface
@@ -16,18 +17,21 @@ class Queue extends Component implements WampServerInterface
     protected $token;
     protected $usersIds;
     protected $users;
+    protected $sessionIds;
 
     protected $subscribedTopics = array();
 
     public function __construct() {
-        $this->clients = new \SplObjectStorage;
+        $this->clients = array();
         $this->users = array();
         $this->usersIds = array(); 
+        $this->sessionIds = array();
     }
 
     public function onOpen(ConnectionInterface $conn) {
         // Store the new connection to send messages to later
-        $this->clients->attach($conn);
+        $this->clients[$conn->wrappedConn->WAMP->sessionId] = $conn;
+        //$this->clients->attach($conn);
         //$this->users[$conn->wrappedConn->WAMP->sessionId] = true;
 
         echo "New connection! (#{$conn->resourceId})\n";
@@ -110,20 +114,25 @@ class Queue extends Component implements WampServerInterface
         }
     }
     */
+
     public function onClose(ConnectionInterface $conn) {
         // The connection is closed, remove it, as we can no longer send it messages
         if (array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
             $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
             unset($this->users[$conn->wrappedConn->WAMP->sessionId]);
             unset($this->usersIds[$user['id']]);
+            unset($this->sessionIds[$user['id']]);
+            unset($this->clients[$conn->wrappedConn->WAMP->sessionId]);
+
         }
 
-        $this->clients->detach($conn);
+//        $this->clients->detach($conn);
 
         echo "Connection Closed: #{$conn->resourceId}\n";
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
+        var_dump($e);
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
@@ -139,6 +148,7 @@ class Queue extends Component implements WampServerInterface
                         'bind' => [$params[1]]
                     ])) {
                     $user = $userTimes->getUser();
+
                     if ($user && !is_null($user->websocket_key) && $user->websocket_key == $params[0]) {
                         //var_dump($userTimes->toArray());
 
@@ -167,6 +177,7 @@ class Queue extends Component implements WampServerInterface
                             'last_ping' => $lastPing,
                         );
                         $this->usersIds[$user->id] = $conn->wrappedConn->WAMP->sessionId;
+                        $this->sessionIds[$user->id] = $params[1];
 
                         /*
                         $lastQueue = Queue::findFirst(array(
@@ -331,14 +342,26 @@ class Queue extends Component implements WampServerInterface
             }
             case "getAvaliableQueues" : {
                 // GET ALL USERS 
+                // GET ROLES WITH CHAT SUPPORT ACL RESOURCE
+                $resource = Resource::findFirst(array(
+                    'conditions' => '[group] = ?0 AND name = ?1',
+                    'bind' => array("Chat", "Support")
+                ));
+
+                if ($resource) {
+                    $technical_users = User::findByPermissionId($resource->id);
+                }
+
+
+
                 $coordinator_group_id = $this->configuration->get('chat_role_coordinator');
-                $technical_group_id = $this->configuration->get('chat_role_technical_support');
+                //$technical_group_id = $this->configuration->get('chat_role_technical_support');
 
                 $coordinator_group = Group::findFirstById($coordinator_group_id);
-                $technical_group = Group::findFirstById($technical_group_id);
+                //$technical_group = Group::findFirstById($technical_group_id);
 
                 $coordinator_users = $coordinator_group->getUsers();
-                $technical_users = $technical_group->getUsers();
+                //$technical_users = $technical_group->getUsers();
 
                 $result = array();
                 if ($coordinator_users->count() > 0) {
@@ -364,14 +387,16 @@ class Queue extends Component implements WampServerInterface
                         }
                     }
                 }
-                if ($technical_users->count() > 0) {
+                if (count($technical_users) > 0) {
                     $result['technical'] = array(
                         'topic' => 'technical-support',
                         'name' => 'Technical Support'
                     );
 
-                    foreach($technical_users as $user) {
-                        $item = $user->toArray();
+                    foreach($technical_users as $item) {
+                        //$item = $user->toArray();
+
+                        $user = User::findFirstById($item['id']);
 
                         $item['language'] = $user->getLanguage()->toArray();
                         $item['avatars'] = $user->getAvatars()->toArray();
@@ -456,6 +481,20 @@ class Queue extends Component implements WampServerInterface
 
         echo "startChat Topic: {$new_topic}\n";
 
+        // SUBSCRIBE THE RECEIVER AS WELL
+        if (array_key_exists($user_id, $this->sessionIds)) {
+            $privateTopic = ($this->subscribedTopics[$this->sessionIds[$user_id]]);
+            
+            $command = $this->createCommandResponse("subscribe", array(
+                'topic' => $new_topic
+            ));
+
+            $privateTopic->broadcast($command);
+        }
+
+
+        //var_dump($id, $queueModel->toArray());
+
         $conn->callResult($id, $queueModel->toArray());
         return true;
     }
@@ -522,10 +561,13 @@ class Queue extends Component implements WampServerInterface
         $messageModel->save();
 
         //var_dump($messageModel->getMessages());
+        var_dump($event, $exclude, $eligible);
 
         $topic->broadcast($event, $exclude, $eligible);
     }
+
     public function onSubscribe(ConnectionInterface $conn, $topic) {
+        var_dump("SUBSCRIBE",  get_class($topic));
         if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
             $conn->close();
             return true;
@@ -558,5 +600,18 @@ class Queue extends Component implements WampServerInterface
 
         return $event;
 
+    }
+
+    protected function createCommandResponse($command = "subscribe", $data = array()) {
+        if (is_null($event)) {
+            $event = array();
+        }
+
+        //$user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+        $event['command'] = $command;
+        $event['data'] = $data;
+        $event['sent'] = time();
+
+        return $event;
     }
 }

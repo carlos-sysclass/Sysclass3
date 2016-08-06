@@ -18,4 +18,5 @@ class Resource extends Model
             array('alias' => 'Roles', 'reusable' => true)
         );
     }
+
 }

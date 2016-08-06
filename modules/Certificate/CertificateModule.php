@@ -46,7 +46,8 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
         } else {
             $info['link']  = array(
                 'text'  => $this->translate->translate('View'),
-                'link'  => "javascript:void(0);"
+                'link'  => "javascript:void(0);",
+                'target' => '_blank'
             );
         }
 
