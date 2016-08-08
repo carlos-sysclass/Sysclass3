@@ -121,7 +121,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
     					'id'        => 'content-widget',
     					'template'	=> $this->template("widgets/overview"),
     					'box'       => 'dark-blue tabbable tabbable-left',
-                        'title'     => '',
+                        //'title'     => '',
                         /*
     					'tools'     => array(
     						//'search'        => true,
