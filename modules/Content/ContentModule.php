@@ -128,7 +128,9 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
     						//'fullscreen'    => true
     					),
                         */
-                        'data' => $data
+                        'data' => $data,
+                        'panel'     => true,
+                        'body'      => 'no-padding',
     				)
     			);
             }
