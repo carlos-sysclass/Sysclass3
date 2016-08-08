@@ -4,7 +4,7 @@ _before_init_functions.push(function() {
     $SC.addResource("content_widget_data", {$widget_data|@json_encode nofilter});
 });
 </script>
-<div class="container">
+
       <div class="row">
         <div class="col-sm-3 col-md-3 courses-super-nav content-bar-border-left">
           <div class="course-tab-onout">
@@ -114,7 +114,7 @@ _before_init_functions.push(function() {
         </div>
       </div>
     </div>
-<div>
+
 	<div class="courses-container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
