@@ -177,10 +177,10 @@ class Lesson extends BaseLesson
                     ON (ccc.class_id = ccl.id)
                 LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
                     ON (tl.class_id = ccl.id)
-                LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Execution cte
-                    ON (tl.id = cte.test_id AND ecu.user_id = :user_id:)
                 WHERE ecu.user_id = :user_id: AND tl.type = 'test'
-                    AND (cte.user_id IS NULL OR cte.user_id <> :user_id:)";
+                    AND tl.id NOT IN (SELECT DISTINCT test_id FROM Sysclass\\Models\\Courses\\Tests\\Execution cte WHERE cte.user_id = :user_id:)
+        ";
+        //echo $phql;
 
         $status = $manager->executeQuery(
             $phql,

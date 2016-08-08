@@ -71,7 +71,7 @@ $di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
 )));
 
 
-if (APP_TYPE === "WEBSOCKET") {
+if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
     $di->set('cache', function() use ($environment, $di) {
         $environment_name = $di->get("sysconfig")->deploy->environment;
 
