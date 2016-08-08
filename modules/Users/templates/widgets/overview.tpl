@@ -45,7 +45,18 @@ _before_init_functions.push(function() {
 						-->
 						{$notif.text}
 						<div class="pull-right" >
-						{if isset($notif.link)}
+						{if isset($notif.links)}
+							{foreach $notif.links as $link_index => $link}
+								<a 
+									class="btn btn-xs btn-{$notif.type} {if isset($link.tooltip)}tooltips{/if}" 
+									href="{$link.link}" 
+									{if isset($link.target)}target="{$link.target}"{/if}
+								  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
+								>
+									{$link.text nofilter}
+								</a>
+							{/foreach}
+						{elseif isset($notif.link)}
 							<!--
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 							-->
