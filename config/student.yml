@@ -37,8 +37,8 @@ dashboard:
     widgets:
         1: ["users.overview"]
         2: ["institution.overview"]
-        3: [""content.overview""]
-        4: ["ads.leftbar.banner", "notification.lastest", , "news.latest" ]
+        3: ["content.overview"]
+        4: ["ads.leftbar.banner", "notification.lastest", "news.latest" ]
         5: ["advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         6: ["calendar"]
     sortable: false
