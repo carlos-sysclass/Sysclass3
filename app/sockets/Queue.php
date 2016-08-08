@@ -132,7 +132,7 @@ class Queue extends Component implements WampServerInterface
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        var_dump($e);
+        //var_dump($e);
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
@@ -561,13 +561,13 @@ class Queue extends Component implements WampServerInterface
         $messageModel->save();
 
         //var_dump($messageModel->getMessages());
-        var_dump($event, $exclude, $eligible);
+        //var_dump($event, $exclude, $eligible);
 
         $topic->broadcast($event, $exclude, $eligible);
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-        var_dump("SUBSCRIBE",  get_class($topic));
+        //var_dump("SUBSCRIBE",  get_class($topic));
         if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
             $conn->close();
             return true;
