@@ -6,6 +6,12 @@ body {
 .no-padding {
   padding: 0 !important;
 }
+.tabbable {
+	border-top: 1px;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: none !important;
+}
 .content-bar-border-left {
   border-right: 1px solid #ddd;
   min-height: 590px;
