@@ -14,7 +14,7 @@ body {
 }
 .content-bar-border-left {
   border-right: 1px solid #ddd;
-  min-height: 590px;
+  min-height: 590px !important;
   padding-top: 15px;
 }
 .new-content-format {
