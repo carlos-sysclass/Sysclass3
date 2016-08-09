@@ -114,7 +114,37 @@ _before_init_functions.push(function() {
         </div>
       </div>
     </div>
+	<script>
+	$( document ).ready(function() {
+	      $(".course-tab-onout").click(function(){
+	        $(".secure-tap").toggleClass("closed");
+	        $(".navbar-left").toggleClass("removed");
+	        if ($(".new-content-tabs").hasClass("col-md-9")){
+	          $(".new-content-tabs").addClass("col-md-12");
+	          $(".new-content-tabs").removeClass("col-md-9");
+	        } else {
+	          $(".new-content-tabs").addClass("col-md-9");
+	          $(".new-content-tabs").removeClass("col-md-12");
+	        };
 
+	        if ($(".new-content-trick").hasClass("col-md-9")){
+	          $(".new-content-trick").addClass("col-md-11");
+	          $(".new-content-trick").removeClass("col-md-9");
+	        } else {
+	          $(".new-content-trick").addClass("col-md-9");
+	          $(".new-content-trick").removeClass("col-md-11");
+	        };
+
+	        if ($(".courses-super-nav").hasClass("col-md-3")){
+	          $(".courses-super-nav").addClass("col-md-1");
+	          $(".courses-super-nav").removeClass("col-md-3");
+	        } else {
+	          $(".courses-super-nav").addClass("col-md-3");
+	          $(".courses-super-nav").removeClass("col-md-1");
+	        };
+	      });
+      });
+    </script>
 	<div class="courses-container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
