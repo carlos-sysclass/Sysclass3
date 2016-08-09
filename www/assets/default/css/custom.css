@@ -7,7 +7,7 @@ body {
   padding: 0 !important;
 }
 .tabbable {
-	border-top: 1px;
+	border-top: 1px solid #ddd;
 	border-left: none !important;
 	border-right: none !important;
 	border-bottom: none !important;
@@ -15,6 +15,10 @@ body {
 .content-bar-border-left {
   border-right: 1px solid #ddd;
   min-height: 590px;
+  padding-top: 15px;
+}
+.new-content-format {
+	padding-top: 15px;
 }
 .new-content-format .nav{
   height: 58px;
