@@ -24,6 +24,8 @@ _before_init_functions.push(function() {
                 <li><a href="#">Análise da Capacidade de Fornecimento pelo Mercado</a></li>
                 <li><a href="#">Legislação e Normalização Técnica</a></li>
                 <li><a href="#">Teste Compras sustentáveis</a></li>
+                <li role="separator" class="divider"></li>
+                 <li><a href="#">Course Description</a></li>
               </ul>
             </li>
             <li id="fat-menu" class="dropdown"> 
@@ -94,9 +96,7 @@ _before_init_functions.push(function() {
         <div class="col-sm-9 col-md-9 new-content-format new-content-tabs">
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="home">
-              <p>
-                Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.
-              </p>
+              ...
             </div>
             <div role="tabpanel" class="tab-pane active" id="profile">
               <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="http://itaipu.sysclass.com/files/default/Thumbnail%20%288%29.png" data-setup="{}">
