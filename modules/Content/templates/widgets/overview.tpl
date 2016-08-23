@@ -5,7 +5,146 @@ _before_init_functions.push(function() {
 });
 </script>
 
-<div>
+      <div class="row">
+        <div class="col-sm-3 col-md-3 courses-super-nav content-bar-border-left">
+          <div class="course-tab-onout">
+            <div class="secure-tap closed">
+              <span class="outer-line-tap one"></span>
+              <span class="outer-line-tap two"></span>
+              <span class="outer-line-tap three"></span>
+            </div>
+            <span class="click-desp">Curso</span>
+          </div>
+          <ul class="nav navbar-left">
+            <li id="fat-menu" class="dropdown active"> 
+              <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compras Eletrônicas</a> 
+              <ul class="dropdown-menu" aria-labelledby="drop3"> 
+                <li><a href="#">Avaliação do Ciclo de Vida</a></li>
+                <li><a href="#">Custo Total de Posse</a></li>
+                <li><a href="#">Análise da Capacidade de Fornecimento pelo Mercado</a></li>
+                <li><a href="#">Legislação e Normalização Técnica</a></li>
+                <li><a href="#">Teste Compras sustentáveis</a></li>
+                <li role="separator" class="divider"></li>
+                 <li><a href="#">Course Description</a></li>
+              </ul>
+            </li>
+            <li id="fat-menu" class="dropdown"> 
+              <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Relacionamento com Fornecedores</span> </a> 
+              <ul class="dropdown-menu" aria-labelledby="drop3"> 
+                <li><a href="#">Avaliação do Ciclo de Vida</a></li>
+                <li><a href="#">Custo Total de Posse</a></li>
+                <li><a href="#">Análise da Capacidade de Fornecimento pelo Mercado</a></li>
+                <li><a href="#">Legislação e Normalização Técnica</a></li>
+                <li><a href="#">Teste Compras sustentáveis</a></li>
+              </ul>
+            </li>
+            <li id="fat-menu" class="dropdown"> 
+              <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Compras Sustentáveis</a> 
+              <ul class="dropdown-menu" aria-labelledby="drop3"> 
+                <li><a href="#">Avaliação do Ciclo de Vida</a></li>
+                <li><a href="#">Custo Total de Posse</a></li>
+                <li><a href="#">Análise da Capacidade de Fornecimento pelo Mercado</a></li>
+                <li><a href="#">Legislação e Normalização Técnica</a></li>
+                <li><a href="#">Teste Compras sustentáveis</a></li>
+              </ul>
+            </li>
+            <li id="fat-menu" class="dropdown"> 
+              <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apresentação do Curso</a> 
+              <ul class="dropdown-menu" aria-labelledby="drop3"> 
+                <li><a href="#">Avaliação do Ciclo de Vida</a></li>
+                <li><a href="#">Custo Total de Posse</a></li>
+                <li><a href="#">Análise da Capacidade de Fornecimento pelo Mercado</a></li>
+                <li><a href="#">Legislação e Normalização Técnica</a></li>
+                <li><a href="#">Teste Compras sustentáveis</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-md-9 new-content-format">
+          <div class="col-md-8 no-padding">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Status</a></li>
+              <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Vídeos</a></li>
+              <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Exercícios</a></li>
+              <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Material</a></li>
+              <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">FAQ</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 no-padding new-content-format">
+            <ul class="nav navbar-right">
+              <li id="fat-menu" class="dropdown"> 
+                <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Processos de Aquisição | <span class="caret"></span> </a> 
+                <ul class="dropdown-menu" aria-labelledby="drop3"> 
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="for-number-display">
+              <span>11/4</span>
+            </div>
+          </div>
+
+          <div class="displaybread">
+            <span>Compras Eletrônicas  »  Processos de Aquisição  »  Vídeos</span>
+          </div>
+          <!-- Tab panes -->
+        </div>
+        <div class="col-sm-9 col-md-9 new-content-format new-content-tabs">
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="home">
+              ...
+            </div>
+            <div role="tabpanel" class="tab-pane active" id="profile">
+              <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="http://itaipu.sysclass.com/files/default/Thumbnail%20%288%29.png" data-setup="{}">
+                <source src="http://itaipu.sysclass.com/files/lesson/3.1-Processo%20de%20Aquisicao%20%20Judite.mp4" type='video/mp4'>
+                <source src="MY_VIDEO.webm" type='video/webm'>
+                <p class="vjs-no-js">
+                  To view this video please enable JavaScript, and consider upgrading to a web browser that
+                  <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+              </video>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="messages">...</div>
+            <div role="tabpanel" class="tab-pane" id="settings">...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+	<script>
+	$( document ).ready(function() {
+	      $(".course-tab-onout").click(function(){
+	        $(".secure-tap").toggleClass("closed");
+	        $(".navbar-left").toggleClass("removed");
+	        if ($(".new-content-tabs").hasClass("col-md-9")){
+	          $(".new-content-tabs").addClass("col-md-12");
+	          $(".new-content-tabs").removeClass("col-md-9");
+	        } else {
+	          $(".new-content-tabs").addClass("col-md-9");
+	          $(".new-content-tabs").removeClass("col-md-12");
+	        };
+
+	        if ($(".new-content-trick").hasClass("col-md-9")){
+	          $(".new-content-trick").addClass("col-md-11");
+	          $(".new-content-trick").removeClass("col-md-9");
+	        } else {
+	          $(".new-content-trick").addClass("col-md-9");
+	          $(".new-content-trick").removeClass("col-md-11");
+	        };
+
+	        if ($(".courses-super-nav").hasClass("col-md-3")){
+	          $(".courses-super-nav").addClass("col-md-1");
+	          $(".courses-super-nav").removeClass("col-md-3");
+	        } else {
+	          $(".courses-super-nav").addClass("col-md-3");
+	          $(".courses-super-nav").removeClass("col-md-1");
+	        };
+	      });
+      });
+    </script>
 	<div class="courses-container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">

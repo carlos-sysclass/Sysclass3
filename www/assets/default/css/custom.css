@@ -1,3 +1,234 @@
+/* New Work Area */
+body {
+  padding-top: 80px;
+  font-family: 'Open Sans', sans-serif;
+}
+.no-padding {
+  padding: 0 !important;
+}
+.tabbable {
+	border-top: 1px solid #ddd;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: none !important;
+}
+.content-bar-border-left {
+  border-right: 1px solid #ddd;
+  min-height: 590px !important;
+  padding-top: 15px;
+}
+.new-content-format {
+	padding-top: 15px;
+}
+.new-content-format .nav{
+  height: 58px;
+  font-weight: 100;
+}
+.new-content-format .nav-tabs {
+  border-bottom: none !important;
+}
+.new-content-format .nav-tabs li a {
+  border-top: 1px solid #337ab7;
+  border-right: 1px solid #337ab7;
+  border-left: 0 solid #337ab7;
+  border-bottom: 1px solid #337ab7;
+  border-radius: 0 !important;
+  margin: 0;
+  font-size: 14px;
+  color: #337ab7;
+}
+.new-content-format .nav-tabs li:first-child a {
+  border-left: 1px solid #337ab7 !important;
+}
+.new-content-format .nav-tabs .active a, .new-content-format .nav-tabs>li.active>a, .new-content-format .nav-tabs>li.active>a:focus {
+  background: #337ab7;
+  color: #fff;
+  border-right: 1px solid #337ab7;
+  border-top: 1px solid #337ab7;
+  border-left: 0px solid #337ab7;
+  border-bottom: 1px solid #337ab7;
+}
+.new-content-format .nav-tabs li a:hover {
+  color: #fff;
+  cursor: pointer;
+  background-color: #2e83cc;
+  border-right: 1px solid #337ab7;
+  border-top: 1px solid #337ab7;
+  border-left: 0px solid #337ab7;
+  border-bottom: 1px solid #337ab7;
+}
+.new-content-format .nav-tabs .active:first-child a:hover {
+  border-left: 1px solid #337ab7;
+}
+.new-content-format .navbar-right {
+  margin-right: 0;
+}
+.new-content-format .navbar-right .dropdown .dropdown-toggle {
+  border: 1px solid #ddd;
+  color: #bababa;
+}
+.new-content-format .navbar-right .dropdown-menu {
+  border-radius: 0 !important;
+  font-size: 12px;
+}
+
+.for-number-display {
+  float: right;
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  border-right: 0;
+  color: #ddd;
+  font-weight: lighter;
+}
+.displaybread {
+  float: left;
+  width: 100%;
+  background: #f1f1f1;
+  font-size: 10px;
+  padding: 5px 10px;
+  color: #4d4d4d;
+  margin-bottom: 12px;
+}
+
+.courses-super-nav .navbar-left {
+  width: 100%;
+}
+.courses-super-nav .nav > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  font-weight: lighter;
+  font-size: 13px;
+}
+.courses-super-nav ul > .active > a {
+  background: #337ab7;
+  color: #fff;
+}
+.courses-super-nav ul > .active.open > a {
+  background: #337ab7;
+  color: #fff;
+}
+.courses-super-nav .dropdown-menu {
+  border-radius: 0;
+  padding: 10px 0;
+}
+.courses-super-nav .dropdown-menu>li>a {
+  display: block;
+  padding: 5px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.courses-super-nav .nav > .active:after {
+  content: '';
+  display: inline-block;
+  border-bottom: 6px solid transparent;
+  border-top: 6px solid transparent;
+  border-left: 6px solid #337ab7;
+  position: absolute;
+  top: 13px;
+  right: -5px;
+}
+
+.course-tab-onout {
+  background: #005999;
+  color: #fff;
+  font-size: 18px;
+  font-weight: lighter;
+  height: 42px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.secure-tap {
+  width: 48px;
+  padding-top: 4px;
+  float: left;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 10px;
+  position: relative;
+  opacity: 1;
+  background: #014373;
+  cursor: pointer;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.secure-tap.closed {
+  background: #ff3b30;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.secure-tap .one {
+  transform: rotate(0deg);
+  position: relative;
+  top: 0px;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.secure-tap .two {
+  opacity: 1;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.secure-tap .three {
+  transform: rotate(0deg);
+  position: relative;
+  top: 0px;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.closed .one {
+  transform: rotate(46deg);
+  position: relative;
+  top: 9px;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.closed .two {
+  opacity: 0;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.closed .three {
+  transform: rotate(-46deg);
+  position: relative;
+  top: -9px;
+  transition: 0.3s ease;
+  -webkit-transition: 0.3s ease;
+  -moz-transition: 0.3s ease;
+}
+.outer-line-tap {
+  float: left;
+  width: 28px;
+  height: 2px;
+  background: #fff;
+  margin-top: 7px;
+  margin-right: 10px;
+}
+.click-desp {
+  float: left;
+  margin-top: 8px;
+}
+.my-video-dimensions {
+    width: 100% !important;
+    height: 477px !important;
+}
+
+.removed {
+  display: none;
+}
+
 /* here you can put your own css to customize and override the theme */
 #content-widget > .portlet-body  {
 	min-height: 550px;
