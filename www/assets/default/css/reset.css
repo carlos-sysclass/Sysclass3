@@ -291,6 +291,7 @@ body {
 }
 .inter-navsuper .nav-tabs {
   border: none;
+  margin-bottom: 0;
 }
 .inter-navsuper .nav-tabs>li>a {
   border-radius: 0;
