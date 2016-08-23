@@ -11,16 +11,16 @@ _before_init_functions.push(function() {
           <div class="col-md-12 no-padding inter-navsuper">
             <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
               <li role="presentation" class="active">
-              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>Unidades</a>
+              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Units"}</a>
               </li>
               <li role="presentation">
-              	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>Cursos</a>
+              	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Courses"}</a>
               </li>
               <li role="presentation">
-              	<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>Timeline</a>
+              	<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Timeline"}</a>
               </li>
               <li role="presentation" class="">
-              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>Programa</a>
+              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Program"}</a>
               </li>
             </ul>
             <ul class="dir-menu-bar">
@@ -46,13 +46,13 @@ _before_init_functions.push(function() {
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Unidade</th>
-                    <th>Video</th>
-                    <th>Material</th>
-                    <th>Exercicio</th>
-                    <th>Teste</th>
-                    <th>Exame</th>
-                    <th>Status</th>
+                    <th>{translateToken value="Unit"}</th>
+                    <th>{translateToken value="Video"}</th>
+                    <th>{translateToken value="Material"}</th>
+                    <th>{translateToken value="Exercise"}</th>
+                    <th>{translateToken value="Test"}</th>
+                    <th>{translateToken value="Exam"}</th>
+                    <th>{translateToken value="Status"}</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -83,10 +83,10 @@ _before_init_functions.push(function() {
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Curso</th>
-                    <th>Instrutor</th>
-                    <th>Unidade em Progresso</th>
-                    <th>Nota Acumulativa</th>
+                    <th>{translateToken value="Course"}</th>
+                    <th>{translateToken value="Course"}Instrutor</th>
+                    <th>{translateToken value="Unit in Progress"}</th>
+                    <th>{translateToken value="Cumulative Grade"}</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -251,7 +251,7 @@ _before_init_functions.push(function() {
 						<div class="nav-title">
 							<span class="tab-title">
 								<i class="fa fa-book"></i> 
-								{translateToken value="Units"}
+								
 							</span>
 							<span class="label label-sm label-success"><strong><span class="unit-count"></span></strong></span>
 						</div>
