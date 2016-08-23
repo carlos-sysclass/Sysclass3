@@ -31,6 +31,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
             $this->putComponent("icheck");
             $this->putComponent("easy-pie-chart");
 
+            $this->putCss("css/reset");
 			$this->putScript("plugins/holder");
             
 			//$this->putScript("plugins/videojs/vjs.youtube");
@@ -119,7 +120,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
     				'content.overview' => array(
     					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
     					'id'        => 'content-widget',
-    					'template'	=> $this->template("widgets/overview"),
+    					'template'	=> $this->template("widgets/overview-new"),
     					'box'       => 'dark-blue tabbable tabbable-left',
                         //'title'     => '',
                         /*

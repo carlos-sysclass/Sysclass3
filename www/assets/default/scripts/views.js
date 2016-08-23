@@ -509,7 +509,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseClass::save');
 	    	var self = this;
 
-	    	self.trigger("before:save", this.model);
+	    	console.warn(self.trigger("before:save", this.model));
 
 	    	this.model.save(null, {
 	    		success : function(model, response, options) {

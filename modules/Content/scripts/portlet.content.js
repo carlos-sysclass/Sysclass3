@@ -166,7 +166,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			}
 		});
-
+		/*
 		var programTabViewClass = blockableTabViewClass.extend({
 			initialize: function(opt) {
 				console.info('portlet.content/programTabViewClass::initialize');
@@ -181,12 +181,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.listenTo(this.model, 'change:id', this.updateCollectionIndex.bind(this));
 				//this.listenTo(this.collection, 'sync', this.updateCollectionIndex.bind(this));
-				/*
-				this.listenTo(this.collection, 'prevModel nextModel', function(model, index, collection) {
-					this.model.set("id", model.get("id"));
-					this.model.fetch();
-				}.bind(this));
-				*/
+
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
 
 				// TODO CREATE SUB VIEWS!!
@@ -194,23 +189,22 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					el : this.$("#tab_program_description"),
 					model : this.model
 				});
-				/*
-				this.programMoreinfoTabView 	= new programMoreinfoTabViewClass({
-					el : this.$("#tab_course_moreinfo"),
-					model : this.model
-				});
-				*/
-				/*
-				this.programCoordinatorTabView 	= new programCoordinatorTabViewClass({
-					el : this.$("#tab_program_coordinator"),
-					model : this.model
-				});
-				*/
+
+				//this.programMoreinfoTabView 	= new programMoreinfoTabViewClass({
+				//	el : this.$("#tab_course_moreinfo"),
+				//	model : this.model
+				//});
+				
+
+				//this.programCoordinatorTabView 	= new programCoordinatorTabViewClass({
+				//	el : this.$("#tab_program_coordinator"),
+				//	model : this.model
+				//});
+				
 				this.programCoursesTabView = new programCoursesTabViewClass({
 					el : this.$("#tab_program_courses table tbody"),
-					model : this.model/*,
-					collection : new mod.collections.classes(this.model.get("classes")) */
-				});
+					model : this.model
+				//});
 				this.blockUi('No Course Selected');
 
 				//this.updateCollectionIndex();
@@ -228,32 +222,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 			},
-			/*
-			updateCollectionIndex : function(e) {
-				console.info('portlet.content/programTabViewClass::updateCollectionIndex');
-
-				this.collection.find(function(model, index, collection) {
-					if (model.get("id") == this.model.get("id")) {
-						this.collection.setPointer(index);
-						return true;
-					}
-					return false;
-				}.bind(this));
-
-				$("#courses-content .courses-count")
-					.html(this.collection.size());
-
-				$("#courses-content .courses-current")
-					.html(this.collection.getPointer() + 1);
-
-			},
-			*/
 			onBlockableItemClick : function(e) {
 				// APLLY USER TO ENROLLMENT PROCESS
             	app.module("utils.toastr").message("warning", "The system will send you to the enroll page");
 
 			}
 		});
+		*/
 		
 		var programDescriptionTabViewClass = Backbone.View.extend({
 			template : _.template($("#tab_program_description-template").html(), null, {variable : 'model'}),
@@ -264,10 +239,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
-				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
+				this.$el.empty().append(this.template(this.model.toJSON()));
 			}
 		});
-
+		/*
 		var programCoordinatorTabViewClass = Backbone.View.extend({
 			template : _.template($("#tab_program_coordinator-template").html(), null, {variable : 'model'}),
 			initialize: function() {
@@ -297,7 +272,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#" + elId + "']").show();
 			}
 		});
-
+		*/
 		var programCoursesTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
 				"click .class-change-action" : "setClassId"
@@ -498,7 +473,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		/* CLASSES TABS VIEW CLASSES */
 
-		
+		/*
 		var courseTabViewClass = blockableTabViewClass.extend({
 			initialize: function(opt) {
 				console.info('portlet.content/classTabViewClass::initialize');
@@ -509,12 +484,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					collection : mod.programsCollection.getCurrentCourses.bind(mod.programsCollection),
 					pointer : mod.programsCollection.getCourseIndex.bind(mod.programsCollection)
 				});
-				/*
-				this.listenTo(mod.programsCollection, "course.changed", function() {
-					this.navigationView.pointer = mod.programsCollection.getCourseIndex();
-					this.navigationView.render();
-				});
-				*/
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 
 				this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
@@ -534,12 +503,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					el : this.$("#tab_course_units table tbody"),
 					model : this.model
 				});
-				/*
-				this.courseTestsTabView = new courseTestsTabViewClass({
-					el : this.$("#tab_course_tests table tbody"),
-					model : this.model
-				});
-				*/
 
 				this.blockUi('No Course Selected');
 
@@ -569,14 +532,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.courseUnitsTabView.render();
 
 				this.checkProgress(mod.progressCollection);
-				/*
-				var factor = this.model.get("progress.factor");
-				if (factor >= 1) {
-					this.$(".viewed-status").removeClass("hidden");
-				} else {
-					this.$(".viewed-status").addClass("hidden");
-				}
-				*/
 
 				this.unBlockUi();
 			},
@@ -588,7 +543,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#tab_course_units']").click();
 			}
 		});
-		
+		*/
+		/*
 		var courseInfoTabViewClass = baseChangeModelViewClass.extend({
 			//portlet: $('#courses-widget'),
 			template : _.template($("#tab_courses_info-template").html(), null, {variable : 'model'}),
@@ -631,6 +587,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#" + elId + "']").show();
 			}
 		});
+		*/
 
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
@@ -748,6 +705,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		
 
 		/* LESSONS / TESTS VIEW CLASSES */
+		/*
 		var unitTabViewClass = blockableTabViewClass.extend({
 			initialize: function() {
 				console.info('portlet.content/unitTabViewClass::initialize');
@@ -786,13 +744,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
 
 
-				/*
-				this.unitExercisesTabView 	= new unitExercisesTabViewClass({
-					el : this.$("#tab_unit_exercises"),
-					model : this.model,
-                	portlet : this.$el
-				});
-				*/
 				this.blockUi('No Unit Selected');
 			},
 			checkProgress : function(model) {
@@ -837,7 +788,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			}
 		});
-
+		*/
+		/*
 		var unitVideoTabViewClass = baseChangeModelViewClass.extend({
 			videoJS : null,
 			nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
@@ -945,6 +897,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//this.$el.show();
 			}
 		});
+		*/
 		/*
 		var unitVideosTabViewItemClass = Backbone.View.extend({
 			tagName : "tr",
@@ -959,6 +912,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 		*/
+		/*
 		var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
 				"click .view-content-action" : "viewContentAction"
@@ -982,7 +936,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			}
 		});
-
+		*/
+		/*
 		var unitMaterialsTabViewClass = baseChildTabViewClass.extend({
 			nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
 			childViewClass : unitMaterialsTabViewItemClass,
@@ -997,7 +952,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#tab_unit_materials'],#tab_unit_materials").removeClass("hidden");
 			}
 		});
-
+		*/
+		/*
 		var unitTestTabViewClass = baseChangeModelViewClass.extend({
 			nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 			template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
@@ -1024,6 +980,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#tab_unit_tests']").tab('show');
 			}
 		});
+		*/
 
 		var overallProgressViewClass = Backbone.View.extend({
 			el: $('#progress-content'),
@@ -1144,9 +1101,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.$(".portlet-title").height(26);
 
-				this.startProgramView();
-				this.startCourseView();
-				this.startUnitView();
+				this.startViews();
+				//this.startCourseView();
+				//this.startUnitView();
 
 				Marionette.triggerMethodOn(this, "start");
 
@@ -1174,19 +1131,42 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
 			},
-			startProgramView : function() {
+			startViews : function() {
 				console.info('portlet.content/widgetViewClass::startProgramView');
 
 				if (_.isNull(this.programTabView)) {
+					/*
 					this.programTabView = new programTabViewClass({
 						model : this.collection.getCurrentProgram(),
 						//collection : this.collection,
 						el : this.$("#program-tab"),
             			portlet : this.$el
 					});
-					this.programTabView.render();
+					*/
+
+					this.programDescriptionTabView 	= new programDescriptionTabViewClass({
+						el : $("#tab_program_description"),
+						model : this.collection.getCurrentProgram()
+					});
+
+					this.programCoursesTabView = new programCoursesTabViewClass({
+						el : $("#tab_program_courses table tbody"),
+						model : this.collection.getCurrentProgram()
+					});
+
+					this.courseUnitsTabView = new courseUnitsTabViewClass({
+						el : this.$("#tab_course_units table tbody"),
+						model : this.model
+					});
+
+					this.programDescriptionTabView.render();
+					this.programCoursesTabView.render();
+					this.courseUnitsTabView.render();
+
+					//this.programTabView.render();
 				}
 			},
+			/*
 			startCourseView : function() {
 				console.info('portlet.content/widgetViewClass::startCourseView');
 
@@ -1212,6 +1192,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.unitTabView.render();
 				}
 			}
+			*/
 		});
 
 		this.onFilter = function(e, portlet) {

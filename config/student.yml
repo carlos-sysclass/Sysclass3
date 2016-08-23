@@ -35,18 +35,18 @@ dashboard:
                     sm: 12
                     xs: 12
     widgets:
-        1: ["users.overview"]
+        1: ["users.overview", "notification.lastest"]
         2: ["institution.overview"]
         3: ["content.overview"]
-        4: ["ads.leftbar.banner", "notification.lastest", "news.latest"]
+        4: ["ads.leftbar.banner", "news.latest"]
         5: ["advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         6: ["calendar"]
-        1: []
-        2: []
-        3: ["content.overview"]
-        4: []
-        5: []
-        6: []
+        #1: []
+        #2: []
+        #3: ["content.overview"]
+        #4: []
+        #5: []
+        #6: []
 
     sortable: false
     resources:
