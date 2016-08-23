@@ -249,6 +249,13 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
                 this.listenTo(this.model, "sync", this.updateChild.bind(this));
                 this.listenTo(this.model, "change:type_id", this.render.bind(this));
+
+
+                this.listenTo(this.parentView, "before:save", function(model) {
+                    console.warn(model.toJSON());
+                    alert(1);
+                    return true;
+                })
                 //this.listenTo(this.model, "before:save", this.updateChildModel.bind(this));
             },
             /*
@@ -295,6 +302,9 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
         });
 
         var formView = opt.module.getForm();
+
+
+
 
         mod.questionDetailViewClass = new questionDetailViewClass({
             el : "#question-type-container",

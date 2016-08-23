@@ -41,6 +41,13 @@ dashboard:
         4: ["ads.leftbar.banner", "notification.lastest", "news.latest"]
         5: ["advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
         6: ["calendar"]
+        1: []
+        2: []
+        3: ["content.overview"]
+        4: []
+        5: []
+        6: []
+
     sortable: false
     resources:
         users.overview.notification.order: ["Calendar", "Tests", "certificate"]
