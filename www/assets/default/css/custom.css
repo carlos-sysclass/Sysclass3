@@ -631,7 +631,7 @@ h4.border-bottom {
 }
 
 .ver-inline-menu li.active a {
-	border-left-color: #005999;
+	border-left-color: transparent;
 }
 .ver-inline-menu li.active a {
 	background: none repeat scroll 0 0 #428BCA;
