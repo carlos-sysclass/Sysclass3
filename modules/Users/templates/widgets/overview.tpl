@@ -12,7 +12,7 @@ _before_init_functions.push(function() {
 </script>
 
 <div class="row">
-	<div class="col-md-4 col-lg-3 col-sm-3 hidden-xs" id="users-avatar" style="padding-right:0;">
+	<div class="col-md-4 col-lg-4 col-sm-3 hidden-xs" id="users-avatar" style="padding-right:0;">
 
 		{if ({$user_details.avatars[0].url})}
 			<img class="page-lock-img" src="{$user_details.avatars[0].url}" alt="" style="width: 90.55555%;">
@@ -21,7 +21,7 @@ _before_init_functions.push(function() {
 		{/if}
 	
 	</div>
-	<div class="col-md-5 col-sm-5 col-xs-12" style="padding-left:0;">
+	<div class="col-md-4 col-sm-5 col-xs-12" style="padding-left:0;">
 		<h4 class="users-panel-username" style="font-size: 28px;">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
