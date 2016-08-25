@@ -16,17 +16,21 @@ _before_init_functions.push(function() {
               <li role="presentation">
               	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Courses"}</a>
               </li>
+              <!--
               <li role="presentation">
               	<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Timeline"}</a>
               </li>
+              -->
               <li role="presentation" class="">
               	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Program"}</a>
               </li>
             </ul>
             <ul class="dir-menu-bar">
+              <!--
               <li><a href=""><i class="fa fa-search" aria-hidden="true"></i></a></li>
               <li><a href=""><i class="fa fa-info" aria-hidden="true"></i></a></li>
               <li><a href=""><i class="fa fa-dropbox" aria-hidden="true"></i></a></li>
+              -->
             </ul>
           </div>
           <!-- Tab panes -->
@@ -37,11 +41,11 @@ _before_init_functions.push(function() {
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <!-- TAGS STATUS DO SISTEMA -->
-                <span class="pendente-tag">Not Avalialbe<span class="pendente"></span></span>
+                <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
-                <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
-                <span class="andamento-tag">Attention<span class="andamento"></span></span>
-                <span class="fechado-tag">Disable<span class="fechado"></span></span>
+                <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
+                <span class="andamento-tag">In Progress<span class="andamento"></span></span>
+                <!-- <span class="fechado-tag">Disable<span class="fechado"></span></span> -->
               </div>
               <table class="table table-striped">
                 <thead>
@@ -49,11 +53,15 @@ _before_init_functions.push(function() {
                     <th>{translateToken value="Unit"}</th>
                     <th>{translateToken value="Video"}</th>
                     <th>{translateToken value="Material"}</th>
+                    <!--
                     <th>{translateToken value="Exercise"}</th>
                     <th>{translateToken value="Test"}</th>
+                    -->
+                    <!--
                     <th>{translateToken value="Exam"}</th>
+                    -->
                     <th>{translateToken value="Status"}</th>
-                    <th></th>
+                    <!-- <th></th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -69,7 +77,7 @@ _before_init_functions.push(function() {
                 <span class="pendente-tag">Not Avalialbe<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
-                <span class="andamento-tag">Attention<span class="andamento"></span></span>
+                <span class="andamento-tag">In Progress<span class="andamento"></span></span>
                 <span class="fechado-tag">Disable<span class="fechado"></span></span>
               </div>
 
@@ -511,9 +519,7 @@ _before_init_functions.push(function() {
 		</td>
 	</tr>
 </script>
-
 <script type="text/template" id="tab_program_description-template">
-	<% console.warn(model.description); %>
 	<%= model.description %>
 	<% if (!_.isEmpty(model.objectives)) { %>
 		<hr />
@@ -543,8 +549,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-	<% console.warn(model) %>
-
     <td><a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a></td>
     <td><%= model.name %>
         <!-- STATUS DO SISTEMA CORPO -->
@@ -589,37 +593,97 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
+<% console.warn(model) %>
 <!-- Unidade -->
-<td><%= model.name %></td>
+<td>
+  <span class="btn btn-sm btn-circle btn-default disabled">
+    <i class="fa fa-file"></i>
+    Lesson
+  </span>
+  <%= model.name %>
+</td>
 <!-- Video -->
-<td>00:30:00 - 00:00:00</td>
+<td>
+  Watch
+  <span class="concluido">
+    <i class="fa fa-check-circle" aria-hidden="true"></i>
+    Viewed
+  </span>
+</td>
+
+  
+
 <!-- Material -->
 <td>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  <% if (_.size(model.materials) == 0) { %> 
+    <span class="pendente">
+      <i class="fa fa-ban" aria-hidden="true"></i>
+      Not Avaliable
+    </span>
+  <% } else { %>
+    <% _.each(model.materials, function (item, index) { %>
+      <% if (item.progress.factor >= 1) { %>
+        <span class="concluido">
+          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          Viewed
+        </span>
+      <% } else if (item.progress.factor > 0) { %>
+      <% } else { %>
+        <span class="avalialbe">
+          <i class="fa fa-coffee" aria-hidden="true"></i>
+          Avaliable
+        </span>
+      <% } %>
+    <!-- <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span> -->
+    <% }); %>
+  <% } %>
 </td>
 <!-- Exercicio -->
+<!--
 <td>
-  <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  <% if (_.size(model.exercises) == 0) { %> 
+  <% } else { %>
+    <% _.each(model.exercises, function (item, index) { %>
+      <% if (item.progress.factor >= 1) { %>
+        <span class="concluido">
+          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          Viewed
+        </span>
+      <% } else if (item.progress.factor > 0) { %>
+      <% } else { %>
+        <span class="avalialbe">
+          <i class="fa fa-coffee" aria-hidden="true"></i>
+          Avaliable
+        </span>
+      <% } %>
+    <% }); %>
+  <% } %>
 </td>
+-->
 <!-- Teste -->
+<!--
 <td>
-  <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  <span class="pendente">
+    <i class="fa fa-ban" aria-hidden="true"></i>
+    Not Avaliable
+  </span>
 </td>
+-->
 <!-- Exame -->
-<td>
+<!-- <td>
   <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
   <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
   <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
 </td>
-<!-- Status -->
-<td></td>
+ --><!-- Status -->
+<td>
+  <span class="concluido">
+    <i class="fa fa-check-circle" aria-hidden="true"></i>
+    Completed
+  </span>
+</td>
 <!-- Opções -->
-<td><button type="button" class="btn btn-primary">FAZER</button></td>
+<!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
 	<!--
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
 	<td class="text-center"></td>
@@ -638,36 +702,58 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_tests-item-template">
 <!-- Unidade -->
-<td><%= model.name %></td>
+<td>
+  <span class="btn btn-sm btn-circle btn-default disabled">
+    <i class="fa fa-list-ol"></i>
+    Exam
+  </span>
+  <%= model.name %>
+</td>
 <!-- Video -->
-<td>00:30:00 - 00:00:00</td>
+<td></td>
 <!-- Material -->
 <td>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  <!--
+  <span class="pendente">
+    <i class="fa fa-ban" aria-hidden="true"></i>
+    Not Avaliable
+  </span>
+  -->
 </td>
 <!-- Exercicio -->
+<!--
 <td>
-  <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  <span class="pendente">
+    <i class="fa fa-ban" aria-hidden="true"></i>
+    Not Avaliable
+  </span>
 </td>
+-->
 <!-- Teste -->
+<!--
 <td>
-  <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  
+  <span class="pendente">
+    <i class="fa fa-ban" aria-hidden="true"></i>
+    Not Avaliable
+  </span>
 </td>
+-->   
 <!-- Exame -->
-<td>
+<!-- <td>
   <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
   <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
   <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
 </td>
-<!-- Status -->
-<td></td>
+ --><!-- Status -->
+<td>
+  <span class="concluido">
+    <i class="fa fa-check-circle" aria-hidden="true"></i>
+    Done
+  </span>
+</td>
 <!-- Opções -->
-<td><button type="button" class="btn btn-primary">FAZER</button></td>
+<!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
 <!--
 	<%
 	if (_.has(model, 'test')) {
@@ -831,7 +917,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_unit_materials-item-template">
-	<% console.warn(model); %>
     <%
         var file_type = "other";
 
