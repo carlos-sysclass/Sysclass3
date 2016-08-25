@@ -22,7 +22,7 @@ _before_init_functions.push(function() {
 	
 	</div>
 	<div class="col-md-6 col-sm-5 col-xs-12">
-		<img class="page-lock-img" src="{Plico_GetResource file='images/flags/br.png'}" alt="" style="width: 100%;">
+		<img class="page-lock-img" src="{Plico_GetResource file='images/flags/br.png'}" alt="" style="float: right; width: 13%; margin-top: 13px;">
 		<h4 class="users-panel-username" style="font-size: 28px;">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
