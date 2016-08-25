@@ -408,7 +408,7 @@ body {
 }
 .dir-menu-bar .fa {
   margin: 0 !important;
-  font-size: 19px;
+  font-size: 19px !important;
 }
 .dir-menu-bar li {
   float: right;
