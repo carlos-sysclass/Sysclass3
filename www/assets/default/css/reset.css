@@ -231,7 +231,7 @@ body {
 /* INDEX 2 */
 
 .inter-navsuper {
-  background: #3472f7;
+  background: #015999;
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
@@ -279,7 +279,7 @@ body {
   margin:2px 11px 2px 0px;
 }
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
-  background: #2ca8ff;
+  background: #286090;
   color: #fff;
   margin: 0;
   border-left: 0;
