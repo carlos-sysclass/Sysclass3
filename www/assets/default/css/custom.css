@@ -248,7 +248,7 @@ body {
 }
 
 .header {
-    background-color: #003355 !important;
+    background-color: #3472f7 !important;
     background-image: none !important;
     filter: none !important;
 }
@@ -2187,7 +2187,7 @@ button.calendar-news-item {
     font-size: 16px;
 }
 .header .navbar-nav .menu-link:hover {
-    background-color: #146a9d !important;
+    background-color: #2ca8ff !important;
 }
 
 #calendar {

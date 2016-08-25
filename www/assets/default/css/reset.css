@@ -398,6 +398,7 @@ body {
   font-weight: lighter;
   border-radius: 0;
   margin-top: 4px;
+  background-color: #2ca8ff;
 }
 .dir-menu-bar {
   float: right;
@@ -407,7 +408,7 @@ body {
 }
 .dir-menu-bar .fa {
   margin: 0 !important;
-  font-size: 19px;
+  font-size: 19px !important;
 }
 .dir-menu-bar li {
   float: right;
@@ -430,4 +431,6 @@ body {
   margin-bottom: 0;
   margin-top: 0;
 }
-
+.fa {
+  font-size: 16px !important;
+}
