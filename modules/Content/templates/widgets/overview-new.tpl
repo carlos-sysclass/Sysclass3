@@ -606,7 +606,7 @@ _before_init_functions.push(function() {
 <td>
   Watch
   <span class="concluido">
-    <i class="fa fa-check-circle" aria-hidden="true"></i>
+    <i class="fa fa-check" aria-hidden="true"></i>
     Viewed
   </span>
 </td>
@@ -624,7 +624,7 @@ _before_init_functions.push(function() {
     <% _.each(model.materials, function (item, index) { %>
       <% if (item.progress.factor >= 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check" aria-hidden="true"></i>
           Viewed
         </span>
       <% } else if (item.progress.factor > 0) { %>
@@ -678,7 +678,7 @@ _before_init_functions.push(function() {
  --><!-- Status -->
 <td>
   <span class="concluido">
-    <i class="fa fa-check-circle" aria-hidden="true"></i>
+    <i class="fa fa-check" aria-hidden="true"></i>
     Completed
   </span>
 </td>
@@ -748,7 +748,7 @@ _before_init_functions.push(function() {
  --><!-- Status -->
 <td>
   <span class="concluido">
-    <i class="fa fa-check-circle" aria-hidden="true"></i>
+    <i class="fa fa-check" aria-hidden="true"></i>
     Done
   </span>
 </td>
