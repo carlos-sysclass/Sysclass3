@@ -22,7 +22,7 @@ _before_init_functions.push(function() {
               </li>
               -->
               <li role="presentation" class="">
-              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab"><i class="fa fa-area-chart"></i>{translateToken value="Program"}</a>
+              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab"><i class="fa fa-graduation-cap"></i>{translateToken value="Program"}</a>
               </li>
             </ul>
             <ul class="dir-menu-bar">
