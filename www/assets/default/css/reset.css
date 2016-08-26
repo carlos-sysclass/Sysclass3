@@ -441,3 +441,17 @@ body {
 .fa {
   font-size: 16px !important;
 }
+.inter-navsuper-tabs .btn.btn-circle {
+    font-size: inherit;
+    text-transform: capitalize;
+    font-weight: normal;
+    border-radius: 0;
+    margin-top: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    color: #454444;
+    opacity: 0.65;
+    margin-right: 20px;
+    margin-left: 15px;
+}
