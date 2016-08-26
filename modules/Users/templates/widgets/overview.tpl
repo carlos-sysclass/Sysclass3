@@ -29,7 +29,7 @@ _before_init_functions.push(function() {
 			<strong>{$user_details.name} {$user_details.surname}</strong>
 			<span class="course_name visible-xs"></span>
 		</h4>
-		<h5 class="users-panel-username hidden-xs">
+		<h5 class="users-panel-username hidden-xs" style="border-bottom: 1px solid #ccc; padding-bottom: 11px;">
 			<span class="course_name"></span> <span class="enroll_token"></span>
 		</h5>
 		{if isset($notifications)}
