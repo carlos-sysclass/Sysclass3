@@ -74,9 +74,9 @@ _before_init_functions.push(function() {
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <!-- TAGS STATUS DO SISTEMA -->
-                <span class="pendente-tag">Not Avalialbe<span class="pendente"></span></span>
+                <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
-                <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
+                <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
                 <span class="andamento-tag">In Progress<span class="andamento"></span></span>
                 <span class="fechado-tag">Disable<span class="fechado"></span></span>
               </div>
@@ -107,7 +107,7 @@ _before_init_functions.push(function() {
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <!-- TAGS STATUS DO SISTEMA -->
-                <span class="pendente-tag">Not Avalialbe<span class="pendente"></span></span>
+                <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
                 <span class="andamento-tag">Attention<span class="andamento"></span></span>
