@@ -11,7 +11,7 @@ _before_init_functions.push(function() {
           <div class="col-md-12 no-padding inter-navsuper">
             <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
               <li role="presentation" class="active">
-              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab"><i class="fa fa-file-text"></i>{translateToken value="Units"}</a>
+              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab"><i class="fa fa-book"></i>{translateToken value="Units"}</a>
               </li>
               <li role="presentation">
               	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Courses"}</a>
