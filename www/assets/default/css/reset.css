@@ -333,13 +333,13 @@ body {
 }
 .inter-navsuper-tabs .pendente, .inter-navsuper-tabs .concluido, .inter-navsuper-tabs .andamento, .inter-navsuper-tabs .fechado, .inter-navsuper-tabs .avalialbe {
   padding: 0px 5px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   color: #fff;
   font-weight: lighter;
 }
 .inter-navsuper-tabs .pendente-tag, .inter-navsuper-tabs .concluido-tag, .inter-navsuper-tabs .andamento-tag, .inter-navsuper-tabs .fechado-tag, .inter-navsuper-tabs .avalialbe-tag {
   background: #eeeeee;
-  border-radius: 30px;
+  border-radius: 30px !important;
   color: #807f7f;
   font-weight: lighter;
   font-size: 12px;
