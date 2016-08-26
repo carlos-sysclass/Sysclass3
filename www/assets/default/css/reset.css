@@ -279,10 +279,10 @@ body {
   margin:2px 11px 2px 0px;
 }
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
-  background: #286090;
-  color: #fff;
+  background: #fff;
+  color: #454444;
   margin: 0;
-  border-left: 0;
+  border-left: 1px solid #ddd;
   border-top: 0;
 }
 .inter-navsuper .nav-tabs>li>a:hover {
