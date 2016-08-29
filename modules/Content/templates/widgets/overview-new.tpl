@@ -6,7 +6,7 @@ _before_init_functions.push(function() {
 </script>
 
 <div>
-      <div class="row">
+    <div class="row">
         <div class="col-sm-12 col-md-12">
           <div class="col-md-12 no-padding inter-navsuper">
             <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
@@ -78,24 +78,25 @@ _before_init_functions.push(function() {
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
                 <span class="andamento-tag">In Progress<span class="andamento"></span></span>
-                <span class="fechado-tag">Disable<span class="fechado"></span></span>
+                <!-- <span class="fechado-tag">Disable<span class="fechado"></span></span> -->
               </div>
-
+              <!--
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <form action="">
                   <input type="text" placeholder="Escreva aqui a sua pesquisa">
                 </form>
               </div>
+              -->
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th></th>
                     <th>{translateToken value="Course"}</th>
-                    <th>{translateToken value="Course"}Instrutor</th>
-                    <th>{translateToken value="Unit in Progress"}</th>
+                    <th>{translateToken value="Instrutor"}</th>
+                    <!-- <th>{translateToken value="Unit in Progress"}</th> -->
                     <th>{translateToken value="Cumulative Grade"}</th>
-                    <th></th>
+                    <!-- <th></th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -549,18 +550,37 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-    <td><a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a></td>
-    <td><%= model.name %>
+  <% console.warn('COURSE', model); %>
+    <td>
+      <a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a>
+    </td>
+    <td><a href="#class-tab" class="class-change-action"><%= model.name %></a>
+    <% if (model.progress.factor == 1) { %>
+      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <% } else if (model.progress.factor > 0) { %>
+      <span class="andamento"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+    <% } else { %>
+      <span class="pendente"><i class="fa thumbs-o-up" aria-hidden="true"></i></span>
+    <% } %>
         <!-- STATUS DO SISTEMA CORPO -->
+        <!--
         <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-        <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
         <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
         <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
         <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
+        -->
         <!-- DATA DE ? -->
+        <!--
         <span class="at-difinf">24/10/2014 às 20:30h</span>
+        -->
     </td>
-    <td>Carlos Oliveira <span class="at-difinf"><a href="">ver perfil</a></span></td>
+    <td>
+
+      <% if (!_.isNull(model.professor_id)) { %>
+        Carlos Oliveira <span class="at-difinf"><a href="">ver perfil</a></span>
+      <% } %>
+    </td>
+    <!--
     <td>1/5 Avaliação do Ciclo de Vida
       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
       <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -568,8 +588,10 @@ _before_init_functions.push(function() {
       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
     </td>
+    -->
     <td class="nota-tal">N/A</td>
-    <td><button type="button" class="btn btn-primary">FAZER</button></td>
+
+    <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
 
     <!--
 	<td class="text-center">
@@ -593,22 +615,36 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-<% console.warn(model) %>
+<% console.warn('UNIT', model) %>
 <!-- Unidade -->
 <td>
   <span class="btn btn-sm btn-circle btn-default disabled">
     <i class="fa fa-file"></i>
     Lesson
   </span>
-  <%= model.name %>
+  <a href="" data-toggle="modal" data-target="#myModal"><%= model.name %></a>
 </td>
 <!-- Video -->
 <td>
-  Watch
-  <span class="concluido">
-    <i class="fa fa-check" aria-hidden="true"></i>
-    Viewed
-  </span>
+  <% if (!model.video) { %> 
+  <% } else { %>
+    <% if (model.video.progress.factor >= 1) { %>
+      <span class="concluido">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        Watched
+      </span>
+    <% } else if (item.progress.factor > 0) { %>
+      <span class="concluido">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        Continue
+      </span>
+    <% } else { %>
+      <span class="avalialbe">
+        <i class="fa thumbs-o-up" aria-hidden="true"></i>
+        Watch
+      </span>
+    <% } %>
+  <% } %>
 </td>
 
   
@@ -630,7 +666,7 @@ _before_init_functions.push(function() {
       <% } else if (item.progress.factor > 0) { %>
       <% } else { %>
         <span class="avalialbe">
-          <i class="fa fa-coffee" aria-hidden="true"></i>
+          <i class="fa thumbs-o-up" aria-hidden="true"></i>
           Avaliable
         </span>
       <% } %>
@@ -677,10 +713,22 @@ _before_init_functions.push(function() {
 </td>
  --><!-- Status -->
 <td>
-  <span class="concluido">
-    <i class="fa fa-check" aria-hidden="true"></i>
-    Completed
-  </span>
+  <% if (model.progress.factor >= 1) { %>
+    <span class="concluido">
+      <i class="fa fa-check" aria-hidden="true"></i>
+      {translateToken value="Completed"}
+    </span>
+  <% } else if (model.progress.factor > 0) { %>
+    <span class="andamento">
+      <i class="fa fa-clock-o" aria-hidden="true"></i>
+      {translateToken value="In Progress"}
+    </span>
+  <% } else { %>
+    <span class="avalialbe">
+      <i class="fa thumbs-o-up" aria-hidden="true"></i>
+      {translateToken value="Avaliable"}
+    </span>
+  <% } %>
 </td>
 <!-- Opções -->
 <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
@@ -701,114 +749,127 @@ _before_init_functions.push(function() {
 </script>
 
 <script type="text/template" id="tab_courses_tests-item-template">
-<!-- Unidade -->
-<td>
-  <span class="btn btn-sm btn-circle btn-default disabled">
-    <i class="fa fa-list-ol"></i>
-    Exam
-  </span>
-  <%= model.name %>
-</td>
-<!-- Video -->
-<td></td>
-<!-- Material -->
-<td>
+  <% console.warn('EXAM', model) %>
+  <!-- Unidade -->
+  <td>
+    <span class="btn btn-sm btn-circle btn-default disabled">
+      <i class="fa fa-list-ol"></i>
+      Exam
+    </span>
+    <%= model.name %>
+  </td>
+  <!-- Video -->
+  <td></td>
+  <!-- Material -->
+  <td>
+    <!--
+    <span class="pendente">
+      <i class="fa fa-ban" aria-hidden="true"></i>
+      Not Avaliable
+    </span>
+    -->
+  </td>
+  <!-- Exercicio -->
   <!--
-  <span class="pendente">
-    <i class="fa fa-ban" aria-hidden="true"></i>
-    Not Avaliable
-  </span>
+  <td>
+    <span class="pendente">
+      <i class="fa fa-ban" aria-hidden="true"></i>
+      Not Avaliable
+    </span>
+  </td>
   -->
-</td>
-<!-- Exercicio -->
-<!--
-<td>
-  <span class="pendente">
-    <i class="fa fa-ban" aria-hidden="true"></i>
-    Not Avaliable
-  </span>
-</td>
--->
-<!-- Teste -->
-<!--
-<td>
-  
-  <span class="pendente">
-    <i class="fa fa-ban" aria-hidden="true"></i>
-    Not Avaliable
-  </span>
-</td>
--->   
-<!-- Exame -->
-<!-- <td>
-  <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
-</td>
- --><!-- Status -->
-<td>
-  <span class="concluido">
-    <i class="fa fa-check" aria-hidden="true"></i>
-    Done
-  </span>
-</td>
-<!-- Opções -->
-<!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
-<!--
-	<%
-	if (_.has(model, 'test')) {
-		if (model.test.test_max_questions == 0) {
-			var total_questions = _.size(model.test.questions);
-		} else {
-			var total_questions = model.test.test_max_questions;
-		}
-	} else {
-		var total_questions = 0; 
-	} 
-	%>
-	<td><a href="javascript:void(0)" class="view-test-action"><%= model.name %></a></td>
-	<td class="text-center"><%= total_questions %></td>
-	<td class="text-center">
-		<% if (_.has(model, 'test')) { %>
-			<span class="label label-danger">
-			<%= _.size(model.test.executions) %>
-			<% if (model.test.test_repetition > 0) { %>
-				 / <%= model.test.test_repetition %>
-			<% } %>
-			</span>
-		<% } %>
-	</td>
-	<td class="text-center">
-		<% if (_.has(model, 'test')) { %>
-			<%
-			if (_.size(model.test.executions) > 0) {
-				 var execution = _.last(model.test.executions);
-			%>
-				<span class="label label-primary"><%= execution.user_grade %></span>
-				<small><%= execution.user_points %> {translateToken value="points"}</small>
-			<% } %>
-		<% } %>
-	</span></td>
-	<td class="text-center">
-		<% if (_.has(model, 'test') && _.size(model.test.executions) > 0) { %>
-			<span class="label label-success">{translateToken value="Yes"}</span>
-		<% } else { %>
-			<span class="label label-danger">{translateToken value="No"}</span>
-		<% } %>
-	</td>
-	<td class="text-center">
-		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
-			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
-				{translateToken value="Do now!"}
-			</a>
-		<% } %>
-		<% if (total_questions > 0) { %>
-			<a href="javascript:void(0);" class="btn btn-xs btn-info view-test-action">
-				{translateToken value="Details"}
-			</a>
-		<% } %>
-	</td>
--->
+  <!-- Teste -->
+  <!--
+  <td>
+    
+    <span class="pendente">
+      <i class="fa fa-ban" aria-hidden="true"></i>
+      Not Avaliable
+    </span>
+  </td>
+  -->   
+  <!-- Exame -->
+  <!-- <td>
+    <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+    <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  </td>
+   --><!-- Status -->
+  <td>
+    <% if (model.progress.factor >= 1) { %>
+      <span class="concluido">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        {translateToken value="Done"}
+      </span>
+    <% } else if (model.progress.factor > 0) { %>
+      <span class="andamento">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        {translateToken value="In Progress"}
+      </span>
+    <% } else { %>
+      <span class="avalialbe">
+        <i class="fa thumbs-o-up" aria-hidden="true"></i>
+        {translateToken value="Avaliable"}
+      </span>
+    <% } %>
+  </td>
+  <!-- Opções -->
+  <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
+  <!--
+  	<%
+  	if (_.has(model, 'test')) {
+  		if (model.test.test_max_questions == 0) {
+  			var total_questions = _.size(model.test.questions);
+  		} else {
+  			var total_questions = model.test.test_max_questions;
+  		}
+  	} else {
+  		var total_questions = 0; 
+  	} 
+  	%>
+  	<td><a href="javascript:void(0)" class="view-test-action"><%= model.name %></a></td>
+  	<td class="text-center"><%= total_questions %></td>
+  	<td class="text-center">
+  		<% if (_.has(model, 'test')) { %>
+  			<span class="label label-danger">
+  			<%= _.size(model.test.executions) %>
+  			<% if (model.test.test_repetition > 0) { %>
+  				 / <%= model.test.test_repetition %>
+  			<% } %>
+  			</span>
+  		<% } %>
+  	</td>
+  	<td class="text-center">
+  		<% if (_.has(model, 'test')) { %>
+  			<%
+  			if (_.size(model.test.executions) > 0) {
+  				 var execution = _.last(model.test.executions);
+  			%>
+  				<span class="label label-primary"><%= execution.user_grade %></span>
+  				<small><%= execution.user_points %> {translateToken value="points"}</small>
+  			<% } %>
+  		<% } %>
+  	</span></td>
+  	<td class="text-center">
+  		<% if (_.has(model, 'test') && _.size(model.test.executions) > 0) { %>
+  			<span class="label label-success">{translateToken value="Yes"}</span>
+  		<% } else { %>
+  			<span class="label label-danger">{translateToken value="No"}</span>
+  		<% } %>
+  	</td>
+  	<td class="text-center">
+  		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
+  			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
+  				{translateToken value="Do now!"}
+  			</a>
+  		<% } %>
+  		<% if (total_questions > 0) { %>
+  			<a href="javascript:void(0);" class="btn btn-xs btn-info view-test-action">
+  				{translateToken value="Details"}
+  			</a>
+  		<% } %>
+  	</td>
+  -->
 </script>
 
 <!--

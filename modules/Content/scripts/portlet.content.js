@@ -189,7 +189,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//app.userSettings.set("class_id", this.model.get("id"));
 				mod.programsCollection.moveToCourse(this.model.get("id"));
 
-				$("[href='#course-tab']").tab('show');
+				$("[href='#tab_course_units']").tab('show');
 			},
 			checkProgress : function(model) {
 				var progress = _.findWhere(model.get("courses"), {class_id : this.model.get("id")});
@@ -210,7 +210,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		/* CLASSES TABS VIEW CLASSES */
-
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
 				"click .lesson-change-action" : "setLessonId",
@@ -228,12 +227,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#unit-tab']").tab('show');
 			},
 			getMappedModel : function() {
-				console.warn(this.model.getMaterials());
-
 				var result = this.model.toJSON();
 
-				result.materials = this.model.getMaterials().toJSON();
+				var video = this.model.getVideo();
 
+				if (video) {
+					result.video = video.toJSON();	
+				} else {
+					result.video = false;
+				}
+
+				result.materials = this.model.getMaterials().toJSON();
 
 				return result;
 			},
@@ -436,9 +440,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		course : baseModel.extend({}),
 		unit : baseModel.extend({
 			contents : {},
+			getVideo : function() {
+				if (this.get('video')) {
+					return this.get('video');
+				}
+				
+				var contents = new mod.collections.contents(this.get("contents"));
+
+				var videos = contents.filter(function(model, index) {
+					return model.isVideo();
+				});
+
+				this.set('video', contents.getMainVideo(_.first(videos)));
+
+				return this.get('video');
+			},
 			getMaterials : function() {
-				if (_.has(this.contents, 'materials')) {
-					return this.contents['materials'];
+				if (this.get('materials')) {
+					return this.get('materials');
 				}
 
 				var filteredCollection = _.filter(this.get("contents"), function(model, index) {
@@ -446,12 +465,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					return object.isMaterial();
 				});
 
-				if (!_.isNull(this.contents)) {
-					//delete this.contents;
-				}
-				this.contents['materials'] = new mod.collections.contents(filteredCollection);
+				this.set('materials', new mod.collections.contents(filteredCollection));
 
-				return this.contents['materials'];
+				return this.get('materials');
 			},
 			getExercises : function() {
 				if (_.has(this.contents, 'exercises')) {
@@ -472,8 +488,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				return this.contents['exercises'];
 			},
-
-
 		}),
 		content : baseModel.extend({
 			isVideo : function() {
