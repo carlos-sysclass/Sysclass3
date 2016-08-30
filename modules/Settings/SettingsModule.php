@@ -36,6 +36,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
     );
     /* ISectionMenu */
     public function getSectionMenu($section_id) {
+        /*
         if ($section_id == "topbar") {
 
             // INJECT THE HELP BUTTON
@@ -54,6 +55,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
 
             return $menuItem;
         }
+        */
         return false;
     }
 
