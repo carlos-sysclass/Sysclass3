@@ -631,8 +631,8 @@ _before_init_functions.push(function() {
           <i class="fa fa-check" aria-hidden="true"></i>
           Watched
         </span>
-      <% } else if (item.progress.factor > 0) { %>
-        <span class="concluido">
+      <% } else if (model.video.progress.factor > 0) { %>
+        <span class="andamento">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
           Continue
         </span>
@@ -658,7 +658,6 @@ _before_init_functions.push(function() {
             <i class="fa fa-check" aria-hidden="true"></i>
             Viewed
           </span>
-        <% } else if (item.progress.factor > 0) { %>
         <% } else { %>
           <span class="avalialbe">
             <i class="fa thumbs-o-up" aria-hidden="true"></i>
