@@ -56,7 +56,75 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     	return value;
     };
 
-  	this.baseClass = Backbone.View.extend({
+	this.baseChangeModelViewClass = Backbone.View.extend({
+		//portlet: $('#courses-widget'),
+		setModel : function(model) {
+			this.model = model;
+			//this.render();
+		},
+		setCollection : function(collection) {
+			this.collection = collection;
+			//this.render();
+		}
+
+	});
+	this.baseChildTabViewClass = this.baseChangeModelViewClass.extend({
+		//nofoundTemplate : _.template($("#tab_all_child-nofound-template").html()),
+		initialize: function(opt) {
+			console.info('portlet.content/baseChildTabViewClass::initialize');
+
+			//this.listenTo(this.model, 'sync', this.render.bind(this));
+			//this.render();
+		},
+		render : function(e) {
+			console.info('portlet.content/baseChildTabViewClass::render');
+
+			this.collection = this.makeCollection();
+
+			this.$el.empty();
+
+			if (this.collection.size() === 0) {
+				this.$el.append(this.nofoundTemplate());
+				this.disableView();
+			} else {
+				this.enableView();
+				var self = this;
+				this.collection.each(function(model, i) {
+					var childView = new self.childViewClass({model : model});
+					self.$el.append(childView.render().el);
+				});
+			}
+			app.module("ui").refresh(this.$el);
+		},
+		disableView : function() {
+
+		},
+		enableView : function() {
+			
+		}
+	});
+
+	this.baseChildTabViewItemClass = Backbone.View.extend({
+		tagName : "tr",
+		//template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
+		initialize : function() {
+			this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
+		},
+		render : function(e) {
+			console.info('portlet.content/baseChildTabViewItemClass::render');
+			this.$el.html(
+				this.template(this.model.toJSON())
+			);
+			return this;
+		}
+	});
+
+
+
+
+	// ====================================================================================
+
+  	this.baseClass = this.baseChangeModelViewClass.extend({
   		dataPooling : true,
   		renderType : "byModel",
 	    events : function() {

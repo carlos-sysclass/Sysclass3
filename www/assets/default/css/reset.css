@@ -212,9 +212,9 @@ body {
   float: left;
   margin-top: 8px;
 }
-.my-video-dimensions {
+.vjs-auto-height {
     width: 100% !important;
-    height: 477px;
+    max-height: 477px;
 }
 
 .removed {
@@ -224,8 +224,8 @@ body {
 .new-content-trick.col-md-11 {
   padding-right: 0 !important;
 }
-.new-content-tabs.col-md-12 .my-video-dimensions {
-  height: 640px;
+.new-content-tabs.col-md-12 .vjs-auto-height {
+  max-height: 640px;
 }
 
 /* INDEX 2 */
@@ -442,7 +442,7 @@ body {
     border-radius: 0 !important;
 }
 .new-modal-v .modal-body {
-  height: 100vh;
+  /* height: 100vh; */
   padding-left: 0;
   padding-right: 0;
 }
@@ -452,9 +452,9 @@ body {
   font-size: 20px;
   margin-bottom: 10px;
 }
-.new-modal-v .my-video-dimensions {
+.new-modal-v .vjs-auto-height {
     width: 100% !important;
-    height: 641px;
+    max-height: 641px;
 }
 .new-modal-v .bg-modal-black {
   background: #000;

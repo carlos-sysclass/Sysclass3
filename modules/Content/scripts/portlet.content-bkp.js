@@ -919,47 +919,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 		*/
 		/*
-		var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
-			events : {
-				"click .view-content-action" : "viewContentAction"
-			},
-			template : _.template($("#tab_unit_materials-item-template").html(), null, {variable: "model"}),
-			viewContentAction : function(e) {
-				// TRACK PROGRESS
-				var progressModel = new mod.models.content_progress();
-				progressModel.setAsViewed(this.model);
-
-				this.model.set("progress", progressModel.toJSON());
-
-				this.render();
-			},
-			checkProgress : function(model) {
-				var progress = _.findWhere(model.get("contents"), {content_id : this.model.get("id")});
-				if (!_.isUndefined(progress)) {
-					this.model.set("progress", progress);
-					this.render();
-				}
-
-			}
-		});
-		*/
-		/*
-		var unitMaterialsTabViewClass = baseChildTabViewClass.extend({
-			nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
-			childViewClass : unitMaterialsTabViewItemClass,
-			makeCollection: function() {
-				// GET THE MATERIALS
-				return mod.programsCollection.getCurrentContents('material');
-			},
-			disableView : function() {
-				$("[href='#tab_unit_materials'],#tab_unit_materials").addClass("hidden");
-			},
-			enableView : function() {
-				$("[href='#tab_unit_materials'],#tab_unit_materials").removeClass("hidden");
-			}
-		});
-		*/
-		/*
 		var unitTestTabViewClass = baseChangeModelViewClass.extend({
 			nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 			template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),

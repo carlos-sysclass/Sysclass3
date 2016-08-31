@@ -227,14 +227,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
                 if (!this.dialogContentUnit.started) {
                     this.dialogContentUnit.start({
-                        modelClass : mod.models.unit
+                        modelClass : mod.models.unit,
                     });
                 }
 
-                this.model.getCourse(true);
+                this.model.getCourse();
 
                 this.dialogContentUnit.setInfo({
-                	model: this.model
+                	model: this.model,
+                	collection : mod.programsCollection
                 }).open();
 
 
