@@ -150,7 +150,7 @@
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
