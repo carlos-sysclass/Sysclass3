@@ -16,7 +16,7 @@ use Sysclass\Models\Content\Program,
 /**
  * @RoutePrefix("/module/content")
  */
-class ContentModule extends \SysclassModule implements \IWidgetContainer
+class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBlockProvider
 {
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array(), $caller = null) {
@@ -38,9 +38,9 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
 
 			//$this->putModuleScript("models.courses");
 			$this->putModuleScript("portlet.content");
-
             $this->putBlock("tests.info.dialog");
             $this->putBlock("lessons.dialogs.exercises");
+            $this->putBlock("content.unit.dialog");
 
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);
@@ -140,6 +140,31 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer
 
 		return false;
 	}
+
+    public function registerBlocks() {
+        return array(
+            'content.unit.dialog' => function($data, $self) {
+                //$self->putComponent("bootstrap-confirmation");
+                $self->putComponent("bootstrap-editable");
+
+                $self->putScript("plugins/videojs/video");
+
+                // CREATE BLOCK CONTEXT
+                //$block_context = $self->getConfig("blocks\\blocks.questions.list\\context");
+                //$self->putItem("questions_list_block_context", $block_context);
+
+                //$self->putModuleScript("blocks.questions.list");
+                //$self->setCache("blocks.questions.list", $block_context);
+                $this->putModuleScript("dialogs.content.unit");
+
+                $self->putSectionTemplate("dialogs", "dialogs/content-unit");
+
+                return true;
+            }
+        );
+    }
+
+    
 
 
     /**

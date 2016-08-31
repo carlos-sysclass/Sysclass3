@@ -227,9 +227,7 @@ _before_init_functions.push(function() {
           </div>
         </div>
     </div>
-
-
-    <!--
+  <!--
 	<div class="courses-container" id="courses-content">
 		<div class="portlet-tabs" id="courses-content-navigation">
 			<ul class="nav nav-tabs">
@@ -508,23 +506,6 @@ _before_init_functions.push(function() {
 		</div>
 	</div>
 	-->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
 </div>
 
 <script type="text/template" id="tab_all_child-nofound-template">
@@ -632,123 +613,120 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-<% console.warn('UNIT', model) %>
-<!-- Unidade -->
-<td>
-  <span class="btn btn-sm btn-circle btn-default disabled">
-    <i class="fa fa-file"></i>
-    Lesson
-  </span>
-  <a href="" data-toggle="modal" data-target="#myModal"><%= model.name %></a>
-</td>
-<!-- Video -->
-<td>
-  <% if (!model.video) { %> 
-  <% } else { %>
-    <% if (model.video.progress.factor >= 1) { %>
-      <span class="concluido">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        Watched
-      </span>
-    <% } else if (item.progress.factor > 0) { %>
-      <span class="concluido">
-        <i class="fa fa-clock-o" aria-hidden="true"></i>
-        Continue
+  <% console.warn('UNIT', model) %>
+  <!-- Unidade -->
+  <td>
+    <span class="btn btn-sm btn-circle btn-default disabled">
+      <i class="fa fa-file"></i>
+      Lesson
+    </span>
+    <a href="javascript: void(0);" class="unit-change-action"><%= model.name %></a>
+  </td>
+  <!-- Video -->
+  <td>
+    <% if (!model.video) { %> 
+    <% } else { %>
+      <% if (model.video.progress.factor >= 1) { %>
+        <span class="concluido">
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Watched
+        </span>
+      <% } else if (item.progress.factor > 0) { %>
+        <span class="concluido">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+          Continue
+        </span>
+      <% } else { %>
+        <span class="avalialbe">
+          <i class="fa thumbs-o-up" aria-hidden="true"></i>
+          Watch
+        </span>
+      <% } %>
+    <% } %>
+  </td>
+  <!-- Material -->
+  <td>
+    <% if (_.size(model.materials) == 0) { %> 
+      <span class="pendente">
+        <i class="fa fa-ban" aria-hidden="true"></i>
+        Not Avaliable
       </span>
     <% } else { %>
-      <span class="avalialbe">
-        <i class="fa thumbs-o-up" aria-hidden="true"></i>
-        Watch
-      </span>
+      <% _.each(model.materials, function (item, index) { %>
+        <% if (item.progress.factor >= 1) { %>
+          <span class="concluido">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            Viewed
+          </span>
+        <% } else if (item.progress.factor > 0) { %>
+        <% } else { %>
+          <span class="avalialbe">
+            <i class="fa thumbs-o-up" aria-hidden="true"></i>
+            Avaliable
+          </span>
+        <% } %>
+      <!-- <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span> -->
+      <% }); %>
     <% } %>
-  <% } %>
-</td>
-
-  
-
-<!-- Material -->
-<td>
-  <% if (_.size(model.materials) == 0) { %> 
+  </td>
+  <!-- Exercicio -->
+  <!--
+  <td>
+    <% if (_.size(model.exercises) == 0) { %> 
+    <% } else { %>
+      <% _.each(model.exercises, function (item, index) { %>
+        <% if (item.progress.factor >= 1) { %>
+          <span class="concluido">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Viewed
+          </span>
+        <% } else if (item.progress.factor > 0) { %>
+        <% } else { %>
+          <span class="avalialbe">
+            <i class="fa fa-coffee" aria-hidden="true"></i>
+            Avaliable
+          </span>
+        <% } %>
+      <% }); %>
+    <% } %>
+  </td>
+  -->
+  <!-- Teste -->
+  <!--
+  <td>
     <span class="pendente">
       <i class="fa fa-ban" aria-hidden="true"></i>
       Not Avaliable
     </span>
-  <% } else { %>
-    <% _.each(model.materials, function (item, index) { %>
-      <% if (item.progress.factor >= 1) { %>
-        <span class="concluido">
-          <i class="fa fa-check" aria-hidden="true"></i>
-          Viewed
-        </span>
-      <% } else if (item.progress.factor > 0) { %>
-      <% } else { %>
-        <span class="avalialbe">
-          <i class="fa thumbs-o-up" aria-hidden="true"></i>
-          Avaliable
-        </span>
-      <% } %>
-    <!-- <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span> -->
-    <% }); %>
-  <% } %>
-</td>
-<!-- Exercicio -->
-<!--
-<td>
-  <% if (_.size(model.exercises) == 0) { %> 
-  <% } else { %>
-    <% _.each(model.exercises, function (item, index) { %>
-      <% if (item.progress.factor >= 1) { %>
-        <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
-          Viewed
-        </span>
-      <% } else if (item.progress.factor > 0) { %>
-      <% } else { %>
-        <span class="avalialbe">
-          <i class="fa fa-coffee" aria-hidden="true"></i>
-          Avaliable
-        </span>
-      <% } %>
-    <% }); %>
-  <% } %>
-</td>
--->
-<!-- Teste -->
-<!--
-<td>
-  <span class="pendente">
-    <i class="fa fa-ban" aria-hidden="true"></i>
-    Not Avaliable
-  </span>
-</td>
--->
-<!-- Exame -->
-<!-- <td>
-  <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-  <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-  <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
-</td>
- --><!-- Status -->
-<td>
-  <% if (model.progress.factor >= 1) { %>
-    <span class="concluido">
-      <i class="fa fa-check" aria-hidden="true"></i>
-      {translateToken value="Completed"}
-    </span>
-  <% } else if (model.progress.factor > 0) { %>
-    <span class="andamento">
-      <i class="fa fa-clock-o" aria-hidden="true"></i>
-      {translateToken value="In Progress"}
-    </span>
-  <% } else { %>
-    <span class="avalialbe">
-      <i class="fa thumbs-o-up" aria-hidden="true"></i>
-      {translateToken value="Avaliable"}
-    </span>
-  <% } %>
-</td>
-<!-- Opções -->
-<!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
+  </td>
+  -->
+  <!-- Exame -->
+  <!-- <td>
+    <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+    <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
+  </td>
+   --><!-- Status -->
+  <td>
+    <% if (model.progress.factor >= 1) { %>
+      <span class="concluido">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        {translateToken value="Completed"}
+      </span>
+    <% } else if (model.progress.factor > 0) { %>
+      <span class="andamento">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        {translateToken value="In Progress"}
+      </span>
+    <% } else { %>
+      <span class="avalialbe">
+        <i class="fa thumbs-o-up" aria-hidden="true"></i>
+        {translateToken value="Avaliable"}
+      </span>
+    <% } %>
+  </td>
+  <!-- Opções -->
+  <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
 	<!--
 	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
 	<td class="text-center"></td>

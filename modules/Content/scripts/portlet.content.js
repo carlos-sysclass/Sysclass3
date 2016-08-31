@@ -212,11 +212,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		/* CLASSES TABS VIEW CLASSES */
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
-				"click .lesson-change-action" : "setLessonId",
+				"click .unit-change-action" : "setLessonId",
 				"click .view-test-action" : "openDialog",
 				"click .open-test-action" : "doTest"
 			},
 			testInfoModule : app.module("dialogs.tests.info"),
+			dialogContentUnit : app.module("dialogs.content.unit"),
 			lessonTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
             testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
 			setLessonId : function(e) {
@@ -224,7 +225,21 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//app.userSettings.set("class_id", this.model.get("id"));
 				mod.programsCollection.moveToUnit(this.model.get("id"));
 
-				$("[href='#unit-tab']").tab('show');
+                if (!this.dialogContentUnit.started) {
+                    this.dialogContentUnit.start({
+                        modelClass : mod.models.unit
+                    });
+                }
+
+                this.model.getCourse(true);
+
+                this.dialogContentUnit.setInfo({
+                	model: this.model
+                }).open();
+
+
+
+				//$("[href='#unit-tab']").tab('show');
 			},
 			getMappedModel : function() {
 				var result = this.model.toJSON();
@@ -440,6 +455,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		course : baseModel.extend({}),
 		unit : baseModel.extend({
 			contents : {},
+			getCourse : function(asJSON) {
+				//if (this.get('course')) {
+				//	return this.get('course');
+				//}
+				var course = mod.programsCollection.getCurrentCourses().findWhere({id : this.get("class_id")})
+				if (asJSON) {
+					this.set('course', course.toJSON());
+				} else {
+					this.set('course', course);	
+				}
+
+				return this.get('course');
+			},
 			getVideo : function() {
 				if (this.get('video')) {
 					return this.get('video');
