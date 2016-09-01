@@ -38,16 +38,39 @@ _before_init_functions.push(function() {
         <div class="col-sm-12 col-md-12 inter-navsuper-tabs">
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="tab_course_units">
+              <!--         
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <!-- TAGS STATUS DO SISTEMA -->
                 <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
                 <span class="andamento-tag">In Progress<span class="andamento"></span></span>
-                <!-- <span class="fechado-tag">Disable<span class="fechado"></span></span> -->
+                <span class="fechado-tag">Disable<span class="fechado"></span></span>
+              </div> 
+              -->
+              <div class="content-container full-video">
+                <div class="unit-video-container" id="unit-video-container">
+                </div>
+                <div class="unit-material-container" id="unit-material-container">
+                  <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </a>
+                  <table class="table table-striped unit-material-table"> 
+                    <thead> 
+                      <tr>
+                        <th class="text-center">{translateToken value="Type"}</th>
+                        <th class="text-center">{translateToken value="Name"}</th>
+                        <th class="text-center">{translateToken value="Viewed"}</th>
+                      </tr>
+                    </thead> 
+                    <tbody> 
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <table class="table table-striped">
+
+
+              <table class="table table-striped unit-table">
                 <thead>
                   <tr>
                     <th>{translateToken value="Unit"}</th>
@@ -103,11 +126,10 @@ _before_init_functions.push(function() {
                 </tbody>
               </table>
             </div>
-
+<!-- 
             <div role="tabpanel" class="tab-pane" id="profile">
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <!-- TAGS STATUS DO SISTEMA -->
                 <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
@@ -221,291 +243,12 @@ _before_init_functions.push(function() {
                 </tbody>
               </table>
             </div>
+ -->            
             <div role="tabpanel" class="tab-pane" id="tab_program_description">
             </div>
-
           </div>
         </div>
     </div>
-  <!--
-	<div class="courses-container" id="courses-content">
-		<div class="portlet-tabs" id="courses-content-navigation">
-			<ul class="nav nav-tabs">
-				<li class="the-course-tab">
-					<a data-toggle="tab" href="#program-tab">
-						<div class="nav-title">
-							<span class="">
-								<i class="fa fa-graduation-cap"></i>&nbsp;
-								{translateToken value="Programs"}
-							</span>
-							<span class="label label-sm label-success"><strong><span class="program-count"></span></strong></span>
-						</div>
-					</a>
-				</li>
-				<li class="the-class-tab">
-					<a data-toggle="tab" href="#course-tab">
-						<div class="nav-title">
-							<span class="tab-title">
-								<i class="fa fa-sitemap"></i> 
-								{translateToken value="Courses"}
-							</span>
-							<span class="label label-sm label-success"><strong><span class="course-count"></span></strong></span>
-						</div>
-					</a>
-				</li>
-				<li class="the-lesson-tab active">
-					<a data-toggle="tab" href="#unit-tab">
-						<div class="nav-title">
-							<span class="tab-title">
-								<i class="fa fa-book"></i> 
-								
-							</span>
-							<span class="label label-sm label-success"><strong><span class="unit-count"></span></strong></span>
-						</div>
-					</a>
-				</li>
-			</ul>
-			<div class="clearfix"></div>
-			<div class="tab-content">
-				<div id="program-tab" class="tab-pane">
-					<div class="clearfix"></div>
-					<div class="navbar navbar-default navbar-lesson" role="navigation">
-						<div class="navbar-header">
-							<a href="#" class="navbar-brand program-title">
-								 {translateToken value="Program"}
-							</a>
-							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success">
-									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
-								</span>
-							</a>
-						</div>
-						<div class="collapse navbar-collapse navbar-ex1-collapse">
-							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
-										<i class="icon-arrow-left"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-info no-padding disabled">
-                    					<span class="entity-current"></span> / <span class="entity-count"></span>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="clearfix"></div>
-
-					<div class="tabbable-custom">
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a data-toggle="tab" href="#tab_program_description"><i class="fa fa-list-alt"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
-							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_program_courses"><i class="fa fa-sitemap"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Courses"}</span></a>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div id="tab_program_description" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-									<div class="alert alert-info">
-										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this program"}
-									</div>
-								</div>
-							</div>
-
-							<div id="tab_program_courses" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-									<table class="table table-striped table-bordered table-advance table-hover">
-										<thead>
-											<tr>
-												<th>{translateToken value="Name"}</th>
-												<th class="text-center">{translateToken value="Completed"}</th>
-											</tr>
-										</thead>
-										<tbody>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					 </div>
-				</div>
-				<div id="course-tab" class="tab-pane">
-
-					<div class="navbar navbar-default navbar-lesson" role="navigation">
-						<div class="navbar-header">
-							<a href="#" class="navbar-brand program-title hidden-xs">
-								{translateToken value="Program"}
-							</a>
-							<a href="#" class="navbar-brand hidden-xs">&raquo;</a>
-							<a href="#" class="navbar-brand course-title">
-								{translateToken value="Course"}
-							</a>
-							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success">
-									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
-								</span>
-							</a>
-						</div>
-						<div class="collapse navbar-collapse navbar-ex1-collapse">
-							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
-										<i class="icon-arrow-left"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-info no-padding disabled">
-                    				<span class="entity-current"></span> / <span class="entity-count"></span>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="clearfix"></div>
-
-					<div class="tabbable-custom">
-						<ul class="nav nav-tabs">
-							<li class="active">
-								<a data-toggle="tab" href="#tab_course_info"><i class="fa fa-info-circle"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Description"}</span></a>
-							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_course_instructor"><i class="icon-user"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Instructor"}</span></a>
-							</li>
-							<li class="">
-
-								<a data-toggle="tab" href="#tab_course_units"><i class="fa fa-clipboard"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Units"}</span></a>
-							</li>
-
-							<li class="visible-xxs visible-md">
-								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">{translateToken value="More"}</span></a>
-								<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="">
-  								</ul>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div id="tab_course_info" class="tab-pane active">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="383px">
-							   	</div>
-							</div>
-							<div id="tab_course_instructor" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="383px">
-							   	</div>
-							</div>
-							<div id="tab_course_units" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-									<table class="table table-striped table-bordered table-advance table-hover">
-										<thead>
-											<tr>
-												<th>{translateToken value="Name"}</th>
-												<th class="text-center">{translateToken value="# Questions"}</th>
-												<th class="text-center">{translateToken value="Times done"}</th>
-												<th class="text-center">{translateToken value="Grade"}</th>
-												<th class="text-center">{translateToken value="Completed"}</th>
-												<th class="text-center">{translateToken value="Options"}</th>
-											</tr>
-										</thead>
-
-										<tbody>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div id="unit-tab" class="tab-pane active">
-					<div class="navbar navbar-default navbar-lesson" role="navigation">
-						<div class="navbar-header">
-							<a href="javascript: void(0);" data-toggle="dropdown" class="navbar-brand course-title hidden-xs">
-								{translateToken value="Course"}
-							</a>
-							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
-							<a href="javascript: void(0);" class="navbar-brand unit-title">
-								{translateToken value="Unit"}
-							</a>
-							<a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
-								<span class="label label-success">
-									<i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
-								</span>
-							</a>
-						</div>
-						<div class="collapse navbar-collapse navbar-ex1-collapse">
-							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
-										<i class="icon-arrow-left"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-info no-padding disabled">
-                    				<span class="entity-current"></span> / <span class="entity-count"></span>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-
-							</ul>
-						</div>
-					</div>
-
-					<div class="tabbable-custom ">
-						<ul class="nav nav-tabs ">
-							<li class="active">
-								<a data-toggle="tab" href="#tab_unit_video"><i class="fa fa-youtube-play"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video"}</span></a>
-							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_unit_materials"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
-							</li>
-							<li class="">
-								<a data-toggle="tab" href="#tab_unit_tests"><i class="fa fa-list-ol"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
-							</li>
-						</ul>
-						<div class="tab-content">
-							<div id="tab_unit_video" class="tab-pane active">
-							</div>
-							<div id="tab_unit_materials" class="tab-pane">
-								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-									<table class="table table-striped table-bordered table-advance table-hover">
-										<thead>
-											<tr>
-												<th class="text-center">{translateToken value="Type"}</th>
-												<th class="text-center">{translateToken value="Name"}</th>
-												<th class="text-center">{translateToken value="Viewed"}</th>
-												<th class="text-center">{translateToken value="Options"}</th>
-											</tr>
-										</thead>
-										<tbody>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div id="tab_unit_tests" class="tab-pane">
-							</div>
-						</div>
-					 </div>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
-	-->
 </div>
 
 <script type="text/template" id="tab_all_child-nofound-template">
@@ -601,7 +344,6 @@ _before_init_functions.push(function() {
 	</td>
 	-->
 </script>
-
 <script type="text/template" id="tab_courses_child-nofound-template">
 	<tr>
 		<td colspan="6"  class="alert alert-info">
@@ -620,51 +362,58 @@ _before_init_functions.push(function() {
       <i class="fa fa-file"></i>
       Lesson
     </span>
-    <a href="javascript: void(0);" class="unit-change-action"><%= model.name %></a>
+    <%= model.name %></a>
   </td>
   <!-- Video -->
   <td>
+
+
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
-        <span class="concluido">
-          <i class="fa fa-check" aria-hidden="true"></i>
-          Watched
-        </span>
+        <a href="javascript: void(0);" class="watch-video-action">
+          <span class="concluido">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            {translateToken value="Watched"}
+          </span>
+        </a>
       <% } else if (model.video.progress.factor > 0) { %>
-        <span class="andamento">
-          <i class="fa fa-clock-o" aria-hidden="true"></i>
-          Continue
-        </span>
+        <a href="javascript: void(0);" class="watch-video-action">
+          <span class="andamento">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {translateToken value="Continue"}
+          </span>
+        </a>
       <% } else { %>
-        <span class="avalialbe">
-          <i class="fa thumbs-o-up" aria-hidden="true"></i>
-          Watch
-        </span>
+        <a href="javascript: void(0);" class="watch-video-action">
+          <span class="avalialbe">
+            <i class="fa thumbs-o-up" aria-hidden="true"></i>
+            {translateToken value="Watch"}
+          </span>
+        </a>
       <% } %>
     <% } %>
   </td>
   <!-- Material -->
   <td>
     <% if (_.size(model.materials) == 0) { %> 
-      <span class="pendente">
-        <i class="fa fa-ban" aria-hidden="true"></i>
-        Not Avaliable
-      </span>
     <% } else { %>
       <% _.each(model.materials, function (item, index) { %>
         <% if (item.progress.factor >= 1) { %>
-          <span class="concluido">
-            <i class="fa fa-check" aria-hidden="true"></i>
-            Viewed
-          </span>
+          <a href="javascript: void(0);" class="list-materials-action">
+            <span class="concluido">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              {translateToken value="Viewed"}
+            </span>
+          </a>
         <% } else { %>
-          <span class="avalialbe">
-            <i class="fa thumbs-o-up" aria-hidden="true"></i>
-            Avaliable
-          </span>
+          <a href="javascript: void(0);" class="list-materials-action">
+            <span class="avalialbe">
+              <i class="fa thumbs-o-up" aria-hidden="true"></i>
+              {translateToken value="Avaliable"}
+            </span>
+          </a>
         <% } %>
-      <!-- <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span> -->
       <% }); %>
     <% } %>
   </td>
@@ -741,7 +490,6 @@ _before_init_functions.push(function() {
 	<td class="text-center"></td>
 	-->
 </script>
-
 <script type="text/template" id="tab_courses_tests-item-template">
   <% console.warn('EXAM', model) %>
   <!-- Unidade -->
@@ -866,6 +614,99 @@ _before_init_functions.push(function() {
   -->
 </script>
 
+<!-- USED HERE AND IN CONTENT DIALOG -->
+<script type="text/template" id="tab_unit_video-nofound-template">
+  <div class="alert alert-info">
+    <span class="text-info"><i class="icon-warning-sign"></i></span>
+    {translateToken value="Ops! There's any content for this lesson"}
+  </div>
+</script>
+<script type="text/template" id="tab_unit_video-item-template">
+  <div class="videocontent">
+    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height"
+      width="auto"  height="auto"
+      <% if (!_.has(model, 'poster')) { %>
+        poster="{Plico_GetResource file='images/default-poster.jpg'}"
+      <% } else { %>
+        poster="<%= model.poster.file.url %>"
+      <% } %>
+      >
+      <% if (_.has(model, 'file')) { %>
+        <source src="<%= model.file.url %>" type='<%= model.file.type %>' />
+      <% } else if (_.has(model, 'content')) { %>
+        <source src="<%= model.content %>" />
+      <% } %>
+
+      <% _.each(model.childs, function(item, index){ %>
+        <track kind="subtitles" src="<%= item.file.url %>" srclang="<%= item.language_code %>" label="<%= item.language_code %>"></track>
+      <% }); %>
+    </video>
+  </div>
+</script>
+
+<script type="text/template" id="tab_unit_materials-nofound-template">
+  <tr>
+    <td colspan="5">
+      <span class="text-info">
+        <i class="icon-warning-sign"></i>
+        {translateToken value="Ops! There's any materials registered for this course"}
+      </span>
+    </td>
+  </tr>
+</script>
+<script type="text/template" id="tab_unit_materials-item-template">
+  <% console.warn(model); %>
+    <%
+        var file_type = "other";
+
+        if (/^video\/.*$/.test(model.file.type)) {
+            file_type = "video";
+        } else if (/^image\/.*$/.test(model.file.type)) {
+            file_type = "image";
+        } else if (/^audio\/.*$/.test(model.file.type)) {
+            file_type = "audio";
+        } else if (/.*\/pdf$/.test(model.file.type)) {
+            file_type = "pdf";
+        }
+    %>
+  <td class="text-center">
+        <% if (file_type == "video") { %>
+            <i class="fa fa-file-video-o"></i>
+        <% } else if (file_type == "image") { %>
+            <i class="fa fa-file-image-o"></i>
+        <% } else if (file_type == "audio") { %>
+            <i class="fa fa-file-sound-o"></i>
+        <% } else if (file_type == "pdf") { %>
+            <i class="fa fa-file-pdf-o"></i>
+        <% } else { %>
+            <i class="fa fa-file-o"></i>
+        <% }  %>
+  </td>
+  <td>
+    <a target="_blank" class="view-content-action" href="<%= model['file'].url %>">
+      <%= model['file'].name %>
+    </a>
+  </td>
+  <td class="text-center">
+    <% if (model.progress.factor == 1) { %>
+      <span class="concluido">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        {translateToken value="Viewed"}
+      </span>
+    <% } else { %>
+      <span class="avalialbe">
+        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        {translateToken value="Avaliable"}
+      </span>
+    <% } %>
+  </td>
+</script>
+
+
+
+
+
+<!-- 
 <script type="text/template" id="tab_unit_exercises-nofound-template">
 	<tr>
 		<td colspan="4"  class="alert alert-info">
@@ -897,3 +738,4 @@ _before_init_functions.push(function() {
 		</a>
 	</td>
 </script>
+ -->

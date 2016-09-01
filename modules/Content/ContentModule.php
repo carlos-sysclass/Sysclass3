@@ -30,6 +30,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             $this->putComponent("bootstrap-switch");
             $this->putComponent("icheck");
             $this->putComponent("easy-pie-chart");
+            $this->putComponent("videojs");
 
             $this->putCss("css/reset");
 			$this->putScript("plugins/holder");
@@ -40,7 +41,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 			$this->putModuleScript("portlet.content");
             $this->putBlock("tests.info.dialog");
             $this->putBlock("lessons.dialogs.exercises");
-            $this->putBlock("content.unit.dialog");
+            //$this->putBlock("content.unit.dialog");
 
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);

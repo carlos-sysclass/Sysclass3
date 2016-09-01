@@ -110,8 +110,7 @@ $di->setShared('environment', function() use ($di) {
 		'css/layout',
 		'css/themes/blue',
 
-		'css/custom',
-		'css/videojs/video-js'
+		'css/custom'
 		//<!-- END THEME STYLES -->
 	);
 
@@ -178,6 +177,11 @@ $di->setShared('environment', function() use ($di) {
 	$config['bing/client_secret'] = 'vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=';
 
 	$config['resources/components'] = array(
+		'videojs' => array(
+			'name'	=> 'videojs',
+			'css'	=> array('css/videojs/video-js'),
+			'js'	=> array("plugins/videojs/video")
+		),
 		'select2' => array(
 			'name'	=> 'select2',
 			'css'	=> array('plugins/select2/select2_metro'),

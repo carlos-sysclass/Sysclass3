@@ -73,6 +73,11 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		initialize: function(opt) {
 			console.info('portlet.content/baseChildTabViewClass::initialize');
 
+			if (_.has(opt, 'childContainer')) {
+				this.childContainer = this.$(opt.childContainer);
+			} else {
+				this.childContainer = this.$el;
+			}
 			//this.listenTo(this.model, 'sync', this.render.bind(this));
 			//this.render();
 		},
@@ -81,17 +86,18 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 			this.collection = this.makeCollection();
 
-			this.$el.empty();
+			this.childContainer.empty();
 
 			if (this.collection.size() === 0) {
-				this.$el.append(this.nofoundTemplate());
+				this.childContainer.append(this.nofoundTemplate());
 				this.disableView();
 			} else {
 				this.enableView();
 				var self = this;
 				this.collection.each(function(model, i) {
-					var childView = new self.childViewClass({model : model});
-					self.$el.append(childView.render().el);
+					var childView = new self.childViewClass({model : model, parent: self});
+					console.warn({model : model, parent: self});
+					self.childContainer.append(childView.render().el);
 				});
 			}
 			app.module("ui").refresh(this.$el);
@@ -106,9 +112,14 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.baseChildTabViewItemClass = Backbone.View.extend({
 		tagName : "tr",
+		parentView : null,
 		//template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
-		initialize : function() {
-			this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
+		initialize : function(opt) {
+			if (_.has(opt, 'parent')) {
+				this.parentView = opt.parent;
+			}
+			console.warn(this.parentView);
+			//this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
 		},
 		render : function(e) {
 			console.info('portlet.content/baseChildTabViewItemClass::render');

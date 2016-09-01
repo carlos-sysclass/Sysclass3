@@ -212,11 +212,6 @@ body {
   float: left;
   margin-top: 8px;
 }
-.vjs-auto-height {
-    width: 100% !important;
-    max-height: 477px;
-}
-
 .removed {
   display: none;
 }
@@ -495,4 +490,43 @@ body {
     padding-top: 11px;
     padding-bottom: 10px;
     margin-bottom: 10px;
+}
+
+
+
+
+/** AJUSTES PARA NOVO VIDEO */
+.content-container .unit-video-container, .content-container .unit-material-container {
+  transition: all 1s linear 0s;
+}
+.content-container .unit-video-container {
+  float: left;
+  width: 75%;
+}
+.content-container .unit-material-container {
+  float: right;
+  overflow: hidden;
+  width: 25%;
+}
+
+.content-container.full-video .unit-video-container {
+  width: 100%;
+}
+.content-container.full-video .unit-material-container {
+  width: 0%;
+}
+
+.content-container .vjs-auto-height {
+    width: 100% !important;
+    max-height: 462px;
+    transition: all 1s linear 0s;
+}
+.content-container.full-video .vjs-auto-height {
+  max-height: 617px;
+}
+
+.content-container .close-content-sidebar {
+  float: right;
+  margin: 10px;
+  font-size: 130%;
 }

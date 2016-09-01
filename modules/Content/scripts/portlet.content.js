@@ -58,6 +58,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 		});
 
+		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
+		/*
 		var baseChangeModelViewClass = Backbone.View.extend({
 			//portlet: $('#courses-widget'),
 			setModel : function(model) {
@@ -65,7 +67,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			}
 		});
-
+		*/
+		var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
+		var baseChildTabViewItemClass = app.module("views").baseChildTabViewItemClass;
+		/*
 		var baseChildTabViewClass = baseChangeModelViewClass.extend({
 			nofoundTemplate : _.template($("#tab_all_child-nofound-template").html()),
 			initialize: function(opt) {
@@ -101,7 +106,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				
 			}
 		});
-
+		*/
+		/*
 		var baseChildTabViewItemClass = Backbone.View.extend({
 			tagName : "tr",
 			//template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
@@ -116,6 +122,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return this;
 			}
 		});
+		*/
 
 		/* COURSE TABS VIEW CLASSES */
 		var blockableTabViewClass = baseChangeModelViewClass.extend({
@@ -212,7 +219,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		/* CLASSES TABS VIEW CLASSES */
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
-				"click .unit-change-action" : "setLessonId",
+				"click .watch-video-action" : "watchVideo",
+				"click .list-materials-action" : "listMaterials",
 				"click .view-test-action" : "openDialog",
 				"click .open-test-action" : "doTest"
 			},
@@ -220,27 +228,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			dialogContentUnit : app.module("dialogs.content.unit"),
 			lessonTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
             testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
-			setLessonId : function(e) {
-				//app.userSettings.set("lesson_id", this.model.get("id"));
-				//app.userSettings.set("class_id", this.model.get("id"));
+			watchVideo : function(e) {
 				mod.programsCollection.moveToUnit(this.model.get("id"));
 
-                if (!this.dialogContentUnit.started) {
-                    this.dialogContentUnit.start({
-                        modelClass : mod.models.unit,
-                    });
-                }
+				this.parentView.trigger("watch:video", this.model);
+			},
+			listMaterials : function(e) {
+				//mod.programsCollection.moveToUnit(this.model.get("id"));
 
-                this.model.getCourse();
-
-                this.dialogContentUnit.setInfo({
-                	model: this.model,
-                	collection : mod.programsCollection
-                }).open();
-
-
-
-				//$("[href='#unit-tab']").tab('show');
+				this.parentView.trigger("list:materials", this.model);
 			},
 			getMappedModel : function() {
 				var result = this.model.toJSON();
@@ -303,19 +299,177 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		var courseUnitsTabViewClass = baseChildTabViewClass.extend({
 			nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
 			childViewClass : courseUnitsTabViewItemClass,
+	        events : {
+	            "click .close-content-sidebar" : "hideContentSidebar"
+	        },
 			initialize: function() {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
-
-				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
-
-
+				//this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
-			}
+			},
+			showContentSidebar : function() {
+				this.$(".content-container").removeClass("full-video");
+			},
+			hideContentSidebar : function() {
+				this.$(".content-container").addClass("full-video");
+			},
 		});
+
+
+	    var unitVideoTabViewClass = baseChangeModelViewClass.extend({
+	        videoJS : null,
+	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
+	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	        initialize: function(opt) {
+	            console.info('portlet.content/unitVideosTabViewClass::initialize');
+
+	            //this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
+	        },
+	        render : function(e) {
+	            console.info('portlet.content/unitVideosTabViewClass::render');
+	            var self = this;
+
+	            if (!this.model.get("video")) {
+	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
+	                this.disableView();
+	            } else {
+	                this.enableView();
+
+	                this.videoModel = this.model.get("video");
+
+	                if (!_.isNull(this.videoJS)) {
+	                    this.videoJS.dispose();
+	                }
+
+	                if (this.videoModel) {
+	                    var videoDomID = "unit-video-" + this.videoModel.get("id");
+
+	                    if (this.$("#" + videoDomID).size() === 0) {
+	                        this.$el.empty().append(
+	                            this.template(this.videoModel.toJSON())
+	                        );
+
+	                        //var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
+	                        videojs(videoDomID, {
+	                            "controls": true,
+	                            "autoplay": false,
+	                            "preload": "auto",
+	                            "width" : "auto",
+	                            "height" : "617",
+	                            "techOrder" : [
+	                                'html5', 'flash'
+	                            ]
+	                        }, function() {
+	                            //this.play();
+	                        });
+	                    }
+
+	                    this.videoJS = videojs(videoDomID);
+
+	                    this.videoJS.ready(this.bindStartVideoEvents.bind(this));
+
+	                    mod.videoJS = this.videoJS;
+	                }
+
+	                app.module("ui").refresh(this.$el);
+	            }
+	        },
+	        bindStartVideoEvents : function() {
+	            var self = this;
+	            //this.videoJS.play();
+	            this.currentProgress = parseFloat(this.videoModel.get("progress.factor"));
+
+	            if (_.isNaN(this.currentProgress)) {
+	                this.currentProgress = 0;
+	            }
+
+	            // @todo CALCULATE THE CURRENT VIDEO TIMELINE, IF PREVIOUSLY STARTED
+
+	            if (this.currentProgress >= 1) {
+	                this.trigger("video:viewed");
+	            } else {
+
+	                this.videoJS.on("timeupdate", function() {
+	                    // CALCULATE CURRENT PROGRESS
+	                    var currentProgress = this.videoJS.currentTime() / this.videoJS.duration();
+
+	                    if (currentProgress > this.currentProgress) {
+	                        var progressDiff =  currentProgress - this.currentProgress;
+	                        if (progressDiff > 0.03 ) {
+	                            this.currentProgress = currentProgress;
+	                            //this.videoModel.set("progress", this.currentProgress);
+	                            var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
+	                            progressModel.setAsViewed(this.videoModel, this.currentProgress);
+	                        }
+	                    }
+
+	                }.bind(this));
+
+	                this.videoJS.on("ended", function() {
+	                    this.currentProgress = 1;
+	                    var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
+	                    progressModel.setAsViewed(this.videoModel, this.currentProgress);
+
+	                    this.trigger("video:viewed");
+	                }.bind(this));
+	            }
+	        },
+	        disableView : function() {
+	            //$("[href='#tab_unit_video'").hide();
+	            //$("[href='#tab_unit_materials']").tab('show');
+	            this.$el.hide();
+	        },
+	        enableView : function() {
+	            //$("[href='#tab_unit_video'").show().tab('show');
+	            this.$el.show();
+	        }
+	    });
+
+
+	    var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
+	        events : {
+	            "click .view-content-action" : "viewContentAction"
+	        },
+	        template : _.template($("#tab_unit_materials-item-template").html(), null, {variable: "model"}),
+	        viewContentAction : function(e) {
+	            // TRACK PROGRESS
+				
+	            var progressModel = new mod.models.content_progress();
+	            progressModel.setAsViewed(this.model);
+
+	            this.model.set("progress", progressModel.toJSON());
+
+	            //this.render();
+	        },
+	        checkProgress : function(model) {
+	            var progress = _.findWhere(model.get("contents"), {content_id : this.model.get("id")});
+	            if (!_.isUndefined(progress)) {
+	                this.model.set("progress", progress);
+	                this.render();
+	            }
+
+	        }
+	    });
+
+	    var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
+	    var unitMaterialsTabViewClass = baseChildTabViewClass.extend({
+	        nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
+	        childViewClass : unitMaterialsTabViewItemClass,
+	        makeCollection: function() {
+	            // GET THE MATERIALS
+	            return this.model.get("materials");
+	        },
+	        disableView : function() {
+	            $("[href='#tab_unit_materials'],#tab_unit_materials").addClass("hidden");
+	        },
+	        enableView : function() {
+	            $("[href='#tab_unit_materials'],#tab_unit_materials").removeClass("hidden");
+	        }
+	    });
 	
 		this.widgetViewClass = parent.widgetViewClass.extend({
 			programTabView : null,
@@ -382,13 +536,38 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					});
 
 					this.courseUnitsTabView = new courseUnitsTabViewClass({
-						el : this.$("#tab_course_units table tbody"),
+						el : this.$("#tab_course_units"),
+						childContainer : "table.unit-table tbody",
 						model : this.model
 					});
+
+		            this.unitVideoTabView   = new unitVideoTabViewClass({
+		                el : this.$("#unit-video-container"),
+		                // model : this.model,
+		            });
+		            // MATERIALS
+		            this.unitMaterialsTabView   = new unitMaterialsTabViewClass({
+		                el : this.$("#unit-material-container table.unit-material-table tbody"),
+		                // model : this.model,
+		            });
 
 					this.programDescriptionTabView.render();
 					this.programCoursesTabView.render();
 					this.courseUnitsTabView.render();
+
+
+					this.listenTo(this.courseUnitsTabView, "watch:video", function(unitModel) {
+						this.unitVideoTabView.setModel(unitModel);
+						this.unitVideoTabView.render();
+					}.bind(this));
+
+					this.listenTo(this.courseUnitsTabView, "list:materials", function(unitModel) {
+						this.unitMaterialsTabView.setModel(unitModel);
+						this.unitMaterialsTabView.render();
+
+						this.courseUnitsTabView.showContentSidebar();
+					}.bind(this));
+
 
 					//this.programTabView.render();
 				}
@@ -431,6 +610,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.courseWidgetView.filterActionView.toggle();
 			}
 		};
+
 		this.onSearch = function(e, portlet,q) {
 			/*
 			// INJECT
