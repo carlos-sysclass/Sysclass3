@@ -59,70 +59,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
-		/*
-		var baseChangeModelViewClass = Backbone.View.extend({
-			//portlet: $('#courses-widget'),
-			setModel : function(model) {
-				this.model = model;
-				this.render();
-			}
-		});
-		*/
 		var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
 		var baseChildTabViewItemClass = app.module("views").baseChildTabViewItemClass;
-		/*
-		var baseChildTabViewClass = baseChangeModelViewClass.extend({
-			nofoundTemplate : _.template($("#tab_all_child-nofound-template").html()),
-			initialize: function(opt) {
-				console.info('portlet.content/baseChildTabViewClass::initialize');
-
-				//this.listenTo(this.model, 'sync', this.render.bind(this));
-				this.render();
-			},
-			render : function(e) {
-				console.info('portlet.content/baseChildTabViewClass::render');
-
-				this.collection = this.makeCollection();
-
-				this.$el.empty();
-
-				if (this.collection.size() === 0) {
-					this.$el.append(this.nofoundTemplate());
-					this.disableView();
-				} else {
-					this.enableView();
-					var self = this;
-					this.collection.each(function(model, i) {
-						var childView = new self.childViewClass({model : model});
-						self.$el.append(childView.render().el);
-					});
-				}
-				app.module("ui").refresh(this.$el);
-			},
-			disableView : function() {
-
-			},
-			enableView : function() {
-				
-			}
-		});
-		*/
-		/*
-		var baseChildTabViewItemClass = Backbone.View.extend({
-			tagName : "tr",
-			//template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
-			initialize : function() {
-				this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
-			},
-			render : function(e) {
-				console.info('portlet.content/baseChildTabViewItemClass::render');
-				this.$el.html(
-					this.template(this.model.toJSON())
-				);
-				return this;
-			}
-		});
-		*/
 
 		/* COURSE TABS VIEW CLASSES */
 		var blockableTabViewClass = baseChangeModelViewClass.extend({
@@ -311,6 +249,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			},
+			showContentArea : function() {
+				this.$(".content-container").removeClass("hidden");
+			},
+			hideContentArea : function() {
+				this.$(".content-container").addClass("hidden");
+			},
 			showContentSidebar : function() {
 				this.$(".content-container").removeClass("full-video");
 			},
@@ -324,6 +268,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        videoJS : null,
 	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+
+	        onScreenStatus : true,
+	        onScreenTime : null,
+	        onScreelThreshold : 0.5 * 1000, // 5 seconds
+	        scrollEvent : null,
+	        viewType : "normal", // normal or float
 	        initialize: function(opt) {
 	            console.info('portlet.content/unitVideosTabViewClass::initialize');
 
@@ -336,6 +286,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            if (!this.model.get("video")) {
 	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
 	                this.disableView();
+
 	            } else {
 	                this.enableView();
 
@@ -376,7 +327,95 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                }
 
 	                app.module("ui").refresh(this.$el);
+
+
+	                this.onScreenStatus = this.$el.isOnScreen(1, 0);
+	                this.onScreenTime = Date.now();
+
+	                //this.onScreenInterval = window.setInterval(this.checkViewType.bind(this), this.onScreelThreshold);
 	            }
+	        },
+	        checkViewType : function(evt) {
+	        	console.info('portlet.content/unitVideosTabViewClass::checkViewType');
+	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
+	            var currentScreenTime = Date.now();
+
+	            if (currentScreenStatus != this.onScreenStatus) {
+	            	// RESET THE COUNTER AND STATUS
+	            	console.warn('checking change');
+	            	this.onScreenTime = Date.now();
+	                this.onScreenStatus = currentScreenStatus;
+
+	                this.onScreenInterval = window.setTimeout(this.changeViewType.bind(this), this.onScreelThreshold + 150);
+	            }
+	        },
+	        changeViewType : function(evt) {
+	        	console.info('portlet.content/unitVideosTabViewClass::changeViewType');
+	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
+	            var currentScreenTime = Date.now();
+
+	            console.warn("STATUS:", this.onScreenStatus, "TIME:", currentScreenTime - this.onScreenTime);
+
+	            if ((currentScreenStatus == this.onScreenStatus) && (currentScreenTime - this.onScreenTime >= this.onScreelThreshold)) {
+	            	// THE SAME STATUS MORE THAN 5 SECONDS, IF THE VIEW  
+	            	if (currentScreenStatus && this.viewType == "float") {
+	            		// SWITCH TO NORMAL
+						console.warn("switch-normal");
+
+						this.$el.removeClass("pop-out");
+
+	                	// RESET THE COUNTER AND STATUS
+	                	this.viewType = "normal";
+	                	this.onScreenStatus = currentScreenStatus;
+	                	this.onScreenTime = Date.now();
+	            	} else if (!currentScreenStatus && this.viewType == "normal") {
+	            		// SWITCH TO FLOAT
+	            		console.warn(this.$el.height());
+
+	            		this.$el.css({
+	            			height : this.$el.height() + "px",
+	            		});
+
+	            		console.warn("switch-float");
+
+	            		this.$el.addClass("pop-out-start");
+	            		window.setTimeout(function() {
+	            			this.$el.removeClass("pop-out-start");
+							this.$el.addClass("pop-out");
+	            		}.bind(this), 550)
+	            		/*
+	            		this.$(".videocontent").animate({
+
+	            		}
+	            		*/
+	                	
+	                	// RESET THE COUNTER AND STATUS
+	                	this.viewType = "float";
+	                	this.onScreenStatus = currentScreenStatus;
+	                	this.onScreenTime = Date.now();
+	            	} else {
+	            	}
+	            } else {
+					// RESET THE COUNTER AND STATUS
+					if (currentScreenStatus != this.onScreenStatus) {
+						this.onScreenTime = Date.now();
+					}
+	                this.onScreenStatus = currentScreenStatus;
+	            }
+
+
+
+
+	        	/*
+					//console.warn("isOnScreen", this.$el.isOnScreen(1, 0.3), this);
+                    if (this.$el.isOnScreen(1, 0)) {
+                        $(document).off("scroll."+this.cid + " resize"+this.cid);
+                        // CALl VIEW START
+                        this.start();
+                    }
+
+                }.bind(this));
+                */
 	        },
 	        bindStartVideoEvents : function() {
 	            var self = this;
@@ -417,6 +456,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    this.trigger("video:viewed");
 	                }.bind(this));
 	            }
+
+	            this.onScreenEvent = $(document).on("scroll."+this.cid + " resize."+this.cid, this.checkViewType.bind(this));
+
+                //if (_.isNull(this.onScreenInterval)) {
+                	//this.onScreenInterval = window.setInterval(this.checkViewType.bind(this, [true]), this.onScreelThreshold / 2);
+                //}
 	        },
 	        disableView : function() {
 	            //$("[href='#tab_unit_video'").hide();
@@ -559,12 +604,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.listenTo(this.courseUnitsTabView, "watch:video", function(unitModel) {
 						this.unitVideoTabView.setModel(unitModel);
 						this.unitVideoTabView.render();
+
+						this.courseUnitsTabView.showContentArea();
 					}.bind(this));
 
 					this.listenTo(this.courseUnitsTabView, "list:materials", function(unitModel) {
 						this.unitMaterialsTabView.setModel(unitModel);
 						this.unitMaterialsTabView.render();
 
+						this.courseUnitsTabView.showContentArea();
 						this.courseUnitsTabView.showContentSidebar();
 					}.bind(this));
 

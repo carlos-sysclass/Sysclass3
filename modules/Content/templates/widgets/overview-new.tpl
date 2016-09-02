@@ -48,8 +48,9 @@ _before_init_functions.push(function() {
                 <span class="fechado-tag">Disable<span class="fechado"></span></span>
               </div> 
               -->
-              <div class="content-container full-video">
+              <div class="content-container full-video hidden">
                 <div class="unit-video-container" id="unit-video-container">
+
                 </div>
                 <div class="unit-material-container" id="unit-material-container">
                   <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="Close">
@@ -93,16 +94,15 @@ _before_init_functions.push(function() {
               </table>
             </div>
             <div role="tabpanel" class="tab-pane" id="tab_program_courses">
-
-              <div class="alert alert-dismissible" role="alert">
+              <!--
+               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <!-- TAGS STATUS DO SISTEMA -->
                 <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
                 <span class="andamento-tag">In Progress<span class="andamento"></span></span>
-                <!-- <span class="fechado-tag">Disable<span class="fechado"></span></span> -->
               </div>
+              -->              
               <!--
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -126,7 +126,7 @@ _before_init_functions.push(function() {
                 </tbody>
               </table>
             </div>
-<!-- 
+            <!--
             <div role="tabpanel" class="tab-pane" id="profile">
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -243,7 +243,7 @@ _before_init_functions.push(function() {
                 </tbody>
               </table>
             </div>
- -->            
+            -->            
             <div role="tabpanel" class="tab-pane" id="tab_program_description">
             </div>
           </div>

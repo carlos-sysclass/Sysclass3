@@ -530,3 +530,32 @@ body {
   margin: 10px;
   font-size: 130%;
 }
+
+.content-container .unit-video-container.pop-out .vjs-auto-height {
+  max-height: 168.75px;
+}
+
+.content-container .unit-video-container.pop-out-start .videocontent {
+}
+.content-container .unit-video-container.pop-out-start .vjs-auto-height {
+  max-height: 168.75px;
+  opacity: 0;
+  transition: all 0.5s linear 0s;
+  width: 300px !important;
+}
+.content-container.full-video .unit-video-container.pop-out  {
+  height: 617px;
+}
+.content-container .unit-video-container.pop-out  {
+  height: 462px;
+}
+
+.content-container .unit-video-container.pop-out .videocontent {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 300px;
+  border: 2px solid #ddd;
+  opacity : 1 !important;
+  transition: opacity 1s linear 0s;
+}
