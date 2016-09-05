@@ -391,7 +391,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
         }
     }
     */
-
+    /*
     public function afterModelCreate($evt, $model, $data, $args) {
         if ($data['_args'][0] == "content-progress") {
             $this->addResponseInfo(array(
@@ -403,6 +403,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
         }
         return false; 
     }
+    */
 
     /**
      * [ add a description ]

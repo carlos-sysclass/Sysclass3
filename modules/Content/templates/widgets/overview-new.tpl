@@ -301,7 +301,7 @@ _before_init_functions.push(function() {
     <% } else if (model.progress.factor > 0) { %>
       <span class="andamento"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
     <% } else { %>
-      <span class="pendente"><i class="fa thumbs-o-up" aria-hidden="true"></i></span>
+      <span class="pendente"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span>
     <% } %>
         <!-- STATUS DO SISTEMA CORPO -->
         <!--
@@ -387,7 +387,7 @@ _before_init_functions.push(function() {
       <% } else { %>
         <a href="javascript: void(0);" class="watch-video-action">
           <span class="avalialbe">
-            <i class="fa thumbs-o-up" aria-hidden="true"></i>
+            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
             {translateToken value="Watch"}
           </span>
         </a>
@@ -409,7 +409,7 @@ _before_init_functions.push(function() {
         <% } else { %>
           <a href="javascript: void(0);" class="list-materials-action">
             <span class="avalialbe">
-              <i class="fa thumbs-o-up" aria-hidden="true"></i>
+              <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
               {translateToken value="Avaliable"}
             </span>
           </a>
@@ -468,7 +468,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
@@ -550,7 +550,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
