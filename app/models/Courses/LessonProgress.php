@@ -19,13 +19,15 @@ class LessonProgress extends Model
         // CALCULATE BASED ON CONTENTS
         $manager = $this->getDI()->get("modelsManager");
         //$phql = "SELECT * /* AVG(factor) as factor*/
+
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor 
             FROM Sysclass\\Models\\Courses\\Contents\\Content as c
         	LEFT JOIN Sysclass\\Models\\Courses\\Contents\\Progress as cp
-                ON (c.id = cp.content_id)
-            WHERE c.lesson_id = ?0 AND (user_id = ?1 OR user_id IS NULL)
-            AND c.content_type NOT IN ('subtitle', 'poster', 'subtitle-translation')
+                ON (c.id = cp.content_id AND (user_id = ?1 OR user_id IS NULL))
+            WHERE c.lesson_id = ?0 
+                AND c.content_type NOT IN ('subtitle', 'poster', 'subtitle-translation')
         ";
+
         $data = $manager->executeQuery($phql, array($this->lesson_id, $this->user_id));
 
         if ($data->count() > 0) {
@@ -38,7 +40,9 @@ class LessonProgress extends Model
 	        $log[] = array(
 	        	'type' => 'success',
 	        	'message' => sprintf('Progress for lesson #%s for user #%s updated.', $this->lesson_id, $this->user_id),
-	        	'status' => true
+	        	'status' => true,
+                'entity' => 'unit',
+                'data' => $this->toArray()
 	        );
         } else {
 	        $log[] = array(

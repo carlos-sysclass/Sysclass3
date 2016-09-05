@@ -130,12 +130,31 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				"click .class-change-action" : "setClassId"
 			},
 			template : _.template($("#tab_program_courses-item-template").html(), null, {variable: "model"}),
+            initialize : function() {
+				baseChildTabViewItemClass.prototype.initialize.apply(this, arguments);
+
+				this.listenTo(app, "progress.courses-changed", function(info) {
+					if (info.class_id == this.model.get("id")) {
+						console.warn("PROGRESS UPDATED", info);
+						this.model.set("progress", info);
+						this.render();
+					}
+				}.bind(this));
+				/*
+				this.listenTo(app, "progress.content-changed", function(info) {
+					if (contentModel.get("lesson_id") == this.model.get("id")) {
+						this.render();
+					}
+				}.bind(this));
+				*/
+            },
 			setClassId : function(e) {
 				//app.userSettings.set("class_id", this.model.get("id"));
 				mod.programsCollection.moveToCourse(this.model.get("id"));
 
 				$("[href='#tab_course_units']").tab('show');
 			},
+			/*
 			checkProgress : function(model) {
 				var progress = _.findWhere(model.get("courses"), {class_id : this.model.get("id")});
 				if (!_.isUndefined(progress)) {
@@ -143,6 +162,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.render();
 				}
 			}
+			*/
 		})
 
 		var programCoursesTabViewClass = baseChildTabViewClass.extend({
@@ -166,10 +186,29 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			dialogContentUnit : app.module("dialogs.content.unit"),
 			lessonTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
             testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
+            initialize : function() {
+				baseChildTabViewItemClass.prototype.initialize.apply(this, arguments);
+
+				this.listenTo(app, "progress.units-changed", function(info) {
+					if (info.lesson_id == this.model.get("id")) {
+						console.warn("PROGRESS UPDATED", info);
+						this.model.set("progress", info);
+						this.render();
+					}
+				}.bind(this));
+				/*
+				this.listenTo(app, "progress.content-changed", function(info) {
+					if (contentModel.get("lesson_id") == this.model.get("id")) {
+						this.render();
+					}
+				}.bind(this));
+				*/
+            },
 			watchVideo : function(e) {
 				mod.programsCollection.moveToUnit(this.model.get("id"));
 
 				this.parentView.trigger("watch:video", this.model);
+				//console.warn("courseUnitsTabViewItemClass", this.model.cid);
 			},
 			listMaterials : function(e) {
 				//mod.programsCollection.moveToUnit(this.model.get("id"));
@@ -180,14 +219,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var result = this.model.toJSON();
 
 				var video = this.model.getVideo();
+				// UPDAT PROGRESS
 
 				if (video) {
+					var progress = mod.progressCollection.getContentProgress(video.get("id"));
+					video.set("progress", progress);
 					result.video = video.toJSON();	
 				} else {
 					result.video = false;
 				}
 
-				result.materials = this.model.getMaterials().toJSON();
+				var materials = this.model.getMaterials();
+
+				materials.each(function(item, i) {
+					var progress = mod.progressCollection.getContentProgress(item.get("id"));
+					item.set("progress", progress);
+				});
+
+				result.materials = materials.toJSON();
 
 				return result;
 			},
@@ -244,7 +293,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
-				//this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
+				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
+			},
+			setModel : function(model) {
+				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
+				this.render();
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
@@ -279,6 +332,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	            //this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
 	        },
+
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
 	            var self = this;
@@ -291,6 +345,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                this.enableView();
 
 	                this.videoModel = this.model.get("video");
+
+					var progress = mod.progressCollection.getContentProgress(this.videoModel.get("id"));
+					this.videoModel.set("progress", progress);
 
 	                if (!_.isNull(this.videoJS)) {
 	                    this.videoJS.dispose();
@@ -443,6 +500,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                            //this.videoModel.set("progress", this.currentProgress);
 	                            var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
 	                            progressModel.setAsViewed(this.videoModel, this.currentProgress);
+
 	                        }
 	                    }
 
@@ -480,6 +538,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            "click .view-content-action" : "viewContentAction"
 	        },
 	        template : _.template($("#tab_unit_materials-item-template").html(), null, {variable: "model"}),
+            initialize : function() {
+				baseChildTabViewItemClass.prototype.initialize.apply(this, arguments);
+
+				this.listenTo(app, "progress.contents-changed", function(info) {
+					if (info.content_id == this.model.get("id")) {
+						console.warn("PROGRESS UPDATED", info);
+						this.model.set("progress", info);
+						this.render();
+					}
+				}.bind(this));
+				/*
+				this.listenTo(app, "progress.content-changed", function(info) {
+					if (contentModel.get("lesson_id") == this.model.get("id")) {
+						this.render();
+					}
+				}.bind(this));
+				*/
+            },
 	        viewContentAction : function(e) {
 	            // TRACK PROGRESS
 				
@@ -490,23 +566,44 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	            //this.render();
 	        },
+	        /*
 	        checkProgress : function(model) {
 	            var progress = _.findWhere(model.get("contents"), {content_id : this.model.get("id")});
 	            if (!_.isUndefined(progress)) {
 	                this.model.set("progress", progress);
 	                this.render();
 	            }
+	        },
+	        */
+			render : function(e) {
+				var progress = mod.progressCollection.getContentProgress(this.model.get("id"));
+				this.model.set("progress", progress);
 
-	        }
+				this.$el.html(
+					this.template(this.model.toJSON())
+				);
+				return this;
+			}
 	    });
 
-	    var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
 	    var unitMaterialsTabViewClass = baseChildTabViewClass.extend({
 	        nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
 	        childViewClass : unitMaterialsTabViewItemClass,
 	        makeCollection: function() {
 	            // GET THE MATERIALS
-	            return this.model.get("materials");
+
+	            // UPDATE PROGRESS
+	            //mod.progressCollection.
+	            var materials = this.model.get("materials");
+
+	            materials.each(function(item, index) {
+	            	console.warn(item, this);
+	            });
+
+
+	            console.warn(materials);
+
+	            return materials;
 	        },
 	        disableView : function() {
 	            $("[href='#tab_unit_materials'],#tab_unit_materials").addClass("hidden");
@@ -781,17 +878,56 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				this.set("content_id", model.get("id"));
 				this.set("factor", factor);
+				/*
+				this.once("sync", function(model) {
+					var updateInfo = model.get("info");
+
+					console.warn(updateInfo);
+
+					for(var type in updateInfo) {
+						app.trigger("progress." + type + "-changed", updateInfo[type]);
+					}
+					//app.trigger("progress.content-changed", model, this);
+				}.bind(this));
+				*/
+
 				this.save();
 
-				if (factor == 1) {
+				//if (factor == 1) {
 					mod.progressCollection.fetch();
-				}
+				//}
 
 				model.set("progress", this.toJSON());
 			}
 		}),
-		progress : Backbone.Model.extend({
-			url : "/module/content/datasource/progress"
+		progress : baseModel.extend({
+			url : "/module/content/datasource/progress",
+			initialize : function() {
+				this.on("sync", function(model, data, response) {
+					console.warn(model.changed, data, response);
+
+					for (var type in model.changed) {
+						//console.warn(model.changed[type])
+						for(var i in model.changed[type]) {
+							if (!_.isEmpty(model.changed[type][i])) {
+								console.warn("trigger", "progress." + type + "-changed", model.attributes[type][i]);
+								app.trigger("progress." + type + "-changed", model.attributes[type][i]);
+							}
+						}
+					}
+				}.bind(this));
+			},
+			getContentProgress : function(id) {
+				var contents = this.get("contents");
+				//console.warn(_.findWhere(this.get("contents"), {"content_id" : id}));
+
+				return _.findWhere(this.get("contents"), {"content_id" : id});
+				/*
+				for (var i in contents) {
+					_.where(contents, {"content_id" : id})
+				}
+				*/
+			}
 		})	
 	};
 
@@ -1039,6 +1175,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					return new mod.collections.contents(data);
 				}
 				return this.contents;
+			},
+			updateProgress : function(progressModel) {
+
 			}
 		}),
 		courses : navigableCollection.extend({
@@ -1129,112 +1268,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			}
 		})
-		
-		/*
-		courses : navigableCollection.extend({
-			//model : fullCourseModelClass,
-			url : "/module/roadmap/datasources/courses",
-		}),
-		classes : navigableCollection.extend({}),
-		lessons : navigableCollection.extend({}),
-		tests : Backbone.Collection.extend({}),
-		contents : Backbone.Collection.extend({
-			model: contentModelClass,
-			getMainVideo : function() {
-				var filteredCollection = this.where({
-					content_type : "file"
-				});
-
-				var filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-					return model.isVideo();
-				});
-
-				if (_.size(filteredVideoCollection) === 0) {
-					filteredCollection = this.where({
-						content_type : "url"
-					});
-					filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-						return model.isRemoteVideo();
-					});
-					if (_.size(filteredVideoCollection) === 0) {
-						return false;
-					}
-				}
-
-				var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
-
-				if (_.size(mainVideo) === 0) {
-					mainVideo = _.first(filteredVideoCollection);
-				}
-
-				// GET CHILDS OBJECTS
-				var poster = _.map(
-					this.where({
-						parent_id : mainVideo.get("id"),
-						content_type : "poster"
-					}),
-					function(model, index) {
-						return model.toJSON();
-					}
-				);
-
-				if (_.size(poster) > 0) {
-
-					mainVideo.set("poster", _.first(poster));
-				}
-
-				// GET CHILDS OBJECTS
-				var childs = _.map(
-					this.where({
-						parent_id : mainVideo.get("id"),
-						content_type : "subtitle"
-					}),
-					function(model, index) {
-						return model.toJSON();
-					}
-				);
-
-				if (_.size(childs) > 0) {
-					// GET SUBTITLES CHILDS
-					var subchilds = _.map(
-						this.where({
-							parent_id : childs[0].id
-						}),
-						function(model, index) {
-							return model.toJSON();
-						}
-					);
-					mainVideo.set("childs", _.union(childs, subchilds));
-				} else {
-					mainVideo.set("childs", childs);
-				}
-
-				return mainVideo;
-			},
-			getMaterials : function() {
-				var filteredCollection = this.where({
-					content_type : "file"
-				});
-
-				filteredCollection = _.filter(filteredCollection, function(model, index) {
-					return model.isMaterial();
-				});
-				return new mod.collections.contents(filteredCollection);
-			},
-			getExercises : function() {
-				var filteredCollection = this.where({
-					content_type : "exercise"
-				});
-
-				return new mod.collections.contents(filteredCollection);
-			}
-		}),
-		questions : Backbone.Collection.extend({
-
-		})
-		*/
 	};
 	mod.programsCollection = null;
+	mod.progressCollection = null;
 
 	mod.on("start", function() {
 		//var userSettingsModel = new userSettingsModelClass();
@@ -1247,7 +1283,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		mod.programsCollection.reset(contentInfo.tree);
 
-		mod.progressCollection = new this.models.progress();
+		mod.progressCollection = new this.models.progress(contentInfo.progress);
+		//mod.progressCollection.reset(contentInfo.progress);
+
+		//mod.progressCollection.fetch();
+		/*
+		this.listenTo(mod.progressCollection, "sync", function(model, data, response) {
+			console.warn(model, data, response);
+
+			// UPDATE programscollection
+			mod.programsCollection.updateProgress(model);
+		}.bind(this));
+		*/
 
 
 		app.trigger("progress.started");

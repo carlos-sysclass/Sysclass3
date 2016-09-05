@@ -80,7 +80,8 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                         'unit_id'       => $userPointers['unit']->id,
                         'content_id'    => $userPointers['content']->id
                     ),
-                    'tree' => array_values($tree)
+                    'tree' => array_values($tree),
+                    'progress' => $this->getUserProgressRequest()
                 );
 
                 //var_dump($settings);
@@ -259,15 +260,33 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
      */
     public function getUserProgressRequest() {
         $userPointers = Unit::getContentPointers();
+        //var_dump($userPointers);
+        
         $result = array();
 
         if ($userPointers['program']) {
+
+            $result['programs'] = array();
+
+            if ($progress = $userPointers['program']->getProgress(array(
+                'conditions' => 'user_id = ?0',
+                'bind' => array($this->user->id)
+            ))) {
+                $result['programs'][] = $progress->toArray();
+            } else {
+                $result['programs'][] = array(
+                    'user_id' => $this->user->id,
+                    'program_id' => $userPointers['program']->id,
+                    'factor' => 0
+                );
+            }
 
             $result['courses'] = array();
             $result['units'] = array();
             $result['contents'] = array();
 
             foreach($userPointers['program']->getCourses() as $course) {  
+
                 if ($progress = $course->getProgress(array(
                     'conditions' => 'user_id = ?0',
                     'bind' => array($this->user->id)
@@ -275,11 +294,12 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     $result['courses'][] = $progress->toArray();
                 } else {
                     $result['courses'][] = array(
-                        'user_id' => $this->user->_id,
+                        'user_id' => $this->user->id,
                         'class_id' => $course->id,
                         'factor' => 0
                     );
                 }
+
                 foreach($course->getUnits() as $unit) {
                     if ($progress = $unit->getProgress(array(
                         'conditions' => 'user_id = ?0',
@@ -287,9 +307,9 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     ))) {
                         $result['units'][] = $progress->toArray();
                     } else {
-                        $result['courses'][] = array(
-                            'user_id' => $this->user->_id,
-                            'class_id' => $course->id,
+                        $result['units'][] = array(
+                            'user_id' => $this->user->id,
+                            'lesson_id' => $unit->id,
                             'factor' => 0
                         );
                     }
@@ -301,6 +321,12 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                             'bind' => array($this->user->id)
                         ))) {
                             $result['contents'][] = $progress->toArray();
+                        } else {
+                            $result['contents'][] = array(
+                                'user_id' => $this->user->id,
+                                'content_id' => $content->id,
+                                'factor' => 0
+                            );
                         }
                     }
                 }

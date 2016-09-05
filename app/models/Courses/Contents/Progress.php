@@ -6,6 +6,7 @@ use Phalcon\Mvc\Model,
 
 class Progress extends Model
 {
+    public $updateLog = "";
     public function initialize()
     {
         $this->setSource("mod_lessons_content_progress");
@@ -32,7 +33,7 @@ class Progress extends Model
         //$evManager = $this->getDI()->get("eventsManager");
         //$evManager->fire("unit:progress", $this, $this->toArray());
 
-        $this->updateProgress();
+        $this->updateLog = $this->updateProgress();
     }
 
     public function updateProgress() {
@@ -53,6 +54,15 @@ class Progress extends Model
         }
 
         $messages = $lessonProgress->updateProgress();
+
+
+        $messages[] = array(
+            'type' => 'success',
+            'message' => sprintf('Progress for unit #%s for user #%s updated.', $this->id, $this->user_id),
+            'status' => true,
+            'entity' => 'content',
+            'data' => $this->toArray()
+        );
 
         $statuses = array_column($messages, 'status');
 

@@ -32,11 +32,10 @@ class CourseProgress extends Model
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
             FROM Sysclass\\Models\\Courses\\Classe as c
             LEFT OUTER JOIN Sysclass\\Models\\Courses\\ClasseProgress as cp
-                ON (c.id = cp.class_id)
+                ON (c.id = cp.class_id AND (cp.user_id = ?1 OR cp.user_id IS NULL))
             WHERE class_id IN (
                 SELECT CourseClasses.class_id FROM Sysclass\Models\Courses\CourseClasses as CourseClasses WHERE CourseClasses.course_id = ?0
             )
-            AND (cp.user_id = ?1 OR cp.user_id IS NULL)
         ";
 
 
@@ -54,7 +53,9 @@ class CourseProgress extends Model
             $log[] = array(
                 'type' => 'success',
                 'message' => sprintf('Progress for Program #%s for user #%s updated.', $this->course_id, $this->user_id),
-                'status' => true
+                'status' => true,
+                'entity' => 'program',
+                'data' => $this->toArray()
             );
 
 

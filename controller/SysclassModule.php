@@ -11,6 +11,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
     protected $_args;
 
+    protected $responseInfo = null;
+
     public function init() {
         $this->beforeExecuteRoute();
     }
@@ -286,8 +288,12 @@ abstract class SysclassModule extends BaseSysclassModule
             }
 
             if (call_user_func(array($itemModel, $createMethod))) {
-                $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $data);
-                
+                $event_data = array_merge($data, array('_args' => func_get_args()));
+                //$this->eventsManager->collectResponses(true);
+                $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
+
+                //$responses = $this->eventsManager->getResponses();
+
                 if ($this->request->hasQuery('object')) {
                     $itemData = call_user_func(
                         array($itemModel, $model_info['exportMethod'][0]),
@@ -309,12 +315,14 @@ abstract class SysclassModule extends BaseSysclassModule
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
-                    $this->response->setJsonContent(array_merge(
-                        $this->createNonAdviseResponse(
-                            $this->translate->translate("Created with success"),
-                            "success"
-                        )
-                    ));
+                    $response = $this->createNonAdviseResponse(
+                        $this->translate->translate("Created with success"),
+                        "success"
+                    );
+                    if (!is_null($this->responseInfo)) {
+                        $response = array_merge($response, $this->responseInfo);
+                    }
+                    $this->response->setJsonContent($response);
                 } else {
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
@@ -360,6 +368,10 @@ abstract class SysclassModule extends BaseSysclassModule
             );
             return true;
         }
+    }
+
+    protected function addResponseInfo($info) {
+        $this->responseInfo = $info;
     }
 
     /**

@@ -52,6 +52,13 @@ class Program extends Model
                 'alias' => 'Coordinator',
             )
         );
+
+        $this->hasOne(
+            "id",
+            "Sysclass\\Models\\Courses\\CourseProgress",
+            "course_id",
+            array('alias' => 'Progress')
+        );
     }
 
     public function calculateDuration(\DateTime $start) {
