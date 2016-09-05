@@ -273,6 +273,10 @@ body {
 .inter-navsuper .fa {
   margin:2px 11px 2px 0px;
 }
+.inter-navsuper .progress-indicator .fa {
+  margin:2px 2px 2px 0px;
+}
+
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
   background: #2ca8ff;
   color: #fff;

@@ -118,11 +118,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.content/programDescriptionTabViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
 				this.render();
+
+				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
 				this.$el.empty().append(this.template(this.model.toJSON()));
-			}
+
+				this.renderProgress();
+			},
+			renderProgress : function(collection, data, response) {
+				console.info('portlet.content/programDescriptionTabViewClass::renderProgress');
+				var totalUnits = mod.progressCollection.getTotalPendingPrograms(mod.programsCollection.getCurrentPrograms());
+
+				if (totalUnits > 0) {
+					$(".program-indicator span").html(totalUnits);
+					$(".program-indicator").show();
+				} else {
+					$(".program-indicator").hide();
+				}
+			},
 		});
 
 		var programCoursesTabViewItemClass = baseChildTabViewItemClass.extend({
@@ -167,8 +182,34 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		var programCoursesTabViewClass = baseChildTabViewClass.extend({
 			nofoundTemplate : _.template($("#tab_program_courses-nofound-template").html()),
-
 			childViewClass : programCoursesTabViewItemClass,
+			initialize: function() {
+				console.info('portlet.content/classInfoTabViewClass::initialize');
+
+				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
+				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
+				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+			},
+			setModel : function(model) {
+				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
+				this.render();
+			},
+			render : function(model) {
+				baseChildTabViewClass.prototype.render.apply(this, arguments);
+
+				this.renderProgress();
+			},
+			renderProgress : function(collection, data, response) {
+				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
+				var totalUnits = mod.progressCollection.getTotalPendingCourses(mod.programsCollection.getCurrentCourses());
+
+				if (totalUnits > 0) {
+					$(".course-indicator span").html(totalUnits);
+					$(".course-indicator").show();
+				} else {
+					$(".course-indicator").hide();
+				}
+			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentCourses();
 			}
@@ -294,11 +335,30 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
+				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
 				this.render();
+
 			},
+			render : function(model) {
+				baseChildTabViewClass.prototype.render.apply(this, arguments);
+
+				this.renderProgress();
+			},
+			renderProgress : function(collection, data, response) {
+				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
+				var totalUnits = mod.progressCollection.getTotalPendingUnits(mod.programsCollection.getCurrentUnits());
+
+				if (totalUnits > 0) {
+					$(".unit-indicator span").html(totalUnits);
+					$(".unit-indicator").show();
+				} else {
+					$(".unit-indicator").hide();
+				}
+			},
+
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			},
@@ -596,12 +656,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            //mod.progressCollection.
 	            var materials = this.model.get("materials");
 
+	            /*
+
 	            materials.each(function(item, index) {
 	            	console.warn(item, this);
 	            });
 
 
 	            console.warn(materials);
+	            */
 
 	            return materials;
 	        },
@@ -630,14 +693,31 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				Marionette.triggerMethodOn(this, "start");
 
-				this.listenTo(this.collection, "program.changed", this.renderProgram.bind(this));
-				this.listenTo(this.collection, "course.changed", this.renderCourse.bind(this));
-				this.listenTo(this.collection, "unit.changed", this.renderUnit.bind(this));
+				//this.listenTo(this.collection, "program.changed", this.renderProgram.bind(this));
+				//this.listenTo(this.collection, "course.changed", this.renderCourse.bind(this));
+				//this.listenTo(this.collection, "unit.changed", this.renderUnit.bind(this));
 
-				this.renderProgram();
-				this.renderCourse();
-				this.renderUnit();
+				//this.renderProgram();
+				//this.renderCourse();
+				//this.renderUnit();
+
+				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
+			/*
+			renderProgress : function(collection, data, response) {
+				console.warn(collection, data, response);
+
+				var totalUnits = collection.getTotalPendingUnits(this.collection.getCurrentUnits());
+
+				if (totalUnits > 0) {
+					$(".unit-indicator span").html(totalUnits);
+					$(".unit-indicator").show();
+				} else {
+					$(".unit-indicator").hide();
+				}
+			},
+			*/
+			/*
 			renderProgram : function() {
 				console.info('portlet.content/widgetViewClass::render');
 				this.$(".program-title").html(this.collection.getCurrentProgram().get("name"));
@@ -650,7 +730,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			renderUnit : function() {
 				this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
 				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
-			},			
+			},
+			*/			
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
 			},
@@ -927,6 +1008,49 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					_.where(contents, {"content_id" : id})
 				}
 				*/
+			},
+			getTotalPendingPrograms : function(programs) {
+				var progressPrograms = this.get("programs");
+
+				var total = programs.reduce(function(count, program) {
+				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
+				  
+				  if (parseFloat(progress.factor) == 1) {
+				    return count;
+				  }
+				  return count + 1;
+				}, 0);
+
+				return total;
+			},
+			getTotalPendingCourses : function(courses) {
+				var progressCourses = this.get("courses");
+
+				var total = courses.reduce(function(count, course) {
+				  var progress = _.findWhere(progressCourses, {class_id : course.get("id")});
+				  
+				  if (parseFloat(progress.factor) == 1) {
+				    return count;
+				  }
+				  return count + 1;
+				}, 0);
+
+				return total;
+			},
+			getTotalPendingUnits : function(units) {
+
+				var progressUnits = this.get("units");
+
+				var total = units.reduce(function(count, unit) {
+				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+				  
+				  if (parseFloat(progress.factor) == 1) {
+				    return count;
+				  }
+				  return count + 1;
+				}, 0);
+
+				return total;
 			}
 		})	
 	};

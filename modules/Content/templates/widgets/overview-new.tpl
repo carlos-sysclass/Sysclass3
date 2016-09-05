@@ -11,10 +11,22 @@ _before_init_functions.push(function() {
           <div class="col-md-12 no-padding inter-navsuper">
             <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
               <li role="presentation" class="active">
-              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab"><i class="fa fa-book"></i>{translateToken value="Units"}</a>
+              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab">
+                  <i class="fa fa-book"></i>
+                  {translateToken value="Units"}
+                  <span class="label label-sm label-danger progress-indicator unit-indicator">
+                    <i class="fa fa-clock-o"></i><span></span>
+                  </span>
+                </a>
               </li>
               <li role="presentation">
-              	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Courses"}</a>
+              	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
+                  <i class="fa fa-sitemap"></i>
+                  {translateToken value="Courses"}
+                  <span class="label label-sm label-danger progress-indicator course-indicator">
+                    <i class="fa fa-clock-o"></i><span></span>
+                  </span>
+                </a>
               </li>
               <!--
               <li role="presentation">
@@ -22,7 +34,13 @@ _before_init_functions.push(function() {
               </li>
               -->
               <li role="presentation" class="">
-              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab"><i class="fa fa-graduation-cap"></i>{translateToken value="Program"}</a>
+              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
+                  <i class="fa fa-graduation-cap"></i>
+                  {translateToken value="Program"}
+                  <span class="label label-sm label-danger progress-indicator program-indicator">
+                    <i class="fa fa-clock-o"></i><span></span>
+                  </span>
+                </a>
               </li>
             </ul>
             <ul class="dir-menu-bar">
@@ -291,7 +309,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-  <% console.warn('COURSE', model); %>
     <td>
       <a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a>
     </td>
@@ -335,14 +352,14 @@ _before_init_functions.push(function() {
     <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
 
     <!--
-	<td class="text-center">
-		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
-			<span class="label label-success">{translateToken value="Yes"}</span>
-		<% } else { %>
-			<span class="label label-danger">{translateToken value="No"}</span>
-		<% } %>
-	</td>
-	-->
+  	<td class="text-center">
+  		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
+  			<span class="label label-success">{translateToken value="Yes"}</span>
+  		<% } else { %>
+  			<span class="label label-danger">{translateToken value="No"}</span>
+  		<% } %>
+  	</td>
+	 -->
 </script>
 <script type="text/template" id="tab_courses_child-nofound-template">
 	<tr>
@@ -355,7 +372,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-  <% console.warn('UNIT', model) %>
   <!-- Unidade -->
   <td>
     <span class="btn btn-sm btn-circle btn-default disabled">
@@ -491,7 +507,6 @@ _before_init_functions.push(function() {
 	-->
 </script>
 <script type="text/template" id="tab_courses_tests-item-template">
-  <% console.warn('EXAM', model) %>
   <!-- Unidade -->
   <td>
     <span class="btn btn-sm btn-circle btn-default disabled">
@@ -655,20 +670,19 @@ _before_init_functions.push(function() {
   </tr>
 </script>
 <script type="text/template" id="tab_unit_materials-item-template">
-  <% console.warn(model); %>
-    <%
-        var file_type = "other";
+  <%
+      var file_type = "other";
 
-        if (/^video\/.*$/.test(model.file.type)) {
-            file_type = "video";
-        } else if (/^image\/.*$/.test(model.file.type)) {
-            file_type = "image";
-        } else if (/^audio\/.*$/.test(model.file.type)) {
-            file_type = "audio";
-        } else if (/.*\/pdf$/.test(model.file.type)) {
-            file_type = "pdf";
-        }
-    %>
+      if (/^video\/.*$/.test(model.file.type)) {
+          file_type = "video";
+      } else if (/^image\/.*$/.test(model.file.type)) {
+          file_type = "image";
+      } else if (/^audio\/.*$/.test(model.file.type)) {
+          file_type = "audio";
+      } else if (/.*\/pdf$/.test(model.file.type)) {
+          file_type = "pdf";
+      }
+  %>
   <td class="text-center">
         <% if (file_type == "video") { %>
             <i class="fa fa-file-video-o"></i>
