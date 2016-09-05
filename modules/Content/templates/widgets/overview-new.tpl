@@ -132,12 +132,12 @@ _before_init_functions.push(function() {
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th></th>
                     <th>{translateToken value="Course"}</th>
                     <th>{translateToken value="Instrutor"}</th>
-                    <!-- <th>{translateToken value="Unit in Progress"}</th> -->
+                    <th>{translateToken value="Units"}</th>
+                    <th>{translateToken value="Next Unit"}</th>
+                    <th>{translateToken value="Status"}</th>
                     <th>{translateToken value="Cumulative Grade"}</th>
-                    <!-- <th></th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -300,7 +300,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_program_courses-nofound-template">
 	<tr>
-		<td colspan="5"  class="alert alert-info">
+		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
 				{translateToken value="Ops! There's any courses registered for this course"}
@@ -309,57 +309,54 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-    <td>
-      <a href="" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a>
-    </td>
+
+    <!-- Course -->
     <td><a href="#class-tab" class="class-change-action"><%= model.name %></a>
-    <% if (model.progress.factor == 1) { %>
-      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
-    <% } else if (model.progress.factor > 0) { %>
-      <span class="andamento"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-    <% } else { %>
-      <span class="pendente"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span>
-    <% } %>
-        <!-- STATUS DO SISTEMA CORPO -->
-        <!--
-        <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-        <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
-        <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
-        <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
-        -->
-        <!-- DATA DE ? -->
-        <!--
-        <span class="at-difinf">24/10/2014 às 20:30h</span>
-        -->
-    </td>
+    <!-- Instrutor -->
     <td>
 
       <% if (!_.isNull(model.professor_id)) { %>
         Carlos Oliveira <span class="at-difinf"><a href="">ver perfil</a></span>
       <% } %>
     </td>
+    <!-- Units -->
+    <td><% console.warn("COURSE", model); %>
+      <%= model.units_completed %> / <%= _.size(model.units) %>
+
+
+    </td>
     <!--
-    <td>1/5 Avaliação do Ciclo de Vida
+    1/5 Avaliação do Ciclo de Vida
       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
       <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
-    </td>
     -->
+    <!-- Next Unit -->
+    <td></td>
+
+    <!-- Status -->
+    <td>
+    <% if (model.progress.factor == 1) { %>
+      <span class="concluido">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        {translateToken value="Completed"}
+      </span>
+    <% } else if (model.progress.factor > 0) { %>
+      <span class="andamento">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        {translateToken value="In Progress"}
+      </span>
+    <% } else { %>
+      <span class="pendente">
+        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        {translateToken value="Avaliable"}
+      </span>
+    <% } %>
+    </td>
+    <!-- Cumulative Grade -->
     <td class="nota-tal">N/A</td>
-
-    <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
-
-    <!--
-  	<td class="text-center">
-  		<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
-  			<span class="label label-success">{translateToken value="Yes"}</span>
-  		<% } else { %>
-  			<span class="label label-danger">{translateToken value="No"}</span>
-  		<% } %>
-  	</td>
-	 -->
 </script>
 <script type="text/template" id="tab_courses_child-nofound-template">
 	<tr>

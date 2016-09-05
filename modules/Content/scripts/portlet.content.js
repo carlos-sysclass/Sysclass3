@@ -169,6 +169,34 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				$("[href='#tab_course_units']").tab('show');
 			},
+			getMappedModel : function() {
+				
+
+				console.warn(result);
+
+				var units = this.model.getUnits();
+
+				units.each(function(item, i) {
+					var progress = mod.progressCollection.getUnitProgress(item.get("id"));
+					item.set("progress", progress);
+					console.warn(item.toJSON(), progress);
+				});
+
+				var totalUnits = mod.progressCollection.getTotalCompleteUnits(units);
+
+				this.model.set("units_completed", totalUnits);
+				var result = this.model.toJSON();
+
+				return result;
+			},
+			render : function(e) {
+				console.info('portlet.content/courseUnitsTabViewItemClass::render');
+
+				this.$el.html(
+					this.template(this.getMappedModel())
+				);
+				return this;
+			},
 			/*
 			checkProgress : function(model) {
 				var progress = _.findWhere(model.get("courses"), {class_id : this.model.get("id")});
@@ -859,7 +887,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	this.models = {
 		program : baseModel.extend({}),
-		course : baseModel.extend({}),
+		course : baseModel.extend({
+			getUnits : function() {
+				if (this.get('units') && (this.get('units') instanceof mod.collections.units)) {
+					return this.get('units');
+				}
+
+				this.set('units', new mod.collections.units(this.get("units")));
+
+				return this.get('units');
+			}
+		}),
 		unit : baseModel.extend({
 			contents : {},
 			getCourse : function(asJSON) {
@@ -998,16 +1036,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				}.bind(this));
 			},
+			getUnitProgress : function(id) {
+				console.warn(this.get("units"), id);
+				return _.findWhere(this.get("units"), {"lesson_id" : id});
+			},
 			getContentProgress : function(id) {
-				var contents = this.get("contents");
-				//console.warn(_.findWhere(this.get("contents"), {"content_id" : id}));
-
 				return _.findWhere(this.get("contents"), {"content_id" : id});
-				/*
-				for (var i in contents) {
-					_.where(contents, {"content_id" : id})
-				}
-				*/
 			},
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
@@ -1033,6 +1067,21 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				    return count;
 				  }
 				  return count + 1;
+				}, 0);
+
+				return total;
+			},
+			getTotalCompleteUnits : function(units) {
+
+				var progressUnits = this.get("units");
+
+				var total = units.reduce(function(count, unit) {
+				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+				  
+				  if (parseFloat(progress.factor) == 1) {
+				    return count + 1;
+				  }
+				  return count;
 				}, 0);
 
 				return total;
