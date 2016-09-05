@@ -94,6 +94,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			} else {
 				this.enableView();
 				var self = this;
+				console.warn("COLLECTION-RENDER", this.collection.toJSON())
 				this.collection.each(function(model, i) {
 					var childView = new self.childViewClass({model : model, parent: self});
 					console.warn({model : model, parent: self});

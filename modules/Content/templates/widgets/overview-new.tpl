@@ -314,16 +314,13 @@ _before_init_functions.push(function() {
     <td><a href="#class-tab" class="class-change-action"><%= model.name %></a>
     <!-- Instrutor -->
     <td>
-
       <% if (!_.isNull(model.professor_id)) { %>
         Carlos Oliveira <span class="at-difinf"><a href="">ver perfil</a></span>
       <% } %>
     </td>
     <!-- Units -->
-    <td><% console.warn("COURSE", model); %>
+    <td>
       <%= model.units_completed %> / <%= _.size(model.units) %>
-
-
     </td>
     <!--
     1/5 Avaliação do Ciclo de Vida
@@ -370,6 +367,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
   <!-- Unidade -->
+  <% console.warn("UNIT", model) %>
   <td>
     <span class="btn btn-sm btn-circle btn-default disabled">
       <i class="fa fa-file"></i>
@@ -505,6 +503,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_tests-item-template">
   <!-- Unidade -->
+  <% console.warn(model) %>
   <td>
     <span class="btn btn-sm btn-circle btn-default disabled">
       <i class="fa fa-list-ol"></i>
@@ -712,10 +711,6 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
 </script>
-
-
-
-
 
 <!-- 
 <script type="text/template" id="tab_unit_exercises-nofound-template">

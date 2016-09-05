@@ -150,18 +150,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(app, "progress.courses-changed", function(info) {
 					if (info.class_id == this.model.get("id")) {
-						console.warn("PROGRESS UPDATED", info);
 						this.model.set("progress", info);
 						this.render();
 					}
 				}.bind(this));
-				/*
-				this.listenTo(app, "progress.content-changed", function(info) {
-					if (contentModel.get("lesson_id") == this.model.get("id")) {
-						this.render();
-					}
-				}.bind(this));
-				*/
             },
 			setClassId : function(e) {
 				//app.userSettings.set("class_id", this.model.get("id"));
@@ -170,22 +162,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#tab_course_units']").tab('show');
 			},
 			getMappedModel : function() {
-				
-
-				console.warn(result);
-
 				var units = this.model.getUnits();
 
 				units.each(function(item, i) {
 					var progress = mod.progressCollection.getUnitProgress(item.get("id"));
 					item.set("progress", progress);
-					console.warn(item.toJSON(), progress);
 				});
 
 				var totalUnits = mod.progressCollection.getTotalCompleteUnits(units);
 
 				this.model.set("units_completed", totalUnits);
 				var result = this.model.toJSON();
+
+				result.units = units.toJSON();
 
 				return result;
 			},
@@ -260,24 +249,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(app, "progress.units-changed", function(info) {
 					if (info.lesson_id == this.model.get("id")) {
-						console.warn("PROGRESS UPDATED", info);
 						this.model.set("progress", info);
 						this.render();
 					}
 				}.bind(this));
-				/*
-				this.listenTo(app, "progress.content-changed", function(info) {
-					if (contentModel.get("lesson_id") == this.model.get("id")) {
-						this.render();
-					}
-				}.bind(this));
-				*/
             },
 			watchVideo : function(e) {
 				mod.programsCollection.moveToUnit(this.model.get("id"));
 
 				this.parentView.trigger("watch:video", this.model);
-				//console.warn("courseUnitsTabViewItemClass", this.model.cid);
 			},
 			listMaterials : function(e) {
 				//mod.programsCollection.moveToUnit(this.model.get("id"));
@@ -285,17 +265,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.parentView.trigger("list:materials", this.model);
 			},
 			getMappedModel : function() {
-				var result = this.model.toJSON();
-
 				var video = this.model.getVideo();
 				// UPDAT PROGRESS
 
 				if (video) {
 					var progress = mod.progressCollection.getContentProgress(video.get("id"));
 					video.set("progress", progress);
-					result.video = video.toJSON();	
+					var videoInfo = video.toJSON();	
 				} else {
-					result.video = false;
+					var videoInfo = false;
 				}
 
 				var materials = this.model.getMaterials();
@@ -305,6 +283,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					item.set("progress", progress);
 				});
 
+				var result = this.model.toJSON();
+				result.video = videoInfo;	
 				result.materials = materials.toJSON();
 
 				return result;
@@ -336,15 +316,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
                 app.module("dialogs.tests.info").open();
             },
+            /*
 			checkProgress : function(model) {
 				var progress = _.findWhere(model.get("units"), {lesson_id : this.model.get("id")});
 				if (!_.isUndefined(progress)) {
 					this.model.set("progress", progress);
 					this.render();
 				}
-
 			},
-
+			*/
             doTest : function(model) {
             	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
             	//alert("Doing Test " + this.model.get("id"));
@@ -367,8 +347,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
-				this.render();
 
+				this.render();
 			},
 			render : function(model) {
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
@@ -386,7 +366,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					$(".unit-indicator").hide();
 				}
 			},
-
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			},
@@ -487,7 +466,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	            if (currentScreenStatus != this.onScreenStatus) {
 	            	// RESET THE COUNTER AND STATUS
-	            	console.warn('checking change');
 	            	this.onScreenTime = Date.now();
 	                this.onScreenStatus = currentScreenStatus;
 
@@ -499,14 +477,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
 	            var currentScreenTime = Date.now();
 
-	            console.warn("STATUS:", this.onScreenStatus, "TIME:", currentScreenTime - this.onScreenTime);
-
 	            if ((currentScreenStatus == this.onScreenStatus) && (currentScreenTime - this.onScreenTime >= this.onScreelThreshold)) {
 	            	// THE SAME STATUS MORE THAN 5 SECONDS, IF THE VIEW  
 	            	if (currentScreenStatus && this.viewType == "float") {
 	            		// SWITCH TO NORMAL
-						console.warn("switch-normal");
-
 						this.$el.removeClass("pop-out");
 
 	                	// RESET THE COUNTER AND STATUS
@@ -515,13 +489,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                	this.onScreenTime = Date.now();
 	            	} else if (!currentScreenStatus && this.viewType == "normal") {
 	            		// SWITCH TO FLOAT
-	            		console.warn(this.$el.height());
-
 	            		this.$el.css({
 	            			height : this.$el.height() + "px",
 	            		});
-
-	            		console.warn("switch-float");
 
 	            		this.$el.addClass("pop-out-start");
 	            		window.setTimeout(function() {
@@ -547,20 +517,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					}
 	                this.onScreenStatus = currentScreenStatus;
 	            }
-
-
-
-
-	        	/*
-					//console.warn("isOnScreen", this.$el.isOnScreen(1, 0.3), this);
-                    if (this.$el.isOnScreen(1, 0)) {
-                        $(document).off("scroll."+this.cid + " resize"+this.cid);
-                        // CALl VIEW START
-                        this.start();
-                    }
-
-                }.bind(this));
-                */
 	        },
 	        bindStartVideoEvents : function() {
 	            var self = this;
@@ -631,18 +587,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(app, "progress.contents-changed", function(info) {
 					if (info.content_id == this.model.get("id")) {
-						console.warn("PROGRESS UPDATED", info);
 						this.model.set("progress", info);
 						this.render();
 					}
 				}.bind(this));
-				/*
-				this.listenTo(app, "progress.content-changed", function(info) {
-					if (contentModel.get("lesson_id") == this.model.get("id")) {
-						this.render();
-					}
-				}.bind(this));
-				*/
             },
 	        viewContentAction : function(e) {
 	            // TRACK PROGRESS
@@ -678,22 +626,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
 	        childViewClass : unitMaterialsTabViewItemClass,
 	        makeCollection: function() {
-	            // GET THE MATERIALS
-
-	            // UPDATE PROGRESS
-	            //mod.progressCollection.
 	            var materials = this.model.get("materials");
-
-	            /*
-
-	            materials.each(function(item, index) {
-	            	console.warn(item, this);
-	            });
-
-
-	            console.warn(materials);
-	            */
-
 	            return materials;
 	        },
 	        disableView : function() {
@@ -731,20 +664,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
-			/*
-			renderProgress : function(collection, data, response) {
-				console.warn(collection, data, response);
-
-				var totalUnits = collection.getTotalPendingUnits(this.collection.getCurrentUnits());
-
-				if (totalUnits > 0) {
-					$(".unit-indicator span").html(totalUnits);
-					$(".unit-indicator").show();
-				} else {
-					$(".unit-indicator").hide();
-				}
-			},
-			*/
 			/*
 			renderProgram : function() {
 				console.info('portlet.content/widgetViewClass::render');
@@ -947,8 +866,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					return this.contents['exercises'];
 				}
 
-				console.warn(this.get("contents"), this.contents);
-
 				var filteredCollection = _.filter(this.get("contents"), function(model, index) {
 					var object = new mod.models.content(model);
 					return object.isExercise();
@@ -1001,8 +918,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.once("sync", function(model) {
 					var updateInfo = model.get("info");
 
-					console.warn(updateInfo);
-
 					for(var type in updateInfo) {
 						app.trigger("progress." + type + "-changed", updateInfo[type]);
 					}
@@ -1023,13 +938,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			url : "/module/content/datasource/progress",
 			initialize : function() {
 				this.on("sync", function(model, data, response) {
-					console.warn(model.changed, data, response);
-
 					for (var type in model.changed) {
-						//console.warn(model.changed[type])
 						for(var i in model.changed[type]) {
 							if (!_.isEmpty(model.changed[type][i])) {
-								console.warn("trigger", "progress." + type + "-changed", model.attributes[type][i]);
 								app.trigger("progress." + type + "-changed", model.attributes[type][i]);
 							}
 						}
@@ -1037,7 +948,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}.bind(this));
 			},
 			getUnitProgress : function(id) {
-				console.warn(this.get("units"), id);
 				return _.findWhere(this.get("units"), {"lesson_id" : id});
 			},
 			getContentProgress : function(id) {
@@ -1320,7 +1230,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getCurrentUnits : function() {
 				if (_.isNull(this.units)) {
 					var course = this.getCurrentCourse();
-					this.units = new mod.collections.units(course.get("units"));
+					if (course.get("units") instanceof mod.collections.units) {
+						this.units = course.get("units");
+					} else {
+						this.units = new mod.collections.units(course.get("units"));
+					}
 
 					this.listenTo(this.units, "previous", this.toPreviousUnitIndex.bind(this));
 					this.listenTo(this.units, "next", this.toNextUnitIndex.bind(this));
@@ -1457,36 +1371,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		mod.programsCollection.reset(contentInfo.tree);
 
 		mod.progressCollection = new this.models.progress(contentInfo.progress);
-		//mod.progressCollection.reset(contentInfo.progress);
-
-		//mod.progressCollection.fetch();
-		/*
-		this.listenTo(mod.progressCollection, "sync", function(model, data, response) {
-			console.warn(model, data, response);
-
-			// UPDATE programscollection
-			mod.programsCollection.updateProgress(model);
-		}.bind(this));
-		*/
-
 
 		app.trigger("progress.started");
 
-		//mod.progressCollection.fetch();
-
-		//for(var i in contentCollection)
-
-		//this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
-
-			this.widgetView = new this.widgetViewClass({
-				model : app.userSettings,
-				collection : mod.programsCollection,
-				el: '#content-widget'
-			});
-
-			//this.courseWidgetView.start();
-
-		//}.bind(this));
+		this.widgetView = new this.widgetViewClass({
+			model : app.userSettings,
+			collection : mod.programsCollection,
+			el: '#content-widget'
+		});
 
 	});
 
