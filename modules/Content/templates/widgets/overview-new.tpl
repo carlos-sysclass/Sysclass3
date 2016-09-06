@@ -460,7 +460,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="pendente">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-asterisk" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
@@ -480,11 +480,9 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
   <!-- Unidade -->
-  <% console.warn("UNIT", model) %>
+  <% //console.warn("UNIT", model) %>
   <td>
-    <span class="btn btn-sm btn-circle btn-default disabled">
       <i class="fa fa-file"></i>
-    </span>
   </td>
   <td>
     <%= model.name %></a>
@@ -498,7 +496,7 @@ _before_init_functions.push(function() {
       <% if (model.video.progress.factor >= 1) { %>
         <a href="javascript: void(0);" class="watch-video-action">
           <span class="concluido">
-            <i class="fa fa-check" aria-hidden="true"></i>
+            <i class="fa fa-repeat" aria-hidden="true"></i>
             {translateToken value="Watched"}
           </span>
         </a>
@@ -512,7 +510,7 @@ _before_init_functions.push(function() {
       <% } else { %>
         <a href="javascript: void(0);" class="watch-video-action">
           <span class="avalialbe">
-            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+            <i class="fa fa-play" aria-hidden="true"></i>
             {translateToken value="Watch"}
           </span>
         </a>
@@ -527,14 +525,14 @@ _before_init_functions.push(function() {
         <% if (item.progress.factor >= 1) { %>
           <a href="javascript: void(0);" class="list-materials-action">
             <span class="concluido">
-              <i class="fa fa-check" aria-hidden="true"></i>
+              <i class="fa fa-folder-open-o" aria-hidden="true"></i>
               {translateToken value="Viewed"}
             </span>
           </a>
         <% } else { %>
           <a href="javascript: void(0);" class="list-materials-action">
             <span class="avalialbe">
-              <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+              <i class="fa fa-folder-o" aria-hidden="true"></i>
               {translateToken value="Avaliable"}
             </span>
           </a>
@@ -593,7 +591,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-asterisk" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
@@ -617,9 +615,9 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_tests-item-template">
   <!-- Unidade -->
-  <% console.warn(model) %>
+  <% //console.warn(model) %>
   <td>
-    <span class="btn btn-sm btn-circle btn-default disabled">
+    <span class="">
       <i class="fa fa-list-ol"></i>
     </span>
   </td>
