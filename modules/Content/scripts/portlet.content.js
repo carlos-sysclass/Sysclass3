@@ -3,7 +3,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	mod.on("start", function() {
 		var parent = app.module("portlet");
 		// TODO THINK ABOUT MOVE THIS CLASS INTO THE MAIN VIEW
-		//
+		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
+		var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
+		var baseChildTabViewItemClass = app.module("views").baseChildTabViewItemClass;
+
 		var navigationViewClass = Backbone.View.extend({
 			events : {
 				//"click .class-change-action"		: "goToClass",
@@ -58,9 +61,39 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 		});
 
-		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
-		var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
-		var baseChildTabViewItemClass = app.module("views").baseChildTabViewItemClass;
+		var courseDropdownViewItemClass = baseChildTabViewItemClass.extend({
+			tagName : "li",
+			events : {
+				"click a.select-item" : "selectItem"
+			},
+			template : _.template($("#dropdown_child-item-template").html(), null, {variable: "model"}),
+			selectItem : function(e) {
+				this.parentView.trigger("dropdown-item.selected", this.model);
+				//app.userSettings.set("class_id", this.model.get("id"));
+				//mod.programsCollection.moveToCourse(this.model.get("id"));
+
+				//$("[href='#tab_course_units']").tab('show');
+			},
+		})
+		var courseDropdownViewClass = baseChildTabViewClass.extend({
+			nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
+			childViewClass : courseDropdownViewItemClass,
+			initialize: function() {
+				console.info('portlet.content/courseDropdownViewClass::initialize');
+
+				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
+			},
+			setCollection : function(model) {
+				baseChildTabViewClass.prototype.setCollection.apply(this, arguments);
+
+				this.render();
+			},
+			makeCollection: function() {
+				return this.collection;
+			},
+		});
+
+
 
 		/* COURSE TABS VIEW CLASSES */
 		var blockableTabViewClass = baseChangeModelViewClass.extend({
@@ -204,6 +237,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
+
+				console.warn(this.$(".navbar-program"));
+
+				// TODO CREATE SUB VIEWS!!
+				this.navigationView 	= new navigationViewClass({
+					el : this.$(".navbar-program"),
+					collection : mod.programsCollection.getCurrentPrograms.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getProgramIndex.bind(mod.programsCollection)
+				});
+				this.navigationView.render();
+
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
@@ -214,18 +258,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(model) {
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
 
+				this.navigationView.render();
 				this.renderProgress();
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				var totalUnits = mod.progressCollection.getTotalPendingCourses(mod.programsCollection.getCurrentCourses());
+				//var totalUnits = mod.progressCollection.getTotalPendingCourses(mod.programsCollection.getCurrentCourses());
+				var totalUnits = mod.programsCollection.getCurrentCourses().size();
 
-				if (totalUnits > 0) {
+				//if (totalUnits > 0) {
 					$(".course-indicator span").html(totalUnits);
 					$(".course-indicator").show();
-				} else {
-					$(".course-indicator").hide();
-				}
+				//} else {
+				//	$(".course-indicator").hide();
+				//}
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentCourses();
@@ -342,8 +388,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
+
+				// TODO CREATE SUB VIEWS!!
+				this.navigationView 	= new navigationViewClass({
+					el : this.$(".navbar-course"),
+					collection : mod.programsCollection.getCurrentCourses.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getCourseIndex.bind(mod.programsCollection)
+				});
+				this.navigationView.render();
+
+
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -353,18 +411,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(model) {
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
 
+				this.navigationView.render();
 				this.renderProgress();
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				var totalUnits = mod.progressCollection.getTotalPendingUnits(mod.programsCollection.getCurrentUnits());
+				//var totalUnits = mod.progressCollection.getTotalPendingUnits(mod.programsCollection.getCurrentUnits());
+				var totalUnits = mod.programsCollection.getCurrentUnits().size();
 
-				if (totalUnits > 0) {
+				//if (totalUnits > 0) {
 					$(".unit-indicator span").html(totalUnits);
 					$(".unit-indicator").show();
-				} else {
-					$(".unit-indicator").hide();
-				}
+				//} else {
+				//	$(".unit-indicator").hide();
+				//}
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
@@ -654,31 +714,34 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				Marionette.triggerMethodOn(this, "start");
 
-				//this.listenTo(this.collection, "program.changed", this.renderProgram.bind(this));
-				//this.listenTo(this.collection, "course.changed", this.renderCourse.bind(this));
+				this.listenTo(this.collection, "program.changed", this.renderProgram.bind(this));
+				this.listenTo(this.collection, "course.changed", this.renderCourse.bind(this));
 				//this.listenTo(this.collection, "unit.changed", this.renderUnit.bind(this));
 
-				//this.renderProgram();
-				//this.renderCourse();
+				this.renderProgram();
+				this.renderCourse();
 				//this.renderUnit();
 
 				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
-			/*
+			
 			renderProgram : function() {
 				console.info('portlet.content/widgetViewClass::render');
 				this.$(".program-title").html(this.collection.getCurrentProgram().get("name"));
 				this.$(".program-count").html(this.collection.getCurrentPrograms().size());
+
+				this.courseDropdownView.setCollection(this.collection.getCurrentCourses());
 			},
 			renderCourse : function() {
 				this.$(".course-title").html(this.collection.getCurrentCourse().get("name"));
 				this.$(".course-count").html(this.collection.getCurrentCourses().size());
 			},
+			/*
 			renderUnit : function() {
 				this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
 				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
 			},
-			*/			
+			*/
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
 			},
@@ -695,13 +758,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					});
 					*/
 
+					this.courseDropdownView = new courseDropdownViewClass({
+						el : this.$(".course-dropdown")
+					});
+
 					this.programDescriptionTabView 	= new programDescriptionTabViewClass({
 						el : $("#tab_program_description"),
 						model : this.collection.getCurrentProgram()
 					});
 
 					this.programCoursesTabView = new programCoursesTabViewClass({
-						el : $("#tab_program_courses table tbody"),
+						el : $("#tab_program_courses"),
+						childContainer : "table.course-table tbody",
 						model : this.collection.getCurrentProgram()
 					});
 
@@ -739,6 +807,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 						this.courseUnitsTabView.showContentArea();
 						this.courseUnitsTabView.showContentSidebar();
+					}.bind(this));
+
+					this.listenTo(this.courseDropdownView, "dropdown-item.selected", function(courseModel) {
+						mod.programsCollection.moveToCourse(courseModel.get("id"));
 					}.bind(this));
 
 

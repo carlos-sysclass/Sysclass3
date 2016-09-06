@@ -568,3 +568,8 @@ body {
 .vjs-poster, .video-js {
   background-color: #fff;
 }
+
+.no-padding-sides {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
