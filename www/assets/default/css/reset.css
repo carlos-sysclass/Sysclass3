@@ -522,11 +522,12 @@ body {
 
 .content-container .vjs-auto-height {
     width: 100% !important;
-    max-height: 462px;
+    /* max-height: 462px; */
     transition: all 1s linear 0s;
+    height: 14.06vw;
 }
 .content-container.full-video .vjs-auto-height {
-  max-height: 617px;
+  /* max-height: 617px; */
 }
 
 .content-container .close-content-sidebar {
@@ -536,33 +537,42 @@ body {
 }
 
 .content-container .unit-video-container.pop-out .vjs-auto-height {
-  max-height: 168.75px;
+  /* max-height: 168.75px; */
 }
 
 .content-container .unit-video-container.pop-out-start .videocontent {
 }
 .content-container .unit-video-container.pop-out-start .vjs-auto-height {
-  max-height: 168.75px;
+  /* max-height: 168.75px; */
   opacity: 0;
   transition: all 0.5s linear 0s;
   width: 300px !important;
 }
 .content-container.full-video .unit-video-container.pop-out  {
-  height: 617px;
+  /* height: 617px; */
 }
 .content-container .unit-video-container.pop-out  {
-  height: 462px;
+  /* height: 462px; */
 }
 
 .content-container .unit-video-container.pop-out .videocontent {
   position: fixed;
   right: 25px;
   bottom: 25px;
-  width: 25%;
-  height: 25%;
+  width: 25vw;
   border: 2px solid #ddd;
+  border-radius: 10px;
   opacity : 1 !important;
   transition: opacity 1s linear 0s;
+  z-index: 100;
+  background-color: #fff;
+}
+
+.content-container .unit-video-container.pop-out .videocontent .videocontent-header {
+    padding: 0 5px 4px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+    cursor: move;
 }
 
 .vjs-poster, .video-js {
@@ -573,3 +583,84 @@ body {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
+
+/* Overlays */
+.ui-widget-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.ui-resizable {
+  position: relative;
+}
+.ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+  -ms-touch-action: none;
+  touch-action: none;
+}
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+.ui-resizable-n {
+  cursor: n-resize;
+  height: 7px;
+  width: 100%;
+  top: -5px;
+  left: 0;
+}
+.ui-resizable-s {
+  cursor: s-resize;
+  height: 7px;
+  width: 100%;
+  bottom: -5px;
+  left: 0;
+}
+.ui-resizable-e {
+  cursor: e-resize;
+  width: 7px;
+  right: -5px;
+  top: 0;
+  height: 100%;
+}
+.ui-resizable-w {
+  cursor: w-resize;
+  width: 7px;
+  left: -5px;
+  top: 0;
+  height: 100%;
+}
+.ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+}
+.ui-resizable-sw {
+  cursor: sw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  bottom: -5px;
+}
+.ui-resizable-nw {
+  cursor: nw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  top: -5px;
+}
+.ui-resizable-ne {
+  cursor: ne-resize;
+  width: 9px;
+  height: 9px;
+  right: -5px;
+  top: -5px;
+}
+
+.ui-resizable-helper { border: 2px dotted #00F; }

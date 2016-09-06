@@ -96,6 +96,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 
 		/* COURSE TABS VIEW CLASSES */
+		/*
 		var blockableTabViewClass = baseChangeModelViewClass.extend({
 			events : {
 				"click .blockable-item" : "onBlockableItemClick"
@@ -144,7 +145,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			}
 		});
-		
+		*/
+
 		var programDescriptionTabViewClass = Backbone.View.extend({
 			template : _.template($("#tab_program_description-template").html(), null, {variable : 'model'}),
 			initialize: function() {
@@ -448,7 +450,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        videoJS : null,
 	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
-
+	        events : {
+	        	"click .close-video" : "stopAndClose"
+	        },
 	        onScreenStatus : true,
 	        onScreenTime : null,
 	        onScreelThreshold : 0.5 * 1000, // 5 seconds
@@ -458,8 +462,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            console.info('portlet.content/unitVideosTabViewClass::initialize');
 
 	            //this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
-	        },
 
+	            // CREATE DRAGGABLE E RESIZABLE BEHAVIOUR
+	        },
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
 	            var self = this;
@@ -476,6 +481,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					var progress = mod.progressCollection.getContentProgress(this.videoModel.get("id"));
 					this.videoModel.set("progress", progress);
 
+
 	                if (!_.isNull(this.videoJS)) {
 	                    this.videoJS.dispose();
 	                }
@@ -488,6 +494,21 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                            this.template(this.videoModel.toJSON())
 	                        );
 
+	                        this.$el.addClass("pop-out");
+
+							this.$(".videocontent").draggable({
+							    start: function( event, ui ) {
+							        $(this).css({
+							            //top: $(this).position().top,
+							            bottom: "auto",
+							            //left: $(this).position().left,
+							            right: "auto"
+							        });
+							    },
+							    //cursor: "crosshair",
+							    handle: ".videocontent-header"
+							});
+
 	                        //var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 	                        videojs(videoDomID, {
 	                            "controls": true,
@@ -499,7 +520,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                                'html5', 'flash'
 	                            ]
 	                        }, function() {
-	                            //this.play();
 	                        });
 	                    }
 
@@ -508,6 +528,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    this.videoJS.ready(this.bindStartVideoEvents.bind(this));
 
 	                    mod.videoJS = this.videoJS;
+   
 	                }
 
 	                app.module("ui").refresh(this.$el);
@@ -520,6 +541,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            }
 	        },
 	        checkViewType : function(evt) {
+	        	/*
 	        	console.info('portlet.content/unitVideosTabViewClass::checkViewType');
 	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
 	            var currentScreenTime = Date.now();
@@ -531,8 +553,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	                this.onScreenInterval = window.setTimeout(this.changeViewType.bind(this), this.onScreelThreshold + 150);
 	            }
+	            */
 	        },
 	        changeViewType : function(evt) {
+	        	/*
 	        	console.info('portlet.content/unitVideosTabViewClass::changeViewType');
 	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
 	            var currentScreenTime = Date.now();
@@ -558,11 +582,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            			this.$el.removeClass("pop-out-start");
 							this.$el.addClass("pop-out");
 	            		}.bind(this), 550)
-	            		/*
-	            		this.$(".videocontent").animate({
-
-	            		}
-	            		*/
 	                	
 	                	// RESET THE COUNTER AND STATUS
 	                	this.viewType = "float";
@@ -577,8 +596,38 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					}
 	                this.onScreenStatus = currentScreenStatus;
 	            }
+	            */
 	        },
 	        bindStartVideoEvents : function() {
+	        	// CALCULATE HEIGHT
+                //var width = this.$(".videocontent").outerWidth();
+                //var height = width * 9 / 16;
+                //this.$(".videocontent .vjs-auto-height").height(height);
+                /*
+				this.$(".videocontent").resizable({
+					stop: function() {
+						this.$(".videocontent .vjs-auto-height").css({
+							"height" : "auto"
+						});
+
+		                var width = this.$(".videocontent").outerWidth();
+		                console.warn(width);
+
+		                var height = width * 9 / 16;
+
+		                this.$(".videocontent .vjs-auto-height").height(height);
+
+					}.bind(this),
+					handles: "nw, ne, se, sw, n, e, s, w",
+					aspectRatio: true,
+					zIndex: 110,
+					animate: true,
+					helper : "ui-resizable-helper"
+				});
+				*/
+
+
+
 	            var self = this;
 	            //this.videoJS.play();
 	            this.currentProgress = parseFloat(this.videoModel.get("progress.factor"));
@@ -589,26 +638,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	            // @todo CALCULATE THE CURRENT VIDEO TIMELINE, IF PREVIOUSLY STARTED
 
-	            if (this.currentProgress >= 1) {
-	                this.trigger("video:viewed");
-	            } else {
+	            //if (this.currentProgress >= 1) {
+	            //    this.trigger("video:viewed");
+	            //} else {
+	            	var progress = this.model.get("progress");
+					this.videoJS.on("loadedmetadata", function() {
+                        if (progress.factor < 1) {
+                        	var start = this.duration() * progress.factor;
+                        	console.warn(progress.factor, this, start, this.duration());
+                        	this.currentTime(start - 5); 
+                        }
 
-	                this.videoJS.on("timeupdate", function() {
-	                    // CALCULATE CURRENT PROGRESS
-	                    var currentProgress = this.videoJS.currentTime() / this.videoJS.duration();
+					});
 
-	                    if (currentProgress > this.currentProgress) {
-	                        var progressDiff =  currentProgress - this.currentProgress;
-	                        if (progressDiff > 0.03 ) {
-	                            this.currentProgress = currentProgress;
-	                            //this.videoModel.set("progress", this.currentProgress);
-	                            var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
-	                            progressModel.setAsViewed(this.videoModel, this.currentProgress);
-
-	                        }
-	                    }
-
-	                }.bind(this));
+	                this.videoJS.on("timeupdate", this.updateProgress.bind(this));
 
 	                this.videoJS.on("ended", function() {
 	                    this.currentProgress = 1;
@@ -617,13 +660,34 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	                    this.trigger("video:viewed");
 	                }.bind(this));
-	            }
+	            //}
 
-	            this.onScreenEvent = $(document).on("scroll."+this.cid + " resize."+this.cid, this.checkViewType.bind(this));
+	            //this.onScreenEvent = $(document).on("scroll."+this.cid + " resize."+this.cid, this.checkViewType.bind(this));
 
                 //if (_.isNull(this.onScreenInterval)) {
                 	//this.onScreenInterval = window.setInterval(this.checkViewType.bind(this, [true]), this.onScreelThreshold / 2);
                 //}
+	        },
+	        updateProgress : function() {
+                var currentProgress = this.videoJS.currentTime() / this.videoJS.duration();
+
+                if (currentProgress > this.currentProgress) {
+                    var progressDiff =  currentProgress - this.currentProgress;
+                    if (progressDiff > 0.03 ) {
+                        this.currentProgress = currentProgress;
+                        //this.videoModel.set("progress", this.currentProgress);
+                        var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
+                        progressModel.setAsViewed(this.videoModel, this.currentProgress);
+
+                    }
+                }
+    		},
+	        stopAndClose : function() {
+				if (!_.isNull(this.videoJS)) {
+					this.updateProgress()
+	                this.videoJS.dispose();
+	                this.$el.hide();
+	            }
 	        },
 	        disableView : function() {
 	            //$("[href='#tab_unit_video'").hide();

@@ -747,6 +747,13 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
   <div class="videocontent">
+    <div class="videocontent-header">
+      <a href="javascript: void(0);" class="btn btn-default btn-xs btn-circle close-video">
+        <i class="fa fa-times"></i>
+      </a>
+    </div>
+    <div class="clearfix"></div>
+
     <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height"
       width="auto"  height="auto"
       <% if (!_.has(model, 'poster')) { %>
@@ -765,7 +772,9 @@ _before_init_functions.push(function() {
         <track kind="subtitles" src="<%= item.file.url %>" srclang="<%= item.language_code %>" label="<%= item.language_code %>"></track>
       <% }); %>
     </video>
-  </div>
+</div>
+
+
 </script>
 
 <script type="text/template" id="tab_unit_materials-nofound-template">
