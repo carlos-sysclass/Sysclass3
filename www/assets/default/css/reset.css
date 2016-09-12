@@ -697,8 +697,8 @@ a:hover, a:focus {
 #tab_course_units .navbar-default .navbar-nav > .open > a, #tab_course_units .navbar-default .navbar-nav > .open > a:hover, #tab_course_units .navbar-default .navbar-nav > .open > a:focus {
   background-color: transparent;
 }
-#tab_course_units .label-danger, #tab_course_units .badge-danger, #tab_program_courses .label-danger, #tab_program_description .label-danger, #tab_program_courses .badge-danger, #tab_program_description .badge-danger {
- background-color: #0d47a1;
+#tab_course_units .label-danger, #tab_program_courses .label-danger, #tab_program_description .label-danger {
+ background-color: #0d47a1 !important;
 }
 
 
