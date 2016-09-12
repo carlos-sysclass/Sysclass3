@@ -334,7 +334,7 @@ a:hover, a:focus {
   font-weight: 600;
 }
 .inter-navsuper-tabs .pendente, .inter-navsuper-tabs .concluido, .inter-navsuper-tabs .andamento, .inter-navsuper-tabs .fechado, .inter-navsuper-tabs .avalialbe {
-  padding: 0px 5px;
+  padding: 0;
   border-radius: 50%;
   color: #fff;
   font-weight: lighter;
@@ -680,5 +680,20 @@ a:hover, a:focus {
   right: -5px;
   top: -5px;
 }
-
 .ui-resizable-helper { border: 2px dotted #00F; }
+
+.unit-table tbody tr td:first-child {
+  text-align: center;
+}
+#tab_course_units .navbar-nav > li > a {
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding: 9px 10px;
+}
+#tab_course_units .navbar-right {
+    float: right !important;
+    margin-right: 0 !important;
+}
+
+
+
