@@ -690,7 +690,7 @@ a:hover, a:focus {
     padding-top: 2px;
     padding: 9px 10px;
 }
-#tab_course_units .navbar-right {
+#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
     float: right !important;
     margin-right: 0 !important;
 }
