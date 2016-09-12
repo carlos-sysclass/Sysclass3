@@ -15,7 +15,7 @@ class Language extends Model
     	$depinj = \Phalcon\DI::getDefault();
     	
     	$response = parent::toArray();
-       	$response['country_image'] = $depinj->get("resourceUrl")->get(sprintf("/img/flags/%s.png", strtolower($this->country_code)));
+       	$response['country_image'] = $depinj->get("resourceUrl")->get(sprintf("/images/flags/%s.png", strtolower($this->country_code)));
 		return $response;
     }
 }

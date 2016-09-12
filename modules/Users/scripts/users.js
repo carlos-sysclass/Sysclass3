@@ -83,9 +83,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			//window.setTimeout(1500, this.$(".user-course-details").unblock());
 	    },
 	    injectCourseDetails : function() {
-	    	this.$(".course_name").html(this.model.get("course_name"));
-
-
+	    	this.$(".course_name").html(this.statsModel.get("name"));
 
 	    	//this.$(".enroll_token").html(this.model.get("enroll_token"));
 
