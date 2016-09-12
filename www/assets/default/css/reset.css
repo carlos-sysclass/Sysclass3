@@ -226,7 +226,7 @@ body {
 /* INDEX 2 */
 
 .inter-navsuper {
-  background: #3472f7;
+  background: #1565c0;
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
@@ -278,25 +278,26 @@ body {
 }
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
-  background: #2ca8ff;
+  background: #1e88e5;
   color: #fff;
   margin: 0;
   border-left: 0;
   border-top: 0;
 }
 .inter-navsuper .nav-tabs>li>a:hover {
-  background: #2ca8ff;
+  background: #2196f3;
   color: #fff;
 }
 .inter-navsuper .nav-tabs {
   border: none;
+  margin: 0;
 }
 .inter-navsuper .nav-tabs>li>a {
   border-radius: 0;
   margin: 0;
   border-left: 0;
   border-top: 0;
-  border-right: 1px solid #fff;
+  border-right: 1px solid #1976d2;
   cursor: pointer;
 }
 .inter-navsuper .nav-tabs>li>a:hover {
