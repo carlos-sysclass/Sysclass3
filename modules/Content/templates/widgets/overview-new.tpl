@@ -146,10 +146,9 @@ _before_init_functions.push(function() {
               <table class="table table-striped unit-table">
                 <thead>
                   <tr>
-                    <th></th>
                     <th>{translateToken value="Unit"}</th>
                     <th>{translateToken value="Video"}</th>
-                    <th>{translateToken value="Material"}</th>
+                    <th>{translateToken value="Materials"}</th>
                     <!--
                     <th>{translateToken value="Exercise"}</th>
                     <th>{translateToken value="Test"}</th>
@@ -228,8 +227,8 @@ _before_init_functions.push(function() {
                   <tr>
                     <th>{translateToken value="Course"}</th>
                     <th>{translateToken value="Instrutor"}</th>
-                    <th>{translateToken value="Units Complete"}</th>
-                    <th>{translateToken value="Next Unit"}</th>
+                    <th>{translateToken value="Units Completed"}</th>
+                    <th>{translateToken value="Next Assignment"}</th>
                     <th>{translateToken value="Status"}</th>
                     <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
@@ -451,7 +450,7 @@ _before_init_functions.push(function() {
     </td>
     <!-- Units -->
     <td>
-      <%= model.units_completed %> / <%= _.size(model.units) %>
+      <%= model.units_completed %> {translateToken value="of"} <%= _.size(model.units) %>
     </td>
     <!--
     1/5 Avaliação do Ciclo de Vida
@@ -464,18 +463,26 @@ _before_init_functions.push(function() {
     <!-- Next Unit -->
     <td>
       <%
+        var completed = true;
         for (var index in model.units) {
           var unit = model.units[index];
           if (parseFloat(unit.progress.factor) >= 1) {
             continue;
           } else {
+            completed = false;
       %>
-        <%= parseInt(index) + 1 %> / <%= _.size(model.units) %> <%= unit.name %>
+        <%= unit.name %>
       <%
             break;
           }
         }
       %>
+      <% if (completed) { %>
+        <span class="concluido">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          {translateToken value="All assignments completed"}
+        </span>
+      <% } %>
     </td>
 
     <!-- Status -->
@@ -513,15 +520,10 @@ _before_init_functions.push(function() {
   <!-- Unidade -->
   <% //console.warn("UNIT", model) %>
   <td>
-      <i class="fa fa-file"></i>
-  </td>
-  <td>
     <%= model.name %></a>
   </td>
   <!-- Video -->
   <td>
-
-
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -564,7 +566,7 @@ _before_init_functions.push(function() {
           <a href="javascript: void(0);" class="list-materials-action">
             <span class="avalialbe">
               <i class="fa fa-folder-o" aria-hidden="true"></i>
-              {translateToken value="Avaliable"}
+              {translateToken value="View"}
             </span>
           </a>
         <% } %>
@@ -647,11 +649,6 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_courses_tests-item-template">
   <!-- Unidade -->
   <% //console.warn(model) %>
-  <td>
-    <span class="">
-      <i class="fa fa-list-ol"></i>
-    </span>
-  </td>
   <td>
     <%= model.name %>
   </td>
