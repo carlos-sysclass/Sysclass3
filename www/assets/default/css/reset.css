@@ -712,6 +712,9 @@ a:hover, a:focus {
 #tab_course_units .label-danger, #tab_program_courses .label-danger, #tab_program_description .label-danger {
  background-color: #0d47a1 !important;
 }
+.label-danger, .badge-danger {
+  background-color: #0d47a1;
+}
 
 
 
