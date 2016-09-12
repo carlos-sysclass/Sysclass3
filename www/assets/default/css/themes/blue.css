@@ -20,7 +20,7 @@ Page header
 }
 .header .navbar-nav .dropdown-toggle:hover,
 .header .navbar-nav .dropdown.open .dropdown-toggle {
-  background-color: #146a9d !important;
+  background-color: #1565c0 !important;
 }
 .header .navbar-nav li.dropdown .dropdown-toggle i {
   color: #68bbec !important;
