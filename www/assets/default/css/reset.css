@@ -2,6 +2,16 @@ body {
   padding-top: 80px;
   font-family: 'Open Sans', sans-serif;
 }
+a:hover, a:focus {
+    color: #23527c;
+    text-decoration: none;
+}
+.btn-primary {
+  background-color: #1976d2;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background-color: #1565c0;
+}
 .no-padding {
   padding: 0 !important;
 }
@@ -278,14 +288,15 @@ body {
 }
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
-  background: #1e88e5;
+  background: #1976d2;
   color: #fff;
   margin: 0;
   border-left: 0;
   border-top: 0;
+  border-right: 1px solid rgba(255,255,255,0.1);
 }
 .inter-navsuper .nav-tabs>li>a:hover {
-  background: #2196f3;
+  background: #1e88e5;
   color: #fff;
 }
 .inter-navsuper .nav-tabs {
@@ -297,7 +308,7 @@ body {
   margin: 0;
   border-left: 0;
   border-top: 0;
-  border-right: 1px solid #1976d2;
+  border-right: 1px solid rgba(255,255,255,0.1);
   cursor: pointer;
 }
 .inter-navsuper .nav-tabs>li>a:hover {
@@ -382,6 +393,12 @@ body {
 }
 .inter-navsuper-tabs .avalialbe {
   color: #2ca8ff;
+}
+.inter-navsuper-tabs .avalialbe i {
+  font-size: 16px;
+}
+.unit-table .fa {
+  font-size: 16px;
 }
 .inter-navsuper-tabs input {
   width: 90%;
