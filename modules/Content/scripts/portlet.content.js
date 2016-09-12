@@ -415,6 +415,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.navigationView.render();
 				this.renderProgress();
+
+				app.module("ui").refresh(this.$el);
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
@@ -645,7 +647,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.videoJS.on("loadedmetadata", function() {
                         if (progress.factor < 1) {
                         	var start = this.duration() * progress.factor;
-                        	console.warn(progress.factor, this, start, this.duration());
+                        	//console.warn(progress.factor, this, start, this.duration());
                         	this.currentTime(start - 5); 
                         }
 
@@ -660,6 +662,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	                    this.trigger("video:viewed");
 	                }.bind(this));
+
+
+	                this.videoJS.play();
 	            //}
 
 	            //this.onScreenEvent = $(document).on("scroll."+this.cid + " resize."+this.cid, this.checkViewType.bind(this));

@@ -320,6 +320,7 @@ a:hover, a:focus {
 .inter-navsuper-tabs .table>tbody>tr>td, .inter-navsuper-tabs .table>tbody>tr>th, .inter-navsuper-tabs .table>tfoot>tr>td, .inter-navsuper-tabs .table>tfoot>tr>th {
   padding: 15px 8px;
   font-size: 13px;
+  vertical-align: middle;
 }
 .inter-navsuper-tabs .alert {
   background: #f9f9f9;
@@ -556,7 +557,7 @@ a:hover, a:focus {
     width: 100% !important;
     /* max-height: 462px; */
     transition: all 1s linear 0s;
-    height: 12.65625vw;
+    height: 27vw;
 
 }
 .content-container.full-video .vjs-auto-height {
@@ -592,7 +593,7 @@ a:hover, a:focus {
   position: fixed;
   right: 25px;
   bottom: 25px;
-  width: 22.5vw;
+  width: 48vw;
   border: 2px solid #ddd;
   border-radius: 10px;
   opacity : 1 !important;
