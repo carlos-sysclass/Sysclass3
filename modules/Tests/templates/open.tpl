@@ -26,7 +26,7 @@
 {block name="dialog-footer"}
 <div class="modal-footer">
     {if $T_TEST.test_repetition <= 0 || $T_TEST.executions|@count < $T_TEST.test_repetition}
-    <a href="/module/tests/open/{$T_TEST.id}" data-dismiss="modal" class="btn btn-primary">
+    <a href="/module/tests/open/{$T_TEST.id}" class="btn btn-primary">
         {translateToken value="Do now!"}
     </a>
     {/if}

@@ -391,11 +391,13 @@ body {
   font-weight: lighter;
 }
 .inter-navsuper-tabs .btn {
+  /*
   font-size: 12px;
   text-transform: uppercase;
   font-weight: lighter;
   border-radius: 0;
   margin-top: 4px;
+  */
 }
 .dir-menu-bar {
   float: right;
@@ -524,7 +526,8 @@ body {
     width: 100% !important;
     /* max-height: 462px; */
     transition: all 1s linear 0s;
-    height: 14.06vw;
+    height: 12.65625vw;
+
 }
 .content-container.full-video .vjs-auto-height {
   /* max-height: 617px; */
@@ -559,7 +562,7 @@ body {
   position: fixed;
   right: 25px;
   bottom: 25px;
-  width: 25vw;
+  width: 22.5vw;
   border: 2px solid #ddd;
   border-radius: 10px;
   opacity : 1 !important;

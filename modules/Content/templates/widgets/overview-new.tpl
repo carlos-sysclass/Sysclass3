@@ -13,19 +13,19 @@ _before_init_functions.push(function() {
               <li role="presentation" class="active">
               	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab">
                   <i class="fa fa-book"></i>
-                  {translateToken value="Units"}
-                  <span class="label label-sm label-danger progress-indicator unit-indicator">
+                  <span class="progress-indicator unit-indicator">
                     <span></span>
                   </span>
+                  {translateToken value="Units"}
                 </a>
               </li>
               <li role="presentation">
               	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
                   <i class="fa fa-sitemap"></i>
-                  {translateToken value="Courses"}
-                  <span class="label label-sm label-danger progress-indicator course-indicator">
+                  <span class="progress-indicator course-indicator">
                     <span></span>
                   </span>
+                  {translateToken value="Courses"}
                 </a>
               </li>
               <!--
@@ -36,10 +36,10 @@ _before_init_functions.push(function() {
               <li role="presentation" class="">
               	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
                   <i class="fa fa-graduation-cap"></i>
-                  {translateToken value="Program"}
-                  <span class="label label-sm label-danger progress-indicator program-indicator">
+                  <span class="progress-indicator program-indicator">
                     <span></span>
                   </span>
+                  {translateToken value="Program"}
                 </a>
               </li>
             </ul>
@@ -231,7 +231,7 @@ _before_init_functions.push(function() {
                     <th>{translateToken value="Units Complete"}</th>
                     <th>{translateToken value="Next Unit"}</th>
                     <th>{translateToken value="Status"}</th>
-                    <th>{translateToken value="Cumulative Grade"}</th>
+                    <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -422,13 +422,27 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-
+    <% console.warn('COURSE', model); %>
     <!-- Course -->
-    <td><a href="#class-tab" class="class-change-action"><%= model.name %></a>
+    <td>
+      <a href="#class-tab" class="btn btn-link btn-sm class-change-action"><%= model.name %></a>
+      <a href="javascript:void(0);"  class="btn btn-info btn-xs">
+        <i class="fa fa-info" aria-hidden="true"></i>
+        Info
+      </a>
     <!-- Instrutor -->
     <td>
       <% if (!_.isNull(model.professor_id)) { %>
-        Carlos Oliveira <span class="at-difinf"><a href="">ver perfil</a></span>
+        <%= model.professor.name %> <%= model.professor.surname %>
+        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
+          <i class="fa fa-info" aria-hidden="true"></i>
+          {translateToken value="Info"}
+        </a>
+        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+          {translateToken value="Contact"}
+        </a>
+
       <% } %>
     </td>
     <!-- Units -->
@@ -444,7 +458,21 @@ _before_init_functions.push(function() {
       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
     -->
     <!-- Next Unit -->
-    <td></td>
+    <td>
+      <%
+        for (var index in model.units) {
+          var unit = model.units[index];
+          if (parseFloat(unit.progress.factor) >= 1) {
+            continue;
+          } else {
+      %>
+        <%= parseInt(index) + 1 %> / <%= _.size(model.units) %> <%= unit.name %>
+      <%
+            break;
+          }
+        }
+      %>
+    </td>
 
     <!-- Status -->
     <td>
@@ -466,7 +494,9 @@ _before_init_functions.push(function() {
     <% } %>
     </td>
     <!-- Cumulative Grade -->
+    <!--
     <td class="nota-tal">N/A</td>
+    -->
 </script>
 <script type="text/template" id="tab_courses_child-nofound-template">
 	<tr>
@@ -668,15 +698,19 @@ _before_init_functions.push(function() {
         {translateToken value="Done"}
       </span>
     <% } else if (model.progress.factor > 0) { %>
-      <span class="andamento">
-        <i class="fa fa-clock-o" aria-hidden="true"></i>
-        {translateToken value="In Progress"}
-      </span>
+      <a href="javascript: void(0);" class="open-test-action">
+        <span class="andamento">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+          {translateToken value="In Progress"}
+        </span>
+      </a>
     <% } else { %>
-      <span class="avalialbe">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-        {translateToken value="Avaliable"}
-      </span>
+      <a href="javascript: void(0);" class="view-test-action">
+        <span class="avalialbe">
+          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+          {translateToken value="Avaliable"}
+        </span>
+      </a>
     <% } %>
   </td>
   <!-- Opções -->
