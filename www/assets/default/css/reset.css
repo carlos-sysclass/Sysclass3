@@ -694,6 +694,9 @@ a:hover, a:focus {
     float: right !important;
     margin-right: 0 !important;
 }
+#tab_course_units .navbar-default .navbar-nav > .open > a, #tab_course_units .navbar-default .navbar-nav > .open > a:hover, #tab_course_units .navbar-default .navbar-nav > .open > a:focus {
+  background-color: transparent;
+}
 
 
 
