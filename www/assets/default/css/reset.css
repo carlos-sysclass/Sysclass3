@@ -2,6 +2,16 @@ body {
   padding-top: 80px;
   font-family: 'Open Sans', sans-serif;
 }
+a:hover, a:focus {
+    color: #23527c;
+    text-decoration: none;
+}
+.btn-primary {
+  background-color: #1976d2;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background-color: #1565c0;
+}
 .no-padding {
   padding: 0 !important;
 }
@@ -226,7 +236,7 @@ body {
 /* INDEX 2 */
 
 .inter-navsuper {
-  background: #3472f7;
+  background: #1565c0;
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
@@ -278,25 +288,27 @@ body {
 }
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
-  background: #2ca8ff;
+  background: #1976d2;
   color: #fff;
   margin: 0;
   border-left: 0;
   border-top: 0;
+  border-right: 1px solid rgba(255,255,255,0.1);
 }
 .inter-navsuper .nav-tabs>li>a:hover {
-  background: #2ca8ff;
+  background: #1e88e5;
   color: #fff;
 }
 .inter-navsuper .nav-tabs {
   border: none;
+  margin: 0;
 }
 .inter-navsuper .nav-tabs>li>a {
   border-radius: 0;
   margin: 0;
   border-left: 0;
   border-top: 0;
-  border-right: 1px solid #fff;
+  border-right: 1px solid rgba(255,255,255,0.1);
   cursor: pointer;
 }
 .inter-navsuper .nav-tabs>li>a:hover {
@@ -322,7 +334,7 @@ body {
   font-weight: 600;
 }
 .inter-navsuper-tabs .pendente, .inter-navsuper-tabs .concluido, .inter-navsuper-tabs .andamento, .inter-navsuper-tabs .fechado, .inter-navsuper-tabs .avalialbe {
-  padding: 0px 5px;
+  padding: 0;
   border-radius: 50%;
   color: #fff;
   font-weight: lighter;
@@ -370,17 +382,35 @@ body {
 .inter-navsuper-tabs .pendente {
   color: #ff3b30;
 }
+.inter-navsuper-tabs .pendente i {
+  font-size: 16px;
+}
 .inter-navsuper-tabs .concluido {
   color: #05ae0e;
+}
+.inter-navsuper-tabs .concluido i {
+  font-size: 16px;
 }
 .inter-navsuper-tabs .andamento {
   color: #ff9500;
 }
+.inter-navsuper-tabs .andamento i {
+  font-size: 16px;
+}
 .inter-navsuper-tabs .fechado {
   color: #5d5d5d;
 }
+.inter-navsuper-tabs .fechado i {
+  font-size: 16px;
+}
 .inter-navsuper-tabs .avalialbe {
-  color: #2ca8ff;
+  color: #1976d2;
+}
+.inter-navsuper-tabs .avalialbe i {
+  font-size: 16px;
+}
+.unit-table .fa {
+  font-size: 16px;
 }
 .inter-navsuper-tabs input {
   width: 90%;
@@ -665,5 +695,29 @@ body {
   right: -5px;
   top: -5px;
 }
-
 .ui-resizable-helper { border: 2px dotted #00F; }
+
+.unit-table tbody tr td:first-child {
+  text-align: center;
+}
+#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a {
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding: 9px 10px;
+}
+#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
+    float: right !important;
+    margin-right: 0 !important;
+}
+#tab_course_units .navbar-default .navbar-nav > .open > a, #tab_course_units .navbar-default .navbar-nav > .open > a:hover, #tab_course_units .navbar-default .navbar-nav > .open > a:focus {
+  background-color: transparent;
+}
+#tab_course_units .label-danger, #tab_program_courses .label-danger, #tab_program_description .label-danger {
+ background-color: #0d47a1 !important;
+}
+.label-danger, .badge-danger {
+  background-color: #0d47a1;
+}
+
+
+

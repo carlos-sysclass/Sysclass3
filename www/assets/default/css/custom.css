@@ -2291,7 +2291,7 @@ a.list-group-item,
 }
 
 .fc-unthemed .fc-today {
-	background: #00599A none repeat scroll 0 0 !important;
+	background: #1565c0 none repeat scroll 0 0 !important;
 	font-weight: bold;
 	color: #fff;
 }
@@ -2340,7 +2340,7 @@ a.list-group-item,
 	color: #444;
 }
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
-	background: #015999 !important;
+	background: #1565c0 !important;
     color: #fff;
     text-decoration: none;
 }

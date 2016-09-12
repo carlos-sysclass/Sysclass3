@@ -977,7 +977,8 @@ Custom label and badges
 
 .label.label-sm {
   font-size: 12px;
-  padding: 1px 4px 1px 4px;
+  padding: 3px 4px 2px 4px;
+  display: inline-flex;
 }
 
 h1 .label,
