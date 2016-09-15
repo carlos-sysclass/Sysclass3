@@ -616,7 +616,7 @@ a:hover, a:focus {
 .content-container .popupcontent .popupcontent-body {
     width: 100% !important;
     transition: all 1s linear 0s;
-    max-height: 27vw;
+    max-height: 28vw;
 
     border-bottom: 2px solid #444;
     border-left: 2px solid #444;
@@ -624,8 +624,33 @@ a:hover, a:focus {
 }
 
 .content-container .vjs-auto-height {
-    height: 27vw;
+  height: 27vw;
+  width: 100% !important;
 }
+
+
+.content-container .popupcontent.popup-minimized {
+  width: 16vw;
+}
+
+.content-container .popupcontent.popup-minimized .popupcontent-header .minimize-action {
+  transform: rotate(180deg);
+  position: relative;
+  top: 3px;
+}
+
+.content-container .popupcontent.popup-minimized .popupcontent-header .navbar-nav {
+  display: none;
+}
+
+.content-container .popupcontent.popup-minimized .popupcontent-body {
+  max-height: 9.9vw;
+}
+
+.content-container .popupcontent.popup-minimized .popupcontent-body .vjs-auto-height {
+  height: 9vw;
+}
+
 
 /*
 .content-container .unit-video-container.pop-out .videocontent .videocontent-header {

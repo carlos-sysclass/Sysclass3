@@ -453,11 +453,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        //nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        //template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
 	        events : {
-	        	"click .popupcontent-header a.minimize" : "minimize",
-	        	"click .popupcontent-header a.close" : "stopAndClose"
+	        	"click .popupcontent-header a.minimize-action" : "minimize",
+	        	"click .popupcontent-header a.close-action" : "stopAndClose"
 	        },
 	        makeDraggable : function() {
 	        	console.warn(this.$el);
+	        	this.$el.removeClass("hidden");
 	            this.$el.addClass("pop-out");
 
 				this.$(".popupcontent").draggable({
@@ -475,7 +476,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        },
 	        minimize : function() {
 	        	// RESIZE TO MINIMUM VALUE
-
+				this.$(".popupcontent").toggleClass("popup-minimized");
 	        },
 	        stopAndClose : function() {
                 this.$el.hide();
@@ -496,9 +497,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        videoJS : null,
 	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	        /*
 	        events : {
-	        	"click .close-video" : "stopAndClose"
+	        	"click .close-action" : "stopAndClose"
 	        },
+	        */
 	        onScreenStatus : true,
 	        onScreenTime : null,
 	        onScreelThreshold : 0.5 * 1000, // 5 seconds
@@ -507,13 +510,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        initialize: function(opt) {
 	            console.info('portlet.content/unitVideosTabViewClass::initialize');
 
-	            //this.listenTo(mod.programsCollection, "unit.changed", this.setModel.bind(this));
-
-	            // CREATE DRAGGABLE E RESIZABLE BEHAVIOUR
+				if (_.has(opt, 'childContainer')) {
+					this.childContainer = this.$(opt.childContainer);
+				} else {
+					this.childContainer = this.$el;
+				}
 	        },
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
 	            var self = this;
+
+				
 
 	            if (!this.model.get("video")) {
 	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
@@ -536,7 +543,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    var videoDomID = "unit-video-" + this.videoModel.get("id");
 
 	                    if (this.$("#" + videoDomID).size() === 0) {
-	                        this.$el.empty().append(
+	                        this.childContainer.empty().append(
 	                            this.template(this.videoModel.toJSON())
 	                        );
 
@@ -678,7 +685,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 }
     		},
-
 	        stopAndClose : function() {
 				if (!_.isNull(this.videoJS)) {
 					this.updateProgress()
@@ -736,6 +742,32 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	    var unitMaterialsTabViewClass = baseChildTabViewClass.extend({
 	        nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
 	        childViewClass : unitMaterialsTabViewItemClass,
+	        events : {
+	        	"click .popupcontent-header a.minimize-action" : "minimize",
+	        	"click .popupcontent-header a.close-action" : "stopAndClose"
+	        },
+	        initialize : function() { 
+	        	baseChildTabViewClass.prototype.initialize.apply(this, arguments);
+
+	        	console.warn(this.$(".unit-ex-dropdown"));
+				this.unitDropdownView = new entityDropdownViewClass({
+					el : this.$(".unit-ex-dropdown")
+
+				});
+
+				this.unitDropdownView.setCollection(mod.programsCollection.getCurrentUnits());
+
+				this.listenTo(this.unitDropdownView, "dropdown-item.selected", function(unitModel) {
+					this.setModel(unitModel);
+					//console.warn(unitModel);
+					this.render();
+				}.bind(this));
+
+				this.listenTo(mod.programsCollection, "course.changed", function() {
+					this.unitDropdownView.setCollection(mod.programsCollection.getCurrentUnits());
+				}.bind(this));
+
+	        },
 	        makeCollection: function() {
 	            var materials = this.model.get("materials");
 	            return materials;
@@ -743,7 +775,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        render : function() {
 	        	baseChildTabViewClass.prototype.render.apply(this, arguments);
 	        	contentPopoutViewClass.prototype.makeDraggable.apply(this, arguments);
-	        }
+	        	contentPopoutViewClass.prototype.enableView.apply(this, arguments);
+	        },
+	        minimize : function() {
+	        	// RESIZE TO MINIMUM VALUE
+				//this.$(".popupcontent").toggleClass("popup-minimized");
+				contentPopoutViewClass.prototype.minimize.apply(this, arguments);
+	        },
+	        stopAndClose : function() {
+                //this.$el.hide();
+                contentPopoutViewClass.prototype.disableView.apply(this, arguments);
+	        },
 	    });
 	
 		this.widgetViewClass = parent.widgetViewClass.extend({
@@ -814,7 +856,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						el : this.$(".unit-dropdown")
 					});
 
-					console.warn(this.$(".unit-dropdown"));
+					//console.warn(this.$(".unit-dropdown"));
 
 
 					this.programDescriptionTabView 	= new programDescriptionTabViewClass({
@@ -836,6 +878,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		            this.unitVideoTabView   = new unitVideoTabViewClass({
 		                el : this.$("#unit-video-container"),
+		                childContainer : ".popupcontent-body",
 		                // model : this.model,
 		            });
 		            // MATERIALS
@@ -854,15 +897,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						this.unitVideoTabView.setModel(unitModel);
 						this.unitVideoTabView.render();
 
-						this.courseUnitsTabView.showContentArea();
+						//this.courseUnitsTabView.showContentArea();
 					}.bind(this));
 
 					this.listenTo(this.courseUnitsTabView, "list:materials", function(unitModel) {
 						this.unitMaterialsTabView.setModel(unitModel);
 						this.unitMaterialsTabView.render();
 
-						this.courseUnitsTabView.showContentArea();
-						this.courseUnitsTabView.showContentSidebar();
+						//this.courseUnitsTabView.showContentArea();
+						//this.courseUnitsTabView.showContentSidebar();
 					}.bind(this));
 
 					this.listenTo(this.courseDropdownView, "dropdown-item.selected", function(courseModel) {

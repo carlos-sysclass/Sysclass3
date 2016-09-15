@@ -120,11 +120,8 @@ _before_init_functions.push(function() {
                 <span class="fechado-tag">Disable<span class="fechado"></span></span>
               </div> 
               -->
-              <div class="content-container full-video hidden">
-                <div class="unit-video-container" id="unit-video-container">
-
-                </div>
-                <div class="unit-material-container pop-out" id="unit-material-container">
+              <div class="content-container full-video">
+                <div class="unit-video-container hidden pop-out" id="unit-video-container">
                   <div class="popupcontent">
                     <div class="popupcontent-header navbar navbar-default">
                       <ul class="nav navbar-nav">
@@ -144,6 +141,44 @@ _before_init_functions.push(function() {
                             <i class="fa fa-caret-down"></i>
                           </a>
                           <ul class="dropdown-menu unit-dropdown">
+                          </ul>
+                        </li>
+                      </ul>
+
+                      <div class="popup-header-buttons">
+                        <a href="javascript: void(0);" class="btn btn-link minimize-action">
+                          <i class="fa fa-caret-up"></i>
+                        </a>
+                        <a href="javascript: void(0);" class="btn btn-link close-action">
+                          <i class="fa fa-times"></i>
+                        </a>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="popupcontent-body">
+                    </div>
+                  </div>
+                </div>
+                <div class="unit-material-container hidden pop-out" id="unit-material-container">
+                  <div class="popupcontent">
+                    <div class="popupcontent-header navbar navbar-default">
+                      <ul class="nav navbar-nav">
+                        <li>
+                          <a href="javascript:void(0);">
+                            <span class="course-title">{translateToken value="Unit"}</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" class="no-padding-sides">
+                            <span class="">&raquo;</span>
+                          </a>
+                        </li>
+                        <li href="javascript: void(0)" class="dropdown">
+                          <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
+                            <span class="unit-title">{translateToken value="Unit"}</span>
+                            <i class="fa fa-caret-down"></i>
+                          </a>
+                          <ul class="dropdown-menu unit-ex-dropdown">
                           </ul>
                         </li>
                       </ul>
@@ -818,15 +853,7 @@ _before_init_functions.push(function() {
   </div>
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
-  <div class="videocontent popupcontent">
-    <div class="popupcontent-header">
-      <a href="javascript: void(0);" class="btn btn-link close-action">
-        <i class="fa fa-times"></i>
-      </a>
-    </div>
-    <div class="clearfix"></div>
-
-    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height popupcontent-body"
+    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height"
       width="auto"  height="auto"
       <% if (!_.has(model, 'poster')) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"
@@ -844,9 +871,6 @@ _before_init_functions.push(function() {
         <track kind="subtitles" src="<%= item.file.url %>" srclang="<%= item.language_code %>" label="<%= item.language_code %>"></track>
       <% }); %>
     </video>
-</div>
-
-
 </script>
 
 <script type="text/template" id="tab_unit_materials-nofound-template">
