@@ -507,20 +507,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        onScreelThreshold : 0.5 * 1000, // 5 seconds
 	        scrollEvent : null,
 	        viewType : "normal", // normal or float
+	        childContainerSelector : false,
+	        childContainer : false,
 	        initialize: function(opt) {
 	            console.info('portlet.content/unitVideosTabViewClass::initialize');
 
 				if (_.has(opt, 'childContainer')) {
-					this.childContainer = this.$(opt.childContainer);
+					this.childContainerSelector = opt.childContainer;
 				} else {
-					this.childContainer = this.$el;
+					this.childContainerSelector = false;
 				}
 	        },
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
 	            var self = this;
-
-				
 
 	            if (!this.model.get("video")) {
 	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
@@ -543,6 +543,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    var videoDomID = "unit-video-" + this.videoModel.get("id");
 
 	                    if (this.$("#" + videoDomID).size() === 0) {
+
+							if (this.childContainerSelector) {
+								this.childContainer = this.$(this.childContainerSelector);
+							} else {
+								this.childContainer = this.$el;
+							}
+
+							console.warn(this.childContainer, this.template(this.videoModel.toJSON()));
+
 	                        this.childContainer.empty().append(
 	                            this.template(this.videoModel.toJSON())
 	                        );
@@ -689,6 +698,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				if (!_.isNull(this.videoJS)) {
 					this.updateProgress()
 	                this.videoJS.dispose();
+	                this.videoJS = null;
 	                this.$el.hide();
 	            }
 	        }
