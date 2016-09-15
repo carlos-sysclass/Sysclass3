@@ -535,6 +535,7 @@ a:hover, a:focus {
 
 
 /** AJUSTES PARA NOVO VIDEO */
+/*
 .content-container .unit-video-container, .content-container .unit-material-container {
   transition: all 1s linear 0s;
 }
@@ -555,16 +556,6 @@ a:hover, a:focus {
   width: 0%;
 }
 
-.content-container .vjs-auto-height {
-    width: 100% !important;
-    /* max-height: 462px; */
-    transition: all 1s linear 0s;
-    height: 27vw;
-
-}
-.content-container.full-video .vjs-auto-height {
-  /* max-height: 617px; */
-}
 
 .content-container .close-content-sidebar {
   float: right;
@@ -573,16 +564,18 @@ a:hover, a:focus {
 }
 
 .content-container .unit-video-container.pop-out .vjs-auto-height {
-  /* max-height: 168.75px; */
 }
 
 .content-container .unit-video-container.pop-out-start .videocontent {
 }
+*/
 .content-container .unit-video-container.pop-out-start .vjs-auto-height {
   /* max-height: 168.75px; */
+  /*
   opacity: 0;
   transition: all 0.5s linear 0s;
   width: 300px !important;
+  */
 }
 .content-container.full-video .unit-video-container.pop-out  {
   /* height: 617px; */
@@ -591,26 +584,49 @@ a:hover, a:focus {
   /* height: 462px; */
 }
 
-.content-container .unit-video-container.pop-out .videocontent {
+
+.content-container .pop-out .popupcontent {
   position: fixed;
-  right: 25px;
-  bottom: 25px;
+  left: auto;
+  right: 1vw;
+  bottom: 1vw;
   width: 48vw;
   border: 2px solid #ddd;
   border-radius: 10px;
   opacity : 1 !important;
   transition: opacity 1s linear 0s;
-  z-index: 100;
+  z-index: 101;
   background-color: #fff;
 }
+.content-container .unit-material-container.pop-out .popupcontent {
+  left: 1vw;
+  right: auto;
+  z-index: 100;
+}
+.content-container .popupcontent .popupcontent-header {
+/*    padding: 0 5px 4px; */
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+    cursor: move;
+}
+.content-container .popupcontent .popupcontent-body {
+    width: 100% !important;
+    transition: all 1s linear 0s;
+    max-height: 27vw;
+}
 
+.content-container .vjs-auto-height {
+    height: 27vw;
+}
+
+/*
 .content-container .unit-video-container.pop-out .videocontent .videocontent-header {
     padding: 0 5px 4px;
     text-align: right;
     border-bottom: 1px solid #ddd;
     cursor: move;
 }
-
+*/
 .vjs-poster, .video-js {
   background-color: #fff;
 }

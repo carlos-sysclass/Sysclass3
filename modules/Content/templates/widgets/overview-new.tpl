@@ -124,21 +124,34 @@ _before_init_functions.push(function() {
                 <div class="unit-video-container" id="unit-video-container">
 
                 </div>
-                <div class="unit-material-container" id="unit-material-container">
-                  <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </a>
-                  <table class="table table-striped unit-material-table"> 
-                    <thead> 
-                      <tr>
-                        <th class="text-center">{translateToken value="Type"}</th>
-                        <th class="text-center">{translateToken value="Name"}</th>
-                        <th class="text-center">{translateToken value="Viewed"}</th>
-                      </tr>
-                    </thead> 
-                    <tbody> 
-                    </tbody>
-                  </table>
+                <div class="unit-material-container pop-out" id="unit-material-container">
+                  <div class="popupcontent">
+                    <div class="popupcontent-header">
+                      <a href="javascript: void(0);" class="btn btn-link close-video">
+                        <i class="fa fa-times"></i>
+                      </a>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!--
+                      <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </a>
+                    -->
+                    <div class="popupcontent-body">
+                      <table class="table table-striped unit-material-table"> 
+                        <thead> 
+                          <tr>
+                            <th class="text-center">{translateToken value="Type"}</th>
+                            <th class="text-center">{translateToken value="Name"}</th>
+                            <th class="text-center">{translateToken value="Viewed"}</th>
+                          </tr>
+                        </thead> 
+                        <tbody> 
+                        </tbody>
+                      </table>'
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -778,15 +791,15 @@ _before_init_functions.push(function() {
   </div>
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
-  <div class="videocontent">
-    <div class="videocontent-header">
-      <a href="javascript: void(0);" class="btn btn-default btn-xs btn-circle close-video">
+  <div class="videocontent popupcontent">
+    <div class="popupcontent-header">
+      <a href="javascript: void(0);" class="btn btn-link close-video">
         <i class="fa fa-times"></i>
       </a>
     </div>
     <div class="clearfix"></div>
 
-    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height"
+    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height popupcontent-body"
       width="auto"  height="auto"
       <% if (!_.has(model, 'poster')) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"
