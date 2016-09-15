@@ -126,12 +126,39 @@ _before_init_functions.push(function() {
                 </div>
                 <div class="unit-material-container pop-out" id="unit-material-container">
                   <div class="popupcontent">
-                    <div class="popupcontent-header">
-                      <a href="javascript: void(0);" class="btn btn-link close-video">
-                        <i class="fa fa-times"></i>
-                      </a>
+                    <div class="popupcontent-header navbar navbar-default">
+                      <ul class="nav navbar-nav">
+                        <li>
+                          <a href="javascript:void(0);">
+                            <span class="course-title">{translateToken value="Unit"}</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="javascript:void(0);" class="no-padding-sides">
+                            <span class="">&raquo;</span>
+                          </a>
+                        </li>
+                        <li href="javascript: void(0)" class="dropdown">
+                          <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
+                            <span class="unit-title">{translateToken value="Unit"}</span>
+                            <i class="fa fa-caret-down"></i>
+                          </a>
+                          <ul class="dropdown-menu unit-dropdown">
+                          </ul>
+                        </li>
+                      </ul>
+
+                      <div class="popup-header-buttons">
+                    
+                        <a href="javascript: void(0);" class="btn btn-link minimize-action">
+                          <i class="fa fa-caret-up"></i>
+                        </a>
+                        <a href="javascript: void(0);" class="btn btn-link close-action">
+                          <i class="fa fa-times"></i>
+                        </a>
+                      </div>
+                      <div class="clearfix"></div>
                     </div>
-                    <div class="clearfix"></div>
 
                     <!--
                       <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="Close">
@@ -149,7 +176,7 @@ _before_init_functions.push(function() {
                         </thead> 
                         <tbody> 
                         </tbody>
-                      </table>'
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -793,7 +820,7 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_unit_video-item-template">
   <div class="videocontent popupcontent">
     <div class="popupcontent-header">
-      <a href="javascript: void(0);" class="btn btn-link close-video">
+      <a href="javascript: void(0);" class="btn btn-link close-action">
         <i class="fa fa-times"></i>
       </a>
     </div>
