@@ -586,41 +586,41 @@ a:hover, a:focus {
 
 
 .content-container .pop-out .popupcontent {
-    position: fixed;
-    left: auto;
-    right: 1vw;
-    bottom: 1vw;
-    width: 48vw;
-    /* border: 2px solid #444; */
-    border-radius: 10px;
-    opacity : 1 !important;
-    transition: opacity 1s linear 0s;
-    z-index: 101;
-    background-color: #fff;
+  position: fixed;
+  left: auto;
+  right: 1vw;
+  bottom: 1vw;
+  width: 48vw;
+  /* border: 2px solid #444; */
+  border-radius: 10px;
+  opacity : 1 !important;
+  transition: opacity 1s linear 0s;
+  z-index: 101;
+  background-color: #fff;
 }
 .content-container .unit-material-container.pop-out .popupcontent {
-    left: 1vw;
-    right: auto;
-    z-index: 100;
+  left: 1vw;
+  right: auto;
+  z-index: 100;
 }
 .content-container .popupcontent .popupcontent-header {
-    border: 2px solid #444;
-    cursor: move;
-    margin: 0;
-    text-align: left;
+  border: 1px solid #ddd;
+  cursor: move;
+  margin: 0;
+  text-align: left;
 }
 .content-container .popupcontent .popupcontent-header .popup-header-buttons {
-    float: right;
+  float: right;
 }
 
 .content-container .popupcontent .popupcontent-body {
-    width: 100% !important;
-    transition: all 1s linear 0s;
-    max-height: 28vw;
+  width: 100% !important;
+  transition: all 1s linear 0s;
+  max-height: 28vw;
 
-    border-bottom: 2px solid #444;
-    border-left: 2px solid #444;
-    border-right: 2px solid #444;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 
 .content-container .vjs-auto-height {
@@ -631,12 +631,13 @@ a:hover, a:focus {
 
 .content-container .popupcontent.popup-minimized {
   width: 16vw;
+  right: 1vw !important;
+  bottom: 1vw !important;
+  top: auto !important;
+  left: auto!important;
 }
 
 .content-container .popupcontent.popup-minimized .popupcontent-header .minimize-action {
-  transform: rotate(180deg);
-  position: relative;
-  top: 3px;
 }
 
 .content-container .popupcontent.popup-minimized .popupcontent-header .navbar-nav {

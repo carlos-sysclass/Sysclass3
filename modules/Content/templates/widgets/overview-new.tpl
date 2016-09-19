@@ -147,7 +147,7 @@ _before_init_functions.push(function() {
 
                       <div class="popup-header-buttons">
                         <a href="javascript: void(0);" class="btn btn-link minimize-action">
-                          <i class="fa fa-caret-up"></i>
+                          <i class="fa fa-compress"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link close-action">
                           <i class="fa fa-times"></i>
@@ -441,15 +441,15 @@ _before_init_functions.push(function() {
   <a href="javascript:void(0);" class="select-item">
     <% if (model.progress.factor == 1) { %>
       <span class="concluido">
-        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
       </span>
     <% } else if (model.progress.factor > 0) { %>
       <span class="andamento">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
       </span>
     <% } else { %>
-      <span class="pendente">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+      <span class="avalialbe">
+        <i class="fa fa-square-o" aria-hidden="true"></i>
       </span>
     <% } %>
     <%= model.name %>
@@ -627,6 +627,35 @@ _before_init_functions.push(function() {
   </td>
   <!-- Material -->
   <td>
+    <% if (_.size(model.materials) > 0) { %>
+    <div class="dropdown">
+      <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
+      <% if (model.materialProgress >= 1) { %>
+        <span class="concluido">
+          <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+          {translateToken value="Viewed"}
+          <i class="fa fa-caret-down"></i>
+        </span>
+      <% } else if (model.materialProgress > 0) { %>
+        <span class="andamento">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+          {translateToken value="In Progress"}
+          <i class="fa fa-caret-down"></i>
+        </span>
+      <% } else { %>
+        <span class="avalialbe">
+          <i class="fa fa-folder-o" aria-hidden="true"></i>
+          {translateToken value="View"}
+          <i class="fa fa-caret-down"></i>
+        </span>
+      <% } %>
+        
+      </a>
+      <ul class="dropdown-menu unit-material-dropdown">
+      </ul>
+    </div>
+    <% } %>
+    <!--
     <% if (_.size(model.materials) == 0) { %> 
     <% } else { %>
       <% _.each(model.materials, function (item, index) { %>
@@ -647,6 +676,7 @@ _before_init_functions.push(function() {
         <% } %>
       <% }); %>
     <% } %>
+    -->
   </td>
   <!-- Exercicio -->
   <!--
@@ -721,6 +751,48 @@ _before_init_functions.push(function() {
 	<td class="text-center"></td>
 	-->
 </script>
+<script type="text/template" id="dropdown_child-unit-material_item-template">
+  <%
+      var file_type = "other";
+
+      if (/^video\/.*$/.test(model.file.type)) {
+          file_type = "video";
+      } else if (/^image\/.*$/.test(model.file.type)) {
+          file_type = "image";
+      } else if (/^audio\/.*$/.test(model.file.type)) {
+          file_type = "audio";
+      } else if (/.*\/pdf$/.test(model.file.type)) {
+          file_type = "pdf";
+      }
+  %>
+  <a target="_blank" class="select-item" href="<%= model['file'].url %>" class="select-item">
+    <% if (file_type == "video") { %>
+        <i class="fa fa-file-video-o"></i>
+    <% } else if (file_type == "image") { %>
+        <i class="fa fa-file-image-o"></i>
+    <% } else if (file_type == "audio") { %>
+        <i class="fa fa-file-sound-o"></i>
+    <% } else if (file_type == "pdf") { %>
+        <i class="fa fa-file-pdf-o"></i>
+    <% } else { %>
+        <i class="fa fa-file-o"></i>
+    <% }  %>
+    <% if (model.progress.factor == 1) { %>
+      <span class="concluido">
+        <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+    <% } else if (model.progress.factor > 0) { %>
+      <span class="andamento">
+        <i class="fa fa-folder-o" aria-hidden="true"></i>
+    <% } else { %>
+      <span class="avalialbe">
+        <i class="fa fa-folder-o" aria-hidden="true"></i>
+    <% } %>
+      <%= model['file'].name %>
+    </span>
+  </a>
+</script>
+
+
 <script type="text/template" id="tab_courses_tests-item-template">
   <!-- Unidade -->
   <% //console.warn(model) %>
@@ -845,6 +917,9 @@ _before_init_functions.push(function() {
   -->
 </script>
 
+
+
+
 <!-- USED HERE AND IN CONTENT DIALOG -->
 <script type="text/template" id="tab_unit_video-nofound-template">
   <div class="alert alert-info">
@@ -872,6 +947,9 @@ _before_init_functions.push(function() {
       <% }); %>
     </video>
 </script>
+
+
+
 
 <script type="text/template" id="tab_unit_materials-nofound-template">
   <tr>

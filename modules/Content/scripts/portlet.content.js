@@ -74,12 +74,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//$("[href='#tab_course_units']").tab('show');
 			},
-		})
+		});
 		var entityDropdownViewClass = baseChildTabViewClass.extend({
 			nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
 			childViewClass : entityDropdownViewItemClass,
-			initialize: function() {
+			initialize: function(opt) {
 				console.info('portlet.content/courseDropdownViewClass::initialize');
+
+				if (_.has(opt, 'childViewClass')) {
+					this.childViewClass = opt.childViewClass;
+				}
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
 			},
@@ -281,6 +285,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		/* CLASSES TABS VIEW CLASSES */
+
+		var unitMaterialDropdownViewItemClass = entityDropdownViewItemClass.extend({
+			template : _.template($("#dropdown_child-unit-material_item-template").html(), null, {variable: "model"}),
+		});
+
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
 				"click .watch-video-action" : "watchVideo",
@@ -292,6 +301,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			dialogContentUnit : app.module("dialogs.content.unit"),
 			lessonTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
             testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
+            materialDropdownView : null,
             initialize : function() {
 				baseChildTabViewItemClass.prototype.initialize.apply(this, arguments);
 
@@ -331,9 +341,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					item.set("progress", progress);
 				});
 
+				var materialProgressFactor = materials.reduce(function(factor, item) {
+					console.warn(factor, item.get("progress.factor"));
+
+					return factor + parseFloat(item.get("progress.factor"));
+				}, 0);
+
+
+
 				var result = this.model.toJSON();
 				result.video = videoInfo;	
 				result.materials = materials.toJSON();
+
+				result.materialProgress = materialProgressFactor / materials.size();
+
 
 				return result;
 			},
@@ -349,8 +370,36 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						this.testTemplate(this.getMappedModel())
 					);
 				}
+
+				this.renderSubViews();
+
 				return this;
 			},
+			renderSubViews : function() {
+				if (!_.isNull(this.materialDropdownView)) {
+					this.materialDropdownView.remove();
+				}
+				this.materialDropdownView = new entityDropdownViewClass({
+					el : this.$(".unit-material-dropdown"),
+					childViewClass : unitMaterialDropdownViewItemClass
+				});
+
+				this.materialDropdownView.setCollection(this.model.getMaterials());
+
+				this.listenTo(this.materialDropdownView, "dropdown-item.selected", function(materialModel) {
+					// OPEN MATERIAL
+					//this.parentView.trigger("list:materials", this.model);
+					//alert(1);
+					console.warn(materialModel);
+
+					var progressModel = new mod.models.content_progress();
+		            progressModel.setAsViewed(materialModel);
+
+		            materialModel.set("progress", progressModel.toJSON());
+
+				}.bind(this));
+			},
+
             openDialog : function() {
                 if (!this.testInfoModule.started) {
                     this.testInfoModule.start();
@@ -404,6 +453,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 
 
+
+
+
+
+
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -415,6 +469,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.navigationView.render();
 				this.renderProgress();
+
+
 
 				app.module("ui").refresh(this.$el);
 			},
@@ -430,6 +486,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//	$(".unit-indicator").hide();
 				//}
 			},
+
+
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			},
@@ -477,6 +535,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        minimize : function() {
 	        	// RESIZE TO MINIMUM VALUE
 				this.$(".popupcontent").toggleClass("popup-minimized");
+				if (this.$(".popupcontent").hasClass("popup-minimized")) {
+					this.$(".popupcontent .minimize-action .fa")
+						.removeClass("fa-compress")
+						.addClass("fa-expand");
+
+					this.$(".popupcontent").draggable("destroy");
+				} else {
+					this.$(".popupcontent .minimize-action .fa")
+						.removeClass("fa-expand")
+						.addClass("fa-compress");
+
+					this.$(".popupcontent").removeAttr("style");
+					this.makeDraggable();
+				}
 	        },
 	        stopAndClose : function() {
                 this.$el.hide();
@@ -663,7 +735,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                     	//console.warn(progress.factor, this, start, this.duration());
                     	this.currentTime(start - 5); 
                     }
-
 				});
 
                 this.videoJS.on("timeupdate", this.updateProgress.bind(this));
@@ -678,6 +749,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 
                 this.videoJS.play();
+
+                // SETTING VOLUME 
+                this.videoJS.volume(0.5);
 
 	        },
 	        updateProgress : function() {
@@ -703,7 +777,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            }
 	        }
 	    });
-
+		/*
 	    var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
 	        events : {
 	            "click .view-content-action" : "viewContentAction"
@@ -729,15 +803,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	            //this.render();
 	        },
-	        /*
-	        checkProgress : function(model) {
-	            var progress = _.findWhere(model.get("contents"), {content_id : this.model.get("id")});
-	            if (!_.isUndefined(progress)) {
-	                this.model.set("progress", progress);
-	                this.render();
-	            }
-	        },
-	        */
 			render : function(e) {
 				var progress = mod.progressCollection.getContentProgress(this.model.get("id"));
 				this.model.set("progress", progress);
@@ -748,7 +813,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return this;
 			}
 	    });
-
+	    */
+	    /*
 	    var unitMaterialsTabViewClass = baseChildTabViewClass.extend({
 	        nofoundTemplate : _.template($("#tab_unit_materials-nofound-template").html()),
 	        childViewClass : unitMaterialsTabViewItemClass,
@@ -762,7 +828,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        	console.warn(this.$(".unit-ex-dropdown"));
 				this.unitDropdownView = new entityDropdownViewClass({
 					el : this.$(".unit-ex-dropdown")
-
 				});
 
 				this.unitDropdownView.setCollection(mod.programsCollection.getCurrentUnits());
@@ -797,6 +862,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                 contentPopoutViewClass.prototype.disableView.apply(this, arguments);
 	        },
 	    });
+	    */
 	
 		this.widgetViewClass = parent.widgetViewClass.extend({
 			programTabView : null,
@@ -892,11 +958,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		                // model : this.model,
 		            });
 		            // MATERIALS
+		            /*
 		            this.unitMaterialsTabView   = new unitMaterialsTabViewClass({
 		                el : this.$("#unit-material-container"),
 		                childContainer : "table.unit-material-table tbody",
 		                // model : this.model,
 		            });
+		            */
 
 					this.programDescriptionTabView.render();
 					this.programCoursesTabView.render();
