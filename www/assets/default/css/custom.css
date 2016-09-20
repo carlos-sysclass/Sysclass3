@@ -1667,7 +1667,7 @@ button.calendar-news-item {
     color: #ddd;
     text-transform: uppercase;
     font-size: 11px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 
 .navbar-text.fb-like {
@@ -1701,14 +1701,15 @@ button.calendar-news-item {
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a {
     color: #ddd;
     font-size: 11px;
-    padding: 11px 4px;
+    padding: 11px 5px;
+    border-right: 1px solid #003f69;
 }
 
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {
     font-size: 14px !important;
     padding: 0;
     width: inherit;
-    margin: 3px 5px;
+    margin: 3px 5px 3px 3px;
 }
 .header .navbar-nav > li > a > i {
 	font-size: 16px !important;
