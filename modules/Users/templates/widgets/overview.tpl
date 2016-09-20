@@ -26,7 +26,7 @@ _before_init_functions.push(function() {
 		<h2 class="users-panel-username" style="font-size: 22px;">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
-			<strong>{$user_details.name} {$user_details.surname}</strong>
+			{$user_details.name} {$user_details.surname} <br>
 			<span class="course_name visible-xs"></span>
 			<small class="users-panel-username hidden-xs">
 				<span class="course_name"></span> <span class="enroll_token"></span>

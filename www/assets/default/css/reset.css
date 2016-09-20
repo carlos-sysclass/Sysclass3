@@ -798,6 +798,13 @@ a:hover, a:focus {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.panel-body h2 {
+  margin: 14px 0 17px;
+  font-weight: 700;
+}
+.panel-body h2 small {
+  font-weight: lighter;
+}
 
 
 
