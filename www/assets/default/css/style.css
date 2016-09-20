@@ -1382,11 +1382,10 @@ Portlets
 
 .portlet > .portlet-title > .caption > i {
   float: left;
-  margin-top: 4px;
   display: inline-block !important;
-  font-size: 13px;
-  margin-right: 5px;
+  font-size: 16px;
   color: #666;
+  padding: 3px 11px 3px 3px;
 }
 
 .portlet.blue > .portlet-title > .caption, .portlet-title.blue > .caption,
@@ -2605,7 +2604,8 @@ Vertical inline menu
 
 .ver-inline-menu li.active a,
 .ver-inline-menu li:hover a {
-  font-size: 13px;
+  font-size: 16px;
+  font-weight: lighter;
 }
 
 .ver-inline-menu li.active a {
