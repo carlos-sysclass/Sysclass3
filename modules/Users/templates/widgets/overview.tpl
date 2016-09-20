@@ -23,15 +23,16 @@ _before_init_functions.push(function() {
 	</div>
 	<div class="col-md-6 col-sm-5 col-xs-12">
 		<img class="page-lock-img" src="{$user_details.language.country_image}" alt="" style="float: right; width: 13%; margin-top: 9px;">
-		<h4 class="users-panel-username" style="font-size: 22px;">
+		<h2 class="users-panel-username" style="font-size: 22px;">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
 			<strong>{$user_details.name} {$user_details.surname}</strong>
 			<span class="course_name visible-xs"></span>
-		</h4>
-		<h5 class="users-panel-username hidden-xs" style="border-bottom: 1px solid #ccc; padding-bottom: 11px;">
-			<span class="course_name"></span> <span class="enroll_token"></span>
-		</h5>
+			<small class="users-panel-username hidden-xs">
+				<span class="course_name"></span> <span class="enroll_token"></span>
+			</small>
+		</h2>
+		
 		{if isset($notifications)}
 			{foreach $notifications as $key => $notif}
 				{if ($notif@iteration % 3 == 1 || $notif@first)}
