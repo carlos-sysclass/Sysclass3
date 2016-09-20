@@ -507,7 +507,7 @@ Header and header elements.
 }
 
 .header .navbar-nav > li.dropdown:last-child {
-   padding-right: 2px;
+   padding-right: 0;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle {
@@ -517,7 +517,9 @@ Header and header elements.
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
-  font-size: 16px;
+  font-size: 14px !important;
+  padding: 0;
+  margin: 3px 5px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-menu > li > a > i {
