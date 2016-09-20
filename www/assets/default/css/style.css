@@ -523,7 +523,7 @@ Header and header elements.
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
   font-size: 14px !important;
   padding: 0;
-  margin: 3px 5px 3px 3px;
+  margin: 3px 5px 3px 1px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-menu > li > a > i {
