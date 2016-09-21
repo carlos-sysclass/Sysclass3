@@ -211,8 +211,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                     //this.listenTo(this.courseInfoModule, "action:do-test", this.doTest.bind(this));
                 }
 
-                console.warn(this.courseInfoModule, app.module("dialogs.course.info"));
-
                 this.courseInfoModule.setInfo({
                 	model : this.model
                 });
@@ -263,8 +261,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
 
 				baseChildTabViewClass.prototype.initialize.apply(this, arguments);
-
-				console.warn(this.$(".navbar-program"));
 
 				// TODO CREATE SUB VIEWS!!
 				this.navigationView 	= new navigationViewClass({
@@ -362,8 +358,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				});
 
 				var materialProgressFactor = materials.reduce(function(factor, item) {
-					console.warn(factor, item.get("progress.factor"));
-
 					return factor + parseFloat(item.get("progress.factor"));
 				}, 0);
 
@@ -410,8 +404,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					// OPEN MATERIAL
 					//this.parentView.trigger("list:materials", this.model);
 					//alert(1);
-					console.warn(materialModel);
-
 					var progressModel = new mod.models.content_progress();
 		            progressModel.setAsViewed(materialModel);
 
@@ -536,7 +528,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        	"click .popupcontent-header a.close-action" : "stopAndClose"
 	        },
 	        makeDraggable : function() {
-	        	console.warn(this.$el);
 	        	this.$el.removeClass("hidden");
 	            this.$el.addClass("pop-out");
 
@@ -646,8 +637,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 								this.childContainer = this.$el;
 							}
 
-							console.warn(this.childContainer, this.template(this.videoModel.toJSON()));
-
 	                        this.childContainer.empty().append(
 	                            this.template(this.videoModel.toJSON())
 	                        );
@@ -756,7 +745,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.videoJS.on("loadedmetadata", function() {
                     if (progress.factor < 1) {
                     	var start = this.duration() * progress.factor;
-                    	//console.warn(progress.factor, this, start, this.duration());
                     	this.currentTime(start - 5); 
                     }
 				});
@@ -854,7 +842,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        initialize : function() { 
 	        	baseChildTabViewClass.prototype.initialize.apply(this, arguments);
 
-	        	console.warn(this.$(".unit-ex-dropdown"));
 				this.unitDropdownView = new entityDropdownViewClass({
 					el : this.$(".unit-ex-dropdown")
 				});
@@ -863,7 +850,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(this.unitDropdownView, "dropdown-item.selected", function(unitModel) {
 					this.setModel(unitModel);
-					//console.warn(unitModel);
 					this.render();
 				}.bind(this));
 
@@ -960,9 +946,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.unitDropdownView = new entityDropdownViewClass({
 						el : this.$(".unit-dropdown")
 					});
-
-					//console.warn(this.$(".unit-dropdown"));
-
 
 					this.programDescriptionTabView 	= new programDescriptionTabViewClass({
 						el : $("#tab_program_description"),

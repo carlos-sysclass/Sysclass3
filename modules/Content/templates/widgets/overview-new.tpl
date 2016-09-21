@@ -499,7 +499,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
-    <% console.warn('COURSE', model); %>
     <!-- Course -->
     <td>
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
@@ -596,7 +595,6 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
   <!-- Unidade -->
-  <% //console.warn("UNIT", model) %>
   <td>
     <%= model.name %></a>
   </td>
@@ -798,7 +796,6 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_tests-item-template">
   <!-- Unidade -->
-  <% //console.warn(model) %>
   <td>
     <%= model.name %>
   </td>

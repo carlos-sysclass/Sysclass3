@@ -29,7 +29,6 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	//this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
 
 	    	var user_pointer = app.getResource("user_pointer");
-	    	console.warn(user_pointer);
 
 	    	this.statsModel.set("id", user_pointer.program_id);
 
@@ -47,7 +46,6 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 
 	    },
 	    loadCourseDetails : function(model) {
-	    	console.warn(model);
 			console.info('panel.users/usersWidgetViewClass::loadCourseDetails');
 
 			var html = '<div class="loading-message loading-message-boxed">' +
@@ -113,7 +111,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 
 		},
 		initializeElements : function() {
-			//console.warn(jQuery.fn.easyPieChart);
+
 			if (jQuery.fn.easyPieChart) {
 
 				this.$(".unit").easyPieChart({
@@ -154,7 +152,6 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		render : function() {
 			/*
-			console.warn(this.model.toJSON());
 			this.renderCourse(
 				this.model.get('current_days'), this.model.get('total_days')
 			);

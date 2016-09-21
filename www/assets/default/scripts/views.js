@@ -23,8 +23,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	}
 
 
-	    	console.warn(moment.locale(), value, formatTo, formatFrom, value, value.valueOf());
-
 	    	if (value.isValid()) {
 		    	if (formatTo == 'time') {
 		    		return value.format("hh:mm:ss");
@@ -94,10 +92,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			} else {
 				this.enableView();
 				var self = this;
-				console.warn("COLLECTION-RENDER", this.collection.toJSON())
 				this.collection.each(function(model, i) {
 					var childView = new self.childViewClass({model : model, parent: self});
-					console.warn({model : model, parent: self});
 					self.childContainer.append(childView.render().el);
 				});
 			}
@@ -119,8 +115,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			if (_.has(opt, 'parent')) {
 				this.parentView = opt.parent;
 			}
-			console.warn(this.parentView);
-			//this.listenTo(mod.progressCollection, "sync", this.checkProgress.bind(this));
 		},
 		render : function(e) {
 			console.info('portlet.content/baseChildTabViewItemClass::render');
@@ -336,8 +330,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 		                } else  {
 		                	
 							if (input.is("[data-format]")) {
-								console.warn(values[idx], input.data("format"), input.data("format-from"));
-								console.warn(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
 								input.val(self.formatValue(values[idx], input.data("format"), input.data("format-from")));
 
 			    			} else {
@@ -490,7 +482,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				this.renderViewItens(this.$(":input"));
 	    	} else {
 	    		var values = model.toJSON();
-	    		console.warn(values);
 				this.renderItens(values);
 	    	}
 
@@ -552,7 +543,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 							values.push($(this).val());
 						}
 					});
-					console.warn(values);
 					// TODO: CREATE A WAY TO CLEAR ALL Backbone DeepModel Variables when prop is his father
 					this.model.unset(prop, {silent: true});
                     if ($el.is("[data-update-single]")) {
@@ -589,8 +579,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	console.info('views/baseClass::save');
 	    	var self = this;
 
-	    	console.warn(self.trigger("before:save", this.model));
-
 	    	this.model.save(null, {
 	    		success : function(model, response, options) {
 	    			self.trigger("after:save", model);
@@ -605,7 +593,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
             self.trigger("complete:save", this.model);
 	    },
 	    setModel : function(model) {
-	    	//console.warn(this, model);
 	    	this.model = model;
 	    	this.render(model);
 	    }
@@ -624,8 +611,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    initialize: function() {
 	    	console.info('views/baseFormClass::initialize');
 	    	mod.baseClass.prototype.initialize.apply(this);
-
-	    	console.warn(this);
 
             //this.handleElements();
             this.handleMasks();
