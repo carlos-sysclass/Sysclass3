@@ -181,9 +181,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		var programCoursesTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
-				"click .class-change-action" : "setClassId"
+				"click .course-change-action" : "setClassId",
+				"click .course-info-action" : "viewCourseInfo"
 			},
 			template : _.template($("#tab_program_courses-item-template").html(), null, {variable: "model"}),
+			courseInfoModule : app.module("dialogs.content.info"),
             initialize : function() {
 				baseChildTabViewItemClass.prototype.initialize.apply(this, arguments);
 
@@ -200,6 +202,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				$("[href='#tab_course_units']").tab('show');
 			},
+			viewCourseInfo : function(e) {
+				e.preventDefault();
+
+                if (!this.courseInfoModule.started) {
+                    this.courseInfoModule.start();
+
+                    //this.listenTo(this.courseInfoModule, "action:do-test", this.doTest.bind(this));
+                }
+
+                console.warn(this.courseInfoModule, app.module("dialogs.course.info"));
+
+                this.courseInfoModule.setInfo({
+                	model : this.model
+                });
+
+                this.courseInfoModule.open();
+			},
+
 			getMappedModel : function() {
 				var units = this.model.getUnits();
 
@@ -512,6 +532,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        //template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
 	        events : {
 	        	"click .popupcontent-header a.minimize-action" : "minimize",
+	        	"click .popupcontent-header a.fullscreen-action" : "fullscreen",
 	        	"click .popupcontent-header a.close-action" : "stopAndClose"
 	        },
 	        makeDraggable : function() {
@@ -549,6 +570,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.$(".popupcontent").removeAttr("style");
 					this.makeDraggable();
 				}
+	        },
+	        fullscreen : function() {
+
 	        },
 	        stopAndClose : function() {
                 this.$el.hide();
@@ -767,6 +791,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
                     }
                 }
+    		},
+    		fullscreen : function() {
+				if (!_.isNull(this.videoJS)) {
+					this.videoJS.requestFullscreen();	
+				}
     		},
 	        stopAndClose : function() {
 				if (!_.isNull(this.videoJS)) {
@@ -1056,9 +1085,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	});
 	var baseModel = app.module("models").getBaseModel();
 
+	var contentBaseModel = baseModel.extend({
+		isCourse : function() {
+			return false;
+		}
+	});
+
 	this.models = {
-		program : baseModel.extend({}),
-		course : baseModel.extend({
+		program : contentBaseModel.extend({}),
+		course : contentBaseModel.extend({
 			getUnits : function() {
 				if (this.get('units') && (this.get('units') instanceof mod.collections.units)) {
 					return this.get('units');
@@ -1067,9 +1102,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.set('units', new mod.collections.units(this.get("units")));
 
 				return this.get('units');
+			},
+			isCourse : function() {
+				return true;
 			}
 		}),
-		unit : baseModel.extend({
+		unit : contentBaseModel.extend({
 			contents : {},
 			getCourse : function(asJSON) {
 				//if (this.get('course')) {
@@ -1131,7 +1169,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return this.contents['exercises'];
 			},
 		}),
-		content : baseModel.extend({
+		content : contentBaseModel.extend({
 			isVideo : function() {
 				return /^video\/.*$/.test(this.get("file.type"));
 			},
@@ -1157,7 +1195,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return !this.isVideo() && !this.isSubtitle() && !this.isAudio() && !this.isImage() & !this.isExercise();
 			}
 		}),
-		content_progress : baseModel.extend({
+		content_progress : contentBaseModel.extend({
 			response_type : "silent",
 			urlRoot : "/module/roadmap/item/content-progress",
 			setAsViewed : function(model, factor) {
@@ -1186,7 +1224,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				model.set("progress", this.toJSON());
 			}
 		}),
-		progress : baseModel.extend({
+		progress : contentBaseModel.extend({
 			url : "/module/content/datasource/progress",
 			initialize : function() {
 				this.on("sync", function(model, data, response) {

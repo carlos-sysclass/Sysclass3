@@ -36,9 +36,12 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			//$this->putModuleScript("models.courses");
-			$this->putModuleScript("portlet.content");
+            $this->putBlock("content.info.dialog");
+
+            $this->putModuleScript("portlet.content");
             $this->putBlock("tests.info.dialog");
-            $this->putBlock("lessons.dialogs.exercises");
+            //$this->putBlock("lessons.dialogs.exercises");
+            
             //$this->putBlock("content.unit.dialog");
 
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
@@ -160,7 +163,13 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 $self->putSectionTemplate("dialogs", "dialogs/content-unit");
 
                 return true;
-            }
+            },
+            'content.info.dialog' => function ($data, $self) {
+                $self->putModuleScript("dialogs.content.info");
+                $self->putSectionTemplate("dialogs", "dialogs/info");
+
+                return true;
+            },
         );
     }
 

@@ -149,6 +149,9 @@ _before_init_functions.push(function() {
                         <a href="javascript: void(0);" class="btn btn-link minimize-action">
                           <i class="fa fa-compress"></i>
                         </a>
+                        <a href="javascript: void(0);" class="btn btn-link fullscreen-action">
+                          <i class="fa fa-desktop"></i>
+                        </a>
                         <a href="javascript: void(0);" class="btn btn-link close-action">
                           <i class="fa fa-times"></i>
                         </a>
@@ -499,9 +502,9 @@ _before_init_functions.push(function() {
     <% console.warn('COURSE', model); %>
     <!-- Course -->
     <td>
-      <a href="javascript:void(0)" class="class-change-action"><%= model.name %></a>
+      <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
       <span class="at-difinf">
-        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
+        <a href="javascript:void(0);"  class="btn btn-info btn-xs course-info-action">
           <i class="fa fa-info" aria-hidden="true"></i>
           Info
         </a>

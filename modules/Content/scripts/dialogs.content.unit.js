@@ -264,8 +264,6 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
             this.modelClass = Backbone.Model;
         }
 
-
-
         this.dialogView = new questionDialogViewClass({
             el : "#content-unit-modal",
             model : new mod.modelClass(),
