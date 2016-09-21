@@ -137,7 +137,6 @@ h4,
 h5,
 h6 {
   font-family: 'Open Sans', sans-serif;
-  font-weight: 300 !important;
 }
 
 h1.block,
@@ -507,17 +506,23 @@ Header and header elements.
 }
 
 .header .navbar-nav > li.dropdown:last-child {
-   padding-right: 2px;
+   padding-right: 0;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle {
   margin: 0px;
   padding: 15px 10px 7px 10px;
   height: 42px;
+  border-right: 1px solid #003f69;
+}
+.header .navbar-nav > li.dropdown:last-child .dropdown-toggle {
+  border: none;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
-  font-size: 16px;
+  font-size: 14px !important;
+  padding: 0;
+  margin: 3px 5px 3px 1px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-menu > li > a > i {
@@ -1382,11 +1387,10 @@ Portlets
 
 .portlet > .portlet-title > .caption > i {
   float: left;
-  margin-top: 4px;
   display: inline-block !important;
-  font-size: 13px;
-  margin-right: 5px;
+  font-size: 16px;
   color: #666;
+  padding: 3px 11px 3px 3px;
 }
 
 .portlet.blue > .portlet-title > .caption, .portlet-title.blue > .caption,
@@ -2605,7 +2609,8 @@ Vertical inline menu
 
 .ver-inline-menu li.active a,
 .ver-inline-menu li:hover a {
-  font-size: 13px;
+  font-size: 16px;
+  font-weight: lighter;
 }
 
 .ver-inline-menu li.active a {
