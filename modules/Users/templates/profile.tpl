@@ -75,35 +75,53 @@
 								</div>
 								<div class="clearfix"></div>
 							</div>
-							<div class="row">
-								<div class="col-md-12">
-										<div id="tab_1-1" class="tab-pane fade active in">
-											<div class="form-body">
-												{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
-											</div>
-										</div>
+								<div class="form-body">
+									<h5 class="form-section margin-bottom-10 margin-top-10">
+										<i class="fa fa-edit"></i>
+										{translateToken value="Personal Info"}
+									</h5>
+									{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
+								</div>
+								
+								{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
+								<div class="form-body">
+									<h5 class="form-section margin-bottom-10 margin-top-10">
+										<i class="fa fa-globe"></i>
+										{translateToken value="Address"}
+									</h5>
+									    {foreach $T_SECTION_TPL['address'] as $template}
+								        	{include file=$template}
+									    {/foreach}
+									{/if}
+								</div>
+								<div class="form-body">
+								<h5 class="form-section margin-bottom-10 margin-top-10">
+									<i class="fa fa-camera"></i>
+									{translateToken value="Change your Avatar"}
+								</h5>
+								
+									{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
+								</div>
+								{if $isTeacher}
+									<div class="form-body">
+										<h5 class="form-section margin-bottom-10 margin-top-10">
+											<i class="fa fa-camera"></i>
+											{translateToken value="Teacher Info"}
+										</h5>
+										{include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
+									</div>
+								{/if}
 
-										{*include file="`$T_MODULE_TPLPATH`/profile/address.tpl"*}
+								{if $canChangePassword}
+									<div class="form-body">
+										<h5 class="form-section margin-bottom-10 margin-top-10">
+											<i class="fa fa-hash"></i>
+											{translateToken value="Change your Password"}
+										</h5>
+										{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
+									</div>
+								{/if}
 
-											<div class="form-body">
-												{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
-											</div>
-										
-										{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
-											    {foreach $T_SECTION_TPL['address'] as $template}
-											        {include file=$template}
-											    {/foreach}
-										{/if}
-
-										{if $isTeacher}
-										    {include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
-										{/if}
-
-										{if $canChangePassword}
-											<div class="form-body">
-												{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
-											</div>
-										{/if}
 										<!--
 										<div id="tab_1-4" class="tab-pane">
 											<div class="form-body">

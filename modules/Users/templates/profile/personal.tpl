@@ -1,45 +1,58 @@
-	<div class="form-group">
-		<label class="control-label">{translateToken value="First Name"}</label>
-		<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
-	</div>
-
-	<div class="form-group">
-		<label class="control-label">{translateToken value="Last Name"}</label>
-		<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Surname"}" class="form-control" />
-	</div>
-	<div class="form-group">
-		<label>{translateToken value="Email Address"}</label>
-		<div class="input-group">
-			<span class="input-group-addon"><i class="icon-envelope"></i></span>
-			<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email Address"}" class="form-control">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="First Name"}</label>
+			<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label">{translateToken value="Birthday"}</label>
-		<div class="input-group">
-			<span class="input-group-addon"><i class="icon-calendar"></i></span>
-			<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Last Name"}</label>
+			<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Surname"}" class="form-control" />
 		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label">{translateToken value="Language"}</label>
-		<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
-		{foreach $T_LANGUAGES as $key => $value}
-			<option value="{$value.id}">{$value.name}</option>
-		{/foreach}
-		</select>
+	<div class="col-md-6">
+		<div class="form-group">
+			<label>{translateToken value="Email Address"}</label>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="icon-envelope"></i></span>
+				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email Address"}" class="form-control">
+			</div>
+		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label">{translateToken value="Timezone"}</label>
-		<select name="timezone" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
-		{foreach $T_TIMEZONES as $key => $value}
-			<option value="{$key}" {if $value.id == $T_EDIT_USER.timezone}selected="selected"{/if}>{$value.name}</option>
-		{/foreach}
-		</select>
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Birthday"}</label>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="icon-calendar"></i></span>
+				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+			</div>
+		</div>
 	</div>
-	<div class="form-group">
-		<label class="control-label">{translateToken value="About You"}</label>
-		<textarea class="form-control" name="short_description" rows="4" placeholder="{translateToken value="Talk about you.."}">{$T_EDIT_USER.short_description}</textarea>
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Language"}</label>
+			<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+			{foreach $T_LANGUAGES as $key => $value}
+				<option value="{$value.id}">{$value.name}</option>
+			{/foreach}
+			</select>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Timezone"}</label>
+			<select name="timezone" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+			{foreach $T_TIMEZONES as $key => $value}
+				<option value="{$key}" {if $value.id == $T_EDIT_USER.timezone}selected="selected"{/if}>{$value.name}</option>
+			{/foreach}
+			</select>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="About You"}</label>
+			<textarea class="form-control" name="short_description" rows="4" placeholder="{translateToken value="Talk about you.."}">{$T_EDIT_USER.short_description}</textarea>
+		</div>
 	</div>
 	<!--
 	Senha (deixe em branco para não alterar):
