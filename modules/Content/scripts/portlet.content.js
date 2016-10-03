@@ -420,7 +420,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                 }
 
                 app.module("dialogs.tests.info").setInfo({
-                	model : this.model
+                	model : this.model,
+                	autoStart : true
                 });
 
                 app.module("dialogs.tests.info").open();

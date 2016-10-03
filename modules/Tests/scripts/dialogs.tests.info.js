@@ -9,6 +9,7 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
     mod.on("start", function(opt){
         // MOVE THIS MODEL TO ANOTHER MODULE
         var testsInfoDialogViewClass = Backbone.View.extend({
+            autoStart : false,
             events : {
                 "click [data-action-trigger]" : "triggerAction"
             },
@@ -35,7 +36,11 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
 
                 //this.$(".modal-content").html(this.template(this.model.toJSON()));
                 //
-                this.$(".modal-content").load("/module/tests/open/" + this.model.get("id") + "?dialog");
+                this.$(".modal-content").load("/module/tests/open/" + this.model.get("id") + "?dialog", function() {
+                    if (this.autoStart) {
+                        this.$("form").submit();
+                    }
+                }.bind(this));
 
                 app.module("ui").refresh(this.$(".modal-content"));
             },
@@ -48,13 +53,19 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
             }
         });
 
+        
+
         this.setInfo = function(info) {
             // FILTER DATATABLE
             //this.filter = filter;
             //this.model = info.model;
             // LOAD TEST MODEL FROM
-            //
+            if (info.autoStart) {
+                this.dialogView.autoStart = true;
+            }
+
             this.dialogView.setModel(info.model);
+
 
             //var url = "/module/questions/items/lesson-content/datatable/" + JSON.stringify(this.filter);
 
@@ -66,7 +77,9 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
         });
 
         mod.open = function() {
-            mod.dialogView.$el.modal('show');
+            if (!mod.dialogView.autoStart) {
+                mod.dialogView.$el.modal('show');
+            }
         };
         mod.close = function() {
             mod.dialogView.$el.modal('hide');

@@ -22,11 +22,6 @@ crud:
           sClass: text-center
           label: Code
 
-        - mData: country_image
-          sType: table-image
-          sClass: text-center
-          label: Country
-
         - mData: name
           label: English Name
 
