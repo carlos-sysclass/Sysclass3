@@ -14,31 +14,14 @@
 		<div class="row profile">
 			<div class="col-md-12">
 				<!--BEGIN TABS-->
-				<div class="tabbable tabbable-custom tabbable-full-width">
-				<!--
-					<ul class="nav nav-tabs">
-
-						<li class="active"><a href="#tab_1_1" data-toggle="tab">{translateToken value="Overview"}</a></li>
-
-						<li class="active"><a href="#tab_1_3" data-toggle="tab">{translateToken value="Account"}</a></li>
-
-						<li class=""><a href="#tab_1_4" data-toggle="tab">{translateToken value="Your Courses"}</a></li>
-
-
-						<li><a href="#tab_1_6" data-toggle="tab">{translateToken value="Help"}</a></li>
-
-					</ul>
-					-->
-					<div class="tab-content">
-
 						<!-- <div class="tab-pane" id="tab_1_1"> -->
 							{*include file="`$T_MODULE_TPLPATH`/profile.overview.tpl"*}
 						<!-- </div> -->
 
 						<!--tab_1_2-->
 						<!-- <div class="tab-pane active" id="tab_1_3"> -->
-							<div class="row">
-								<div class="col-md-3">
+							<div class="row profile-header">
+								<div class="col-md-2">
 									<ul class="list-unstyled profile-nav" style="margin-bottom: 0px;">
 										<li>
 											{if ({$T_EDIT_USER.avatars[0].url})}
@@ -58,66 +41,42 @@
 											</li>
 										{/foreach}
 									</ul>
-									<ul class="ver-inline-menu tabbable margin-bottom-10 profile-tabs">
-										<li class="active">
-											<a data-toggle="tab" href="#tab_1-1">
-											<i class="icon-user"></i>
-											{translateToken value="Personal info"}
-											</a>
-											<span class="after"></span>
-										</li>
-										<li ><a data-toggle="tab" href="#tab_1-2"><i class="icon-picture"></i> {translateToken value="Profile Picture"}</a></li>
-
-										{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
-											<li ><a data-toggle="tab" href="#tab_1-3"><i class="icon-picture"></i> {translateToken value="Address"}</a></li>
-										{/if}
-
-										{if $isTeacher}
-											<li ><a data-toggle="tab" href="#tab_curriculum"><i class="fa fa-male"></i>{translateToken value="Curriculum"}</a></li>
-										{/if}
-
-										
-										{if $canChangePassword}
-										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Change Password"}</a></li>
-										{/if}
-										<!--
-										<li ><a data-toggle="tab" href="#tab_1-4"><i class="icon-lock"></i> {translateToken value="Your Courses"}</a></li>
-										-->
-										<!--
-										<li ><a data-toggle="tab" href="#tab_5-4"><i class="icon-eye-open"></i> {translateToken value="Privacity Settings"}</a></li>
-										-->
-									</ul>
 								</div>
-								<div class="col-md-9 profile-info">
-									<h1>
-										<span data-update="name">{$T_EDIT_USER.name}</span>
-										<span data-update="surname"> {$T_EDIT_USER.surname}</span>
-										<!--
-										<div class="btn-group">
-											<button href="#" class="dropdown-toggle btn btn-default tooltips" data-toggle="dropdown" data-close-others="true" aria-expanded="false" data-original-title="Click here to change your session language" data-placement="bottom">
-												<img alt="" src="{Plico_GetResource file="img/flags/`$T_LANGUAGE_MENU.country_code|strtolower`.png"}"/>
-									      		{$T_LANGUAGE_MENU.name}
-									      		<i class="fa fa-angle-down"></i>
-									      	</button>
-									      	<ul role="menu" class="dropdown-menu pull-right">
-												{foreach $T_LANGUAGE_MENU.items as $subitem}
-												<li>
-													<a href="{$subitem.link}" data-callback="change-language" data-language="{$subitem.code}">
-										                <img alt="" src="{Plico_GetResource file="img/flags/`$subitem.country_code|strtolower`.png"}"/>
-														{$subitem.name}
-													</a>
-												</li>
-										    {/foreach}
-										    </ul>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-12">
+											<h2 class="no-margin">
+												<span data-update="name">{$T_EDIT_USER.name}</span>
+												<span data-update="surname"> {$T_EDIT_USER.surname}</span>
+											</h2>
 										</div>
-										-->
-									</h1>
-
+										<div class="row">
+											<!-- PUT HERE USER BADGES -->
+											<div class="col-md-12 list-separated profile-stat">
+		                                        <div class="col-md-4 col-sm-4 col-xs-6">
+		                                            <div class="uppercase profile-stat-title"> 37 </div>
+		                                            <div class="uppercase profile-stat-text"> Projects </div>
+		                                        </div>
+		                                        <div class="col-md-4 col-sm-4 col-xs-6">
+		                                            <div class="uppercase profile-stat-title"> 51 </div>
+		                                            <div class="uppercase profile-stat-text"> Tasks </div>
+		                                        </div>
+		                                        <div class="col-md-4 col-sm-4 col-xs-6">
+		                                            <div class="uppercase profile-stat-title"> 61 </div>
+		                                            <div class="uppercase profile-stat-text"> Uploads </div>
+		                                        </div>
+		                                    </div>
+										</div>
+									</div>
+									<!-- 
 									<p data-update="short_description">{$T_EDIT_USER.short_description}</p>
-
 									<p><a href="#" data-update="website">{$T_EDIT_USER.website}</a></p>
-
-									<div class="tab-content margin-top-20">
+ 									-->
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
 										<div id="tab_1-1" class="tab-pane fade active in">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
@@ -126,32 +85,24 @@
 
 										{*include file="`$T_MODULE_TPLPATH`/profile/address.tpl"*}
 
-										<div id="tab_1-2" class="tab-pane fade">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 											</div>
-										</div>
 										
 										{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
-											<div class="tab-pane fade" id="tab_1-3">
 											    {foreach $T_SECTION_TPL['address'] as $template}
 											        {include file=$template}
 											    {/foreach}
-											</div>
 										{/if}
 
 										{if $isTeacher}
-											<div class="tab-pane fade" id="tab_curriculum">
-											    {include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
-											</div>
+										    {include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
 										{/if}
 
 										{if $canChangePassword}
-										<div id="tab_1-4" class="tab-pane fade">
 											<div class="form-body">
 												{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
 											</div>
-										</div>
 										{/if}
 										<!--
 										<div id="tab_1-4" class="tab-pane">
@@ -219,20 +170,6 @@
 										-->
 									</div>
 
-									<!--
-									<ul class="list-inline">
-										<li class="tooltips" data-original-title="{translateToken value="Your Location"}" data-placement="bottom"><i class="icon-map-marker"></i> {$T_EDIT_USER.uf}, {$T_EDIT_USER.country_code}</li>
-										<li><i class="icon-calendar"></i> <span data-update="birthday" data-format="date" data-format-from="isodate" >{$T_EDIT_USER.birthday}</span></li>
-										
-										{if $T_EDIT_USER.polo_id}
-											<li class="tooltips" data-original-title="{translateToken value="Your Proctoring Center"}" data-placement="bottom"><i class="icon-briefcase"></i> {$T_USER_POLO.nome}</li>
-										{/if}
-
-										<li><i class="icon-star"></i> Top Seller</li>
-										<li><i class="icon-heart"></i> BASE Jumping</li>
-										
-									</ul>
-									-->
 								</div>
 							</div>
 							<!--
