@@ -48,12 +48,14 @@
 			</select>
 		</div>
 	</div>
+	<!--
 	<div class="col-md-12">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="About You"}</label>
 			<textarea class="form-control" name="short_description" rows="4" placeholder="{translateToken value="Talk about you.."}">{$T_EDIT_USER.short_description}</textarea>
 		</div>
 	</div>
+	-->
 	<!--
 	Senha (deixe em branco para não alterar):
 	Confirmar senha:

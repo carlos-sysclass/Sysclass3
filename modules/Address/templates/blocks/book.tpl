@@ -25,7 +25,7 @@
 	</div>
 	<div class="col-md-8">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Street"}</label>
+			<label class="control-label">{translateToken value="Address"}</label>
 			<input name="address" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-minlength="5" />
 		</div>
 	</div>

@@ -15,7 +15,7 @@
 			<div class="col-md-12">
 				<!--BEGIN TABS-->
 						<!-- <div class="tab-pane" id="tab_1_1"> -->
-							{*include file="`$T_MODULE_TPLPATH`/profile.overview.tpl"*}
+							{*include /file="`$T_MODULE_TPLPATH`/profile.overview.tpl"*}
 						<!-- </div> -->
 
 						<!--tab_1_2-->
@@ -82,7 +82,7 @@
 									</h5>
 									{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 								</div>
-								
+
 								{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
 								<div class="form-body">
 									<h5 class="form-section margin-bottom-10 margin-top-10">
