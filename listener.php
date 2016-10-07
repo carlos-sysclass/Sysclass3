@@ -11,7 +11,7 @@ error_reporting(E_ALL & ~E_DEPRECATED & ~E_WARNING & ~E_NOTICE & ~E_STRICT & ~E_
 
 define("REAL_PATH", realpath(__DIR__ . "/"));
 
-define("PLICOLIB_PATH", __DIR__ . "/../../../plicolib/current/");
+define("PLICOLIB_PATH", __DIR__ . "/plicolib/");
 
 define("APP_TYPE", "WEBSOCKET");
 
