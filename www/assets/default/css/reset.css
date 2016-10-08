@@ -277,11 +277,10 @@ a:hover, a:focus {
   border-top: none;
 }
 .inter-navsuper-tabs .table>thead>tr>th {
-  border-bottom: 1px solid #ddd;
-  font-size: 12px;
-  color: #969696;
+  font-size: 14px;
+  color: #444;
   text-transform: uppercase;
-  font-weight: lighter;
+  font-weight: 500;
 }
 .inter-navsuper-tabs .table>tbody>tr>td:first-child .fa-eye {
   text-align: center;
