@@ -234,7 +234,7 @@ _before_init_functions.push(function() {
                     <!--
                     <th>{translateToken value="Exam"}</th>
                     -->
-                    <th>{translateToken value="Status"}</th>
+                    <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
                     <!-- <th></th> -->
                   </tr>
                 </thead>
