@@ -306,7 +306,7 @@ _before_init_functions.push(function() {
                     <th><i class="fa fa-file"></i>{translateToken value="Course"}</th>
                     <th><i class="fa fa-user"></i>{translateToken value="Instrutor"}</th>
                     <th><i class="fa fa-book"></i>{translateToken value="Units"}</th>
-                    <th><i class="fa fa-"></i>{translateToken value="Assignments"}</th>
+                    <th><i class="fa fa-pencil-square-o"></i>{translateToken value="Assignments"}</th>
                     <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
                     <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
