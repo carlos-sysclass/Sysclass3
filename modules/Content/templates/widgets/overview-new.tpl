@@ -303,11 +303,11 @@ _before_init_functions.push(function() {
               <table class="table table-striped course-table">
                 <thead>
                   <tr>
-                    <th>{translateToken value="Course"}</th>
-                    <th>{translateToken value="Instrutor"}</th>
-                    <th>{translateToken value="Units Completed"}</th>
-                    <th>{translateToken value="Next Assignment"}</th>
-                    <th>{translateToken value="Status"}</th>
+                    <th><i class="fa fa-"></i>{translateToken value="Course"}</th>
+                    <th><i class="fa fa-user"></i>{translateToken value="Instrutor"}</th>
+                    <th><i class="fa fa-"></i>{translateToken value="Units"}</th>
+                    <th><i class="fa fa-"></i>{translateToken value="Assignments"}</th>
+                    <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
                     <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
                 </thead>

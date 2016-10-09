@@ -551,7 +551,7 @@ class LoginController extends \AbstractSysclassController
 						$user->reset_hash = null;
 
 						if ($user->save()) {
-							$message = $this->translate->translate("Password updated with success! You can access the system using your e-mail and password");
+							$message = $this->translate->translate("Password updated. You can access the system using your e-mail and password.");
 			            	$message_type = 'success';
 
 							// USER IS LOGGED IN, SO...
@@ -732,7 +732,7 @@ class LoginController extends \AbstractSysclassController
 				$passwordRequest->active = 0;
 
 				if ($user->save() && $passwordRequest->save()) {
-					$message = $this->translate->translate("Password updated with success! Please enter you login details below.");
+					$message = $this->translate->translate("Password updated. Please enter you login details below.");
 	            	$message_type = 'success';
 
 	            	$this->redirect("/login", $message, $message_type);

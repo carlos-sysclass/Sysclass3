@@ -346,7 +346,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
             $itemModel = $this->model("translate");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Language updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Language updated."), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
