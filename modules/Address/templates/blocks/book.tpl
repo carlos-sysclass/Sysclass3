@@ -37,8 +37,8 @@
 	</div>
 	<div class="col-md-4">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="District"}</label>
-			<input name="address2" value="" type="text" placeholder="{translateToken value="District"}" class="form-control" data-rule-minlength="3" />
+			<label class="control-label">{translateToken value="Subdivision"}</label>
+			<input name="address2" value="" type="text" placeholder="{translateToken value="Subdivision"}" class="form-control" data-rule-minlength="3" />
 		</div>
 	</div>
 	<div class="col-md-4">
@@ -49,8 +49,8 @@
 	</div>
 	<div class="col-md-4">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="State"}</label>
-			<input name="state" value="" type="text" placeholder="{translateToken value="State"}" class="form-control" />
+			<label class="control-label">{translateToken value="State/Province"}</label>
+			<input name="state" value="" type="text" placeholder="{translateToken value="State/Province"}" class="form-control" />
 		</div>
 	</div>
 </div>
