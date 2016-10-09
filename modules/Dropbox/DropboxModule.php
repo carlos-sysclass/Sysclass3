@@ -106,7 +106,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
             if ($model == "me") {
                 $itemModel = $this->model("dropbox");
                 $messages = array(
-                    'success' => "File updated with success",
+                    'success' => "File updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {

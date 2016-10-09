@@ -358,13 +358,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             if ($model == "me") {
                 $itemModel = $this->model($this->_modelRoute);
                 $messages = array(
-                    'success' => "Advertising updated with success",
+                    'success' => "Advertising updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model == "content") {
                 $itemModel = $this->model("advertising/content");
                 $messages = array(
-                    'success' => "Advertising content updated with success",
+                    'success' => "Advertising content updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {
@@ -531,7 +531,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         ))->getItems();
 
         $messages = array(
-            'success' => "Advertising content order updated with success",
+            'success' => "Advertising content order updated.",
             'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
         );
 

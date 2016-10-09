@@ -194,7 +194,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             $data = $this->getHttpData(func_get_args());
 
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Group updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group updated."), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

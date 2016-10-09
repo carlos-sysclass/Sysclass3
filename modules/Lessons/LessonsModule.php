@@ -457,7 +457,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         ))->getItems();
 
         $messages = array(
-            'success' => "Lesson content order updated with success",
+            'success' => "Lesson content order updated.",
             'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
         );
 
@@ -640,13 +640,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Lesson updated with success",
+                    'success' => "Lesson updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
-                    'success' => "Lesson content updated with success",
+                    'success' => "Lesson content updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             }

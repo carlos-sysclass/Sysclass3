@@ -19,13 +19,13 @@
 	</div>
 	<div class="col-md-4">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Zipcode"}</label>
-			<input name="postal_code" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-zipcode="true" />
+			<label class="control-label">{translateToken value="Postal Code"}</label>
+			<input name="postal_code" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-Postal Code="true" />
 		</div>
 	</div>
 	<div class="col-md-8">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Address"}</label>
+			<label class="control-label">{translateToken value="Street or P.O. Box"}</label>
 			<input name="address" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-minlength="5" />
 		</div>
 	</div>

@@ -645,7 +645,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 /*
                 $itemModel = $this->model("tests");
                 $messages = array(
-                    'success' => "Lesson updated with success",
+                    'success' => "Lesson updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
                 */
@@ -653,7 +653,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 /*
                 $itemModel = $this->model("tests/question");
                 $messages = array(
-                    'success' => "Question updated with success",
+                    'success' => "Question updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
                 */
@@ -663,7 +663,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $advise = false;
 
                 $messages = array(
-                    'success' => "Test updated with success",
+                    'success' => "Test updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -822,7 +822,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 return $this->invalidRequestError();
             } elseif ($model == "question") {
                 $messages = array(
-                    'success' => "Questions order updated with success",
+                    'success' => "Questions order updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -860,7 +860,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $itemModel = $this->getModelData("me", $class_id);
 
             $messages = array(
-                'success' => "Lesson order updated with success",
+                'success' => "Lesson order updated.",
                 'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
             );
 

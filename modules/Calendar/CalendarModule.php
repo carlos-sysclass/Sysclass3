@@ -363,7 +363,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             //$eventModel->user_id = $userModel->id;
 
             if ($eventModel->save()) {
-                $response = $this->createAdviseResponse($this->translate->translate("Event updated with success"),
+                $response = $this->createAdviseResponse($this->translate->translate("Event updated."),
                     "success"
                 );
 
