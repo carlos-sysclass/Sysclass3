@@ -803,6 +803,6 @@ a:hover, a:focus {
 .panel-body h2 small {
   font-weight: lighter;
 }
-
-
-
+.class="fa fa-book" {
+  margin: 33px 33px 33px 33px;
+}
