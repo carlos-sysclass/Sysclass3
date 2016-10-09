@@ -40,7 +40,7 @@ ul.page-sidebar-menu > li:last-child > a {
   border-bottom: 1px solid transparent !important;
 }
 ul.page-sidebar-menu > li a i {
-  color: #969696;
+  color: #444;
 }
 ul.page-sidebar-menu > li.open > a,
 ul.page-sidebar-menu > li > a:hover,
