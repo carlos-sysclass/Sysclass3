@@ -16,8 +16,6 @@ define("PLICOLIB_PATH", __DIR__ . "/plicolib/");
 define("APP_TYPE", "WEBSOCKET");
 
 
-
-
 try {
 	// REGISTER THE COMPOSER AUTOLOADER
 	require __DIR__ . '/vendor/autoload.php';
