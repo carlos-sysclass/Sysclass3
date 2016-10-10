@@ -2285,12 +2285,11 @@ a.list-group-item,
 }
 
 .easy-pie-chart .number {
-    font-size: 32px;
+    font-size: 36px;
     letter-spacing: -2px;
     color: #444;
 	font-weight: 300;
 }
-
 
 .vcenter {
     display: inline-block;
