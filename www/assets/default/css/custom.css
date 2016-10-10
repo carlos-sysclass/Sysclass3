@@ -2434,4 +2434,8 @@ a.list-group-item,
 
  /* PROFILE PAGE */
  .profile-header {
+ 
+ }
+ h2 {
+  font-weight: 500;
  }
