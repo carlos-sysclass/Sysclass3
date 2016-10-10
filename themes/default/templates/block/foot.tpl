@@ -97,3 +97,16 @@
         $SC.start(options);
     });
 </script>
+<!--
+<script type="text/javascript">
+// Requires jQuery!
+jQuery.ajax({
+    url: "https://jira.sysclass.com/s/99a3674e13fdd8995dddce607df0e5ff-T/ciw404/72004/b6b48b2829824b869586ac216d119363/2.0.21/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=pt-BR&collectorId=f6779fac",
+    type: "get",
+    cache: true,
+    dataType: "script"
+});
+-->
+
+    
+</script>
