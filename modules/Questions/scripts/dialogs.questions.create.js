@@ -44,18 +44,38 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
                 });
                 
                 this.on("complete:save", this.close.bind(this));
-
             },
             open : function() {
                 this.model.unset("id");
                 this.model.unset("name");
                 this.model.unset("question");
+
                 this.oForm.get(0).reset();
-                this.$el.modal("show");
+                this.oForm.find(".select2-me").select2("val", "");
+
+                this.$(".modal-body").load("/module/questions/form/create", function() {
+                    if (!app.module("views.form.questions").started) {
+                        app.module("views.form.questions").start({
+                            module: mod
+                        });
+                    } else {
+                        app.module("views.form.questions").setInfo({
+                            module: mod
+                        });
+                    }
+
+                    this.$(".wysihtml5-sandbox, .wysihtml5-toolbar").remove();
+                    app.module("ui").refresh(this.$el);
+                    this.$el.modal("show");
+                }.bind(this))
+
+                
             },
             close : function() {
                 this.$el.modal("hide");
                 this.trigger("hide.dialog");
+
+                this.$('.wysihtml5-sandbox').remove();
             }
         });
 
@@ -78,11 +98,6 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
             el : "#dialogs-questions-create",
             model : new mod.models.question()
         });
-
-        app.module("views.form.questions").start({
-            module: mod
-        });
-
 
         // BIND TO DEFAULT CALLER
         /*

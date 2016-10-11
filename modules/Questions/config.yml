@@ -81,6 +81,8 @@ crud:
       scripts: ["views.form.questions", "views.form.questions.edit"]
       variables:
         page_subtitle: Edit your questions
+    'form/create':
+      template: dialog_form.tpl
 models:
   me:
     class: Sysclass\Models\Courses\Questions\Question
