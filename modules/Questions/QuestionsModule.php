@@ -204,6 +204,37 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
     }
 
 
+    /**
+     * [ add a description ]
+     *
+     * @Get("/form/create")
+     */
+    public function formCreatePage($identifier)
+    {
+        $items = Departament::find("active = 1");
+        $this->putitem("knowledge_areas", $items->toArray());
+
+        $items = QuestionType::find();
+        $this->putItem("questions_types", $items->toArray());
+
+        $items = QuestionDifficulty::find();
+        $this->putItem("questions_difficulties", $items->toArray());
+
+        $this->handleDefaultRequest();
+
+        /*
+
+        $model_info = $this->model_info['me'];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
+            $this->display($this->template);
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+        */
+    }
+
+
     public function getDatatableItemOptions() {
         if ($this->_args['model'] == 'lesson-content') {
             $options['select'] = array(

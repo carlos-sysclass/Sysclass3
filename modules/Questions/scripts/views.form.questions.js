@@ -3,7 +3,26 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
     this.startWithParent = false;
 
+    this.setInfo = function(opt) {
+        if (_.has(mod, "questionDetailView")) {
+            mod.questionDetailView.disableAll();
+            mod.questionDetailView.stopListening();
+        }
+        
+        var formView = opt.module.getForm();
+
+        mod.questionDetailView = new mod.questionDetailViewClass({
+            el : "#question-type-container",
+            model : formView.model,
+            form : formView
+        });
+
+
+    }
+
     this.on("start", function(opt) {
+
+        this.started = true;
 
         var questionChoiceModelClass = Backbone.Model.extend({});
 
@@ -240,7 +259,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             }
         });
 
-        var questionDetailViewClass = Backbone.View.extend({
+        mod.questionDetailViewClass = Backbone.View.extend({
             subviews : {},
             initialize: function(opt) {
                 console.info('views.form.questions/questionDetailViewClass::initialize');
@@ -252,10 +271,10 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
 
                 this.listenTo(this.parentView, "before:save", function(model) {
-                    console.warn(model.toJSON());
-                    alert(1);
                     return true;
-                })
+                });
+
+                //app.module("ui").refresh(this.$el);
                 //this.listenTo(this.model, "before:save", this.updateChildModel.bind(this));
             },
             /*
@@ -283,6 +302,8 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                         });
                         this.subviews[type_id].render();
                     }
+                } else {
+                    this.subviews[type_id].setElement(this.$(".question-type-" + type_id));
                 }
                 _.each(this.subviews, function(subview, index) {
                     if (type_id != index) {
@@ -298,20 +319,30 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                     //var values = this.subviews[type_id].getChildModelData();
                     //model.set(values);
                 }
+            },
+            disableAll : function() {
+                _.each(this.subviews, function(subview, index) {
+                    subview.disable();
+                });
+                this.subviews = {};
             }
         });
 
+        if (_.has(opt, "module")) {
+            this.setInfo(opt);
+        }
+        /*
         var formView = opt.module.getForm();
 
-
-
-
-        mod.questionDetailViewClass = new questionDetailViewClass({
+        mod.questionDetailView = new mod.questionDetailViewClass({
             el : "#question-type-container",
             model : formView.model,
             form : formView
         });
+        */
     });
+
+
     /*
     $SC.module("crud.views.add").on("start", function() {
         if (!mod._isInitialized) {
