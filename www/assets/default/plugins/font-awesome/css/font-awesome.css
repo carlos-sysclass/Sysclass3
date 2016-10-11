@@ -1166,7 +1166,6 @@
 }
 .fa-file:before {
   content: "\f15b";
-  margin: 0 4px 0 0;
 }
 .fa-file-text:before {
   content: "\f15c";
