@@ -100,11 +100,17 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
 		        if (opt.datatable != undefined) {
 		        	opt.datatable = _.extend(datatableOpt, opt.datatable);
-		        	this.oTable = this.$el.dataTable(opt.datatable);
 		        } else {
-		        	opt.datatable = _.extend(datatableOpt, opt.datatable);
-		        	this.oTable = this.$el.dataTable(datatableOpt);
+		        	opt.datatable = datatableOpt;
 		        }
+
+		        if (_.has(opt.datatable, 'datatable_fields')) {
+		        	opt.datatable.aoColumns = opt.datatable.datatable_fields;
+		        	 //= opt.datatable_fields;
+		        }
+
+		        this.oTable = this.$el.dataTable(opt.datatable);
+
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
