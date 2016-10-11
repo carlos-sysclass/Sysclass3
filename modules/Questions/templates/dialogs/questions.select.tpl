@@ -14,7 +14,7 @@
                 <div class="row margin-top-20">
                     <div class="col-md-12">
                         {include "`$smarty.current_dir`/../blocks/table.tpl" 
-                        FORCE_INIT=1
+                        
                         T_MODULE_CONTEXT=$T_QUESTIONS_SELECT_BLOCK_CONTEXT
                         T_MODULE_ID="questions-select"}
                     </div>
