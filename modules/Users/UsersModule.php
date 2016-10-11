@@ -168,13 +168,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 			$modules = $this->getModules("ISummarizable");
 
-			//var_dump(array_keys($modules));
-			//exit;
-
             $userDetails = $currentUser->toFullArray(array('Avatars', 'Courses'));
-
-			//$userDetails = MagesterUserDetails::getUserDetails($currentUser->user['login']);
-			//$userDetails = array_merge($currentUser->toArray(), $userDetails);
 
 			$data = array();
 			$data['user_details'] = $userDetails;
@@ -186,18 +180,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					$data['notification'][$key] = $mod->getSummary();
 				}
 			}
-//                var_dump($data['notification']);
 
 			$data['notification'] = $caller->sortModules("users.overview.notification.order", $data['notification']);
 
-            //var_dump($data['notification']);
-            //exit;
-
 			$this->putModuleScript("users");
 
-                
             $userPointers = $userPointers = Unit::getContentPointers();
-
 
             $data['pointer'] = array(
                 'program_id'    => $userPointers['program']->id,
@@ -709,6 +697,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $this->putitem("timezones", $timezones);
 
         $this->putItem("edit_user", $currentUser->toFullArray(array('Avatars')));
+
+
         //var_dump($currentUser->toFullArray(array('Avatars')));
         //exit;
 		//$this->putCss("css/pages/profile");
