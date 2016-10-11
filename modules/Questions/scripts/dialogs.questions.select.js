@@ -36,7 +36,6 @@ $SC.module("dialogs.questions.select", function(mod, app, Backbone, Marionette, 
 
 
     mod.on("start", function(opt) {
-        console.warn(opt);
         this.started = true;
 
         this.dialogView = null;
@@ -61,7 +60,6 @@ $SC.module("dialogs.questions.select", function(mod, app, Backbone, Marionette, 
         //var sAjaxSource = "/module/questions/items/lesson-content/datatable/";
 
         var config = app.getResource("questions-select_context");
-        console.warn(config);
 
         var tableViewClass = app.module("utils.datatables").tableViewClass;
         this.tableView = new tableViewClass({
