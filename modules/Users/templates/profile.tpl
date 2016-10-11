@@ -19,7 +19,9 @@
 				<!-- </div> -->
 
 				<!-- ADD USER WIDGET -->
-				
+				<div class="widget-container">
+				{* include file="pages/widget-container.tpl" *}
+				</div>
 
 				<div class="form-body">
 					<h5 class="form-section margin-bottom-10 margin-top-10">

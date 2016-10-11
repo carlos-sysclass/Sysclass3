@@ -647,6 +647,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         */
         //$this->putScript("menu.translate");
 
+        $userWidgets = $this->getWidgets(array('users.overview'), $this);
+
+        foreach($userWidgets as $key => $widget) {
+            $this->addWidget($key, $widget);
+        }
+
         $languageRS = Language::find();
 
         $userLanguageCode =  $this->translate->getSource();
