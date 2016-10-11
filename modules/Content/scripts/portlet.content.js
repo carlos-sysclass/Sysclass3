@@ -1231,7 +1231,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var progressPrograms = this.get("programs");
 
 				var total = programs.reduce(function(count, program) {
-				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
+				  var progress = _.findWhere(progressPrograms, {program_id : program.get("id")});
 				  
 				  if (parseFloat(progress.factor) == 1) {
 				    return count;
