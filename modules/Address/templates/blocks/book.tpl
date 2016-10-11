@@ -2,7 +2,7 @@
 	<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Country"}</label>
-			<select class="select2-me form-control" name="country_code" data-format-as="country-list">
+			<select class="select2-me form-control" name="country" data-format-as="country-list">
 				{foreach $T_COUNTRY_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
 				{/foreach}
@@ -26,7 +26,7 @@
 	<div class="col-md-8">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Address"}</label>
-			<input name="address" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-minlength="5" />
+			<input name="street" value="" type="text" placeholder="{translateToken value="Address Line 1"}" class="form-control" data-rule-minlength="5" />
 		</div>
 	</div>
 	<div class="col-md-4">
@@ -38,7 +38,7 @@
 	<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="District"}</label>
-			<input name="address2" value="" type="text" placeholder="{translateToken value="District"}" class="form-control" data-rule-minlength="3" />
+			<input name="street2" value="" type="text" placeholder="{translateToken value="District"}" class="form-control" data-rule-minlength="3" />
 		</div>
 	</div>
 	<div class="col-md-4">

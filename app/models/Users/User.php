@@ -65,7 +65,7 @@ class User extends Model
             "user_id", "file_id",
             "Sysclass\\Models\\Dropbox\\File",
             "id",
-            array('alias' => 'Avatars', 'reusable' => true)
+            array('alias' => 'avatars', 'reusable' => true)
         );
 
         $this->hasManyToMany(
@@ -119,6 +119,19 @@ class User extends Model
             )
         );
     }
+
+    public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
+        $item = parent::toFullArray($manyAliases, $itemData, $extended);
+        if (!is_null($item['country'])) {
+            $depinj = \Phalcon\DI::getDefault();
+
+            $item['country_image'] = $depinj->get("resourceUrl")->get(sprintf("/images/flags/%s.png", strtolower($item['country'])));
+        }
+
+
+        return $item;
+    }
+    
 
     public static function specialFind($filters) {
         $users = array();
