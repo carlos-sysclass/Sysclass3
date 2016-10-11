@@ -212,7 +212,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
 
             if ($eventModel->save() !== FALSE)
             {
-                $response = $this->createAdviseResponse($this->translate->translate("Event updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event updated."), "success");
 
                 return array_merge($response, $eventModel->toFullArray());
             }

@@ -307,7 +307,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             $itemModel->assign($data);
 
             if ($itemModel->save()) {
-                $response = $this->createAdviseResponse($this->translate->translate("Role updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Role updated."), "success");
 
                 return array_merge($response, $itemModel->toArray());
             } else {

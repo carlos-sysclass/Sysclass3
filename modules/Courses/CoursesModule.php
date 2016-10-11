@@ -418,7 +418,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
             $itemModel = $this->model("courses");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Course updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Course updated."), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

@@ -17,5 +17,5 @@
 	  -->
 	</div>
 {foreachelse}
-	<div class="alert alert-success" role="alert">There are no new notifications!</div>
+	<div class="alert alert-success" role="alert">{translateToken value="No new notifications."}</div>
 {/foreach}

@@ -341,14 +341,14 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $modelRoute = "roadmap/classes";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Class updated with success",
+                    'success' => "Class updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping updated with success",
+                    'success' => "Course Grouping updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model ==  "periods") {
@@ -525,21 +525,21 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $modelRoute = "roadmap/classes";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Classes order updated with success",
+                    'success' => "Classes order updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping order updated with success",
+                    'success' => "Course Grouping order updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Periods updated with success",
+                    'success' => "Course Periods updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } else {

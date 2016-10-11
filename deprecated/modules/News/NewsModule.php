@@ -243,7 +243,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 
 			$itemModel = $this->model("news");
 			if ($itemModel->setItem($data, $id) !== FALSE) {
-				$response = $this->createAdviseResponse($this->translate->translate("News updated with success"), "success");
+				$response = $this->createAdviseResponse($this->translate->translate("News updated."), "success");
 				return array_merge($response, $data);
 			} else {
 				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
