@@ -2444,3 +2444,12 @@ a.list-group-item,
 .navbar-course {
     margin-bottom: 0px;
 }
+
+.inter-navsuper-tabs .table-content-scrollable {
+    max-height: 384px;       /* Just for the demo          */
+    overflow-y: auto;    /* Trigger vertical scroll    */
+    overflow-x: hidden;  /* Hide the horizontal scroll */
+    display: block;
+}
+
+

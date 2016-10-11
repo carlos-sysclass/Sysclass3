@@ -220,28 +220,29 @@ _before_init_functions.push(function() {
                 </div>
               </div>
 
+              <div class="table-content-scrollable">
+                <table class="table table-striped unit-table">
+                  <thead>
+                    <tr>
+                      <th><i class="fa fa-book"></i>{translateToken value="Unit"}</th>
+                      <th><i class="fa fa-play-circle-o"></i>{translateToken value="Video"}</th>
+                      <th><i class="fa fa-folder-o"></i>{translateToken value="Materials"}</th>
+                      <!--
+                      <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
+                      <th><i class="fa fa-"></i>{translateToken value="Test"}</th>
+                      -->
+                      <!--
+                      <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
+                      -->
+                      <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
+                      <!-- <th></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
 
-              <table class="table table-striped unit-table">
-                <thead>
-                  <tr>
-                    <th><i class="fa fa-book"></i>{translateToken value="Unit"}</th>
-                    <th><i class="fa fa-play-circle-o"></i>{translateToken value="Video"}</th>
-                    <th><i class="fa fa-folder-o"></i>{translateToken value="Materials"}</th>
-                    <!--
-                    <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
-                    <th><i class="fa fa-"></i>{translateToken value="Test"}</th>
-                    -->
-                    <!--
-                    <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
-                    -->
-                    <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
-                    <!-- <th></th> -->
-                  </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="tab_program_courses">
               <div class="navbar navbar-default navbar-program" role="navigation">
@@ -300,20 +301,22 @@ _before_init_functions.push(function() {
                 </form>
               </div>
               -->
-              <table class="table table-striped course-table">
-                <thead>
-                  <tr>
-                    <th><i class="fa fa-file"></i>{translateToken value="Course"}</th>
-                    <th><i class="fa fa-user"></i>{translateToken value="Instrutor"}</th>
-                    <th><i class="fa fa-book"></i>{translateToken value="Units"}</th>
-                    <th><i class="fa fa-pencil-square-o"></i>{translateToken value="Assignments"}</th>
-                    <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
-                    <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+              <div class="table-content-scrollable">
+                <table class="table table-striped course-table">
+                  <thead>
+                    <tr>
+                      <th><i class="fa fa-file"></i>{translateToken value="Course"}</th>
+                      <th><i class="fa fa-user"></i>{translateToken value="Instrutor"}</th>
+                      <th><i class="fa fa-book"></i>{translateToken value="Units"}</th>
+                      <th><i class="fa fa-pencil-square-o"></i>{translateToken value="Assignments"}</th>
+                      <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
+                      <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <!--
             <div role="tabpanel" class="tab-pane" id="profile">
