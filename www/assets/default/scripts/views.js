@@ -11,12 +11,12 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
     			return "";
     		}
     		
-
 	    	if (formatFrom == 'unix-timestamp') {
 	    		value = moment.unix(value);
 	    	} else if (formatFrom == 'isodate') {
+
 	    		value = moment(value, "YYYY-MM-DD");
-			} else if (formatTo == 'date') {
+			} else if (formatFrom == 'date') {
 				value = moment(value, 'L');
 	    	} else {
 	    		value = moment(value);
