@@ -224,17 +224,17 @@ _before_init_functions.push(function() {
               <table class="table table-striped unit-table">
                 <thead>
                   <tr>
-                    <th>{translateToken value="Unit"}</th>
-                    <th>{translateToken value="Video"}</th>
-                    <th>{translateToken value="Materials"}</th>
+                    <th><i class="fa fa-book"></i>{translateToken value="Unit"}</th>
+                    <th><i class="fa fa-play-circle-o"></i>{translateToken value="Video"}</th>
+                    <th><i class="fa fa-folder-o"></i>{translateToken value="Materials"}</th>
                     <!--
-                    <th>{translateToken value="Exercise"}</th>
-                    <th>{translateToken value="Test"}</th>
+                    <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
+                    <th><i class="fa fa-"></i>{translateToken value="Test"}</th>
                     -->
                     <!--
-                    <th>{translateToken value="Exam"}</th>
+                    <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
                     -->
-                    <th>{translateToken value="Status"}</th>
+                    <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
                     <!-- <th></th> -->
                   </tr>
                 </thead>
@@ -303,11 +303,11 @@ _before_init_functions.push(function() {
               <table class="table table-striped course-table">
                 <thead>
                   <tr>
-                    <th>{translateToken value="Course"}</th>
-                    <th>{translateToken value="Instrutor"}</th>
-                    <th>{translateToken value="Units Completed"}</th>
-                    <th>{translateToken value="Next Assignment"}</th>
-                    <th>{translateToken value="Status"}</th>
+                    <th><i class="fa fa-file"></i>{translateToken value="Course"}</th>
+                    <th><i class="fa fa-user"></i>{translateToken value="Instrutor"}</th>
+                    <th><i class="fa fa-book"></i>{translateToken value="Units"}</th>
+                    <th><i class="fa fa-pencil-square-o"></i>{translateToken value="Assignments"}</th>
+                    <th><i class="fa fa-check"></i>{translateToken value="Status"}</th>
                     <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
                 </thead>
@@ -557,7 +557,7 @@ _before_init_functions.push(function() {
       <% if (completed) { %>
         <span class="concluido">
           <i class="fa fa-check-square-o" aria-hidden="true"></i>
-          {translateToken value="All assignments completed"}
+          {translateToken value="All completed"}
         </span>
       <% } %>
     </td>

@@ -277,11 +277,13 @@ a:hover, a:focus {
   border-top: none;
 }
 .inter-navsuper-tabs .table>thead>tr>th {
-  border-bottom: 1px solid #ddd;
-  font-size: 12px;
-  color: #969696;
+  font-size: 14px;
+  color: #444;
   text-transform: uppercase;
-  font-weight: lighter;
+  font-weight: 500;
+}
+inter-navsuper-tabs .table > thead > tr > th i.fa {
+margin:0 4px 0 0;
 }
 .inter-navsuper-tabs .table>tbody>tr>td:first-child .fa-eye {
   text-align: center;
@@ -289,7 +291,7 @@ a:hover, a:focus {
 .inter-navsuper-tabs .table>tbody>tr>td> a .fa-eye {
   font-size: 16px;
   margin: 12px 6px 12px 16px;
-  color: #9c9a9a;
+  color: #444;
   float: left;
   cursor: pointer;
 }
@@ -301,7 +303,7 @@ a:hover, a:focus {
   width: 100%;
 }
 .inter-navsuper .fa {
-  margin:2px 11px 2px 0px;
+  margin:2px 4px 2px 0px;
 }
 .inter-navsuper .progress-indicator .fa {
   margin:2px 2px 2px 0px;
@@ -800,11 +802,10 @@ a:hover, a:focus {
 }
 .panel-body h2 {
   margin: 14px 0 17px;
-  font-weight: 600;
 }
 .panel-body h2 small {
   font-weight: lighter;
 }
-
-
-
+.class="fa fa-book" {
+  margin: 33px 33px 33px 33px;
+}

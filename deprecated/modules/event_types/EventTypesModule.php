@@ -192,7 +192,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
 
             if ($itemModel->setItem($data, $id) !== FALSE)
             {
-                $response = $this->createAdviseResponse($this->translate->translate("Event Type updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event updated."), "success");
                 return array_merge($response, $data);
             }
             else

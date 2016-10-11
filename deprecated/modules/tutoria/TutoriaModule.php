@@ -221,7 +221,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
                 $modelData = $this->model($modelRoute)->getItem($id);
                 $data = array_merge($data, $modelData);
 
-                $response = $this->createAdviseResponse($this->translate->translate("Item updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item updated."), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

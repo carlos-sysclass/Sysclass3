@@ -202,7 +202,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $itemModel = $this->model("classes");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Class updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Class updated."), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -302,7 +302,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemModel = $this->getModelData("me", $class_id);
 
             $messages = array(
-                'success' => "Lesson order updated with success",
+                'success' => "Lesson order updated.",
                 'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
             );
 

@@ -278,7 +278,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Department updated with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Department updated."), "success");
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
