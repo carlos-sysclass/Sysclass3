@@ -64,18 +64,18 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
                         });
                     }
 
-                    this.$(".wysihtml5-sandbox, .wysihtml5-toolbar").remove();
+                    this.$(".wysihtml5-toolbar").remove();
                     app.module("ui").refresh(this.$el);
+
+                    this.bindViewEvents();
                     this.$el.modal("show");
-                }.bind(this))
+                }.bind(this));
 
                 
             },
             close : function() {
                 this.$el.modal("hide");
                 this.trigger("hide.dialog");
-
-                this.$('.wysihtml5-sandbox').remove();
             }
         });
 
