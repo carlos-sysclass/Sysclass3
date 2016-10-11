@@ -1230,6 +1230,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
 
+				console.warn(progressPrograms);
+
 				var total = programs.reduce(function(count, program) {
 				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
 				  

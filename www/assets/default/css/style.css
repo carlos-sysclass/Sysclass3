@@ -451,7 +451,7 @@ Header and header elements.
 }
 
 .header.navbar-fixed-top {
-  z-index: 9995 !important;
+  z-index: 100 !important;
 }
 
 .header .navbar-brand {

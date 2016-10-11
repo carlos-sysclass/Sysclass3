@@ -283,7 +283,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             } else {
                 $result['programs'][] = array(
                     'user_id' => $this->user->id,
-                    'program_id' => $userPointers['program']->id,
+                    'course_id' => $userPointers['program']->id,
                     'factor' => 0
                 );
             }
