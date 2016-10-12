@@ -2192,7 +2192,7 @@ button.calendar-news-item {
 }
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
-    padding: 10px 4px 11px;
+    padding: 10px 12px 11px;
     height: 42px;
 }
 
@@ -2444,12 +2444,3 @@ a.list-group-item,
 .navbar-course {
     margin-bottom: 0px;
 }
-
-.inter-navsuper-tabs .table-content-scrollable {
-    max-height: 384px;       /* Just for the demo          */
-    overflow-y: auto;    /* Trigger vertical scroll    */
-    overflow-x: hidden;  /* Hide the horizontal scroll */
-    display: block;
-}
-
-
