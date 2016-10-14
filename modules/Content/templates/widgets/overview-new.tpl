@@ -606,25 +606,19 @@ _before_init_functions.push(function() {
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
-        <a href="javascript: void(0);" class="watch-video-action">
-          <span class="concluido">
+        <a href="javascript: void(0);" class="btn btn-sm btn-done watch-video-action">
             <i class="fa fa-play-circle-o" aria-hidden="true"></i>
             {translateToken value="Watch Again"}
-          </span>
         </a>
       <% } else if (model.video.progress.factor > 0) { %>
-        <a href="javascript: void(0);" class="watch-video-action">
-          <span class="andamento">
+        <a href="javascript: void(0);" class="btn btn-sm btn-continue watch-video-action">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
             {translateToken value="Continue"}
-          </span>
         </a>
       <% } else { %>
-        <a href="javascript: void(0);" class="watch-video-action">
-          <span class="avalialbe">
-            <i class="fa fa-play-circle-o" aria-hidden="true"></i>
-            {translateToken value="Watch"}
-          </span>
+        <a href="javascript: void(0);" class="btn btn-sm btn-avaliable watch-video-action">
+          <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+          {translateToken value="Watch"}
         </a>
       <% } %>
     <% } %>
@@ -633,28 +627,25 @@ _before_init_functions.push(function() {
   <td>
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
-      <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
       <% if (model.materialProgress >= 1) { %>
-        <span class="concluido">
-          <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-          {translateToken value="Viewed"}
-          <i class="fa fa-caret-down"></i>
-        </span>
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-done dropdown-toggle" href="javascript:void(0);">
+            <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            {translateToken value="Viewed"}
+            <i class="fa fa-caret-down"></i>
+        </a>
       <% } else if (model.materialProgress > 0) { %>
-        <span class="andamento">
-          <i class="fa fa-clock-o" aria-hidden="true"></i>
-          {translateToken value="In Progress"}
-          <i class="fa fa-caret-down"></i>
-        </span>
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-continue dropdown-toggle" href="javascript:void(0);">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {translateToken value="In Progress"}
+            <i class="fa fa-caret-down"></i>
+        </a>
       <% } else { %>
-        <span class="avalialbe">
-          <i class="fa fa-folder-o" aria-hidden="true"></i>
-          {translateToken value="View"}
-          <i class="fa fa-caret-down"></i>
-        </span>
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-avaliable dropdown-toggle" href="javascript:void(0);">
+            <i class="fa fa-folder-o" aria-hidden="true"></i>
+            {translateToken value="View"}
+            <i class="fa fa-caret-down"></i>
+        </a>
       <% } %>
-        
-      </a>
       <ul class="dropdown-menu unit-material-dropdown">
       </ul>
     </div>
