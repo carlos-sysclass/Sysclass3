@@ -837,18 +837,14 @@ _before_init_functions.push(function() {
         {translateToken value="Completed"}
       </span>
     <% } else if (model.progress.factor > 0) { %>
-      <a href="javascript: void(0);" class="open-test-action">
-        <span class="andamento">
+      <a href="javascript: void(0);" class="btn btn-sm btn-continue view-test-action">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
           {translateToken value="In Progress"}
-        </span>
       </a>
     <% } else { %>
-      <a href="javascript: void(0);" class="view-test-action">
-        <span class="avalialbe">
+      <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
           <i class="fa fa-square-o" aria-hidden="true"></i>
           {translateToken value="Avaliable"}
-        </span>
       </a>
     <% } %>
   </td>
