@@ -258,8 +258,9 @@ a:hover, a:focus {
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: lighter;
+  padding: 8px 15px;
 }
 .inter-navsuper-tabs .table {
   margin-bottom: 0;
@@ -808,4 +809,9 @@ margin:0 4px 0 0;
 }
 .class="fa fa-book" {
   margin: 33px 33px 33px 33px;
+}
+
+.fc-left h2 {
+  font-size: 18px !important;
+  font-weight: 100;
 }
