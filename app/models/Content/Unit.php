@@ -152,9 +152,23 @@ class Unit extends Model
                 case 'default' :
                 default : {
                     $program = $user->getPrograms()->getFirst();
-                    $course = $program->getCourses()->getFirst();
-                    $unit = $course->getLessons()->getFirst();
-                    $content = $unit->getContents()->getFirst();
+                    if ($program) {
+                        $course = $program->getCourses()->getFirst();
+                    } else {
+                        $course = false;
+                    }
+                    if ($course) {
+                        $unit = $course->getLessons()->getFirst();    
+                    } else {
+                        $unit = false;
+                    }
+                    
+                    if ($unit) {
+                        $content = $unit->getContents()->getFirst();    
+                    } else {
+                        $content = false;
+                    }
+                    
                     break;
                 }
             }

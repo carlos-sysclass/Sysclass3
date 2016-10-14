@@ -567,7 +567,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "question") {
                 $itemModel = $this->model("tests/question");
                 $messages = array(
-                    'success' => "Question created with success",
+                    'success' => "Question created successfully.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -581,7 +581,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $_GET['redirect'] = "0";
 
                 $messages = array(
-                    'success' => "Test created with success",
+                    'success' => "Test created successfully.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again",
                     'try_limit' => "You can not run this test more often"
                 );
@@ -679,7 +679,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
-                        $this->translate->translate("Test completed with success"),
+                        $this->translate->translate("Test completed successfully."),
                         "success"
                     );
                 }
@@ -708,7 +708,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "question") {
                 $itemModel = $this->model("tests/question");
                 $messages = array(
-                    'success' => "Question removed with success",
+                    'success' => "Question removed successfully.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
             } else {

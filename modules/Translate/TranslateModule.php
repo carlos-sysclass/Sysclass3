@@ -321,7 +321,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Language saved with success"),
+                    $this->translate->translate("Language saved successfully."),
                     "success"
                 );
             } else {
