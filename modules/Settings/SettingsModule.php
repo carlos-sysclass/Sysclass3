@@ -316,7 +316,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             if ($this->request->hasQuery('object')) {
                 $this->response->setJsonContent(
                     $this->createAdviseResponse(
-                        $this->translate->translate("System settings saved with success!"),
+                        $this->translate->translate("System settings saved."),
                         "success"
                     )
                 );
@@ -324,7 +324,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 $this->response->setJsonContent(
                     $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $itemModel->id,
-                        $this->translate->translate("System settings saved with success!"),
+                        $this->translate->translate("System settings saved."),
                         "success"
                     )
                 );
