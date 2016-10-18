@@ -60,7 +60,8 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         if (in_array('calendar', $widgetsIndexes))
         {
             $this->putComponent("fullcalendar");
-        	//$this->putScript("scripts/fullcalendar.timelineview");
+        	$this->putScript("plugins/fullcalendar/fullcalendar/gcal");
+            
             $this->putModuleScript("calendar");
 
             $sources = CalendarSource::find();

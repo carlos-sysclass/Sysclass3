@@ -2358,6 +2358,8 @@ a.list-group-item,
 }
 #calendar {
 	top: 0px;
+  margin-bottom: -40px;
+
 }
 .fc-toolbar {
     position: relative;
