@@ -177,7 +177,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Class created with success"),
+                    $this->translate->translate("Class created successfully."),
                     "success"
                 );
             } else {
@@ -226,7 +226,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $itemModel = $this->model("courses/classes/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Class removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Class removed successfully."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
