@@ -258,7 +258,7 @@ a:hover, a:focus {
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: lighter;
   padding: 8px 15px;
 }
@@ -278,7 +278,7 @@ a:hover, a:focus {
   border-top: none;
 }
 .inter-navsuper-tabs .table>thead>tr>th {
-  font-size: 14px;
+  font-size: 16px;
   color: #444;
   text-transform: uppercase;
   font-weight: 500;
@@ -778,6 +778,7 @@ margin:0 4px 0 0;
     padding-bottom: 2px;
     padding-top: 2px;
     padding: 9px 10px;
+	text-transform: uppercase;
 }
 #tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
     float: right !important;
