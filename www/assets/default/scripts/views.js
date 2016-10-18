@@ -178,7 +178,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				self.update(e);
     		});
 
-
 			/*	    	
     		this.$("[type='radio'].icheck-me").on("ifChecked", function(e) {
 				self.update(e);
@@ -191,7 +190,32 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    	//});
 	    },
 	    bindViewEvents : function() {
-			
+	    	var self = this;
+	    	
+			this.$el.delegate('.bootstrap-switch-me', 'switchChange.bootstrapSwitch', function(e, state) {
+				self.update(e);
+			});
+	    	// HANDLE SPECIAL wysihtml5 CHANGE EVENTS
+	    	this.$('.wysihtml5').each(function() {
+	    		var wysihtml5DOM = this;
+
+				var wysihtml5 = $(wysihtml5DOM).data('wysihtml5');
+				wysihtml5.editor.on("change", function(e) {
+					var changeEvt = jQuery.Event("change");
+					//console.log(wysihtml5DOM);
+					wysihtml5.el.trigger(changeEvt);
+					//self.update()
+				});
+	    	});
+	    	// HANDLE SPECIAL icheck CHANGE EVENTS
+	    	//this.$('.icheck-me').each(function() {
+	    	this.$el.delegate("[type='radio'].icheck-me", "ifChecked", function(e) {
+				self.update(e);
+    		});
+
+    		this.$el.delegate("[type='checkbox'].icheck-me", "ifChanged", function(e) {
+				self.update(e);
+    		});
 	    },
 	    handleAction : function(action) {
 	    	console.info('views/baseClass::handleAction');

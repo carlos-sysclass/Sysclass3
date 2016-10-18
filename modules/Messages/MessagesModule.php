@@ -171,10 +171,11 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
             foreach($groupsRS as $group) {
                 $widgets[$widgetsNames[$group->id]] = array(
                     //'title'     => $this->translate->translate($group['name']),
-                    'header'    => $this->translate->translate($group->name),
+                    'id'        => 'advisor-chat-widget-' . $group->id,
+                    'title'    => $this->translate->translate($group->name),
                     'template'  => $this->template("contact-list.widget"),
-                    'icon'      => $group->icon,
-                    'panel'     => 'dark-blue messages-panel',
+                    'icon'      => " " . $group->icon,
+                    'box'       => 'dark-blue messages-panel tabbable',    
                     'body'      => false,
                     'data'      => $recipients[$group->id]
                 );
