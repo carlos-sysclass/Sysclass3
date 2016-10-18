@@ -2446,7 +2446,7 @@ a.list-group-item,
 }
 
 .inter-navsuper-tabs .table-content-scrollable {
-  max-height: 384px;
+  max-height: 350px;
   overflow-y: auto;  
   overflow-x: hidden;
   display: block;
@@ -2505,4 +2505,8 @@ a.list-group-item,
 
 .inter-navsuper-tabs .table > thead > tr > th > i.fa {
   margin-right: 5px;
+}
+
+h2.users-panel-username {
+  font-size: 22px !important;
 }

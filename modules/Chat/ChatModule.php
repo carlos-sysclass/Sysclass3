@@ -107,10 +107,10 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
             $widgets['advisor.chat'] = array(
                 'id'        => 'advisor-chat-widget',
                 'template'  => $this->template("widgets/chat"),
-                'header'     => $this->translate->translate("Talk to us"),
+                'title'     => $this->translate->translate("Talk to us"),
                 'body'      => false,
-                'icon'      => "fa fa-comment",
-                'panel'     => 'dark-blue'
+                'icon'      => " fa fa-comment",
+                'box'       => 'dark-blue',
             );
         }
 

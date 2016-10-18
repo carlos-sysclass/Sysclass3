@@ -407,31 +407,31 @@ margin:0 4px 0 0;
   color: #ff3b30;
 }
 .inter-navsuper-tabs .pendente i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .concluido {
   color: #05ae0e;
 }
 .inter-navsuper-tabs .concluido i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .andamento {
   color: #ff9500;
 }
 .inter-navsuper-tabs .andamento i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .fechado {
   color: #5d5d5d;
 }
 .inter-navsuper-tabs .fechado i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .avalialbe {
-  color: #1976d2;
+  color: #05ae0e;
 }
 .inter-navsuper-tabs .avalialbe i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .unit-table .fa {
   font-size: 16px;

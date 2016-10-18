@@ -2609,8 +2609,10 @@ Vertical inline menu
 
 .ver-inline-menu li.active a,
 .ver-inline-menu li:hover a {
+  /*
   font-size: 16px;
   font-weight: lighter;
+  */
 }
 
 .ver-inline-menu li.active a {
