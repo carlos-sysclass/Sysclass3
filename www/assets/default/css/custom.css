@@ -2134,7 +2134,7 @@ button.calendar-news-item {
 }
 .summary-list > div.summary-item {
     border-bottom: 1px solid #ccc;
-    padding: 0 0px 7px;
+    padding: 0 0px 8px;
 }
 
 .summary-list > div.summary-item:LAST-CHILD {
