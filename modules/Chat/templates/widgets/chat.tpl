@@ -1,3 +1,4 @@
+<!--
 <ul class="ver-inline-menu ver-inline-notabbable ver-inline-menu-noarrow">
     <li class="active block-title">
         <a>
@@ -20,7 +21,8 @@
         </a>
     </li>
 </ul>
-<div class="panel-body chat-panel-reset">
+-->
+<div class="portlet-body chat-panel-reset">
     <div>
         <ul class="queue-container">
             
