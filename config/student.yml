@@ -20,7 +20,7 @@ dashboard:
         2:
             4:
                 weight:
-                    md: 9
+                    md: 6
                     sm: 12
                     xs: 12
             5:
@@ -28,8 +28,14 @@ dashboard:
                     md: 3
                     sm: 12
                     xs: 12
-        3:
             6:
+                weight:
+                    md: 3
+                    sm: 12
+                    xs: 12
+
+        3:
+            7:
                 weight:
                     md: 12
                     sm: 12
@@ -38,9 +44,10 @@ dashboard:
         1: ["users.overview", "notification.lastest"]
         2: ["institution.overview"]
         3: ["content.overview"]
-        4: ["ads.leftbar.banner", "news.latest"]
-        5: ["advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
-        6: ["calendar"]
+        4: ["news.latest"]
+        5: ["messages.contactus", "messages.help", "messages.improvements"]
+        6: ["advisor.chat"]
+        7: ["calendar"]
         #1: []
         #2: []
         #3: ["content.overview"]

@@ -258,8 +258,9 @@ a:hover, a:focus {
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: lighter;
+  padding: 8px 15px;
 }
 .inter-navsuper-tabs .table {
   margin-bottom: 0;
@@ -340,7 +341,7 @@ margin:0 4px 0 0;
   border-top: 0;
 }
 .inter-navsuper-tabs .table>tbody>tr>td, .inter-navsuper-tabs .table>tbody>tr>th, .inter-navsuper-tabs .table>tfoot>tr>td, .inter-navsuper-tabs .table>tfoot>tr>th {
-  padding: 15px 8px;
+  padding: 10px 8px;
   font-size: 13px;
   vertical-align: middle;
 }
@@ -406,31 +407,31 @@ margin:0 4px 0 0;
   color: #ff3b30;
 }
 .inter-navsuper-tabs .pendente i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .concluido {
   color: #05ae0e;
 }
 .inter-navsuper-tabs .concluido i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .andamento {
   color: #ff9500;
 }
 .inter-navsuper-tabs .andamento i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .fechado {
   color: #5d5d5d;
 }
 .inter-navsuper-tabs .fechado i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .avalialbe {
-  color: #1976d2;
+  color: #05ae0e;
 }
 .inter-navsuper-tabs .avalialbe i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .unit-table .fa {
   font-size: 16px;
@@ -808,4 +809,9 @@ margin:0 4px 0 0;
 }
 .class="fa fa-book" {
   margin: 33px 33px 33px 33px;
+}
+
+.fc-left h2 {
+  font-size: 18px !important;
+  font-weight: 100;
 }
