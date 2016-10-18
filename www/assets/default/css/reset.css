@@ -267,7 +267,7 @@ a:hover, a:focus {
 }
 .inter-navsuper-tabs .tab-content {
   border: 1px solid #ddd;
-  height: 430px;
+  height: 417px;
   max-height: 430px;
 }
 .inter-navsuper-tabs .table-tab {
@@ -308,6 +308,11 @@ margin:0 4px 0 0;
 }
 .inter-navsuper .progress-indicator .fa {
   margin:2px 2px 2px 0px;
+}
+
+.inter-navsuper-tabs .table > thead > tr > th, .inter-navsuper-tabs .table > tbody > tr > td {
+  border-top: 0 none;
+  border-bottom: 1px solid #ddd;
 }
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {

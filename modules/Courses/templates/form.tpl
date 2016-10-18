@@ -4,18 +4,18 @@
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Description"}</a>
+				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Description"}</a>
 			</li>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					{translateToken value="Info"}
+					{translateToken value="Step 2 - Info"}
 				</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Courses & Content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses & Content"}</a>
 			</li>
 			{/if}
 			
