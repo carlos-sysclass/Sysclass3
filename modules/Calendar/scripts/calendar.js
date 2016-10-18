@@ -78,6 +78,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		                	mod.view.calendarDialog.find(".event-description").html(event.description);
 		                	mod.view.calendarDialog.modal('show');
 		                },
+		                /*
 	                    eventRender : function( event, element, view ) {
 	                        if (/^-?[\d.]+(?:e-?\d+)?$/.test(event.id)) {
 	                            if (element.find(".fc-content .remove-event").size() == 0) {
@@ -89,8 +90,8 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                                );
 	                            }
 	                        }
-
 	                    },
+	                    */
 	                    googleCalendarApiKey: 'AIzaSyAFwmTQ7O_yp6ZsFTWkejI9S7l0RqYQkTo',
 	                    eventSources : [
 	                        {
