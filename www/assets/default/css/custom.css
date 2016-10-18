@@ -1915,8 +1915,8 @@ button.calendar-news-item {
     .page-quick-sidebar-wrapper .page-quick-sidebar .list-heading {
          border-bottom: 1px solid #ccc;
 	    color: #6c8296;
-	    font-size: 16px;
-	    margin: 10px;
+	    font-size: 14px !important;
+	    margin: 18px;
 	    padding-bottom: 5px; }
     .page-quick-sidebar-wrapper .page-quick-sidebar .list-items {
       margin: 0;
