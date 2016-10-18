@@ -821,7 +821,7 @@ _before_init_functions.push(function() {
       </a>
     <% } else { %>
       <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
-          <i class="fa fa-circle-o" aria-hidden="true"></i>
+          <i class="fa fa-check" aria-hidden="true"></i>
           {translateToken value="Avaliable"}
       </a>
     <% } %>
