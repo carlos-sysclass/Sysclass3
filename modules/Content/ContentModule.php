@@ -218,11 +218,11 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to course with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course successfully."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from course with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course successfully."), "error");
         }
         return array_merge($response, $info);
     }
