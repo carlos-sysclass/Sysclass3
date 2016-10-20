@@ -1102,6 +1102,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-right: 0;
 	min-height: 450px;
 }
+.page-quick-sidebar-chat-user-messages.scroller {
+  min-height: 150px;
+}
 .scroller.chat-contents {
 	min-height: 200px;
 }
