@@ -205,6 +205,10 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                         {
                             googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',
                             className: 'calendar-holidays-item'
+                        },
+                        {
+                            googleCalendarId: 'pt.py#holiday@group.v.calendar.google.com',
+                            className: 'calendar-holidays2-item'
                         }
                     ],
                     /*[
