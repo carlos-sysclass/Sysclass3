@@ -247,7 +247,7 @@ class ApiController extends \AbstractSysclassController
 
 	 					if ($user) {
 	 						$user->refresh();
-	 						$messages[] = $this->createResponse(200, "User created with success!", "success");
+	 						$messages[] = $this->createResponse(200, "User created.", "success");
 
 	 						$data['user'] = array(
 	 							'id' => $user->id,
@@ -265,7 +265,7 @@ class ApiController extends \AbstractSysclassController
 										$result = $enroll->enrollUser($user, $course);
 
 										if (count($result) == 0) {
-											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name} with success!", "success");
+											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name}.", "success");
 
 											$data['courses'][] = array(
 												'id' => $course->id,

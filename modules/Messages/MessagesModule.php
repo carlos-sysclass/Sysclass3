@@ -217,7 +217,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 }
 
                 return $this->createAdviseResponse(
-                    $this->translate->translate("Message created with success. You can follow thge message in your inbox."),
+                    $this->translate->translate("Message created successfully.. You can follow thge message in your inbox."),
                     "success"
                 );
             } else {
