@@ -1632,6 +1632,12 @@ UI Loading
     color: white !important;
 }
 
+.calendar-holidays2-item {
+    background-color: #d9534f !important;
+    border: 1px solid #d43f3a !important;
+    color: white !important;
+}
+
 .calendar-calendar-item {
     background-color: #57b5e3 !important;
     color: white !important;
