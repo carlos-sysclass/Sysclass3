@@ -279,9 +279,8 @@ a:hover, a:focus {
 }
 .inter-navsuper-tabs .table>thead>tr>th {
   font-size: 16px;
-  color: #444;
-  text-transform: uppercase;
-  font-weight: 500;
+  color: #31708f;
+  font-weight: normal;
 }
 inter-navsuper-tabs .table > thead > tr > th i.fa {
 margin:0 4px 0 0;
