@@ -11,6 +11,24 @@ _before_init_functions.push(function() {
           <div class="col-md-12 no-padding inter-navsuper">
             <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
               <li role="presentation" class="active">
+                <a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
+                  <i class="fa fa-graduation-cap"></i>
+                  <span class="progress-indicator program-indicator">
+                    <span></span>
+                  </span>
+                  {translateToken value="Program"}
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
+                  <i class="fa fa-sitemap"></i>
+                  <span class="progress-indicator course-indicator">
+                    <span></span>
+                  </span>
+                  {translateToken value="Courses"}
+                </a>
+              </li>
+              <li role="presentation">
               	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab">
                   <i class="fa fa-book"></i>
                   <span class="progress-indicator unit-indicator">
@@ -19,29 +37,12 @@ _before_init_functions.push(function() {
                   {translateToken value="Units"}
                 </a>
               </li>
-              <li role="presentation">
-              	<a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
-                  <i class="fa fa-sitemap"></i>
-                  <span class="progress-indicator course-indicator">
-                    <span></span>
-                  </span>
-                  {translateToken value="Courses"}
-                </a>
-              </li>
               <!--
               <li role="presentation">
               	<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-sitemap"></i>{translateToken value="Timeline"}</a>
               </li>
               -->
-              <li role="presentation" class="">
-              	<a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
-                  <i class="fa fa-graduation-cap"></i>
-                  <span class="progress-indicator program-indicator">
-                    <span></span>
-                  </span>
-                  {translateToken value="Program"}
-                </a>
-              </li>
+
             </ul>
             <ul class="dir-menu-bar">
               <!--
@@ -55,7 +56,7 @@ _before_init_functions.push(function() {
         </div>
         <div class="col-sm-12 col-md-12 inter-navsuper-tabs">
           <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="tab_course_units">
+            <div role="tabpanel" class="tab-pane" id="tab_course_units">
               <div class="navbar navbar-default navbar-course" role="navigation">
                 <ul class="nav navbar-nav">
                   <!--
@@ -222,16 +223,17 @@ _before_init_functions.push(function() {
                 <thead>
                   <tr>
                     <th width="40%">{translateToken value="Unit"}</th>
-                    <th width="15%" class="text-center">{translateToken value="Video"}</th>
-                    <th width="15%" class="text-center">{translateToken value="Materials"}</th>
-                    <th width="15%" class="text-center">{translateToken value="Tests"}</th>
+                    <th width="20%">{translateToken value="Instructor"}</th>
+                    <th width="10%" class="text-center">{translateToken value="Video"}</th>
+                    <th width="10%" class="text-center">{translateToken value="Materials"}</th>
+                    <th width="10%" class="text-center">{translateToken value="Tests"}</th>
                     <!--
                     <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
                     -->
                     <!--
                     <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
                     -->
-                    <th width="15%" class="text-center">{translateToken value="Status"}</th>
+                    <th width="10%" class="text-center">{translateToken value="Status"}</th>
                     <!-- <th></th> -->
                   </tr>
                 </thead>
@@ -305,9 +307,9 @@ _before_init_functions.push(function() {
                   <tr>
                     <th width="30%">{translateToken value="Course"}</th>
                     <th width="20%">{translateToken value="Instrutor"}</th>
-                    <th width="10%">{translateToken value="Units"}</th>
+                    <th width="10%" class="text-center">{translateToken value="Units"}</th>
                     <th width="30%">{translateToken value="Assignments"}</th>
-                    <th width="10%">{translateToken value="Status"}</th>
+                    <th width="10%" class="text-center">{translateToken value="Status"}</th>
                     <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
                 </thead>
@@ -437,7 +439,7 @@ _before_init_functions.push(function() {
               </table>
             </div>
             -->            
-            <div role="tabpanel" class="tab-pane" id="tab_program_description">
+            <div role="tabpanel" class="tab-pane active" id="tab_program_description">
             </div>
           </div>
         </div>
@@ -506,12 +508,12 @@ _before_init_functions.push(function() {
     <!-- Course -->
     <td width="30%">
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
-      <span class="at-difinf">
+      <!-- <span class="at-difinf"> -->
         <a href="javascript:void(0);"  class="btn btn-info btn-xs course-info-action">
           <i class="fa fa-info" aria-hidden="true"></i>
           Info
         </a>
-      </span>
+      <!-- </span> -->
     <!-- Instrutor -->
     <td width="20%">
       <% if (!_.isNull(model.professor_id)) { %>
@@ -530,7 +532,7 @@ _before_init_functions.push(function() {
       <% } %>
     </td>
     <!-- Units -->
-    <td width="10%">
+    <td width="10%" class="text-center">
       <%= model.units_completed %> {translateToken value="of"} <%= _.size(model.units) %>
     </td>
     <!--
@@ -598,12 +600,29 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
+  <% console.warn('UNIT', model); %>
   <!-- Unidade -->
   <td width="40%">
     <%= model.name %></a>
   </td>
+  <td width="20%">
+    <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+      <%= model.professor.name %> <%= model.professor.surname %>
+      <span class="at-difinf">
+        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
+          <i class="fa fa-info" aria-hidden="true"></i>
+          {translateToken value="Info"}
+        </a>
+        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+          {translateToken value="Contact"}
+        </a>
+      </span>
+
+    <% } %>
+  </td>
   <!-- Video -->
-  <td width="15%" class="text-center">
+  <td width="10%" class="text-center">
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -625,7 +644,7 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
   <!-- Material -->
-  <td width="15%" class="text-center">
+  <td width="10%" class="text-center">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
       <% if (model.materialProgress >= 1) { %>
@@ -698,7 +717,7 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   
-  <td width="15%" class="text-center">
+  <td width="10%" class="text-center">
   </td>
   
   <!-- Exame -->
@@ -708,7 +727,7 @@ _before_init_functions.push(function() {
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    --><!-- Status -->
-  <td width="15%"  class="text-center">
+  <td width="10%"  class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
@@ -787,10 +806,12 @@ _before_init_functions.push(function() {
   <td width="40%">
     <%= model.name %>
   </td>
+  <!-- Instructor -->
+  <td width="10%" class="text-center"></td>
   <!-- Video -->
-  <td width="15%" class="text-center"></td>
+  <td width="10%" class="text-center"></td>
   <!-- Material -->
-  <td width="15%" class="text-center">
+  <td width="10%" class="text-center">
     <!--
     <span class="pendente">
       <i class="fa fa-ban" aria-hidden="true"></i>
@@ -808,7 +829,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Teste -->
-  <td width="15%" class="text-center">
+  <td width="10%" class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="concluido">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
@@ -833,7 +854,7 @@ _before_init_functions.push(function() {
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    --><!-- Status -->
-  <td width="15%" class="text-center">
+  <td width="10%" class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
