@@ -29,14 +29,14 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
 
         $item['instructor_id'] = json_decode($item['instructor_id'], true);
 
-        if (is_array($item['instructor_id'])) {
+        //if (is_array($item['instructor_id'])) {
             $item['instructors'] = $userModel->clear()->addFilter(array(
                 'can_be_coordinator' => true,
                 'id'    =>  $item['instructor_id']
-            ))->getItems();
-        } else {
+            ))->getItem();
+        //} else {
             $item['instructors'] = array();
-        }
+        //}
 
         return $item;
     }
@@ -72,7 +72,7 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
         if ($this->lesson_type !== FALSE) {
             $data['type'] = $this->lesson_type;
         }
-        $data['instructor_id'] = json_encode($data['instructor_id']);
+        //$data['instructor_id'] = json_encode($data['instructor_id']);
         return parent::addItem($data, $identifier);
     }
 
@@ -81,9 +81,9 @@ class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableMo
         if ($this->lesson_type !== FALSE) {
             $data['type'] = $this->lesson_type;
         }
-        if (array_key_exists('instructor_id', $data)) {
-            $data['instructor_id'] = json_encode($data['instructor_id']);
-        }
+        //if (array_key_exists('instructor_id', $data)) {
+        //    $data['instructor_id'] = json_encode($data['instructor_id']);
+        //}
         return parent::setItem($data, $identifier);
     }
 
