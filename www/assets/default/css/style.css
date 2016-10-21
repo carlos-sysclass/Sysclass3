@@ -404,7 +404,7 @@ Dashboard resets
 }
 .chat-panel-reset p {
     font-size: 10px;
-    margin-top: 16px;
+    margin-top: 0px;
 }
 .queue-container li .btn {
     width: 100%;
