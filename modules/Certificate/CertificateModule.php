@@ -33,8 +33,10 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
         $info = array(
             'type'  => 'success',
+            'format' => "dropdown",
             'count' => $certificates->count(),
             'text'  => $this->translate->translate('Certificates'),
+            'name'  => $this->translate->translate('View'),
         );
 
         if ($certificates->count() > 0) {
@@ -42,10 +44,10 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
             foreach($certificates as $index => $cert) {
                 $info['links'][]  = array(
-                    'text'  => $this->translate->translate('View'),
+                    //'text'  => $this->translate->translate('View'),
                     'link'  => $this->getBasePath() . "print/" . $cert->id,
                     'text' => ($index+1) . '&ordm;',
-                    'tooltip' => $cert->name,
+                    'name' => $cert->name,
                     'target' => '_blank'
                 );
             }
@@ -63,6 +65,9 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                 'target' => '_blank'
             );
         }
+
+        //var_dump($info);
+        //exit;
 
         return $info;
     }
