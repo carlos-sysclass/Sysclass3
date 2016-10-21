@@ -60,11 +60,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Class"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Course"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Class"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Course"));
                 break;
             }
         }
