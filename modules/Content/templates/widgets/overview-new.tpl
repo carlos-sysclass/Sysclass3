@@ -561,7 +561,7 @@ _before_init_functions.push(function() {
       <% if (completed) { %>
         <span class="concluido">
           <i class="fa fa-check-square-o" aria-hidden="true"></i>
-          {translateToken value="All completed"}
+          {translateToken value="Completed"}
         </span>
       <% } %>
     </td>
