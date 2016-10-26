@@ -53,8 +53,9 @@ class LoginController extends \AbstractSysclassController
 		$this->putScript("plugins/uniform/jquery.uniform.min");
 
 		$this->putScript("plugins/modernizr/modernizr");
-		$this->putScript("plugins/imagesloaded/imagesloaded");
-		$this->putScript("plugins/bigvideo/bigvideo");
+		//$this->putScript("plugins/imagesloaded/imagesloaded");
+
+		$this->putComponent("bigvideo");
 
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/login");

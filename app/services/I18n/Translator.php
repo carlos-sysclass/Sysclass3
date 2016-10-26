@@ -53,6 +53,10 @@ class Translator extends Component
         return $this->getSystemLanguageCode();
     }
 
+    public function languageExists() {
+        
+    }
+
     public function setSource($language_code)
     {
         //$langCodes = $this->getDisponibleLanguagesCodes();

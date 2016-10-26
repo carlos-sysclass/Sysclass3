@@ -41,7 +41,7 @@ Course Reading:
 </div>
  -->
 <div class="form-group">
-	<label class="control-label">{translateToken value="Instructor"}</label>
+	<label class="control-label">{translateToken value="Coordinator"}</label>
 	<select class="select2-me form-control" name="professor_id">
 		<option value="">{translateToken value="Please Select"}</option>
 		{foreach $T_INSTRUCTORS as $id => $instructor}

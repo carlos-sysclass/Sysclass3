@@ -63,7 +63,6 @@
 				</div>
 			</div>
 			{if
-				$T_CONFIGURATION.enable_facebook_login ||
 				$T_CONFIGURATION.enable_linkedin_login ||
 				$T_CONFIGURATION.enable_googleplus_login
 			}
@@ -91,12 +90,20 @@
 					{/if}
 				</ul>
 			</div>
- -->			{/if}
+-->			{/if}
 			{if $T_CONFIGURATION.signup_enable}
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
 						<a href="https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Create an account"}</a>
+					</p>
+				</div>
+			{/if}
+			{if $T_CONFIGURATION.trouble_login_enable}
+				<div class="create-account">
+					<p>
+						{translateToken value="Trouble logging in?"}
+						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please click here"}</a>
 					</p>
 				</div>
 			{/if}

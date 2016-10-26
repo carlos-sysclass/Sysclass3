@@ -306,7 +306,7 @@ _before_init_functions.push(function() {
                 <thead>
                   <tr>
                     <th width="30%">{translateToken value="Course"}</th>
-                    <th width="20%">{translateToken value="Instrutor"}</th>
+                    <th width="20%">{translateToken value="Coordinator"}</th>
                     <th width="10%" class="text-center">{translateToken value="Units"}</th>
                     <th width="30%">{translateToken value="Assignments"}</th>
                     <th width="10%" class="text-center">{translateToken value="Status"}</th>
