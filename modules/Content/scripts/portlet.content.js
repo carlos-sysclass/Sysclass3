@@ -1235,7 +1235,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var total = programs.reduce(function(count, program) {
 				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
 				  
-				  if (parseFloat(progress.factor) == 1) {
+				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 				    return count;
 				  }
 				  return count + 1;
@@ -1249,7 +1249,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var total = courses.reduce(function(count, course) {
 				  var progress = _.findWhere(progressCourses, {class_id : course.get("id")});
 				  
-				  if (parseFloat(progress.factor) == 1) {
+				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 				    return count;
 				  }
 				  return count + 1;
@@ -1264,7 +1264,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var total = units.reduce(function(count, unit) {
 				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
 				  
-				  if (parseFloat(progress.factor) == 1) {
+				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 				    return count + 1;
 				  }
 				  return count;
@@ -1279,7 +1279,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var total = units.reduce(function(count, unit) {
 				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
 				  
-				  if (parseFloat(progress.factor) == 1) {
+				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 				    return count;
 				  }
 				  return count + 1;
