@@ -508,12 +508,26 @@ _before_init_functions.push(function() {
     <!-- Course -->
     <td width="30%">
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
-      <!-- <span class="at-difinf"> -->
+      <div class="btn-group">
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
+          <i class="fa fa-cogs"></i>
+          <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu pull-right">
+          <li>
+              <a class="course-info-action" href="javascript:void(0);" class="select-item">
+              {translateToken value="Course Info"}
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!--
+      <a href="javascript:void(0)" class="course-change-action"></a>
         <a href="javascript:void(0);"  class="btn btn-info btn-xs course-info-action">
           <i class="fa fa-info" aria-hidden="true"></i>
           Info
         </a>
-      <!-- </span> -->
+      -->
     <!-- Instrutor -->
     <td width="20%">
       <% if (!_.isNull(model.professor_id)) { %>
@@ -608,7 +622,8 @@ _before_init_functions.push(function() {
   <td width="20%">
     <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
       <%= model.professor.name %> <%= model.professor.surname %>
-<!--       <span class="at-difinf">
+      <!--       
+      <span class="at-difinf">
         <a href="javascript:void(0);"  class="btn btn-info btn-xs">
           <i class="fa fa-info" aria-hidden="true"></i>
           {translateToken value="Info"}
@@ -618,7 +633,7 @@ _before_init_functions.push(function() {
           {translateToken value="Contact"}
         </a>
       </span>
- -->
+      -->
     <% } %>
   </td>
   <!-- Video -->
