@@ -14,9 +14,10 @@ class FieldsOptions extends Model
         */
 
     }
-
+    /*
     public function toArray() {
     	return $this->toFullArray(array('Field'), parent::toArray());
     }
+    */
 
 }
