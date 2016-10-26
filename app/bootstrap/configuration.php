@@ -182,6 +182,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('css/videojs/video-js'),
 			'js'	=> array("plugins/videojs/video")
 		),
+		'bigvideo' => array(
+			'name'	=> 'bigvideo',
+			'css'	=> array('css/videojs/video-js', "css/bigvideo/bigvideo"),
+			'js'	=> array("plugins/videojs/video", "plugins/imagesloaded/imagesloaded", "plugins/bigvideo/bigvideo")
+		),
 		'select2' => array(
 			'name'	=> 'select2',
 			'css'	=> array('plugins/select2/select2_metro'),
