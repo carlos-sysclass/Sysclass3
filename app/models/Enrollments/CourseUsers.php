@@ -203,7 +203,7 @@ class CourseUsers extends Model
 
         if (count($subwhere) > 0) {
             $subsql .= " WHERE " . implode(" AND ", $subwhere);
-            $where[] = sprintf("user_id NOT IN (%s)", $subsql);
+            $where[] = sprintf("u.id NOT IN (%s)", $subsql);
         }
 
 
