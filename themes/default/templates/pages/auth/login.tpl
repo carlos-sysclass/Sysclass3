@@ -56,7 +56,7 @@
 					</button>
 					{/if}
 					{if $T_CONFIGURATION.enable_forgot_form}
-					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}
+					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Forgot your password?"}
 					</button>
 
 					{/if}
@@ -112,7 +112,7 @@
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
 		<form class="forget-form" action="/password-reset" method="post">
-			<h3 >{translateToken value="Forget your password?"}</h3>
+			<h3 >{translateToken value="Forgot your password?"}</h3>
 			<p>{translateToken value="Enter your e-mail address below to reset your password."}</p>
 
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}

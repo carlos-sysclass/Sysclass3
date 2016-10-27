@@ -545,6 +545,7 @@ _before_init_functions.push(function() {
           Info
         </a>
       -->
+    </td>
     <!-- Instrutor -->
     <!--
     <td width="20%">
@@ -595,8 +596,8 @@ _before_init_functions.push(function() {
       %>
       <% if (completed) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
-          {translateToken value="All completed"}
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          {translateToken value="Completed"}
         </span>
       <% } %>
     </td>
@@ -633,7 +634,6 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-  <% console.warn('UNIT', model); %>
   <!-- Unidade -->
   <td width="40%">
       <%= model.name %>

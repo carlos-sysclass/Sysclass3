@@ -1556,7 +1556,8 @@ Dropdown Menu Badges
   position: absolute;
   margin-top: 1px;
   right: 3px;
-  display: inline; }
+  display: inline;
+  width: 260px; }
 
 .dropdown-menu.badge-roundless {
   -webkit-border-radius: 0 !important;

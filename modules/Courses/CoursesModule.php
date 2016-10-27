@@ -112,7 +112,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Course'),
+                    'text'      => $this->translate->translate('New Program'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'

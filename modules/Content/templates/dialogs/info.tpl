@@ -27,13 +27,13 @@
 <script type="text/template" id="content_course_dialog_body">
     <h5 class="form-section margin-bottom-10">
         <i class="fa fa-list"></i>
-        Description
+        {translateToken value="Description"}
     </h5>
     <%= model.description %>
 
     <h5 class="form-section margin-bottom-10">
         <i class="fa fa-calendar-check-o"></i>
-        Objectives
+        {translateToken value="Objectives"}
     </h5>
     <%= model.objectives %>
 </script>
