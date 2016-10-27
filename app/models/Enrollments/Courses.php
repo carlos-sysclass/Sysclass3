@@ -16,7 +16,7 @@ class Courses extends Model
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
     }
 
-
+    /*
     public function metaData()
     {
         return array(
@@ -83,6 +83,7 @@ class Courses extends Model
             )
         );
     }
+    */
     /*
     public function beforeValidationOnCreate() {
         if (is_null($this->token)) {

@@ -103,7 +103,7 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
             $user = $user['id'];
         }
         if (is_numeric($user)) {
-            $user = User::findFirstById($user['id']);
+            $user = User::findFirstById($user);
             // INIT USER
             if ($user) {
                 self::$default->initialize($user);

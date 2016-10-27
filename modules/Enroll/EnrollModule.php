@@ -236,10 +236,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
         if (is_array($filter)) {
             if ($filter['exclude'] == TRUE) {
-                $usersRS = Enrollment::getUsersNotEnrolled($filter['enroll_id'], $_GET['q']);
+                $usersRS = Enrollment::getUsersNotEnrolled($filter, $_GET['q']);
                 //$groupsRS = RolesGroups::getGroupsWithoutARole($filter['role_id'], $_GET['q']);
             } else {
-                $usersRS = Enrollment::getUsersEnrolled($filter['enroll_id']);
+                $usersRS = Enrollment::getUsersEnrolled($filter, null);
                 //$groupsRS = RolesGroups::getGroupsWithARole($filter['role_id']);
             }
         } else {

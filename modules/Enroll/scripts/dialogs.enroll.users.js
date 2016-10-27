@@ -117,18 +117,22 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
             	// UPDATE 
             	this.model = model;
 
-            	this.select2Obj.select2("destroy");
+				this.select2Obj.select2("destroy");
 				this.select2Obj.data("url", "/module/enroll/datasource/users/combo/" + JSON.stringify({
-					enroll_id : this.model.get("id"),
+					enroll_id : this.model.get("enroll_id"),
+					course_id : this.model.get("course_id"),
 					exclude : true
 				}));
+
+				console.warn(this.model.toJSON());
 
 
 				this.tableView
 					.putVar('enroll_id', this.model.get("enroll_id"))
 					.putVar('course_id', this.model.get("course_id"))
 					.setUrl("/module/enroll/datasource/users/datatable/" + JSON.stringify({
-						enroll_id : this.model.get("enroll_id")
+						enroll_id : this.model.get("enroll_id"),
+						course_id : this.model.get("course_id"),
 					}) + "?block");
 
             	//app.module("ui").handleSelect2(this.$el);

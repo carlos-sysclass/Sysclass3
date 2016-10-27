@@ -100,6 +100,10 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                        {
 	                            googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',
 	                            className: 'calendar-holidays-item'
+	                        },
+	                        {
+	                            googleCalendarId: 'es.py#holiday@group.v.calendar.google.com',
+	                            className: 'calendar-holidays2-item'
 	                        }
 	                    ],
 		                /*

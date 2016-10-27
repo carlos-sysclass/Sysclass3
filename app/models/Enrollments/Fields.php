@@ -7,6 +7,10 @@ use Plico\Mvc\Model,
 
 class Fields extends Model
 {
+    protected static $_translateFields = array(
+        'label'
+    );
+
     public function initialize()
     {
         $this->setSource("mod_enroll_fields");

@@ -35,7 +35,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             $summary['link'] = array(
                 'text'  => $this->translate->translate('View'),
-                'link'  => $this->getBasePath() . "open/" . $test_id
+                'link'  => $this->getBasePath() . "open/" . $test_id,
+                'link'  => 'javascript: void(0)'
             );
         }
 

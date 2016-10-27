@@ -48,16 +48,50 @@ _before_init_functions.push(function() {
 						{$notif.text}
 						<div class="pull-right" >
 						{if isset($notif.links)}
-							{foreach $notif.links as $link_index => $link}
-								<a 
-									class="btn btn-xs btn-{$notif.type} {if isset($link.tooltip)}tooltips{/if}" 
-									href="{$link.link}" 
-									{if isset($link.target)}target="{$link.target}"{/if}
-								  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
-								>
-									{$link.text nofilter}
-								</a>
-							{/foreach}
+							{if $notif.format == 'dropdown'}
+								<div class="dropdown">
+									<a 
+										class="btn btn-xs btn-{$notif.type} dropdown-toggle {if isset($link.tooltip)}tooltips{/if}" 
+										href="javascript: void(0)" 
+										data-close-others="true" data-toggle="dropdown" 
+										{if isset($link.target)}target="{$link.target}"{/if}
+									  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
+									  	data-close-others="true" data-toggle="dropdown" 
+									  	
+									>
+										{$notif.name nofilter}
+										<i class="fa fa-caret-down"></i>
+									</a>
+									<ul class="dropdown-menu sumarry-item-dropdown pull-right">
+										{foreach $notif.links as $link_index => $link}
+											<li>
+												<a 
+													class="no-padding" 
+													href="{$link.link}" 
+													{if isset($link.target)}target="{$link.target}"
+													{/if}
+												>
+													<span class="label label-{$notif.type}" style="display: inline-block">
+													{$link.text nofilter}
+													</span>
+													{$link.name nofilter}
+												</a>
+											</li>
+										{/foreach}
+									</ul>
+								</div>
+							{else}
+								{foreach $notif.links as $link_index => $link}
+									<a 
+										class="btn btn-xs btn-{$notif.type} {if isset($link.tooltip)}tooltips{/if}" 
+										href="{$link.link}" 
+										{if isset($link.target)}target="{$link.target}"{/if}
+									  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
+									>
+										{$link.text nofilter}
+									</a>
+								{/foreach}
+							{/if}
 						{elseif isset($notif.link)}
 							<!--
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>

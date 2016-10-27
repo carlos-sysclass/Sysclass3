@@ -6,7 +6,8 @@ namespace Sysclass\Modules\Courses;
  */
 use Sysclass\Models\Courses\Course as Course,
     Sysclass\Models\Enrollments\CourseUsers,
-    Sysclass\Models\Acl\Role;
+    Sysclass\Models\Acl\Role,
+    Sysclass\Models\I18n\Language;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -266,6 +267,9 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
+
+        $languageRS = Language::find();
+        $this->putitem("languages", $languageRS->toArray());
 
 
         parent::editPage($id);

@@ -1102,6 +1102,9 @@ ul.list-group.empty-list-group.ui-sortable-hover {
 	padding-right: 0;
 	min-height: 450px;
 }
+.page-quick-sidebar-chat-user-messages.scroller {
+  min-height: 150px;
+}
 .scroller.chat-contents {
 	min-height: 200px;
 }
@@ -1626,6 +1629,12 @@ UI Loading
 .calendar-holidays-item {
     background-color: #f0ad4e !important;
     border: 1px solid #eea236 !important;
+    color: white !important;
+}
+
+.calendar-holidays2-item {
+    background-color: #d9534f !important;
+    border: 1px solid #d43f3a !important;
     color: white !important;
 }
 
@@ -2448,7 +2457,8 @@ a.list-group-item,
 }
 
 .inter-navsuper-tabs .table-content-scrollable {
-  max-height: 350px;
+  max-height: 338px;
+  height: 338px;
   overflow-y: auto;  
   overflow-x: hidden;
   display: block;
@@ -2511,4 +2521,8 @@ a.list-group-item,
 
 h2.users-panel-username {
   font-size: 22px !important;
+}
+
+.dropdown-menu li.subchild > a {
+  padding-left: 20px
 }
