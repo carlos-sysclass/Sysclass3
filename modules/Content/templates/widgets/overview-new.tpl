@@ -223,17 +223,17 @@ _before_init_functions.push(function() {
                 <thead>
                   <tr>
                     <th width="40%">{translateToken value="Unit"}</th>
-                    <th width="20%">{translateToken value="Instructor"}</th>
-                    <th width="10%" class="text-center">{translateToken value="Video"}</th>
-                    <th width="10%" class="text-center">{translateToken value="Materials"}</th>
-                    <th width="10%" class="text-center">{translateToken value="Tests"}</th>
+                    <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
+                    <th width="15%" class="text-center">{translateToken value="Video"}</th>
+                    <th width="15%" class="text-center">{translateToken value="Materials"}</th>
+                    <th width="15%" class="text-center">{translateToken value="Tests"}</th>
                     <!--
                     <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
                     -->
                     <!--
                     <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
                     -->
-                    <th width="10%" class="text-center">{translateToken value="Status"}</th>
+                    <th width="15%" class="text-center">{translateToken value="Status"}</th>
                     <!-- <th></th> -->
                   </tr>
                 </thead>
@@ -308,11 +308,11 @@ _before_init_functions.push(function() {
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th width="30%">{translateToken value="Course"}</th>
-                    <th width="20%">{translateToken value="Coordinator"}</th>
-                    <th width="10%" class="text-center">{translateToken value="Units"}</th>
+                    <th width="40%">{translateToken value="Course"}</th>
+                    <!-- <th width="20%">{translateToken value="Coordinator"}</th> -->
+                    <th width="15%" class="text-center">{translateToken value="Units"}</th>
                     <th width="30%">{translateToken value="Assignments"}</th>
-                    <th width="10%" class="text-center">{translateToken value="Status"}</th>
+                    <th width="15%" class="text-center">{translateToken value="Status"}</th>
                     <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
                 </thead>
@@ -450,7 +450,6 @@ _before_init_functions.push(function() {
 </div>
 
 <script type="text/template" id="dropdown_child-item-template">
-  <% console.warn('DROPDDOW', model); %>
   <a href="javascript:void(0);" class="select-item">
     <% if (!_.isUndefined(model.progress)) { %>
       <% if (model.progress.factor == 1) { %>
@@ -512,18 +511,31 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_program_courses-item-template">
     <!-- Course -->
-    <td width="30%">
+    <td width="40%">
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
       <div class="btn-group">
         <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
           <i class="fa fa-caret-down"></i>
         </a>
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu">
           <li>
-              <a class="course-info-action" href="javascript:void(0);" class="select-item">
+              <a class="course-info-action" href="javascript:void(0);">
               {translateToken value="Course Info"}
             </a>
           </li>
+          <% if (!_.isNull(model.professor_id)) { %>
+          <li role="separator" class="divider"></li>
+          <li>
+            <a href="javascript:void(0);">
+              {translateToken value="Coordinator"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
+            </a>
+          </li>
+          <li class="subchild">
+            <a class="course-info-action" href="javascript:void(0);" class="select-item">
+              {translateToken value="Send Message"}
+            </a>
+          </li>
+          <% } %>
         </ul>
       </div>
       <!--
@@ -534,6 +546,7 @@ _before_init_functions.push(function() {
         </a>
       -->
     <!-- Instrutor -->
+    <!--
     <td width="20%">
       <% if (!_.isNull(model.professor_id)) { %>
         <%= model.professor.name %> <%= model.professor.surname %>
@@ -550,8 +563,9 @@ _before_init_functions.push(function() {
 
       <% } %>
     </td>
+    -->
     <!-- Units -->
-    <td width="10%" class="text-center">
+    <td width="15%" class="text-center">
       <%= model.units_completed %> {translateToken value="of"} <%= _.size(model.units) %>
     </td>
     <!--
@@ -588,7 +602,7 @@ _before_init_functions.push(function() {
     </td>
 
     <!-- Status -->
-    <td  width="10%" class="text-center">
+    <td  width="15%" class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
@@ -622,27 +636,43 @@ _before_init_functions.push(function() {
   <% console.warn('UNIT', model); %>
   <!-- Unidade -->
   <td width="40%">
-    <%= model.name %></a>
+      <%= model.name %>
+      <div class="btn-group">
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
+          <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+              <a class="course-info-action" href="javascript:void(0);">
+              {translateToken value="Course Info"}
+            </a>
+          </li>
+          <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+          <li role="separator" class="divider"></li>
+          <li>
+            <a href="javascript:void(0);">
+              {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
+            </a>
+          </li>
+          <li class="subchild">
+            <a class="course-info-action" href="javascript:void(0);" class="select-item">
+              {translateToken value="Send Message"}
+            </a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+
   </td>
+  <!--
   <td width="20%">
     <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
       <%= model.professor.name %> <%= model.professor.surname %>
-      <!--       
-      <span class="at-difinf">
-        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
-          <i class="fa fa-info" aria-hidden="true"></i>
-          {translateToken value="Info"}
-        </a>
-        <a href="javascript:void(0);"  class="btn btn-info btn-xs">
-          <i class="fa fa-paper-plane" aria-hidden="true"></i>
-          {translateToken value="Contact"}
-        </a>
-      </span>
-      -->
     <% } %>
   </td>
+  -->
   <!-- Video -->
-  <td width="10%" class="text-center">
+  <td width="15%" class="text-center">
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -664,7 +694,7 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
   <!-- Material -->
-  <td width="10%" class="text-center">
+  <td width="15%" class="text-center">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
       <% if (model.materialProgress >= 1) { %>
@@ -737,7 +767,7 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   
-  <td width="10%" class="text-center">
+  <td width="15%" class="text-center">
   </td>
   
   <!-- Exame -->
@@ -747,7 +777,7 @@ _before_init_functions.push(function() {
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    --><!-- Status -->
-  <td width="10%"  class="text-center">
+  <td width="15%"  class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
@@ -827,11 +857,11 @@ _before_init_functions.push(function() {
     <%= model.name %>
   </td>
   <!-- Instructor -->
-  <td width="10%" class="text-center"></td>
+  <!-- <td width="15%" class="text-center"></td> -->
   <!-- Video -->
-  <td width="10%" class="text-center"></td>
+  <td width="15%" class="text-center"></td>
   <!-- Material -->
-  <td width="10%" class="text-center">
+  <td width="15%" class="text-center">
     <!--
     <span class="pendente">
       <i class="fa fa-ban" aria-hidden="true"></i>
@@ -849,7 +879,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Teste -->
-  <td width="10%" class="text-center">
+  <td width="15%" class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="concluido">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
@@ -874,7 +904,7 @@ _before_init_functions.push(function() {
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    --><!-- Status -->
-  <td width="10%" class="text-center">
+  <td width="15%" class="text-center">
     <% if (model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
