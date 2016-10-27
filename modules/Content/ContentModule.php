@@ -63,6 +63,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 }
             }
 
+            
             // LOAD THE CURRENT 
             if (!is_null($checkScope)) {
                 $userPointers = Unit::getContentPointers(null, $checkScope, $checkValue);
@@ -84,41 +85,14 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     'tree' => array_values($tree),
                     'progress' => $this->getUserProgressRequest()
                 );
-
-                //var_dump($settings);
-                //exit;
                 /*
-                if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
-                    // GET FIRST COURSE FORM USER LIST
-                    $enrollment = CourseUsers::findFirst(array(
-                        'conditions'    => 'user_id = ?0 AND status_id = 1',
-                        'bind' => array($currentUser->id)
-                        //'bind' => '123456'
-                    ));
-
-                    if (!is_object($enrollment)) {
-                        // CHECK FOR CLASS-ONLY ENROLLMENTS
-                    } else {
-                        $this->db->Execute(sprintf(
-                            "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
-                            $currentUser->id,
-                            'course_id'
-                        ));
-                        $this->db->Execute(sprintf(
-                            "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
-                            $currentUser->id,
-                            'course_id',
-                            $enrollment->course_id
-                        ));
-                        if (@isset($settings['class_id'])) {
-                            // GET THE FIRST CLASS FROM COURSE
-
-                        }
-
-                    }
-
-                }
+                var_dump($settings);
+                var_dump($checkScope);
+                var_dump($checkValue);
+                var_dump($data['progress']);
+                exit;
                 */
+
     			return array(
     				'content.overview' => array(
     					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
@@ -239,7 +213,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
         if (in_array($data['scope'], $scopes)) {
             $userPointers = Unit::getContentPointers(null, $data['scope'], $data['entity_id']);
- 
+
             $result = array(
                 'program_id'    => $userPointers['program']->id,
                 'course_id'     => $userPointers['course']->id,
@@ -254,6 +228,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 $userSetting->value = $userPointers[$scope]->id;
 
                 $userSetting->save();
+
             }
 
             return $result;

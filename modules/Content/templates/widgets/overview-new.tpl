@@ -254,10 +254,13 @@ _before_init_functions.push(function() {
                   </a>
                   -->
 
-                  <li>
-                    <a href="javascript:void(0);">
+                  <li class="dropdown">
+                    <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
                       <span class="program-title">{translateToken value="Program"}</span>
+                      <i class="fa fa-caret-down"></i>
                     </a>
+                    <ul class="dropdown-menu program-dropdown">
+                    </ul>
                   </li>
                   <!--
                   <a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
@@ -447,19 +450,22 @@ _before_init_functions.push(function() {
 </div>
 
 <script type="text/template" id="dropdown_child-item-template">
+  <% console.warn('DROPDDOW', model); %>
   <a href="javascript:void(0);" class="select-item">
-    <% if (model.progress.factor == 1) { %>
-      <span class="concluido">
-        <i class="fa fa-check-circle" aria-hidden="true"></i>
-      </span>
-    <% } else if (model.progress.factor > 0) { %>
-      <span class="andamento">
-        <i class="fa fa-clock-o" aria-hidden="true"></i>
-      </span>
-    <% } else { %>
-      <span class="avalialbe">
-        <i class="fa fa-circle" aria-hidden="true"></i>
-      </span>
+    <% if (!_.isUndefined(model.progress)) { %>
+      <% if (model.progress.factor == 1) { %>
+        <span class="concluido">
+          <i class="fa fa-check-circle" aria-hidden="true"></i>
+        </span>
+      <% } else if (model.progress.factor > 0) { %>
+        <span class="andamento">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+        </span>
+      <% } else { %>
+        <span class="avalialbe">
+          <i class="fa fa-circle" aria-hidden="true"></i>
+        </span>
+      <% } %>
     <% } %>
     <%= model.name %>
   </a>
