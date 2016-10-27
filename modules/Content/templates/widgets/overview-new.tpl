@@ -510,7 +510,6 @@ _before_init_functions.push(function() {
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
       <div class="btn-group">
         <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
-          <i class="fa fa-cogs"></i>
           <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu pull-right">
