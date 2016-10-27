@@ -933,7 +933,7 @@ class LoginController extends \AbstractSysclassController
 
 				$this->redirect(
 					"login/reset",
-					$this->translate->translate("We'll send you an e-mail containing a link to reset your password. Please check your inbox."),
+					$this->translate->translate("You will receive an e-mail with the instructions to reset your password. Check your inbox."),
 					'success'
 				);
 			} else {
