@@ -18,7 +18,7 @@ use Phalcon\DI,
 /**
  * @RoutePrefix("/module/users")
  */
-class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, \ISectionMenu, INotifyable
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, /* \ISectionMenu, */ INotifyable
 {
     /* ILinkable */
     public function getLinks() {
