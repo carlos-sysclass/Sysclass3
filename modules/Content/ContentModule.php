@@ -16,7 +16,7 @@ use Sysclass\Models\Content\Program,
 /**
  * @RoutePrefix("/module/content")
  */
-class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBlockProvider
+class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBlockProvider, \ISectionMenu
 {
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array(), $caller = null) {
@@ -145,6 +145,51 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 return true;
             },
         );
+    }
+
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+
+            $this->putScript("scripts/ui.menu.content");
+
+            $courses = $this->user->getCourses();
+
+            $items = array();
+            foreach($courses as $course) {
+                $items[] = array(
+                    'link' => "javascript:void(0);",
+                    'text' => sprintf("#%s %s", $course->id, $course->name),
+                    'attrs' => array(
+                        'data-entity-id' => $course->id
+                    )
+                );
+            }
+
+            if (count($courses) > 0) {
+                $menuItem = array(
+                    'id'        => "users-topbar-menu",
+                    'icon'      => ' fa fa-graduation-cap',
+                    'text'      => $this->translate->translate('Programs'),
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    */
+                    'type'      => '',
+                    'items'     => $items,
+                    'extended'  => false,
+                );
+
+                return $menuItem;
+            }
+        }
+        return false;
     }
 
     

@@ -1256,7 +1256,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
 
-				console.warn(progressPrograms);
+				//console.warn(progressPrograms);
 
 				var total = programs.reduce(function(count, program) {
 				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
@@ -1283,35 +1283,67 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				return total;
 			},
+			getTotalUnits : function(units) {
+				
+
+				if (_.isUndefined(units)) {
+					var progressUnits = this.get("units");
+					return _.size(progressUnits);
+				} else {
+					return units.size();
+				}
+			},
 			getTotalCompleteUnits : function(units) {
 
 				var progressUnits = this.get("units");
 
-				var total = units.reduce(function(count, unit) {
-				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
-				  
-				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
-				    return count + 1;
-				  }
-				  return count;
-				}, 0);
+				if (_.isUndefined(units)) {
+					var total = progressUnits.reduce(function(count, progress) {
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count + 1;
+					  }
+					  return count;
+					}, 0);
 
-				return total;
+					return total;
+				} else {
+					var total = units.reduce(function(count, unit) {
+					  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+					  
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count + 1;
+					  }
+					  return count;
+					}, 0);
+
+					return total;
+				}
 			},
 			getTotalPendingUnits : function(units) {
 
 				var progressUnits = this.get("units");
 
-				var total = units.reduce(function(count, unit) {
-				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
-				  
-				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
-				    return count;
-				  }
-				  return count + 1;
-				}, 0);
+				if (_.isUndefined(units)) {
+					var total = progressUnits.reduce(function(count, progress) {
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count;
+					  }
+					  return count + 1;
+					}, 0);
 
-				return total;
+					return total;
+				} else {
+					var total = units.reduce(function(count, unit) {
+					  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+					  
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count;
+					  }
+					  return count + 1;
+					}, 0);
+
+					return total;
+				}
 			}
 		})	
 	};
