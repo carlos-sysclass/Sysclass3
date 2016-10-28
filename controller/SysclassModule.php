@@ -669,6 +669,7 @@ abstract class SysclassModule extends BaseSysclassModule
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
+            
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );

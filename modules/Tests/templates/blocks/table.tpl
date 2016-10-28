@@ -23,7 +23,7 @@ _lazy_init_functions.push(function() {
     var tableView = new tableViewClass({
         el : "#view-{$T_MODULE_ID}",
         datatable : {
-            "sAjaxSource": '{$T_TESTS_EXECUTION_CONTEXT.ajax_source}',
+            "sAjaxSource": '{$T_TESTS_EXECUTION_CONTEXT.ajax_source nofilter}',
             "aoColumns": {$T_TESTS_EXECUTION_CONTEXT.datatable_fields|@json_encode nofilter}
         }
     });
