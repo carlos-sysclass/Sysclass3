@@ -604,11 +604,11 @@ _before_init_functions.push(function() {
 
     <!-- Status -->
     <td  width="15%" class="text-center">
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
       </span>
-    <% } else if (model.progress.factor > 0) { %>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
       </span>
