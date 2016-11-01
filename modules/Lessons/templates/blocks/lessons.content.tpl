@@ -743,7 +743,10 @@
             <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
             <strong><%= model.language_code %></strong>
         </span>
-        <%= file.name %>
+        <a href="<%= file.url %>">
+            <%= file.name %>
+        </a>
+
         <a class="btn btn-sm text-danger delete-translation-content" href="javascript: void(0);" data-content-id="<%= model.id %>"
             data-toggle="confirmation"
             data-original-title="{translateToken value="Are you sure?"}"
