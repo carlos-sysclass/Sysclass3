@@ -583,13 +583,13 @@ _before_init_functions.push(function() {
         var completed = true;
         for (var index in model.units) {
           var unit = model.units[index];
-          if (parseFloat(unit.progress.factor) >= 1) {
+          if (_.has(unit, 'progress') && parseFloat(unit.progress.factor) >= 1) {
             continue;
           } else {
             completed = false;
-      %>
-        <%= unit.name %>
-      <%
+          %>
+            <%= unit.name %>
+          <%
             break;
           }
         }
