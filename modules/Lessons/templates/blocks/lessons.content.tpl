@@ -4,11 +4,13 @@
     </ul>
     -->
     <div class="pull-left">
-        <span class="btn btn-sm btn-link timeline-addurl">
+
+<!--
+         <span class="btn btn-sm btn-link timeline-addurl">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Url"}</span>
         </span>
-        
+ -->        
         <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/lesson">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add File"}</span>
