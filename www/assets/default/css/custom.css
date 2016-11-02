@@ -2526,3 +2526,7 @@ h2.users-panel-username {
 .dropdown-menu li.subchild > a {
   padding-left: 20px
 }
+
+.progress-indicator .plural {
+  display: none;
+}

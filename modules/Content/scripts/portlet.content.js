@@ -173,13 +173,20 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/programDescriptionTabViewClass::renderProgress');
-				var totalUnits = mod.progressCollection.getTotalPendingPrograms(mod.programsCollection.getCurrentPrograms());
+				var totalUnits = mod.progressCollection.getTotalPrograms(mod.programsCollection.getCurrentPrograms());
 
 				if (totalUnits > 0) {
-					$(".program-indicator span").html(totalUnits);
-					$(".program-indicator").show();
+					$(".program-indicator span.counter").html(totalUnits).show();
 				} else {
-					$(".program-indicator").hide();
+					$(".program-indicator span.counter").hide();
+				}
+
+				if (totalUnits > 1) {
+					$(".program-indicator span.singular").hide();
+					$(".program-indicator span.plural").show();
+				} else {
+					$(".program-indicator span.singular").show();
+					$(".program-indicator span.plural").hide();
 				}
 			},
 		});
@@ -290,15 +297,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				//var totalUnits = mod.progressCollection.getTotalPendingCourses(mod.programsCollection.getCurrentCourses());
-				var totalUnits = mod.programsCollection.getCurrentCourses().size();
+				var totalUnits = mod.progressCollection.getTotalCourses();
+				//var totalUnits = mod.programsCollection.getCurrentCourses().size();
 
-				//if (totalUnits > 0) {
-					$(".course-indicator span").html(totalUnits);
-					$(".course-indicator").show();
-				//} else {
-				//	$(".course-indicator").hide();
-				//}
+				if (totalUnits > 0) {
+					$(".course-indicator span.counter")
+						.html(totalUnits)
+						.show();
+				} else {
+					$(".course-indicator span.counter").hide();
+				}
+
+				if (totalUnits > 1) {
+					$(".course-indicator span.singular").hide();
+					$(".course-indicator span.plural").show();
+				} else {
+					$(".course-indicator span.singular").show();
+					$(".course-indicator span.plural").hide();
+				}
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentCourses();
@@ -469,13 +485,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
-
-
-
-
-
-
-
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -494,15 +503,21 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				//var totalUnits = mod.progressCollection.getTotalPendingUnits(mod.programsCollection.getCurrentUnits());
-				var totalUnits = mod.programsCollection.getCurrentUnits().size();
+				var totalUnits = mod.progressCollection.getTotalUnits();
 
-				//if (totalUnits > 0) {
-					$(".unit-indicator span").html(totalUnits);
-					$(".unit-indicator").show();
-				//} else {
-				//	$(".unit-indicator").hide();
-				//}
+				if (totalUnits > 0) {
+					$(".unit-indicator span.counter").html(totalUnits).show();
+				} else {
+					$(".unit-indicator span.counter").hide();
+				}
+
+				if (totalUnits > 1) {
+					$(".unit-indicator span.singular").hide();
+					$(".unit-indicator span.plural").show();
+				} else {
+					$(".unit-indicator span.singular").show();
+					$(".unit-indicator span.plural").hide();
+				}
 			},
 
 
@@ -1253,6 +1268,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getContentProgress : function(id) {
 				return _.findWhere(this.get("contents"), {"content_id" : id});
 			},
+			getTotalPrograms : function(programs) {
+				if (_.isUndefined(programs)) {
+					var progressUnits = this.get("programs");
+					return _.size(progressUnits);
+				} else {
+					return programs.size();
+				}
+			},
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
 
@@ -1269,6 +1292,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				return total;
 			},
+			getTotalCourses : function(courses) {
+				if (_.isUndefined(courses)) {
+					var progressUnits = this.get("courses");
+					return _.size(progressUnits);
+				} else {
+					return courses.size();
+				}
+			},
 			getTotalPendingCourses : function(courses) {
 				var progressCourses = this.get("courses");
 
@@ -1284,8 +1315,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				return total;
 			},
 			getTotalUnits : function(units) {
-				
-
 				if (_.isUndefined(units)) {
 					var progressUnits = this.get("units");
 					return _.size(progressUnits);
