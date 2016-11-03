@@ -153,6 +153,11 @@ blocks:
         sClass: text-center
         label: Active
 
+      - mData: approved
+        sType: table-boolean
+        sClass: text-center
+        label: Approved
+
       - mData: options
         sType: table-options
         sClass: text-center

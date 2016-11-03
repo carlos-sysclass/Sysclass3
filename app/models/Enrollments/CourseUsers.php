@@ -14,7 +14,9 @@ class CourseUsers extends Model
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => false));
-
+        /*
+        $this->belongsTo("status_id", "Sysclass\\Models\\Enrollments\\CourseUsersStatus", "id",  array('alias' => 'Status', 'reusable' => false));
+        */
 		$this->hasOne(
             array("course_id", "user_id"),
             "Sysclass\Models\Courses\CourseProgress",
@@ -257,7 +259,8 @@ class CourseUsers extends Model
 
 
         //if (is_null($search)) {
-        $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active
+        $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active,
+                cu.approved
             FROM Sysclass\\Models\\Users\\User u
             LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)";
         if (count($where) > 0) {
