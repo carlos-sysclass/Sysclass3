@@ -286,8 +286,14 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
      * @Get("/datasource/progress")
      */
     public function getUserProgressRequest() {
+        $progress = Program::getUserProgressTree();
+
+        return $progress;
+
+        /*
         $userPointers = Unit::getContentPointers();
-        //var_dump($userPointers);
+        var_dump($progress);
+        //exit;
         
         $result = array();
 
@@ -359,7 +365,10 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 }
             }
         }
+        var_dump($result);
+        exit;
         return $result;
+        */
     }
 
 }

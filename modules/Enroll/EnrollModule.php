@@ -76,7 +76,9 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 // GET ALL THIS DATA FROM config.yml
                 //$self->putBlock('enroll.fields.dialog');
                 $self->putBlock("enroll.users.dialog");
+                $self->putBlock("enroll.settings.dialog");
                 $self->putModuleScript("blocks.enroll.courses");
+                
 
                 $self->putComponent("data-tables");
                 $self->putComponent("select2");
@@ -107,6 +109,22 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putModuleScript("dialogs.enroll.users");
 
                 $self->putSectionTemplate("dialogs", "dialogs/users");
+
+                return true;
+            },
+            'enroll.settings.dialog' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                $self->putComponent("data-tables");
+                //$self->putComponent("select2");
+                $self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                //$block_context = $self->getConfig("blocks\\enroll.settings.dialog\\context");
+                //$self->putItem("enroll_users_dialog_context", $block_context);
+
+                $self->putModuleScript("dialogs.enroll.settings");
+
+                $self->putSectionTemplate("dialogs", "dialogs/settings");
 
                 return true;
             }
@@ -214,6 +232,11 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'icon'  => 'fa fa-users',
                     'link'  => 'javascript:void(0);',
                     'class' => 'btn-sm btn-primary datatable-actionable',
+                ),
+                'settings' => array(
+                    'icon'  => 'fa fa-cogs',
+                    'link'  => 'javascript:void(0);',
+                    'class' => 'btn-sm btn-warning datatable-actionable',
                 ),
                 'remove'  => array(
                     'icon'  => 'fa fa-remove',
