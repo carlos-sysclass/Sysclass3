@@ -18,7 +18,7 @@ use Phalcon\DI,
 /**
  * @RoutePrefix("/module/users")
  */
-class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, \ISectionMenu, INotifyable
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, /* \ISectionMenu, */ INotifyable
 {
     /* ILinkable */
     public function getLinks() {
@@ -172,6 +172,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 			$data = array();
 			$data['user_details'] = $userDetails;
+
 			$data['notification'] = array();
 
 			foreach($modules as $key => $mod) {

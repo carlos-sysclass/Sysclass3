@@ -6,7 +6,8 @@ namespace Sysclass\Modules\Courses;
  */
 use Sysclass\Models\Courses\Course as Course,
     Sysclass\Models\Enrollments\CourseUsers,
-    Sysclass\Models\Acl\Role;
+    Sysclass\Models\Acl\Role,
+    Sysclass\Models\I18n\Language;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -111,7 +112,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Course'),
+                    'text'      => $this->translate->translate('New Program'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
@@ -267,6 +268,9 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putItem("instructors", $users);
 
+        $languageRS = Language::find();
+        $this->putitem("languages", $languageRS->toArray());
+
 
         parent::editPage($id);
     }
@@ -394,7 +398,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Course created with success"),
+                    $this->translate->translate("Course created successfully."),
                     "success"
                 );
             } else {
@@ -441,7 +445,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
             $itemModel = $this->model("courses");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Course removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Course removed successfully."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -615,11 +619,11 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to course with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course successfully."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from course with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course successfully."), "error");
         }
         return array_merge($response, $info);
     }

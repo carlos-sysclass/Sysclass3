@@ -244,7 +244,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
 
             $itemModel = $this->model($this->_modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Item removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item removed successfully."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

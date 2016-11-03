@@ -1556,7 +1556,8 @@ Dropdown Menu Badges
   position: absolute;
   margin-top: 1px;
   right: 3px;
-  display: inline; }
+  display: inline;
+  width: 260px; }
 
 .dropdown-menu.badge-roundless {
   -webkit-border-radius: 0 !important;
@@ -8130,7 +8131,7 @@ Portlets
     .portlet > .portlet-title > .caption {
       float: left;
       display: inline-block;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 18px;
       padding: 10px 0; }
       .portlet > .portlet-title > .caption.bold {

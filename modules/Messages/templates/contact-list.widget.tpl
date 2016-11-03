@@ -29,7 +29,7 @@
 			
 			<a href="javascript: void(0);" class="message-recipient-item dialogs-messages-send-action" data-group-id="{$item.id}">
 				{if isset($item.icon)}
-					<span class="text-{$item.color}"><i class="fa {$item.icon}"></i></span>
+					<span class="text-{$item.color}"><i class="fa {$item.icon} fa-{$item.icon}"></i></span>
 				{/if}
 				{$item.text}
 			</a>
