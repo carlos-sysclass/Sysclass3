@@ -102,7 +102,7 @@ class Unit extends Model
                     // FROM CONTENT, LOAD ALL PARENTS
                     $content = Content::findFirstById($entity_id);
                     if (!$content) {
-                        return self::getContentPointers($user, 'default');
+                        return self::getContentPointers($user, 'unit');
                     }
                     $unit = $content->getUnit();
                     $course = $unit->getCourse();
@@ -114,7 +114,7 @@ class Unit extends Model
                     // FROM CONTENT, LOAD ALL PARENTS
                     $unit = Unit::findFirstById($entity_id);
                     if (!$unit) {
-                        return self::getContentPointers($user, 'default');
+                        return self::getContentPointers($user, 'course');
                     }
                     $content = $unit->getContents()->getFirst();
                     $course = $unit->getCourse();
@@ -127,7 +127,7 @@ class Unit extends Model
                     // FROM CONTENT, LOAD ALL PARENTS
                     $course = Course::findFirstById($entity_id);
                     if (!$course) {
-                        return self::getContentPointers($user, 'default');
+                        return self::getContentPointers($user, 'program');
                     }
                     $unit = $course->getLessons()->getFirst();
                     $content = $unit->getContents()->getFirst();
@@ -143,9 +143,17 @@ class Unit extends Model
                     if (!$program) {
                         return self::getContentPointers($user, 'default');
                     }
-                    $course = $program->getClasses()->getFirst();
-                    $unit = $course->getLessons()->getFirst();
-                    $content = $unit->getContents()->getFirst();
+                    $course = $program->getCourses()->getFirst();
+                    if ($course) {
+                        $unit = $course->getLessons()->getFirst();
+                    } else {
+                        $unit = false;
+                    }
+                    if ($unit) {
+                        $content = $unit->getContents()->getFirst();    
+                    } else {
+                        $content = false;
+                    }
 
                     break;
                 }

@@ -98,7 +98,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("User Type created with success"),
+                    $this->translate->translate("User type created successfully."),
                     "success"
                 );
             } else {
@@ -146,7 +146,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
 
             $itemModel = $this->model("user/types/item");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("User Type removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User type removed successfully."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

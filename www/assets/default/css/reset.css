@@ -12,7 +12,7 @@ h3 {
   font-size: 18px !important;
 }
 h4 {
-  font-size: 16px !important;
+  font-size: 14px !important;
 }
 h5 {
   font-size: 14px !important;
@@ -258,7 +258,7 @@ a:hover, a:focus {
 }
 .inter-navsuper .nav-tabs li a {
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: lighter;
   padding: 8px 15px;
 }
@@ -267,7 +267,7 @@ a:hover, a:focus {
 }
 .inter-navsuper-tabs .tab-content {
   border: 1px solid #ddd;
-  height: 430px;
+  height: 417px;
   max-height: 430px;
 }
 .inter-navsuper-tabs .table-tab {
@@ -278,10 +278,9 @@ a:hover, a:focus {
   border-top: none;
 }
 .inter-navsuper-tabs .table>thead>tr>th {
-  font-size: 14px;
-  color: #444;
-  text-transform: uppercase;
-  font-weight: 500;
+  font-size: 16px;
+  color: #31708f;
+  font-weight: normal;
 }
 inter-navsuper-tabs .table > thead > tr > th i.fa {
 margin:0 4px 0 0;
@@ -308,6 +307,11 @@ margin:0 4px 0 0;
 }
 .inter-navsuper .progress-indicator .fa {
   margin:2px 2px 2px 0px;
+}
+
+.inter-navsuper-tabs .table > thead > tr > th, .inter-navsuper-tabs .table > tbody > tr > td {
+  border-top: 0 none;
+  border-bottom: 1px solid #ddd;
 }
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
@@ -778,6 +782,7 @@ margin:0 4px 0 0;
     padding-bottom: 2px;
     padding-top: 2px;
     padding: 9px 10px;
+	text-transform: uppercase;
 }
 #tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
     float: right !important;
@@ -802,7 +807,7 @@ margin:0 4px 0 0;
     -moz-osx-font-smoothing: grayscale;
 }
 .panel-body h2 {
-  margin: 14px 0 17px;
+  margin: 20px 0 14px;
 }
 .panel-body h2 small {
   font-weight: lighter;
@@ -812,6 +817,6 @@ margin:0 4px 0 0;
 }
 
 .fc-left h2 {
-  font-size: 18px !important;
+  font-size: 16px !important;
   font-weight: 100;
 }

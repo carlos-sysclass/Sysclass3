@@ -41,7 +41,13 @@ class UnitContent extends Model
             'conditions' => 'Sysclass\Models\Courses\Contents\ContentFile.active = 1',
             'limit' => '1'
         ));
-        $item['file'] = $files->getFirst()->toArray();
+        $file = $files->getFirst();
+        if ($file) {
+            $item['file'] = $files->getFirst()->toArray();
+        } else {
+            $item['file'] = array();
+        }
+        
 
         return $item;
     }

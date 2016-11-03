@@ -120,6 +120,7 @@ class User extends Model
         );
     }
 
+
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
         $item = parent::toFullArray($manyAliases, $itemData, $extended);
         if (!is_null($item['country'])) {

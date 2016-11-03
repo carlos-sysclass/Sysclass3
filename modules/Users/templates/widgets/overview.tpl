@@ -22,7 +22,7 @@ _before_init_functions.push(function() {
 	
 	</div>
 	<div class="col-md-6 col-sm-5 col-xs-12">
-		<img class="page-lock-img" src="{$user_details.country_image}" alt="" style="float: right; height: 30px; margin-top: 6px;">
+		<img class="page-lock-img" src="{$user_details.country_image}" alt="" style="float: right; height: 32px; margin-top: 10px;">
 		<h2 class="users-panel-username" style="font-size: 22px;">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
@@ -48,16 +48,50 @@ _before_init_functions.push(function() {
 						{$notif.text}
 						<div class="pull-right" >
 						{if isset($notif.links)}
-							{foreach $notif.links as $link_index => $link}
-								<a 
-									class="btn btn-xs btn-{$notif.type} {if isset($link.tooltip)}tooltips{/if}" 
-									href="{$link.link}" 
-									{if isset($link.target)}target="{$link.target}"{/if}
-								  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
-								>
-									{$link.text nofilter}
-								</a>
-							{/foreach}
+							{if $notif.format == 'dropdown'}
+								<div class="dropdown">
+									<a 
+										class="btn btn-xs btn-{$notif.type} dropdown-toggle {if isset($link.tooltip)}tooltips{/if}" 
+										href="javascript: void(0)" 
+										data-close-others="true" data-toggle="dropdown" 
+										{if isset($link.target)}target="{$link.target}"{/if}
+									  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
+									  	data-close-others="true" data-toggle="dropdown" 
+									  	
+									>
+										{$notif.name nofilter}
+										<i class="fa fa-caret-down"></i>
+									</a>
+									<ul class="dropdown-menu sumarry-item-dropdown pull-right">
+										{foreach $notif.links as $link_index => $link}
+											<li>
+												<a 
+													class="no-padding" 
+													href="{$link.link}" 
+													{if isset($link.target)}target="{$link.target}"
+													{/if}
+												>
+													<span class="label label-{$notif.type}" style="display: inline-block">
+													{$link.text nofilter}
+													</span>
+													{$link.name nofilter}
+												</a>
+											</li>
+										{/foreach}
+									</ul>
+								</div>
+							{else}
+								{foreach $notif.links as $link_index => $link}
+									<a 
+										class="btn btn-xs btn-{$notif.type} {if isset($link.tooltip)}tooltips{/if}" 
+										href="{$link.link}" 
+										{if isset($link.target)}target="{$link.target}"{/if}
+									  	{if isset($link.tooltip)}data-original-title="{$link.tooltip}"{/if}
+									>
+										{$link.text nofilter}
+									</a>
+								{/foreach}
+							{/if}
 						{elseif isset($notif.link)}
 							<!--
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>

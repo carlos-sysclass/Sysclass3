@@ -247,7 +247,7 @@ class ApiController extends \AbstractSysclassController
 
 	 					if ($user) {
 	 						$user->refresh();
-	 						$messages[] = $this->createResponse(200, "User created with success!", "success");
+	 						$messages[] = $this->createResponse(200, "User created.", "success");
 
 	 						$data['user'] = array(
 	 							'id' => $user->id,
@@ -265,7 +265,7 @@ class ApiController extends \AbstractSysclassController
 										$result = $enroll->enrollUser($user, $course);
 
 										if (count($result) == 0) {
-											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name} with success!", "success");
+											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name}.", "success");
 
 											$data['courses'][] = array(
 												'id' => $course->id,
@@ -348,6 +348,15 @@ class ApiController extends \AbstractSysclassController
 	public function getEnrollRequest($identifier) {
 		$identifier = $this->request->getQuery("identifier");
 
+		$locale = $this->request->getQuery("locale");
+
+		$language = \Locale::getPrimaryLanguage($locale);
+
+		// CHECK IF $locale EXISTS and translate accordinaly
+		$this->translate->setSource($language);
+
+		$this->response->setJsonContent($locale);
+
 		//if (filter_var($identifier, FILTER_VALIDATE_)) {
 			$enroll = Enroll::findFirstByIdentifier($identifier);
 
@@ -356,28 +365,41 @@ class ApiController extends \AbstractSysclassController
 					'status' => $this->invalidRequestError(self::NO_DATA_FOUND, "warning")
 				));
 			} else {
-				$data = $enroll->toArray();
-				$courses = $enroll->getCourses();
+				$data = $enroll->toExtendArray(["courses"]);
+				//$data = $enroll->toArray();
+
+				//echo ($data);
+				//exit;
+				
+				$courses = $enroll->getCourses([
+					'conditions' => 'signup_active = 1 AND signup_enable_new_users = 1'
+				]);
 
 				$data['courses'] = array();
 				foreach($courses as $course) {
-					$data['courses'][] = $course->toFullArray(array('Course'));
+					$data['courses'][] = $course->toExtendArray();
 				}
+				
 
 				$fields = $enroll->getEnrollFields(array(
 					'order' => 'position'
 				));
 				$data['fields'] = array();
+
 				foreach($fields as $field) {
+					//var_dump($field->toFullArray());
+					$field->translate();
+
 					$data['fields'][] = $field->toFullArray();
 				}
 
 				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
-
+				
 				$this->response->setJsonContent(array(
 					'status' => $this->createResponse(200, self::EXECUTION_OK, "success"),
 					'data' => $data
 				));
+				
 			}
 		//} else {
 		//	$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));

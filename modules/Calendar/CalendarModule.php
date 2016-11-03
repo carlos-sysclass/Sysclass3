@@ -60,7 +60,8 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
         if (in_array('calendar', $widgetsIndexes))
         {
             $this->putComponent("fullcalendar");
-        	//$this->putScript("scripts/fullcalendar.timelineview");
+        	$this->putScript("plugins/fullcalendar/fullcalendar/gcal");
+            
             $this->putModuleScript("calendar");
 
             $sources = CalendarSource::find();
@@ -322,7 +323,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $eventModel->user_id = $userModel->id;
 
             if ($eventModel->save()) {
-                $response = $this->createAdviseResponse($this->translate->translate("Event created with success"),
+                $response = $this->createAdviseResponse($this->translate->translate("Event created successfully."),
                     "success"
                 );
 
@@ -396,7 +397,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             $eventModel = Event::findFirstById($id);
 
             if ($eventModel->delete()) {
-                $response = $this->createAdviseResponse($this->translate->translate("Event removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event removed successfully."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

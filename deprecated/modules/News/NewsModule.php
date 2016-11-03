@@ -218,7 +218,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 			if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
 				return $this->createRedirectResponse(
 					$this->getBasePath() . "edit/" . $data['id'],
-					$this->translate->translate("News saved with success"),
+					$this->translate->translate("News saved successfully."),
 					"success"
 				);
 			} else {
@@ -267,7 +267,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 
 			$itemModel = $this->model("news");
 			if ($itemModel->deleteItem($id) !== FALSE) {
-				$response = $this->createAdviseResponse($this->translate->translate("News removed with success"), "success");
+				$response = $this->createAdviseResponse($this->translate->translate("News removed successfully."), "success");
 				return $response;
 			} else {
 				// MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

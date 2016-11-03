@@ -162,11 +162,11 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to group with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to group successfully."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from group with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from group successfully."), "error");
         }
         return array_merge($response, $info);
     }
@@ -254,7 +254,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Department created with success"),
+                    $this->translate->translate("Department created successfully."),
                     "success"
                 );
             } else {
@@ -301,7 +301,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
 
             $itemModel = $this->model("courses/areas/collection");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Department removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Department removed successfully."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
