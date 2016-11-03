@@ -76,10 +76,15 @@ blocks:
         sClass: text-center
         label: Language
 
-      - mData: signup_public
+      - mData: signup_auto_approval
         sType: table-boolean
         sClass: text-center
-        label: Public Approval
+        label: Automatic approval
+
+      - mData: signup_enable_new_users
+        sType: table-boolean
+        sClass: text-center
+        label: Public enroll 
 
       - mData: signup_active
         sType: table-boolean

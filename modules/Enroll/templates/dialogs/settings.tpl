@@ -16,13 +16,25 @@
 					<div class="form-body">
                         <div class="form-group">
                             <label class="control-label col-md-3" style="text-align:left">
-                                {translateToken value="Automatic Approval"}
+                                {translateToken value="Automatic approval"}
                             </label>
                             <div class="col-md-9">
-                                <input type="checkbox" name="signup_public" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='YES'}" data-off-color="warning" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update="signup_public" data-update-single="true" >
+                                <input type="checkbox" name="signup_auto_approval" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='YES'}" data-off-color="warning" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update="signup_auto_approval" data-update-single="true" >
 
                                 <span class="help-text">
                                     <small>{translateToken value="Users will be automaticaly approved"}</small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3" style="text-align:left">
+                                {translateToken value="Public enroll"}
+                            </label>
+                            <div class="col-md-9">
+                                <input type="checkbox" name="signup_enable_new_users" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='YES'}" data-off-color="warning" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update="signup_enable_new_users" data-update-single="true" >
+
+                                <span class="help-text">
+                                    <small>{translateToken value="Users without a sysclass account can enroll in this course."}</small>
                                 </span>
                             </div>
                         </div>
