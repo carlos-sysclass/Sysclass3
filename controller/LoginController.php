@@ -548,7 +548,7 @@ class LoginController extends \AbstractSysclassController
 					if ($postData['password'] === $postData['password-confirm']) {
 						$user->password = $this->authentication->hashPassword($postData['password'], $user);
 
-						$user->pending = 0;
+						//$user->pending = 0;
 						$user->reset_hash = null;
 
 						if ($user->save()) {

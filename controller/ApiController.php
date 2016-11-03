@@ -371,7 +371,9 @@ class ApiController extends \AbstractSysclassController
 				//echo ($data);
 				//exit;
 				
-				$courses = $enroll->getCourses();
+				$courses = $enroll->getCourses([
+					'conditions' => 'signup_active = 1 AND signup_enable_new_users = 1'
+				]);
 
 				$data['courses'] = array();
 				foreach($courses as $course) {

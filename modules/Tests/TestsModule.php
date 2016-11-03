@@ -184,11 +184,15 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $block_context = $self->getConfig("blocks\\tests.execution.list.table\context");
 
+//var_dump($block_context['ajax_source'], array('filter' => $filter));
+
                 $block_context['ajax_source'] = $stringsHelper->vksprintf(
                     $block_context['ajax_source'],
                     array('filter' => $filter)
                 );
 
+//                var_dump($block_context['ajax_source']);
+//exit;
                 $self->putComponent("data-tables");
                 $self->putScript("scripts/utils.datatables");
 
@@ -400,7 +404,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $this->module("settings")->put("test_execution_id", $executionId);
 
                 //$this->putModuleScript();
-
+                //
                 $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
 
                 $this->putItem("test", $testData);

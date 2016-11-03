@@ -14,27 +14,31 @@ _before_init_functions.push(function() {
                 <a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
                   <i class="fa fa-graduation-cap"></i>
                   <span class="progress-indicator program-indicator">
-                    <span></span>
+                    <span class="counter"></span>
+                    <span class="singular">{translateToken value="Program"}</span>
+                    <span class="plural">{translateToken value="Programs"}</span>
                   </span>
-                  {translateToken value="Program"}
+                  
                 </a>
               </li>
               <li role="presentation">
                 <a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
                   <i class="fa fa-sitemap"></i>
                   <span class="progress-indicator course-indicator">
-                    <span></span>
+                    <span class="counter"></span>
+                    <span class="singular">{translateToken value="Course"}</span>
+                    <span class="plural">{translateToken value="Courses"}</span>
                   </span>
-                  {translateToken value="Courses"}
                 </a>
               </li>
               <li role="presentation">
               	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab">
                   <i class="fa fa-book"></i>
                   <span class="progress-indicator unit-indicator">
-                    <span></span>
+                    <span class="counter"></span>
+                    <span class="singular">{translateToken value="Unit"}</span>
+                    <span class="plural">{translateToken value="Units"}</span>
                   </span>
-                  {translateToken value="Units"}
                 </a>
               </li>
               <!--
@@ -583,13 +587,13 @@ _before_init_functions.push(function() {
         var completed = true;
         for (var index in model.units) {
           var unit = model.units[index];
-          if (parseFloat(unit.progress.factor) >= 1) {
+          if (_.has(unit, 'progress') && parseFloat(unit.progress.factor) >= 1) {
             continue;
           } else {
             completed = false;
-      %>
-        <%= unit.name %>
-      <%
+          %>
+            <%= unit.name %>
+          <%
             break;
           }
         }
@@ -604,11 +608,11 @@ _before_init_functions.push(function() {
 
     <!-- Status -->
     <td  width="15%" class="text-center">
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
       </span>
-    <% } else if (model.progress.factor > 0) { %>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
       </span>
@@ -778,11 +782,11 @@ _before_init_functions.push(function() {
   </td>
    --><!-- Status -->
   <td width="15%"  class="text-center">
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
       </span>
-    <% } else if (model.progress.factor > 0) { %>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
         <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
       </span>
@@ -835,10 +839,10 @@ _before_init_functions.push(function() {
     <% } else { %>
         <i class="fa fa-file-o"></i>
     <% }  %>
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
         <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-    <% } else if (model.progress.factor > 0) { %>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento">
         <i class="fa fa-folder-o" aria-hidden="true"></i>
     <% } else { %>
@@ -880,12 +884,12 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   <td width="15%" class="text-center">
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
         {translateToken value="Completed"}
       </span>
-    <% } else if (model.progress.factor > 0) { %>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <a href="javascript: void(0);" class="btn btn-sm btn-continue view-test-action">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
           {translateToken value="In Progress"}
@@ -905,11 +909,11 @@ _before_init_functions.push(function() {
   </td>
    --><!-- Status -->
   <td width="15%" class="text-center">
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
       </span>
-    <% } else if (model.progress.factor > 0) { %>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
         <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
       </span>
@@ -1055,7 +1059,7 @@ _before_init_functions.push(function() {
     </a>
   </td>
   <td class="text-center">
-    <% if (model.progress.factor == 1) { %>
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
         <i class="fa fa-check" aria-hidden="true"></i>
         {translateToken value="Viewed"}

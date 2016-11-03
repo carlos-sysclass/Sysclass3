@@ -76,7 +76,17 @@ blocks:
         sClass: text-center
         label: Language
 
-      - mData: course.active
+      - mData: signup_auto_approval
+        sType: table-boolean
+        sClass: text-center
+        label: Automatic approval
+
+      - mData: signup_enable_new_users
+        sType: table-boolean
+        sClass: text-center
+        label: Public enroll 
+
+      - mData: signup_active
         sType: table-boolean
         sClass: text-center
         label: Active

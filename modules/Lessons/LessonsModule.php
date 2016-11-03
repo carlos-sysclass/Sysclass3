@@ -379,7 +379,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $modelRoute = "lessons/content";
             $optionsRoute = "edit";
 
+
             $itemsCollection = $this->model($modelRoute);
+            //$itemsCollection->debug();
             // APPLY FILTER
             if (is_null($filter) || !is_numeric($filter)) {
                 return $this->invalidRequestError();
@@ -389,6 +391,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 'lesson_id' => $filter/*,
                 "parent_id" => null*/
             ))->getItems();
+
 
         }
 
