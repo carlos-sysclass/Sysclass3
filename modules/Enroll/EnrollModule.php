@@ -340,12 +340,23 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             foreach($items as $key => $item) {
                 // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                 if (array_key_exists('block', $_GET)) {
-                    $items[$key]['options'] = array(
-                        'remove'  => array(
-                            'icon'  => 'fa fa-close',
+                    $items[$key]['options'] = array();
+                    if ($item['approved'] == 0) {
+                        $items[$key]['options']['approve'] = array(
+                            'icon'  => 'fa fa-check',
                             //'link'  => $baseLink . "block/" . $item['id'],
-                            'class' => 'btn-sm btn-danger'
-                        )
+                            'class' => 'btn-sm btn-success tooltips',
+                            'attrs'         => array(
+                                'data-on-color' => "success",
+                                'data-original-title' => $this->translate->translate('Approve User'),
+                                'data-placement' => 'top'
+                            )
+                        );
+                    }
+                    $items[$key]['options']['remove'] = array(
+                        'icon'  => 'fa fa-close',
+                        //'link'  => $baseLink . "block/" . $item['id'],
+                        'class' => 'btn-sm btn-danger'
                     );
                 } else {
                     $items[$key]['options'] = array(
@@ -354,7 +365,6 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                             //'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary datatable-actionable'
                         ),
-
                         'permission'  => array(
                             'icon'  => 'fa fa-lock',
                             'link'  => $baseLink . "set-resources/" . $item['id'],

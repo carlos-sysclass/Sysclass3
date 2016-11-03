@@ -93,7 +93,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        };
 
 		        if ($.fn.dataTable.isDataTable(this.$el)) {
-		        	//alert(1);
 		        	this.$el.DataTable().destroy();
 		        }
 
