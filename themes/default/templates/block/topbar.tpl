@@ -201,7 +201,7 @@
 						{if $item.items}
 						class="dropdown-toggle" data-toggle="dropdown" data-close-others="true"
 						{else}
-						class="menu-link"
+						class="menu-link {$item.className}"
 						{/if}
 					>
 						{if $item.icon}

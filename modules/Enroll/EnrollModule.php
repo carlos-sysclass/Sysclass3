@@ -14,7 +14,7 @@ use Sysclass\Models\Courses\Course as Course,
 /**
  * @RoutePrefix("/module/enroll")
  */
-class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable
+class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable, \ISectionMenu
 {
 
     /* IBlockProvider */
@@ -127,6 +127,26 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putSectionTemplate("dialogs", "dialogs/settings");
 
                 return true;
+            },
+            'enroll.avaliable.dialog' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                //$self->putComponent("unslider");
+                $self->putComponent("bxslider");
+
+                $programs = $self->user->getAvaliablePrograms();
+
+                //$self->putComponent("select2");
+                //$self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                //$block_context = $self->getConfig("blocks\\enroll.settings.dialog\\context");
+                $self->putItem("avaliable_programs", $programs->toArray());
+
+                $self->putModuleScript("dialogs.enroll.avaliable");
+
+                $self->putSectionTemplate("dialogs", "dialogs/avaliable");
+
+                return true;
             }
         );
     }
@@ -224,6 +244,44 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
         return $actions[$request];
     }
+
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+            $programs = $this->user->getAvaliablePrograms();
+            if ($programs->count() > 0) {
+                // GET NOT ENROLLED COURSES
+                $this->putScript("scripts/ui.menu.enroll");
+                $this->putBlock('enroll.avaliable.dialog');
+
+                $menuItem = array(
+                    'id'        => "enroll-topbar-menu",
+                    'icon'      => ' fa fa-asterisk',
+                    'text'      => $this->translate->translate('New Programs Avaliable'),
+                    'className' => 'btn-warning',
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    */
+                    /*
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    */
+                    'type'      => '',
+                    //'items'     => $items,
+                    'extended'  => false
+                );
+
+                return $menuItem;
+            }
+        }
+        return false;
+    }
+
 
     public function getDatatableItemOptions() {
         if ($this->_args['model'] == 'courses') {

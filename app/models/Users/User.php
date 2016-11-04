@@ -3,7 +3,9 @@ namespace Sysclass\Models\Users;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Acl\Resource,
-    Sysclass\Models\Acl\RolesUsers;
+    Sysclass\Models\Acl\RolesUsers,
+    Phalcon\DI,
+    Phalcon\Mvc\Model\Query;
 
 class User extends Model
 {
@@ -282,6 +284,40 @@ class User extends Model
         }
         return false;
     }
+
+    public function getAvaliablePrograms() {
+
+        $where = [];
+        //$subwhere = [];
+        $params = ['user_id' => $this->id];
+        /*
+
+        if (!is_null($search)) {
+            $where[] = "LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)";
+            $params['query'] = '%' . $search . '%';
+        }
+        */
+
+        $subsql = "SELECT cu.course_id FROM Sysclass\\Models\\Enrollments\\CourseUsers cu WHERE user_id = :user_id:";
+
+        $where[] = sprintf("ec.course_id NOT IN (%s)", $subsql);
+
+        $sql = "SELECT p.* 
+            FROM Sysclass\\Models\\Enrollments\\Courses ec
+            LEFT JOIN Sysclass\\Models\\Content\\Program p ON (ec.course_id = p.id)";
+
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+        $query = new Query($sql, DI::getDefault());
+        $courses   = $query->execute($params);
+
+        //var_dump($users->toArray());
+
+        return $courses;
+    }
+
 
 
 }
