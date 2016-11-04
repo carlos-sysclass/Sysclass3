@@ -307,6 +307,18 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/nouislider/nouislider'),
 			'js'	=> array('plugins/nouislider/nouislider')
 
+		),
+		'unslider' => array(
+			'name' => 'unslider',
+			'css'	=> array('plugins/unslider/unslider', 'plugins/unslider/unslider-dots'),
+			'js'	=> array('plugins/unslider/unslider-min')
+
+		),
+		'bxslider' => array(
+			'name' => 'bxslider',
+			'css'	=> array('plugins/bxslider/jquery.bxslider.min'),
+			'js'	=> array('plugins/bxslider/jquery.bxslider.min')
+
 		)
 	);
 

@@ -265,7 +265,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             case "start-password-request" : {
                 // SEND EMAIL PASSWORD RESET 
                 $data = $event->data;
-                // var_dump($event->timestamp);
 
                 $user = User::findFirstById($data['id']);
 
