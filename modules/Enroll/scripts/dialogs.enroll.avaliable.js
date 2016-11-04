@@ -16,7 +16,8 @@ $SC.module("dialogs.enroll.avaliable", function(mod, app, Backbone, Marionette, 
                     self.$('.carroussel').bxSlider({
                       minSlides: 2,
                       maxSlides: 2,
-                      slideWidth: 400
+                      slideWidth: 420,
+                      slideMargin: 20
                     });
                 });
             }
