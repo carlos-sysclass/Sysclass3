@@ -2168,7 +2168,7 @@ button.calendar-news-item {
 }
 
 .dropdown-menu li > a {
-	padding: 6px 13px;
+	padding: 4px 4px 4px 4px !important;
 }
 
 .progress-mini {
