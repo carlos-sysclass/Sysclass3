@@ -2201,8 +2201,10 @@ button.calendar-news-item {
 }
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
-    padding: 10px 12px 11px;
+    padding: 11px 12px 11px;
     height: 42px;
+    font-size: 11px;
+    text-transform: uppercase;
 }
 
 .header .navbar-nav > li.menu-item .menu-link > i {
@@ -2529,4 +2531,13 @@ h2.users-panel-username {
 
 .progress-indicator .plural {
   display: none;
+}
+
+.bx-wrapper {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.dropdown-menu li > a {
+  text-transform: uppercase;
 }

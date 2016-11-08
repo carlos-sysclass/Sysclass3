@@ -486,6 +486,18 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         }
     }
 
+    this.handleUnslider = function(context) {
+        if ($.fn.unslider) {
+            if ($(".unslider-me", context).size() > 0) {
+                $(".unslider-me", context).each(function() {
+                    
+                });
+            }
+        }
+    };
+
+    
+
     this.handleActions = function (context) {
         var self = this;
 
@@ -526,6 +538,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         this.handleCheckUnique(context);
 		this.handleScrollers(context);
 		this.handlePasswordStrengthChecker(context);
+        this.handleUnslider(context);
         this.handleActions(context);
 
         return context;

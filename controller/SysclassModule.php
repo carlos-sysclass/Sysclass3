@@ -292,6 +292,8 @@ abstract class SysclassModule extends BaseSysclassModule
                 //$this->eventsManager->collectResponses(true);
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
 
+                // @todo CREATE A WAY TO CUSTOMIZED MODULE MESSAGES ON OPERATIONS
+
                 //$responses = $this->eventsManager->getResponses();
 
                 if ($this->request->hasQuery('object')) {
@@ -323,6 +325,13 @@ abstract class SysclassModule extends BaseSysclassModule
                         $response = array_merge($response, $this->responseInfo);
                     }
                     $this->response->setJsonContent($response);
+                } elseif ($this->request->hasQuery('reload')) {
+                    $this->response->setJsonContent(
+                        $this->createReloadResponse(
+                            $this->translate->translate("Created successfully."),
+                            "success"
+                        )
+                    );
                 } else {
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(

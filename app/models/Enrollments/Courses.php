@@ -15,7 +15,26 @@ class Courses extends Model
         $this->belongsTo("enroll_id", "Sysclass\\Models\\Enrollments\\Enroll", "id",  array('alias' => 'Enroll'));
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
     }
+    /*
+    public function userCanEnroll($user_id, $course_id) {
+        $depinj = DI::getDefault();
+        $translator = $depinj->get("translate");
 
+        if (!$this->signup_active) {
+            $message = new Message(
+                $translator->translate("This enrollment options ins not avaliable"
+                ),
+                null,
+                "warning"
+            );
+
+            $this->appendMessage($message);
+
+            return false;
+        }
+
+    }
+    */
     /*
     public function metaData()
     {

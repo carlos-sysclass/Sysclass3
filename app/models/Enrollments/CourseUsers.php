@@ -3,6 +3,7 @@ namespace Sysclass\Models\Enrollments;
 
 use Plico\Mvc\Model,
     Phalcon\DI,
+    Sysclass\Models\Enrollments\Courses as EnrollCourses,
     Phalcon\Mvc\Model\Message as Message,
     Phalcon\Mvc\Model\Query;
 
@@ -14,7 +15,9 @@ class CourseUsers extends Model
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => false));
-
+        /*
+        $this->belongsTo("status_id", "Sysclass\\Models\\Enrollments\\CourseUsersStatus", "id",  array('alias' => 'Status', 'reusable' => false));
+        */
 		$this->hasOne(
             array("course_id", "user_id"),
             "Sysclass\Models\Courses\CourseProgress",
@@ -25,18 +28,47 @@ class CourseUsers extends Model
     }
 
     public function beforeValidationOnCreate() {
+        $depinj = DI::getDefault();
+        $translator = $depinj->get("translate");
         if (is_null($this->token)) {
             $random = new \Phalcon\Security\Random();
             $this->token = $random->uuid();
         }
-        
+
+        if (is_null($this->user_id)) {
+            
+            $user = $depinj->get("user");
+            $this->user_id = $user->id;
+        }
+
+        // CHECK FOR ENROLLMENT PARAMETERS
+        $enrollment = EnrollCourses::findFirstById($this->enroll_id);
+
+        if ($enrollment->signup_active) {
+            // @todo CHECK FOR ENROLLMENT DATES
+            if ($enrollment->signup_auto_approval) {
+                $this->approved = 1;
+            } else {
+                $this->approved = 0;
+            }
+        } else {
+            $message = new Message(
+                $translator->translate("This enrollment options is not avaliable right now"
+                ),
+                null,
+                "warning"
+            );
+            $this->appendMessage($message);
+            return false;
+        }
+
         $count = self::count(array(
             'conditions' => "user_id = ?0 AND course_id = ?1",
             'bind' => array($this->user_id, $this->course_id)
         ));
         if ($count > 0) {
             $message = new Message(
-                "It's already a enrollment registered. Please try again.",
+                $translator->translate("It's already a enrollment registered. Please try again."),
                 null,
                 "warning"
             );
@@ -257,7 +289,8 @@ class CourseUsers extends Model
 
 
         //if (is_null($search)) {
-        $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active
+        $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active,
+                cu.approved
             FROM Sysclass\\Models\\Users\\User u
             LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)";
         if (count($where) > 0) {

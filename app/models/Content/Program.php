@@ -45,6 +45,15 @@ class Program extends Model
         );
 
         $this->belongsTo(
+            "language_id",
+            "Sysclass\Models\I18n\Language",
+            "id",
+            array(
+                'alias' => 'Language',
+            )
+        );
+
+        $this->belongsTo(
             "coordinator_id",
             "Sysclass\Models\Users\User",
             "id",

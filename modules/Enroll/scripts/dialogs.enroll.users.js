@@ -62,6 +62,33 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 	        		}
 	    		});
 
+                this.listenTo(this.tableView, "action.datatable", function(data, item, model) {
+                    if ($(item).hasClass("datatable-option-approve")) {
+
+
+						item
+							.tooltip('disable')
+							.find("i.fa")
+							.addClass("fa-refresh fa-spin");
+
+                    	console.warn(data, item, model);
+                    	var model = new mod.models.enroll.user(data);
+                    	model.set('approved', 1);
+                    	model.save();
+
+                    	window.setTimeout(function() {
+                    		item.hide(500);
+                    	}, 1500);
+                    	
+                    	/*
+                        var itemModelClass = app.module("crud.models").itemModelClass;
+                        var model = new itemModelClass(data);
+                        app.module("dialogs.enroll.users").dialogView.setModel(model);
+                        app.module("dialogs.enroll.users").dialogView.open();
+                        */
+                    }
+                }.bind(this));
+
                 var self = this;
 
                 this.select2Obj = this.$(".select2-me");

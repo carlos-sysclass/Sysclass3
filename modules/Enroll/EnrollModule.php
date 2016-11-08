@@ -14,7 +14,7 @@ use Sysclass\Models\Courses\Course as Course,
 /**
  * @RoutePrefix("/module/enroll")
  */
-class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable
+class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable, \ISectionMenu
 {
 
     /* IBlockProvider */
@@ -127,6 +127,47 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putSectionTemplate("dialogs", "dialogs/settings");
 
                 return true;
+            },
+            'enroll.avaliable.dialog' => function($data, $self) {
+                // GET ALL THIS DATA FROM config.yml
+                //$self->putComponent("unslider");
+                $self->putComponent("bxslider");
+
+                $programsData = $self->user->getAvaliableEnrollments();
+
+                $result = array();
+
+                foreach($programsData as $info) {
+
+                    $enrollment = $info->enrollment->toArray();
+                    $programObject = $info->program;
+                    $program = $programObject->toFullArray();
+                    $program['courses'] = $programObject->getProgramsCourses()->toArray();
+
+                    $item = array(
+                        'enrollment'    => $enrollment,
+                        'program'       => $program
+                    );
+
+                    $result[] = $item;
+                }
+
+                
+                //var_dump($result);
+                //exit;
+
+                //$self->putComponent("select2");
+                //$self->putScript("scripts/utils.datatables");
+                //$self->putComponent("bootstrap-switch");
+
+                //$block_context = $self->getConfig("blocks\\enroll.settings.dialog\\context");
+                $self->putItem("avaliable_programs", $result);
+
+                $self->putModuleScript("dialogs.enroll.avaliable");
+
+                $self->putSectionTemplate("dialogs", "dialogs/avaliable");
+
+                return true;
             }
         );
     }
@@ -225,18 +266,62 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         return $actions[$request];
     }
 
+    /* ISectionMenu */
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+            $programs = $this->user->getAvaliablePrograms();
+            if ($programs->count() > 0) {
+                // GET NOT ENROLLED COURSES
+                $this->putScript("scripts/ui.menu.enroll");
+                $this->putBlock('enroll.avaliable.dialog');
+
+                $menuItem = array(
+                    'id'        => "enroll-topbar-menu",
+                    'icon'      => ' fa fa-asterisk',
+                    'text'      => $this->translate->translate('Programs Avaliable'),
+                    'className' => 'btn-warning',
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    */
+                    /*
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    */
+                    'type'      => '',
+                    //'items'     => $items,
+                    'extended'  => false
+                );
+
+                return $menuItem;
+            }
+        }
+        return false;
+    }
+
+
     public function getDatatableItemOptions() {
         if ($this->_args['model'] == 'courses') {
             return array(
                 'enroll' => array(
                     'icon'  => 'fa fa-users',
                     'link'  => 'javascript:void(0);',
-                    'class' => 'btn-sm btn-primary datatable-actionable',
+                    'class' => 'btn-sm btn-primary datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => $this->translate->translate('Enrolled Users')
+                    )
                 ),
                 'settings' => array(
                     'icon'  => 'fa fa-cogs',
                     'link'  => 'javascript:void(0);',
-                    'class' => 'btn-sm btn-warning datatable-actionable',
+                    'class' => 'btn-sm btn-warning datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => $this->translate->translate('Program Settings')
+                    )
                 ),
                 'remove'  => array(
                     'icon'  => 'fa fa-remove',
@@ -340,12 +425,23 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             foreach($items as $key => $item) {
                 // TODO THINK ABOUT MOVE THIS TO config.yml FILE
                 if (array_key_exists('block', $_GET)) {
-                    $items[$key]['options'] = array(
-                        'remove'  => array(
-                            'icon'  => 'fa fa-close',
+                    $items[$key]['options'] = array();
+                    if ($item['approved'] == 0) {
+                        $items[$key]['options']['approve'] = array(
+                            'icon'  => 'fa fa-check',
                             //'link'  => $baseLink . "block/" . $item['id'],
-                            'class' => 'btn-sm btn-danger'
-                        )
+                            'class' => 'btn-sm btn-success tooltips',
+                            'attrs'         => array(
+                                'data-on-color' => "success",
+                                'data-original-title' => $this->translate->translate('Approve User'),
+                                'data-placement' => 'top'
+                            )
+                        );
+                    }
+                    $items[$key]['options']['remove'] = array(
+                        'icon'  => 'fa fa-close',
+                        //'link'  => $baseLink . "block/" . $item['id'],
+                        'class' => 'btn-sm btn-danger'
                     );
                 } else {
                     $items[$key]['options'] = array(
@@ -354,7 +450,6 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                             //'link'  => $baseLink . "edit/" . $item['id'],
                             'class' => 'btn-sm btn-primary datatable-actionable'
                         ),
-
                         'permission'  => array(
                             'icon'  => 'fa fa-lock',
                             'link'  => $baseLink . "set-resources/" . $item['id'],
@@ -400,4 +495,14 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             return $this->invalidRequestError();
         }
     }
+
+
+    public function beforeModelCreate($event, $itemModel, $data) {
+        if (get_class($itemModel) == 'Sysclass\Models\Enrollments\CourseUsers') {
+        }
+        return true;
+
+    }
+
+
 }
