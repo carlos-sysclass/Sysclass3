@@ -2459,8 +2459,8 @@ a.list-group-item,
 }
 
 .inter-navsuper-tabs .table-content-scrollable {
-  max-height: 338px;
-  height: 338px;
+  max-height: 335px;
+  height: 335px;
   overflow-y: auto;  
   overflow-x: hidden;
   display: block;
