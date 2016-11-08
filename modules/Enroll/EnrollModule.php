@@ -133,20 +133,27 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 //$self->putComponent("unslider");
                 $self->putComponent("bxslider");
 
-                $programsData = $self->user->getAvaliablePrograms();
+                $programsData = $self->user->getAvaliableEnrollments();
 
-                $programs = array();
+                $result = array();
 
-                foreach($programsData as $program) {
-                    $item = $program->toFullArray();
+                foreach($programsData as $info) {
 
-                    $item['courses'] = $program->getProgramsCourses()->toArray();
+                    $enrollment = $info->enrollment->toArray();
+                    $programObject = $info->program;
+                    $program = $programObject->toFullArray();
+                    $program['courses'] = $programObject->getProgramsCourses()->toArray();
 
-                    $programs[] = $item;
+                    $item = array(
+                        'enrollment'    => $enrollment,
+                        'program'       => $program
+                    );
+
+                    $result[] = $item;
                 }
 
                 
-                //var_dump($programs);
+                //var_dump($result);
                 //exit;
 
                 //$self->putComponent("select2");
@@ -154,7 +161,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 //$self->putComponent("bootstrap-switch");
 
                 //$block_context = $self->getConfig("blocks\\enroll.settings.dialog\\context");
-                $self->putItem("avaliable_programs", $programs);
+                $self->putItem("avaliable_programs", $result);
 
                 $self->putModuleScript("dialogs.enroll.avaliable");
 
@@ -488,4 +495,14 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             return $this->invalidRequestError();
         }
     }
+
+
+    public function beforeModelCreate($event, $itemModel, $data) {
+        if (get_class($itemModel) == 'Sysclass\Models\Enrollments\CourseUsers') {
+        }
+        return true;
+
+    }
+
+
 }

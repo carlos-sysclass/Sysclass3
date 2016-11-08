@@ -307,6 +307,14 @@ abstract class PhalconWrapperController extends Controller
 		return $error;
 	}
 
+	protected function createReloadResponse($message = null, $type = null, $code = 200) {
+		if (!is_null($message)) {
+			$this->putMessage($message, $type);
+		}
+		return $this->createResponse($code, $message, $type, "redirect");
+	}
+
+
 	protected function createRedirectResponse($location, $message = null, $type = null, $code = 200) {
 		if (!is_null($message)) {
 			$this->putMessage($message, $type);
