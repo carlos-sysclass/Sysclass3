@@ -8,6 +8,9 @@ $SC.module("dialogs.enroll.avaliable", function(mod, app, Backbone, Marionette, 
         
         
         var enrollAvaliableDialogViewClass = dialogViewClass.extend({
+            events : {
+                "click .enroll-action" : "enrollUser"
+            }
             initialize : function() {
                 dialogViewClass.prototype.initialize.apply(this);
                 var self = this;
@@ -17,9 +20,12 @@ $SC.module("dialogs.enroll.avaliable", function(mod, app, Backbone, Marionette, 
                       minSlides: 2,
                       maxSlides: 2,
                       slideWidth: 420,
-                      slideMargin: 20
+                      slideMargin: 10
                     });
                 });
+            },
+            enrollUser : function() {
+                
             }
         });
         

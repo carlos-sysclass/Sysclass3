@@ -297,8 +297,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				var totalUnits = mod.progressCollection.getTotalCourses();
-				//var totalUnits = mod.programsCollection.getCurrentCourses().size();
+				//var totalUnits = mod.progressCollection.getTotalCourses();
+				var totalUnits = mod.programsCollection.getCurrentCourses().size();
 
 				if (totalUnits > 0) {
 					$(".course-indicator span.counter")
@@ -503,7 +503,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				var totalUnits = mod.progressCollection.getTotalUnits();
+				var totalUnits = mod.progressCollection.getTotalCoursesUnits(mod.programsCollection.getCurrentCourses());
+				
 
 				if (totalUnits > 0) {
 					$(".unit-indicator span.counter").html(totalUnits).show();
@@ -1321,6 +1322,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					return units.size();
 				}
+			},
+			getTotalCoursesUnits : function(courses) {
+				var total = courses.reduce(function(count, item, i) {
+					var units = item.getUnits();
+					if (units) {
+						return count + units.size();
+					}
+					return count;
+				}, 0);
+
+				return total;
+				//var progressCourses = this.get("units");				
 			},
 			getTotalCompleteUnits : function(units) {
 

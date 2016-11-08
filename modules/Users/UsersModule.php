@@ -211,6 +211,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	}
 
     /* ISectionMenu */
+    /*
     public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
 
@@ -229,21 +230,14 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 );
             }
 
+            var_dump($this->translate->translate('My Programs'));
+            exit;
+
             if (count($courses) > 0) {
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-graduation-cap',
-                    'text'      => $this->translate->translate('Programs'),
-                    /*
-                    'external'  => array(
-                        'link'  => $this->getBasePath(),
-                        'text'  => $this->translate->translate('See my statement')
-                    ),
-                    */
-                    'link'  => array(
-                        'link'  => $this->getBasePath(),
-                        'text'  => $this->translate->translate('Courses')
-                    ),
+                    'text'      => $this->translate->translate('My Programs'),
                     'type'      => '',
                     'items'     => $items,
                     'extended'  => false,
@@ -254,6 +248,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
         return false;
     }
+    */
 
     /* INotifyable */
     public function getAllActions() {
