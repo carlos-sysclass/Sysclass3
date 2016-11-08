@@ -20,7 +20,9 @@
                 <div class="modal-body ">
                     <div class="">
                         <ul class="carroussel">
-                            {foreach $T_AVALIABLE_PROGRAMS as $program}
+                            {foreach $T_AVALIABLE_PROGRAMS as $info}
+                                {assign var="enrollment" value=$info.enrollment}
+                                {assign var="program" value=$info.program}
                                 <li class="">
                                     <div class="thumbnail">
                                         <img src="http://placehold.it/300x150&text={translateToken value='No Image'}" alt="100%x200" style="width: 100%; height: 200px; display: block;">
@@ -45,12 +47,14 @@
                                                 <p>{translateToken value="Language"}: <strong>{$program.language.name}</strong></p>
                                             {/if}
                                             <p>
-                                                <a href="javascript:;" class="btn btn-primary enroll-action" data-entity-id="{$program.id}"> {translateToken value="Enroll"}</a>
+                                                <a href="javascript:;" class="btn btn-primary enroll-action" data-enroll-id="{$enrollment.enroll_id}" data-program-id="{$program.id}"> 
+                                                {translateToken value="Enroll"}</a>
                                             </p>
                                         </div>
                                     </div>
                                 </li>
                             {/foreach}
+                            <!--
                             <li class="">
                                 <div class="thumbnail">
                                     <img src="http://placehold.it/300x150&text=Image" alt="100%x200" style="width: 100%; height: 200px; display: block;">
@@ -111,6 +115,7 @@
                                     </div>
                                 </div>
                             </li>
+                            -->
                         </ul>
                     </div>
 

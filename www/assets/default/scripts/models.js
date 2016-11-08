@@ -28,6 +28,8 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 if (!_.isNull(this.response_type)) {
                     if (this.response_type == "redirect") {
                         params.push("redirect=" + "1");
+                    } else if (this.response_type == "reload") {
+                        params.push("reload=" + "1");
                     } else if (this.response_type == "object") {
                         params.push("object=" + "1");
                     } else if (this.response_type == "status") {
