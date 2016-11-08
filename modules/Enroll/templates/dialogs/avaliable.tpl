@@ -8,13 +8,13 @@
                     </button>
                     <h4 class="modal-title">
                         <i class="fa fa-asterisk"></i>
-                        {translateToken value='New Programs Avaliable'}
+                        {translateToken value='Programs Avaliable'}
                         <span data-update="name"></span>
                     </h4>
                 </div>
                 <style>
                     .thumbnail {
-                        height: 400px;
+                        min-height: 600px;
                     }
                 </style>
                 <div class="modal-body ">
@@ -26,14 +26,55 @@
                                         <img src="http://placehold.it/300x150&text={translateToken value='No Image'}" alt="100%x200" style="width: 100%; height: 200px; display: block;">
                                         <div class="caption">
                                             <h3>{$program.name}</h3>
-                                            <p> {$program.description nofilter}</p>
+                                            <p> {$program.description|truncate:80:"...":false nofilter}</p>
+
+                                            {if $program.area_id}
+                                                <p>{translateToken value="Departament"}: <strong>{$program.departament.name}</strong></p>
+                                            {/if}
+
+                                            {if $program.courses}
+                                                <p>{translateToken value="Total Courses"}: <strong>
+                                            {$program.courses|@count}</strong></p>
+                                            {/if}
+
+                                            {if $program.coordinator_id}
+                                                <p>{translateToken value="Coordinator"}: <strong>{$program.coordinator.name} {$program.coordinator.surname}</strong></p>
+                                            {/if}
+
+                                            {if $program.language_id}
+                                                <p>{translateToken value="Language"}: <strong>{$program.language.name}</strong></p>
+                                            {/if}
                                             <p>
-                                                <a href="javascript:;" class="btn btn-primary"> {translateToken value="Enroll"}</a>
+                                                <a href="javascript:;" class="btn btn-primary enroll-action" data-entity-id="{$program.id}"> {translateToken value="Enroll"}</a>
                                             </p>
                                         </div>
                                     </div>
                                 </li>
                             {/foreach}
+                            <li class="">
+                                <div class="thumbnail">
+                                    <img src="http://placehold.it/300x150&text=Image" alt="100%x200" style="width: 100%; height: 200px; display: block;">
+                                    <div class="caption">
+                                        <h3>Thumbnail label</h3>
+                                        <p> Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit. </p>
+                                        <p>
+                                            <a href="javascript:;" class="btn btn-primary"> {translateToken value="Enroll"}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="">
+                                <div class="thumbnail">
+                                    <img src="http://placehold.it/300x150&text=Image" alt="100%x200" style="width: 100%; height: 200px; display: block;">
+                                    <div class="caption">
+                                        <h3>Thumbnail label</h3>
+                                        <p> Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit. </p>
+                                        <p>
+                                            <a href="javascript:;" class="btn btn-primary"> {translateToken value="Enroll"}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
                             <li class="">
                                 <div class="thumbnail">
                                     <img src="http://placehold.it/300x150&text=Image" alt="100%x200" style="width: 100%; height: 200px; display: block;">

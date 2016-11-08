@@ -12,7 +12,7 @@
 
 		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}
 			<li class="">
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Courses"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Programs"}</a>
 			</li>
 		{/if}
 		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}

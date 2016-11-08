@@ -133,14 +133,28 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 //$self->putComponent("unslider");
                 $self->putComponent("bxslider");
 
-                $programs = $self->user->getAvaliablePrograms();
+                $programsData = $self->user->getAvaliablePrograms();
+
+                $programs = array();
+
+                foreach($programsData as $program) {
+                    $item = $program->toFullArray();
+
+                    $item['courses'] = $program->getProgramsCourses()->toArray();
+
+                    $programs[] = $item;
+                }
+
+                
+                //var_dump($programs);
+                //exit;
 
                 //$self->putComponent("select2");
                 //$self->putScript("scripts/utils.datatables");
                 //$self->putComponent("bootstrap-switch");
 
                 //$block_context = $self->getConfig("blocks\\enroll.settings.dialog\\context");
-                $self->putItem("avaliable_programs", $programs->toArray());
+                $self->putItem("avaliable_programs", $programs);
 
                 $self->putModuleScript("dialogs.enroll.avaliable");
 
@@ -257,7 +271,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $menuItem = array(
                     'id'        => "enroll-topbar-menu",
                     'icon'      => ' fa fa-asterisk',
-                    'text'      => $this->translate->translate('New Programs Avaliable'),
+                    'text'      => $this->translate->translate('Programs Avaliable'),
                     'className' => 'btn-warning',
                     /*
                     'external'  => array(
@@ -289,12 +303,18 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 'enroll' => array(
                     'icon'  => 'fa fa-users',
                     'link'  => 'javascript:void(0);',
-                    'class' => 'btn-sm btn-primary datatable-actionable',
+                    'class' => 'btn-sm btn-primary datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => $this->translate->translate('Enrolled Users')
+                    )
                 ),
                 'settings' => array(
                     'icon'  => 'fa fa-cogs',
                     'link'  => 'javascript:void(0);',
-                    'class' => 'btn-sm btn-warning datatable-actionable',
+                    'class' => 'btn-sm btn-warning datatable-actionable tooltips',
+                    'attrs' => array(
+                        'data-original-title' => $this->translate->translate('Program Settings')
+                    )
                 ),
                 'remove'  => array(
                     'icon'  => 'fa fa-remove',

@@ -169,7 +169,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-graduation-cap',
-                    'text'      => $this->translate->translate('Programs'),
+                    'text'      => $this->translate->translate('My Programs'),
                     /*
                     'external'  => array(
                         'link'  => $this->getBasePath(),
