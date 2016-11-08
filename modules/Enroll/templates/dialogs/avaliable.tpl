@@ -14,7 +14,7 @@
                 </div>
                 <style>
                     .thumbnail {
-                        min-height: 600px;
+                        min-height: 480px;
                     }
                 </style>
                 <div class="modal-body ">
