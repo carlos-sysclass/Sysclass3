@@ -28,7 +28,7 @@
                                         <img src="http://placehold.it/300x150&text={translateToken value='No Image'}" alt="100%x200" style="width: 100%; height: 200px; display: block;">
                                         <div class="caption">
                                             <h3>{$program.name}</h3>
-                                            <p> {$program.description|truncate:80:"...":false nofilter}</p>
+                                            <p> {$program.description|truncate:160:"...":false nofilter}</p>
 
                                             {if $program.area_id}
                                                 <p>{translateToken value="Departament"}: <strong>{$program.departament.name}</strong></p>
@@ -117,10 +117,6 @@
                             </li>
                             -->
                         </ul>
-                    </div>
-
-                    <div class="form-actions nobg">
-                        <button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
                     </div>
     			</div>
     		</div>
