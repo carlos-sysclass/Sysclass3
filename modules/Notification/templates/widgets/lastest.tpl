@@ -11,15 +11,15 @@
 		  	</button>
 		  {/if}
 		  {$note.message}
-		  <!--
+		  
 		  {if isset($note.link_href)}
 		  <div class="pull-right">
-		  	<a href="{$note.link_href}">
+		  	<a href="{$note.link_href}" target="_blank">
 		  		{$note.link_text}
 		  	</a>
 		  </div>
 		  {/if}
-		  -->
+		  
 		</div>
 	</li>
 {foreachelse}
