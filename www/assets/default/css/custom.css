@@ -2186,7 +2186,7 @@ button.calendar-news-item {
 }
 */
 #notification-panel .alert {
-	display: none;
+/*	display: none; */
 }
 
 .header .navbar-nav > li.menu-item {
@@ -2542,3 +2542,6 @@ h2.users-panel-username {
   text-transform: uppercase;
 }
 */
+.alert.notification-alert {
+  padding-right: 10px;
+}

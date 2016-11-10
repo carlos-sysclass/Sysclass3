@@ -19,6 +19,7 @@ class NotificationModule extends \SysclassModule implements \IWidgetContainer
             $currentUser    = $this->user;
 
             $notifications = UserNotification::find(array(
+                //'conditions' => "user_id = ?0 AND (viewed = 0 OR stick = 1) AND type = 'info'",
                 'conditions' => "user_id = ?0 AND (viewed = 0 OR stick = 1) AND type = 'info'",
                 'bind' => array($this->user->id),
                 'order' => 'timestamp DESC',
@@ -26,6 +27,11 @@ class NotificationModule extends \SysclassModule implements \IWidgetContainer
             ));
 
             $data = $notifications->toArray();
+
+            //var_dump($data);
+            //exit;
+
+            $this->putComponent("bxslider");
 
             //$this->putScript('plugins/jquery/jquery.scrollbox');
             $this->putModuleScript("widget");
