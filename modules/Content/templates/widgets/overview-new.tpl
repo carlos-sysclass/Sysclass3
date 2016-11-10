@@ -641,31 +641,33 @@ _before_init_functions.push(function() {
   <!-- Unidade -->
   <td width="40%">
       <%= model.name %>
-      <div class="btn-group">
-        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
-          <i class="fa fa-caret-down"></i>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-              <a class="course-info-action" href="javascript:void(0);">
-              {translateToken value="Course Info"}
-            </a>
-          </li>
-          <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
-          <li role="separator" class="divider"></li>
-          <li>
-            <a href="javascript:void(0);">
-              {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
-            </a>
-          </li>
-          <li class="subchild">
-            <a class="course-info-action" href="javascript:void(0);" class="select-item">
-              {translateToken value="Send Message"}
-            </a>
-          </li>
-          <% } %>
-        </ul>
-      </div>
+      <%
+        var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
+        /* hasDropdown = hasDropdown && <another-condition> */
+      %>
+      <% if (hasDropdown) { %>
+        <div class="btn-group">
+          <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
+            <i class="fa fa-caret-down"></i>
+          </a>
+
+          <ul class="dropdown-menu">
+            <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a href="javascript:void(0);">
+                {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
+              </a>
+            </li>
+            <li class="subchild">
+              <a class="course-info-action" href="javascript:void(0);" class="select-item">
+                {translateToken value="Send Message"}
+              </a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
 
   </td>
   <!--

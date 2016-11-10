@@ -418,17 +418,26 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             'edit'  => array(
                 'icon'  => 'fa fa-edit',
                 'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-primary datatable-actionable'
+                'class' => 'btn-sm btn-primary datatable-actionable tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Edit Role")
+                ]
             ),
             'users'  => array(
                 'icon'  => 'fa fa-user',
                 'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-info datatable-actionable'
+                'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Manage Users")
+                ]
             ),
             'permission'  => array(
                 'icon'  => 'fa fa-lock',
                 'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-warning datatable-actionable'
+                'class' => 'btn-sm btn-warning datatable-actionable tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Define permissions")
+                ]
             ),
             'remove'    => array(
                 'icon'  => 'fa fa-remove',
