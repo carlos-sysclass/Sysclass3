@@ -28,8 +28,6 @@ class NotificationModule extends \SysclassModule implements \IWidgetContainer
 
             $data = $notifications->toArray();
 
-            //var_dump($data);
-            //exit;
 
             $this->putComponent("bxslider");
 
