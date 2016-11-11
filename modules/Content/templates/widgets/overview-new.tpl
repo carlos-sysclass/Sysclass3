@@ -653,7 +653,6 @@ _before_init_functions.push(function() {
 
           <ul class="dropdown-menu">
             <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
-            <li role="separator" class="divider"></li>
             <li>
               <a href="javascript:void(0);">
                 {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
