@@ -95,7 +95,12 @@ class Unit extends Model
         $courses = $user->getPrograms();
 
         if ($courses->count() > 0) {
-            $course_ids = array_column($courses->toArray(), 'id');
+            //$course_ids = array_column($courses->toArray(), 'id');
+
+            $course_ids = [];
+            foreach($courses as $course) {
+                    $course_ids[] = $course->id;
+            }
 
             switch($by) {
                 case 'content' : {
@@ -107,6 +112,10 @@ class Unit extends Model
                     $unit = $content->getUnit();
                     $course = $unit->getCourse();
                     $program = $course->getPrograms()->getFirst();
+                    if (!in_array($program->id, $course_ids)) {
+                        return self::getContentPointers($user, 'unit');
+                    }
+
                     break;
                 }
                 case 'unit' : {
@@ -116,9 +125,13 @@ class Unit extends Model
                     if (!$unit) {
                         return self::getContentPointers($user, 'course');
                     }
-                    $content = $unit->getContents()->getFirst();
                     $course = $unit->getCourse();
                     $program = $course->getPrograms()->getFirst();
+                    if (!in_array($program->id, $course_ids)) {
+                        return self::getContentPointers($user, 'course');
+                    }
+                    $content = $unit->getContents()->getFirst();
+
                     break;
                 }
                 case 'course' : {
@@ -129,9 +142,14 @@ class Unit extends Model
                     if (!$course) {
                         return self::getContentPointers($user, 'program');
                     }
+                    $program = $course->getPrograms()->getFirst();
+                    if (!in_array($program->id, $course_ids)) {
+                        return self::getContentPointers($user, 'program');
+                    }
+
                     $unit = $course->getLessons()->getFirst();
                     $content = $unit->getContents()->getFirst();
-                    $program = $course->getPrograms()->getFirst();
+
                     break;
                 }
                 case 'program' : {
