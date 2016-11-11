@@ -164,7 +164,6 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                 }
 
                 this.dialogModule.setModel(this.model).getValue(function(item, model) {
-                    console.warn(item);
                     //self.addOne(model);
                     //self.refreshCounters();
                 });
@@ -238,9 +237,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                         modelClass : this.modelClass
                     });
                 }
-                console.warn(this.dialogModule)
                 this.dialogModule.setModel(this.model).getValue(function(item, model) {
-                    console.warn(item);
                     //self.addOne(model);
                     //self.refreshCounters();
                 });
@@ -420,10 +417,8 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                             collection : this.fieldsCollection
                         });
 
-                        //console.warn(formView.model.get("enrollfields"));
 
                         this.fieldsCollection.reset(formView.model.get("enrollfields"));
-                        console.warn(this.fieldsCollection.toJSON());
                     }.bind(this));
                 }
             }

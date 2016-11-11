@@ -355,7 +355,9 @@ class ApiController extends \AbstractSysclassController
 		// CHECK IF $locale EXISTS and translate accordinaly
 		$this->translate->setSource($language);
 
-		$this->response->setJsonContent($locale);
+		//$this->response->setJsonContent($language);
+
+		//return true;
 
 		//if (filter_var($identifier, FILTER_VALIDATE_)) {
 			$enroll = Enroll::findFirstByIdentifier($identifier);
@@ -387,7 +389,7 @@ class ApiController extends \AbstractSysclassController
 				$data['fields'] = array();
 
 				foreach($fields as $field) {
-					//var_dump($field->toFullArray());
+					//print_r($field->toFullArray());
 					$field->translate();
 
 					$data['fields'][] = $field->toFullArray();
