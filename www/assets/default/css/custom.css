@@ -2186,7 +2186,7 @@ button.calendar-news-item {
 }
 */
 #notification-panel .alert {
-	display: none;
+/*	display: none; */
 }
 
 .header .navbar-nav > li.menu-item {
@@ -2456,11 +2456,11 @@ a.list-group-item,
 }
 .navbar-course {
     margin-bottom: 0px;
-}
+}/
 
 .inter-navsuper-tabs .table-content-scrollable {
-  max-height: 338px;
-  height: 338px;
+  max-height: 335px;
+  height: 335px;
   overflow-y: auto;  
   overflow-x: hidden;
   display: block;
@@ -2537,7 +2537,11 @@ h2.users-panel-username {
   box-shadow: none !important;
   border: none !important;
 }
-
+/*
 .dropdown-menu li > a {
   text-transform: uppercase;
+}
+*/
+.alert.notification-alert {
+  padding-right: 10px;
 }

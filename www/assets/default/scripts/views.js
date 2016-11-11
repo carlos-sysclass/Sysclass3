@@ -480,7 +480,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                 var self = this;
                 this.$("[data-update]").not(":input").each(function() {
                     var domField = $(this);
-
                     var modelField = $(this).data("update");
 
                     if (self.model.get(modelField)) {

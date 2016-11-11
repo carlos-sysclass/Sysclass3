@@ -14,7 +14,7 @@
                 </div>
                 <style>
                     .thumbnail {
-                        min-height: 600px;
+                        /*min-height: 480px;*/
                     }
                 </style>
                 <div class="modal-body ">
@@ -46,15 +46,33 @@
                                             {if $program.language_id}
                                                 <p>{translateToken value="Language"}: <strong>{$program.language.name}</strong></p>
                                             {/if}
-                                            <p>
-                                                <a href="javascript:;" class="btn btn-primary enroll-action" data-enroll-id="{$enrollment.enroll_id}" data-program-id="{$program.id}"> 
-                                                {translateToken value="Enroll"}</a>
+
+                                            <p>{translateToken value="Automatic Approval"}: 
+                                            {if $enrollment.signup_auto_approval}
+                                                <strong class="text-success">{translateToken value="YES"}</strong>
+                                            {else}
+                                                <strong class="text-danger">{translateToken value="NO"}</strong>
+                                            {/if}
                                             </p>
+
+                                            {if $enrollment.signup_auto_approval}
+                                                <p>
+                                                    <a href="javascript:;" class="btn btn-primary enroll-action" data-enroll-id="{$enrollment.enroll_id}" data-program-id="{$program.id}"> 
+                                                    {translateToken value="Enroll"}
+                                                    </a>
+                                                </p>
+                                            {else}
+                                                <p>
+                                                    <a href="javascript:;" class="btn btn-warning enroll-action" data-enroll-id="{$enrollment.enroll_id}" data-program-id="{$program.id}"> 
+                                                    {translateToken value="Request Enroll"}
+                                                    </a>
+                                                </p>
+                                            {/if}
                                         </div>
                                     </div>
                                 </li>
                             {/foreach}
-                            <!--
+                            
                             <li class="">
                                 <div class="thumbnail">
                                     <img src="http://placehold.it/300x150&text=Image" alt="100%x200" style="width: 100%; height: 200px; display: block;">
@@ -115,7 +133,7 @@
                                     </div>
                                 </div>
                             </li>
-                            -->
+                            
                         </ul>
                     </div>
     			</div>

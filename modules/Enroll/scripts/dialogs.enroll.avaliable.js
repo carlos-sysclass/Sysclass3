@@ -36,7 +36,9 @@ $SC.module("dialogs.enroll.avaliable", function(mod, app, Backbone, Marionette, 
                       minSlides: 2,
                       maxSlides: 2,
                       slideWidth: 420,
-                      slideMargin: 10
+                      slideMargin: 10,
+                      adaptiveHeight : true,
+                      responsive : true
                     });
                 });
             },

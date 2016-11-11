@@ -55,7 +55,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             array(
                 'icon'  => 'fa fa-file',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => $this->translate->translate("Lesson")
+                'text'  => $this->translate->translate("Unit")
             )
         );
 
@@ -65,10 +65,10 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             case "add":
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Lesson"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New Unit"));
                 break;
             case "edit/:id":
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Lesson"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Unit"));
                 break;
         }
         return $breadcrumbs;
@@ -82,7 +82,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Lesson'),
+                    'text'      => $this->translate->translate('New Unit'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'

@@ -401,8 +401,6 @@ abstract class SysclassModule extends BaseSysclassModule
         ));
         $model_info = $this->model_info[$model];
 
-
-        
         if ($this->isResourceAllowed("edit", $model_info)) {
 
         //if ($allowed = $this->isUserAllowed("edit")) {

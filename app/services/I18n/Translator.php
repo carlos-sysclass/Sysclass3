@@ -159,8 +159,7 @@ class Translator extends Component
         $langCodes = $this->getDisponibleLanguagesCodes();
 
         //$language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $translateModel->getUserLanguageCode() : $language_code;
-        $language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $this->getSource() : $language_code;
-
+        $language_selected = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $this->getSource() : $language_code;
 
         $exists = array_search($token, $this->source_tokens_index);
         /*
@@ -187,7 +186,17 @@ class Translator extends Component
                 $tokenModel->save();
             } else {
                 // JUST CALL THE REMOTE SYSTEM TRANSLATION METHOD
-                $translated = $this->translateText($this->getSystemLanguageCode(), $this->source_lang, $token);
+                if ($language_selected != $this->getSystemLanguageCode()) {
+                    if (is_null($language_code)) {
+                        $translated = $this->translateText($this->getSystemLanguageCode(), $this->source_lang, $token);
+                    } else {
+                        $translated = $this->translateText($language_selected, $this->source_lang, $token);
+                        
+                    }
+                } else {
+                    $translated = $token;
+                }
+                
                 if ($translated !== FALSE) {
                     $tokenModel = new Tokens();
                     $tokenModel->assign(array(

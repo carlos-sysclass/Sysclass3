@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Lessons
+      page_title: Units
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Lessons
+        page_subtitle: Manage your Units
       context:
         datatable_fields:
         - mData: id
@@ -24,7 +24,7 @@ crud:
           label: Name
 
         - mData: class
-          label: Class
+          label: Course
 
         - mData: active
           sType: table-boolean
@@ -39,7 +39,7 @@ crud:
       components: ["select2", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
-        page_subtitle: Create a new lessons
+        page_subtitle: Create a new units
     'edit/{id}':
       components: ["validation", "bootstrap-switch", "wysihtml5", "select2"]
       blocks: ["lessons.content", "questions.select.dialog", "questions.create.dialog"]
@@ -49,7 +49,7 @@ crud:
       #scripts: ["views.lessons.edit"]
       template: form.tpl
       variables:
-        page_subtitle: Edit your lesson info
+        page_subtitle: Edit your unit info
 models:
   me: 
     class: Sysclass\Models\Courses\Lesson
