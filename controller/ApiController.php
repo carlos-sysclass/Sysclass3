@@ -395,6 +395,21 @@ class ApiController extends \AbstractSysclassController
 					$data['fields'][] = $field->toFullArray();
 				}
 
+				$data['labels'] = [
+					'enroll_action' => $this->translate->translate("Enroll Now"),
+					'already_has_account' => $this->translate->translate("Already has a account? Click Here."),
+					'choose_program' => $this->translate->translate("Choose your program."),
+					'accept_the' => $this->translate->translate("Accept the"),
+					'use_terms' => $this->translate->translate("Use Terms"),
+					/**
+					  * @todo Inject this info inside the enrollment page
+					 */
+
+					'form_title' => $enroll->name,
+					'form_subtitle' => $this->translate->translate("Cursos de Fornecedores à Distância", null, "pt"),
+					'confirmation_text' => $this->translate->translate("<p>Your registration has been received successfully. In a few minutes you will receive a confirmation email containing a link to continue your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you still do not receive your email, please return to this page, and ask to have them emailed.</p>", null, "pt")
+				];
+
 				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
 				
 				$this->response->setJsonContent(array(
