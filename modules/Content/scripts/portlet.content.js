@@ -39,6 +39,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.collection().prev();
 
+				console.warn(this.collection().toJSON(), this.pointer());
+
 				if (this.pointer() <= 0) {
 					//this.pointer = 0;
 					this.$(".nav-prev-action").addClass("btn-disabled");
@@ -52,6 +54,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				e.preventDefault();
 
 				this.collection().next();
+
+				console.warn(this.collection().toJSON(), this.pointer());
 
 				if (this.pointer() >= this.collection().size()) {
 					//this.pointer = this.collection.size() - 1;
@@ -1539,6 +1543,28 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   					this.getCurrentUnit()
 				);
 			},
+			toPreviousProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex <= 0) {
+					return false;
+				}
+				programIndex--;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
+			toNextProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex >= this.size()) {
+					return false;
+				}
+				programIndex++;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
 			moveToProgram : function(program_id) {
 				var model = this.findWhere({id : program_id});
 				//var model = this.courses.findWhere({id : course_id});
@@ -1631,7 +1657,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			// COLLECTIONS
 			getCurrentPrograms : function() {
-				return this;
+				if (_.isNull(this.programs)) {
+					this.programs = this;
+
+					this.listenTo(this.programs, "previous", this.toPreviousProgramIndex.bind(this));
+					this.listenTo(this.programs, "next", this.toNextProgramIndex.bind(this));
+				}
+				return this.programs;
 			},
 			getCurrentCourses : function() {
 				if (_.isNull(this.courses)) {
