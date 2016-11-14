@@ -406,7 +406,7 @@ class ApiController extends \AbstractSysclassController
 					 */
 
 					'form_title' => $enroll->name,
-					'form_subtitle' => $this->translate->translate("Cursos de Fornecedores à Distância", null, "pt"),
+					'form_subtitle' => $enroll->subtitle,
 					'confirmation_text' => $this->translate->translate("<p>Your registration has been received successfully. In a few minutes you will receive a confirmation email containing a link to continue your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you still do not receive your email, please return to this page, and ask to have them emailed.</p>", null, "pt")
 				];
 

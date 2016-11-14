@@ -36,6 +36,14 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
+							<label class="control-label">{translateToken value="Subtitle"}</label>
+							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Subtitle"}" class="form-control" data-rule-minlength="5" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
 							<label class="control-label">{translateToken value="Url"}</label>
 							<div class="input-group">
 								<span class="input-group-addon">https://signup-itaipu.sysclass.com/</span>
