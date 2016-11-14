@@ -39,8 +39,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.collection().prev();
 
-				console.warn(this.collection().toJSON(), this.pointer());
-
 				if (this.pointer() <= 0) {
 					//this.pointer = 0;
 					this.$(".nav-prev-action").addClass("btn-disabled");
@@ -54,8 +52,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				e.preventDefault();
 
 				this.collection().next();
-
-				console.warn(this.collection().toJSON(), this.pointer());
 
 				if (this.pointer() >= this.collection().size()) {
 					//this.pointer = this.collection.size() - 1;
@@ -160,6 +156,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.content/programDescriptionTabViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
+
+				this.navigationView 	= new navigationViewClass({
+					el : this.$(".navbar-program"),
+					collection : mod.programsCollection.getCurrentPrograms.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getProgramIndex.bind(mod.programsCollection)
+				});
 				this.render();
 
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
@@ -167,12 +169,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
+
 				this.render();
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
-				this.$el.empty().append(this.template(this.model.toJSON()));
+				this.$(".program-description-content").empty().append(this.template(this.model.toJSON()));
 
+				this.navigationView.render();
 				this.renderProgress();
 			},
 			renderProgress : function(collection, data, response) {

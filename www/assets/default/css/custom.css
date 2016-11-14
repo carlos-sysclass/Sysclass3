@@ -2433,7 +2433,7 @@ a.list-group-item,
 	background: #fff;
 }
 
-#tab_program_description,#tab_course_info {
+#tab_program_description .program-description-content, #tab_course_info {
 	margin: 10px 10px 0 10px;
 }
 
@@ -2526,7 +2526,7 @@ h2.users-panel-username {
 }
 
 .dropdown-menu li.subchild > a {
-  padding-left: 20px
+  padding-left: 20px !important;
 }
 
 .progress-indicator .plural {
