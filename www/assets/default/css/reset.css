@@ -782,13 +782,13 @@ margin:0 4px 0 0;
 .unit-table tbody tr td:first-child {
 
 }
-#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a {
+#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a, .navbar-widget .navbar-nav > li > a {
     padding-bottom: 2px;
     padding-top: 2px;
     padding: 9px 10px;
 	text-transform: uppercase;
 }
-#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
+#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right, .navbar-widget .navbar-right {
     float: right !important;
     margin-right: 0 !important;
 }

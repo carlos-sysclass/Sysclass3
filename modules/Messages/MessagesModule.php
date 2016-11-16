@@ -15,9 +15,10 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider, \ISectionMenu, \IWidgetContainer
+class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider, /*\ISectionMenu, */ \IWidgetContainer
 {
     // ISummarizable
+    /*
     public function getSummary() {
         //$data = $this->dataAction();
         //return false;
@@ -33,7 +34,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
             )
         );
     }
-
+    */
     // IBlockProvider
     public function registerBlocks() {
         return array(
@@ -85,8 +86,8 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
     }
 
     // ISectionMenu
+    /*
     public function getSectionMenu($section_id) {
-        /*
     	if ($section_id == "topbar") {
 
             $total = $this->getTotalUnviewed();
@@ -128,11 +129,12 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
     		return $menuItem;
     	}
-        */
     	return false;
     }
+    */
     // IWidgetContainer
     public function getWidgets($widgetsIndexes = array(), $caller = null) {
+        /*
         $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
 
         if (
@@ -183,6 +185,24 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
             return $widgets;
         }
+        */
+        if (in_array("messages.inbox", $widgetsIndexes)) {
+
+            $this->putBlock("messages.send.dialog");
+
+            return array(
+                "messages.inbox" => array(
+                    //'title'     => $this->translate->translate($group['name']),
+                    'id'        => 'messages-inbox-widget',
+                    'title'    => $this->translate->translate("Messages list"),
+                    'template'  => $this->template("widgets/inbox"),
+                    'icon'      => " fa fa-envelope",
+                    'box'       => 'dark-blue'
+                )
+            );
+        }
+        return false;
+
     }
 
     /**
@@ -304,11 +324,13 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
     /**
      * Send Page Action
      *
-     * @url GET /inbox
+     * @Get("/inbox")
      */
     public function inboxPage($recipient_id) {
         $this->putCss("css/pages/inbox");
-        $this->putScript("scripts/inbox");
+        $this->putModuleScript("inbox");
+
+        $this->putComponent("select2");
 
         $this->putModuleScript("inbox");
 

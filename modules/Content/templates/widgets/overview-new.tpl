@@ -447,6 +447,51 @@ _before_init_functions.push(function() {
             </div>
             -->            
             <div role="tabpanel" class="tab-pane active" id="tab_program_description">
+              <div class="navbar navbar-default navbar-program" role="navigation">
+                <ul class="nav navbar-nav">
+                  <!--
+                  <a href="#" class="navbar-brand disabled">
+                    <strong>{translateToken value="You're in:"} </strong>
+                  </a>
+                  -->
+
+                  <li class="dropdown">
+                    <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
+                      <span class="program-title">{translateToken value="Program"}</span>
+                      <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu program-dropdown">
+                    </ul>
+                  </li>
+                  <!--
+                  <a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
+                    <span class="label label-success">
+                      <i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+                    </span>
+                  </a>
+                  -->
+                </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                      <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
+                        <i class="fa fa-arrow-left"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-info no-padding-sides disabled">
+                        <span class="entity-current"></span> / <span class="entity-count"></span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
+                        <i class="fa fa-arrow-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+              </div>
+              <div class="program-description-content">
+                
+              </div>
             </div>
           </div>
         </div>
@@ -653,7 +698,6 @@ _before_init_functions.push(function() {
 
           <ul class="dropdown-menu">
             <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
-            <li role="separator" class="divider"></li>
             <li>
               <a href="javascript:void(0);">
                 {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>

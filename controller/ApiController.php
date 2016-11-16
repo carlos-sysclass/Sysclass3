@@ -272,21 +272,26 @@ class ApiController extends \AbstractSysclassController
 												'name' => $course->name
 											);
 										} else {
-
+											// REMOVE THE USER
 											$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
 											$error = true;
 											break;
 										}
 									} else {
+										// REMOVE THE USER
 										$messages[] = $this->createResponse(400, "Course does not exists!", "error");
 										$error = true;
 									}
 								}
 							} else {
-								$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");
-								$error = true;
+								// CHECK IF THE CONFIGURATION ALLOWS THE USER TO ENTER THE SYSTEM WITHOUT A COURSE
+								if ($this->configuration->get("signup_require_program")) {
+									$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");	
+									$error = true;	
+								} else {
+									// USER CAN PROCEED WITHOUT A COURSE
+								}
 							}
-
 	 					} else {
 							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please check your info and try again!"), "error");
 							$error = true;
@@ -406,7 +411,7 @@ class ApiController extends \AbstractSysclassController
 					 */
 
 					'form_title' => $enroll->name,
-					'form_subtitle' => $this->translate->translate("Cursos de Fornecedores à Distância", null, "pt"),
+					'form_subtitle' => $enroll->subtitle,
 					'confirmation_text' => $this->translate->translate("<p>Your registration has been received successfully. In a few minutes you will receive a confirmation email containing a link to continue your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you still do not receive your email, please return to this page, and ask to have them emailed.</p>", null, "pt")
 				];
 

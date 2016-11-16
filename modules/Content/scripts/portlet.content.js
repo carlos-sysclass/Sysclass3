@@ -156,6 +156,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.content/programDescriptionTabViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
+
+				this.navigationView 	= new navigationViewClass({
+					el : this.$(".navbar-program"),
+					collection : mod.programsCollection.getCurrentPrograms.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getProgramIndex.bind(mod.programsCollection)
+				});
 				this.render();
 
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
@@ -163,12 +169,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
+
 				this.render();
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
-				this.$el.empty().append(this.template(this.model.toJSON()));
+				this.$(".program-description-content").empty().append(this.template(this.model.toJSON()));
 
+				this.navigationView.render();
 				this.renderProgress();
 			},
 			renderProgress : function(collection, data, response) {
@@ -1539,6 +1547,28 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   					this.getCurrentUnit()
 				);
 			},
+			toPreviousProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex <= 0) {
+					return false;
+				}
+				programIndex--;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
+			toNextProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex >= this.size()) {
+					return false;
+				}
+				programIndex++;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
 			moveToProgram : function(program_id) {
 				var model = this.findWhere({id : program_id});
 				//var model = this.courses.findWhere({id : course_id});
@@ -1631,7 +1661,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			// COLLECTIONS
 			getCurrentPrograms : function() {
-				return this;
+				if (_.isNull(this.programs)) {
+					this.programs = this;
+
+					this.listenTo(this.programs, "previous", this.toPreviousProgramIndex.bind(this));
+					this.listenTo(this.programs, "next", this.toNextProgramIndex.bind(this));
+				}
+				return this.programs;
 			},
 			getCurrentCourses : function() {
 				if (_.isNull(this.courses)) {

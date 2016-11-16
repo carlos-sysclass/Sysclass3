@@ -270,10 +270,13 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
             $programs = $this->user->getAvaliablePrograms();
+            $userPrograms = $this->user->getCourses();
             if ($programs->count() > 0) {
                 // GET NOT ENROLLED COURSES
                 $this->putScript("scripts/ui.menu.enroll");
                 $this->putBlock('enroll.avaliable.dialog');
+
+                $this->putItem("enroll_programs_count", $userPrograms->count());
 
                 $menuItem = array(
                     'id'        => "enroll-topbar-menu",
