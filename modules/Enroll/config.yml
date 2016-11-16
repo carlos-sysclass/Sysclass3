@@ -84,7 +84,7 @@ blocks:
       - mData: signup_enable_new_users
         sType: table-boolean
         sClass: text-center
-        label: Public enroll 
+        label: Public enrollment
 
       - mData: signup_active
         sType: table-boolean

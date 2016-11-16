@@ -23,27 +23,6 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
         
 		if (in_array('content.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 
-			// TODO MOVE TO YOUR OWN COMPONENT
-			//$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
-            $this->putComponent("bootstrap-switch");
-            $this->putComponent("icheck");
-            $this->putComponent("easy-pie-chart");
-            $this->putComponent("videojs");
-
-            $this->putCss("css/reset");
-			$this->putScript("plugins/holder");
-            
-			//$this->putScript("plugins/videojs/vjs.youtube");
-
-			//$this->putModuleScript("models.courses");
-            $this->putBlock("content.info.dialog");
-
-            $this->putModuleScript("portlet.content");
-            $this->putBlock("tests.info.dialog");
-            //$this->putBlock("lessons.dialogs.exercises");
-            
-            //$this->putBlock("content.unit.dialog");
-
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);
 
@@ -75,6 +54,29 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             $tree = Program::getUserContentTree();
 
             if ($userPointers) {
+
+                // TODO MOVE TO YOUR OWN COMPONENT
+                //$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+                $this->putComponent("bootstrap-switch");
+                $this->putComponent("icheck");
+                $this->putComponent("easy-pie-chart");
+                $this->putComponent("videojs");
+
+                $this->putCss("css/reset");
+                $this->putScript("plugins/holder");
+                
+                //$this->putScript("plugins/videojs/vjs.youtube");
+
+                //$this->putModuleScript("models.courses");
+                $this->putBlock("content.info.dialog");
+
+                $this->putModuleScript("portlet.content");
+                $this->putBlock("tests.info.dialog");
+                //$this->putBlock("lessons.dialogs.exercises");
+                
+                //$this->putBlock("content.unit.dialog");
+
+
                 $data = array(
                     'current' => array(
                         'program_id'    => $userPointers['program']->id,

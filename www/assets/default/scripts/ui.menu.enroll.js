@@ -17,5 +17,12 @@ $SC.module("menu.enroll", function(mod, app, Backbone, Marionette, $, _) {
 			el: '#enroll-topbar-menu'
 		});
 
+		mod.listenToOnce(app.userSettings, "sync", function(model, data, options) {
+			alert(1);
+			if (model.get("programs_count") == 0) {
+				this.contentMenuView.showDialog();
+			}
+		}.bind(this));
+
 	});
 });
