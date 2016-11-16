@@ -7,7 +7,10 @@ namespace Sysclass\Modules\Messages;
 use Sysclass\Models\Users\Group as UserGroup,
     Sysclass\Models\Messages\Group as MessageGroup,
     Sysclass\Models\Messages\Message,
-    Sysclass\Models\Messages\Receivers;
+    Sysclass\Models\Messages\Receivers as GroupReceivers,
+    Sysclass\Models\Messages\UserReceiver,
+    Sysclass\Models\Acl\Role;
+    
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -67,13 +70,18 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 ));
                 $self->putItem("receivers", $receiverGroups);
 
-
                 $messageGroupsRS = MessageGroup::find();
                 $messageGroups = array();
                 foreach($messageGroupsRS as $messageGroup) {
                     $messageGroups[$messageGroup->id] = $messageGroup->name;
                 }
                 $self->putItem("message_groups", $messageGroups);
+
+                $teacherRole = Role::findFirstByName('Teacher');
+                $users = $teacherRole->getAllUsers();
+
+                $this->putItem("USER_RECEIVERS", $users);
+
 
 
                 $self->putModuleScript("dialogs.messages.send");
@@ -208,9 +216,9 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
     /**
      * [ add a description ]
      *
-     * @Post("/item/me");
+     * @Post("/item/{model}")
      */
-    public function addItemAction($id)
+    public function addItemRequest($model)
     {
         $request = $this->getMatchedUrl();
 
@@ -229,15 +237,23 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                     //UsersGroups::find("user_id = {$userModel->id}")->delete();
                     
                     foreach($data['group_id'] as $group) {
-                        $receiverModel = new Receivers();
+                        $receiverModel = new GroupReceivers();
                         $receiverModel->message_id = $itemModel->id;
                         $receiverModel->group_id = $group['id'];
                         $receiverModel->save();
                     }
+
+                    foreach($data['user_id'] as $user) {
+                        $receiverModel = new UserReceiver();
+                        $receiverModel->message_id = $itemModel->id;
+                        $receiverModel->user_id = $user['id'];
+                        $receiverModel->save();
+                    }
+
                 }
 
                 return $this->createAdviseResponse(
-                    $this->translate->translate("Message created successfully.. You can follow thge message in your inbox."),
+                    $this->translate->translate("Created successfully.. You can follow the message in your inbox."),
                     "success"
                 );
             } else {

@@ -69,6 +69,8 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
                 //$this->putModuleScript("models.courses");
                 $this->putBlock("content.info.dialog");
+                $this->putBlock("messages.send.dialog");
+                
 
                 $this->putModuleScript("portlet.content");
                 $this->putBlock("tests.info.dialog");
