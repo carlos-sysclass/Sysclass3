@@ -142,9 +142,17 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     $enrollment = $info->enrollment->toArray();
                     $programObject = $info->program;
                     $program = $programObject->toFullArray();
-                    $program['courses'] = $programObject->getProgramsCourses()->toArray();
+                    $program['courses'] = array();
+                    foreach($programObject->getProgramsCourses() as $course) {
+                        $item = $course->toArray();
 
-                    $item = array(
+                        $item['program'] = $course->program->toFullArray();
+                        $program['courses'][] = $item;
+
+                    }
+                    //$program['courses'] = $programObject->getProgramsCourses()->toFullArray();
+
+                     $item = array(
                         'enrollment'    => $enrollment,
                         'program'       => $program
                     );

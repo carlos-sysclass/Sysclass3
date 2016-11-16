@@ -25,7 +25,11 @@
                                 {assign var="program" value=$info.program}
                                 <li class="">
                                     <div class="thumbnail">
+                                    {if $program.image}
+                                        <img src="{$program.image.url}" style="width: 100%; height: 200px; display: block;">
+                                    {else}
                                         <img src="http://placehold.it/300x150&text={translateToken value='No Image'}" alt="100%x200" style="width: 100%; height: 200px; display: block;">
+                                    {/if}
                                         <div class="caption">
                                             <h3>{$program.name}</h3>
                                             <p> {$program.description|truncate:160:"...":false nofilter}</p>

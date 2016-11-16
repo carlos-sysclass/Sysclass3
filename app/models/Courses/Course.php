@@ -55,6 +55,15 @@ class Course extends Model
                 'alias' => 'language',
             )
         );
+
+        $this->belongsTo(
+            "image_id",
+            "Sysclass\Models\Dropbox\File",
+            "id",
+            array(
+                'alias' => 'Image',
+            )
+        );
     }
 /*
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {

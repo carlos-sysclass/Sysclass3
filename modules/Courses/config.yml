@@ -41,7 +41,7 @@ crud:
     'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "jquery-mask", "validation", "bootstrap-switch"]
       #blocks: ["programs.moreinfo", "roadmap.classes", "users.list.table"]
-      blocks: ["programs.moreinfo", "roadmap.classes"]
+      blocks: ["dropbox.upload", "programs.moreinfo", "roadmap.classes"]
       scripts: ["views.courses.edit"]
       template: form.tpl
       variables:

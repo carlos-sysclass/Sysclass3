@@ -68,6 +68,15 @@ class Program extends Model
             "course_id",
             array('alias' => 'Progress')
         );
+
+        $this->belongsTo(
+            "image_id",
+            "Sysclass\Models\Dropbox\File",
+            "id",
+            array(
+                'alias' => 'Image',
+            )
+        );
     }
 
     public function calculateDuration(\DateTime $start) {
