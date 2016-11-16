@@ -580,7 +580,7 @@ _before_init_functions.push(function() {
             </a>
           </li>
           <li class="subchild">
-            <a class="course-info-action" href="javascript:void(0);" class="select-item">
+            <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%= model.professor_id %>" data-mode="user">
               {translateToken value="Send Message"}
             </a>
           </li>
@@ -704,7 +704,7 @@ _before_init_functions.push(function() {
               </a>
             </li>
             <li class="subchild">
-              <a class="course-info-action" href="javascript:void(0);" class="select-item">
+              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
                 {translateToken value="Send Message"}
               </a>
             </li>

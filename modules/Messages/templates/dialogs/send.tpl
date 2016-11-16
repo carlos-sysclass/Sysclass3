@@ -1,5 +1,5 @@
 <div class="modal fade" id="dialogs-messages-send" tabindex="-1" role="basic" aria-hidden="true" data-animation="false">
-    <div class="modal-dialog modal-wide">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
         	<form id="form-role" role="form" class="form-validate" method="post" action="">
                 <div class="modal-header">
@@ -13,7 +13,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">{translateToken value="Send To"}</label>
-                                        <select class="select2-me form-control input-block-level" name="group_id" data-placeholder="{translateToken value='Send To'}" multiple="multiple" data-format-attr="id" data-rule-required="true">
+
+                                        <select class="select2-me form-control input-block-level" name="group_id" data-placeholder="{translateToken value='Send To'}" multiple="multiple" data-format-attr="id">
                                             {foreach $T_RECEIVERS as $optgroup_id => $groups}
                                                 <optgroup label="{$T_MESSAGE_GROUPS[$optgroup_id]}">
                                                 {foreach $groups as $group}
@@ -22,6 +23,13 @@
                                                 </optgroup>
                                             {/foreach}
                                         </select>
+
+                                        <select class="select2-me form-control input-block-level" name="user_id" data-placeholder="{translateToken value='Send To'}" multiple="multiple" data-format-attr="id">
+                                            {foreach $T_USER_RECEIVERS as $optgroup_id => $user}
+                                                <option value="{$user.id}">{$user.name} {$user.surname}</option>
+                                            {/foreach}
+                                        </select>
+
                                     </div>
                                 </div>
                             </div>

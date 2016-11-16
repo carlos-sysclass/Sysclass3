@@ -10,6 +10,7 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
         var baseFormClass = app.module("views").baseFormClass;
         var messageSendDialogViewClass = baseFormClass.extend({
             renderType : "byView",
+            mode : "group",
             initialize: function() {
                 console.info('dialogs.roles.create/messageSendDialogViewClass::initialize');
                 baseFormClass.prototype.initialize.apply(this);
@@ -17,6 +18,18 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
                 var self = this;
 
                 this.on("complete:save", this.close.bind(this));
+            },
+            setMode : function(mode) {
+                this.mode = mode;
+
+                if (this.mode == "user") {
+                    this.$(":input[name='group_id']").select2("container").hide();
+                    this.$(":input[name='user_id']").show();
+                } else {
+                    this.$(":input[name='user_id']").hide();
+                    this.$(":input[name='group_id']").show();
+                }
+
             },
             open : function() {
                 this.$el.modal("show");
@@ -45,10 +58,17 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
         // BIND TO DEFAULT CALLER
         $(".dialogs-messages-send-action").on("click", function(e) {
             e.preventDefault();
-            var group_id = $(e.currentTarget).data("groupId");
-            //console.warn(this, group_id, $(e.currentTarget).data());
             var model = new mod.models.message();
-            model.set("group_id.0.id", group_id);
+
+            if ($(e.currentTarget).data("mode") == "user") {
+                var user_id = $(e.currentTarget).data("userId");
+                model.set("user_id.0.id", user_id);
+                this.dialogView.setMode("user");
+            } else {
+                var group_id = $(e.currentTarget).data("groupId");
+                model.set("group_id.0.id", group_id);
+                this.dialogView.setMode("group");
+            }
 
             this.dialogView.setModel(model);
             
