@@ -12,9 +12,10 @@
 	Coordinator:	Contact:
 -->
 
-<h3 class="form-section">{translateToken value="Image"}</h3>
+
 
 <div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
+	<label class="control-label">{translateToken value=""}
 	<input type="hidden" name="image_id" />
     <ul class="list-group content-timeline-items">
     </ul>

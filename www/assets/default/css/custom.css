@@ -2545,3 +2545,14 @@ h2.users-panel-username {
 .alert.notification-alert {
   padding-right: 10px;
 }
+#enroll-avaliable-carroussel {
+  padding:0px 25px;
+}
+
+#enroll-avaliable-carroussel .bx-controls-direction .bx-prev {
+  left: -30px;
+}
+
+#enroll-avaliable-carroussel .bx-controls-direction .bx-next {
+  right: -30px;
+}

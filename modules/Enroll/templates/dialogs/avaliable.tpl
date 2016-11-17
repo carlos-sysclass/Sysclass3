@@ -18,7 +18,7 @@
                     }
                 </style>
                 <div class="modal-body ">
-                    <div class="">
+                    <div class="" id="enroll-avaliable-carroussel">
                         <ul class="carroussel">
                             {foreach $T_AVALIABLE_PROGRAMS as $info}
                                 {assign var="enrollment" value=$info.enrollment}
