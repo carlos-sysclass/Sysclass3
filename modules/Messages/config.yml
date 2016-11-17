@@ -1,0 +1,4 @@
+models:
+  me: 
+    class: Sysclass\Models\Messages\Message
+    exportMethod: ["toFullArray", ["Groups", "Users"]]
