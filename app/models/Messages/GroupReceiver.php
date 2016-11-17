@@ -3,7 +3,7 @@ namespace Sysclass\Models\Messages;
 
 use Phalcon\Mvc\Model;
 
-class Receivers extends Model
+class GroupReceiver extends Model
 {
     public function initialize()
     {
