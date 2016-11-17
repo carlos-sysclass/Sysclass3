@@ -8,7 +8,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Address Book"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Address"}</a>
 			</li>
 			{/if}
 			<li>
@@ -58,6 +58,7 @@
 				<div class="tab-pane fade in" id="tab_1_2">
 			    {foreach $T_SECTION_TPL['address'] as $template}
 					{include file=$template}
+					<div class="clearfix"></div>
 				{/foreach}
 				</div>
 			{/if}
