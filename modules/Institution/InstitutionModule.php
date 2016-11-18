@@ -44,6 +44,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
                     'id'        => 'institution-widget',
        				'template'	=> $this->template("widgets/overview"),
                     'panel'     => true,
+                    'body'      => "no-padding",
                     'data' => $organization->toFullArray()
         		)
         	);

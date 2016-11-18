@@ -4,7 +4,7 @@
 <ul class="carroussel">
 {foreach $notifications as $index => $note}
 	<li data-entity-id="{$note.id}">
-		<div class="alert alert-{$note.type} {if $dismissAllowed && $note.stick == 0}alert-dismissible{/if} notification-alert" role="alert">
+		<div class="alert alert-{$note.type} no-margin {if $dismissAllowed && $note.stick == 0}alert-dismissible{/if} notification-alert" role="alert">
 		  {if $dismissAllowed && $note.stick == 0}
 		  	<button type="button" class="btn btn-link btn-xs pull-right dismiss-action">
 		  		<i class="fa fa-times"></i>
@@ -24,13 +24,13 @@
 	</li>
 {foreachelse}
 	<li>
-		<div class="alert alert-success" role="alert">{translateToken value="No new notifications."}</div>
+		<div class="alert alert-success no-margin" role="alert">{translateToken value="No new notifications."}</div>
 	</li>
 {/foreach}
 </ul>
 
 <script type="text/template" id="notification-lastest-empty">
 	<li>
-		<div class="alert alert-success" role="alert">{translateToken value="No new notifications."}</div>
+		<div class="alert alert-success no-margin" role="alert">{translateToken value="No new notifications."}</div>
 	</li>
 </script>
