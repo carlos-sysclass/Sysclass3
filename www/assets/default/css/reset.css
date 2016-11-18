@@ -445,12 +445,14 @@ margin:0 4px 0 0;
   font-size: 16px;
 }
 .inter-navsuper-tabs input {
+  /*
   width: 90%;
   background: transparent;
   border: none;
   font-style: italic;
   font-size: 24px;
   font-weight: lighter;
+  */
 }
 .inter-navsuper-tabs .btn {
   /*
@@ -478,11 +480,11 @@ margin:0 4px 0 0;
 }
 .dir-menu-bar li a {
   border-left: 1px solid #fff;
-  padding: 12px 13px;
   color: #fff;
-  width: 45px;
-  height: 42px;
+  height: 38px;
+  padding: 10px;
   text-align: center;
+  width: 40px;
 }
 .inter-navsuper-tabs h3 {
   font-size: 18px;

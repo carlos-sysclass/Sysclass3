@@ -90,56 +90,8 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 return true;
             }
         );
-
     }
 
-    // ISectionMenu
-    /*
-    public function getSectionMenu($section_id) {
-    	if ($section_id == "topbar") {
-
-            $total = $this->getTotalUnviewed();
-
-            $currentUser = $this->getCurrentUser();
-            $currentFolder = $this->getDefaultFolder($currentUser);
-
-            $messages = $this->getUnviewedMessages(array($currentFolder));
-
-            $items = array();
-            foreach($messages as $msg) {
-                $items[] = array(
-                    'link'      => $this->getBasePath() . "view/" . $msg['id'],
-                    'values' => array(
-                        'photo'     => 'img/avatar2.jpg',
-                        'from'      => $msg['sender'],
-                        'time'      => $msg['timestamp'],
-                        'message'   => substr(strip_tags($msg['body']), 0, 50) . "..."
-                    )
-                );
-            }
-
-    		$menuItem = array(
-    			'icon' 		=> 'envelope',
-    			'notif' 	=> $total,
-    			'text'		=> $this->translate->translate('You have %s new messages', $total),
-    			'external'	=> array(
-    				'link'	=> $this->getBasePath() . "inbox",
-    				'text'	=> $this->translate->translate('See all messages')
-    			),
-                'link'  => array(
-                    'link'  => $this->getBasePath() . "inbox",
-                    'text'  => $this->translate->translate('Messages')
-                ),
-    			'type'		=> 'inbox',
-    			'items'		=> $items,
-                'extended'  => true
-    		);
-
-    		return $menuItem;
-    	}
-    	return false;
-    }
-    */
     // IWidgetContainer
     public function getWidgets($widgetsIndexes = array(), $caller = null) {
         /*
@@ -195,17 +147,30 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
         }
         */
         if (in_array("messages.inbox", $widgetsIndexes)) {
+            $this->putCss("css/reset");
 
+            $this->putComponent("select2");
+            $this->putComponent("datatables");
+
+            $this->putModuleScript("portlet.messages");
+            
             $this->putBlock("messages.send.dialog");
+
+            $block_context = $this->getConfig("widgets\\messages.inbox\context");
+
+            //var_dump($block_context);
+            //exit;
+            $this->putItem("messages_block_context", $block_context);
 
             return array(
                 "messages.inbox" => array(
                     //'title'     => $this->translate->translate($group['name']),
-                    'id'        => 'messages-inbox-widget',
-                    'title'    => $this->translate->translate("Messages list"),
+                    'type'      => 'messages', // USED BY JS SUBMODULE 
+                    'id'        => 'messages-widget',
                     'template'  => $this->template("widgets/inbox"),
-                    'icon'      => " fa fa-envelope",
-                    'box'       => 'dark-blue'
+                    'box'       => 'dark-blue tabbable tabbable-left',
+                    'panel'     => true,
+                    'body'      => 'no-padding'
                 )
             );
         }

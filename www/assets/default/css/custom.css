@@ -2556,3 +2556,25 @@ h2.users-panel-username {
 #enroll-avaliable-carroussel .bx-controls-direction .bx-next {
   right: -30px;
 }
+
+#tab_messages_messages div.dataTables_filter label {
+  /* float: none; */
+}
+
+#message-body-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 417px;
+    left: 10px;
+    position: absolute;
+    top: 0;
+    width: 97.6%;
+    display: none;
+}
+
+#message-body-container .modal-header {
+  padding: 10px 15px;
+}
+#message-body-container .modal-header a.btn > i {
+  font-size: 22px !important;
+}

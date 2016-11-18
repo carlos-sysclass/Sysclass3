@@ -1,3 +1,26 @@
+widgets:
+  messages.inbox:
+    context:
+      messages:
+        ajax_source: "/module/messages/items/me/datatable"
+        datatable_fields:
+        - mData: id
+          sClass: text-center
+          label: "#"
+
+        - mData: from.name
+          label: Name
+
+        - mData: from.email
+          label: From
+
+        - mData: subject
+          label: Subject
+
+        - mData: timestamp
+          sType: unix-moment-since
+          sClass: text-center
+          label: Date
 models:
   me: 
     class: Sysclass\Models\Messages\Message
