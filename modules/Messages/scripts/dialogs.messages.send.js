@@ -6,6 +6,19 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
 
 //    this.started = false;
 
+    var baseModel = app.module("models").getBaseModel();
+
+    mod.models = {
+        message : baseModel.extend({
+            response_type : "object",
+            defaults : {
+                subject : "",
+                body : ""
+            },
+            urlRoot : "/module/messages/item/me"
+        })
+    };
+
     mod.on("start", function(opt) {
         var baseFormClass = app.module("views").baseFormClass;
         var messageSendDialogViewClass = baseFormClass.extend({
@@ -40,15 +53,7 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
             }
         });
 
-        this.models = {
-            message : Backbone.DeepModel.extend({
-                defaults : {
-                    subject : "",
-                    body : ""
-                },
-                urlRoot : "/module/messages/item/me"
-            })
-        };
+
 
         this.dialogView = new messageSendDialogViewClass({
             el : "#dialogs-messages-send",
