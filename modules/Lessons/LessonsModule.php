@@ -263,11 +263,11 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to group successfully."), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to group."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from group successfully."), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from group."), "error");
         }
         return array_merge($response, $info);
     }
@@ -287,13 +287,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Lesson created successfully.",
+                    'success' => "Lesson created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
-                    'success' => "Lesson content created successfully.",
+                    'success' => "Lesson content created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -303,7 +303,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             } elseif ($model == "question-content") {
                 $itemModel = $this->model("lessons/content/question");
                 $messages = array(
-                    'success' => "Question included successfully.",
+                    'success' => "Question included.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -545,7 +545,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             ))->getItems();
 
             if (count($files) > 0 && $itemModel->deleteItem($file_id) !== false) {
-                $response = $this->createAdviseResponse($this->translate->translate("File removed successfully."), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("File removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -602,7 +602,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function setExerciseAnswersRequest() {
         if ($user = $this->getCurrentUser(true)) {
             $messages = array(
-                'success' => "Answers saved successfully.",
+                'success' => "Answers saved.",
                 'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
             );
 
@@ -690,13 +690,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Lesson removed successfully.",
+                    'success' => "Lesson removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
-                    'success' => "Lesson content removed successfully.",
+                    'success' => "Lesson content removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
             }
@@ -772,7 +772,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                     $contentData['id'] = $itemModel->addItem($contentData);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("File translated successfully."), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("File translated."), "success");
                     return array_merge($response, $contentData);
 
                 }

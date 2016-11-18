@@ -173,19 +173,19 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
                 if ($redirect) {
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        $this->translate->translate("Your question has been successfully registered!"),
+                        $this->translate->translate("Your question has been registered!"),
                         "success"
                     );
                 } else {
                     $modelData = $itemModel->getItem($data['id']);
                     $data = array_merge($data, $modelData);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("Your question has been successfully registered!"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Your question has been registered!"), "success");
                     return array_merge($response, $data);
 
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $data['id'],
-                        $this->translate->translate("Your question has been successfully registered!"),
+                        $this->translate->translate("Your question has been registered!"),
                         "success"
                     );
 
@@ -245,7 +245,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
 
             $itemModel = $this->model($this->_modelRoute);
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Item removed successfully."), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Item removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

@@ -500,7 +500,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
             $result = $class::setOrder($enroll_id, $position);
 
-            $response = $this->createAdviseResponse($this->translate->translate("Collection sorted successfully"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Collection sorted"), "success");
             return $response;
         } else {
             return $this->invalidRequestError();

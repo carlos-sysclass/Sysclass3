@@ -180,7 +180,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
             {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $eventModel->id,
-                    $this->translate->translate("Event created successfully."),
+                    $this->translate->translate("Event created."),
                     "success"
                 );
             }
@@ -242,7 +242,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
             $itemModel = $this->model("events/item");
             if ($itemModel->deleteItem($id) !== FALSE)
             {
-                $response = $this->createAdviseResponse($this->translate->translate("Event removed successfully."), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event removed."), "success");
                 return $response;
             }
             else

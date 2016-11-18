@@ -774,7 +774,7 @@ class PHPMailer {
 
   /**
    * Creates message and assigns Mailer. If the message is
-   * not sent successfully then it returns false.  Use the ErrorInfo
+   * not sent then it returns false.  Use the ErrorInfo
    * variable to view description of the error.
    * @throws phpmailerException
    * @return bool
@@ -2157,7 +2157,7 @@ class PHPMailer {
    * @param string $name Overrides the attachment name.
    * @param string $encoding File encoding (see $Encoding).
    * @param string $type File MIME type.
-   * @return bool True on successfully adding an attachment
+   * @return bool True on adding an attachment
    */
   public function AddEmbeddedImage($path, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream') {
 
@@ -2197,7 +2197,7 @@ class PHPMailer {
    * @param string $name
    * @param string $encoding File encoding (see $Encoding).
    * @param string $type MIME type.
-   * @return bool True on successfully adding an attachment
+   * @return bool True on adding an attachment
    */
   public function AddStringEmbeddedImage($string, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream') {
     // Append to $attachment array

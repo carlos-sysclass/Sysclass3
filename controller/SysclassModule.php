@@ -306,7 +306,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         ),
                         $itemData 
@@ -314,13 +314,13 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('status')) {
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
                     $response = $this->createNonAdviseResponse(
-                        $this->translate->translate("Created successfully."),
+                        $this->translate->translate("Message sent."),
                         "success"
                     );
                     if (!is_null($this->responseInfo)) {
@@ -330,7 +330,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         )
                     );
@@ -338,7 +338,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         )
                     );
@@ -565,7 +565,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("Removed successfully."), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Removed."), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                     $response = $this->invalidRequestError("", "warning");

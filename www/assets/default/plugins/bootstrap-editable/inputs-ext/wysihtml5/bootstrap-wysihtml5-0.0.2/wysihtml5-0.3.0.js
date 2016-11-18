@@ -2839,7 +2839,7 @@ rangy.createModule("DomUtil", function(api, module) {
                         this.rangeCount = this.nativeSelection.rangeCount;
 
                         if (this.rangeCount == previousRangeCount + 1) {
-                            // The range was added successfully
+                            // The range was added
 
                             // Check whether the range that we added to the selection is reflected in the last range extracted from
                             // the selection
@@ -2854,7 +2854,7 @@ rangy.createModule("DomUtil", function(api, module) {
                             updateAnchorAndFocusFromRange(this, range, selectionIsBackwards(this.nativeSelection));
                             this.isCollapsed = selectionIsCollapsed(this);
                         } else {
-                            // The range was not added successfully. The simplest thing is to refresh
+                            // The range was not added. The simplest thing is to refresh
                             this.refresh();
                         }
                     }
