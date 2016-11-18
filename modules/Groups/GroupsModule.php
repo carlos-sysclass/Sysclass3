@@ -129,11 +129,11 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to group successfully."), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to group."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from group successfully."), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from group."), "error");
         }
         return array_merge($response, $info);
     }
@@ -168,7 +168,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Group created successfully."),
+                    $this->translate->translate("Group created."),
                     "success"
                 );
             } else {
@@ -219,7 +219,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
             $itemModel = $this->model("user/groups/item");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Group removed successfully."), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

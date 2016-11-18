@@ -217,7 +217,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 }
 
                 return $this->createAdviseResponse(
-                    $this->translate->translate("Message created successfully.. You can follow thge message in your inbox."),
+                    $this->translate->translate("Message created. You can check the message in your inbox."),
                     "success"
                 );
             } else {
@@ -464,7 +464,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 }
 
                 if ($result && $pm -> send($values['email'])) { // DO NOT SEND EMAIL
-                    $message      = $this->translate->translate("Your message was successfully sent.");
+                    $message      = $this->translate->translate("Your message was sent.");
                     $message_type = 'success';
                 } else {
                     $message      = $pm -> errorMessage;

@@ -321,7 +321,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Language saved successfully."),
+                    $this->translate->translate("Language saved."),
                     "success"
                 );
             } else {
@@ -533,7 +533,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 $tokensModel->save();
                 // ADD THIS TOKEN
             }
-            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' successfully done!", array($from, $to)), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' done!", array($from, $to)), "success");
 
             $response['data'] = $translatedTerms;
 

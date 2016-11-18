@@ -173,7 +173,7 @@ define(function (require) {
 	 *
 	 * @param {*} promiseOrValue
 	 * @param {function?} [onFulfilled] callback to be called when promiseOrValue is
-	 *   successfully fulfilled.  If promiseOrValue is an immediate value, callback
+	 *   fulfilled.  If promiseOrValue is an immediate value, callback
 	 *   will be invoked immediately.
 	 * @param {function?} [onRejected] callback to be called when promiseOrValue is
 	 *   rejected.
@@ -3352,7 +3352,7 @@ var global = this;
 
                   } else {
 
-                     // the connection was established at least once successfully,
+                     // the connection was established at least once,
                      // but now lost .. sane thing is to try automatic reconnects
                      if (peer.retryCount <= peer.options.maxRetries) {
 
