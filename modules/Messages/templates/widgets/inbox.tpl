@@ -5,7 +5,7 @@
         <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
           <li role="presentation" class="active">
             <a href="#tab_messages_messages" aria-controls="tab_program_description" role="tab" data-toggle="tab">
-              <i class="fa fa-envelope"></i>
+              <i class="fa fa-inbox"></i>
               <span class="progress-indicator messages-indicator">
                 <span class="counter"></span>
                 <span class="singular">{translateToken value="Message"}</span>
@@ -17,21 +17,21 @@
           
           <li role="presentation">
             <a href="#tab_messages_forum" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
-              <i class="fa fa-sitemap"></i>
-              <span class="progress-indicator course-indicator">
+              <i class="fa fa-commenting"></i>
+              <span class="progress-indicator forum-indicator">
                 <span class="counter"></span>
-                <span class="singular">{translateToken value="Forum entry"}</span>
-                <span class="plural">{translateToken value="Forum entries"}</span>
+                <span class="singular">{translateToken value="Forum"}</span>
+                <span class="plural">{translateToken value="Forum"}</span>
               </span>
             </a>
           </li>
           <li role="presentation">
           	<a href="#tab_messages_faq" aria-controls="tab_course_units" role="tab" data-toggle="tab">
-              <i class="fa fa-book"></i>
-              <span class="progress-indicator unit-indicator">
+              <i class="fa fa-question-circle"></i>
+              <span class="progress-indicator faq-indicator">
                 <span class="counter"></span>
-                <span class="singular">{translateToken value="FAQ entry"}</span>
-                <span class="plural">{translateToken value="FAQ entries"}</span>
+                <span class="singular">{translateToken value="FAQ"}</span>
+                <span class="plural">{translateToken value="FAQ"}</span>
               </span>
             </a>
           </li>
@@ -39,8 +39,8 @@
         </ul>
         <ul class="dir-menu-bar">
           <li>
-            <a href="javascript: void(0);" class="dialogs-messages-send-action tooltips" data-mode="user"  data-original-title="Compose">
-              <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            <a href="javascript: void(0);" class="dialogs-messages-send-action tooltips" data-mode="user" data-original-title="{translateToken value='New Message'}">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
@@ -60,11 +60,14 @@
         </div>
         <div id="message-body-container">
           <div class="modal-header">
-              <button type="button" class="btn btn-xs pull-right btn-danger close-action tooltips" aria-label="Close" data-original-title="{translateToken value='Close'}">
-                  <i class="fa fa-times"></i>
+              <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="Close" data-original-title="{translateToken value='Forward'}">
+                  <i class="fa fa-mail-forward"></i>
               </button>
               <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="Close" data-original-title="{translateToken value='Reply'}">
                   <i class="fa fa-mail-reply"></i>
+              </button>
+              <button type="button" class="btn btn-xs pull-right btn-danger close-action tooltips" aria-label="Close" data-original-title="{translateToken value='Back'}">
+                  <i class="fa fa-arrow-left"></i>
               </button>
               <h4 class="modal-title">
                   <span data-update="subject">dsadas</span>

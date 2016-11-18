@@ -192,7 +192,7 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			        datatable : {
 			            "sAjaxSource": message_context.ajax_source,
 			            "aoColumns": message_context.datatable_fields,
-			            dom : "<'row'<'col-lg-6 col-md-6 col-sm-12'i><'col-lg-6 col-md-6 col-sm-12'f>r><t><'row'<'col-md-7 col-sm-12'p>>",
+			            dom : "<'row'<'col-lg-12 col-md-12 col-sm-12'f>r><t><'row'<'col-md-7 col-sm-12'p>>",
 			            bScrollInfinite: true,
 			            bScrollCollapse: true,
 			            sScrollY: "330px",

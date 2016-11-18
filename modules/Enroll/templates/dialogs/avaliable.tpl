@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">
-                        <i class="fa fa-asterisk"></i>
+                        <i class="fa fa-shield"></i>
                         {translateToken value='Programs Avaliable'}
                         <span data-update="name"></span>
                     </h4>
