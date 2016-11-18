@@ -4,14 +4,7 @@ widgets:
       messages:
         ajax_source: "/module/messages/items/me/datatable"
         datatable_fields:
-        - mData: id
-          sClass: text-center
-          label: "#"
-
         - mData: from.name
-          label: Name
-
-        - mData: from.email
           label: From
 
         - mData: subject
