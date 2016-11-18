@@ -39,7 +39,7 @@
         </ul>
         <ul class="dir-menu-bar">
           <li>
-            <a href="javascript: void(0);" class="tooltips " data-original-title="Compose">
+            <a href="javascript: void(0);" class="dialogs-messages-send-action tooltips" data-mode="user"  data-original-title="Compose">
               <i class="fa fa-paper-plane" aria-hidden="true"></i>
             </a>
           </li>
@@ -60,8 +60,11 @@
         </div>
         <div id="message-body-container">
           <div class="modal-header">
-              <button type="button" class="btn btn-xs pull-right btn-danger close-action" aria-label="Close">
+              <button type="button" class="btn btn-xs pull-right btn-danger close-action tooltips" aria-label="Close" data-original-title="{translateToken value='Close'}">
                   <i class="fa fa-times"></i>
+              </button>
+              <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="Close" data-original-title="{translateToken value='Reply'}">
+                  <i class="fa fa-mail-reply"></i>
               </button>
               <h4 class="modal-title">
                   <span data-update="subject">dsadas</span>

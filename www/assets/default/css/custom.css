@@ -2575,6 +2575,9 @@ h2.users-panel-username {
 #message-body-container .modal-header {
   padding: 10px 15px;
 }
+#message-body-container .modal-header button.btn {
+  margin: 0 0 0 10px;
+}
 #message-body-container .modal-header a.btn > i {
   font-size: 22px !important;
 }

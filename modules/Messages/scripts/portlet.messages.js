@@ -28,14 +28,26 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 
 		var messagesBodyViewClass = baseClass.extend({
 			events : {
+				"click button.reply-action" : "replyTo",
 				"click button.close-action" : "close"
 			},
+			sendDialog : app.module("dialogs.messages.send"),
 			renderType : "byView",
 			show : function() {
 				this.$el.show();
 			},
 			close : function() {
 				this.$el.hide();
+			},
+			replyTo : function() {
+				var model = new this.sendDialog.models.message();
+				model.set("user_id.0.id", this.model.get("user_id"));
+				model.set("reply_to", this.model.get("id"));
+				model.set("subject", "fwd:" + this.model.get("subject"));
+				//this.sendDialog
+				this.sendDialog.dialogView.setMode("user");
+				this.sendDialog.dialogView.setModel(model);
+				this.sendDialog.dialogView.open();
 			}
 		});
 
@@ -69,7 +81,6 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 				return new mod.models.messages.message(data);
         	},
         	onCellClick : function(model, data, el) {
-        		console.warn(this, model.toJSON());
         		this.messagesBodyView.setModel(model);
         		this.messagesBodyView.show();
         	}
