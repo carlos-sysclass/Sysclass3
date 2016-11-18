@@ -9,6 +9,12 @@ class Message extends Model
     {
         $this->setSource("mod_messages");
 
+        $this->belongsTo(
+            "user_id",
+            "Sysclass\Models\Users\User",
+            "id",
+            array('alias' => 'From')
+        );
 
         $this->hasManyToMany(
             "id",
