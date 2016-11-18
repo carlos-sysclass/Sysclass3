@@ -5,20 +5,20 @@
 {foreach $notifications as $index => $note}
 	<li data-entity-id="{$note.id}">
 		<div class="alert alert-{$note.type} no-margin {if $dismissAllowed && $note.stick == 0}alert-dismissible{/if} notification-alert" role="alert">
-		  {if $dismissAllowed && $note.stick == 0}
-		  	<button type="button" class="btn btn-link btn-xs pull-right dismiss-action">
-		  		<i class="fa fa-times"></i>
-		  	</button>
-		  {/if}
-		  {$note.message}
-		  
-		  {if isset($note.link_href)}
-		  <div class="pull-right">
-		  	<a href="{$note.link_href}" target="_blank">
-		  		{$note.link_text}
-		  	</a>
-		  </div>
-		  {/if}
+			{if $dismissAllowed && $note.stick == 0}
+			  	<button type="button" class="btn btn-link btn-xs pull-right dismiss-action">
+			  		<i class="fa fa-times"></i>
+			  	</button>
+			{/if}
+			{$note.message}
+			  
+			{if isset($note.link_href)}
+				<div class="pull-right">
+					<a href="{$note.link_href}" target="_blank">
+						{$note.link_text}
+					</a>
+				</div>
+			{/if}
 		  
 		</div>
 	</li>

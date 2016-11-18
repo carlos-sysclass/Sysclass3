@@ -2590,6 +2590,6 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   content: "" !important;
 }
 
-#institution-widget {
+#institution-widget, #messages-widget {
   margin-bottom: 0px;
 }
