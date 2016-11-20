@@ -6466,7 +6466,7 @@ Dropdown Checkboxes
     padding: 8px 20px;
     position: relative;
     white-space: nowrap;
-    line-height: 1.42857143;
+    line-height: 1.3;
     text-transform: uppercase; }
     .dropdown-menu-v2 > li > a:hover,
     .dropdown-menu-v2 > li > a:focus {
@@ -14720,7 +14720,7 @@ Timeline
     margin-top: -2px; }
   .timeline .timeline-body-content {
     font-size: 14px;
-    margin-top: 35px; }
+    /*margin-top: 35px;*/ }
   .timeline .timeline-body-img {
     width: 100px;
     height: 100px;

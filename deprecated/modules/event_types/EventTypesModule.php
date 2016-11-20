@@ -161,7 +161,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
             {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Event Type created successfully."),
+                    $this->translate->translate("New event type created."),
                     "success"
                 );
             }
@@ -221,7 +221,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
             $itemModel = $this->model("event/types/item");
             if ($itemModel->deleteItem($id) !== FALSE)
             {
-                $response = $this->createAdviseResponse($this->translate->translate("Event type removed successfully."), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Event type removed."), "success");
                 return $response;
             }
             else

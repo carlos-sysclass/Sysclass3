@@ -398,7 +398,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
                 return $this->createRedirectResponse(
                     $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Course created successfully."),
+                    $this->translate->translate("Course created."),
                     "success"
                 );
             } else {
@@ -445,7 +445,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
             $itemModel = $this->model("courses");
             if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Course removed successfully."), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Course removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -619,11 +619,11 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to course successfully."), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from course successfully."), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course."), "error");
         }
         return array_merge($response, $info);
     }

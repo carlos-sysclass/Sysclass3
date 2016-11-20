@@ -14830,7 +14830,7 @@ define(function (require) {
 	 *
 	 * @param {*} x
 	 * @param {function?} onFulfilled callback to be called when x is
-	 *   successfully fulfilled.  If promiseOrValue is an immediate value, callback
+	 *   fulfilled.  If promiseOrValue is an immediate value, callback
 	 *   will be invoked immediately.
 	 * @param {function?} onRejected callback to be called when x is
 	 *   rejected.

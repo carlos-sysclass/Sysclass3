@@ -12,6 +12,12 @@
 					<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled Courses"}</a>
 				</li>
 			{/if}
+			{if (isset($T_SECTION_TPL['users.details']) &&  ($T_SECTION_TPL['users.details']|@count > 0))}
+				<li class="">
+					<a href="#tab_1_4" data-toggle="tab">{translateToken value="Details"}</a>
+				</li>
+			{/if}
+
 			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
 				<li class="">
 					<a href="#tab_1_3" data-toggle="tab">{translateToken value="Address"}</a>
@@ -131,6 +137,14 @@
 				    {foreach $T_SECTION_TPL['enroll'] as $template}
 				        {include file=$template}
 				    {/foreach}
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['users.details']) &&  ($T_SECTION_TPL['users.details']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_4">
+				    {foreach $T_SECTION_TPL['users.details'] as $template}
+			        	{include file=$template}
+				    {/foreach}
+				    <div class="clearfix"></div>
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}

@@ -306,7 +306,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         ),
                         $itemData 
@@ -314,13 +314,13 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('status')) {
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
                     $response = $this->createNonAdviseResponse(
-                        $this->translate->translate("Created successfully."),
+                        $this->translate->translate("Message sent."),
                         "success"
                     );
                     if (!is_null($this->responseInfo)) {
@@ -330,7 +330,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         )
                     );
@@ -338,7 +338,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("Created successfully."),
+                            $this->translate->translate("Message sent."),
                             "success"
                         )
                     );
@@ -535,29 +535,24 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function deleteItemRequest($model, $id)
     {
+
+        $this->response->setContentType('application/json', 'UTF-8');
+
         $itemModel = $this->getModelData($model, $id);
 
         $model_info = $this->model_info[$model];
 
         $resource = null;
         $action = "delete";
-        if (
-            array_key_exists('acl', $model_info) && 
-            array_key_exists('delete', $model_info['acl']) &&
-            is_array($model_info['acl']['delete'])
-        ) {
-            $acl = $model_info['acl']['delete'];
-            $resource = $acl['resource'];
-            $action = @isset($acl['action']) ? $acl['action'] : $action;
-        }
+
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
             'object' => $itemModel
         ));
+        $model_info = $this->model_info[$model];
 
-        if ($allowed = $this->isUserAllowed($action, $resource)) {
-
+        if ($this->isResourceAllowed($action, $model_info)) {
             if ($itemModel) {
 
                 $this->eventsManager->fire("module-{$this->module_id}:beforeModelDelete", $itemModel);
@@ -565,7 +560,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("Removed successfully."), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Removed."), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                     $response = $this->invalidRequestError("", "warning");

@@ -324,7 +324,7 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function notAuthenticatedError()
 	{
-		debug_print_backtrace();
+		//debug_print_backtrace();
 		return $this->createResponse(403, "You don't have access to this resource", "error", "advise");
 	}
 
@@ -815,11 +815,16 @@ abstract class PhalconWrapperController extends Controller
 		}
 	}
 
-	public function putSectionTemplate($key, $tpl) {
+	public function putSectionTemplate($key, $tpl, $type = "smarty") {
 		if (!array_key_exists($key, self::$_sections_tpl)) {
 			self::$_sections_tpl[$key] = array();
 		}
-		self::$_sections_tpl[$key][$tpl] = $tpl . ".tpl";
+		if ($type == "volt") {
+			$ext = ".volt";
+		} else {
+			$ext = ".tpl";
+		}
+		self::$_sections_tpl[$key][$tpl] = $tpl . $ext;
 		return $this;
 	}
 
