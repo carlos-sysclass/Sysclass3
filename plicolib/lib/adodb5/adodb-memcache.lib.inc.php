@@ -59,7 +59,7 @@ $db->CacheExecute($sql);
 		function connect(&$err)
 		{
 			if (!function_exists('memcache_pconnect')) {
-				$err = 'Memcache module PECL extension not found!';
+				$err = 'Memcache module PECL extension not found.';
 				return false;
 			}
 
