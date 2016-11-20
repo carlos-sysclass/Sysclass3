@@ -277,10 +277,11 @@ a:hover, a:focus {
 .inter-navsuper-tabs .table-tab:first-child {
   border-top: none;
 }
-.inter-navsuper-tabs .table>thead>tr>th {
-  font-size: 16px;
+.inter-navsuper-tabs .table > thead > tr > th {
+  font-size: 14px;
   color: #31708f;
   font-weight: normal;
+  text-transform: uppercase;
 }
 inter-navsuper-tabs .table > thead > tr > th i.fa {
 margin:0 4px 0 0;

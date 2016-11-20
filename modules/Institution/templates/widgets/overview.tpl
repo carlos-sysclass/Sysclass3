@@ -17,7 +17,7 @@
 		{if $context.time_at}
 	        <div class="col-lg-6 col-md-6 col-xs-12">
 	            <a href="{$context.website}" target="_blank" class="btn btn-primary btn-compressed">
-	                    <span class="text"><i class="fa fa-clock-o"></i> {$context.time_at}</span>
+                    <span class="text"><i class="fa fa-clock-o"></i> {$context.time_at}</span>
 	            </a>
 	    	</div>       
 	    {/if}
