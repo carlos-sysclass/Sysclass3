@@ -4,7 +4,7 @@
 		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 16px; margin-top: 11px;" />
     </div>
 </div>
-<div style="padding: 6px 10px;">
+<div style="padding: 6px 10px;" class="institution-button-container">
 	<div class="row">
 		{if $context.website}
 	        <div class="col-lg-6 col-md-6 col-xs-12">
@@ -17,12 +17,12 @@
 		{if $context.time_at}
 	        <div class="col-lg-6 col-md-6 col-xs-12">
 	            <a href="{$context.website}" target="_blank" class="btn btn-primary btn-compressed">
-	                    <span class="text"><i class="fa fa-clock-o"></i> {$context.time_at}</span>
+                    <span class="text"><i class="fa fa-clock-o"></i> {$context.time_at}</span>
 	            </a>
 	    	</div>       
 	    {/if}
-
-	    
+	</div>
+	<div class="row">
         {if $context.facebook}
 	    	<div class="col-lg-6 col-md-6 col-xs-12">
 	    
@@ -38,7 +38,8 @@
 	        </a>
 	    	</div>
 	    {/if}
-
+	</div>
+	<div class="row">
 	    {if $context.skype}
 	    	<div class="col-lg-6 col-md-6 col-xs-12">
 		        <a href="skype://{$context.skype}" target="_blank" class="btn btn-primary btn-compressed">
@@ -56,7 +57,8 @@
 		        </a>
 	    	</div>
 	    {/if}
-
+	</div>
+	<div class="row">
 	    {if $context.googleplus}
 	    	<div class="col-lg-6 col-md-6 col-xs-12">
 		        <a href="https://plus.google.com/{$context.googleplus}" target="_blank" class="btn btn-primary btn-compressed">

@@ -409,7 +409,7 @@ abstract class ModelManager extends DatabaseManager {
 			return TRUE;
 		}
 
-		throw new Exception('$table_name não pode ser NULL!');
+		throw new Exception('$table_name não pode ser NULL.');
 		exit;
 
 	}

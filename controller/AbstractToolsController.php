@@ -122,7 +122,7 @@ abstract class AbstractToolsController extends PhalconWrapperController
 	 *
 	 * <br>Example:
 	 * <code>
-	 * $param = 'Hello world!';
+	 * $param = 'Hello world';
 	 * if (sC_checkParameter($param, 'string')) {
 	 *     echo "Parameter is String";
 	 * }
