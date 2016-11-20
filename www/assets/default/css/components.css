@@ -8164,7 +8164,7 @@ Portlets
       .portlet > .portlet-title > .actions > .btn-group > .btn.btn-sm {
         padding: 10px 12px;
         font-size: 13px;
-        line-height: 0.5; }
+        line-height: 1.5; }
         .portlet > .portlet-title > .actions > .btn.btn-default,
         .portlet > .portlet-title > .actions > .btn.btn-sm.btn-default,
         .portlet > .portlet-title > .actions > .btn-group > .btn.btn-default,
