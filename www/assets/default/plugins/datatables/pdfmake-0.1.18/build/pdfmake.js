@@ -9652,7 +9652,7 @@
 	     * _.forEach(saves, function(type) {
 	     *   asyncSave({ 'type': type, 'complete': done });
 	     * });
-	     * // => logs 'done saving!' after the two async saves have completed
+	     * // => logs 'done saving.' after the two async saves have completed
 	     */
 	    function after(n, func) {
 	      if (!isFunction(func)) {

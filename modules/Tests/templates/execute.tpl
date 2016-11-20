@@ -180,7 +180,7 @@
         </div>
         {if $T_EXECUTION.pending == 1}
             <div class="nobg no-border" align="center">
-                <button class="btn btn-success finish-test-action" type="button">{translateToken value="Complete Test"}</button>
+                <button class="btn btn-success finish-test-action" type="button">{translateToken value="Finish test"}</button>
             </div>
         {else}
             <div class="nobg no-border" align="center">
