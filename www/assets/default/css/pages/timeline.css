@@ -112,7 +112,7 @@ New Timeline
 
 .timeline-body-content {
   font-size: 14px;
-  margin-top: 35px;
+/*  margin-top: 35px; */
 }
 
 .timeline-body-img {
@@ -170,7 +170,7 @@ New Timeline
     display: none;
   }
   .timeline-body-content {
-    margin-top: 35px;
+/*    margin-top: 35px; */
   }
 }
 @media (max-width: 480px) {

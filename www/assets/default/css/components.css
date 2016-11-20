@@ -14720,7 +14720,7 @@ Timeline
     margin-top: -2px; }
   .timeline .timeline-body-content {
     font-size: 14px;
-    margin-top: 35px; }
+    /*margin-top: 35px;*/ }
   .timeline .timeline-body-img {
     width: 100px;
     height: 100px;
