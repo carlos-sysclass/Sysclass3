@@ -25,7 +25,7 @@
 			{/if}
 		</ul>
 		<div class="tab-content">
-			<div class="tab-pane fade in" id="tab_1_1">
+			<div class="tab-pane fade active in" id="tab_1_1">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -140,7 +140,7 @@
 				</div>
 			{/if}
 			{if (isset($T_SECTION_TPL['users.details']) &&  ($T_SECTION_TPL['users.details']|@count > 0))}
-				<div class="tab-pane fade active in" id="tab_1_4">
+				<div class="tab-pane fade in" id="tab_1_4">
 				    {foreach $T_SECTION_TPL['users.details'] as $template}
 			        	{include file=$template}
 				    {/foreach}
