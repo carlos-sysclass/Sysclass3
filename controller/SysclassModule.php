@@ -535,29 +535,24 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function deleteItemRequest($model, $id)
     {
+
+        $this->response->setContentType('application/json', 'UTF-8');
+
         $itemModel = $this->getModelData($model, $id);
 
         $model_info = $this->model_info[$model];
 
         $resource = null;
         $action = "delete";
-        if (
-            array_key_exists('acl', $model_info) && 
-            array_key_exists('delete', $model_info['acl']) &&
-            is_array($model_info['acl']['delete'])
-        ) {
-            $acl = $model_info['acl']['delete'];
-            $resource = $acl['resource'];
-            $action = @isset($acl['action']) ? $acl['action'] : $action;
-        }
+
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
             'object' => $itemModel
         ));
+        $model_info = $this->model_info[$model];
 
-        if ($allowed = $this->isUserAllowed($action, $resource)) {
-
+        if ($this->isResourceAllowed($action, $model_info)) {
             if ($itemModel) {
 
                 $this->eventsManager->fire("module-{$this->module_id}:beforeModelDelete", $itemModel);
