@@ -472,7 +472,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
             //$this->response->redirect();
             $this->redirect(
                 '/dashboard',
-                $this->translate->translate('Warning: Your course is not completed yet!'),
+                $this->translate->translate('Warning: Your course is not completed yet.'),
                 'warning'
             );
             //$this->response->redirect('/module/progress/course/' . $id);

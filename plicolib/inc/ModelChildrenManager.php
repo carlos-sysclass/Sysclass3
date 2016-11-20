@@ -38,7 +38,7 @@ abstract class ModelChildrenManager extends ModelManager {
 			return TRUE;
 		}
 
-		throw new Exception('$child_table_name não pode ser NULL!');
+		throw new Exception('$child_table_name não pode ser NULL.');
 		exit;
 
 	}
