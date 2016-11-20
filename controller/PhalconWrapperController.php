@@ -324,7 +324,7 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function notAuthenticatedError()
 	{
-		debug_print_backtrace();
+		//debug_print_backtrace();
 		return $this->createResponse(403, "You don't have access to this resource", "error", "advise");
 	}
 
