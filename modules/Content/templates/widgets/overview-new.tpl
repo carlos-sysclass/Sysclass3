@@ -563,8 +563,8 @@ _before_init_functions.push(function() {
     <td width="40%">
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
       <div class="btn-group">
-        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
-          <i class="fa fa-caret-down"></i>
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-link dropdown-toggle" href="javascript:void(0);">
+          <i class="fa fa-info-circle"></i>
         </a>
         <ul class="dropdown-menu">
           <li>
@@ -692,8 +692,8 @@ _before_init_functions.push(function() {
       %>
       <% if (hasDropdown) { %>
         <div class="btn-group">
-          <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
-            <i class="fa fa-caret-down"></i>
+          <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-link dropdown-toggle" href="javascript:void(0);">
+            <i class="fa fa-info-circle"></i>
           </a>
 
           <ul class="dropdown-menu">
