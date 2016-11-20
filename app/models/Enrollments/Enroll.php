@@ -37,7 +37,12 @@ class Enroll extends Model
             "id",
             "Sysclass\Models\Enrollments\Fields",
             "enroll_id",
-            array('alias' => 'EnrollFields')
+            array(
+                'alias' => 'EnrollFields',
+                'params' => array(
+                    'order' => '[Sysclass\Models\Enrollments\Fields].position ASC'
+                )
+            )
         );
 
         $this->hasManyToMany(

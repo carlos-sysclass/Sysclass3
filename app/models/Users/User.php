@@ -23,6 +23,15 @@ class User extends Model
 
         $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
 
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id", "enroll_id",
+            "Sysclass\\Models\\Enrollments\\Enroll",
+            "id",
+            array('alias' => 'Enrollments')
+        );
+
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",
@@ -42,7 +51,9 @@ class User extends Model
                 'bind' => (new \DateTime('now'))->format('Y-m-d H:i:s')
             )
         );
-
+        /**
+          * @deprecated 3.2 Use the "Programs" identifier below
+         */
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",

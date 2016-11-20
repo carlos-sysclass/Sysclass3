@@ -2,6 +2,7 @@
 namespace Sysclass\Modules\Users;
 
 use Phalcon\DI,
+    Sysclass\Forms\BaseForm,
     Phalcon\Mvc\Model\Message,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UserCurriculum,
@@ -77,6 +78,54 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 //$self->putItem("users_block_context", $block_context);
 
                 $self->putSectionTemplate("dialogs", "dialogs/select");
+
+                return true;
+            },
+            'users.details' => function($data, $self) {
+                //$country_codes = Country::findAll();
+                //$country_codes = $self->model("i18n/country")->getItems();
+                //$self->putItem("country_codes", $country_codes);
+
+                $userFields = array(
+                    'how_did_you_know',
+                    'supplier_name',
+                    'cnpj',
+                    'is_supplier'
+                );
+
+                $enrollments = $self->user->getEnrollments();
+
+                $info = array(
+                    'fields' => array()
+                );
+
+                foreach($enrollments as $enroll) {
+                    $fields = $enroll->getEnrollFields();
+
+                    foreach($fields as $enrollfield) {
+                        if (in_array($enrollfield->field->name, $userFields)) {
+                            $enrollfield->translate();
+
+                            $enrollfield->weight = 12;
+
+                            $info['fields'][] = $enrollfield->toAdditionalArray(["field", "options"]);
+                        }
+                    }
+                }
+
+                $form = new BaseForm(null, $info);
+
+                $info = [];
+
+                foreach ($form as $key => $value) {
+                    $value->weight = 12;
+                    $info['fields'][] = $value->toArray();
+
+                }
+
+                $self->putItem("user_details_info", $info);
+
+                $self->putSectionTemplate("users.details", "blocks/details");
 
                 return true;
             }
