@@ -8,7 +8,8 @@ namespace Sysclass\Modules\Institution;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-use Sysclass\Models\Organizations\Organization;
+use Sysclass\Models\Organizations\Organization,
+    Sysclass\Services\I18n\Timezones;
 /**
  * @RoutePrefix("/module/institution")
  */
@@ -38,6 +39,14 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         if (in_array('institution.overview', $widgetsIndexes)) {
             //$this->putModuleScript("widget.institution");
 
+            $data = $organization->toFullArray();
+
+            $time_at = Timezones::getTimeAt($organization->timezone);
+
+            if ($time_at) {
+                $data['time_at'] = $time_at->format('H:i');
+            }
+
         	return array(
         		'institution.overview' => array(
        				//'title' 	=> 'User Overview',
@@ -45,7 +54,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
        				'template'	=> $this->template("widgets/overview"),
                     'panel'     => true,
                     'body'      => "no-padding",
-                    'data' => $organization->toFullArray()
+                    'data'      => $data
         		)
         	);
         }
@@ -101,5 +110,23 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         }
         return $breadcrumbs;
     }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/edit/{id}")
+     * @allow(resource=users, action=edit)
+     */
+    public function editPage($id)
+    {
+        $timezones = Timezones::findAll();
+        $this->putitem("timezones", $timezones);
+
+        parent::editPage($id);
+    }
+
+
+
+
 
 }

@@ -2593,3 +2593,11 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 #institution-widget, #messages-widget {
   margin-bottom: 0px;
 }
+
+#institution-widget .panel-body {
+  min-height: 260px;  
+}
+.btn-compressed {
+  padding-left: 3px;
+  padding-right: 3px;
+}

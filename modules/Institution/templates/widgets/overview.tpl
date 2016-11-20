@@ -5,34 +5,73 @@
     </div>
 </div>
 <div style="padding: 6px 10px;">
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        {if $context.website}
-            <a href="{$context.website}" target="_blank" class="btn btn-primary">
-                    <span class="text"><i class="fa fa-laptop"></i> {translateToken value="Website"}</span>
-            </a>
-        {/if}
-    </div>       
-    <div class="col-lg-12 col-md-12 col-xs-12">
+	<div class="row">
+		{if $context.website}
+	        <div class="col-lg-6 col-md-6 col-xs-12">
+	            <a href="{$context.website}" target="_blank" class="btn btn-primary btn-compressed">
+	                    <span class="text"><i class="fa fa-laptop"></i> {translateToken value="Website"}</span>
+	            </a>
+	    	</div>       
+	    {/if}
+
+		{if $context.time_at}
+	        <div class="col-lg-6 col-md-6 col-xs-12">
+	            <a href="{$context.website}" target="_blank" class="btn btn-primary btn-compressed">
+	                    <span class="text"><i class="fa fa-clock-o"></i> {$context.time_at}</span>
+	            </a>
+	    	</div>       
+	    {/if}
+
+	    
         {if $context.facebook}
-	        <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-primary">
-	                <span class="text"><i class="fa fa-facebook"></i> {translateToken value="Facebook"}</span>
+	    	<div class="col-lg-6 col-md-6 col-xs-12">
+	    
+		        <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-primary btn-compressed">
+		                <span class="text"><i class="fa fa-facebook"></i> {translateToken value="Facebook"}</span>
+		        </a>
+	    	</div>
+        {/if}
+	    {if $context.street && $context.street_number}
+	    	<div class="col-lg-6 col-md-6 col-xs-12">
+	        	<a href="https://www.google.com.br/maps/place/{$context.street}, {$context.street_number} - {$context.city}" target="_blank" class="btn btn-primary btn-compressed">
+	                <span class="text"><i class="fa fa-map"></i> {translateToken value="View Map"}</span>
 	        </a>
-        {/if}
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        {if $context.phone}
-            <a href="tel://{$context.phone}" target="_blank" class="btn btn-primary">
-                    <span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
-            </a>
-        {/if}
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        <a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-primary">
-                <span class="text"><i class="fa fa-map"></i> {translateToken value="View Map"}</span>
-        </a>
-    </div>
-</div>
+	    	</div>
+	    {/if}
+
+	    {if $context.skype}
+	    	<div class="col-lg-6 col-md-6 col-xs-12">
+		        <a href="skype://{$context.skype}" target="_blank" class="btn btn-primary btn-compressed">
+		            <span class="text"><i class="fa fa-skype"></i>
+		            {translateToken value="Skype"}
+		            </span>
+		        </a>
+	    	</div>
+	    {/if}
+
+	    {if $context.linkedin}
+	    	<div class="col-lg-6 col-md-6 col-xs-12">
+		        <a href="https://www.linkedin.com/{$context.linkedin}" target="_blank" class="btn btn-primary btn-compressed">
+		                <span class="text"><i class="fa fa-linkedin-square"></i> {translateToken value="Linked In"}</span>
+		        </a>
+	    	</div>
+	    {/if}
+
+	    {if $context.googleplus}
+	    	<div class="col-lg-6 col-md-6 col-xs-12">
+		        <a href="https://plus.google.com/{$context.googleplus}" target="_blank" class="btn btn-primary btn-compressed">
+		                <span class="text"><i class="fa fa-google-plus"></i> {translateToken value="Google+"}</span>
+		        </a>
+		    </div>
+	    {/if}
+	    {if $context.phone}
+	    	<div class="col-lg-6 col-md-6 col-xs-12">
+	            <a href="callto://+{$context.phone}" target="_blank" class="btn btn-primary btn-compressed">
+	                    <span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
+	            </a>
+	    	</div>
+	    {/if}
+	</div>
 </div>
 
 
