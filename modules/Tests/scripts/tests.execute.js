@@ -152,7 +152,8 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
 
         this.testViewClass = Backbone.View.extend({
             events : {
-                "click .finish-test-action" : "finishTest"
+                "click .finish-test-action" : "finishTest",
+                "click .retake-test-action" : "retakeTest"
             },
             initialize : function() {
                 var testExecutionView = new testExecutionViewClass({
@@ -174,9 +175,24 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                 // SAVE THE EXECUTION, BLOCK THE UI, SHOW A MESSAGE AND REDIRECT TO TEST RESULTS
                 this.model.set("complete", 1);
                 this.model.save();
+            },
+            retakeTest : function() {
+                this.testInfoModule = app.module("dialogs.tests.info");
 
+                if (!this.testInfoModule.started) {
+                    this.testInfoModule.start();
+                }
+                console.warn(this.model.toJSON());
+                
+                var testModel = new mod.models.test({
+                    id : this.model.get("test_id")
+                });
+                this.testInfoModule.setInfo({
+                    model : testModel,
+                    autoStart : true
+                });
 
-
+                this.testInfoModule.open();
             }
         });
     });
@@ -192,11 +208,6 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
     mod.on("start", function() {
         this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 
-            /*
-            var testModel = new this.models.test({
-                id : app.userSettings.get("test_id")
-            });
-            */
 
             var testExecutionModel = new mod.models.test_execution({
                 id : app.userSettings.get("test_execution_id")

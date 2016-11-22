@@ -1,7 +1,8 @@
 <?php
 namespace Sysclass\Models\Courses\Tests;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Users\User;
 
 class Execution extends Model
 {
@@ -31,4 +32,27 @@ class Execution extends Model
         );
     }
 
+    public function canExecuteAgain(User $user) {
+
+        $test = $this->getTest();
+        $test_repetition = @isset($test->test_repetition) ? $test->test_repetition : false;
+
+        if (is_numeric($test_repetition)) {
+            $test_repetition = intval($test_repetition);
+
+            $total_executions = self::count([
+                'conditions' => "test_id = ?0 AND user_id = ?1",
+                'bind' => [$this->test_id, $user->id]
+            ]);
+
+            if ($test_repetition <= 0 || $test_repetition > $total_executions) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+        // ASSUMES NO LIMIT
+        return true;
+    }
 }
