@@ -21,7 +21,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
         'content_id',
         'unit_id',
         'course_id',
-        'program_id'
+        'program_id',
+        'content_current_tab'
     );
     
     protected $defaults = array(

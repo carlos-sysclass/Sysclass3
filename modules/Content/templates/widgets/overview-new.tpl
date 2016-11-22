@@ -9,9 +9,9 @@ _before_init_functions.push(function() {
     <div class="row">
         <div class="col-sm-12 col-md-12">
           <div class="col-md-12 no-padding inter-navsuper">
-            <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
+            <ul class="nav nav-tabs col-md-8 no-padding widget-tabs-container" role="tablist">
               <li role="presentation" class="active">
-                <a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
+                <a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab" data-setting-update="program">
                   <i class="fa fa-graduation-cap"></i>
                   <span class="progress-indicator program-indicator">
                     <span class="counter"></span>
@@ -22,7 +22,7 @@ _before_init_functions.push(function() {
                 </a>
               </li>
               <li role="presentation">
-                <a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
+                <a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab" data-setting-update="course">
                   <i class="fa fa-sitemap"></i>
                   <span class="progress-indicator course-indicator">
                     <span class="counter"></span>
@@ -32,7 +32,7 @@ _before_init_functions.push(function() {
                 </a>
               </li>
               <li role="presentation">
-              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab">
+              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab" data-setting-update="unit">
                   <i class="fa fa-book"></i>
                   <span class="progress-indicator unit-indicator">
                     <span class="counter"></span>
@@ -581,7 +581,7 @@ _before_init_functions.push(function() {
           </li>
           <li class="subchild">
             <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%= model.professor_id %>" data-mode="user">
-              {translateToken value="Send Message"}
+              <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
             </a>
           </li>
           <% } %>
@@ -705,7 +705,7 @@ _before_init_functions.push(function() {
             </li>
             <li class="subchild">
               <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
-                {translateToken value="Send Message"}
+                <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
               </a>
             </li>
             <% } %>

@@ -1711,7 +1711,7 @@ button.calendar-news-item {
     color: #ddd;
     font-size: 11px;
     padding: 11px 5px;
-    border-right: 1px solid #003f69;
+    /* border-right: 1px solid #003f69; */
 }
 
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {

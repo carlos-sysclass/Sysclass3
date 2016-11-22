@@ -513,7 +513,7 @@ Header and header elements.
   margin: 0px;
   padding: 15px 10px 7px 10px;
   height: 42px;
-  border-right: 1px solid #003f69;
+  /* border-right: 1px solid #003f69; */
 }
 .header .navbar-nav > li.dropdown:last-child .dropdown-toggle {
   border: none;

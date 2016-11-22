@@ -764,7 +764,10 @@ abstract class SysclassModule extends BaseSysclassModule
             $options['edit']  = array(
                 'icon'  => 'fa fa-pencil',
                 'link'  => $baseLink . 'edit/%id$s',
-                'class' => 'btn-sm btn-primary'
+                'class' => 'btn-sm btn-primary tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Edit'
+                )
             );
         }
         if ($deleteAllowed) {
