@@ -97,6 +97,7 @@ $SC.module("blocks.enroll.courses", function(mod, app, Backbone, Marionette, $, 
     });
 
     $SC.module("crud.views.edit").on("start", function() {
+
         if (!mod._isInitialized && this.getForm) {
             mod.start(this.getForm());
         }

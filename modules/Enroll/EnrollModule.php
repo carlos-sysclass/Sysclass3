@@ -6,7 +6,11 @@ namespace Sysclass\Modules\Enroll;
  */
 use Sysclass\Models\Courses\Course as Course,
     Sysclass\Models\Enrollments\CourseUsers as Enrollment,
-    Sysclass\Models\Forms\Fields;
+    Sysclass\Models\Forms\Fields,
+    Sysclass\Models\Content\Program,
+    Sysclass\Models\Users\User,
+    Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -14,9 +18,8 @@ use Sysclass\Models\Courses\Course as Course,
 /**
  * @RoutePrefix("/module/enroll")
  */
-class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable, \ISectionMenu
+class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkable, \IBreadcrumbable, \IActionable, \ISectionMenu, INotifyable
 {
-
     /* IBlockProvider */
     public function registerBlocks() {
         return array(
@@ -24,7 +27,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             'enroll.user.block' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("select2");
-                $self->putComponent("data-tables", "select2");
+                $self->putComponent("datatables", "select2");
                 $self->putScript("scripts/utils.datatables");
 
                 $self->putModuleScript("user.block");
@@ -56,7 +59,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 //$self->putBlock('enroll.fields.dialog');
                 $self->putModuleScript("fields.form");
 
-                $self->putComponent("data-tables");
+                $self->putComponent("datatables");
                 $self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
 
@@ -80,7 +83,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $self->putModuleScript("blocks.enroll.courses");
                 
 
-                $self->putComponent("data-tables");
+                $self->putComponent("datatables");
                 $self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
 
@@ -98,7 +101,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             },
             'enroll.users.dialog' => function($data, $self) {
                 // GET ALL THIS DATA FROM config.yml
-                $self->putComponent("data-tables");
+                $self->putComponent("datatables");
                 $self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
                 //$self->putComponent("bootstrap-switch");
@@ -114,7 +117,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             },
             'enroll.settings.dialog' => function($data, $self) {
                 // GET ALL THIS DATA FROM config.yml
-                $self->putComponent("data-tables");
+                $self->putComponent("datatables");
                 //$self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
                 //$self->putComponent("bootstrap-switch");
@@ -314,6 +317,58 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         return false;
     }
 
+    /* INotifyable */
+    public function getAllActions() {
+
+    }
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "inform-coordinator" : {
+                // SEND EMAIL PASSWORD RESET 
+                $data = $event->data;
+
+                $user = User::findFirstById($data['user_id']);
+                $program = Program::findFirstById($data['course_id']);
+
+                $receiver = $program->getCoordinator();
+
+                if ($receiver) {
+                    $status = $this->mail->send(
+                        $receiver->email, 
+                        "Aviso de Matrícula. Email automático, não é necessário responder.",
+                        "email/" . $this->sysconfig->deploy->environment . "/enroll-info.email",
+                        true,
+                        array(
+                            'student' => $user,
+                            'program' => $program,
+                            'receiver' => $receiver,
+                            'enroll_view_link' => "http://" . $this->sysconfig->deploy->environment . '.sysclass.com/module/enroll/edit/' . $data['enroll_id'] . '#tab_1_3'
+                        )
+                    );
+                    $this->notification->createForUser(
+                        $receiver,
+                        'An user enrolled a program.',
+                        'activity',
+                        array(
+                            'text' => "View",
+                            'link' => $this->getBasePath() . "edit/" . $data['enroll_id'] . '#tab_1_3'
+                        ),
+                        false,
+                        "ENROLL:" . "E" . $data['enroll_id'] . "U" . $user->id . "P" . $program->id
+                    );
+                    return array(
+                        'status' => true
+                    );
+                }
+                return array(
+                    'status' => false,
+                    'unqueue' => true
+                );
+            }
+        }
+    }
+
 
     public function getDatatableItemOptions() {
         if ($this->_args['model'] == 'courses') {
@@ -336,7 +391,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 ),
                 'remove'  => array(
                     'icon'  => 'fa fa-remove',
-                    'class' => 'btn-sm btn-danger'
+                    'class' => 'btn-sm btn-danger tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Remove'
+                    )
                 )
             );
         }
@@ -508,12 +566,9 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     }
 
 
-    public function beforeModelCreate($event, $itemModel, $data) {
-        if (get_class($itemModel) == 'Sysclass\Models\Enrollments\CourseUsers') {
+    public function afterModelCreate($event, $itemModel, $data) {
+        if ($data['_args'][0] == "users") {
+            $this->eventsManager->fire("enroll:created", $this, $data);
         }
-        return true;
-
     }
-
-
 }

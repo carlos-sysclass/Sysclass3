@@ -91,7 +91,7 @@ if (APP_TYPE === "CONSOLE") {
     $di = new WebDI();
 }
 
-$di->set("eventManager", $eventsManager);
+$di->set("eventsManager", $eventsManager);
 DI::setDefault($di);
 
 /*

@@ -236,7 +236,6 @@
         return;
       }
 
-      console.warn(options, data);
       if (!data) {
         $this.data('bs.confirmation', (data = new Confirmation(this, options)));
       }

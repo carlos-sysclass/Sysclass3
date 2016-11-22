@@ -258,6 +258,10 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $model_info = $this->model_info[$model];
 
+        $this->setArgs(array(
+            'model' => $model,
+        ));
+
         if ($this->isResourceAllowed("create", $model_info)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
             $data = $this->request->getJsonRawBody(true);
@@ -292,6 +296,7 @@ abstract class SysclassModule extends BaseSysclassModule
             if (call_user_func(array($itemModel, $createMethod))) {
                 $event_data = array_merge($data, array('_args' => func_get_args()));
                 //$this->eventsManager->collectResponses(true);
+
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
 
                 // @todo CREATE A WAY TO CUSTOMIZED MODULE MESSAGES ON OPERATIONS
@@ -306,7 +311,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         ),
                         $itemData 
@@ -314,13 +319,13 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('status')) {
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
                     $response = $this->createNonAdviseResponse(
-                        $this->translate->translate("Message sent."),
+                        $this->translate->translate("Success."),
                         "success"
                     );
                     if (!is_null($this->responseInfo)) {
@@ -330,7 +335,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     );
@@ -338,7 +343,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     );
@@ -765,7 +770,10 @@ abstract class SysclassModule extends BaseSysclassModule
         if ($deleteAllowed) {
             $options['remove']  = array(
                 'icon'  => 'fa fa-remove',
-                'class' => 'btn-sm btn-danger'
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Remove'
+                )
             );
         }
         return $options;

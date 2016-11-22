@@ -120,7 +120,7 @@ if (APP_TYPE === "WEB") {
 
         $translator->setSource("en");
 
-        // TODO: MAKE A WAY THE SELECT THE USER 
+        // TODO: MAKE A WAY THE SELECT THE USER
         /*
         $user = $di->get("user");
 
@@ -145,10 +145,13 @@ $di->setShared('queue', function () {
     return $queue;
 });
 
-$messagebus = new Sysclass\Services\MessageBus\Manager();
-$messagebus->setEventsManager($eventsManager);
-$messagebus->initialize();
-$di->setShared('messagebus', $messagebus);
+$di->setShared('messagebus', function () use ($eventsManager) {
+    $messagebus = new Sysclass\Services\MessageBus\Manager();
+    $messagebus->setEventsManager($eventsManager);
+    return $messagebus;
+});
+
+
 
 
 $di->setShared('mail', function () {
