@@ -429,10 +429,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     this.handleBootstrapConfirmation = function(context) {
         if ($("[data-toggle=confirmation]", context).size() > 0) {
             $("[data-toggle='confirmation']", context).each(function() {
-                console.warn($(this).data('confirmationTitle'));
-                $(this).confirmation({
-                    title : $(this).data('confirmationTitle')
-                });
+//                console.warn($(this).data('confirmationTitle'));
+                $(this).confirmation();
             });
         }
     };

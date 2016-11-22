@@ -53,14 +53,11 @@ class EventConsumerTask extends \Phalcon\CLI\Task
 
     public function processEventsAction(array $params = null)
     {
-//        
-
         $result = $this->messagebus->processEvents();
 
         foreach($result['messages'] as $message) {
             fwrite(STDERR, Color::{$message['type']}($message['message']));    
         }
-
     }
 
 }

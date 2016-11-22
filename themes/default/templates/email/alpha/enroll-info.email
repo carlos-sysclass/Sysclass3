@@ -1,0 +1,42 @@
+{% extends "layout/alpha/default.email" %}
+{% block content %}
+<table class="row note">
+<tr>
+      <td class="wrapper last">
+            <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">
+            Olá {{ receiver.name }} {{ receiver.surname }}
+            </h4>
+            <p>
+            Uma nova matrícula foi efetuada. Dados do novo aluno seguem abaixo.
+            </p>
+            <p><strong>Nome:</strong>{{ student.name}} {{ student.surname}} </p>
+            <p><strong>Email:</strong>{{ student.email}}</p>
+            <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;"></span>
+            <p><strong>Programa:</strong>{{ program.name}}</p>
+            
+            <!-- BEGIN: Note Panel -->
+            <p>
+                   {{translate.translate("To review his enrollment, please click on the url below") }}
+            </p>
+            <table class="twelve columns" style="margin-bottom: 10px">
+            <tr>
+                  <td class="panel" style="background: #fff;border: 0;padding: 10px !important;">
+                        <a href="{{ enroll_view_link }}">
+                              {{ enroll_view_link }}
+                        </a>
+                  </td>
+                  <td class="expander">
+                  </td>
+            </tr>
+            </table>
+            <p>
+            Se clicar sobre a URL acima não funcionar, por favor copie e cole em seu navegador.
+            </p>
+            <!-- END: Note Panel -->
+            <p>Esperamos trabalhar juntos no futuro produzindo energia limpa e renovável,</p>
+            <p>Equipe da Superintendência de Compras Programa DESFOR</p>
+      </td>
+</tr>
+</table>
+{% endblock %}
+
