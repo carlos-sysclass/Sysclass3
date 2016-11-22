@@ -184,15 +184,11 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $block_context = $self->getConfig("blocks\\tests.execution.list.table\context");
 
-//var_dump($block_context['ajax_source'], array('filter' => $filter));
-
                 $block_context['ajax_source'] = $stringsHelper->vksprintf(
                     $block_context['ajax_source'],
                     array('filter' => $filter)
                 );
 
-//                var_dump($block_context['ajax_source']);
-//exit;
                 $self->putComponent("data-tables");
                 $self->putScript("scripts/utils.datatables");
 
@@ -311,6 +307,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             //exit;
             //
+
             $this->putItem("test", $testData);
             $this->createClientContext("execute", null, "open");
 
@@ -518,14 +515,19 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
 
                 // LOAD USER PROGRESS ON THIS TEST
-                
+                // CHECK IF THE USER CAN EXECUTE AGAIN
+
+                $this->putBlock("tests.info.dialog");
 
                 $this->module("settings")->put("test_execution_id", $execution_id);
 
                 $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+                
 
                 $this->putItem("test", $testData);
                 $this->putItem("execution", $executionData);
+                $this->putItem("can_execute_again", $execution->canExecuteAgain($this->user));
+                
 
                 $this->createClientContext("execute", null, "execute");
 

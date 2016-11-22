@@ -185,6 +185,10 @@
         {else}
             <div class="nobg no-border" align="center">
                 <a class="btn btn-primary" href="/dashboard">{translateToken value="Back to home page"}</a>
+
+                {if ($T_EXECUTION.pass == 0 && $T_CAN_EXECUTE_AGAIN)}
+                    <a class="btn btn-warning retake-test-action" href="javascript:void(0);">{translateToken value="Retake test"}</a>
+                {/if}
             </div>
         {/if}
     </form>
