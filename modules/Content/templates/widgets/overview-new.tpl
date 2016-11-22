@@ -581,7 +581,7 @@ _before_init_functions.push(function() {
           </li>
           <li class="subchild">
             <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%= model.professor_id %>" data-mode="user">
-              {translateToken value="Send Message"}
+              <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
             </a>
           </li>
           <% } %>
@@ -705,7 +705,7 @@ _before_init_functions.push(function() {
             </li>
             <li class="subchild">
               <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
-                {translateToken value="Send Message"}
+                <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
               </a>
             </li>
             <% } %>
