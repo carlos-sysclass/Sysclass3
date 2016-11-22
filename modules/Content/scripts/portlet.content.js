@@ -934,6 +934,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.renderCourse();
 				this.renderUnit();
 
+				this.renderTabs();
+
 				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
 			
@@ -966,6 +968,21 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				//this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
 				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
+			},
+			renderTabs : function() {
+				this.$(".widget-tabs-container a[data-toggle='tab']")
+					.on('shown.bs.tab', function (e) {
+						console.warn($(e.target).data('settingUpdate'));
+
+						this.model.set("content_current_tab", $(e.target).data('settingUpdate'));
+						//this.model.save();
+  						//e.target // newly activated tab
+  						//e.relatedTarget // previous active tab
+					}.bind(this));
+
+				var current_tab = this.model.get("content_current_tab");
+				this.$(".widget-tabs-container a[data-toggle='tab'][data-setting-update='" + current_tab + "']")
+					.tab('show');
 			},
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
@@ -1816,9 +1833,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	mod.programsCollection = null;
 	mod.progressCollection = null;
 
-	mod.on("start", function() {
-		//var userSettingsModel = new userSettingsModelClass();
-		//
+	this.listenTo(app, "settings.sysclass", function() {
 		var contentInfo = $SC.getResource("content_widget_data");
 
 		mod.programsCollection = new this.collections.programs({
@@ -1836,7 +1851,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			collection : mod.programsCollection,
 			el: '#content-widget'
 		});
-
 	});
 
 	/*
