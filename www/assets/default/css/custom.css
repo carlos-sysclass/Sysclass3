@@ -2599,6 +2599,10 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   padding-left: 3px;
   padding-right: 3px;
 }
+
+.institution-button-container {
+  padding: 6px 10px;
+}
 .institution-button-container .row .col-md-6 {
   padding-right: 5px;
   padding-left: 5px;
@@ -2611,3 +2615,15 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   padding-right: 5px;
 }
 
+.institution-button-container.total-rows-1 {
+  margin-top: 57px;
+}
+.institution-button-container.total-rows-2 {
+  margin-top: 38px;
+}
+.institution-button-container.total-rows-3 {
+  margin-top: 19px;
+}
+.institution-button-container.total-rows-4 {
+  margin-top: 0px;
+}
