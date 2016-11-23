@@ -77,7 +77,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->context['*config*'] = null;
 
         if (file_exists($filename)) {
-            $this->context['*config*'] = yaml_parse_file($filename);
+            $this->context['*config*'] = $this->yaml->parseFile($filename);
         }
 
     }

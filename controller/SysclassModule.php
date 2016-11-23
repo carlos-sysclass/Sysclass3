@@ -618,6 +618,10 @@ abstract class SysclassModule extends BaseSysclassModule
                 }
             }
 
+            if (is_array($model_info['bindVars'])) {
+                $filterData = $model_info['bindVars'];
+            }
+
             if (!empty($filter)) {
 
                 if (!is_array($filter)) {

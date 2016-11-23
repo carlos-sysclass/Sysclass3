@@ -644,16 +644,23 @@ _before_init_functions.push(function() {
         }
       %>
       <% if (completed) { %>
-        <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
-          {translateToken value="Completed"}
-        </span>
+        <% if (_.size(model.units) == 0) { %>
+          <span class="andamento">
+            <i class="fa fa-warning" aria-hidden="true"></i>
+            {translateToken value="No units avaliable"}
+          </span>
+        <% } else { %>
+          <span class="concluido">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            {translateToken value="Completed"}
+          </span>
+        <% } %>
       <% } %>
     </td>
 
     <!-- Status -->
     <td  width="15%" class="text-center">
-    <% if (completed || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
+    <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
       </span>
@@ -661,7 +668,12 @@ _before_init_functions.push(function() {
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
       </span>
+    <% } else if (_.size(model.units) == 0) { %>
+      <span class="pendente tooltips" data-original-title="{translateToken value="Not avaliable"}" data-placement="top">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </span>
     <% } else { %>
+
       <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top">
         <i class="fa fa-circle" aria-hidden="true"></i>
       </span>

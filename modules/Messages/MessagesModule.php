@@ -158,8 +158,6 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
             $block_context = $this->getConfig("widgets\\messages.inbox\context");
 
-            //var_dump($block_context);
-            //exit;
             $this->putItem("messages_block_context", $block_context);
 
             return array(

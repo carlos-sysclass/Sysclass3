@@ -45,4 +45,11 @@ class Message extends Model
             $this->user_id = $user->id;
         }
     }
+
+    public static function findTree() {
+        $list = self::find(func_get_args());
+        var_dump(func_get_args());
+        return $list;
+        //var_dump($list->toArray());
+    }
 }
