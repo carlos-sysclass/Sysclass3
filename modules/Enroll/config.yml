@@ -179,7 +179,10 @@ models:
     class: Sysclass\Models\Enrollments\CourseUsers
     exportMethod: ["toFullArray", ["User", "Course"]]
     acl:
+      create: 
+        resource: Enroll
+        action: myself
       edit:
         resource: Enroll
-        action: edit
+        action: users
 
