@@ -257,14 +257,16 @@ abstract class SysclassModule extends BaseSysclassModule
 
 
         $model_info = $this->model_info[$model];
+        $data = $this->request->getJsonRawBody(true);
 
         $this->setArgs(array(
             'model' => $model,
+            'data'  => $data
         ));
 
-        if ($this->isResourceAllowed("create", $model_info)) {
+        if ($this->isResourceAllowed("create", $model_info, $model, $data)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
-            $data = $this->request->getJsonRawBody(true);
+            
 
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -408,12 +410,12 @@ abstract class SysclassModule extends BaseSysclassModule
         ));
         $model_info = $this->model_info[$model];
 
-        if ($this->isResourceAllowed("edit", $model_info)) {
+        $data = $this->request->getJsonRawBody(true);
+
+        if ($this->isResourceAllowed("edit", $model_info, $model, $data)) {
 
         //if ($allowed = $this->isUserAllowed("edit")) {
             if ($itemModel) {
-
-                $data = $this->request->getJsonRawBody(true);
 
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -616,6 +618,10 @@ abstract class SysclassModule extends BaseSysclassModule
                     $modelFilters = $model_info['listMethod'][1];
                     $model_info['listMethod'] = $model_info['listMethod'][0];
                 }
+            }
+
+            if (is_array($model_info['bindVars'])) {
+                $filterData = $model_info['bindVars'];
             }
 
             if (!empty($filter)) {

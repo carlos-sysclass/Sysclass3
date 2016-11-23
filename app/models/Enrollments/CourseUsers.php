@@ -27,18 +27,37 @@ class CourseUsers extends Model
 
     }
 
+    public function beforeValidation() {
+        $depinj = DI::getDefault();
+        $translator = $depinj->get("translate");
+
+        $user = $depinj->get("user");
+        if (is_null($this->user_id)) {
+            $this->user_id = $user->id;
+        } else {
+            // CHECK IF THE USER HAS PERMISSION TO INCLUDE ANOTHER USER
+            if ($this->user_id != $user->id) {
+                $acl = $depinj->get("acl");
+                if (!$acl->isUserAllowed(null, "enroll", "users")) {
+                    $message = new Message(
+                        $translator->translate("You don't have access to this resource."
+                        ),
+                        null,
+                        "danger"
+                    );
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+        }
+    }
+
     public function beforeValidationOnCreate() {
         $depinj = DI::getDefault();
         $translator = $depinj->get("translate");
         if (is_null($this->token)) {
             $random = new \Phalcon\Security\Random();
             $this->token = $random->uuid();
-        }
-
-        if (is_null($this->user_id)) {
-            
-            $user = $depinj->get("user");
-            $this->user_id = $user->id;
         }
 
         // CHECK FOR ENROLLMENT PARAMETERS
@@ -82,7 +101,7 @@ class CourseUsers extends Model
         
         
         // CREATE THE PAYMENT RECORDS
-    }    
+    }
 
     public static function getUserProgress($full = false) {
         $user = \Phalcon\DI::getDefault()->get("user");

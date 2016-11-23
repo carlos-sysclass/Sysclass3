@@ -17,4 +17,7 @@ widgets:
 models:
   me: 
     class: Sysclass\Models\Messages\Message
+    listMethod: ["find", ["user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
+    bindVars : 
+      user_id: !user id
     exportMethod: ["toFullArray", ["Groups", "Users"]]
