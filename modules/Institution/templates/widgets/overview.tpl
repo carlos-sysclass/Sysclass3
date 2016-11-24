@@ -48,7 +48,6 @@
 {$total=$variables|count}
 
 <div class="institution-button-container total-rows-{($total/2)|ceil}">
-
 	{foreach $variables as $variable}
 
 		{if $variable@index is div by 2}
@@ -59,7 +58,7 @@
 	            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
 	        </a>
 		</div>
-		{if $variable@iteration is div by 2 || $variable@last}
+		{if ($variable@iteration is div by 2) || ($variable@last)}
 			</div>
 		{/if}
 
