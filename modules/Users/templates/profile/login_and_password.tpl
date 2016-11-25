@@ -1,3 +1,4 @@
+{if !$T_CONFIGURATION.enable_email_login}
 <div class="form-group col-md-6 checkunique-me" data-check-url="/module/users/check-login">
 	<label class="control-label">{translateToken value="Login"}</label>
     <div class="input-icon right">
@@ -6,7 +7,8 @@
         <input type="text" name="login" class="form-control " autocomplete="off" data-rule-remote="/module/users/check-login" data-msg-remote="{translateToken value='Please pick another username'}" />
     </div>
 </div>
-<div class="form-group col-md-6">
+{/if}
+<div class="form-group {if !$T_CONFIGURATION.enable_email_login}col-md-12{else}col-md-12{/if}">
 	<label class="control-label">{translateToken value="New Password"}</label>
 	<input type="password" name="new-password" class="form-control password_strength" autocomplete="off" />
     <span class="pwstrength_viewport_progress"></span>

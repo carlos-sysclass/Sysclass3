@@ -429,6 +429,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             }
         }
 
+        if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {
+            $curriculum = new UserCurriculum();
+            $data['curriculum']['id'] = $model->id;
+            $curriculum->assign($data['curriculum']);
+            $curriculum->save();
+        }
+
         return true;
     }
 
