@@ -61,7 +61,7 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
         });
 
         // BIND TO DEFAULT CALLER
-        $(".dialogs-messages-send-action").on("click", function(e) {
+        $("body").delegate(".dialogs-messages-send-action", "click", function(e) {
             e.preventDefault();
             var model = new mod.models.message();
 
