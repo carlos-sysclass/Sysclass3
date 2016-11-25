@@ -62,6 +62,33 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 	        		}
 	    		});
 
+                this.listenTo(this.tableView, "action.datatable", function(data, item, model) {
+                    if ($(item).hasClass("datatable-option-approve")) {
+
+
+						item
+							.tooltip('disable')
+							.find("i.fa")
+							.addClass("fa-refresh fa-spin");
+
+                    	console.warn(data, item, model);
+                    	var model = new mod.models.enroll.user(data);
+                    	model.set('approved', 1);
+                    	model.save();
+
+                    	window.setTimeout(function() {
+                    		item.hide(500);
+                    	}, 1500);
+                    	
+                    	/*
+                        var itemModelClass = app.module("crud.models").itemModelClass;
+                        var model = new itemModelClass(data);
+                        app.module("dialogs.enroll.users").dialogView.setModel(model);
+                        app.module("dialogs.enroll.users").dialogView.open();
+                        */
+                    }
+                }.bind(this));
+
                 var self = this;
 
                 this.select2Obj = this.$(".select2-me");
@@ -117,18 +144,22 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
             	// UPDATE 
             	this.model = model;
 
-            	this.select2Obj.select2("destroy");
+				this.select2Obj.select2("destroy");
 				this.select2Obj.data("url", "/module/enroll/datasource/users/combo/" + JSON.stringify({
-					enroll_id : this.model.get("id"),
+					enroll_id : this.model.get("enroll_id"),
+					course_id : this.model.get("course_id"),
 					exclude : true
 				}));
+
+				console.warn(this.model.toJSON());
 
 
 				this.tableView
 					.putVar('enroll_id', this.model.get("enroll_id"))
 					.putVar('course_id', this.model.get("course_id"))
 					.setUrl("/module/enroll/datasource/users/datatable/" + JSON.stringify({
-						enroll_id : this.model.get("enroll_id")
+						enroll_id : this.model.get("enroll_id"),
+						course_id : this.model.get("course_id"),
 					}) + "?block");
 
             	//app.module("ui").handleSelect2(this.$el);

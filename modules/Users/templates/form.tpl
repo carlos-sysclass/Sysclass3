@@ -12,6 +12,17 @@
 					<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled Courses"}</a>
 				</li>
 			{/if}
+			{if (isset($T_SECTION_TPL['users.details']) &&  ($T_SECTION_TPL['users.details']|@count > 0))}
+				<li class="">
+					<a href="#tab_1_4" data-toggle="tab">{translateToken value="Details"}</a>
+				</li>
+			{/if}
+
+			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
+				<li class="">
+					<a href="#tab_1_3" data-toggle="tab">{translateToken value="Address"}</a>
+				</li>
+			{/if}
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
@@ -105,6 +116,16 @@
 		        </div>
 				<div class="clearfix"></div>
 				-->
+
+				{has_role role="Teacher" user_id="" assign="isTeacher"}
+
+				<h5 class="form-section margin-bottom-100">
+					<i class="fa fa-camera"></i>
+					{translateToken value="Teacher Info"}
+				</h5>
+				{include file="./profile/curriculum.tpl"}
+				<div class="clearfix"></div>
+
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 				    {foreach $T_SECTION_TPL['permission'] as $template}
 				        {include file=$template}
@@ -116,6 +137,22 @@
 				    {foreach $T_SECTION_TPL['enroll'] as $template}
 				        {include file=$template}
 				    {/foreach}
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['users.details']) &&  ($T_SECTION_TPL['users.details']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_4">
+				    {foreach $T_SECTION_TPL['users.details'] as $template}
+			        	{include file=$template}
+				    {/foreach}
+				    <div class="clearfix"></div>
+				</div>
+			{/if}
+			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
+				<div class="tab-pane fade in" id="tab_1_3">
+				    {foreach $T_SECTION_TPL['address'] as $template}
+			        	{include file=$template}
+				    {/foreach}
+				    <div class="clearfix"></div>
 				</div>
 			{/if}
 		</div>

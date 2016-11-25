@@ -151,30 +151,50 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 		*/
 
-		var programDescriptionTabViewClass = Backbone.View.extend({
+		var programDescriptionTabViewClass = baseChildTabViewClass.extend({
 			template : _.template($("#tab_program_description-template").html(), null, {variable : 'model'}),
 			initialize: function() {
 				console.info('portlet.content/programDescriptionTabViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
+
+				this.navigationView 	= new navigationViewClass({
+					el : this.$(".navbar-program"),
+					collection : mod.programsCollection.getCurrentPrograms.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getProgramIndex.bind(mod.programsCollection)
+				});
 				this.render();
 
+				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+			},
+			setModel : function(model) {
+				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
+
+				this.render();
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
-				this.$el.empty().append(this.template(this.model.toJSON()));
+				this.$(".program-description-content").empty().append(this.template(this.model.toJSON()));
 
+				this.navigationView.render();
 				this.renderProgress();
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/programDescriptionTabViewClass::renderProgress');
-				var totalUnits = mod.progressCollection.getTotalPendingPrograms(mod.programsCollection.getCurrentPrograms());
+				var totalUnits = mod.progressCollection.getTotalPrograms(mod.programsCollection.getCurrentPrograms());
 
 				if (totalUnits > 0) {
-					$(".program-indicator span").html(totalUnits);
-					$(".program-indicator").show();
+					$(".program-indicator span.counter").html(totalUnits).show();
 				} else {
-					$(".program-indicator").hide();
+					$(".program-indicator span.counter").hide();
+				}
+
+				if (totalUnits > 1) {
+					$(".program-indicator span.singular").hide();
+					$(".program-indicator span.plural").show();
+				} else {
+					$(".program-indicator span.singular").show();
+					$(".program-indicator span.plural").hide();
 				}
 			},
 		});
@@ -285,15 +305,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				//var totalUnits = mod.progressCollection.getTotalPendingCourses(mod.programsCollection.getCurrentCourses());
+				//var totalUnits = mod.progressCollection.getTotalCourses();
 				var totalUnits = mod.programsCollection.getCurrentCourses().size();
 
-				//if (totalUnits > 0) {
-					$(".course-indicator span").html(totalUnits);
-					$(".course-indicator").show();
-				//} else {
-				//	$(".course-indicator").hide();
-				//}
+				if (totalUnits > 0) {
+					$(".course-indicator span.counter")
+						.html(totalUnits)
+						.show();
+				} else {
+					$(".course-indicator span.counter").hide();
+				}
+
+				if (totalUnits > 1) {
+					$(".course-indicator span.singular").hide();
+					$(".course-indicator span.plural").show();
+				} else {
+					$(".course-indicator span.singular").show();
+					$(".course-indicator span.plural").hide();
+				}
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentCourses();
@@ -464,13 +493,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
-
-
-
-
-
-
-
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -489,15 +511,22 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
-				//var totalUnits = mod.progressCollection.getTotalPendingUnits(mod.programsCollection.getCurrentUnits());
-				var totalUnits = mod.programsCollection.getCurrentUnits().size();
+				var totalUnits = mod.progressCollection.getTotalCoursesUnits(mod.programsCollection.getCurrentCourses());
+				
 
-				//if (totalUnits > 0) {
-					$(".unit-indicator span").html(totalUnits);
-					$(".unit-indicator").show();
-				//} else {
-				//	$(".unit-indicator").hide();
-				//}
+				if (totalUnits > 0) {
+					$(".unit-indicator span.counter").html(totalUnits).show();
+				} else {
+					$(".unit-indicator span.counter").hide();
+				}
+
+				if (totalUnits > 1) {
+					$(".unit-indicator span.singular").hide();
+					$(".unit-indicator span.plural").show();
+				} else {
+					$(".unit-indicator span.singular").show();
+					$(".unit-indicator span.plural").hide();
+				}
 			},
 
 
@@ -905,6 +934,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.renderCourse();
 				this.renderUnit();
 
+				this.renderTabs();
+
 				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
 			
@@ -913,17 +944,45 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.$(".program-title").html(this.collection.getCurrentProgram().get("name"));
 				this.$(".program-count").html(this.collection.getCurrentPrograms().size());
 
+				this.programDropdownView.setCollection(this.collection.getCurrentPrograms());
+
 				this.courseDropdownView.setCollection(this.collection.getCurrentCourses());
 			},
 			renderCourse : function() {
-				this.$(".course-title").html(this.collection.getCurrentCourse().get("name"));
+				var course = this.collection.getCurrentCourse();
+				if (course) {
+					this.$(".course-title").html(course.get("name"));
+				} else {
+					this.$(".course-title").html();
+				}
 				this.$(".course-count").html(this.collection.getCurrentCourses().size());
 
 				this.unitDropdownView.setCollection(this.collection.getCurrentUnits());
 			},
 			renderUnit : function() {
-				this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
+				var unit = this.collection.getCurrentUnit();
+				if (unit) {
+					this.$(".unit-title").html(unit.get("name"));
+				} else {
+					this.$(".unit-title").html();
+				}
+				//this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
 				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
+			},
+			renderTabs : function() {
+				this.$(".widget-tabs-container a[data-toggle='tab']")
+					.on('shown.bs.tab', function (e) {
+						console.warn($(e.target).data('settingUpdate'));
+
+						this.model.set("content_current_tab", $(e.target).data('settingUpdate'));
+						//this.model.save();
+  						//e.target // newly activated tab
+  						//e.relatedTarget // previous active tab
+					}.bind(this));
+
+				var current_tab = this.model.get("content_current_tab");
+				this.$(".widget-tabs-container a[data-toggle='tab'][data-setting-update='" + current_tab + "']")
+					.tab('show');
 			},
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
@@ -940,6 +999,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
             			portlet : this.$el
 					});
 					*/
+
+					this.programDropdownView = new entityDropdownViewClass({
+						el : this.$(".program-dropdown")
+					});
 
 					this.courseDropdownView = new entityDropdownViewClass({
 						el : this.$(".course-dropdown")
@@ -997,6 +1060,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 						//this.courseUnitsTabView.showContentArea();
 						//this.courseUnitsTabView.showContentSidebar();
+					}.bind(this));
+
+					this.listenTo(this.programDropdownView, "dropdown-item.selected", function(programModel) {
+						mod.programsCollection.moveToProgram(programModel.get("id"));
 					}.bind(this));
 
 					this.listenTo(this.courseDropdownView, "dropdown-item.selected", function(courseModel) {
@@ -1227,21 +1294,37 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getContentProgress : function(id) {
 				return _.findWhere(this.get("contents"), {"content_id" : id});
 			},
+			getTotalPrograms : function(programs) {
+				if (_.isUndefined(programs)) {
+					var progressUnits = this.get("programs");
+					return _.size(progressUnits);
+				} else {
+					return programs.size();
+				}
+			},
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
 
-				console.warn(progressPrograms);
+				//console.warn(progressPrograms);
 
 				var total = programs.reduce(function(count, program) {
 				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
 				  
-				  if (parseFloat(progress.factor) == 1) {
+				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 				    return count;
 				  }
 				  return count + 1;
 				}, 0);
 
 				return total;
+			},
+			getTotalCourses : function(courses) {
+				if (_.isUndefined(courses)) {
+					var progressUnits = this.get("courses");
+					return _.size(progressUnits);
+				} else {
+					return courses.size();
+				}
 			},
 			getTotalPendingCourses : function(courses) {
 				var progressCourses = this.get("courses");
@@ -1249,43 +1332,85 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var total = courses.reduce(function(count, course) {
 				  var progress = _.findWhere(progressCourses, {class_id : course.get("id")});
 				  
-				  if (parseFloat(progress.factor) == 1) {
+				  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 				    return count;
 				  }
 				  return count + 1;
 				}, 0);
 
 				return total;
+			},
+			getTotalUnits : function(units) {
+				if (_.isUndefined(units)) {
+					var progressUnits = this.get("units");
+					return _.size(progressUnits);
+				} else {
+					return units.size();
+				}
+			},
+			getTotalCoursesUnits : function(courses) {
+				var total = courses.reduce(function(count, item, i) {
+					var units = item.getUnits();
+					if (units) {
+						return count + units.size();
+					}
+					return count;
+				}, 0);
+
+				return total;
+				//var progressCourses = this.get("units");				
 			},
 			getTotalCompleteUnits : function(units) {
 
 				var progressUnits = this.get("units");
 
-				var total = units.reduce(function(count, unit) {
-				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
-				  
-				  if (parseFloat(progress.factor) == 1) {
-				    return count + 1;
-				  }
-				  return count;
-				}, 0);
+				if (_.isUndefined(units)) {
+					var total = progressUnits.reduce(function(count, progress) {
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count + 1;
+					  }
+					  return count;
+					}, 0);
 
-				return total;
+					return total;
+				} else {
+					var total = units.reduce(function(count, unit) {
+					  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+					  
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count + 1;
+					  }
+					  return count;
+					}, 0);
+
+					return total;
+				}
 			},
 			getTotalPendingUnits : function(units) {
 
 				var progressUnits = this.get("units");
 
-				var total = units.reduce(function(count, unit) {
-				  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
-				  
-				  if (parseFloat(progress.factor) == 1) {
-				    return count;
-				  }
-				  return count + 1;
-				}, 0);
+				if (_.isUndefined(units)) {
+					var total = progressUnits.reduce(function(count, progress) {
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count;
+					  }
+					  return count + 1;
+					}, 0);
 
-				return total;
+					return total;
+				} else {
+					var total = units.reduce(function(count, unit) {
+					  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+					  
+					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
+					    return count;
+					  }
+					  return count + 1;
+					}, 0);
+
+					return total;
+				}
 			}
 		})	
 	};
@@ -1313,6 +1438,33 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.listenTo(this, "reset", this.flatenTree.bind(this));
 				//this.listenTo(this, "course.changed", this.recalculateUnitIndex.bind(this));
+			},
+			updateProgramIndex : function() {
+				// DESTROY DEPENDENT COLLECTIONS
+				this.courses = null;
+				this.units = null;
+				this.contents = null;
+
+				// CREATE NEW ONES
+				
+				// UPDATE THE SERVER TO RECEIVE NEW VARS
+				$.ajax(
+					"/module/content/set-pointer",
+					{
+						async : false,
+						method : 'POST',
+						data : {
+							scope : 'program',
+							entity_id : this.current.program_id
+						},
+						dataType : 'json',
+						success : function(data, textStatus, jqXHR) {
+							this.current = data;
+
+							this.trigger("course.changed", this.getCurrentCourse());
+						}.bind(this)
+					}
+				);
 			},
 			updateCourseIndex : function() {
 				// DESTROY DEPENDENT COLLECTIONS
@@ -1412,6 +1564,42 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   					this.getCurrentUnit()
 				);
 			},
+			toPreviousProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex <= 0) {
+					return false;
+				}
+				programIndex--;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
+			toNextProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex >= this.size()) {
+					return false;
+				}
+				programIndex++;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
+			moveToProgram : function(program_id) {
+				var model = this.findWhere({id : program_id});
+				//var model = this.courses.findWhere({id : course_id});
+				//var courseIndex = this.getCurrentCourses().indexOf(model);
+				var programIndex = this.indexOf(model);
+				if (programIndex >= 0) {
+					// CALCULATE NEW POINTERS
+					this.current.program_id = program_id;
+					this.updateProgramIndex();
+
+					this.trigger("program.changed", model, programIndex);
+
+				}
+			},
 			moveToCourse : function(course_id) {
 				var model = this.courses.findWhere({id : course_id});
 				var courseIndex = this.getCurrentCourses().indexOf(model);
@@ -1490,7 +1678,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			// COLLECTIONS
 			getCurrentPrograms : function() {
-				return this;
+				if (_.isNull(this.programs)) {
+					this.programs = this;
+
+					this.listenTo(this.programs, "previous", this.toPreviousProgramIndex.bind(this));
+					this.listenTo(this.programs, "next", this.toNextProgramIndex.bind(this));
+				}
+				return this.programs;
 			},
 			getCurrentCourses : function() {
 				if (_.isNull(this.courses)) {
@@ -1506,14 +1700,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getCurrentUnits : function() {
 				if (_.isNull(this.units)) {
 					var course = this.getCurrentCourse();
-					if (course.get("units") instanceof mod.collections.units) {
-						this.units = course.get("units");
+					if (!_.isUndefined(course)) {
+						if (course.get("units") instanceof mod.collections.units) {
+							this.units = course.get("units");
+						} else {
+							this.units = new mod.collections.units(course.get("units"));
+						}
+						this.listenTo(this.units, "previous", this.toPreviousUnitIndex.bind(this));
+						this.listenTo(this.units, "next", this.toNextUnitIndex.bind(this));
 					} else {
-						this.units = new mod.collections.units(course.get("units"));
+						this.units = new mod.collections.units();
 					}
 
-					this.listenTo(this.units, "previous", this.toPreviousUnitIndex.bind(this));
-					this.listenTo(this.units, "next", this.toNextUnitIndex.bind(this));
 				}
 
 				return this.units;
@@ -1635,9 +1833,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	mod.programsCollection = null;
 	mod.progressCollection = null;
 
-	mod.on("start", function() {
-		//var userSettingsModel = new userSettingsModelClass();
-		//
+	this.listenTo(app, "settings.sysclass", function() {
 		var contentInfo = $SC.getResource("content_widget_data");
 
 		mod.programsCollection = new this.collections.programs({
@@ -1655,7 +1851,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			collection : mod.programsCollection,
 			el: '#content-widget'
 		});
-
 	});
 
 	/*

@@ -6,6 +6,73 @@ use Phalcon\DI,
 
 class Model extends \Phalcon\Mvc\Model
 {
+    protected static $_translate = false;
+    protected static $_translateFields = [];
+
+    public function translate() {
+        static::$_translate = true;
+
+        if (count(static::$_translateFields) > 0) {
+            //var_dump(get_class($this), static::$_translateFields);
+            $DepInject = DI::getDefault();
+            $translator = $DepInject->get("translate");
+            foreach(static::$_translateFields as $fieldKey) {
+                $this->{$fieldKey} = $translator->translate($this->{$fieldKey});
+            }
+
+        }
+
+        return $this;
+    }
+    public function toAdditionalArray($relAliases = null, $itemData = null, $extended = false) {
+
+        if (is_null($itemData)) {
+            $itemData = $this->toArray();    
+        }
+        
+        if (is_array($relAliases)) {
+            foreach($relAliases as $index => $alias) {
+                if (!array_key_exists($alias, $itemData)) {
+                    $alias = ucfirst(strtolower($alias));
+                    $methodName = "get{$alias}";
+
+                    if (is_numeric($index)) {
+                        $key = strtolower($alias);
+                    } else {
+                        $key = $index;
+                    }
+                    $itemRel = $this->{$methodName}();
+
+                    $exportMethod = "toArray";
+                    if ($extended) {
+                        $exportMethod = "toFullArray";
+                    }
+
+                    if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
+                        $itemData[$key] = array();
+                        foreach($itemRel as $sub) {
+                            if (static::$_translate) {
+                                $sub->translate();
+                            }
+                            $itemData[$key][] = $sub->{$exportMethod}();
+                        }
+                    } else {
+                        if ($itemRel) {
+                            if (static::$_translate) {
+                                $itemRel->translate();
+                            }
+                            $itemData[$key] = $itemRel->{$exportMethod}();
+                        } else {
+                            $itemData[$key] = null;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return $itemData;
+    }
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
 
         if (is_null($itemData)) {
@@ -24,18 +91,25 @@ class Model extends \Phalcon\Mvc\Model
                 }
                 $itemRel = $this->{$methodName}();
 
+                $exportMethod = "toArray";
                 if ($extended) {
-                    if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
-                        $itemData[$key] = array();
-                        foreach($itemRel as $sub) {
-                            $itemData[$key][] = $sub->toFullArray();
+                    $exportMethod = "toFullArray";
+                }
+
+                if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
+                    $itemData[$key] = array();
+                    foreach($itemRel as $sub) {
+                        if (static::$_translate && method_exists([$sub, 'translate'])) {
+                            $sub->translate();
                         }
-                    } else {
-                        $itemData[$key] = $itemRel->toFullArray();
+                        $itemData[$key][] = $sub->{$exportMethod}();
                     }
                 } else {
                     if ($itemRel) {
-                        $itemData[$key] = $itemRel->toArray();
+                        if (static::$_translate && method_exists([$itemRel, 'translate'])) {
+                            $itemRel->translate();
+                        }
+                        $itemData[$key] = $itemRel->{$exportMethod}();
                     } else {
                         $itemData[$key] = null;
                     }
@@ -60,6 +134,9 @@ class Model extends \Phalcon\Mvc\Model
 
                     $itemRel = $this->{$methodName}();
                     if ($itemRel) {
+                        if (static::$_translate && method_exists([$itemRel, 'translate'])) {
+                            $itemRel->translate();
+                        }
                         $itemData[$key] = $itemRel->toArray();
                     } else {
                         $itemData[$key] = null;
@@ -75,11 +152,59 @@ class Model extends \Phalcon\Mvc\Model
 
                     $itemRel = $this->{$methodName}();
 
-                    if ($itemRel) {
-                        $itemData[$key] = $itemRel->toArray();
-                    } else {
-                        $itemData[$key] = null;
+                    $exportMethod = "toArray";
+                    if ($extended) {
+                        $exportMethod = "toFullArray";
                     }
+                    
+                    if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
+                        $itemData[$key] = array();
+                        foreach($itemRel as $sub) {
+                            if (static::$_translate && method_exists([$sub, 'translate'])) {
+                                $sub->translate();
+                            }
+                            $itemData[$key][] = $sub->{$exportMethod}();
+                        }
+                    } else {
+                        if ($itemRel) {
+                            if (static::$_translate && method_exists([$itemRel, 'translate'])) {
+                                $itemRel->translate();
+                            }
+                            $itemData[$key] = $itemRel->{$exportMethod}();
+                        } else {
+                            $itemData[$key] = null;
+                        }
+                    }
+
+                    /*
+                    if ($extended) {
+                        if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
+                            $itemData[$key] = array();
+                            foreach($itemRel as $sub) {
+                                if ($this->_translate) {
+                                    $sub->translate();
+                                }
+                                $itemData[$key][] = $sub->toFullArray();
+                            }
+                        } else {
+                            //var_dump($key, get_class($itemRel));
+                            if ($this->_translate) {
+                                $itemRel->translate();
+                            }
+                            $itemData[$key] = $itemRel->toFullArray();
+                        }
+                    } else {
+                        if ($itemRel) {
+                            if ($this->_translate) {
+                                $itemRel->translate();
+                            }
+
+                            $itemData[$key] = $itemRel->toArray();
+                        } else {
+                            $itemData[$key] = null;
+                        }
+                    }
+                    */
                 }
             }
         }

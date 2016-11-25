@@ -3,7 +3,9 @@ namespace Sysclass\Models\Users;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Acl\Resource,
-    Sysclass\Models\Acl\RolesUsers;
+    Sysclass\Models\Acl\RolesUsers,
+    Phalcon\DI,
+    Phalcon\Mvc\Model\Query;
 
 class User extends Model
 {
@@ -20,6 +22,15 @@ class User extends Model
         $this->hasOne("id", "Sysclass\\Models\\Users\\UserAvatar", "user_id",  array('alias' => 'avatar'));
 
         $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
+
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id", "enroll_id",
+            "Sysclass\\Models\\Enrollments\\Enroll",
+            "id",
+            array('alias' => 'Enrollments')
+        );
 
         $this->hasMany(
             "id",
@@ -40,7 +51,9 @@ class User extends Model
                 'bind' => (new \DateTime('now'))->format('Y-m-d H:i:s')
             )
         );
-
+        /**
+          * @deprecated 3.2 Use the "Programs" identifier below
+         */
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",
@@ -119,6 +132,7 @@ class User extends Model
             )
         );
     }
+
 
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
         $item = parent::toFullArray($manyAliases, $itemData, $extended);
@@ -281,6 +295,73 @@ class User extends Model
         }
         return false;
     }
+
+    public function getAvaliablePrograms() {
+
+        $where = [];
+        //$subwhere = [];
+        $params = ['user_id' => $this->id];
+        /*
+
+        if (!is_null($search)) {
+            $where[] = "LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)";
+            $params['query'] = '%' . $search . '%';
+        }
+        */
+
+        $subsql = "SELECT cu.course_id FROM Sysclass\\Models\\Enrollments\\CourseUsers cu WHERE user_id = :user_id:";
+
+        $where[] = sprintf("ec.course_id NOT IN (%s)", $subsql);
+
+        $sql = "SELECT p.*
+            FROM Sysclass\\Models\\Enrollments\\Courses ec
+            LEFT JOIN Sysclass\\Models\\Content\\Program p ON (ec.course_id = p.id)";
+
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+        $query = new Query($sql, DI::getDefault());
+        $courses   = $query->execute($params);
+
+        //var_dump($users->toArray());
+
+        return $courses;
+    }
+
+    public function getAvaliableEnrollments() {
+
+        $where = [];
+        //$subwhere = [];
+        $params = ['user_id' => $this->id];
+        /*
+
+        if (!is_null($search)) {
+            $where[] = "LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)";
+            $params['query'] = '%' . $search . '%';
+        }
+        */
+
+        $subsql = "SELECT cu.course_id FROM Sysclass\\Models\\Enrollments\\CourseUsers cu WHERE user_id = :user_id:";
+
+        $where[] = sprintf("enrollment.course_id NOT IN (%s)", $subsql);
+
+        $sql = "SELECT program.*, enrollment.* 
+            FROM Sysclass\\Models\\Enrollments\\Courses enrollment
+            LEFT JOIN Sysclass\\Models\\Content\\Program program ON (enrollment.course_id = program.id)";
+
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+        $query = new Query($sql, DI::getDefault());
+        $courses   = $query->execute($params);
+
+        //var_dump($users->toArray());
+
+        return $courses;
+    }
+
 
 
 }

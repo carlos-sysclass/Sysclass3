@@ -35,7 +35,8 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             $summary['link'] = array(
                 'text'  => $this->translate->translate('View'),
-                'link'  => $this->getBasePath() . "open/" . $test_id
+                'link'  => $this->getBasePath() . "open/" . $test_id,
+                'link'  => 'javascript: void(0)'
             );
         }
 
@@ -306,6 +307,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             //exit;
             //
+
             $this->putItem("test", $testData);
             $this->createClientContext("execute", null, "open");
 
@@ -399,7 +401,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $this->module("settings")->put("test_execution_id", $executionId);
 
                 //$this->putModuleScript();
-
+                //
                 $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
 
                 $this->putItem("test", $testData);
@@ -513,14 +515,19 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
 
                 // LOAD USER PROGRESS ON THIS TEST
-                
+                // CHECK IF THE USER CAN EXECUTE AGAIN
+
+                $this->putBlock("tests.info.dialog");
 
                 $this->module("settings")->put("test_execution_id", $execution_id);
 
                 $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+                
 
                 $this->putItem("test", $testData);
                 $this->putItem("execution", $executionData);
+                $this->putItem("can_execute_again", $execution->canExecuteAgain($this->user));
+                
 
                 $this->createClientContext("execute", null, "execute");
 
@@ -567,7 +574,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "question") {
                 $itemModel = $this->model("tests/question");
                 $messages = array(
-                    'success' => "Question created with success",
+                    'success' => "Question created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -581,7 +588,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $_GET['redirect'] = "0";
 
                 $messages = array(
-                    'success' => "Test created with success",
+                    'success' => "Test created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again",
                     'try_limit' => "You can not run this test more often"
                 );
@@ -679,7 +686,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                     return $this->createRedirectResponse(
                         $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
-                        $this->translate->translate("Test completed with success"),
+                        $this->translate->translate("Test completed."),
                         "success"
                     );
                 }
@@ -708,7 +715,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "question") {
                 $itemModel = $this->model("tests/question");
                 $messages = array(
-                    'success' => "Question removed with success",
+                    'success' => "Question removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
             } else {

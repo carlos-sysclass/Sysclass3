@@ -35,7 +35,7 @@ class ErrorController extends AbstractSysclassController
 
 		$this->putItem("error", "500");
 		$this->putItem("error_class", "500");
-		$this->putItem("error_title", $this->translate->translate('Oops! But the system halted!'));
+		$this->putItem("error_title", $this->translate->translate('Oops! But the system halted.'));
 		$this->putItem("error_message", $this->translate->translate('We can not find the page you\'re looking for.'));
 
 		parent::display('pages/error/main.tpl');

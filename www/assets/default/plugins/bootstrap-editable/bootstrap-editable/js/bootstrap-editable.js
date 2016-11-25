@@ -537,7 +537,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         **/
         validate: null,
         /**
-        Success callback. Called when value successfully sent on server and **response status = 200**.
+        Success callback. Called when value sent on server and **response status = 200**.
         Usefull to work with json response. For example, if your backend response can be <code>{success: true}</code>
         or <code>{success: false, msg: "server error"}</code> you can check it inside this callback.
         If it returns **string** - means error occured and string is shown as error message.

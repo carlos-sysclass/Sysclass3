@@ -1,6 +1,7 @@
 <?php
 use Phalcon\Mvc\Router\Annotations as Router,
 	Phalcon\Mvc\Dispatcher as MvcDispatcher,
+    Phalcon\Cli\Dispatcher as CliDispatcher,
     Phalcon\Mvc\Dispatcher\Exception as MvcDispatcherException;
 
 if (APP_TYPE === "WEB") {
@@ -27,9 +28,7 @@ if (APP_TYPE === "WEB") {
 
             $resource = sprintf("Sysclass\\Modules\\%s\\%sModule", $mod, $mod);
             $prefix = sprintf("/module/%s", strtolower($mod));
-            $router->addResource($resource , $prefix);
-
-
+            $router->addResource($resource, $prefix);
         }
 
     	return $router;
@@ -41,6 +40,9 @@ if (APP_TYPE === "WEB") {
         // Attach a listener for type "dispatch"
         // 
         $eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("authentication"));
+        $eventsManager->attach('dispatch:beforeExecuteRoute', function ($event, $dispatcher) use ($di) {
+            $di->get("messagebus")->initialize();
+        });
         //$eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("queue"));
 
         $eventsManager->attach('dispatch:afterExecuteRoute', function ($event, $dispatcher) use ($di) {
@@ -69,7 +71,30 @@ if (APP_TYPE === "WEB") {
 
     }, true);
 } else {
+    $di->set('dispatcher', function () use ($eventsManager, $di) {
+        $eventsManager->attach('dispatch:beforeExecuteRoute', function ($event, $dispatcher) use ($di) {
+            $di->get("messagebus")->initialize();
+        });
+
+        $dispatcher = new CliDispatcher();
+
+        // Bind the eventsManager to the view component
+        $dispatcher->setEventsManager($eventsManager);
+        $dispatcher-> setNamespaceName("Sysclass\Tasks");
+
+        return $dispatcher;
+
+    }, true);
+    /*
+    $eventsManager->attach('dispatch', function ($event, $dispatcher) {
+        var_dump(func_get_args());
+        var_dump(1);
+        exit;
+        $di->get("messagebus")->initialize();
+    });
     $dispatcher = $di->get("dispatcher");
-    $dispatcher-> setNamespaceName("Sysclass\Tasks");
+    */
+    
+
 }
 

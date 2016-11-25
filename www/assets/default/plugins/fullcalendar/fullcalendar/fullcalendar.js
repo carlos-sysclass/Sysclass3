@@ -3553,7 +3553,7 @@ var Grid = fc.Grid = RowRenderer.extend({
 
 
 	// Renders and assigns an `el` property for each fill segment. Generic enough to work with different types.
-	// Only returns segments that successfully rendered.
+	// Only returns segments that rendered.
 	// To be harnessed by renderFill (implemented by subclasses).
 	// Analagous to renderFgSegEls.
 	renderFillSegEls: function(type, segs) {
@@ -3768,7 +3768,7 @@ Grid.mixin({
 
 
 	// Renders and assigns an `el` property for each foreground event segment.
-	// Only returns segments that successfully rendered.
+	// Only returns segments that rendered.
 	// A utility that subclasses may use.
 	renderFgSegEls: function(segs, disableResizing) {
 		var view = this.view;
@@ -5131,13 +5131,13 @@ var DayGrid = Grid.extend({
 
 
 	// Renders a set of rectangles over the given segments of days.
-	// Only returns segments that successfully rendered.
+	// Only returns segments that rendered.
 	renderFill: function(type, segs, className) {
 		var nodes = [];
 		var i, seg;
 		var skeletonEl;
 
-		segs = this.renderFillSegEls(type, segs); // assignes `.el` to each seg. returns successfully rendered segs
+		segs = this.renderFillSegEls(type, segs); // assignes `.el` to each seg. returns rendered segs
 
 		for (i = 0; i < segs.length; i++) {
 			seg = segs[i];
@@ -6357,7 +6357,7 @@ var TimeGrid = Grid.extend({
 
 
 	// Renders a set of rectangles over the given time segments.
-	// Only returns segments that successfully rendered.
+	// Only returns segments that rendered.
 	renderFill: function(type, segs, className) {
 		var segCols;
 		var skeletonEl;
@@ -6370,7 +6370,7 @@ var TimeGrid = Grid.extend({
 
 		if (segs.length) {
 
-			segs = this.renderFillSegEls(type, segs); // assignes `.el` to each seg. returns successfully rendered segs
+			segs = this.renderFillSegEls(type, segs); // assignes `.el` to each seg. returns rendered segs
 			segCols = this.groupSegCols(segs); // group into sub-arrays, and assigns 'col' to each seg
 
 			className = className || type.toLowerCase();

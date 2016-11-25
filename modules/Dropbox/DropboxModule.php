@@ -138,7 +138,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
            if ($model == "me") {
                 $itemModel = $this->model("dropbox");
                 $messages = array(
-                    'success' => "File removed with success",
+                    'success' => "File removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your file. Please check your data and try again"
                 );
             } else {
@@ -315,7 +315,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
             ))->getItems();
 
             if (count($files) > 0 && $itemModel->deleteItem($file_id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("File removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("File removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

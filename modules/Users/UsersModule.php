@@ -2,6 +2,7 @@
 namespace Sysclass\Modules\Users;
 
 use Phalcon\DI,
+    Sysclass\Forms\BaseForm,
     Phalcon\Mvc\Model\Message,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UserCurriculum,
@@ -18,7 +19,7 @@ use Phalcon\DI,
 /**
  * @RoutePrefix("/module/users")
  */
-class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, \ISectionMenu, INotifyable
+class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider, \IBreadcrumbable, \IActionable, \IWidgetContainer, /* \ISectionMenu, */ INotifyable
 {
     /* ILinkable */
     public function getLinks() {
@@ -77,6 +78,54 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 //$self->putItem("users_block_context", $block_context);
 
                 $self->putSectionTemplate("dialogs", "dialogs/select");
+
+                return true;
+            },
+            'users.details' => function($data, $self) {
+                //$country_codes = Country::findAll();
+                //$country_codes = $self->model("i18n/country")->getItems();
+                //$self->putItem("country_codes", $country_codes);
+
+                $userFields = array(
+                    'how_did_you_know',
+                    'supplier_name',
+                    'cnpj',
+                    'is_supplier'
+                );
+
+                $enrollments = $self->user->getEnrollments();
+
+                $info = array(
+                    'fields' => array()
+                );
+
+                foreach($enrollments as $enroll) {
+                    $fields = $enroll->getEnrollFields();
+
+                    foreach($fields as $enrollfield) {
+                        if (in_array($enrollfield->field->name, $userFields)) {
+                            $enrollfield->translate();
+
+                            $enrollfield->weight = 12;
+
+                            $info['fields'][] = $enrollfield->toAdditionalArray(["field", "options"]);
+                        }
+                    }
+                }
+
+                $form = new BaseForm(null, $info);
+
+                $info = [];
+
+                foreach ($form as $key => $value) {
+                    $value->weight = 12;
+                    $info['fields'][] = $value->toArray();
+
+                }
+
+                $self->putItem("user_details_info", $info);
+
+                $self->putSectionTemplate("users.details", "blocks/details");
 
                 return true;
             }
@@ -172,6 +221,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 			$data = array();
 			$data['user_details'] = $userDetails;
+
 			$data['notification'] = array();
 
 			foreach($modules as $key => $mod) {
@@ -210,6 +260,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 	}
 
     /* ISectionMenu */
+    /*
     public function getSectionMenu($section_id) {
         if ($section_id == "topbar") {
 
@@ -228,21 +279,14 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 );
             }
 
+            var_dump($this->translate->translate('My Programs'));
+            exit;
+
             if (count($courses) > 0) {
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-graduation-cap',
-                    'text'      => $this->translate->translate('Programs'),
-                    /*
-                    'external'  => array(
-                        'link'  => $this->getBasePath(),
-                        'text'  => $this->translate->translate('See my statement')
-                    ),
-                    */
-                    'link'  => array(
-                        'link'  => $this->getBasePath(),
-                        'text'  => $this->translate->translate('Courses')
-                    ),
+                    'text'      => $this->translate->translate('My Programs'),
                     'type'      => '',
                     'items'     => $items,
                     'extended'  => false,
@@ -253,6 +297,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
         return false;
     }
+    */
 
     /* INotifyable */
     public function getAllActions() {
@@ -264,7 +309,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             case "start-password-request" : {
                 // SEND EMAIL PASSWORD RESET 
                 $data = $event->data;
-                // var_dump($event->timestamp);
 
                 $user = User::findFirstById($data['id']);
 
@@ -383,6 +427,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $userGroup->group_id = $group['id'];
                 $userGroup->save();
             }
+        }
+
+        if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {
+            $curriculum = new UserCurriculum();
+            $data['curriculum']['id'] = $model->id;
+            $curriculum->assign($data['curriculum']);
+            $curriculum->save();
         }
 
         return true;

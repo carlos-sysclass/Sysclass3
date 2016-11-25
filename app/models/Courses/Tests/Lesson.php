@@ -60,11 +60,16 @@ class Lesson extends BaseLesson
 
         if ($executionQuestions->count() == 0) {
 
+            $questionsArray = $questions->toArray();
+            $questions_indexes = array_rand(
+                $questionsArray, 
+                min(intval($questions_size), count($questionsArray))
+            );
+            if (!is_array($questions_indexes)) {
+                $questions_indexes = array($questions_indexes);
+            }
 
-            $questions_indexes = array_rand($questions->toArray(), $questions_size);
-
-
-            
+           
             foreach($questions as $i => $question) {
                 if (in_array($i, $questions_indexes)) {
                     $result[] = $question;

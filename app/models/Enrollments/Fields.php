@@ -7,6 +7,10 @@ use Plico\Mvc\Model,
 
 class Fields extends Model
 {
+    protected static $_translateFields = array(
+        'label'
+    );
+
     public function initialize()
     {
         $this->setSource("mod_enroll_fields");
@@ -24,7 +28,7 @@ class Fields extends Model
     }
 
     public function toArray() {
-    	return $this->toFullArray(array('Field', 'Options'), parent::toArray());
+    	return $this->toAdditionalArray(array('Field', 'Options'), parent::toArray());
     }
 
     public static function setOrder($enroll_id, $order) {

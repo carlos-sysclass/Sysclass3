@@ -8,43 +8,33 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	}
 	var usersWidgetViewClass = Backbone.View.extend({
 	    
-	    events: {
-	    	"change :input[name='current_course']" : 'setCourse',
-	    },
 	    initialize: function() {
 	    	//current_course
 	    	console.info('panel.users/usersWidgetViewClass::initialize');
 
-	    	this.statsModel = new mod.models.course_stats();
+	    	//this.statsModel = new mod.models.course_stats();
 
-	    	this.overallProgressView = new overallProgressViewClass({
-	    		el : this.$("#progress-user"),
-	    		model : this.statsModel
-	    	});
+	    	//this.listenTo(this.model, "change:course_id", this.loadCourseDetails.bind(this));
 
-	    	this.listenTo(this.model, "change:course_id", this.loadCourseDetails.bind(this));
-
-	    	this.listenTo(this.statsModel, "sync", this.injectCourseDetails.bind(this));
+	    	//this.listenTo(this.statsModel, "sync", this.injectCourseDetails.bind(this));
 
 	    	//this.$(":input[name='current_course']").select2('val', this.model.get("course_id"));
 
-	    	var user_pointer = app.getResource("user_pointer");
+	    	//var user_pointer = app.getResource("user_pointer");
 
-	    	this.statsModel.set("id", user_pointer.program_id);
+	    	//this.statsModel.set("id", user_pointer.program_id);
 
-	    	this.statsModel.fetch();
+	    	//this.statsModel.fetch();
+	    	this.render();
 
+	    	this.listenTo(this.collection, "program.changed", this.render.bind(this));
 
+	    	
 	    },
 	    render: function(collection) {
-	    	console.info('panel.users/usersWidgetViewClass::render');
+	    	this.$(".course_name").html(this.collection.getCurrentProgram().get("name"));
 	    },
-	    setCourse : function(e,a,b,c,d) {
-	    	console.info('panel.users/usersWidgetViewClass::setCourse');
-
-	    	this.model.set("course_id", $(e.currentTarget).val());
-
-	    },
+		/*
 	    loadCourseDetails : function(model) {
 			console.info('panel.users/usersWidgetViewClass::loadCourseDetails');
 
@@ -87,18 +77,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 
 	    	//this.$(".total_classes").html(this.statsModel.get("total_classes"));
 	    	//this.$(".total_lessons").html(this.statsModel.get("total_lessons"));
-	    	/*
-	    	this.$(".progress-text").html(
-    			app.module("views").formatValue(
-					this.statsModel.get("progress.course"),
-					'decimal-custom',
-					'0.[00]%'
-    			)
-	    	);
-	    	*/
 
 	    	//this.$(".user-course-details").unblock();
 	    }
+	    */
   	});
 
 
@@ -106,8 +88,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		el: $('#progress-content'),
 		portlet: $('#courses-widget'),
 		initialize: function() {
-			this.listenTo(this.model, 'sync', this.render.bind(this));
+			this.listenTo(this.collection, 'sync', this.render.bind(this));
 			this.initializeElements();
+
+			this.render();
 
 		},
 		initializeElements : function() {
@@ -162,12 +146,13 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				this.model.get('lessons.completed'), this.model.get('lessons.total')
 			);
 			*/
+			//console.warn(this.collection.toJSON());
+
 			this.renderUnit(
-				this.model.get('lessons.completed'), this.model.get('lessons.total')
+				this.collection.getTotalCompleteUnits(), this.collection.getTotalUnits()
 			);
-
-
 		},
+		/*
 		renderCourse : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
@@ -242,6 +227,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			}
 		},
+		*/
 		renderUnit : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
@@ -270,20 +256,29 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	});
 
 	mod.on("start", function() {
-
+		/*
 		this.listenToOnce(app.userSettings, "sync", function(model, data, options) {
 			this.usersWidgetView = new usersWidgetViewClass({
 				el: '#users-panel',
 				model : app.userSettings,
 			});
 		}.bind(this));
+		*/
 	});
 
 	this.listenTo(app, "progress.started", function() {
-		this.listenTo(app.module("portlet.content").progressCollection, "sync", function() {
-			if (this.usersWidgetView) {
-				this.usersWidgetView.statsModel.fetch();
-			}
+		// LISTEN TO MODULE EVENTS TO UPDATE THE UI AS WELL
+		this.usersWidgetView = new usersWidgetViewClass({
+			el: '#users-panel',
+			//model : app.userSettings,
+			collection : app.module("portlet.content").programsCollection
 		});
+
+		this.overallProgressView = new overallProgressViewClass({
+	    	el : $("#progress-user"),
+	    	collection : app.module("portlet.content").progressCollection
+	    	//model : this.statsModel
+	    });
+
 	});
 });

@@ -4,18 +4,18 @@
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
+				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Description"}</a>
 			</li>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					{translateToken value="More Info"}
+					{translateToken value="Step 2 - Info"}
 				</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Courses"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses & Content"}</a>
 			</li>
 			{/if}
 			
@@ -40,6 +40,15 @@
 					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 				</div>
 
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Primary Language"}</label>
+					<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+					{foreach $T_LANGUAGES as $key => $value}
+						<option value="{$value.id}">{$value.name}</option>
+					{/foreach}
+					</select>
+				</div>
+				
 			    <h5 class="form-section margin-bottom-10 margin-top-20">
 			        <i class="fa fa-calendar"></i>
 			        {translateToken value="Course Duration"}

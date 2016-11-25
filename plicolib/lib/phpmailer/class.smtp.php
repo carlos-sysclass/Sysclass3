@@ -255,7 +255,7 @@ class SMTP {
 
   /**
    * Performs SMTP authentication.  Must be run after running the
-   * Hello() method.  Returns true if successfully authenticated.
+   * Hello() method.  Returns true if authenticated.
    * @access public
    * @param string $username
    * @param string $password

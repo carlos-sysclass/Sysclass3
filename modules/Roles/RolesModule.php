@@ -276,7 +276,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
             if ($userModel->save()) {
                 return $this->createAdviseResponse(
-                    $this->translate->translate("Role created with success"),
+                    $this->translate->translate("Role created."),
                     "success"
                 );
             } else {
@@ -332,7 +332,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             $itemModel = AclRole::findFirstById($id);
 
             if ($itemModel->delete() !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Role removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Role removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -414,28 +414,49 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     */
    
     protected function getDatatableItemOptions() {
-        return array(
+
+        $model_info = $this->model_info['me'];
+
+        $options = array(
             'edit'  => array(
                 'icon'  => 'fa fa-edit',
                 'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-primary datatable-actionable'
+                'class' => 'btn-sm btn-primary datatable-actionable tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Edit Role")
+                ]
             ),
             'users'  => array(
                 'icon'  => 'fa fa-user',
                 'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-info datatable-actionable'
+                'class' => 'btn-sm btn-info datatable-actionable tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Manage Users")
+                ]
             ),
             'permission'  => array(
                 'icon'  => 'fa fa-lock',
                 'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-warning datatable-actionable'
-            ),
-            'remove'    => array(
-                'icon'  => 'fa fa-remove',
-                'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-danger'
+                'class' => 'btn-sm btn-warning datatable-actionable tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Define permissions")
+                ]
             )
         );
+
+        
+        if ($this->isResourceAllowed("delete", $model_info)) {
+            $options['remove'] = array(
+                'icon'  => 'fa fa-remove',
+                'link'  => 'javascript:void(0);',
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Remove")
+                ]
+            );
+        }
+
+        return $options;
     }
     /**
      * [ add a description ]
@@ -465,13 +486,13 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("Role added to resource with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Role added to resource."), "success");
 
         } else {
             $roleResources->getFirst()->delete();
 
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("Role removed from resource with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("Role removed from resource."), "error");
         }
         return array_merge($response, $info);
     }
@@ -490,7 +511,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->save() !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("User Included with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User Included."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -515,7 +536,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->delete() !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("User removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("User removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -541,7 +562,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->save() !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Group Included with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group Included."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
@@ -565,7 +586,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
             ));
 
             if ($itemModel->delete() !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Group removed with success"), "success");
+                $response = $this->createAdviseResponse($this->translate->translate("Group removed."), "success");
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT

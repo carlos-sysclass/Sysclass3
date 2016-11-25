@@ -53,8 +53,9 @@ class LoginController extends \AbstractSysclassController
 		$this->putScript("plugins/uniform/jquery.uniform.min");
 
 		$this->putScript("plugins/modernizr/modernizr");
-		$this->putScript("plugins/imagesloaded/imagesloaded");
-		$this->putScript("plugins/bigvideo/bigvideo");
+		//$this->putScript("plugins/imagesloaded/imagesloaded");
+
+		$this->putComponent("bigvideo");
 
 		//$this->putScript("plugins/videoBG/jquery.videoBG");
 		$this->putScript("scripts/pages/login");
@@ -547,7 +548,7 @@ class LoginController extends \AbstractSysclassController
 					if ($postData['password'] === $postData['password-confirm']) {
 						$user->password = $this->authentication->hashPassword($postData['password'], $user);
 
-						$user->pending = 0;
+						//$user->pending = 0;
 						$user->reset_hash = null;
 
 						if ($user->save()) {
@@ -933,7 +934,7 @@ class LoginController extends \AbstractSysclassController
 
 				$this->redirect(
 					"login/reset",
-					$this->translate->translate("We'll send you an e-mail containing a link to reset your password. Please check your inbox."),
+					$this->translate->translate("You will receive an e-mail with the instructions to reset your password. Check your inbox."),
 					'success'
 				);
 			} else {

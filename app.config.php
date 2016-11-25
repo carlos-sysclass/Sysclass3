@@ -430,7 +430,7 @@ $loader->register();
 
 $di = new FactoryDefault();
 $eventsManager = new Phalcon\Events\Manager();
-$di->set("eventManager", $eventsManager);
+$di->set("eventsManager", $eventsManager);
 
 $di->set('db', function () use ($configuration, $eventsManager) {
 	$class = "Phalcon\\Db\\Adapter\\Pdo\\" . ucfirst($configuration['dbtype']);

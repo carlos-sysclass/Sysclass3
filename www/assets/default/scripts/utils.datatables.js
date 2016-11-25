@@ -18,7 +18,8 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				"click .datatable-option-check" : "checkItem",
 				"switchChange.bootstrapSwitch .datatable-option-switch" : "switchItem",
 				"click .datatable-actionable" : "doAction",
-				"click [data-datatable-action]" : "doAction"
+				"click [data-datatable-action]" : "doAction",
+				"click tbody td" : "_cellClickHandler"
 			},
 			options : null,
         	initialize : function(opt) {
@@ -93,7 +94,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        };
 
 		        if ($.fn.dataTable.isDataTable(this.$el)) {
-		        	//alert(1);
 		        	this.$el.DataTable().destroy();
 		        }
 
@@ -114,9 +114,15 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').select2(); // initialize select2 dropdown
+
+		        // DEFAULT EVENT HANDLERS
+				this.listenTo(this, "cellclick.datatable", this.onCellClick.bind(this));
         	},
         	destroy : function() {
 				this.oTable.api().destroy();
+        	},
+        	getApi : function() {
+        		return this.oTable.api();
         	},
         	recreate : function() {
         		/*
@@ -167,11 +173,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 
-
-
 				var model = this.getTableItemModel(data[0]);
-
-				console.warn(model.toJSON());
 
 				this.oTable
 					.api()
@@ -208,7 +210,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	redraw : function() {
         		this.oTable.api().draw(false);
         	},
-
         	/**
         	 * Get a variable from view bags
         	 * @param  {[type]} name [description]
@@ -227,7 +228,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				this._vars[name] = value;
 				return this;
 			},
-        	// 
         	/**
         	 * RETURN THE MODEL BASED ON ROW DATA, CAN BE OVERRIDEN
         	 * @param  {array} data the raw JSON data from selected / clicked row.
@@ -240,6 +240,20 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         		}
         		return new itemModelClass(data);
         	},
+
+        	// EVENT HANDLERS HELPERS
+        	_cellClickHandler : function(e) {
+        		var el = $(e.currentTarget);
+				var tr = el.closest('tr');
+    			var row = this.getApi().row(tr);
+        		var data = row.data();
+        		var model = this.getTableItemModel(data);
+
+        		this.trigger("cellclick.datatable", model, data, el);
+        	},
+        	onCellClick : function(model, data, el) {
+
+        	}
         	/**
         	 * Call the "destroy" method on referenced model 
         	 * @param  {Event} e JsEvent from button click

@@ -182,6 +182,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('css/videojs/video-js'),
 			'js'	=> array("plugins/videojs/video")
 		),
+		'bigvideo' => array(
+			'name'	=> 'bigvideo',
+			'css'	=> array('css/videojs/video-js', "css/bigvideo/bigvideo"),
+			'js'	=> array("plugins/videojs/video", "plugins/imagesloaded/imagesloaded", "plugins/bigvideo/bigvideo")
+		),
 		'select2' => array(
 			'name'	=> 'select2',
 			'css'	=> array('plugins/select2/select2_metro'),
@@ -194,7 +199,7 @@ $di->setShared('environment', function() use ($di) {
 		),
 		'datatables' => array(
 			'name'	=> 'datatables',
-			'css'	=> array('plugins/datatables/datatables'),
+			'css'	=> array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
 			'js'	=> array('plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
 
@@ -301,6 +306,18 @@ $di->setShared('environment', function() use ($di) {
 			'name' => 'noui-slider',
 			'css'	=> array('plugins/nouislider/nouislider'),
 			'js'	=> array('plugins/nouislider/nouislider')
+
+		),
+		'unslider' => array(
+			'name' => 'unslider',
+			'css'	=> array('plugins/unslider/unslider', 'plugins/unslider/unslider-dots'),
+			'js'	=> array('plugins/unslider/unslider-min')
+
+		),
+		'bxslider' => array(
+			'name' => 'bxslider',
+			'css'	=> array('plugins/bxslider/jquery.bxslider.min'),
+			'js'	=> array('plugins/bxslider/jquery.bxslider.min')
 
 		)
 	);

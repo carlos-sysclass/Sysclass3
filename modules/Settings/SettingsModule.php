@@ -21,7 +21,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
         'content_id',
         'unit_id',
         'course_id',
-        'program_id'
+        'program_id',
+        'content_current_tab'
     );
     
     protected $defaults = array(
@@ -90,6 +91,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             $this->response->setContentType('application/json', 'UTF-8');
             
             if ($results = $this->getSettings(true)) {
+                $userPrograms = $user->getCourses();
+                $results['programs_count'] = $userPrograms->count();
                 $results['user_id'] = $user->id;
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;
@@ -316,7 +319,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             if ($this->request->hasQuery('object')) {
                 $this->response->setJsonContent(
                     $this->createAdviseResponse(
-                        $this->translate->translate("System settings saved with success!"),
+                        $this->translate->translate("System settings saved."),
                         "success"
                     )
                 );
@@ -324,7 +327,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                 $this->response->setJsonContent(
                     $this->createRedirectResponse(
                         $this->getBasePath() . "edit/" . $itemModel->id,
-                        $this->translate->translate("System settings saved with success!"),
+                        $this->translate->translate("System settings saved."),
                         "success"
                     )
                 );

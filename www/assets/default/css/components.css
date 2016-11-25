@@ -1556,7 +1556,8 @@ Dropdown Menu Badges
   position: absolute;
   margin-top: 1px;
   right: 3px;
-  display: inline; }
+  display: inline;
+  width: 260px; }
 
 .dropdown-menu.badge-roundless {
   -webkit-border-radius: 0 !important;
@@ -6465,7 +6466,7 @@ Dropdown Checkboxes
     padding: 8px 20px;
     position: relative;
     white-space: nowrap;
-    line-height: 1.42857143;
+    line-height: 1.3;
     text-transform: uppercase; }
     .dropdown-menu-v2 > li > a:hover,
     .dropdown-menu-v2 > li > a:focus {
@@ -8130,7 +8131,7 @@ Portlets
     .portlet > .portlet-title > .caption {
       float: left;
       display: inline-block;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 18px;
       padding: 10px 0; }
       .portlet > .portlet-title > .caption.bold {
@@ -14719,7 +14720,7 @@ Timeline
     margin-top: -2px; }
   .timeline .timeline-body-content {
     font-size: 14px;
-    margin-top: 35px; }
+    /*margin-top: 35px;*/ }
   .timeline .timeline-body-img {
     width: 100px;
     height: 100px;

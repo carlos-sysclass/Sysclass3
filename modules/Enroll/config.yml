@@ -71,7 +71,22 @@ blocks:
       - mData: course.name
         label: Program
 
-      - mData: course.active
+      - mData: course.language.name
+        #sType: table-boolean
+        sClass: text-center
+        label: Language
+
+      - mData: signup_auto_approval
+        sType: table-boolean
+        sClass: text-center
+        label: Automatic approval
+
+      - mData: signup_enable_new_users
+        sType: table-boolean
+        sClass: text-center
+        label: Public enrollment
+
+      - mData: signup_active
         sType: table-boolean
         sClass: text-center
         label: Active
@@ -138,6 +153,11 @@ blocks:
         sClass: text-center
         label: Active
 
+      - mData: approved
+        sType: table-boolean
+        sClass: text-center
+        label: Approved
+
       - mData: options
         sType: table-options
         sClass: text-center
@@ -154,12 +174,15 @@ models:
     exportMethod: ["toFullArray", ["Field"]]
   courses: 
     class: Sysclass\Models\Enrollments\Courses
-    exportMethod: ["toFullArray", ["Enroll", "Course"]]
+    exportMethod: ["toExtendArray"]
   users: 
     class: Sysclass\Models\Enrollments\CourseUsers
     exportMethod: ["toFullArray", ["User", "Course"]]
     acl:
+      create: 
+        resource: Enroll
+        action: myself
       edit:
         resource: Enroll
-        action: edit
+        action: users
 

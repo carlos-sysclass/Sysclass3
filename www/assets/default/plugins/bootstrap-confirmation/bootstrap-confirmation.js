@@ -235,6 +235,7 @@
       if (!data && option == 'destroy') {
         return;
       }
+
       if (!data) {
         $this.data('bs.confirmation', (data = new Confirmation(this, options)));
       }

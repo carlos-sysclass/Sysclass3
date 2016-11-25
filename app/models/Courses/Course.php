@@ -46,7 +46,33 @@ class Course extends Model
                 'alias' => 'Coordinator',
             )
         );
+
+        $this->belongsTo(
+            "language_id",
+            "Sysclass\Models\I18n\Language",
+            "id",
+            array(
+                'alias' => 'language',
+            )
+        );
+
+        $this->belongsTo(
+            "image_id",
+            "Sysclass\Models\Dropbox\File",
+            "id",
+            array(
+                'alias' => 'Image',
+            )
+        );
     }
+/*
+    public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
+        $item = parent::toFullArray($manyAliases, $itemData, $extended);
+
+        var_dump($item);
+        return $item;
+        exit;
+    }*/
 
     public function calculateDuration(\DateTime $start) {
         switch($this->duration_type) {

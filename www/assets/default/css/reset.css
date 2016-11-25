@@ -12,7 +12,7 @@ h3 {
   font-size: 18px !important;
 }
 h4 {
-  font-size: 16px !important;
+  font-size: 14px !important;
 }
 h5 {
   font-size: 14px !important;
@@ -260,13 +260,14 @@ a:hover, a:focus {
   color: #fff;
   font-size: 16px;
   font-weight: lighter;
+  padding: 8px 15px;
 }
 .inter-navsuper-tabs .table {
   margin-bottom: 0;
 }
 .inter-navsuper-tabs .tab-content {
   border: 1px solid #ddd;
-  height: 430px;
+  height: 417px;
   max-height: 430px;
 }
 .inter-navsuper-tabs .table-tab {
@@ -276,11 +277,11 @@ a:hover, a:focus {
 .inter-navsuper-tabs .table-tab:first-child {
   border-top: none;
 }
-.inter-navsuper-tabs .table>thead>tr>th {
+.inter-navsuper-tabs .table > thead > tr > th {
   font-size: 14px;
-  color: #444;
+  color: #31708f;
+  font-weight: normal;
   text-transform: uppercase;
-  font-weight: 500;
 }
 inter-navsuper-tabs .table > thead > tr > th i.fa {
 margin:0 4px 0 0;
@@ -307,6 +308,15 @@ margin:0 4px 0 0;
 }
 .inter-navsuper .progress-indicator .fa {
   margin:2px 2px 2px 0px;
+}
+
+.inter-navsuper-tabs .table > thead > tr > th, .inter-navsuper-tabs .table > tbody > tr > td {
+  border-top: 0 none;
+  border-bottom: 1px solid #ddd;
+}
+
+.inter-navsuper-tabs .table > tbody > tr:last-child > td {
+  border-bottom: none;
 }
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
@@ -340,7 +350,7 @@ margin:0 4px 0 0;
   border-top: 0;
 }
 .inter-navsuper-tabs .table>tbody>tr>td, .inter-navsuper-tabs .table>tbody>tr>th, .inter-navsuper-tabs .table>tfoot>tr>td, .inter-navsuper-tabs .table>tfoot>tr>th {
-  padding: 15px 8px;
+  padding: 10px 8px;
   font-size: 13px;
   vertical-align: middle;
 }
@@ -406,42 +416,44 @@ margin:0 4px 0 0;
   color: #ff3b30;
 }
 .inter-navsuper-tabs .pendente i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .concluido {
   color: #05ae0e;
 }
 .inter-navsuper-tabs .concluido i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .andamento {
   color: #ff9500;
 }
 .inter-navsuper-tabs .andamento i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .fechado {
   color: #5d5d5d;
 }
 .inter-navsuper-tabs .fechado i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .inter-navsuper-tabs .avalialbe {
-  color: #1976d2;
+  color: #05ae0e;
 }
 .inter-navsuper-tabs .avalialbe i {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .unit-table .fa {
   font-size: 16px;
 }
 .inter-navsuper-tabs input {
+  /*
   width: 90%;
   background: transparent;
   border: none;
   font-style: italic;
   font-size: 24px;
   font-weight: lighter;
+  */
 }
 .inter-navsuper-tabs .btn {
   /*
@@ -469,11 +481,11 @@ margin:0 4px 0 0;
 }
 .dir-menu-bar li a {
   border-left: 1px solid #fff;
-  padding: 12px 13px;
   color: #fff;
-  width: 45px;
-  height: 42px;
+  height: 38px;
+  padding: 10px;
   text-align: center;
+  width: 40px;
 }
 .inter-navsuper-tabs h3 {
   font-size: 18px;
@@ -773,12 +785,13 @@ margin:0 4px 0 0;
 .unit-table tbody tr td:first-child {
 
 }
-#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a {
+#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a, .navbar-widget .navbar-nav > li > a {
     padding-bottom: 2px;
     padding-top: 2px;
     padding: 9px 10px;
+	text-transform: uppercase;
 }
-#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
+#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right, .navbar-widget .navbar-right {
     float: right !important;
     margin-right: 0 !important;
 }
@@ -801,11 +814,16 @@ margin:0 4px 0 0;
     -moz-osx-font-smoothing: grayscale;
 }
 .panel-body h2 {
-  margin: 14px 0 17px;
+  margin: 20px 0 14px;
 }
 .panel-body h2 small {
   font-weight: lighter;
 }
 .class="fa fa-book" {
   margin: 33px 33px 33px 33px;
+}
+
+.fc-left h2 {
+  font-size: 16px !important;
+  font-weight: 100;
 }

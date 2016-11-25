@@ -63,12 +63,12 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                             method : "PUT"
                         },
                         function() {
-                            alert('fcjsklfjklsdfjksd');
+                            //alert('fcjsklfjklsdfjksd');
                         }
                     );
                 },
                 comparator : function(first, last) {
-                    console.warn("COMPARATOR", first.get("position"), last.get("position"), parseInt(first.get("position")) < parseInt(last.get("position")));
+                    //console.warn("COMPARATOR", first.get("position"), last.get("position"), parseInt(first.get("position")) < parseInt(last.get("position")));
                     if (parseInt(first.get("position")) < parseInt(last.get("position"))) {
                         return -1;
                     }
@@ -164,7 +164,6 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                 }
 
                 this.dialogModule.setModel(this.model).getValue(function(item, model) {
-                    console.warn(item);
                     //self.addOne(model);
                     //self.refreshCounters();
                 });
@@ -238,9 +237,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                         modelClass : this.modelClass
                     });
                 }
-                console.warn(this.dialogModule)
                 this.dialogModule.setModel(this.model).getValue(function(item, model) {
-                    console.warn(item);
                     //self.addOne(model);
                     //self.refreshCounters();
                 });
@@ -388,7 +385,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
             initialize : function() {
 
                 this.model.on("change:admittance_type", function(model, value) {
-console.warn(this, this.$el);
+
                     this.$(".admittance-type-item").addClass("hidden");
                     this.$(".admittance-type-item.admittance-type-" + value).removeClass("hidden");
                 }.bind(this));
@@ -420,10 +417,8 @@ console.warn(this, this.$el);
                             collection : this.fieldsCollection
                         });
 
-                        console.warn(formView.model.get("enrollfields"));
 
                         this.fieldsCollection.reset(formView.model.get("enrollfields"));
-                        console.warn(this.fieldsCollection.toJSON());
                     }.bind(this));
                 }
             }

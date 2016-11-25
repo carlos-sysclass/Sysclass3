@@ -22,9 +22,7 @@
 						{if $setting.group != $group}
 							{continue}
 						{/if}
-
-        					{include "`$smarty.current_dir`/fields/`$setting.datatype`.tpl" T_FIELD=$setting}
-
+    					{include "`$smarty.current_dir`/fields/`$setting.datatype`.tpl" T_FIELD=$setting}
 						
 					{/foreach}
 						<!--

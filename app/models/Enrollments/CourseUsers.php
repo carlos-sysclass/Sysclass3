@@ -3,6 +3,7 @@ namespace Sysclass\Models\Enrollments;
 
 use Plico\Mvc\Model,
     Phalcon\DI,
+    Sysclass\Models\Enrollments\Courses as EnrollCourses,
     Phalcon\Mvc\Model\Message as Message,
     Phalcon\Mvc\Model\Query;
 
@@ -14,7 +15,9 @@ class CourseUsers extends Model
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => false));
-
+        /*
+        $this->belongsTo("status_id", "Sysclass\\Models\\Enrollments\\CourseUsersStatus", "id",  array('alias' => 'Status', 'reusable' => false));
+        */
 		$this->hasOne(
             array("course_id", "user_id"),
             "Sysclass\Models\Courses\CourseProgress",
@@ -24,19 +27,67 @@ class CourseUsers extends Model
 
     }
 
+    public function beforeValidation() {
+        $depinj = DI::getDefault();
+        $translator = $depinj->get("translate");
+
+        $user = $depinj->get("user");
+        if (is_null($this->user_id)) {
+            $this->user_id = $user->id;
+        } else {
+            // CHECK IF THE USER HAS PERMISSION TO INCLUDE ANOTHER USER
+            if ($this->user_id != $user->id) {
+                $acl = $depinj->get("acl");
+                if (!$acl->isUserAllowed(null, "enroll", "users")) {
+                    $message = new Message(
+                        $translator->translate("You don't have access to this resource."
+                        ),
+                        null,
+                        "danger"
+                    );
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+        }
+    }
+
     public function beforeValidationOnCreate() {
+        $depinj = DI::getDefault();
+        $translator = $depinj->get("translate");
         if (is_null($this->token)) {
             $random = new \Phalcon\Security\Random();
             $this->token = $random->uuid();
         }
-        
+
+        // CHECK FOR ENROLLMENT PARAMETERS
+        $enrollment = EnrollCourses::findFirstById($this->enroll_id);
+
+        if ($enrollment->signup_active) {
+            // @todo CHECK FOR ENROLLMENT DATES
+            if ($enrollment->signup_auto_approval) {
+                $this->approved = 1;
+            } else {
+                $this->approved = 0;
+            }
+        } else {
+            $message = new Message(
+                $translator->translate("This enrollment options is not avaliable right now"
+                ),
+                null,
+                "warning"
+            );
+            $this->appendMessage($message);
+            return false;
+        }
+
         $count = self::count(array(
             'conditions' => "user_id = ?0 AND course_id = ?1",
             'bind' => array($this->user_id, $this->course_id)
         ));
         if ($count > 0) {
             $message = new Message(
-                "It's already a enrollment registered. Please try again.",
+                $translator->translate("It's already a enrollment registered. Please try again."),
                 null,
                 "warning"
             );
@@ -50,7 +101,7 @@ class CourseUsers extends Model
         
         
         // CREATE THE PAYMENT RECORDS
-    }    
+    }
 
     public static function getUserProgress($full = false) {
         $user = \Phalcon\DI::getDefault()->get("user");
@@ -178,15 +229,43 @@ class CourseUsers extends Model
         //$this->eventsManager;
     }
 
-    public static function getUsersNotEnrolled($enroll_id, $search = null) {
-        if (is_null($search)) {
-            $sql = "SELECT u.* 
+    public static function getUsersNotEnrolled($filter, $search = null) {
+
+        $where = [];
+        $subwhere = [];
+        $params = [];
+
+        if (!is_null($search)) {
+            $where[] = "LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)";
+            $params['query'] = '%' . $search . '%';
+        }
+
+        $subsql = "SELECT user_id FROM Sysclass\\Models\\Enrollments\\CourseUsers";
+
+        if (is_array($filter) && array_key_exists('course_id', $filter)) {
+            $subwhere[] = "course_id = :course_id:";
+            $params['course_id'] = $filter['course_id'];
+        }
+
+        if (is_array($filter) && array_key_exists('enroll_id', $filter)) {
+            $subwhere[] = "enroll_id = :enroll_id:";
+            $params['enroll_id'] = $filter['enroll_id'];
+        }
+
+        if (count($subwhere) > 0) {
+            $subsql .= " WHERE " . implode(" AND ", $subwhere);
+            $where[] = sprintf("u.id NOT IN (%s)", $subsql);
+        }
+
+
+        //if (is_null($search)) {
+        $sql = "SELECT u.* 
             FROM Sysclass\\Models\\Users\\User u
-            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)
-            WHERE (cu.enroll_id <> :enroll_id: OR cu.enroll_id IS NULL)
-            ";
-            $query = new Query($sql, DI::getDefault());
-            $users   = $query->execute(array("enroll_id" => $role_id));
+            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)";
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+        /*
         } else {
             $sql = "SELECT u.*
             FROM Sysclass\\Models\\Users\\User u
@@ -197,11 +276,48 @@ class CourseUsers extends Model
             $query = new Query($sql, DI::getDefault());
             $users   = $query->execute(array("enroll_id" => $enroll_id, 'query' => '%' . $search . '%'));
         }
+        */
+
+        $query = new Query($sql, DI::getDefault());
+        $users   = $query->execute($params);
+
+        //var_dump($users->toArray());
 
         return $users;
     }
 
-    public static function getUsersEnrolled($enroll_id, $search = null) {
+    public static function getUsersEnrolled($filter, $search = null) {
+
+        $where = [];
+        $params = [];
+
+        if (!is_null($search)) {
+            $where[] = "LOWER(CONCAT(u.name, ' ', u.surname)) LIKE LOWER(:query:)";
+            $params['query'] = '%' . $search . '%';
+        }
+
+        if (is_array($filter) && array_key_exists('course_id', $filter)) {
+            $where[] = "(cu.course_id = :course_id:)";
+            $params['course_id'] = $filter['course_id'];
+        }
+
+        if (is_array($filter) && array_key_exists('enroll_id', $filter)) {
+            $where[] = "(cu.enroll_id = :enroll_id:)";
+            $params['enroll_id'] = $filter['enroll_id'];
+        }
+
+
+        //if (is_null($search)) {
+        $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active,
+                cu.approved
+            FROM Sysclass\\Models\\Users\\User u
+            LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)";
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+
+        /*
         if (is_null($search)) {
             $sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active
             FROM Sysclass\\Models\\Users\\User u
@@ -220,6 +336,10 @@ class CourseUsers extends Model
             $query = new Query($sql, DI::getDefault());
             $users   = $query->execute(array("enroll_id" => $role_id, 'query' => '%' . $search . '%'));
         }
+        */
+        $query = new Query($sql, DI::getDefault());
+        $users   = $query->execute($params);
+
 
         return $users;
     }

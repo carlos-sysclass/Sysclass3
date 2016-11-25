@@ -65,16 +65,26 @@ $SC.module("blocks.enroll.courses", function(mod, app, Backbone, Marionette, $, 
                     this.tableView.refresh();
                 }.bind(this));
 
+                this.listenTo(app.module("dialogs.enroll.settings").dialogView, "hide.dialog", function(a) {
+                    this.tableView.refresh();
+                });
 
                 this.listenTo(this.tableView, "action.datatable", function(data, item) {
-                    console.warn(data, item);
-
                     if ($(item).hasClass("datatable-option-enroll")) {
                         var itemModelClass = app.module("crud.models").itemModelClass;
                         var model = new itemModelClass(data);
                         app.module("dialogs.enroll.users").dialogView.setModel(model);
                         app.module("dialogs.enroll.users").dialogView.open();
                     }
+
+                    if ($(item).hasClass("datatable-option-settings")) {
+                        var itemModelClass = app.module("crud.models").itemModelClass;
+                        var model = new itemModelClass(data);
+                        app.module("dialogs.enroll.settings").dialogView.setModel(model);
+                        app.module("dialogs.enroll.settings").dialogView.open();
+                    }
+
+
                 }.bind(this));
 
             }
@@ -87,6 +97,7 @@ $SC.module("blocks.enroll.courses", function(mod, app, Backbone, Marionette, $, 
     });
 
     $SC.module("crud.views.edit").on("start", function() {
+
         if (!mod._isInitialized && this.getForm) {
             mod.start(this.getForm());
         }

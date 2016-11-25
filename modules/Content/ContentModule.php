@@ -16,33 +16,12 @@ use Sysclass\Models\Content\Program,
 /**
  * @RoutePrefix("/module/content")
  */
-class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBlockProvider
+class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBlockProvider, \ISectionMenu
 {
     /* IWidgetContainer */
 	public function getWidgets($widgetsIndexes = array(), $caller = null) {
         
 		if (in_array('content.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
-
-			// TODO MOVE TO YOUR OWN COMPONENT
-			//$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
-            $this->putComponent("bootstrap-switch");
-            $this->putComponent("icheck");
-            $this->putComponent("easy-pie-chart");
-            $this->putComponent("videojs");
-
-            $this->putCss("css/reset");
-			$this->putScript("plugins/holder");
-            
-			//$this->putScript("plugins/videojs/vjs.youtube");
-
-			//$this->putModuleScript("models.courses");
-            $this->putBlock("content.info.dialog");
-
-            $this->putModuleScript("portlet.content");
-            $this->putBlock("tests.info.dialog");
-            //$this->putBlock("lessons.dialogs.exercises");
-            
-            //$this->putBlock("content.unit.dialog");
 
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);
@@ -63,6 +42,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 }
             }
 
+            
             // LOAD THE CURRENT 
             if (!is_null($checkScope)) {
                 $userPointers = Unit::getContentPointers(null, $checkScope, $checkValue);
@@ -74,6 +54,31 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             $tree = Program::getUserContentTree();
 
             if ($userPointers) {
+
+                // TODO MOVE TO YOUR OWN COMPONENT
+                //$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+                $this->putComponent("bootstrap-switch");
+                $this->putComponent("icheck");
+                $this->putComponent("easy-pie-chart");
+                $this->putComponent("videojs");
+
+                $this->putCss("css/reset");
+                $this->putScript("plugins/holder");
+                
+                //$this->putScript("plugins/videojs/vjs.youtube");
+
+                //$this->putModuleScript("models.courses");
+                $this->putBlock("content.info.dialog");
+                $this->putBlock("messages.send.dialog");
+                
+
+                $this->putModuleScript("portlet.content");
+                $this->putBlock("tests.info.dialog");
+                //$this->putBlock("lessons.dialogs.exercises");
+                
+                //$this->putBlock("content.unit.dialog");
+
+
                 $data = array(
                     'current' => array(
                         'program_id'    => $userPointers['program']->id,
@@ -84,41 +89,14 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     'tree' => array_values($tree),
                     'progress' => $this->getUserProgressRequest()
                 );
-
-                //var_dump($settings);
-                //exit;
                 /*
-                if (!@isset($settings['course_id']) || !is_numeric($settings['course_id'])) {
-                    // GET FIRST COURSE FORM USER LIST
-                    $enrollment = CourseUsers::findFirst(array(
-                        'conditions'    => 'user_id = ?0 AND status_id = 1',
-                        'bind' => array($currentUser->id)
-                        //'bind' => '123456'
-                    ));
-
-                    if (!is_object($enrollment)) {
-                        // CHECK FOR CLASS-ONLY ENROLLMENTS
-                    } else {
-                        $this->db->Execute(sprintf(
-                            "DELETE FROM user_settings WHERE user_id = %d AND item = '%s'",
-                            $currentUser->id,
-                            'course_id'
-                        ));
-                        $this->db->Execute(sprintf(
-                            "INSERT INTO user_settings (user_id, item, value) VALUES (%d, '%s', '%s')",
-                            $currentUser->id,
-                            'course_id',
-                            $enrollment->course_id
-                        ));
-                        if (@isset($settings['class_id'])) {
-                            // GET THE FIRST CLASS FROM COURSE
-
-                        }
-
-                    }
-
-                }
+                var_dump($settings);
+                var_dump($checkScope);
+                var_dump($checkValue);
+                var_dump($data['progress']);
+                exit;
                 */
+
     			return array(
     				'content.overview' => array(
     					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
@@ -173,6 +151,51 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
         );
     }
 
+    public function getSectionMenu($section_id) {
+        if ($section_id == "topbar") {
+
+            $this->putScript("scripts/ui.menu.content");
+
+            $courses = $this->user->getCourses();
+
+            $items = array();
+            foreach($courses as $course) {
+                $items[] = array(
+                    'link' => "javascript:void(0);",
+                    'text' => sprintf("#%s %s", $course->id, $course->name),
+                    'attrs' => array(
+                        'data-entity-id' => $course->id
+                    )
+                );
+            }
+
+            if (count($courses) > 0) {
+                $menuItem = array(
+                    'id'        => "users-topbar-menu",
+                    'icon'      => ' fa fa-graduation-cap',
+                    'text'      => $this->translate->translate('My Programs'),
+                    /*
+                    'external'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('See my statement')
+                    ),
+                    
+                    'link'  => array(
+                        'link'  => $this->getBasePath(),
+                        'text'  => $this->translate->translate('Courses')
+                    ),
+                    */
+                    'type'      => '',
+                    'items'     => $items,
+                    'extended'  => false,
+                );
+
+                return $menuItem;
+            }
+        }
+        return false;
+    }
+
     
 
 
@@ -218,11 +241,11 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
         if ($status == 1) {
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("User added to course with success"), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("User added to course."), "success");
         } elseif ($status == -1) {
             // USER EXCLUÍDO AO GRUPO
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("User removed from course with success"), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("User removed from course."), "error");
         }
         return array_merge($response, $info);
     }
@@ -239,7 +262,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
         if (in_array($data['scope'], $scopes)) {
             $userPointers = Unit::getContentPointers(null, $data['scope'], $data['entity_id']);
- 
+
             $result = array(
                 'program_id'    => $userPointers['program']->id,
                 'course_id'     => $userPointers['course']->id,
@@ -254,6 +277,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 $userSetting->value = $userPointers[$scope]->id;
 
                 $userSetting->save();
+
             }
 
             return $result;
@@ -266,8 +290,14 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
      * @Get("/datasource/progress")
      */
     public function getUserProgressRequest() {
+        $progress = Program::getUserProgressTree();
+
+        return $progress;
+
+        /*
         $userPointers = Unit::getContentPointers();
-        //var_dump($userPointers);
+        var_dump($progress);
+        //exit;
         
         $result = array();
 
@@ -339,7 +369,10 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 }
             }
         }
+        var_dump($result);
+        exit;
         return $result;
+        */
     }
 
 }

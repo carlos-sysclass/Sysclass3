@@ -257,10 +257,16 @@ abstract class SysclassModule extends BaseSysclassModule
 
 
         $model_info = $this->model_info[$model];
+        $data = $this->request->getJsonRawBody(true);
 
-        if ($this->isResourceAllowed("create", $model_info)) {
+        $this->setArgs(array(
+            'model' => $model,
+            'data'  => $data
+        ));
+
+        if ($this->isResourceAllowed("create", $model_info, $model, $data)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
-            $data = $this->request->getJsonRawBody(true);
+            
 
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -277,6 +283,8 @@ abstract class SysclassModule extends BaseSysclassModule
             $itemModel = new $model_class();
             $itemModel->assign($data);
 
+            $itemModel->id = null;
+
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
 
             if (
@@ -290,7 +298,10 @@ abstract class SysclassModule extends BaseSysclassModule
             if (call_user_func(array($itemModel, $createMethod))) {
                 $event_data = array_merge($data, array('_args' => func_get_args()));
                 //$this->eventsManager->collectResponses(true);
+
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
+
+                // @todo CREATE A WAY TO CUSTOMIZED MODULE MESSAGES ON OPERATIONS
 
                 //$responses = $this->eventsManager->getResponses();
 
@@ -302,7 +313,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Created with success"),
+                            $this->translate->translate("Success."),
                             "success"
                         ),
                         $itemData 
@@ -310,24 +321,31 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('status')) {
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Created with success"),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
                     $response = $this->createNonAdviseResponse(
-                        $this->translate->translate("Created with success"),
+                        $this->translate->translate("Success."),
                         "success"
                     );
                     if (!is_null($this->responseInfo)) {
                         $response = array_merge($response, $this->responseInfo);
                     }
                     $this->response->setJsonContent($response);
+                } elseif ($this->request->hasQuery('reload')) {
+                    $this->response->setJsonContent(
+                        $this->createReloadResponse(
+                            $this->translate->translate("Success."),
+                            "success"
+                        )
+                    );
                 } else {
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("Created with success"),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     );
@@ -392,14 +410,12 @@ abstract class SysclassModule extends BaseSysclassModule
         ));
         $model_info = $this->model_info[$model];
 
+        $data = $this->request->getJsonRawBody(true);
 
-        
-        if ($this->isResourceAllowed("edit", $model_info)) {
+        if ($this->isResourceAllowed("edit", $model_info, $model, $data)) {
 
         //if ($allowed = $this->isUserAllowed("edit")) {
             if ($itemModel) {
-
-                $data = $this->request->getJsonRawBody(true);
 
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -526,29 +542,24 @@ abstract class SysclassModule extends BaseSysclassModule
      */
     public function deleteItemRequest($model, $id)
     {
+
+        $this->response->setContentType('application/json', 'UTF-8');
+
         $itemModel = $this->getModelData($model, $id);
 
         $model_info = $this->model_info[$model];
 
         $resource = null;
         $action = "delete";
-        if (
-            array_key_exists('acl', $model_info) && 
-            array_key_exists('delete', $model_info['acl']) &&
-            is_array($model_info['acl']['delete'])
-        ) {
-            $acl = $model_info['acl']['delete'];
-            $resource = $acl['resource'];
-            $action = @isset($acl['action']) ? $acl['action'] : $action;
-        }
+
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
             'object' => $itemModel
         ));
+        $model_info = $this->model_info[$model];
 
-        if ($allowed = $this->isUserAllowed($action, $resource)) {
-
+        if ($this->isResourceAllowed($action, $model_info)) {
             if ($itemModel) {
 
                 $this->eventsManager->fire("module-{$this->module_id}:beforeModelDelete", $itemModel);
@@ -556,7 +567,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 if ($itemModel->delete()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
 
-                    $response = $this->createAdviseResponse($this->translate->translate("Removed with success"), "success");
+                    $response = $this->createAdviseResponse($this->translate->translate("Removed."), "success");
                 } else {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
                     $response = $this->invalidRequestError("", "warning");
@@ -607,6 +618,10 @@ abstract class SysclassModule extends BaseSysclassModule
                     $modelFilters = $model_info['listMethod'][1];
                     $model_info['listMethod'] = $model_info['listMethod'][0];
                 }
+            }
+
+            if (is_array($model_info['bindVars'])) {
+                $filterData = $model_info['bindVars'];
             }
 
             if (!empty($filter)) {
@@ -669,6 +684,7 @@ abstract class SysclassModule extends BaseSysclassModule
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
+            
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
@@ -754,13 +770,19 @@ abstract class SysclassModule extends BaseSysclassModule
             $options['edit']  = array(
                 'icon'  => 'fa fa-pencil',
                 'link'  => $baseLink . 'edit/%id$s',
-                'class' => 'btn-sm btn-primary'
+                'class' => 'btn-sm btn-primary tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Edit'
+                )
             );
         }
         if ($deleteAllowed) {
             $options['remove']  = array(
                 'icon'  => 'fa fa-remove',
-                'class' => 'btn-sm btn-danger'
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Remove'
+                )
             );
         }
         return $options;

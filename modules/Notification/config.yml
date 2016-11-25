@@ -1,0 +1,11 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+models:
+  me: 
+    class: Sysclass\Models\Notifications\User
+    acl:
+      edit:
+        resource: Notification
+        action: Dismiss
+    #exportMethod: ["toExtendArray", ["EnrollFields"]]

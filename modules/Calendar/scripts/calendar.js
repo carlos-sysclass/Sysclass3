@@ -64,9 +64,6 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		                draggable : false,
 		                timezone : 'UTC',
 		                lang: lang,
-	                    eventSources: [
-	                        '/module/calendar/datasource/calendar'
-		                ],
 	                    eventDataTransform : function( eventData ) {
 	                        if (/^-?[\d.]+(?:e-?\d+)?$/.test(eventData.id)) {
 	                            eventData.start = moment.unix(eventData.start);
@@ -81,6 +78,34 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		                	mod.view.calendarDialog.find(".event-description").html(event.description);
 		                	mod.view.calendarDialog.modal('show');
 		                },
+		                /*
+	                    eventRender : function( event, element, view ) {
+	                        if (/^-?[\d.]+(?:e-?\d+)?$/.test(event.id)) {
+	                            if (element.find(".fc-content .remove-event").size() == 0) {
+	                                element.find(".fc-content").append(
+	                                    '<span href="javascript:void(0);" aria-hidden="true" ' +
+	                                    'class="pull-right no-border remove-event-container ' + event.className + '">' +
+	                                        '<i class="remove-event fa fa-close"></i>' +
+	                                    '</span>'
+	                                );
+	                            }
+	                        }
+	                    },
+	                    */
+	                    googleCalendarApiKey: 'AIzaSyAFwmTQ7O_yp6ZsFTWkejI9S7l0RqYQkTo',
+	                    eventSources : [
+	                        {
+	                            url: "/module/calendar/datasource/calendar",
+	                        },
+	                        {
+	                            googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',
+	                            className: 'calendar-holidays-item'
+	                        },
+	                        {
+	                            googleCalendarId: 'es.py#holiday@group.v.calendar.google.com',
+	                            className: 'calendar-holidays2-item'
+	                        }
+	                    ],
 		                /*
 		                dayClick: function(date, jsEvent, view)
 		                {
@@ -131,7 +156,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 
 			this.searchBy = "title";
 	        $('.fc-prev-button, .fc-next-button, .fc-today-button').click(function() {
-				this.$(":input[name='event_type']").val();
+				mod.view.$(":input[name='event_type']").val();
 			});
 	        /*
 	        jQuery("#event-to-filter").change

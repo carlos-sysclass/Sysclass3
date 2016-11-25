@@ -1,7 +1,7 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
 
-<div class="form-body" id="form-{$T_MODULE_ID}">
+<div class="form-body">
 	<ul class="nav nav-tabs">
 		<li class="active">
 			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
@@ -12,7 +12,7 @@
 
 		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}
 			<li class="">
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Courses"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Programs"}</a>
 			</li>
 		{/if}
 		{if (isset($T_SECTION_TPL['enroll.fields']) &&  ($T_SECTION_TPL['enroll.fields']|@count > 0))}
@@ -24,12 +24,20 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane fade active in" id="tab_1_1">
-			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}" id="form-{$T_MODULE_ID}">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Name"}</label>
 							<input name="name" value="" type="text" placeholder="{translateToken value="Name"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Subtitle"}</label>
+							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Subtitle"}" class="form-control" data-rule-minlength="5" />
 						</div>
 					</div>
 				</div>
@@ -124,7 +132,6 @@
 					<button class="btn btn-success save-action" type="button">{translateToken value="Save Changes"}</button>
 				</div>
 			</form>
-
 		</div>
 		<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
 

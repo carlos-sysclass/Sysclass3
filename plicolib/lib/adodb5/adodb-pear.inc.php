@@ -355,7 +355,7 @@ class DB
 	 * @param $name the base name of the extension (without the .so or
 	 * .dll suffix)
 	 *
-	 * @return bool true if the extension was already or successfully
+	 * @return bool true if the extension was already or
 	 * loaded, false if it could not be loaded
 	 */
 	function assertExtension($name)

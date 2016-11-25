@@ -1,38 +1,69 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-		<img class="" alt="" src="{$context.logo.url}" style="max-width: 70%; margin-bottom: 28px; margin-top: 11px;" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        {if $context.website}
-                <a href="{$context.website}" target="_blank" class="btn btn-primary">
-                        <span class="text"><i class="fa fa-laptop"></i> {translateToken value="Website"}</span>
-                </a>
-        {/if}
-    </div>       
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        {if $context.facebook}
-                <a href="https://facebook.com/{$context.facebook}" target="_blank" class="btn btn-primary">
-                        <span class="text"><i class="fa fa-facebook"></i> {translateToken value="Facebook"}</span>
-                </a>
-        {/if}
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        {if $context.phone}
-                <a href="tel://{$context.phone}" target="_blank" class="btn btn-primary">
-                        <span class="text"><i class="fa fa-phone"></i> {$context.phone}</span>
-                </a>
-        {/if}
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        <a href="https://www.google.com.br/maps/place/{$context.address}" target="_blank" class="btn btn-primary">
-                <span class="text"><i class="fa fa-map"></i> {translateToken value="View Map"}</span>
-        </a>
+	<div class="col-lg-12 col-md-12 col-xs-12 text-center">
+		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 16px; margin-top: 11px;" />
     </div>
 </div>
 
+{$variables=[]}
+
+{if $context.website}
+	{$text=translateToken value="Website"}
+
+	{$variables.website=['link' => $context.website,'icon'=>'fa-laptop','text'=>$text]}
+{/if}
+{if $context.time_at}
+	{$variables.time_at=['icon'=>'fa-clock-o','text'=>$context.time_at]}
+{/if}
+{if $context.facebook}
+	{$text=translateToken value="Facebook"}
+
+	{$variables.facebook=['link' => "https://facebook.com/{$context.facebook}",'icon'=>'fa-facebook','text'=>$text]}
+{/if}
+{if $context.street && $context.street_number}
+	{$text=translateToken value="View Map"}
+
+	{$variables.address=['link' => "https://www.google.com.br/maps/place/{$context.street}, {$context.street_number} - {$context.city}",'icon'=>'fa-map','text'=>$text]}
+
+{/if}
+{if $context.skype}
+	{$text=translateToken value="Skype"}
+
+	{$variables.skype=['link' => "skype://{$context.skype}",'icon'=>'fa-skype','text'=>$text]}
+{/if}
+{if $context.linkedin}
+	{$text=translateToken value="Linked In"}
+
+	{$variables.linkedin=['link' => "https://www.linkedin.com/{$context.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
+{/if}
+{if $context.googleplus}
+	{$text=translateToken value="Google+"}
+
+	{$variables.googleplus=['link' => "https://plus.google.com/{$context.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
+{/if}
+{if $context.phone}
+	{$variables.phone=['link' => "callto://+{$context.phone}",'icon'=>'fa-phone','text'=>$context.phone]}
+{/if}
+
+{$total=$variables|count}
+
+<div class="institution-button-container total-rows-{($total/2)|ceil}">
+	{foreach $variables as $variable}
+
+		{if $variable@index is div by 2}
+			<div class="row">
+		{/if}
+	    <div class="col-lg-6 col-md-6 col-xs-12">
+	        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
+	            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
+	        </a>
+		</div>
+		{if ($variable@iteration is div by 2) || ($variable@last)}
+			</div>
+		{/if}
+
+	{/foreach}
+</div>
 
 <!--
 <div class="row"  id="institution-chat-list">

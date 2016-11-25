@@ -4,11 +4,13 @@
     </ul>
     -->
     <div class="pull-left">
-        <span class="btn btn-sm btn-link timeline-addurl">
+
+<!--
+         <span class="btn btn-sm btn-link timeline-addurl">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add Url"}</span>
         </span>
-        
+ -->        
         <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/lesson">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add File"}</span>
@@ -67,7 +69,6 @@
                     </span>
                     Content
                 </span>
-                <span class="timeline-body-time font-grey-cascade"></span>
             </div>
             <div class="timeline-body-head-actions">
                 <span class="btn btn-sm btn-default text-loading hidden">
@@ -100,6 +101,8 @@
                 </a>
             </div>
         </div>
+        <div class="clearfix"></div>
+        <div class="clearfix"></div>
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper">
                 <div class="form-group wysihtml5-container">
@@ -132,7 +135,6 @@
                     </span>
                     {translateToken value="Insert a url"}
                 </span>
-                <span class="timeline-body-time font-grey-cascade"></span>
             </div>
             <div class="timeline-body-head-actions">
                 <span class="btn btn-sm btn-default text-loading hidden">
@@ -161,6 +163,7 @@
                 </a>
             </div>
         </div>
+        <div class="clearfix"></div>
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper">
                 <div class="form-group">
@@ -190,7 +193,6 @@
                     </span>
                     Exercises
                 </span>
-                <span class="timeline-body-time font-grey-cascade"></span>
             </div>
             <div class="timeline-body-head-actions">
                 <span class="btn btn-sm btn-default text-loading hidden">
@@ -241,6 +243,7 @@
                 </a>
             </div>
         </div>
+        <div class="clearfix"></div>
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper">
                 <ul class="list-group questions-container"></ul>
@@ -401,9 +404,6 @@
 
                     <%= file.name %>
                 </span>
-                <!--
-                <span class="timeline-body-time font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
-                -->
             </div>
             <div class="timeline-body-head-actions">
                 <span class="btn btn-sm btn-default disabled text-loading">
@@ -439,6 +439,7 @@
 
             </div>
         </div>
+        <div class="clearfix"></div>
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper">
                 <div class="preview"></div>
@@ -500,7 +501,9 @@
                     </span>
                     <%= file.name %>
                 </span>
+                <!--
                 <span class="timeline-body-time font-grey-cascade"><%= opt.formatFileSize(file.size) %></span>
+                -->
             </div>
             <div class="timeline-body-head-actions">
                 <% if (file_type == "video") { %>
@@ -537,6 +540,7 @@
                 </a>
             </div>
         </div>
+        <div class="clearfix"></div>
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper row">
                 <div class="preview col-md-6">
@@ -743,7 +747,10 @@
             <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
             <strong><%= model.language_code %></strong>
         </span>
-        <%= file.name %>
+        <a href="<%= file.url %>">
+            <%= file.name %>
+        </a>
+
         <a class="btn btn-sm text-danger delete-translation-content" href="javascript: void(0);" data-content-id="<%= model.id %>"
             data-toggle="confirmation"
             data-original-title="{translateToken value="Are you sure?"}"

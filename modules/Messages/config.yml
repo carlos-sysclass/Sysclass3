@@ -1,0 +1,23 @@
+widgets:
+  messages.inbox:
+    context:
+      messages:
+        ajax_source: "/module/messages/items/me/datatable"
+        datatable_fields:
+        - mData: from.name
+          label: From
+
+        - mData: subject
+          label: Subject
+
+        - mData: timestamp
+          sType: unix-moment-since
+          sClass: text-center
+          label: Date
+models:
+  me: 
+    class: Sysclass\Models\Messages\Message
+    listMethod: ["find", ["user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
+    bindVars : 
+      user_id: !user id
+    exportMethod: ["toFullArray", ["Groups", "Users"]]

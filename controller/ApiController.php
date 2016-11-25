@@ -16,8 +16,8 @@ use Phalcon\DI,
 class ApiController extends \AbstractSysclassController
 {
 	const INVALID_DATA = "Your data sent is invalid. Please try again.";
-	const NO_DATA_FOUND = "Sorry, no data found!";
-	const EXECUTION_OK = "Method execute successfully.";
+	const NO_DATA_FOUND = "Sorry, no data found.";
+	const EXECUTION_OK = "Method executed.";
 	
 
 	public function beforeExecuteRoute(Dispatcher $dispatcher) {
@@ -247,7 +247,7 @@ class ApiController extends \AbstractSysclassController
 
 	 					if ($user) {
 	 						$user->refresh();
-	 						$messages[] = $this->createResponse(200, "User created with success!", "success");
+	 						$messages[] = $this->createResponse(200, "User created.", "success");
 
 	 						$data['user'] = array(
 	 							'id' => $user->id,
@@ -265,28 +265,33 @@ class ApiController extends \AbstractSysclassController
 										$result = $enroll->enrollUser($user, $course);
 
 										if (count($result) == 0) {
-											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name} with success!", "success");
+											$messages[] = $this->createResponse(200, "User enrolled in Course #{$course->id} {$course->name}.", "success");
 
 											$data['courses'][] = array(
 												'id' => $course->id,
 												'name' => $course->name
 											);
 										} else {
-
+											// REMOVE THE USER
 											$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
 											$error = true;
 											break;
 										}
 									} else {
+										// REMOVE THE USER
 										$messages[] = $this->createResponse(400, "Course does not exists!", "error");
 										$error = true;
 									}
 								}
 							} else {
-								$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");
-								$error = true;
+								// CHECK IF THE CONFIGURATION ALLOWS THE USER TO ENTER THE SYSTEM WITHOUT A COURSE
+								if ($this->configuration->get("signup_require_program")) {
+									$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");	
+									$error = true;	
+								} else {
+									// USER CAN PROCEED WITHOUT A COURSE
+								}
 							}
-
 	 					} else {
 							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please check your info and try again!"), "error");
 							$error = true;
@@ -348,6 +353,17 @@ class ApiController extends \AbstractSysclassController
 	public function getEnrollRequest($identifier) {
 		$identifier = $this->request->getQuery("identifier");
 
+		$locale = $this->request->getQuery("locale");
+
+		$language = \Locale::getPrimaryLanguage($locale);
+
+		// CHECK IF $locale EXISTS and translate accordinaly
+		$this->translate->setSource($language);
+
+		//$this->response->setJsonContent($language);
+
+		//return true;
+
 		//if (filter_var($identifier, FILTER_VALIDATE_)) {
 			$enroll = Enroll::findFirstByIdentifier($identifier);
 
@@ -356,28 +372,56 @@ class ApiController extends \AbstractSysclassController
 					'status' => $this->invalidRequestError(self::NO_DATA_FOUND, "warning")
 				));
 			} else {
-				$data = $enroll->toArray();
-				$courses = $enroll->getCourses();
+				$data = $enroll->toExtendArray(["courses"]);
+				//$data = $enroll->toArray();
+
+				//echo ($data);
+				//exit;
+				
+				$courses = $enroll->getCourses([
+					'conditions' => 'signup_active = 1 AND signup_enable_new_users = 1'
+				]);
 
 				$data['courses'] = array();
 				foreach($courses as $course) {
-					$data['courses'][] = $course->toFullArray(array('Course'));
+					$data['courses'][] = $course->toExtendArray();
 				}
+				
 
 				$fields = $enroll->getEnrollFields(array(
 					'order' => 'position'
 				));
 				$data['fields'] = array();
+
 				foreach($fields as $field) {
+					//print_r($field->toFullArray());
+					$field->translate();
+
 					$data['fields'][] = $field->toFullArray();
 				}
 
-				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
+				$data['labels'] = [
+					'enroll_action' => $this->translate->translate("Enroll Now"),
+					'already_has_account' => $this->translate->translate("Already has a account? Click Here."),
+					'choose_program' => $this->translate->translate("Choose your program."),
+					'accept_the' => $this->translate->translate("Accept the"),
+					'use_terms' => $this->translate->translate("Use Terms"),
+					/**
+					  * @todo Inject this info inside the enrollment page
+					 */
 
+					'form_title' => $enroll->name,
+					'form_subtitle' => $enroll->subtitle,
+					'confirmation_text' => $this->translate->translate("<p>Your registration has been received. In a few minutes you will receive a confirmation email containing a link to conclude your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you can't find it, please return to this page and try again.</p>")
+				];
+
+				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
+				
 				$this->response->setJsonContent(array(
 					'status' => $this->createResponse(200, self::EXECUTION_OK, "success"),
 					'data' => $data
 				));
+				
 			}
 		//} else {
 		//	$this->response->setJsonContent($this->invalidRequestError(self::INVALID_DATA, "warning"));
