@@ -437,7 +437,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
      *
      * @Delete("/item/{model}/{id}")
      */
-    public function deleteItemRequest($model, $identifier)
+    public function deleteItemRequestJSON($model, $identifier)
     {
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());

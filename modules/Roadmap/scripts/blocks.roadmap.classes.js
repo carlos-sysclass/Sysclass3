@@ -25,6 +25,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 this.listenTo(this, "add", function(model, collection, opt) {
                     model.set("course_id", this.course_id);
                     model.set("period_id", this.period_id);
+                    model.set("active", 1);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
                 });
@@ -126,9 +127,6 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 //if (this.invalidated || !this.model.get("id")) {
                     this.$el.html(this.template(this.model.toJSON()));
 
-
-
-
                     if (this.model.get("id")) {
                         if (this.model.get("active") === 0) {
                             this.$el.removeClass("green-stripe");
@@ -176,16 +174,15 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                     if (!self.model.get("id")) {
                         self.invalidated = true;
                     }
-                    self.model.save(null, {
-                        success : function() {
-                            if (self.invalidated) {
-                                self.invalidated = false;
-                                self.render();
-                                self.opened = false;
-                                self.start();
-                            }
+                    self.listenToOnce(self.model, 'sync', function() {
+                        if (self.invalidated) {
+                            self.invalidated = false;
+                            self.render();
+                            self.opened = false;
+                            self.start();
                         }
                     });
+                    self.model.save();
 
                 });
 

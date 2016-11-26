@@ -188,7 +188,7 @@
 <% console.warn(data) %>
     <a href="#" class="btn btn-sm editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
-        data-name="classe.name"
+        data-name="name"
         data-send="never"
         data-original-title="Class Name"
         data-inputclass="form-control"

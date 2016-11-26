@@ -60,6 +60,9 @@ models:
       edit:
         resource: Classes
         action: edit
+      delete:
+        resource: Classes
+        action: delete
   periods:
     class: Sysclass\Models\Content\CoursePeriods
     exportMethod : ["toFullArray", ["Courses"]]
