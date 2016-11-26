@@ -185,6 +185,7 @@
 </script>
 
 <script type="text/template" id="classes-edit-item">
+<% console.warn(data) %>
     <a href="#" class="btn btn-sm editable-me <% if (data.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="classe.name"
@@ -192,17 +193,13 @@
         data-original-title="Class Name"
         data-inputclass="form-control"
     >
-        <% if (_.has(data, 'classe')) { %>
-            <% if (_.has(data['classe'], 'name')) { %>
-                <%= data.classe.name %>
-            <% } %>
-        <% } %>
+        <%= data.name %>
     </a>
     <div class="list-file-item-options">
         <% if (typeof data.id !== 'undefined') { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-            <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.class_id %>" data-original-title="Edit class info">
+            <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.id %>" data-original-title="Edit class info">
                 <i class="fa fa-edit"></i>
             </a>
 
@@ -229,15 +226,15 @@
             <i class="fa fa-trash"></i>
         </a>
     </div>
-    <% if (_.has(data, 'class')) { %>
+    <% //if (_.has(data, 'class')) { %>
     <div class="detail-container">
         <h5 class="form-section no-margin margin-bottom-5">Details</h5>
-        <% if (!_.isEmpty(data.class.description)) { %>
+        <% if (!_.isEmpty(data.description)) { %>
         <div class="row">
             <div class="col-md-12 col-sm-12">
                     <span>{translateToken value="Description"}</span>
                     <p class="">
-                        <strong><%= data.class.description %></strong>
+                        <strong><%= data.description %></strong>
                     </p>
             </div>
         </div>
@@ -245,31 +242,17 @@
         <% } %>
         <div class="row">
             <div class="col-md-6 col-sm-6">
-                <p>
-                    <span>{translateToken value="Total Lessons"}</span>
-                    <% if (data.class.total_lessons == 0) { %>
-                        <strong class="text-danger pull-right"><%= data.class.total_lessons %></strong>
-                    <% } else { %>
-                        <strong class="text-primary pull-right"><%= data.class.total_lessons %></strong>
-                    <% } %>
-
-                </p>
+                <span>{translateToken value="Total Lessons"}</span>
+                <% if (data.total_units == 0) { %>
+                    <strong class="text-danger pull-right"><%= data.total_units %></strong>
+                <% } else { %>
+                    <strong class="text-primary pull-right"><%= data.total_units %></strong>
+                <% } %>
             </div>
-            <% if (_.isObject(data.class.instructors)) { %>
+            <% if (_.isObject(data.professor)) { %>
             <div class="col-md-6 col-sm-6">
-                <div>
-                    <span>{translateToken value="Instructors"}</span>
-                    <ul class="pull-right">
-                        <%
-                            var instructors = _.map(data.class.instructors, function(data) {
-                                return _.pick(data, "name", "surname");
-                            });
-                        %>
-                        <% _.each(instructors, function(item) { %>
-                            <li class="text-primary"><strong><% print(item.name  + " " + item.surname); %></strong></li>
-                        <% }); %>
-                    </ul>
-                </div>
+                <span>{translateToken value="Professor"}</span>
+                <strong class="text-primary pull-right"><<% print(data.professor.name  + " " + data.professor.surname); %></strong>
             </div>
             <% } else { %>
                 <div class="col-md-6 col-sm-6">
@@ -281,7 +264,7 @@
             <% } %>
         </div>
 
-    <% } %>
+    <% //} %>
 </script>
 <!--
 <script type="text/template" id="tab_roadmap-season-template">

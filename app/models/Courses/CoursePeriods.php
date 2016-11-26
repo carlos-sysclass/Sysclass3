@@ -7,7 +7,7 @@ class CoursePeriods extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_roadmap_courses_periods");
+        $this->setSource("mod_roadmap_course_periods");
 
         $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
 

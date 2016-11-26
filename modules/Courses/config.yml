@@ -70,5 +70,6 @@ blocks:
           sClass: text-center
           label: Actions
 models:
-  me: Sysclass\Models\Courses\Course
+  me:
+    class: Sysclass\Models\Content\Program
   users: Sysclass\Models\Enrollments\CourseUsers

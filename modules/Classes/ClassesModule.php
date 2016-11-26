@@ -4,7 +4,9 @@ namespace Sysclass\Modules\Classes;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Classe,
+use 
+    Sysclass\Models\Content\Program,
+    Sysclass\Models\Courses\Classe,
     Sysclass\Models\Courses\Lesson,
     Sysclass\Models\Acl\Role;
 /**
@@ -135,6 +137,9 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function editPage($id)
     {
+        $programs = Program::find();
+        $this->putItem("programs", $programs->toArray());
+
         // GET THE PROFESSORS
         $teacherRole = Role::findFirstByName('Teacher');
         $users = $teacherRole->getAllUsers();

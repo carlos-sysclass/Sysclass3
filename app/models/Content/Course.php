@@ -62,20 +62,22 @@ class Course extends Model
             array('alias' => 'Professor')
         );
 
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Content\ProgramCourses",
-            "class_id", "course_id", 
+        $this->belongsTo(
+            "course_id",
             "Sysclass\Models\Content\Program",
             "id",
             array(
-                'alias' => 'Programs',
-                'params' => array(
-                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
-                )
+                'alias' => 'Program'
             )
         );
 
+        $this->belongsTo(
+            "period_id",
+            "Sysclass\\Models\\Content\\CoursePeriods",
+            "id",
+            array('alias' => 'Period')
+        );
+        /*
         $this->hasManyToMany(
             "id",
             "Sysclass\Models\Courses\CourseClasses",
@@ -89,6 +91,7 @@ class Course extends Model
                 )
             )
         );
+        */
     }
 
     protected function resetOrder($class_id) {

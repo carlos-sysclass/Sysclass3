@@ -6,6 +6,8 @@ namespace Sysclass\Modules\Roadmap;
  */
 use Sysclass\Services\MessageBus\INotifyable,
     Sysclass\Collections\MessageBus\Event,
+    Sysclass\Models\Content\Program,
+    Sysclass\Models\Content\Course,
     Sysclass\Models\Enrollments\CourseUsers as EnrolledCourse,
     Sysclass\Models\Courses\Contents\Progress as ContentProgress;
 
@@ -98,7 +100,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
      * @Get("/datasources/{model}/{type}")
      * @Get("/datasources/{model}/{type}/{filter}")
      */
-    public function getItemsRequest($model = "me", $type = "default", $filter = null)
+    public function getItemsRequestJSON($model = "me", $type = "default", $filter = null)
     {
         if ($currentUser = $this->getCurrentUser(true)) {
             if ($model ==  "periods") {
@@ -112,10 +114,13 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 }
                 //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-                $itemsData = $itemsCollection->addFilter(array(
+                $itemsData = $itemsCollection->debug()->addFilter(array(
                     'c.active'     => 1,
                     'cp.course_id'  => $courses
                 ), array("operator" => "="))->getItems();
+
+
+
             } elseif ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
                 $itemsCollection = $this->model($modelRoute);
@@ -125,16 +130,38 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 if (!is_array($filter)) {
                     $filter = json_decode($filter, true);
                 }
-                //var_dump($filter);
-                //exit;
-                //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-                $itemsData = $itemsCollection->addFilter(array(
+                $program = Program::findFirstById($filter['course_id']);
+
+                if (!is_null($filter['period_id'])) {
+                    $courses = $program->getCourses([
+                        'conditions' => 'period_id = ?0',
+                        'bind' => [$filter['period_id']]
+                    ]);
+                } else {
+                    $courses = $program->getCourses([
+                        'conditions' => 'period_id IS NULL'
+                    ]);
+                }
+
+                foreach($courses as $course) {
+                    $item = $course->toFullArray();
+                    $item['total_units'] = $course->getUnits()->count();
+                    $itemsData[] = $item;
+                }
+
+                //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
+                /*
+                $itemsCollection->debug()->addFilter(array(
                     'c.active'      => 1,
                     'cl.active'     => 1,
                     'c2c.course_id' => $filter['course_id'],
                     'clp.period_id' => $filter['period_id']
-                )/*, array("operator" => "=")*/)->getItems();
+                ))->getItems();
+
+                var_dump($itemsData);
+                exit;
+                */
 
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
@@ -522,12 +549,33 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
         if ($userData = $this->getCurrentUser()) {
 
             if ($model ==  "classes") {
-                $modelRoute = "roadmap/classes";
-                $itemModel = $this->model($modelRoute);
+
+                if (is_null($course_id) || !is_numeric($course_id)) {
+                    return $this->invalidRequestError();
+                }
+
+                //$modelRoute = "roadmap/classes";
+                //$itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Classes order updated.",
+                    'success' => "Course order updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
+
+
+                $program = Program::findFirstById($course_id);
+
+                $data = $this->request->getPut();
+
+                if ($program) {
+                    if ($program->setCourseOrder($data['position'], $data['period_id'])) {
+                        return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+                    } else {
+                        return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
+                    }
+                } else {
+                    return $this->invalidRequestError();
+                }
+
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);

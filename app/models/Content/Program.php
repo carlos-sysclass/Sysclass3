@@ -9,28 +9,26 @@ class Program extends Model
     {
         $this->setSource("mod_courses");
         
-		$this->hasManyToMany(
+		$this->hasMany(
             "id",
-            "Sysclass\Models\Content\ProgramCourses",
-            "course_id", "class_id",
             "Sysclass\Models\Content\Course",
-            "id",
+            "course_id",
             array(
                 'alias' => 'Courses',
                 'params' => array(
-                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
+                    'order' => '[Sysclass\Models\Content\Course].position'
                 )
             )
         );
         
         $this->hasMany(
             "id",
-            "Sysclass\Models\Content\ProgramCourses",
+            "Sysclass\Models\Content\Course",
             "course_id",
             array(
                 'alias' => 'ProgramsCourses',
                 'params' => array(
-                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
+                    'order' => '[Sysclass\Models\Content\Course].position'
                 )
             )
         );
@@ -104,6 +102,57 @@ class Program extends Model
             return $end->add(new \DateInterval($interval));
         }
         return $end;
+    }
+
+    protected function resetOrder($course_id, $period_id = null) {
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        if (is_null($period_id)) {
+            $phql = "UPDATE Sysclass\\Models\\Content\\Course
+                SET position = -1 WHERE course_id = :course_id: AND period_id IS NULL";
+            $bind = ['course_id' => $this->id];
+        } else {
+            $phql = "UPDATE Sysclass\\Models\\Content\\Course
+                SET position = -1 WHERE course_id = :course_id: AND period_id = :period_id:";
+            $bind = ['course_id' => $this->id, 'period_id' => $this->period_id];
+            
+        }
+
+        return $manager->executeQuery(
+            $phql,
+            $bind
+        );
+    }
+
+    public function setCourseOrder(array $order_ids, $period_id = null) {
+        $status = self::resetOrder();
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        foreach($order_ids as $index => $course_id) {
+            $bind = [
+                'position' => $index + 1,
+                'id' => $course_id,
+                'course_id' => $this->id // program_id
+            ];
+
+            if (empty($period_id)) {
+                $phql = "UPDATE Sysclass\\Models\\Content\\Course 
+                    SET position = :position: 
+                    WHERE id = :id: AND course_id = :course_id: AND period_id IS NULL";
+            } else {
+                $phql = "UPDATE Sysclass\\Models\\Content\\Course
+                    SET position = :position:  WHERE id = :id: AND course_id = :course_id: AND period_id = :period_id:";
+                $bind['period_id'] = $period_id;
+            }
+
+            $status->success() && $status = $manager->executeQuery(
+                $phql,
+                $bind
+            );
+
+        }
+
+        return $status->success();
     }
 
     public static function getUserProgressTree(User $user = null) {    
