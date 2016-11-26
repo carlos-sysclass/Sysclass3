@@ -1,10 +1,10 @@
 <?php
-namespace Sysclass\Models\Courses;
+namespace Sysclass\Models\Content\Progress;
 
 use Phalcon\Mvc\Model,
 	Sysclass\Models\Courses\CourseProgress as ProgramProgress;
 
-class ClasseProgress extends Model
+class Course extends Model
 {
     public function initialize()
     {

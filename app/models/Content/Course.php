@@ -1,7 +1,8 @@
 <?php
 namespace Sysclass\Models\Content;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Users\User;
 
 class Course extends Model
 {
@@ -131,7 +132,11 @@ class Course extends Model
         return $status->success();
     }
 
-    public function getFullTree() {
+    public function getFullTree(User $user = null, $only_active = false) {
+        if (is_null($user)) {
+            $user = \Phalcon\DI::getDefault()->get('user');
+        }
+
         $result = $this->toArray();
         if ($professor =  $this->getProfessor()) {
             $result['professor'] = $professor->toArray();
@@ -139,12 +144,20 @@ class Course extends Model
             $result['professor'] = array();
         }
         $result['units'] = array();
-        $units = $this->getUnits();
-        foreach($units as $unit) {
-            $result['units'][] = $unit->getFullTree();
+
+        if ($only_active) {
+            $units = $this->getUnits([
+                'conditions' => "active = 1"
+            ]);
+        } else {
+            $units = $this->getUnits();
         }
 
-        $user_id = $this->getDI()->get("user")->id;
+        foreach($units as $unit) {
+            $result['units'][] = $unit->getFullTree($user, $only_active);
+        }
+
+        $user_id = $user->id;
 
         $progress = $this->getProgress(array(
             'conditions' => "user_id = ?0",

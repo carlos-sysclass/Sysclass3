@@ -461,7 +461,17 @@ abstract class SysclassModule extends BaseSysclassModule
                 $beforeMessages = $itemModel->getMessages();
                 $beforeMessages = is_null($beforeMessages) ? [] : $beforeMessages;
 
-                if ($itemModel->save()) {
+                if (
+                    array_key_exists('updateMethod', $model_info)
+                ) {
+                    $updateMethod = $model_info['updateMethod'];
+                } else {
+                    $updateMethod = "update";
+                }
+
+                if (call_user_func(array($itemModel, $updateMethod))) {
+
+                //if ($itemModel->save()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
 
                     $afterMessages = $itemModel->getMessages();

@@ -1,7 +1,8 @@
 <?php
 namespace Sysclass\Models\Content;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Users\User;
 
 class Program extends Model
 {
@@ -230,37 +231,33 @@ class Program extends Model
                     }
                 }
             }
-
-
-
-
-            
         }
-
-
-            
-
-
-
 
         return $result;
     }
 
-    public static function getUserContentTree(User $user = null) {
+    public static function getUserContentTree(User $user = null, $only_active = false) {
         if (is_null($user)) {
             $user = \Phalcon\DI::getDefault()->get('user');
         }
-        $programs = $user->getPrograms();
+        if ($only_active) {
+            $programs = $user->getPrograms([
+                'conditions' => "active = 1"
+            ]);    
+        } else {
+            $programs = $user->getPrograms();
+        }
+        
 
         $tree = array();
         foreach($programs as $program) {
-            $tree[] = $program->getFullTree();
+            $tree[] = $program->getFullTree($user, $only_active);
         }
 
         return $tree;
     }
 
-    public function getFullTree() {
+    public function getFullTree(User $user = null, $only_active = false) {
         $result = $this->toArray();
         if ($coordinator =  $this->getCoordinator()) {
             $result['coordinator'] = $coordinator->toArray();
@@ -275,8 +272,31 @@ class Program extends Model
 
         $result['courses'] = array();
         $courses = $this->getCourses();
+        if ($only_active) {
+            $courses = $this->getCourses([
+                'conditions' => "active = 1"
+            ]);    
+        } else {
+            $courses = $this->getCourses();
+        }
         foreach($courses as $course) {
-            $result['courses'][] = $course->getFullTree();
+            $result['courses'][] = $course->getFullTree($user, $only_active);
+        }
+
+        $user_id = $user->id;
+
+        $progress = $this->getProgress(array(
+            'conditions' => "user_id = ?0",
+            'bind' => array($user->id)
+        ));
+
+        if ($progress) {
+            $result['progress'] = $progress->toArray();   
+            $result['progress']['factor'] = floatval($result['progress']['factor']);
+        } else {
+            $result['progress'] = array(
+                'factor' => 0
+            );
         }
 
         return $result;

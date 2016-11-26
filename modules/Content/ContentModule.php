@@ -51,7 +51,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             }
             
 
-            $tree = Program::getUserContentTree();
+            $tree = Program::getUserContentTree($this->user, true);
 
             if ($userPointers) {
 
@@ -93,8 +93,6 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 var_dump($settings);
                 var_dump($checkScope);
                 var_dump($checkValue);
-                var_dump($data['progress']);
-                exit;
                 */
 
     			return array(

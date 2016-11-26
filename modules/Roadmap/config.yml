@@ -68,3 +68,10 @@ models:
     exportMethod : ["toFullArray", ["Courses"]]
     #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
     #findMethod: findFirstById
+  content-progress:
+    class: Sysclass\Models\Content\Progress\Content
+    createMethod: createOrUpdate
+    acl:
+      create: 
+        resource: Lessons
+        action: take

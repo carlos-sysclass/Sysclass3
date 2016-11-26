@@ -1,17 +1,17 @@
 <?php
-namespace Sysclass\Models\Courses;
+namespace Sysclass\Models\Content\Progress;
 
 use Phalcon\Mvc\Model,
-    Sysclass\Models\Courses\ClasseProgress,
-    Sysclass\Models\Courses\Contents\Progress as ContentProgress;
+    Sysclass\Models\Content\Progress\Course as CourseProgress,
+    Sysclass\Models\Content\Progress\Content as ContentProgress;
 
-class LessonProgress extends Model
+class Unit extends Model
 {
     public function initialize()
     {
         $this->setSource("mod_lessons_progress");
 
-        $this->belongsTo("lesson_id", "Sysclass\\Models\\Courses\\Lesson", "id",  array('alias' => 'Unit'));
+        $this->belongsTo("lesson_id", "Sysclass\\Models\\Content\\Unit", "id",  array('alias' => 'Unit'));
     }
 
     public function updateProgress() {
@@ -22,7 +22,7 @@ class LessonProgress extends Model
 
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor 
             FROM Sysclass\\Models\\Courses\\Contents\\Content as c
-        	LEFT JOIN Sysclass\\Models\\Courses\\Contents\\Progress as cp
+        	LEFT JOIN Sysclass\\Models\\Content\\Progress\\Content as cp
                 ON (c.id = cp.content_id AND (user_id = ?1 OR user_id IS NULL))
             WHERE c.lesson_id = ?0 
                 AND c.content_type NOT IN ('subtitle', 'poster', 'subtitle-translation')
@@ -56,13 +56,13 @@ class LessonProgress extends Model
     	// CALL UPDATE ON CLASS
         $unit = $this->getUnit();
 
-        $classProgress = ClasseProgress::findFirst(array(
+        $classProgress = CourseProgress::findFirst(array(
             'conditions' => 'user_id = ?0 AND class_id = ?1',
             'bind' => array($this->user_id, $unit->class_id)
         ));
 
         if (!$classProgress) {
-            $classProgress = new ClasseProgress();
+            $classProgress = new CourseProgress();
             $classProgress->user_id = $this->user_id;
             $classProgress->class_id = $unit->class_id;
             $classProgress->save();

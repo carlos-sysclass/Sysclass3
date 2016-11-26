@@ -4,7 +4,8 @@ namespace Sysclass\Models\Content;
 use Plico\Mvc\Model,
     Sysclass\Models\Content\UnitContent as Content,
     Sysclass\Models\Content\Course,
-    Sysclass\Models\Content\Program;
+    Sysclass\Models\Content\Program,
+    Sysclass\Models\Users\User;
 
 class Unit extends Model
 {
@@ -111,7 +112,7 @@ class Unit extends Model
                     }
                     $unit = $content->getUnit();
                     $course = $unit->getCourse();
-                    $program = $course->getPrograms()->getFirst();
+                    $program = $course->getProgram();
                     if (!in_array($program->id, $course_ids)) {
                         return self::getContentPointers($user, 'unit');
                     }
@@ -126,7 +127,7 @@ class Unit extends Model
                         return self::getContentPointers($user, 'course');
                     }
                     $course = $unit->getCourse();
-                    $program = $course->getPrograms()->getFirst();
+                    $program = $course->getProgram();
                     if (!in_array($program->id, $course_ids)) {
                         return self::getContentPointers($user, 'course');
                     }
@@ -142,12 +143,12 @@ class Unit extends Model
                     if (!$course) {
                         return self::getContentPointers($user, 'program');
                     }
-                    $program = $course->getPrograms()->getFirst();
+                    $program = $course->getProgram();
                     if (!in_array($program->id, $course_ids)) {
                         return self::getContentPointers($user, 'program');
                     }
 
-                    $unit = $course->getLessons()->getFirst();
+                    $unit = $course->getUnits()->getFirst();
                     $content = $unit->getContents()->getFirst();
 
                     break;
@@ -163,7 +164,7 @@ class Unit extends Model
                     }
                     $course = $program->getCourses()->getFirst();
                     if ($course) {
-                        $unit = $course->getLessons()->getFirst();
+                        $unit = $course->getUnits()->getFirst();
                     } else {
                         $unit = false;
                     }
@@ -184,7 +185,7 @@ class Unit extends Model
                         $course = false;
                     }
                     if ($course) {
-                        $unit = $course->getLessons()->getFirst();    
+                        $unit = $course->getUnits()->getFirst();    
                     } else {
                         $unit = false;
                     }
@@ -213,7 +214,11 @@ class Unit extends Model
         return false;
     }
 
-    public function getFullTree() {
+    public function getFullTree(User $user = null, $only_active = false) {
+        if (is_null($user)) {
+            $user = \Phalcon\DI::getDefault()->get('user');
+        }
+
         $result = $this->toArray();
         if ($professor =  $this->getProfessor()) {
             $result['professor'] = $professor->toArray();
@@ -221,27 +226,32 @@ class Unit extends Model
             $result['professor'] = array();
         }
         $result['contents'] = array();
-        $contents = $this->getContents();
+
+        if ($only_active) {
+            $contents = $this->getContents([
+                'conditions' => "active = 1"
+            ]);
+        } else {
+            $contents = $this->getContents();
+        }
+
         foreach($contents as $content) {
-            $result['contents'][] = $content->getFullTree();
+            $result['contents'][] = $content->getFullTree($user, $only_active);
         }
 
         if ($this->type == "test" && ($test = $this->getTest())) {
-            $user_id = $this->getDI()->get("user")->id;
             // LOAD TEST DETAILS
             $result['test'] = $test->toArray();
             $result['test']['executions'] = $test->getExecutions(array(
                 'conditions' => "user_id = ?0",
-                'bind' => array($user_id)
+                'bind' => array($user->id)
             ))->toArray();
             $result['test']['questions'] = $test->getQuestions()->toArray();
         }
 
-        $user_id = $this->getDI()->get("user")->id;
-
         $progress = $this->getProgress(array(
             'conditions' => "user_id = ?0",
-            'bind' => array($user_id)
+            'bind' => array($user->id)
         ));
 
         if ($progress) {
