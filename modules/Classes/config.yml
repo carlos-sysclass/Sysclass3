@@ -48,5 +48,5 @@ crud:
         page_subtitle: Edit your course info
 models:
   me: 
-    class: Sysclass\Models\Courses\Classe
+    class: Sysclass\Models\Content\Course
     exportMethod: ["toFullArray", []]

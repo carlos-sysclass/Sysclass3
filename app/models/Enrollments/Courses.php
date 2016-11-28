@@ -13,7 +13,7 @@ class Courses extends Model
         $this->setSource("mod_enroll_courses");
 
         $this->belongsTo("enroll_id", "Sysclass\\Models\\Enrollments\\Enroll", "id",  array('alias' => 'Enroll'));
-        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
+        $this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id",  array('alias' => 'Course'));
     }
     /*
     public function userCanEnroll($user_id, $course_id) {

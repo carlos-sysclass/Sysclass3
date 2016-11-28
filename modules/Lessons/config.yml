@@ -52,5 +52,5 @@ crud:
         page_subtitle: Edit your unit info
 models:
   me: 
-    class: Sysclass\Models\Courses\Lesson
+    class: Sysclass\Models\Content\Unit
     exportMethod: ["toFullArray", ["Classe"]]

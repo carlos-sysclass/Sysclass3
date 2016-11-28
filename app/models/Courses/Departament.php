@@ -14,7 +14,7 @@ class Departament extends Model
 
 		$this->hasMany(
             "id",
-            "Sysclass\Models\Courses\Course",
+            "Sysclass\Models\Content\Program",
             "area_id",
             array('alias' => 'Courses')
         );

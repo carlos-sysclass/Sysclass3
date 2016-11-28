@@ -7,7 +7,7 @@ namespace Sysclass\Modules\Lessons;
 use Sysclass\Models\Courses\Contents\Exercise,
     Sysclass\Models\I18n\Language,
     Sysclass\Models\Dropbox\File,
-    Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role;
 
 /**

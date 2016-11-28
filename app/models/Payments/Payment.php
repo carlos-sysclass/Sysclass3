@@ -27,15 +27,6 @@ class Payment extends Model
 
         $this->hasManyToMany(
             "id",
-            "Sysclass\\Models\\Enrollments\\CourseUsers",
-            "user_id", "course_id",
-            "Sysclass\\Models\\Courses\\Course",
-            "id",
-            array('alias' => 'Courses')
-        );
-
-        $this->hasManyToMany(
-            "id",
             "Sysclass\\Models\\Users\\UserAvatar",
             "user_id", "file_id",
             "Sysclass\\Models\\Dropbox\\File",

@@ -43,7 +43,7 @@ class Course extends Model
                 'alias' => 'Tests',
                 'params' => array(
                     'conditions' => "type = 'test'",
-                    'order' => '[Sysclass\Models\Courses\Lesson].position ASC, [Sysclass\Models\Courses\Lesson].id ASC'
+                    'order' => '[Sysclass\Models\Courses\Tests\Lesson].position ASC, [Sysclass\Models\Courses\Tests\Lesson].id ASC'
                 )
             )
         );
@@ -78,21 +78,6 @@ class Course extends Model
             "id",
             array('alias' => 'Period')
         );
-        /*
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Courses\CourseClasses",
-            "class_id", "course_id", 
-            "Sysclass\Models\Courses\Course",
-            "id",
-            array(
-                'alias' => 'Courses',
-                'params' => array(
-                    'order' => '[Sysclass\Models\Courses\CourseClasses].position'
-                )
-            )
-        );
-        */
     }
 
     protected function beforeValidation() {
@@ -106,7 +91,7 @@ class Course extends Model
     protected function resetOrder($class_id) {
 		$manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
-		$phql = "UPDATE Sysclass\\Models\\Courses\\Lesson 
+		$phql = "UPDATE Sysclass\\Models\\Content\\Unit 
 			SET position = -1 WHERE class_id = :class_id:";
 
 		return $manager->executeQuery(
@@ -122,7 +107,7 @@ class Course extends Model
         $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
         foreach($order_ids as $index => $lesson_id) {
-			$phql = "UPDATE Sysclass\\Models\\Courses\\Lesson 
+			$phql = "UPDATE Sysclass\\Models\\Content\\Unit
 				SET position = :position: 
 				WHERE id = :id: AND class_id = :class_id:";
 

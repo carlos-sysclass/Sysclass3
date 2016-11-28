@@ -22,16 +22,6 @@ class PaymentStatus extends Model
         $this->hasOne("id", "Sysclass\\Models\\Users\\UserAvatar", "user_id",  array('alias' => 'avatar'));
 
         $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
-
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\\Models\\Enrollments\\Course",
-            "user_id", "course_id",
-            "Sysclass\\Models\\Courses\\Course",
-            "id",
-            array('alias' => 'Courses')
-        );
-
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Users\\UserAvatar",

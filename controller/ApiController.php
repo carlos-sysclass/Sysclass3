@@ -4,7 +4,7 @@ namespace Sysclass\Controllers;
 use Phalcon\DI,
 	Phalcon\Mvc\Dispatcher,
 	Sysclass\Models\Users\User,
-	Sysclass\Models\Courses\Course,
+	Sysclass\Models\Content\Program as Course,
 	Sysclass\Models\Enrollments\CourseUsers as Enrollment,
 	Sysclass\Models\Enrollments\Enroll,
 	Sysclass\Models\I18n\Language,

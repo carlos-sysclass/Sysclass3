@@ -20,14 +20,6 @@ class Program extends Model
         // GET RELATED UNIT, AND CALL AN UPDATE
         // CALCULATE BASED ON CONTENTS
         $manager = $this->getDI()->get("modelsManager");
-        /*
-        $phql = "SELECT AVG(factor) as factor
-            FROM Sysclass\\Models\\Courses\\ClasseProgress
-            WHERE class_id IN (
-                SELECT CourseClasses.class_id FROM Sysclass\Models\Courses\CourseClasses as CourseClasses WHERE course_id = ?0
-            )
-        ";
-        */
 
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
             FROM Sysclass\\Models\\Content\\Course as c
