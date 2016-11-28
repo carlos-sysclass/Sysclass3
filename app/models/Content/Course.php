@@ -95,6 +95,14 @@ class Course extends Model
         */
     }
 
+    protected function beforeValidation() {
+        if ($this->active) {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
+    }
+
     protected function resetOrder($class_id) {
 		$manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
