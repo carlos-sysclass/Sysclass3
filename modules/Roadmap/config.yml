@@ -50,3 +50,28 @@ models:
         action: take
     #listMethod: findFull
     #exportMethod: ["toFullArray", ["Lessons"]]
+models:
+  course:
+    class: Sysclass\Models\Content\Course
+    acl:
+      create: 
+        resource: Classes
+        action: create
+      edit:
+        resource: Classes
+        action: edit
+      delete:
+        resource: Classes
+        action: delete
+  periods:
+    class: Sysclass\Models\Content\CoursePeriods
+    exportMethod : ["toFullArray", ["Courses"]]
+    #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    #findMethod: findFirstById
+  content-progress:
+    class: Sysclass\Models\Content\Progress\Content
+    createMethod: createOrUpdate
+    acl:
+      create: 
+        resource: Lessons
+        action: take

@@ -58,7 +58,7 @@ class User extends Model
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",
             "user_id", "course_id",
-            "Sysclass\\Models\\Courses\\Course",
+            "Sysclass\\Models\\Content\\Program",
             "id",
             array('alias' => 'Courses')
         );

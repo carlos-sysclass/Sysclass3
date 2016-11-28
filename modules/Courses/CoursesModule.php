@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Courses;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course,
+use Sysclass\Models\Content\Program as Course,
     Sysclass\Models\Enrollments\CourseUsers,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\I18n\Language;

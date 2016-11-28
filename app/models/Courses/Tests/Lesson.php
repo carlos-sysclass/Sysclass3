@@ -1,10 +1,10 @@
 <?php
 namespace Sysclass\Models\Courses\Tests;
 
-use Sysclass\Models\Courses\Lesson as BaseLesson;
+use Sysclass\Models\Content\Unit as BaseUnit;
 use Sysclass\Models\Courses\Tests\ExecutionQuestions;
 
-class Lesson extends BaseLesson
+class Lesson extends BaseUnit
 {
     protected $assignedData = null;
 
@@ -174,14 +174,12 @@ class Lesson extends BaseLesson
         $phql = "SELECT tl.*
                 FROM 
                     Sysclass\\Models\\Enrollments\\CourseUsers ecu
-                LEFT JOIN Sysclass\\Models\\Courses\\Course cc
-                    ON (ecu.course_id = cc.id)
-                LEFT JOIN Sysclass\\Models\\Courses\\CourseClasses ccc
-                    ON (ccc.course_id = cc.id)
-                LEFT JOIN Sysclass\\Models\\Courses\\Classe ccl
-                    ON (ccc.class_id = ccl.id)
+                LEFT JOIN Sysclass\\Models\\Content\\Program c
+                    ON (ecu.course_id = c.id)
+                LEFT JOIN Sysclass\\Models\\Content\\Course cl
+                    ON (c.id = cl.course_id)
                 LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
-                    ON (tl.class_id = ccl.id)
+                    ON (tl.class_id = cl.id)
                 WHERE ecu.user_id = :user_id: AND tl.type = 'test'
                     AND tl.id NOT IN (SELECT DISTINCT test_id FROM Sysclass\\Models\\Courses\\Tests\\Execution cte WHERE cte.user_id = :user_id:)
         ";

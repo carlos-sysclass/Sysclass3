@@ -1,19 +1,23 @@
-$SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $, _) {
     // MODELS
     this.startWithParent = false;
 
-    mod.on("start", function(opt){
+    mod.on("start", function(opt) {
 
-        mod.classModelClass = Backbone.DeepModel.extend({
-            urlRoot : function() {
+        var baseModel = app.module("models").getBaseModel();
+
+        mod.classModelClass = baseModel.extend({
+            urlRoot : "/module/roadmap/item/course"
+            /*function() {
                 if (this.get("id")) {
-                    return "/module/roadmap/item/course-classes";
+                    ;
                 } else {
-                    return "/module/roadmap/item/course-classes?object=1";
+                    return "/module/roadmap/item/course";
                 }
             }
+            */
         });
-        mod.classesCollectionClass = Backbone.Collection.extend({
+        mod.coursesCollectionClass = Backbone.Collection.extend({
             initialize: function(data, opt) {
                 this.course_id = opt.course_id;
                 this.period_id = opt.period_id;
@@ -21,6 +25,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 this.listenTo(this, "add", function(model, collection, opt) {
                     model.set("course_id", this.course_id);
                     model.set("period_id", this.period_id);
+                    model.set("active", 1);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
                 });
@@ -69,7 +74,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             },
             model : mod.periodModelClass,
             url: function() {
-                return "/module/roadmap/datasources/periods/default/" + JSON.stringify({ course_id : this.course_id });
+                return "/module/roadmap/items/periods/default/" + JSON.stringify({ course_id : this.course_id });
             },
             setContentOrder : function(order) {
                 $.ajax(
@@ -114,13 +119,14 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             className : "list-file-item draggable blue-stripe",
             invalidated : true,
             initialize: function(opt) {
-                console.info('blocks.roadmap.classes/roadmapBlockClassItemViewClass::initialize');
+                console.info('blocks.roadmap.courses/roadmapBlockClassItemViewClass::initialize');
                 this.opened = opt.opened ? opt.opened : false;
                 //this.listenTo(this.model, 'sync', this.render.bind(this));
             },
             render : function() {
                 //if (this.invalidated || !this.model.get("id")) {
                     this.$el.html(this.template(this.model.toJSON()));
+
                     if (this.model.get("id")) {
                         if (this.model.get("active") === 0) {
                             this.$el.removeClass("green-stripe");
@@ -141,11 +147,11 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     mod.trigger("lesson:updated", this.model);
 
                     this.$el.data("view", this);
-/*                    
+                    /*                    
                     if (this.invalidated && this.$el.closest(document.documentElement)) {
                         //this.start();
                     }
-*/
+                    */
                     this.invalidated = false;
                 //
 
@@ -168,16 +174,15 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     if (!self.model.get("id")) {
                         self.invalidated = true;
                     }
-                    self.model.save(null, {
-                        success : function() {
-                            if (self.invalidated) {
-                                self.invalidated = false;
-                                self.render();
-                                self.opened = false;
-                                self.start();
-                            }
+                    self.listenToOnce(self.model, 'sync', function() {
+                        if (self.invalidated) {
+                            self.invalidated = false;
+                            self.render();
+                            self.opened = false;
+                            self.start();
                         }
                     });
+                    self.model.save();
 
                 });
 
@@ -201,7 +206,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        mod.roadmapBlockClassesViewClass = Backbone.View.extend({
+        mod.roadmapBlockCoursesViewClass = Backbone.View.extend({
             events : {
                 "click .add-item-action" : "addItem"
             },
@@ -225,7 +230,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                     forcePlaceholderSize: true,
                     tolerance: "intersect",
                     receive : function( event, ui ) {
-                        console.info('blocks.roadmap.classes/roadmapBlockClassesViewClass::sortable->receive');
+                        console.info('blocks.roadmap.courses/roadmapBlockCoursesViewClass::sortable->receive');
 
                         var view = $(ui.item).data("view");
 
@@ -234,7 +239,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                         $(this).removeClass("empty-list-group");
                     },
                     remove : function( event, ui ) {
-                        console.info('blocks.roadmap.classes/roadmapBlockClassesViewClass::sortable->remove');
+                        console.info('blocks.roadmap.courses/roadmapBlockCoursesViewClass::sortable->remove');
                         var id = $(ui.item).data("roadmapClassId");
                         self.collection.remove(id);
                     },
@@ -249,7 +254,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
             },
             addItem : function(e) {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::addItem');
+                console.info('blocks.roadmap.courses/roadmapBlockCoursesViewClass::addItem');
                 var self = this;
 
                 var itemModel = new mod.classModelClass(null);
@@ -269,7 +274,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 roadmapBlockClassItemView.start();
             },
             addOne : function(model, i) {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::addOne');
+                console.info('blocks.roadmap.courses/roadmapBlockCoursesViewClass::addOne');
 
                 var self = this;
 
@@ -287,7 +292,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
 
             },
             refreshCounters : function() {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::refreshCounters');
+                console.info('blocks.roadmap.courses/roadmapBlockCoursesViewClass::refreshCounters');
                 var total = this.collection.size();
                 //alert(total);
                 this.$("ul > li.list-file-item .total").html(total);
@@ -297,7 +302,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
             },
             render: function() {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::render');
+                console.info('blocks.roadmap.courses/roadmapBlockCoursesViewClass::render');
 
                 var self = this;
 
@@ -332,38 +337,40 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             className : "panel panel-default period-item draggable",
             initialize: function(opt) {
                 var self = this;
-                console.info('blocks.roadmap.classes/roadmapBlockPeriodItemViewClass::initialize');
+                console.info('blocks.roadmap.courses/roadmapBlockPeriodItemViewClass::initialize');
 
                 this.opened = opt.opened ? opt.opened : false;
 
                 this.listenTo(this.model, 'sync', this.render.bind(this));
 
-                // CREATE A COLLECTION BASED ON MODEL classes attribute
-                this.collection = new mod.classesCollectionClass(
-                    this.model.get("classes"),
+                console.warn('roadmapBlockPeriodItemViewClass.model', this.model.toJSON());
+
+                // CREATE A COLLECTION BASED ON MODEL courses attribute
+                this.collection = new mod.coursesCollectionClass(
+                    this.model.get("courses"),
                     {
                         course_id : this.model.get("course_id"),
                         period_id : _.isUndefined(this.model.get("id")) ? null : this.model.get("id")
                     }
                 );
                 this.listenTo(this.collection, "add", function(model, collection, options) {
-                    self.model.set("classes", collection.toJSON());
+                    self.model.set("courses", collection.toJSON());
                 });
                 this.listenTo(this.collection, "remove", function(model, collection, options) {
-                    self.model.set("classes", collection.toJSON());
+                    self.model.set("courses", collection.toJSON());
                 });
             },
             render : function() {
-                console.info('blocks.roadmap.classes/roadmapBlockPeriodItemViewClass::render');
+                console.info('blocks.roadmap.courses/roadmapBlockPeriodItemViewClass::render');
                 this.$el.html(this.template(this.model.toJSON()));
 
                 // RENDER SUBVIEWS
-                var roadmapBlockClassesView = new mod.roadmapBlockClassesViewClass({
+                var roadmapBlockCoursesView = new mod.roadmapBlockCoursesViewClass({
                     el: this.$(".subitems-container"),
                     collection : this.collection
                 });
 
-                roadmapBlockClassesView.render();
+                roadmapBlockCoursesView.render();
 
                 this.$el.attr("data-roadmap-period-id", this.model.get("id"));
 
@@ -425,10 +432,10 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 this.listenTo(this.collection, 'add', this.refreshCounters.bind(this));
                 this.listenTo(this.collection, 'remove', this.refreshCounters.bind(this));
 
-                this.listenTo(opt.classesCollection, 'sync', this.renderNoPeriod.bind(this));
+                this.listenTo(opt.coursesCollection, 'sync', this.renderNoPeriod.bind(this));
 
                 this.listenTo(mod, 'period:removed', function() {
-                    opt.classesCollection.fetch();
+                    opt.coursesCollection.fetch();
                 });
 
                 this.initializeSortable();
@@ -456,7 +463,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 });
             },
             addItem : function(e) {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::addItem');
+                console.info('blocks.roadmap.courses/roadmapBlockViewClass::addItem');
 
                 var self = this;
                 var itemModel = new mod.periodModelClass({
@@ -483,10 +490,10 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 mod.periodAddDialog.open();
             },
             addOne : function(model, prefixSelector) {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::addOne');
+                console.info('blocks.roadmap.courses/roadmapBlockViewClass::addOne');
 
                 var self = this;
-                // GET ONLY THIS PERIOD CLASSES
+                // GET ONLY THIS PERIOD COURSES
 
                 var roadmapBlockClassItemView = new mod.roadmapBlockPeriodItemViewClass({
                     model : model
@@ -509,7 +516,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 return roadmapBlockClassItemView;
             },
             refreshCounters : function() {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::refreshCounters');
+                console.info('blocks.roadmap.courses/roadmapBlockViewClass::refreshCounters');
                 var total = this.collection.size();
                 this.$(".items-container > div.period-item .period-total").html(total);
 
@@ -519,9 +526,9 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
             },
             renderNoPeriod : function(collection) {
                 this.fakePeriodModel = new mod.periodModelClass({
-                    name : "Other Classes",
+                    name : "Other Courses",
                     course_id : this.model.get("id"),
-                    classes : collection.toJSON()
+                    courses : collection.toJSON()
                 });
                 if (!_.isNull(this.fakePeriodView)) {
                     this.fakePeriodView.remove();
@@ -529,7 +536,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
                 this.fakePeriodView = this.addOne(this.fakePeriodModel, ".no-period-container");
             },
             render: function() {
-                console.info('blocks.roadmap.classes/roadmapBlockViewClass::render');
+                console.info('blocks.roadmap.courses/roadmapBlockViewClass::render');
 
                 var self = this;
 
@@ -571,7 +578,7 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
     });
 
     mod.createBlock = function(el, data) {
-        var classesCollection = new mod.classesCollectionClass([], {
+        var coursesCollection = new mod.coursesCollectionClass([], {
             course_id : data.course_id,
             period_id : null
         });
@@ -583,22 +590,22 @@ $SC.module("blocks.roadmap.classes", function(mod, app, Backbone, Marionette, $,
         var roadmapBlockView = new mod.roadmapBlockViewClass({
             el : el,
             collection : periodsCollection,
-            classesCollection : classesCollection,
+            coursesCollection : coursesCollection,
             model : data.courseModel
         });
 
 
 
-        classesCollection.fetch();
+        coursesCollection.fetch();
         periodsCollection.fetch();
 
         mod.periodsCollection = periodsCollection;
-        mod.classesCollection = classesCollection;
+        mod.coursesCollection = coursesCollection;
     };
 
     app.module("crud.views.edit").on("start", function() {
         var self = this;
-        console.warn(this.getForm());
+        //console.warn(this.getForm());
 
         mod.listenToOnce(this.getForm(), "form:rendered", function() {
             mod.start({

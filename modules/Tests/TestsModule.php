@@ -6,7 +6,7 @@ namespace Sysclass\Modules\Tests;
  */
 use Phalcon\Acl\Adapter\Memory as AclList,
     Phalcon\Acl\Resource,
-    Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Courses\Tests\Lesson as TestLesson,

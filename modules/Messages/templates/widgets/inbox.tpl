@@ -14,7 +14,7 @@
               
             </a>
           </li>
-          
+          <!--
           <li role="presentation">
             <a href="#tab_messages_forum" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
               <i class="fa fa-commenting"></i>
@@ -35,7 +35,7 @@
               </span>
             </a>
           </li>
-          
+          -->
         </ul>
         <ul class="dir-menu-bar">
           <li>

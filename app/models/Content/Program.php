@@ -1,7 +1,8 @@
 <?php
 namespace Sysclass\Models\Content;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Users\User;
 
 class Program extends Model
 {
@@ -9,28 +10,26 @@ class Program extends Model
     {
         $this->setSource("mod_courses");
         
-		$this->hasManyToMany(
+		$this->hasMany(
             "id",
-            "Sysclass\Models\Content\ProgramCourses",
-            "course_id", "class_id",
             "Sysclass\Models\Content\Course",
-            "id",
+            "course_id",
             array(
                 'alias' => 'Courses',
                 'params' => array(
-                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
+                    'order' => '[Sysclass\Models\Content\Course].position'
                 )
             )
         );
         
         $this->hasMany(
             "id",
-            "Sysclass\Models\Content\ProgramCourses",
+            "Sysclass\Models\Content\Course",
             "course_id",
             array(
                 'alias' => 'ProgramsCourses',
                 'params' => array(
-                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
+                    'order' => '[Sysclass\Models\Content\Course].position'
                 )
             )
         );
@@ -64,7 +63,7 @@ class Program extends Model
 
         $this->hasOne(
             "id",
-            "Sysclass\\Models\\Courses\\CourseProgress",
+            "Sysclass\\Models\\Content\\Progress\\Program",
             "course_id",
             array('alias' => 'Progress')
         );
@@ -104,6 +103,57 @@ class Program extends Model
             return $end->add(new \DateInterval($interval));
         }
         return $end;
+    }
+
+    protected function resetOrder($course_id, $period_id = null) {
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        if (is_null($period_id)) {
+            $phql = "UPDATE Sysclass\\Models\\Content\\Course
+                SET position = -1 WHERE course_id = :course_id: AND period_id IS NULL";
+            $bind = ['course_id' => $this->id];
+        } else {
+            $phql = "UPDATE Sysclass\\Models\\Content\\Course
+                SET position = -1 WHERE course_id = :course_id: AND period_id = :period_id:";
+            $bind = ['course_id' => $this->id, 'period_id' => $this->period_id];
+            
+        }
+
+        return $manager->executeQuery(
+            $phql,
+            $bind
+        );
+    }
+
+    public function setCourseOrder(array $order_ids, $period_id = null) {
+        $status = self::resetOrder();
+        $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
+
+        foreach($order_ids as $index => $course_id) {
+            $bind = [
+                'position' => $index + 1,
+                'id' => $course_id,
+                'course_id' => $this->id // program_id
+            ];
+
+            if (empty($period_id)) {
+                $phql = "UPDATE Sysclass\\Models\\Content\\Course 
+                    SET position = :position: 
+                    WHERE id = :id: AND course_id = :course_id: AND period_id IS NULL";
+            } else {
+                $phql = "UPDATE Sysclass\\Models\\Content\\Course
+                    SET position = :position:  WHERE id = :id: AND course_id = :course_id: AND period_id = :period_id:";
+                $bind['period_id'] = $period_id;
+            }
+
+            $status->success() && $status = $manager->executeQuery(
+                $phql,
+                $bind
+            );
+
+        }
+
+        return $status->success();
     }
 
     public static function getUserProgressTree(User $user = null) {    
@@ -181,37 +231,33 @@ class Program extends Model
                     }
                 }
             }
-
-
-
-
-            
         }
-
-
-            
-
-
-
 
         return $result;
     }
 
-    public static function getUserContentTree(User $user = null) {
+    public static function getUserContentTree(User $user = null, $only_active = false) {
         if (is_null($user)) {
             $user = \Phalcon\DI::getDefault()->get('user');
         }
-        $programs = $user->getPrograms();
+        if ($only_active) {
+            $programs = $user->getPrograms([
+                'conditions' => "active = 1"
+            ]);    
+        } else {
+            $programs = $user->getPrograms();
+        }
+        
 
         $tree = array();
         foreach($programs as $program) {
-            $tree[] = $program->getFullTree();
+            $tree[] = $program->getFullTree($user, $only_active);
         }
 
         return $tree;
     }
 
-    public function getFullTree() {
+    public function getFullTree(User $user = null, $only_active = false) {
         $result = $this->toArray();
         if ($coordinator =  $this->getCoordinator()) {
             $result['coordinator'] = $coordinator->toArray();
@@ -226,8 +272,31 @@ class Program extends Model
 
         $result['courses'] = array();
         $courses = $this->getCourses();
+        if ($only_active) {
+            $courses = $this->getCourses([
+                'conditions' => "active = 1"
+            ]);    
+        } else {
+            $courses = $this->getCourses();
+        }
         foreach($courses as $course) {
-            $result['courses'][] = $course->getFullTree();
+            $result['courses'][] = $course->getFullTree($user, $only_active);
+        }
+
+        $user_id = $user->id;
+
+        $progress = $this->getProgress(array(
+            'conditions' => "user_id = ?0",
+            'bind' => array($user->id)
+        ));
+
+        if ($progress) {
+            $result['progress'] = $progress->toArray();   
+            $result['progress']['factor'] = floatval($result['progress']['factor']);
+        } else {
+            $result['progress'] = array(
+                'factor' => 0
+            );
         }
 
         return $result;
