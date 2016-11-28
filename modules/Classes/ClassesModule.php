@@ -6,8 +6,8 @@ namespace Sysclass\Modules\Classes;
  */
 use 
     Sysclass\Models\Content\Program,
-    Sysclass\Models\Courses\Classe,
-    Sysclass\Models\Courses\Lesson,
+    Sysclass\Models\Content\Course as Classe,
+    Sysclass\Models\Content\Unit as Lesson,
     Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]

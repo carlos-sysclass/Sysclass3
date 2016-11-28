@@ -89,12 +89,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     'tree' => array_values($tree),
                     'progress' => $this->getUserProgressRequest()
                 );
-                /*
-                var_dump($settings);
-                var_dump($checkScope);
-                var_dump($checkValue);
-                */
-
+                
     			return array(
     				'content.overview' => array(
     					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE

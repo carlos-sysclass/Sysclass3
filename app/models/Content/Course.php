@@ -51,7 +51,7 @@ class Course extends Model
 
 		$this->hasOne(
             "id",
-            "Sysclass\\Models\\Courses\\ClasseProgress",
+            "Sysclass\\Models\\Content\\Progress\\Course",
             "class_id",
             array('alias' => 'Progress')
         );

@@ -28,7 +28,7 @@ class UnitContent extends Model
 
         $this->hasOne(
             "id",
-            "Sysclass\Models\Courses\Contents\Progress",
+            "Sysclass\Models\Content\Progress\Content",
             "content_id",
             array('alias' => 'Progress')
         );

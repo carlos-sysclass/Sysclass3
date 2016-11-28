@@ -63,7 +63,7 @@ class Program extends Model
 
         $this->hasOne(
             "id",
-            "Sysclass\\Models\\Courses\\CourseProgress",
+            "Sysclass\\Models\\Content\\Progress\\Program",
             "course_id",
             array('alias' => 'Progress')
         );

@@ -22,7 +22,7 @@ class Unit extends Model
 
 		$this->hasOne(
             "id",
-            "Sysclass\\Models\\Courses\\LessonProgress",
+            "Sysclass\\Models\\Content\\Progress\\Unit",
             "lesson_id",
             array('alias' => 'Progress')
         );

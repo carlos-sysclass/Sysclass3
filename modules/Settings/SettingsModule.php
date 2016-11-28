@@ -6,7 +6,7 @@ namespace Sysclass\Modules\Settings;
  */
 use Sysclass\Models\System\Settings as SystemSettings, 
     Sysclass\Models\Users\Settings,
-    Sysclass\Models\Courses\Course;
+    Sysclass\Models\Content\Program as Course;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules

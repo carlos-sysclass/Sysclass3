@@ -1,10 +1,10 @@
 <?php
 namespace Sysclass\Models\Courses\Tests;
 
-use Sysclass\Models\Courses\Lesson as BaseLesson;
+use Sysclass\Models\Content\Unit as BaseUnit;
 use Sysclass\Models\Courses\Tests\ExecutionQuestions;
 
-class Lesson extends BaseLesson
+class Lesson extends BaseUnit
 {
     protected $assignedData = null;
 
@@ -174,9 +174,9 @@ class Lesson extends BaseLesson
         $phql = "SELECT tl.*
                 FROM 
                     Sysclass\\Models\\Enrollments\\CourseUsers ecu
-                LEFT JOIN Sysclass\\Models\\Courses\\Course c
+                LEFT JOIN Sysclass\\Models\\Content\\Program c
                     ON (ecu.course_id = c.id)
-                LEFT JOIN Sysclass\\Models\\Courses\\Classe cl
+                LEFT JOIN Sysclass\\Models\\Content\\Course cl
                     ON (c.id = cl.course_id)
                 LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
                     ON (tl.class_id = cl.id)
