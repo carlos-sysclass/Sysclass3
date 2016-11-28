@@ -14,13 +14,13 @@ class CourseUsers extends Model
         $this->setSource("mod_enroll_course_to_users");
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
-        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => false));
+        $this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id",  array('alias' => 'Course', 'reusable' => false));
         /*
         $this->belongsTo("status_id", "Sysclass\\Models\\Enrollments\\CourseUsersStatus", "id",  array('alias' => 'Status', 'reusable' => false));
         */
 		$this->hasOne(
             array("course_id", "user_id"),
-            "Sysclass\Models\Courses\CourseProgress",
+            "Sysclass\Models\Content\Progress\Program",
             array("course_id", "user_id"),
             array('alias' => 'CourseProgress')
         );

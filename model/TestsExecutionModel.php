@@ -1,7 +1,7 @@
 <?php
 use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
-    Sysclass\Models\Courses\ClasseProgress,
-    Sysclass\Models\Courses\LessonProgress;
+    Sysclass\Models\Content\Progress\Course as ClasseProgress,
+    Sysclass\Models\Content\Progress\Uniot as LessonProgress;
 
 class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 

@@ -4,7 +4,7 @@ namespace Sysclass\Models\Enrollments;
 use Plico\Mvc\Model,
     Phalcon\DI,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Courses\Course,
+    Sysclass\Models\Content\Program as Course,
     Sysclass\Models\Enrollments\CourseUsers,
     Sysclass\Models\Enrollments\Fields as EnrollFields,
     Sysclass\Models\Forms\Fields as FormFields,

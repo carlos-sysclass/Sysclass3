@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Enroll;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Course as Course,
+use Sysclass\Models\Content\Program as Course,
     Sysclass\Models\Enrollments\CourseUsers as Enrollment,
     Sysclass\Models\Forms\Fields,
     Sysclass\Models\Content\Program,
