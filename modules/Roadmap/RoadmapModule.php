@@ -122,8 +122,8 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
 
             } elseif ($model ==  "classes") {
-                $modelRoute = "roadmap/classes";
-                $itemsCollection = $this->model($modelRoute);
+                //$modelRoute = "roadmap/classes";
+                //$itemsCollection = $this->model($modelRoute);
 
                 $filter = filter_var($filter, FILTER_DEFAULT);
 

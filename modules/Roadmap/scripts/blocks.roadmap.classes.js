@@ -25,14 +25,16 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 this.listenTo(this, "add", function(model, collection, opt) {
                     model.set("course_id", this.course_id);
                     model.set("period_id", this.period_id);
-                    model.set("active", 1);
+                    if (_.isNull(model.get("active"))) {
+                        model.set("active", 1);    
+                    }
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
                 });
             },
             model : mod.classModelClass,
             url: function() {
-                return "/module/roadmap/datasources/classes/default/" + JSON.stringify({ 'course_id' : this.course_id, 'period_id' : this.period_id });
+                return "/module/roadmap/items/course/default/" + JSON.stringify({ 'course_id' : this.course_id, 'period_id' : this.period_id });
             },
             setContentOrder : function(order) {
                 $.ajax(
@@ -52,7 +54,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
             defaults : {
                 name: "",
                 max_classes : -1,
-                active: true
+                active: 1
             },
             urlRoot : function() {
                 if (this.get("id")) {
@@ -127,8 +129,10 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 //if (this.invalidated || !this.model.get("id")) {
                     this.$el.html(this.template(this.model.toJSON()));
 
+                    //console.warn(this.model.toJSON());
                     if (this.model.get("id")) {
-                        if (this.model.get("active") === 0) {
+                        console.warn(this.model.get("id"), this.model.get("active"));
+                        if (this.model.get("active") == 0) {
                             this.$el.removeClass("green-stripe");
                             this.$el.removeClass("blue-stripe");
                             this.$el.addClass("red-stripe");
