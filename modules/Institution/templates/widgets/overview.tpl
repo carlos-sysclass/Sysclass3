@@ -12,7 +12,7 @@
 
 	{$variables.website=['link' => $context.website,'icon'=>'fa-laptop','text'=>$text]}
 {/if}
-{if $context.time_at}
+{if $T_CONFIGURATION.organization_show_current_time && $context.time_at}
 	{$variables.time_at=['icon'=>'fa-clock-o','text'=>$context.time_at]}
 {/if}
 {if $context.facebook}
