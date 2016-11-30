@@ -154,8 +154,10 @@
 				<!--end tab-pane-->
 				<!--end tab-pane-->
 			</div>
-			<div class="margin-top-10">
-				<button class="btn green" type="submit">Save Changes</button>
+			<div class="col-md-12">
+				<div class="form-body margin-top-10">
+					<button class="btn green" type="submit">{translateToken value="Save Changes"}</button>
+				</div>
 			</div>
 			<!--END TABS-->
 		</div>
