@@ -150,11 +150,11 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
         $lessonTest = LessonTest::findFirstById($test_id);
         $user = User::findFirstById($user_id);
         if ($lessonTest && $user) {
-            $module = $lessonTest->getClasse();
+            $module = $lessonTest->getCourse();
             if ($module) {
-                $courses = $module->getCourses();
-                if ($courses->count() > 0) {
-                    $course = $courses->getFirst();
+                $course = $module->getProgram();
+                if ($course) {
+                    //$course = $courses->getFirst();
 
                     $vars = array(
                         'username' => $user->name . " " . $user->surname,
@@ -205,9 +205,9 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
         $module = Course::findFirstById($course_id);
         $user = User::findFirstById($user_id);
         if ($module && $user) {
-            $courses = $module->getCourses();
-            if ($courses->count() > 0) {
-                $course = $courses->getFirst();
+            //$courses = $module->getUnits();
+            //if ($courses->count() > 0) {
+                //$course = $courses->getFirst();
 
                 $vars = array(
                     //'username' => $user->name . " " . $user->surname,
@@ -262,7 +262,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
                     return true;
                 }
-            }
+            //}
 
         }
         return false;
