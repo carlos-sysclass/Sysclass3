@@ -103,6 +103,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
     public function getItemsRequestJSON($model = "me", $type = "default", $filter = null)
     {
         if ($currentUser = $this->getCurrentUser(true)) {
+            /*
             if ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemsCollection = $this->model($modelRoute);
@@ -151,19 +152,8 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 }
 
                 //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-                /*
-                $itemsCollection->debug()->addFilter(array(
-                    'c.active'      => 1,
-                    'cl.active'     => 1,
-                    'c2c.course_id' => $filter['course_id'],
-                    'clp.period_id' => $filter['period_id']
-                ))->getItems();
 
-                var_dump($itemsData);
-                exit;
-                */
-
-            } elseif ($model ==  "grouping") {
+            } else*/ if ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemsCollection = $this->model($modelRoute);
 
