@@ -568,7 +568,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
     public function afterModelCreate($event, $itemModel, $data) {
         if ($data['_args'][0] == "users") {
-            $this->eventsManager->fire("enroll:created", $this, $data);
+            $this->eventsManager->fire("enroll:created", $this, $itemModel->toArray());
         }
     }
 
