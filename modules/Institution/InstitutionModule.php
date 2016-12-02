@@ -77,7 +77,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         if (in_array('institution.overview', $widgetsIndexes)) {
             //$this->putModuleScript("widget.institution");
 
-            $data = $organization->toArray();
+            $data = $organization->toFullArray();
 
             $time_at = Timezones::getTimeAt($organization->timezone);
 
