@@ -16,8 +16,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             model : formView.model,
             form : formView
         });
-
-
     }
 
     this.on("start", function(opt) {
