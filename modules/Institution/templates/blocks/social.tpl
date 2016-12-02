@@ -8,6 +8,18 @@
 		</select>
 	</div>
 {/if}
+
+{if ($T_SHOW_LANGUAGE)}
+	<div class="form-group">
+		<label class="control-label">{translateToken value="Language"}</label>
+		<select name="{$T_SHOW_LANGUAGE}" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+		{foreach $T_LANGUAGES as $key => $value}
+			<option value="{$value.code}">{$value.name}</option>
+		{/foreach}
+		</select>
+	</div>
+{/if}
+
 <div class="form-group">
 	<label class="control-label">{translateToken value="Website"}</label>
 	<input name="website" value="" type="text" placeholder="Website" class="form-control" data-rule-url="true" />

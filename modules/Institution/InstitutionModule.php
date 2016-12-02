@@ -9,7 +9,8 @@ namespace Sysclass\Modules\Institution;
  * @package Sysclass\Modules
  */
 use Sysclass\Models\Organizations\Organization,
-    Sysclass\Services\I18n\Timezones;
+    Sysclass\Services\I18n\Timezones,
+    Sysclass\Models\I18n\Language;
 /**
  * @RoutePrefix("/module/institution")
  */
@@ -29,6 +30,9 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             },
             'organization.social.dialog' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
+                $languages = Language::find("active = 1");
+                $this->putitem("languages", $languages->toArray());
+
                 $self->putComponent("data-tables");
                 $self->putComponent("select2");
                 //$self->putComponent("bootstrap-editable");
@@ -55,12 +59,13 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         if (in_array('institution.overview', $widgetsIndexes)) {
             //$this->putModuleScript("widget.institution");
 
-            $data = $organization->toFullArray();
+            $data = $organization->toArray();
 
             $time_at = Timezones::getTimeAt($organization->timezone);
 
             if ($time_at) {
                 $data['time_at'] = $time_at->format('H:i');
+                $data['details']['time_at'] = $data['time_at'];
             }
 
         	return array(

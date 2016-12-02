@@ -18,7 +18,7 @@
                         {include "`$smarty.current_dir`/../blocks/social.tpl" 
                         T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_DIALOG_CONTEXT
                         T_MODULE_ID="organization-social"
-                        T_SHOW_COUNTRY=true}
+                        T_SHOW_LANGUAGE="language_code"}
                         </form>
                     </div>
                 </div>

@@ -87,6 +87,8 @@ models:
   me: Sysclass\Models\Organizations\Organization
   details: 
     class: Sysclass\Models\Organizations\OrganizationL10n
+    findMethod : "findUnique"
+    updateMethod: "save"
     acl:
       create:
         resource: Institution

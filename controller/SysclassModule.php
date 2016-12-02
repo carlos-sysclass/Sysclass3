@@ -400,8 +400,10 @@ abstract class SysclassModule extends BaseSysclassModule
     public function setItemRequest($model, $id)
     {
         $this->response->setContentType('application/json', 'UTF-8');
+        
+        $data = $this->request->getJsonRawBody(true);
 
-        $itemModel = $this->getModelData($model, $id);
+        $itemModel = $this->getModelData($model, $id, $data);
 
         $this->setArgs(array(
             'model' => $model,
@@ -410,15 +412,9 @@ abstract class SysclassModule extends BaseSysclassModule
         ));
         $model_info = $this->model_info[$model];
 
-        $data = $this->request->getJsonRawBody(true);
-
-        var_dump(array_key_exists($model, $this->model_info), $this->isResourceAllowed("edit", $model_info, $model, $data));
 
         if ($this->isResourceAllowed("edit", $model_info, $model, $data)) {
 
-        //if ($allowed = $this->isUserAllowed("edit")) {
-            var_dump($itemModel);
-            exit;
             if ($itemModel) {
 
                 if (!array_key_exists($model, $this->model_info)) {
@@ -440,8 +436,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 $itemModel->assign($data);
                 $itemModel->id = $id;
-
-                var_dump(1);
 
                 $this->eventsManager->collectResponses(true);
                 
