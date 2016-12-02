@@ -31,6 +31,8 @@ class Organization extends Model
             ]);
         }
 
+        /*
+
 		$this->postal_code = $details->postal_code;
 		$this->street = $details->street;
 		$this->street_number = $details->street_number;
@@ -46,5 +48,7 @@ class Organization extends Model
 		$this->linkedin = $details->linkedin;
 		$this->skype = $details->skype;
 		$this->googleplus = $details->googleplus;
+
+        */
     }
 }

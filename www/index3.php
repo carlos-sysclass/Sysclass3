@@ -35,6 +35,6 @@ try {
     echo $application->handle()->getContent();
 
 } catch (\Exception $e) {
-    var_dump($e);
+    //var_dump($e);
     exit;
 }
