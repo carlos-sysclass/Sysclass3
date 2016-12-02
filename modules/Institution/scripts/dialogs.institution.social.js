@@ -14,26 +14,20 @@ $SC.module("dialogs.institution.social", function(mod, app, Backbone, Marionette
         mod.dialogView.close();
     };
 
-    /*
     mod.setModel = function(model) {
-        if (!_.isUndefined(mod.dialogView)) {
-            this.stopListening(mod.dialogView.model);
-            mod.dialogView.setModel(model);
-
-            mod.dialogView.listenTo(mod.dialogView.model, "sync", function() {
-                mod.trigger("created.question", this.model);
-            });
-        }
+        console.warn(model);
+        mod.dialogView.setModel(model);
     };
-    */
+
 
     mod.on("start", function(opt) {
-        var baseFormClass = app.module("views").baseFormClass;
-        var questionCreationDialogViewClass = baseFormClass.extend({
+        this.started = true;
+        var dialogViewClass = app.module("views").dialogViewClass;
+        var socialInfoDialog = dialogViewClass.extend({
             renderType : "byView",
             initialize: function() {
-                console.info('dialogs.roles.create/questionCreationDialogViewClass::initialize');
-                baseFormClass.prototype.initialize.apply(this);
+                console.info('dialogs.institution.social/socialInfoDialog::initialize');
+                dialogViewClass.prototype.initialize.apply(this);
 
                 var self = this;
 
@@ -45,7 +39,15 @@ $SC.module("dialogs.institution.social", function(mod, app, Backbone, Marionette
                 
                 this.on("complete:save", this.close.bind(this));
             },
+            setModel : function(model) {
+                console.warn(model);
+                this.model.set("id", model.get("id"));
+            },
+
             open : function() {
+                console.info('dialogs.institution.social/socialInfoDialog::open');
+                dialogViewClass.prototype.open.apply(this);
+                /*
                 this.model.unset("id");
                 this.model.unset("name");
                 this.model.unset("question");
@@ -70,8 +72,7 @@ $SC.module("dialogs.institution.social", function(mod, app, Backbone, Marionette
                     this.bindViewEvents();
                     this.$el.modal("show");
                 }.bind(this));
-
-                
+                */
             },
             close : function() {
                 this.$el.modal("hide");
@@ -80,23 +81,15 @@ $SC.module("dialogs.institution.social", function(mod, app, Backbone, Marionette
         });
 
         this.models = {
-            response_type : "object",
-            question : $SC.module("crud.models").baseItemModelClass.extend({
-                /*
-                defaults : {
-                    name : "",
-                    active : 1,
-                    in_course : 0,
-                    in_class : 0
-                },
-                */
-                urlRoot : "/module/questions/item/me"
+            details : $SC.module("crud.models").baseItemModelClass.extend({
+                response_type : "object",
+                urlRoot : "/module/institution/item/details"
             })
         };
 
-        this.dialogView = new questionCreationDialogViewClass({
+        this.dialogView = new socialInfoDialog({
             el : "#dialogs-organization-social",
-            model : new mod.models.question()
+            model : new mod.models.details()
         });
 
         // BIND TO DEFAULT CALLER

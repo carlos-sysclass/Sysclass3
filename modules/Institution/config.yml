@@ -85,4 +85,12 @@ blocks:
           label: Actions
 models:
   me: Sysclass\Models\Organizations\Organization
-  details: Sysclass\Models\Organizations\OrganizationL10n
+  details: 
+    class: Sysclass\Models\Organizations\OrganizationL10n
+    acl:
+      create:
+        resource: Institution
+        action: edit
+      edit:
+        resource: Institution
+        action: edit

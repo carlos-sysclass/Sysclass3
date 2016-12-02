@@ -1,3 +1,13 @@
+{if ($T_SHOW_COUNTRY)}
+	<div class="form-group">
+		<label class="control-label">{translateToken value="Country"}</label>
+		<select class="select2-me form-control" name="country" data-format-as="country-list" data-rule-required="true">
+			{foreach $T_COUNTRY_CODES as $key => $code}
+				<option value="{$key}">{$code}</option>
+			{/foreach}
+		</select>
+	</div>
+{/if}
 <div class="form-group">
 	<label class="control-label">{translateToken value="Website"}</label>
 	<input name="website" value="" type="text" placeholder="Website" class="form-control" data-rule-url="true" />

@@ -3,9 +3,32 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 	this.config = $SC.module("crud.config").getConfig();
 	var entity_id = mod.config.entity_id;
 
-	mod.addInitializer(function() {
+	this.startWithParent = false;
 
-		this.getForm()
+	mod.on("start", function(opt) {
+
+		var socialInfoViewClass = Backbone.View.extend({
+			events : {
+				"click .social-addanother" : "addNewSocialInfo"
+			},
+			socialInfoDialog : app.module("dialogs.institution.social"),
+			initialize : function() {
+				if (!this.socialInfoDialog.started) {
+					this.socialInfoDialog.start();
+				}
+				this.socialInfoDialog.setModel(
+					opt.module.getModel()
+				);
+			},
+			addNewSocialInfo : function() {
+				alert(1);
+				this.socialInfoDialog.open();
+			}
+		});
+
+		var socialInfoView = new socialInfoViewClass({
+			el: "#additional-address"
+		});
 
 		/*
 		var bindTableEvents = function(table) {
@@ -91,5 +114,11 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 		});
 		*/
 	});
+
+    $SC.module("crud.views.edit").on("start", function() {
+        mod.start({
+            module: this
+        });
+    });
 
 });

@@ -80,7 +80,7 @@
                 T_MODULE_CONTEXT=$T_QUESTIONS_SELECT_BLOCK_CONTEXT
                 T_MODULE_ID="questions-select"}
 
-				<div class="additional-address">
+				<div id="additional-address">
 					<a href="javascript:void(0);" class="btn btn-sm btn-link social-addanother">
         				<i class="fa fa-plus"></i>
         				<span>{translateToken value="Add Social Info"}</span>

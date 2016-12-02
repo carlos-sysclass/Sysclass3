@@ -1,5 +1,5 @@
 <div id="dialogs-organization-social" class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-wide">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -13,10 +13,13 @@
             <div class="modal-body">
                 <div class="row margin-top-20">
                     <div class="col-md-12">
-                        {include "`$smarty.current_dir`/../blocks/table.tpl" 
-                        
+                        <form id="form-social-info" role="form" class="form-validate" method="post" action="">
+
+                        {include "`$smarty.current_dir`/../blocks/social.tpl" 
                         T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_DIALOG_CONTEXT
-                        T_MODULE_ID="organization-social"}
+                        T_MODULE_ID="organization-social"
+                        T_SHOW_COUNTRY=true}
+                        </form>
                     </div>
                 </div>
             </div>
@@ -43,7 +46,8 @@
             </div>
             -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button class="btn btn-success save-action" type="submit">{translateToken value="Save Changes"}</button>
+                <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
