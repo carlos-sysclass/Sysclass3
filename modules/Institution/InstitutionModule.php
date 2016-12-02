@@ -43,6 +43,24 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
                 $self->putModuleScript("dialogs.institution.social");
                 $self->setCache("organization.social.dialog", $block_context);
 
+                $self->putSectionTemplate("social", "blocks/social.list");
+
+                return true;
+            },
+            'organization.social.list' => function($data, $self) {
+                $this->putBlock("organization.social.dialog");
+
+
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                //$self->putComponent("bootstrap-editable");
+
+                $block_context = $self->getConfig("blocks\\organization.social.list\\context");
+                $self->putItem("organization_social_list_context", $block_context);
+
+                $self->putModuleScript("dialogs.institution.social");
+                $self->setCache("organization.social.dialog", $block_context);
+
                 $self->putSectionTemplate("dialogs", "dialogs/social");
 
                 return true;
