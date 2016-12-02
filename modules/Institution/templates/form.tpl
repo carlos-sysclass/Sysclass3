@@ -75,17 +75,14 @@
 			{/if}
 
  			<div class="tab-pane fade in" id="tab_1_3">
-                {include "`$smarty.current_dir`/blocks/social.tpl" 
-                
-                T_MODULE_CONTEXT=$T_QUESTIONS_SELECT_BLOCK_CONTEXT
-                T_MODULE_ID="questions-select"}
+                {include "`$smarty.current_dir`/blocks/social.tpl"}
 
-				<div id="additional-address">
-					<a href="javascript:void(0);" class="btn btn-sm btn-link social-addanother">
-        				<i class="fa fa-plus"></i>
-        				<span>{translateToken value="Add Social Info"}</span>
-    				</a>
-				</div>
+				{if (isset($T_SECTION_TPL['social']) &&  ($T_SECTION_TPL['social']|@count > 0))}
+		    		{foreach $T_SECTION_TPL['social'] as $template}
+						{include file=$template}
+						<div class="clearfix"></div>
+					{/foreach}
+				{/if}
 			</div>
 		</div>
 <!--

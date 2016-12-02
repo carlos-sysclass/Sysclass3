@@ -5,6 +5,7 @@ use Plico\Mvc\Model;
 
 class Organization extends Model
 {
+    public $details = [];
     public function initialize()
     {
         $this->setSource("mod_organization");
@@ -25,30 +26,44 @@ class Organization extends Model
             'bind' => [$translate->getSource()]
         ]);
 
-        if (!$details) {
-            $details = $this->getDetails([
-                'conditions' => "language_code = 'en'"
-            ]);
+        if ($details->count() > 0) {
+            $detailsRec = $details->getFirst();
+        } else {
+            $detailsRec = new OrganizationL10n();
+            $detailsRec->id = $this->id;
+            $detailsRec->language_code = $translate->getSource();
         }
 
+        $detailsRec->postal_code = is_null($detailsRec->postal_code) ? $this->postal_code : $detailsRec->postal_code;
+        $detailsRec->street = is_null($detailsRec->street) ? $this->street : $detailsRec->street;
+        $detailsRec->street_number = is_null($detailsRec->street_number) ? $this->street_number : $detailsRec->street_number;
+        $detailsRec->street2 = is_null($detailsRec->street2) ? $this->street2 : $detailsRec->street2;
+        $detailsRec->district = is_null($detailsRec->district) ? $this->district : $detailsRec->district;
+        $detailsRec->city = is_null($detailsRec->city) ? $this->city : $detailsRec->city;
+        $detailsRec->state = is_null($detailsRec->state) ? $this->state : $detailsRec->state;
+        $detailsRec->country = is_null($detailsRec->country) ? $this->country : $detailsRec->country;
+        $detailsRec->phone = is_null($detailsRec->phone) ? $this->phone : $detailsRec->phone;
+        $detailsRec->website = is_null($detailsRec->website) ? $this->website : $detailsRec->website;
+        $detailsRec->facebook = is_null($detailsRec->facebook) ? $this->facebook : $detailsRec->facebook;
+        $detailsRec->linkedin = is_null($detailsRec->linkedin) ? $this->linkedin : $detailsRec->linkedin;
+        $detailsRec->skype = is_null($detailsRec->skype) ? $this->skype : $detailsRec->skype;
+        $detailsRec->googleplus = is_null($detailsRec->googleplus) ? $this->googleplus : $detailsRec->googleplus;
+
+        $detailsRec->timezone = is_null($detailsRec->timezone) ? $this->timezone : $detailsRec->timezone;
+
+        $this->details = $detailsRec->toArray();
+       
         /*
 
-		$this->postal_code = $details->postal_code;
-		$this->street = $details->street;
-		$this->street_number = $details->street_number;
-		$this->street2 = $details->street2;
-		$this->district = $details->district;
-		$this->city = $details->city;
-		$this->state = $details->state;
-		$this->country = $details->country;
-		$this->phone = $details->phone;
-		$this->website = $details->website;
 		$this->timezone = $details->timezone;
-		$this->facebook = $details->facebook;
-		$this->linkedin = $details->linkedin;
-		$this->skype = $details->skype;
-		$this->googleplus = $details->googleplus;
 
         */
+    }
+
+    public function toArray() {
+        $item = parent::toArray();
+        $item['details'] = $this->details;
+
+        return $item;
     }
 }

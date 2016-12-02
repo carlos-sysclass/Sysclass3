@@ -5,44 +5,48 @@
     </div>
 </div>
 
+{if $context.details}
+	{assign var="social" value=$context.details}
+{/if}
+
 {$variables=[]}
 
-{if $context.website}
+{if $social.website}
 	{$text=translateToken value="Website"}
 
-	{$variables.website=['link' => $context.website,'icon'=>'fa-laptop','text'=>$text]}
+	{$variables.website=['link' => $social.website,'icon'=>'fa-laptop','text'=>$text]}
 {/if}
-{if $T_CONFIGURATION.organization_show_current_time && $context.time_at}
-	{$variables.time_at=['icon'=>'fa-clock-o','text'=>$context.time_at]}
+{if $T_CONFIGURATION.organization_show_current_time && $social.time_at}
+	{$variables.time_at=['icon'=>'fa-clock-o','text'=>$social.time_at]}
 {/if}
-{if $context.facebook}
+{if $social.facebook}
 	{$text=translateToken value="Facebook"}
 
-	{$variables.facebook=['link' => "https://facebook.com/{$context.facebook}",'icon'=>'fa-facebook','text'=>$text]}
+	{$variables.facebook=['link' => "https://facebook.com/{$social.facebook}",'icon'=>'fa-facebook','text'=>$text]}
 {/if}
-{if $context.street && $context.street_number}
+{if $social.street && $social.street_number}
 	{$text=translateToken value="View Map"}
 
-	{$variables.address=['link' => "https://www.google.com.br/maps/place/{$context.street}, {$context.street_number} - {$context.city}",'icon'=>'fa-map','text'=>$text]}
+	{$variables.address=['link' => "https://www.google.com.br/maps/place/{$social.street}, {$social.street_number} - {$social.city}",'icon'=>'fa-map','text'=>$text]}
 
 {/if}
-{if $context.skype}
+{if $social.skype}
 	{$text=translateToken value="Skype"}
 
-	{$variables.skype=['link' => "skype://{$context.skype}",'icon'=>'fa-skype','text'=>$text]}
+	{$variables.skype=['link' => "skype://{$social.skype}",'icon'=>'fa-skype','text'=>$text]}
 {/if}
-{if $context.linkedin}
+{if $social.linkedin}
 	{$text=translateToken value="Linked In"}
 
-	{$variables.linkedin=['link' => "https://www.linkedin.com/{$context.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
+	{$variables.linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
 {/if}
-{if $context.googleplus}
+{if $social.googleplus}
 	{$text=translateToken value="Google+"}
 
-	{$variables.googleplus=['link' => "https://plus.google.com/{$context.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
+	{$variables.googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
 {/if}
-{if $context.phone}
-	{$variables.phone=['link' => "callto://+{$context.phone}",'icon'=>'fa-phone','text'=>$context.phone]}
+{if $social.phone}
+	{$variables.phone=['link' => "callto://+{$social.phone}",'icon'=>'fa-phone','text'=>$social.phone]}
 {/if}
 
 {$total=$variables|count}

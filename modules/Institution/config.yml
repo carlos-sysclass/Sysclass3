@@ -53,13 +53,13 @@ crud:
         page_subtitle: Create a new Organization
     'edit/{id}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image", "jquery-mask", "phone-field"]
-      blocks: ["dropbox.upload", "address.book", "organization.social.dialog"]
+      blocks: ["dropbox.upload", "address.book", "organization.social.list"]
       scripts: ["views.institution.edit"]
       template: form.tpl
       variables:
         page_subtitle: Edit your Organization
 blocks:
-  organization.social.dialog:
+  organization.social.list:
     context:
       sAjaxSource: /module/insitution/items/details/datatable/
       datatable_fields:
@@ -87,6 +87,8 @@ models:
   me: Sysclass\Models\Organizations\Organization
   details: 
     class: Sysclass\Models\Organizations\OrganizationL10n
+    findMethod : "findUnique"
+    updateMethod: "save"
     acl:
       create:
         resource: Institution
