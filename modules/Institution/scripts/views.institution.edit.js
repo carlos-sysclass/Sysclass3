@@ -160,9 +160,8 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 	}.bind(this);
 
 	app.on("added.table", function(name, table) {
-		console.warn(name);
-		if (name == "view-users") {
-			//bindTableEvents(table);
+		if (name == "view-organization-list") {
+			bindTableEvents(table);
 		}
 	}.bind(this));
 
