@@ -470,16 +470,16 @@ margin:0 4px 0 0;
   padding: 0;
   margin: 0;
 }
-.dir-menu-bar .fa {
+.dir-menu-bar > li > a > .fa {
   margin: 0 !important;
   font-size: 19px;
 }
-.dir-menu-bar li {
+.dir-menu-bar > li {
   float: right;
   list-style: none;
   display: flex;
 }
-.dir-menu-bar li a {
+.dir-menu-bar > li > a {
   border-left: 1px solid #fff;
   color: #fff;
   height: 38px;

@@ -2636,3 +2636,11 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   height: 314px;
   max-height: 314px;
 }
+
+.dir-menu-bar .dropdown.open .dropdown-toggle {
+  color: #fff;
+}
+
+.dir-menu-bar .dropdown-menu li {
+  display: block;
+}

@@ -37,10 +37,10 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
 
                 if (this.mode == "user") {
                     this.$(":input[name='group_id']").select2("container").hide();
-                    this.$(":input[name='user_id']").show();
+                    this.$(":input[name='user_id']").select2("container").show();
                 } else {
-                    this.$(":input[name='user_id']").hide();
-                    this.$(":input[name='group_id']").show();
+                    this.$(":input[name='user_id']").select2("container").hide();
+                    this.$(":input[name='group_id']").select2("container").show();
                 }
 
             },

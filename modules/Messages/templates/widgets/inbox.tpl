@@ -38,10 +38,27 @@
           -->
         </ul>
         <ul class="dir-menu-bar">
-          <li>
-            <a href="javascript: void(0);" class="dialogs-messages-send-action tooltips" data-mode="user" data-original-title="{translateToken value='New Message'}">
+          <li class="dropdown">
+            <a href="javascript: void(0);" data-close-others="true" data-toggle="dropdown" class="dropdown-toggle">
               <i class="fa fa-envelope" aria-hidden="true"></i>
             </a>
+            <ul class="dropdown-menu pull-right">
+              <li>
+                <a href="javascript: void(0);" class="dialogs-messages-send-action" data-mode="user">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                  {translateToken value="Compose"}
+                </a>              
+              </li>
+              <li class="divider"></li>
+              {foreach $T_MESSAGES_GROUP_RECEIVERS as $receiver}
+              <li>
+                <a href="javascript: void(0);" class="dialogs-messages-send-action" data-mode="group" data-group-id="{$receiver.id}">
+                  <i class="fa {$receiver.image} fa-{$receiver.image}" aria-hidden="true"></i>
+                  {$receiver.name}
+                </a>              
+              </li>
+              {/foreach}
+            </ul>
           </li>
           <li>
             <a href="javascript: void(0);" class="dialogs-messages-search-action tooltips" data-original-title="{translateToken value='Search'}">

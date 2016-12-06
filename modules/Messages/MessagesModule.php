@@ -63,7 +63,6 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 $self->putComponent("wysihtml5");
                 $self->putComponent("select2");
 
-
                 $receiverGroups = UserGroup::findConnectBy(array(
                     'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
                     'connect_by' => 'behaviour_allow_messages'
@@ -81,8 +80,6 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 $users = $teacherRole->getAllUsers();
 
                 $this->putItem("USER_RECEIVERS", $users);
-
-
 
                 $self->putModuleScript("dialogs.messages.send");
                 $self->putSectionTemplate("dialogs", "dialogs/send");
@@ -116,9 +113,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
             //$this->putCss("plugins/bootstrap-toastr/toastr.min");
             //$this->putScript("plugins/bootstrap-toastr/toastr.min");
 
-
             //$this->putModuleScript("messages");
-
 
             $this->putBlock("messages.send.dialog");
 
@@ -126,9 +121,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
             $recipients = $this->getMessageReceivers();
 
-
             $groupsRS = MessageGroup::find();
-
 
             foreach($groupsRS as $group) {
                 $widgets[$widgetsNames[$group->id]] = array(
@@ -158,8 +151,26 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
             $this->putBlock("messages.send.dialog");
 
             $block_context = $this->getConfig("widgets\\messages.inbox\context");
-
             $this->putItem("messages_block_context", $block_context);
+                /*
+                $receiverGroups = UserGroup::findConnectBy(array(
+                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
+                    'connect_by' => 'behaviour_allow_messages'
+                ));
+                */
+                $receiverGroups = UserGroup::find([
+                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1'
+                ]);
+
+                $this->putItem("messages_group_receivers", $receiverGroups->toArray());
+                /*
+                $messageGroupsRS = MessageGroup::find();
+                $messageGroups = array();
+                foreach($messageGroupsRS as $messageGroup) {
+                    $messageGroups[$messageGroup->id] = $messageGroup->name;
+                }
+                $this->putItem("message_groups", $messageGroups);
+                */
 
             return array(
                 "messages.inbox" => array(

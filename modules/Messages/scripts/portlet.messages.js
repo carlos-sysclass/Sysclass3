@@ -207,46 +207,12 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    //size: '7px',
-					    //wrapperClass: "slimScrollDiv",
-					    //color: '#a1b2bd',
-					    ///railColor: '#333',
-					    //position: 'right',
 					    height: '274px',
-					    //alwaysVisible: false,
-					    //railVisible: false,
-					    //disableFadeOut: true,
-					    //allowPageScroll : true,
-					    //wheelStep : 2
 					}
 			    });
     			$SC.addTable("messages-table-messages", this.tableView);
 
-    			// LISTEN TO DATATABLE EVENTS
-    			this.listenTo(this.tableView, "action.datatable", function(data, item, model) {
-    				/*
-                    if ($(item).hasClass("datatable-option-approve")) {
-						item
-							.tooltip('disable')
-							.find("i.fa")
-							.addClass("fa-refresh fa-spin");
-
-                    	console.warn(data, item, model);
-                    	var model = new mod.models.enroll.user(data);
-                    	model.set('approved', 1);
-                    	model.save();
-
-                    	window.setTimeout(function() {
-                    		item.hide(500);
-                    	}, 1500);
-                    }
-                    */
-                }.bind(this));
-
 				this.render();
-
-				//this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
-				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
 			doSearch : function(e, text) {
 				this.tableView.doSearch(e, text);
