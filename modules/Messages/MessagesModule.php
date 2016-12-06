@@ -162,7 +162,15 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                     'conditions' => 'behaviour_allow_messages > 0 AND active = 1'
                 ]);
 
-                $this->putItem("messages_group_receivers", $receiverGroups->toArray());
+                $receivers = [];
+
+                foreach($receiverGroups as $receiverModel) {
+                    $receiverModel->translate();
+
+                    $receivers[] = $receiverModel->toArray();
+                }
+
+                $this->putItem("messages_group_receivers", $receivers);
                 /*
                 $messageGroupsRS = MessageGroup::find();
                 $messageGroups = array();
