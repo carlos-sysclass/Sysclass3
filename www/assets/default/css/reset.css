@@ -487,6 +487,19 @@ margin:0 4px 0 0;
   text-align: center;
   width: 40px;
 }
+
+.dir-menu-bar .search-container {
+  display: none;
+}
+
+.dir-menu-bar .search-container input {
+    background: #fff none repeat scroll 0 0;
+    border-width: 0;
+    height: 36px;
+    margin-top: 1px;
+    padding: 9px;
+}
+
 .inter-navsuper-tabs h3 {
   font-size: 18px;
   padding: 8px;
@@ -495,6 +508,8 @@ margin:0 4px 0 0;
   margin-bottom: 0;
   margin-top: 0;
 }
+
+
 
 /*MODAL*/
 .new-modal-v .modal-dialog {

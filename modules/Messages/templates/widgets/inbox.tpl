@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <div class="col-md-12 no-padding inter-navsuper">
-        <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
+        <ul class="nav nav-tabs col-md-8 no-padding widget-tabs" role="tablist">
           <li role="presentation" class="active">
             <a href="#tab_messages_messages" aria-controls="tab_program_description" role="tab" data-toggle="tab">
               <i class="fa fa-inbox"></i>
@@ -43,12 +43,20 @@
               <i class="fa fa-envelope" aria-hidden="true"></i>
             </a>
           </li>
+          <li>
+            <a href="javascript: void(0);" class="dialogs-messages-search-action tooltips" data-original-title="{translateToken value='Search'}">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </a>
+            <div class="search-container">
+              <input class="form-control" name="_search" />
+            </div>
+          </li>
         </ul>
       </div>
       <!-- Tab panes -->
     </div>
     <div class="col-sm-12 col-md-12 inter-navsuper-tabs">
-      <div class="tab-content">
+      <div class="tab-content tab-content-messages">
         <div role="tabpanel" class="tab-pane active" id="tab_messages_messages">
           <div class="row">
             <div class="col-md-12">

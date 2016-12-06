@@ -110,6 +110,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        }
 
 		        this.oTable = this.$el.dataTable(opt.datatable);
+		        this.getApi().on("init", this.startScrollUI.bind(this));
 
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
@@ -117,6 +118,24 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
 		        // DEFAULT EVENT HANDLERS
 				this.listenTo(this, "cellclick.datatable", this.onCellClick.bind(this));
+        	},
+        	startScrollUI : function() {
+        		if (this.options.scrollY) {
+        			var defaults = {
+					    size: '7px',
+					    wrapperClass: "slimScrollDiv",
+					    color: '#a1b2bd',
+					    railColor: '#333',
+					    position: 'right',
+					    alwaysVisible: false,
+					    railVisible: false,
+					    disableFadeOut: true,
+					    allowPageScroll : true,
+					    wheelStep : 2
+					};
+        			var scrollOptions = _.extend(defaults, this.options.slimScroll);
+        			this.$el.closest(".dataTables_scrollBody").slimScroll(scrollOptions);
+        		}
         	},
         	destroy : function() {
 				this.oTable.api().destroy();

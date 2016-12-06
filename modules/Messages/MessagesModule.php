@@ -151,6 +151,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
             $this->putComponent("select2");
             $this->putComponent("datatables");
+            $this->putComponent("jquery-jscrollpane");
 
             $this->putModuleScript("portlet.messages");
             
