@@ -6,6 +6,10 @@ use Plico\Mvc\Model,
 
 class Group extends Model
 {
+    protected static $_translateFields = array(
+        'name'
+    );
+    
     public function initialize()
     {
         $this->setSource("groups");
