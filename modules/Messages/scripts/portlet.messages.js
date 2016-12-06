@@ -199,15 +199,28 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			            "sAjaxSource": message_context.ajax_source,
 			            "aoColumns": message_context.datatable_fields,
 			            dom : "<t>",
-			            bScrollInfinite: true,
-			            bScrollCollapse: true,
-			            sScrollY: "377px",
+			            //bScrollInfinite: true,
+			            //bScrollCollapse: false,
+			            //sScrollY: "274px",
+			            sScrollY: true,  
 			            paging: false
-			        }
+			        },
+			        scrollY : true,
+			        slimScroll : {
+					    //size: '7px',
+					    //wrapperClass: "slimScrollDiv",
+					    //color: '#a1b2bd',
+					    ///railColor: '#333',
+					    //position: 'right',
+					    height: '274px',
+					    //alwaysVisible: false,
+					    //railVisible: false,
+					    //disableFadeOut: true,
+					    //allowPageScroll : true,
+					    //wheelStep : 2
+					}
 			    });
     			$SC.addTable("messages-table-messages", this.tableView);
-
-
 
     			// LISTEN TO DATATABLE EVENTS
     			this.listenTo(this.tableView, "action.datatable", function(data, item, model) {

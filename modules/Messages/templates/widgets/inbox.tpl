@@ -56,7 +56,7 @@
       <!-- Tab panes -->
     </div>
     <div class="col-sm-12 col-md-12 inter-navsuper-tabs">
-      <div class="tab-content">
+      <div class="tab-content tab-content-messages">
         <div role="tabpanel" class="tab-pane active" id="tab_messages_messages">
           <div class="row">
             <div class="col-md-12">

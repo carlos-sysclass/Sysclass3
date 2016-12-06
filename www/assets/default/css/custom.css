@@ -2459,8 +2459,8 @@ a.list-group-item,
 }
 
 .inter-navsuper-tabs .table-content-scrollable {
-  max-height: 335px;
-  height: 335px;
+  max-height: 334px;
+  height: 334px;
   overflow-y: auto;  
   overflow-x: hidden;
   display: block;
@@ -2589,7 +2589,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after {
   content: "" !important;
 }
-#institution-widget, #messages-widget {
+#institution-widget {
   margin-bottom: 0px;
 }
 #institution-widget .panel-body {
@@ -2630,4 +2630,9 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 
 #messages-table-messages_wrapper table.dataTable {
   margin-top: 0px !important;
+}
+
+.inter-navsuper-tabs .tab-content.tab-content-messages {
+  height: 314px;
+  max-height: 314px;
 }

@@ -319,7 +319,13 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/bxslider/jquery.bxslider.min'),
 			'js'	=> array('plugins/bxslider/jquery.bxslider.min')
 
-		)
+		),
+		'jquery-jscrollpane' => array(
+			'name' => 'query-jscrollpane',
+			'css'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane'),
+			'js'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane.min')
+
+		),
 	);
 
 	// MOVE TO module config.yml!!!
