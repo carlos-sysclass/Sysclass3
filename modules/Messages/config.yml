@@ -11,13 +11,21 @@ widgets:
           label: Subject
 
         - mData: timestamp
-          sType: unix-moment-since
+          sType: unix-moment-datetime
           sClass: text-center
           label: Date
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
 models:
   me: 
     class: Sysclass\Models\Messages\Message
-    listMethod: ["find", ["user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
+    listMethod: ["find", ["deleted = 0 AND user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
     bindVars : 
       user_id: !user id
     exportMethod: ["toFullArray", ["Groups", "Users"]]
+    acl: 
+      delete:
+        action: trash
