@@ -15,4 +15,13 @@ class Message extends Model
         $this->belongsTo("chat_id", "Sysclass\\Models\\Chat\\Chat", "id",  array('alias' => 'Chat', 'reusable' => false));
     }
 
+    public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
+    	$user = $this->getDI()->get('user');
+    	$result = parent::toFullArray($manyAliases, $itemData, $extended);
+
+  		$result['mine'] = $user->id == $result['user_id'];
+
+    	return $result;
+    }
+
 }

@@ -226,6 +226,7 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				// LOAD PREVIOUS CONVERSATION
 				this.collection = new this.chatModule.collections.conversations();
 				this.collection.id = this.model.get("id");
+				this.listenTo(this.collection, "request", this.showPreviousLoader.bind(this));
 				this.listenTo(this.collection, "sync", this.renderPrevious.bind(this));
 
 
@@ -238,8 +239,12 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.start();
 			},
+			showPreviousLoader : function() {
+				this.loader.show();
+			},
 			renderPrevious : function(collection) {
 				var showedDate = moment();
+				this.loader.hide();
 				this.collection.each(function(model, index) {
 					var modelDate = moment.unix(model.get("sent"));
 					if (!modelDate.isSame(showedDate, 'day')) {
@@ -262,18 +267,21 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				
 			},
 			render : function() {
-				this.collection.fetch();
 
 				console.info("menu.chat/sidebarChatConversationViewClass::render", this);
 
 				this.$el.html(this.template(this.model.toJSON()));
 
-				this.$(".user-details .media-heading").html(this.model.get("requester.name") + ' ' + this.model.get("requester.surname"));
-				this.$(".user-details .media-heading-sub").html("COURSE #1");
-
 				this.messageContainer = this.$('.page-quick-sidebar-chat-user-messages');
 				this.previousMessageContainer = this.$('.page-quick-sidebar-chat-user-messages-previous');
 				this.currentMessageContainer = this.$('.page-quick-sidebar-chat-user-messages-current');
+				this.loader = this.$('.chat-loader');
+
+				this.collection.fetch();
+
+				this.$(".user-details .media-heading").html(this.model.get("requester.name") + ' ' + this.model.get("requester.surname"));
+				//this.$(".user-details .media-heading-sub").html("COURSE #1");
+
 
 
 				app.module("ui").refresh(this.$el);
@@ -322,11 +330,6 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 	                var view = new messageItemViewClass({model: model});
 
 	                this.previousMessageContainer.append(view.render().el);
-	                /*
-	                this.messageContainer.slimScroll({
-    		            scrollTo: '1000000px'
-					});
-					*/
 	            }
 	        },
 			addOne : function(topic, model) {

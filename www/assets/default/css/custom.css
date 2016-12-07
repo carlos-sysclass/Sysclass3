@@ -2644,3 +2644,12 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 .dir-menu-bar .dropdown-menu li {
   display: block;
 }
+
+.page-quick-sidebar-chat-user-messages .chat-loader {
+    height: 100%;
+    margin: 45%;
+    width: 10%;
+}
+.page-quick-sidebar-chat-user-messages .chat-loader .fa {
+  font-size: 2.5em !important;
+}

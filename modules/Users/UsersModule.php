@@ -429,48 +429,46 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
 
         if ($placeholder) {
+            $templatedPath = $this->environment['default/resource'] .'images/placeholder/avatar.jpg';
 
-                $templatedPath = $this->environment['default/resource'] .'images/placeholder/avatar.jpg';
+            $themedPath = sprintf($templatedPath, $this->environment->view->theme);
 
-                $themedPath = sprintf($templatedPath, $this->environment->view->theme);
+            //var_dump($plico->get('path/app/www') . $themedPath);
+            if (file_exists($this->environment['path/app/www'] . $themedPath)) {
+                $full_path = $this->environment['path/app/www'] . $themedPath;
+            } else {
+                $full_path = $this->environment['path/app/www'] . sprintf($templatedPath, $this->environment['default/theme']);
+            }
 
-                //var_dump($plico->get('path/app/www') . $themedPath);
-                if (file_exists($this->environment['path/app/www'] . $themedPath)) {
-                    $full_path = $this->environment['path/app/www'] . $themedPath;
-                } else {
-                    $full_path = $this->environment['path/app/www'] . sprintf($templatedPath, $this->environment['default/theme']);
-                }
+            $file_slug = sprintf("avatar-placeholder-%d-%d", $width, $height);
+            if ($stream = Image::getCached($file_slug, true)) {
+                $this->response->setContentType('image/png');
+                $this->response->setHeader('Content-Length', strlen($stream));
+                $this->response->setContent($stream);
+            } else {
+                $imageinfo = getimagesize($full_path);
+                $coords = array(
+                    'w' => $imageinfo[0],
+                    'h' => $imageinfo[1],
+                    'x' => 0,
+                    'y' => 0,
+                );
+                $content = file_get_contents($full_path);
 
-                $file_slug = sprintf("avatar-placeholder-%d-%d", $width, $height);
-                if ($stream = Image::getCached($file_slug, true)) {
-                    $this->response->setContentType('image/png');
-                    $this->response->setHeader('Content-Length', strlen($stream));
-                    $this->response->setContent($stream);
-                } else {
-                    $imageinfo = getimagesize($full_path);
-                    $coords = array(
-                        'w' => $imageinfo[0],
-                        'h' => $imageinfo[1],
-                        'x' => 0,
-                        'y' => 0,
-                    );
-                    $content = file_get_contents($full_path);
+                $image = new Image;
+                $croped = $image->resize($content, $coords, $width, $height);
 
-                    $image = new Image;
-                    $croped = $image->resize($content, $coords, $width, $height);
+                $stream = $image->cache(
+                    $croped,
+                    $file_slug,
+                    true
+                );
 
-                    $stream = $image->cache(
-                        $croped,
-                        $file_slug,
-                        true
-                    );
+                $this->response->setContentType('image/png');
+                $this->response->setHeader('Content-Length', strlen($stream));
 
-                    $this->response->setContentType('image/png');
-                    $this->response->setHeader('Content-Length', strlen($stream));
-
-                    $this->response->setContent($stream);
-                }
-           
+                $this->response->setContent($stream);
+            }
         }
     }
 
