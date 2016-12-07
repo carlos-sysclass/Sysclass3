@@ -14,7 +14,8 @@ use Phalcon\DI,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\UserPasswordRequest,
     Sysclass\Services\MessageBus\INotifyable,
-    Sysclass\Collections\MessageBus\Event;
+    Sysclass\Collections\MessageBus\Event,
+    Plico\Php\Image;
 
 /**
  * @RoutePrefix("/module/users")
@@ -364,6 +365,112 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'unqueue' => true
                 );
             }
+        }
+    }
+
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/avatar/{id}")
+     * @Get("/avatar/{id}/{width}x{height}")
+     */
+    public function getAvatarRequest($id, $width, $height) {
+        $user = User::findFirstById($id);
+
+        if (is_null($size)) {
+            $width = 50;
+            $height = 50;
+        }
+        $file_slug = sprintf("avatar-%d-%d-%d", $id, $width, $height);
+
+        if ($stream = Image::getCached($file_slug, true)) {
+            $this->response->setContentType('image/png');
+            $this->response->setHeader('Content-Length', strlen($stream));
+            $this->response->setContent($stream);
+        } else {
+            if ($avatar = $user->getAvatar()) {
+                $file = $avatar->getFile();
+
+                // CHECK IF THE FILE EXISTS
+                if (!$this->storage->fileExists($file)) {
+                    $placeholder = true;
+                } else {
+                    //var_dump($file->toArray());
+
+                    $imageinfo = $this->storage->getImageFileInfo($file);
+
+                    $stream = $this->storage->getFilestream($file);
+
+                    $coords = array(
+                        'w' => $imageinfo['width'],
+                        'h' => $imageinfo['height'],
+                        'x' => 0,
+                        'y' => 0,
+                    );
+
+                    $image = new Image;
+                    $croped = $image->resize($stream, $coords, $width, $height);
+
+                    $stream = $image->cache(
+                        $croped,
+                        $file_slug,
+                        true
+                    );
+
+                    $this->response->setContentType('image/png');
+                    $this->response->setHeader('Content-Length', strlen($stream));
+
+                    $this->response->setContent($stream);
+                }
+            } else {
+                $placeholder = true;
+            }
+        }
+
+        if ($placeholder) {
+
+                $templatedPath = $this->environment['default/resource'] .'images/placeholder/avatar.jpg';
+
+                $themedPath = sprintf($templatedPath, $this->environment->view->theme);
+
+                //var_dump($plico->get('path/app/www') . $themedPath);
+                if (file_exists($this->environment['path/app/www'] . $themedPath)) {
+                    $full_path = $this->environment['path/app/www'] . $themedPath;
+                } else {
+                    $full_path = $this->environment['path/app/www'] . sprintf($templatedPath, $this->environment['default/theme']);
+                }
+
+                $file_slug = sprintf("avatar-placeholder-%d-%d", $width, $height);
+                if ($stream = Image::getCached($file_slug, true)) {
+                    $this->response->setContentType('image/png');
+                    $this->response->setHeader('Content-Length', strlen($stream));
+                    $this->response->setContent($stream);
+                } else {
+                    $imageinfo = getimagesize($full_path);
+                    $coords = array(
+                        'w' => $imageinfo[0],
+                        'h' => $imageinfo[1],
+                        'x' => 0,
+                        'y' => 0,
+                    );
+                    $content = file_get_contents($full_path);
+
+                    $image = new Image;
+                    $croped = $image->resize($content, $coords, $width, $height);
+
+                    $stream = $image->cache(
+                        $croped,
+                        $file_slug,
+                        true
+                    );
+
+                    $this->response->setContentType('image/png');
+                    $this->response->setHeader('Content-Length', strlen($stream));
+
+                    $this->response->setContent($stream);
+                }
+           
         }
     }
 

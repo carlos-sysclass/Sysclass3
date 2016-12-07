@@ -12,7 +12,7 @@ class Message extends Model
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'From', 'reusable' => true));
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
 
-        $this->belongsTo("chat_id", "Sysclass\\Models\\Chat\\Chat", "id",  array('alias' => 'Chat', 'reusable' => true));
+        $this->belongsTo("chat_id", "Sysclass\\Models\\Chat\\Chat", "id",  array('alias' => 'Chat', 'reusable' => false));
     }
 
 }

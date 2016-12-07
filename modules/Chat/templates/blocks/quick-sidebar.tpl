@@ -113,7 +113,7 @@
 
 <script type="text/template" id="sidebar-chat-item-template">
 <div class="post <% if (model.mine) { %>out<% } else { %>in<% } %>">
-    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+    <img class="avatar" alt="" src="/module/users/avatar/<%= model.from.id %>" />
     <div class="message">
         <span class="arrow"></span>
         <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
