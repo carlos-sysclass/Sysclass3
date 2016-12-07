@@ -94,7 +94,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                             // ALWAYS SUBSCRIBE TO A PRIVATE 
                             this._conn.subscribe(this._session_key, this.parseReceivedTopic.bind(this));
 
+                            console.warn("afterConnection.chat");
                             this.trigger("afterConnection.chat", result);
+
                         }.bind(this), function (error) {
                             this.trigger("errorConnection.chat", error);
                             console.warn("error", error);
@@ -118,8 +120,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     mod.startRetryMode = function(now) {
         this._options.tryCount++;
         if (this._options.maxRetries > 0 && this._options.tryCount <= this._options.maxRetries) {
-            
-
             if (_.isBoolean(now) && now) {
                 console.warn('WebSocket connection Try #' + this._options.tryCount);
                 mod.startConnection();

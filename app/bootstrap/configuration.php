@@ -45,7 +45,7 @@ $di->setShared('environment', function() use ($di) {
 		'path/modules'			=> $appRootDir . 'modules/',
 		'path/template'			=> '%s/templates/',
 		'path/plugins'			=> '%s/plugins/',
-		'path/cache'			=> $plicoLibDir . 'cache/',
+		'path/cache'			=> $appRootDir . 'cache/',
 		'path/app/www'			=> $appRootDir . 'www',
 		'path/files/public'		=> $appRootDir . 'files',
 		'path/files'			=> $appRootDir . 'files',

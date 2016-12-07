@@ -242,12 +242,20 @@ class Queue extends Component implements WampServerInterface
                 //var_dump($conn->wrappedConn->WAMP->sessionId, $this->users);
 
                 if ($this->acl->isUserAllowed($user, "Chat", "View")) {
-                    $chatList = Chat::find(array(
+                    $chatList = Chat::find([
                         //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
-                        'conditions' => "receiver_id = ?0 OR receiver_id IS NULL",
-                        'bind' => array($user['id']),
+                        'conditions' => "receiver_id = :user_id: OR requester_id = :user_id: OR receiver_id IS NULL",
+                        'bind' => array('user_id' => $user['id']),
                         'order' => 'ping ASC'
-                    ));
+                    ]);
+
+                    var_dump([
+                        //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
+                        'conditions' => "receiver_id = :user_id: OR requester_id = :user_id: OR receiver_id IS NULL",
+                        'bind' => array('user_id' => $user['id']),
+                        'order' => 'ping ASC'
+                    ]);
+                    //exit;
 
                     $result = array();
 

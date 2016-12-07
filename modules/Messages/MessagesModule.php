@@ -214,7 +214,7 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
 
         $options['view']  = array(
             'link'  => 'javascript:void(0)',
-            'icon'  => 'fa fa-eye',
+            'icon'  => 'fa fa-envelope',
             'class' => 'btn-sm btn-primary tooltips',
             'attrs' => array(
                'data-original-title' => 'View'

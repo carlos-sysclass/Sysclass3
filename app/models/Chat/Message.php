@@ -12,7 +12,16 @@ class Message extends Model
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'From', 'reusable' => true));
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
 
-        $this->belongsTo("chat_id", "Sysclass\\Models\\Chat\\Chat", "id",  array('alias' => 'Chat', 'reusable' => true));
+        $this->belongsTo("chat_id", "Sysclass\\Models\\Chat\\Chat", "id",  array('alias' => 'Chat', 'reusable' => false));
+    }
+
+    public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
+    	$user = $this->getDI()->get('user');
+    	$result = parent::toFullArray($manyAliases, $itemData, $extended);
+
+  		$result['mine'] = $user->id == $result['user_id'];
+
+    	return $result;
     }
 
 }

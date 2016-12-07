@@ -113,7 +113,7 @@
 
 <script type="text/template" id="sidebar-chat-item-template">
 <div class="post <% if (model.mine) { %>out<% } else { %>in<% } %>">
-    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
+    <img class="avatar" alt="" src="/module/users/avatar/<%= model.from.id %>" />
     <div class="message">
         <span class="arrow"></span>
         <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
@@ -154,7 +154,12 @@
     </div>
 
     <div class="page-quick-sidebar-chat-user-messages"  data-height="auto" data-rail-visible="1" data-rail-color="#ddd">
-        <div class="page-quick-sidebar-chat-user-messages-previous"></div>
+        <div class="page-quick-sidebar-chat-user-messages-previous">
+        </div>
+        <div class="chat-loader" align="center">
+            <i class="fa fa-lg fa-refresh fa-spin"></i>
+        </div>
+
         <div class="page-quick-sidebar-chat-user-messages-current"></div>
     </div>
     <div class="page-quick-sidebar-chat-user-form">
