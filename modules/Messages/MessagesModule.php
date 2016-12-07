@@ -18,26 +18,8 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider, /*\ISectionMenu, */ \IWidgetContainer
+class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidgetContainer
 {
-    // ISummarizable
-    /*
-    public function getSummary() {
-        //$data = $this->dataAction();
-        //return false;
-        //$total = $this->getTotalUnviewed();
-        return array(
-            'type'  => 'primary',
-            //'count' => count($data),
-            'count' => 0,
-            'text'  => $this->translate->translate('Emails'),
-            'link'  => array(
-                'text'  => $this->translate->translate('View'),
-                'link'  => $this->getBasePath() . 'inbox'
-            )
-        );
-    }
-    */
     // IBlockProvider
     public function registerBlocks() {
         return array(
@@ -196,58 +178,6 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
     }
 
-    /*
-    public function addItemRequest($model)
-    {
-        $request = $this->getMatchedUrl();
-
-        if ($userData = $this->getCurrentUser(true)) {
-            //$itemModel = $this->model("user/item");
-            // TODO CHECK IF CURRENT USER CAN DO THAT
-            $data = $this->getHttpData(func_get_args());
-            $itemModel = new Message();
-            $itemModel->assign($data);
-
-            $itemModel->user_id = $userData->id;
-
-            if ($itemModel->save()) {
-
-                if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
-                    //UsersGroups::find("user_id = {$userModel->id}")->delete();
-                    
-                    foreach($data['group_id'] as $group) {
-                        $receiverModel = new GroupReceivers();
-                        $receiverModel->message_id = $itemModel->id;
-                        $receiverModel->group_id = $group['id'];
-                        $receiverModel->save();
-                    }
-
-                    foreach($data['user_id'] as $user) {
-                        $receiverModel = new UserReceiver();
-                        $receiverModel->message_id = $itemModel->id;
-                        $receiverModel->user_id = $user['id'];
-                        $receiverModel->save();
-                    }
-
-                }
-
-                return $this->createAdviseResponse(
-                    $this->translate->translate("Message created. You can check the message in your inbox."),
-                    "success"
-                );
-            } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
-                return $response;
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    public function beforeModelCreate($evt, $model, $data) {
-        //var_dump($model->toArray(), $data);
-        //exit;
-    }
     public function afterModelCreate($evt, $model, $data) {
         if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
             //UsersGroups::find("user_id = {$userModel->id}")->delete();
@@ -274,109 +204,32 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
         return true;
     }
 
+    protected function getDatatableItemOptions($item, $model = 'me') {
+        $options = parent::getDatatableItemOptions($item, $model);
+        $model_info = $this->model_info[$model];
 
-    /**
-     * [getMessageGroups description]
-     * @deprecated 3.0.14
-     */
-    /*
-    protected function getMessageGroups() {
-        return $this->_getTableData(
-            "mod_messages_groups",
-            "id as id, name, icon",
-            "",
-            "id ASC"
+        $trashAllowed = $this->isResourceAllowed("trash", $model_info);
+
+        $options = array();
+
+        $options['view']  = array(
+            'link'  => 'javascript:void(0)',
+            'icon'  => 'fa fa-eye',
+            'class' => 'btn-sm btn-primary tooltips',
+            'attrs' => array(
+               'data-original-title' => 'View'
+            )
         );
-    }
-    */
-    /**
-     * [getMessageReceivers description]
-     * @param  [type] $group_id [description]
-     * @return [type]           [description]
-     * @deprecated 3.0.14
-     */
-    /*
-    protected function getMessageReceivers($group_id = null) {
-        if (!($user instanceof MagesterUser)) {
-            $user = $this->getCurrentUser();
+
+        if ($trashAllowed) {
+            $options['remove']  = array(
+                'icon'  => 'fa fa-trash',
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Remove'
+                )
+            );
         }
-        //$xentifyModule = $this->loadModule("xentify");
-        $receiversCollection = $this->model("messages/receivers/collection");
-
-        $contactListData = $receiversCollection->getItems();
-
-
-        $contactList = array();
-
-        foreach ($contactListData as $key => $recp) {
-
-            //if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
-            //    unset($contactListData[$key]);
-            //} else {
-                $item           = array();
-                $item['id']     = $recp['recipient_id'];
-                $item['text']   = $this->translate->translate($recp['title']);
-
-                //if ($recp['qm_type'] == 'link') {
-                //    $item['href'] = $recp['link'];
-                //} else {
-                $item['link']   = $this->getBasePath() . "send/" . $recp['recipient_id'] . "?popup";
-                //}
-                //$image = explode("/", $recp['image']);
-                $item['icon'] = $recp['image'];
-                $item['color'] = $recp['image_type'];
-
-                if (!is_array($contactList[$recp['group_id']])) {
-                    $contactList[$recp['group_id']] = array();
-                }
-                $contactList[$recp['group_id']][$recp['recipient_id']] = $item;
-            //}
-        }
-        return $contactList;
-
+        return $options;
     }
-    */
-    /**
-     * Send Page Action
-     *
-     * @Get("/inbox")
-     */
-    public function inboxPage($recipient_id) {
-        $this->putCss("css/pages/inbox");
-        $this->putModuleScript("inbox");
-
-        $this->putComponent("select2");
-
-        $this->putModuleScript("inbox");
-
-        $this->display("inbox.tpl");
-    }
-
-    /**
-     * Attach File Action
-     *
-     * @url POST /attach_file
-     * @deprecated 3.0.14
-     */
-    /*
-    public function attachFile($recipient_id) {
-        if (count($_FILES) > 0) {
-            $fileWrapper = $this->helper("file/wrapper");
-
-            $user = $this->getCurrentUser();
-            $result = array();
-            foreach($_FILES as $index => $file) {
-                $result = $fileWrapper->uploadObjectByPath(
-                    $user['login'],
-                    $file['name'],
-                    $file['tmp_name']
-                );
-
-            }
-            return $result;
-        }
-
-        return $this->invalidRequestError();
-    }
-    */
 }

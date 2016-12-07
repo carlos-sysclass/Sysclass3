@@ -31,6 +31,11 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
                 var self = this;
 
                 this.on("complete:save", this.close.bind(this));
+                this.on("complete:save", function() {
+                    app.trigger("sent.messages", [
+                        this.model
+                    ]);
+                }.bind(this));
             },
             setMode : function(mode) {
                 this.mode = mode;
@@ -42,7 +47,6 @@ $SC.module("dialogs.messages.send", function(mod, app, Backbone, Marionette, $, 
                     this.$(":input[name='user_id']").select2("container").hide();
                     this.$(":input[name='group_id']").select2("container").show();
                 }
-
             },
             open : function() {
                 this.$el.modal("show");

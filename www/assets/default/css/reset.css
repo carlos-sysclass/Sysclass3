@@ -286,6 +286,7 @@ a:hover, a:focus {
 inter-navsuper-tabs .table > thead > tr > th i.fa {
 margin:0 4px 0 0;
 }
+/*
 .inter-navsuper-tabs .table>tbody>tr>td:first-child .fa-eye {
   text-align: center;
 }
@@ -296,6 +297,7 @@ margin:0 4px 0 0;
   float: left;
   cursor: pointer;
 }
+*/
 .inter-navsuper-tabs .table>tbody>tr>td>.at-difinf{
   float: left;
   font-size: 12px;

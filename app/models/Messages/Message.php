@@ -1,13 +1,24 @@
 <?php
 namespace Sysclass\Models\Messages;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Phalcon\Mvc\Model\Behavior\SoftDelete;
 
 class Message extends Model
 {
     public function initialize()
     {
         $this->setSource("mod_messages");
+
+        // MAKE A SOFT DELETABLE TARGET
+        $this->addBehavior(
+            new SoftDelete(
+                [
+                    "field" => "deleted",
+                    "value" => 1
+                ]
+            )
+        );
 
         $this->belongsTo(
             "user_id",

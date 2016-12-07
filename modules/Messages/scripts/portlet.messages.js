@@ -7,7 +7,7 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			message : baseModel.extend({
 				response_type : "object",
 				//idAttribute : "user_id",
-				urlRoot : "/module/enroll/messages/me"
+				urlRoot : "/module/messages/item/me"
 				/*
 				urlRoot : function() {
 					return "/module/enroll/item/users/" + this.get("role_id")
@@ -62,6 +62,19 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 				this.messagesBodyView = new messagesBodyViewClass({
 					el: "#message-body-container"
 				});
+
+				// RELOAD ON SENDING A MESSAGE
+				this.listenTo(app, "sent.messages", this.refresh.bind(this));
+
+				this.on("action.datatables", function(row, data, action, e) {
+					var model = this.getTableItemModel(data);
+
+					this.messagesBodyView.setModel(model);
+        			this.messagesBodyView.show();
+
+					console.warn(row, data, action, e);
+				}.bind(this));
+
 				/*
 				this.listenTo(this, "cellclick.datatable", function(model data, el) {
 					console.warn(model data, el);
@@ -85,11 +98,11 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			getTableItemModel : function(data) {
 				return new mod.models.messages.message(data);
-        	},
+        	}/*,
         	onCellClick : function(model, data, el) {
         		this.messagesBodyView.setModel(model);
         		this.messagesBodyView.show();
-        	}
+        	}*/
 		});
 
 
@@ -211,6 +224,10 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 					}
 			    });
     			$SC.addTable("messages-table-messages", this.tableView);
+
+				this.tableView.getApi().on("draw", this.renderProgress.bind(this));
+
+    			this.renderProgress();
 
 				this.render();
 			},
