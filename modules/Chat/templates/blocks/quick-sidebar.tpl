@@ -67,22 +67,22 @@
         -->
         {if $receiveAllowed}
             <% if (!model.isOwner) { %>
-            <button type="button" class="btn btn-circle btn-sm btn-primary hidden tooltips show-hover assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
+            <button type="button" class="btn btn-sm btn-primary hidden tooltips show-hover assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
                 <i class="fa fa-sign-in"></i>
             </button>
             <% } %> 
         {/if}
         {if $assignAllowed}
-            <button type="button" class="btn btn-circle btn-sm btn-info hidden tooltips show-hover assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
+            <button type="button" class="btn btn-sm btn-info hidden tooltips show-hover assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
                 <i class="fa fa-sign-out"></i>
             </button>
         {/if}
-        <button type="button" class="btn btn-circle btn-sm btn-warning hidden tooltips show-hover resolve-action" data-original-title="{translateToken value='Set Resolution'}">
+        <button type="button" class="btn btn-sm btn-warning hidden tooltips show-hover resolve-action" data-original-title="{translateToken value='Set Resolution'}">
             <i class="fa fa-check-square-o"></i>
         </button>
 
         <button type="button"
-            class="btn btn-circle btn-sm btn-danger hidden show-hover delete-action"
+            class="btn btn-sm btn-danger hidden show-hover delete-action"
             data-toggle="confirmation"
             data-original-title="{translateToken value='Do you really want to remove this conversation?'}"
             data-placement="left"
@@ -99,7 +99,7 @@
         </button>
 
         <% if ( model.new_count > 0) { %>
-            <button type="button" class="btn btn-circle btn-sm btn-danger btn-disabled">
+            <button type="button" class="btn btn-sm btn-danger btn-disabled">
                 <%= model.new_count %>
             </button>
         <% } %>
@@ -130,21 +130,21 @@
 
 <script type="text/template" id="sidebar-conversation-item-template">
     <div class="page-quick-sidebar-nav">
-        <button type="button" class="btn btn-circle btn-sm btn-default show-hover page-quick-sidebar-back-to-list">
+        <button type="button" class="btn btn-sm btn-default show-hover page-quick-sidebar-back-to-list">
             <i class="fa fa-arrow-left"></i>
           Back
         </button>
         {if $receiveAllowed}
-        <button type="button" class="btn btn-circle btn-sm btn-primary tooltips assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
+        <button type="button" class="btn btn-sm btn-primary tooltips assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
             <i class="fa fa-sign-in"></i>
         </button>
         {/if}
         {if $assignAllowed}
-        <button type="button" class="btn btn-circle btn-sm btn-info tooltips assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
+        <button type="button" class="btn btn-sm btn-info tooltips assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
             <i class="fa fa-sign-out"></i>
         </button>
         {/if}
-        <button type="button" class="btn btn-circle btn-sm btn-warning tooltips resolve-action" data-original-title="{translateToken value='Set Resolution'}">
+        <button type="button" class="btn btn-sm btn-warning tooltips resolve-action" data-original-title="{translateToken value='Set Resolution'}">
             <i class="fa fa-check-square-o"></i>
         </button>
 

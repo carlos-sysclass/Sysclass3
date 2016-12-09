@@ -1,7 +1,7 @@
 <div class="footer">
 	<div class="footer-inner">
 		&copy; Copyright 2016 • WiseFlex Knowledge Systems LLC. 
-		<span style="color: black">
+		<span style="color: white">
 			[ Current Version: {$T_SYSCONFIG.deploy.base_version} 
 			Build {$T_SYSCONFIG.deploy.build_number} ]
 		</span> 
