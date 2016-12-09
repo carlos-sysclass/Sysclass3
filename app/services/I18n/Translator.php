@@ -197,7 +197,7 @@ class Translator extends Component
                     $translated = $token;
                 }
                 
-                if ($translated !== FALSE) {
+                if ($translated !== FALSE && !is_object($translated)) {
                     $tokenModel = new Tokens();
                     $tokenModel->assign(array(
                         'language_code' => $this->source_lang,

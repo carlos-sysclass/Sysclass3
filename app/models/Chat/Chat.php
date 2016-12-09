@@ -13,6 +13,9 @@ class Chat extends Model
 
         $this->belongsTo("requester_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'Requester', 'reusable' => true));
 
+        $this->belongsTo("receiver_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'Receiver', 'reusable' => true));
+
+
 
     }
 
