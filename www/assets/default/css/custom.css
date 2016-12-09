@@ -2674,3 +2674,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 .page-quick-sidebar-chat-user-messages .chat-loader .fa {
   font-size: 2.5em !important;
 }
+
+.footer .footer-inner {
+  color: #ffffff;
+}
