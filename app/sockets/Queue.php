@@ -249,48 +249,11 @@ class Queue extends Component implements WampServerInterface
                         'order' => 'ping ASC'
                     ]);
 
-                    var_dump([
-                        //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
-                        'conditions' => "receiver_id = :user_id: OR requester_id = :user_id: OR receiver_id IS NULL",
-                        'bind' => array('user_id' => $user['id']),
-                        'order' => 'ping ASC'
-                    ]);
-                    //exit;
-
                     $result = array();
 
                     foreach($chatList as $chat) {
-                        $item = $chat->toArray();
-                        unset($item['websocket_token']);
-                        $requester = $chat->getRequester();
-                        $item['requester'] = $requester->toArray();
-
-                        if (array_key_exists($requester->id, $this->usersIds)) {
-                            $item['online'] = true;
-                            $item['session_id'] = $this->usersIds[$requester->id];
-                        } else {
-                            $item['online'] = false;
-                        }
-                        //var_dump($user['last_ping']);
-                        
-                        $chat_messages = $chat->getChatMessages([
-                            'conditions' => 'sent > ?0',
-                            'bind' => [$user['last_ping']],
-                            'order' => 'sent DESC'
-                        ]);
-                        $item['new_count'] = 0;
-                        foreach($chat_messages as $message) {
-                            if ($message->user_id == $user['id']) {
-                                break;
-                            }
-                            $item['new_count']++;
-                        }
-
-                        //$chat_messages
-
-                        $result[] = $item;
+                        $result[] = $this->mapChatObject($conn, $chat);
                     }
-
 
                     $conn->callResult($id, $result);
                 } else {
@@ -439,6 +402,46 @@ class Queue extends Component implements WampServerInterface
         return true;
     }
 
+    protected function mapChatObject(ConnectionInterface $conn, Chat $chat) {
+        $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+
+        $item = $chat->toArray();
+
+        if ($chat->requester_id == $user['id']) {
+            $another = $chat->getReceiver();
+        } else {
+            $another = $chat->getRequester();
+        }
+        $item['another'] = $another->toArray();
+
+        unset($item['websocket_token']);
+        //$item['from'] = $requester->toArray();
+
+        if (array_key_exists($another->id, $this->usersIds)) {
+            $item['online'] = true;
+            $item['session_id'] = $this->usersIds[$another->id];
+        } else {
+            $item['online'] = false;
+        }
+                       
+        $chat_messages = $chat->getChatMessages([
+            'conditions' => 'sent > ?0',
+            'bind' => [$user['last_ping']],
+            'order' => 'sent DESC'
+        ]);
+        $item['new_count'] = 0;
+        foreach($chat_messages as $message) {
+            if ($message->user_id == $user['id']) {
+                break;
+            }
+            $item['new_count']++;
+        }
+
+        //$chat_messages
+
+        return $item;
+    }
+
     protected function RPC_createChat(ConnectionInterface $conn, $id, $user_id) {
         if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
             $conn->close();
@@ -492,18 +495,25 @@ class Queue extends Component implements WampServerInterface
         // SUBSCRIBE THE RECEIVER AS WELL
         if (array_key_exists($user_id, $this->sessionIds)) {
             $privateTopic = ($this->subscribedTopics[$this->sessionIds[$user_id]]);
-            
-            $command = $this->createCommandResponse("subscribe", array(
-                'topic' => $new_topic
-            ));
 
-            $privateTopic->broadcast($command);
+            var_dump($this->subscribedTopics);
+            var_dump($this->sessionIds);
+
+            if ($privateTopic) {
+                $command = $this->createCommandResponse("subscribe", array(
+                    'topic' => $new_topic
+                ));
+
+                $privateTopic->broadcast($command);
+            }
         }
 
 
         //var_dump($id, $queueModel->toArray());
 
-        $conn->callResult($id, $queueModel->toArray());
+
+
+        $conn->callResult($id, $this->mapChatObject($conn, $queueModel));
         return true;
     }
 

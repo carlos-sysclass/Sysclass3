@@ -105,28 +105,29 @@
         <% } %>
     </div>
     <div class="media-body">
-        <h4 class="media-heading"><%= model.requester.name %> <%= model.requester.surname %></h4>
-        <div class="media-heading-sub"> CEO, Loop Inc </div>
+        <h4 class="media-heading"><%= model.another.name %> <%= model.another.surname %></h4>
+        <!-- <div class="media-heading-sub"> CEO, Loop Inc </div> -->
         <div class="media-heading-small"><%= moment.unix(model.ping).fromNow() %></div>
     </div>
 </script>
 
 <script type="text/template" id="sidebar-chat-item-template">
-<div class="post <% if (model.mine) { %>out<% } else { %>in<% } %>">
-    <img class="avatar" alt="" src="/module/users/avatar/<%= model.from.id %>" />
-    <div class="message">
-        <span class="arrow"></span>
-        <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
-        <span class="datetime"><%= moment.unix(model.sent).format("HH:mm:ss") %></span>
-        <span class="body"> <%= model.message %> </span>
+    <div class="post <% if (model.mine) { %>out<% } else { %>in<% } %>">
+        <img class="avatar" alt="" src="/module/users/avatar/<%= model.from.id %>" />
+        <div class="message">
+            <span class="arrow"></span>
+            <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
+            <span class="datetime"><%= moment.unix(model.sent).format("HH:mm:ss") %></span>
+            <span class="body"> <%= model.message %> </span>
+        </div>
     </div>
-</div>
+    </script>
+    <script type="text/template" id="sidebar-chat-item-info-template">
+    <hr />
+    <div class="message text-center"><i><%= model.message %></i></div>
+    <hr />
 </script>
-<script type="text/template" id="sidebar-chat-item-info-template">
-<hr />
-<div class="message text-center"><i><%= model.message %></i></div>
-<hr />
-</script>
+
 <script type="text/template" id="sidebar-conversation-item-template">
     <div class="page-quick-sidebar-nav">
         <button type="button" class="btn btn-circle btn-sm btn-default show-hover page-quick-sidebar-back-to-list">
