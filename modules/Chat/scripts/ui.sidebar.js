@@ -223,19 +223,21 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.previousMessageContainer.empty();
 				this.currentMessageContainer.empty();
 				this.collection.each(function(model, index) {
-					var modelDate = moment.unix(model.get("sent"));
-					if (!modelDate.isSame(showedDate, 'day')) {
+					if (model.get("chat.topic") == this.model.get("topic")) {
+						var modelDate = moment.unix(model.get("sent"));
+						if (!modelDate.isSame(showedDate, 'day')) {
 
-						var infoModel = new this.chatModule.models.message({
-							type : "info",
-							message : modelDate.format("LL")
-						})
-						var view = new messageItemViewClass({model: infoModel});
-	                	this.previousMessageContainer.append(view.render().el);
+							var infoModel = new this.chatModule.models.message({
+								type : "info",
+								message : modelDate.format("LL")
+							})
+							var view = new messageItemViewClass({model: infoModel});
+		                	this.previousMessageContainer.append(view.render().el);
 
-						showedDate = modelDate;
+							showedDate = modelDate;
+						}
+						this.addPreviousOne(model, index);
 					}
-					this.addPreviousOne(model, index);
 				}.bind(this));
 
 				this.messageContainer.slimScroll({

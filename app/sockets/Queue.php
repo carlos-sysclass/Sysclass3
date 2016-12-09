@@ -132,7 +132,6 @@ class Queue extends Component implements WampServerInterface
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        //var_dump($e);
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
@@ -150,7 +149,6 @@ class Queue extends Component implements WampServerInterface
                     $user = $userTimes->getUser();
 
                     if ($user && !is_null($user->websocket_key) && $user->websocket_key == $params[0]) {
-                        //var_dump($userTimes->toArray());
 
                         $lastPing = UserTimes:: maximum([
                             'column' => 'started',
@@ -496,9 +494,6 @@ class Queue extends Component implements WampServerInterface
         if (array_key_exists($user_id, $this->sessionIds)) {
             $privateTopic = ($this->subscribedTopics[$this->sessionIds[$user_id]]);
 
-            var_dump($this->subscribedTopics);
-            var_dump($this->sessionIds);
-
             if ($privateTopic) {
                 $command = $this->createCommandResponse("subscribe", array(
                     'topic' => $new_topic
@@ -507,11 +502,6 @@ class Queue extends Component implements WampServerInterface
                 $privateTopic->broadcast($command);
             }
         }
-
-
-        //var_dump($id, $queueModel->toArray());
-
-
 
         $conn->callResult($id, $this->mapChatObject($conn, $queueModel));
         return true;
@@ -578,14 +568,10 @@ class Queue extends Component implements WampServerInterface
         $messageModel->user_id = $user['id'];
         $messageModel->save();
 
-        //var_dump($messageModel->getMessages());
-        //var_dump($event, $exclude, $eligible);
-
         $topic->broadcast($event, $exclude, $eligible);
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-        //var_dump("SUBSCRIBE",  get_class($topic));
         if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
             $conn->close();
             return true;
