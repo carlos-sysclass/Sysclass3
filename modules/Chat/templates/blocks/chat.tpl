@@ -57,8 +57,10 @@
    <hr />
 </script>
 <script type="text/template" id="chat-item-info-template">
+<!--
    <div class="info"><i><%= model.message %></i></div>
    <hr />
+-->
 </script>
 <!--
 <script type="text/template" id="tutoria-chat-status-template">
