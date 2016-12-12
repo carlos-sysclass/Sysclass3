@@ -28,17 +28,7 @@
             
         </ul>
     </div>
-    <div class="row" id="chat-action-container">
-        <div class="col-md-12">
-            <div class="text-center">
-
-            </div>
-        </div>
-    </div>
 </div>
-
-
-
 
 <script type="text/template" id="widget-chat-queue-template">
     <div class="row">
