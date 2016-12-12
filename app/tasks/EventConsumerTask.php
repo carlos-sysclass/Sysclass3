@@ -28,8 +28,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
 
             // CHECK IF THE USER IS PENDING, GENERATE THE LINK, AND SEND TO USER
             // 
-            if ($user->pending == "1") {
-
+            if ($user->pending == "1" || !$this->configuration->get("signup_must_approve")) {
                 $user->generateConfirmHash();
                 $user->save();
                 //$content = $this->view->render("email/activate.email");
