@@ -54,7 +54,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
 
             $groupLabels = array(
                 "content"           => $this->translate->translate('Content'),
-                "administration"    => $this->translate->translate('Administation'),
+                "administration"    => $this->translate->translate('Administration'),
                 "communication"     => $this->translate->translate('Communication'),
                 "users"             => $this->translate->translate('Users'),
                 "not_classified"    => $this->translate->translate('Not Classified')
@@ -110,10 +110,10 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
 
             $groupLabels = array(
                 "content"           => $this->translate->translate('Content'),
-                "administration"    => $this->translate->translate('Administation'),
+                "administration"    => $this->translate->translate('Administration'),
                 "communication"     => $this->translate->translate('Communication'),
                 "users"             => $this->translate->translate('Users'),
-                "not_classified"    => $this->translate->translate('Not Classified')
+                "not_classified"    => $this->translate->translate('Not classified')
             );
 
             $modulesOrder = 
