@@ -200,7 +200,7 @@ $di->setShared('environment', function() use ($di) {
 		'datatables' => array(
 			'name'	=> 'datatables',
 			'css'	=> array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
-			'js'	=> array('plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
+			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation','plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
 
 		'bootstrap-switch' => array(

@@ -125,6 +125,7 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
             $this->putCss("css/reset");
 
             $this->putComponent("select2");
+            //$this->putComponent("bootstrap-confirmation");
             $this->putComponent("datatables");
             $this->putComponent("jquery-jscrollpane");
 
