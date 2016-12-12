@@ -524,7 +524,7 @@ _before_init_functions.push(function() {
         <ul class="dropdown-menu">
           <li>
               <a class="course-info-action" href="javascript:void(0);">
-              {translateToken value="Course Info"}
+              {translateToken value="Course info"}
             </a>
           </li>
           <% if (!_.isNull(model.professor_id)) { %>
@@ -536,7 +536,7 @@ _before_init_functions.push(function() {
           </li>
           <li class="subchild">
             <a class="course-info-action" href="javascript:void(0);" class="select-item">
-              {translateToken value="Send Message"}
+              {translateToken value="Send message"}
             </a>
           </li>
           <% } %>
