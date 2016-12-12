@@ -8162,7 +8162,7 @@ Portlets
       .portlet > .portlet-title > .actions > .btn.btn-sm,
       .portlet > .portlet-title > .actions > .btn-group > .btn,
       .portlet > .portlet-title > .actions > .btn-group > .btn.btn-sm {
-        padding: 4px 10px;
+        padding: 10px 12px;
         font-size: 13px;
         line-height: 1.5; }
         .portlet > .portlet-title > .actions > .btn.btn-default,

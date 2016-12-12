@@ -3154,7 +3154,7 @@ CREATE TABLE IF NOT EXISTS `mod_tutoria` (
 --
 /*
 INSERT INTO `mod_tutoria` (`id`, `question_timestamp`, `answer_timestamp`, `lessons_ID`, `unit_ID`, `title`, `question_user_id`, `question`, `answer_user_id`, `answer`) VALUES
-(1, 1374587851, 1374587851, 90, NULL, 'Qual o segredo da vida, do Universo e de tudo o mais?', 48, 'Alguém pode em ajudar?', 0, 'Provavelmente é 42!');
+(1, 1374587851, 1374587851, 90, NULL, 'Qual o segredo da vida, do Universo e de tudo o mais?', 48, 'Alguém pode em ajudar?', 0, 'Provavelmente é 42.');
 */
 /* 2012-11-21 */
 
