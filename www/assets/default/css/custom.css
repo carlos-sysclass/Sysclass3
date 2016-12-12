@@ -2654,8 +2654,8 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 
 .inter-navsuper-tabs .tab-content.tab-content-messages {
-  height: 314px;
-  max-height: 314px;
+  height: 351px;
+  max-height: 351px;
 }
 
 .dir-menu-bar .dropdown.open .dropdown-toggle {

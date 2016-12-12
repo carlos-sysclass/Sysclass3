@@ -1,5 +1,5 @@
 $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
-    ab.debug(true, false);
+    //ab.debug(true, false);
 
     this.startWithParent = true;
     /*
@@ -163,6 +163,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         }
 
         this.getQueues();
+        this.getAvaliableQueues();
     };
     // CALLED ON QUEUE RESET COLLECTION
     this.subscribeQueues = function(collection) {
