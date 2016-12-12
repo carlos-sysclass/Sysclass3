@@ -162,6 +162,7 @@ class Translator extends Component
         $language_selected = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $this->getSource() : $language_code;
 
         $exists = array_search($token, $this->source_tokens_index);
+
         /*
         $exists = $this->source_tokens->filter(function($item) use ($token) {
             //if ($item['token'] === $token) {
@@ -191,7 +192,8 @@ class Translator extends Component
                         $translated = $this->translateText($this->getSystemLanguageCode(), $this->source_lang, $token);
                     } else {
                         $translated = $this->translateText($language_selected, $this->source_lang, $token);
-                        
+
+                       
                     }
                 } else {
                     $translated = $token;

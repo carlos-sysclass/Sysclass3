@@ -331,18 +331,19 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				//this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true, false);
 			},
 			render : function() {
+				console.warn(this.model.toJSON());
 				this.$el.html(this.template(this.model.toJSON()));
 				return this;
 			},
 			startChat : function() {
 				var topic = this.model.get("topic");
 
-				console.warn(this.model.toJSON(), this.model.get("user").id, this.model.get("user.id"));
+				//console.warn(this.model.toJSON(), this.model.get("user").id, this.model.get("user.id"));
 
 				//console.warn(topic, this.model.get("name"), this.model.get("user"), this.model.get("user.id"));
 
 				this.chatModule.createChat(this.model.get("user").id);
-			},
+			}
 		});
 
 		this.blockChatViewClass = Backbone.View.extend({
@@ -432,6 +433,9 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				app.module("ui").refresh(this.$(".queue-container"));
 			},
 			addOne : function(model) {
+				var users = model.get("users");
+
+
 				var itemView = new mod.blockChatQueueViewClass({
 					model: model
 				});
@@ -440,7 +444,7 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		this.startChatBlock = function() {
-			mod.chatModule.getAvaliableQueues();
+			//mod.chatModule.getAvaliableQueues();
 
 			this.started = true;
 			this.blockChatView = new this.blockChatViewClass({

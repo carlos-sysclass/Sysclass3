@@ -321,8 +321,7 @@ class Queue extends Component implements WampServerInterface
                     $technical_users = User::findByPermissionId($resource->id);
                 }
 
-
-
+                /*
                 $coordinator_group_id = $this->configuration->get('chat_role_coordinator');
                 //$technical_group_id = $this->configuration->get('chat_role_technical_support');
 
@@ -356,30 +355,51 @@ class Queue extends Component implements WampServerInterface
                         }
                     }
                 }
+                */
+
+                //var_dump($technical_users);
+
+                $result = array();
+
+                
+
+                $currentUserData = $this->users[$conn->wrappedConn->WAMP->sessionId];
+                $currentUser = User::findFirstById($currentUserData['id']);
+                $lang = $currentUser->getLanguage();
+                $this->translate->setSource($lang->code);
+                
+
                 if (count($technical_users) > 0) {
-                    $result['technical'] = array(
-                        'topic' => 'technical-support',
-                        'name' => 'Technical Support'
-                    );
+                    foreach($technical_users as $tech_user) {
+                        $user = User::findFirstById($tech_user['id']);
 
-                    foreach($technical_users as $item) {
+                        $lang = $user->getLanguage();
+
                         //$item = $user->toArray();
+                        $item = array(
+                            'topic' => 'technical-support',
+                            'name' => $this->translate->translate('Technical Support'),
+                        );
 
-                        $user = User::findFirstById($item['id']);
+                        //var_dump($this->translate->translate('Technical Support', null, $lang->code), $lang->code);
 
-                        $item['language'] = $user->getLanguage()->toArray();
-                        $item['avatars'] = $user->getAvatars()->toArray();
+
+                        $item['user'] = $user->toArray();
+
+                        $item['user']['language'] = $lang->toArray();
+                        $item['user']['avatars'] = $user->getAvatars()->toArray();
                         //$item['avatar'] = $user->getAvatar();
 
                         if (array_key_exists($user->id, $this->usersIds)) {
-                            $result['technical']['online'] = true;
-                            $result['technical']['session_id'] = $this->usersIds[$user->id];
-
-                            $result['technical']['user'] = $item;
+                            $item['online'] = true;
+                            $item['session_id'] = $this->usersIds[$user->id];
+                            //$item['user'] = $item;
                         } else {
-                            $result['technical']['online'] = false;
-                            $result['technical']['user'] = $item;
+                            $item['online'] = false;
+                            //$item['user'] = $item;
                         }
+
+                        $result[] = $item;
                     }
                 }
 
