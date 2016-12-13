@@ -38,7 +38,8 @@ $SC.module("dialogs.enroll.avaliable", function(mod, app, Backbone, Marionette, 
                       slideWidth: 420,
                       slideMargin: 10,
                       adaptiveHeight : true,
-                      responsive : true
+                      responsive : true,
+                      infiniteLoop : false
                     });
                 });
             },
