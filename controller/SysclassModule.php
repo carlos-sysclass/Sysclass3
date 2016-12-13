@@ -641,41 +641,47 @@ abstract class SysclassModule extends BaseSysclassModule
                     $filter = json_decode($filter, true);
                 }
 
-                $options = array();
+                if (array_key_exists('rules', $filter) && is_array($filter['rules'])) {
+                    $parsed = $this->sqlParser->parse($filter);
+                    $args['conditions'] = $parsed['conditions'];
+                    $args['bind'] = $parsed['bind'];
+                } else {
+                    $options = array();
 
-                foreach($filter as $key => $item) {
-                    if (strpos($key, "_") === 0) {
-                        $options[$key] = $item;
-                        unset($filter[$key]);
-                    }
-                }
-
-                $index = 0;
-
-                foreach($filter as $key => $item) {
-                    if (strpos($key, "_") === 0) {
-                        $opt[$key] = $item;
-                        unset($filter[$key]);
-                    }
-                    if (is_null($item)) {
-                        if (@$options['_exclude'] === TRUE) {
-                            $modelFilters[] = "{$key} IS NOT NULL";
-                        } else {
-                            $modelFilters[] = "{$key} IS NULL";
+                    foreach($filter as $key => $item) {
+                        if (strpos($key, "_") === 0) {
+                            $options[$key] = $item;
+                            unset($filter[$key]);
                         }
-                    } else {
-                        if (@$options['_exclude'] === TRUE) {
-                            $modelFilters[] = "{$key} <> ?{$index}";
-                        } else {
-                            $modelFilters[] = "{$key} = ?{$index}";
-                        }
-
-                        $filterData[$index] = $item;
-                        $index++;
                     }
-                }
 
-                $args['args'] = $filter;
+                    $index = 0;
+
+                    foreach($filter as $key => $item) {
+                        if (strpos($key, "_") === 0) {
+                            $opt[$key] = $item;
+                            unset($filter[$key]);
+                        }
+                        if (is_null($item)) {
+                            if (@$options['_exclude'] === TRUE) {
+                                $modelFilters[] = "{$key} IS NOT NULL";
+                            } else {
+                                $modelFilters[] = "{$key} IS NULL";
+                            }
+                        } else {
+                            if (@$options['_exclude'] === TRUE) {
+                                $modelFilters[] = "{$key} <> ?{$index}";
+                            } else {
+                                $modelFilters[] = "{$key} = ?{$index}";
+                            }
+
+                            $filterData[$index] = $item;
+                            $index++;
+                        }
+                    }
+                    $args['conditions'] = implode(" AND ", $modelFilters);
+                    $args['bind'] = $filterData;
+                }
             } else {
                 /*
                 $args = array(
@@ -684,13 +690,12 @@ abstract class SysclassModule extends BaseSysclassModule
                 */
             }
 
+            $args['order'] = $sort;
+            $args['args'] = $filter;
+
             if (!is_null($columns) && is_array($columns)) {
                 $args['columns'] = implode(",", $columns);
             }
-
-            $args['conditions'] = implode(" AND ", $modelFilters);
-            $args['bind'] = $filterData;
-            $args['order'] = $sort;
 
             /**
              * @todo Get parameters to filter, if possibile, the info

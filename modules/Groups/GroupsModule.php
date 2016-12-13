@@ -12,7 +12,7 @@ namespace Sysclass\Modules\Groups;
 /**
  * @RoutePrefix("/module/groups")
  */
-class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable
+class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
 
     /* ILinkable */
@@ -96,6 +96,49 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
         return $actions[$request];
     }
+
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'group.definition' => function($data, $self) {
+                $self->putComponent("data-tables");
+                $self->putComponent("jquery-builder");
+
+                // CREATE BLOCK CONTEXT
+                $block_context = $self->getConfig("blocks\\group.definition\\context");
+
+                //var_dump($block_context);
+                //exit;
+                $self->putItem("group_definition_context", $block_context);
+
+                return true;
+            }
+        );
+    }
+
+
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/add-dynamic")
+     */
+    public function addDynamicPage()
+    {
+        $model_info = $this->model_info['me'];
+
+        if ($this->isResourceAllowed("create", $model_info)) {
+            if (!$this->createClientContext("add-dynamic")) {
+                $this->entryPointNotFoundError($this->getSystemUrl('home'));
+            }
+            $this->display($this->template);
+
+        } else {
+            $this->redirect($this->getSystemUrl('home'), "", 401);
+        }
+    }
+
+
     /**
      * [ add a description ]
      *
@@ -280,5 +323,4 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         return array_values($items);
     }
     */
-
 }

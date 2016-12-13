@@ -324,8 +324,14 @@ $di->setShared('environment', function() use ($di) {
 			'name' => 'query-jscrollpane',
 			'css'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane'),
 			'js'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane.min')
-
 		),
+		'jquery-builder' => array(
+			'name' => 'jquery-builder',
+			'css'	=> array('plugins/jquery-builder/query-builder.default.min'),
+			'js'	=> array('plugins/jquery-builder/query-builder.standalone.min', 'plugins/jquery-builder/sql-parser')
+		),
+
+
 	);
 
 	// MOVE TO module config.yml!!!
