@@ -213,14 +213,16 @@ class Translator extends Component
             }
         }
 
+
         // IF NOT FOUND, CHECK FOR CONSTANTS
         if (!is_null($vars)) {
             if (!is_array($vars)) {
                 $vars = array($vars);
             }
-            $translated = vsprintf($token, $vars);
+            $translated = vsprintf($translated, $vars);
+        } else {
+            $this->session_tokens[$token] = $translated;
         }
-        $this->session_tokens[$token] = $translated;
         try {
             $this->cache->save("session_tokens", $this->session_tokens);
         } catch(Exception $e) {

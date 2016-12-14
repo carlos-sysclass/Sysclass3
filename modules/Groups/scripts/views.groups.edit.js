@@ -14,12 +14,14 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				this.$(".jquery-builder").queryBuilder({
 				  plugins: [
 				    'bt-tooltip-errors',
-				    'not-group'
+				    //'not-group',
+
 				  ],
 				  filters: [{
 				    id: 'email',
 				    label: 'Email',
-				    type: 'string'
+				    type: 'string',
+				    no_invert: true
 				  }, 
 				  {
 				    id: 'is_supplier',
@@ -30,7 +32,8 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				      1: 'Yes',
 				      0: 'No'
 				    },
-				    operators: ['equal']
+				    operators: ['equal'],
+				    no_invert: true
 				  }]
 				});
 
