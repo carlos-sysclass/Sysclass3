@@ -2,49 +2,20 @@
 namespace Sysclass\Models\Enrollments;
 
 use Plico\Mvc\Model,
-    Sysclass\Models\Enrollments\CoursesRestrictGroups,
     Phalcon\Db\Column,
     Phalcon\Mvc\Model\MetaData,
     Phalcon\Mvc\Model\Message as Message;
 
-class Courses extends Model
+class CoursesRestrictGroups extends Model
 {
-    protected $assignedData = null;
-
     public function initialize()
     {
-        $this->setSource("mod_enroll_courses");
+        $this->setSource("mod_enroll_courses_restricted_groups");
 
-        $this->belongsTo("enroll_id", "Sysclass\\Models\\Enrollments\\Enroll", "id",  array('alias' => 'Enroll'));
-        $this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id",  array('alias' => 'Course'));
-
-        $this->hasMany("id", "Sysclass\\Models\\Enrollments\\CoursesRestrictGroups", "enroll_course_id",  array('alias' => 'Enrollgroups'));
-
-
+        $this->belongsTo("enroll_course_id", "Sysclass\\Models\\Enrollments\\Courses", "id",  array('alias' => 'EnrollCourse'));
+        $this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'Group'));
     }
 
-    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
-        $this->assignedData = $data;
-
-        return parent::assign($data, $dataColumnMap, $whiteList);
-    }
-
-    public function afterSave() {
-        // SAVE THE LINKED TEST
-        if (array_key_exists('enrollgroups', $this->assignedData) && is_array($this->assignedData['enrollgroups'])) {
-
-            $this->getEnrollgroups()->delete();
-
-            foreach ($this->assignedData['enrollgroups'] as $group) {
-                $restrictGroup = new CoursesRestrictGroups();
-                $restrictGroup->assign([
-                    'group_id' => $group['group_id']
-                ]);
-                $restrictGroup->enroll_course_id = $this->id;
-                $restrictGroup->save();
-            }
-        }
-    }
 
     /*
     public function userCanEnroll($user_id, $course_id) {

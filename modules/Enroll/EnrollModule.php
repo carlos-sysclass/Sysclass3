@@ -9,6 +9,7 @@ use Sysclass\Models\Content\Program as Course,
     Sysclass\Models\Forms\Fields,
     Sysclass\Models\Content\Program,
     Sysclass\Models\Users\User,
+    Sysclass\Models\Users\Group,
     Sysclass\Services\MessageBus\INotifyable,
     Sysclass\Collections\MessageBus\Event;
 /**
@@ -121,6 +122,9 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 //$self->putComponent("select2");
                 $self->putScript("scripts/utils.datatables");
                 //$self->putComponent("bootstrap-switch");
+
+                $groups = Group::find("active = 1");
+                $this->putItem("enroll_groups", $groups->toArray());
 
                 //$block_context = $self->getConfig("blocks\\enroll.settings.dialog\\context");
                 //$self->putItem("enroll_users_dialog_context", $block_context);

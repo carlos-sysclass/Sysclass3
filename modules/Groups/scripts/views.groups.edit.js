@@ -56,6 +56,7 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 			updateModel : function() {
 				console.warn(arguments);
 				console.warn(this.$(".jquery-builder").queryBuilder('getRules'));
+				this.model.unset(this.dynamicField, {silent : true});
 				this.model.set(this.dynamicField, this.$(".jquery-builder").queryBuilder('getRules'));
 
 				// CHECK IF IS NEED TO UPDATE THE TABLE

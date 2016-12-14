@@ -50,15 +50,6 @@ crud:
       scripts: ["views.groups.edit"]
       variables:
         page_subtitle: Edit a group
-    add-dynamic:
-      components: ["validation", "wysihtml5", "bootstrap-switch", "select2", "jquery-builder"]
-      #blocks: ["messages.group.allow"]
-      override-route: "add"
-      model-prefix : "dynamic"
-      template: form-dynamic.tpl
-      scripts: ["views.groups.add-dynamic"]
-      variables:
-        page_subtitle: Create a new dynamic Group
 blocks:
   group.definition:
     context:

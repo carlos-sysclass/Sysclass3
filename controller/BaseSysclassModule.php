@@ -187,8 +187,16 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         if (array_key_exists("model-prefix", $config)) {
             $this->clientContext['model-prefix'] = $config['model-prefix'];
         } else {
-            $this->clientContext['model-prefix'] = "me";
+            //$this->clientContext['model-prefix'] = "me";
         }
+
+        if (array_key_exists("model-id", $config)) {
+            $this->clientContext['model-id'] = $config['model-id'];
+        } else {
+            $this->clientContext['model-id'] = "me";
+        }
+
+
 
         if (is_array($data)) {
             $this->clientContext = array_replace_recursive($this->clientContext, $data);

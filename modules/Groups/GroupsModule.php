@@ -116,29 +116,6 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         );
     }
 
-
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/add-dynamic")
-     */
-    public function addDynamicPage()
-    {
-        $model_info = $this->model_info['me'];
-
-        if ($this->isResourceAllowed("create", $model_info)) {
-            if (!$this->createClientContext("add-dynamic")) {
-                $this->entryPointNotFoundError($this->getSystemUrl('home'));
-            }
-            $this->display($this->template);
-
-        } else {
-            $this->redirect($this->getSystemUrl('home'), "", 401);
-        }
-    }
-
-
     /**
      * [ add a description ]
      *

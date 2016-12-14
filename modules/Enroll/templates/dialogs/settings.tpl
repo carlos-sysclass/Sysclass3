@@ -50,6 +50,24 @@
                                 </span>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3" style="text-align:left">
+                                {translateToken value="Restricted Groups"}
+                            </label>
+                            <div class="col-md-9">
+                                <select class="select2-me form-control input-block-level" name="enrollgroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="group_id">
+                                    <option value="-1">{translateToken value="Select a group"}</option>
+                                    {foreach $T_ENROLL_GROUPS as $group}
+                                        <option value="{$group.id}">{$group.name}</option>
+                                    {/foreach}
+                                </select>
+
+                                <span class="help-text">
+                                    <small>{translateToken value="Only allow the enroll for users in these groups"}</small>
+                                </span>
+                            </div>
+                        </div>
 					</div>
                     <div class="form-actions nobg">
                         <button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
