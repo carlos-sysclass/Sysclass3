@@ -357,9 +357,13 @@ class User extends Model
         $query = new Query($sql, DI::getDefault());
         $courses   = $query->execute($params);
 
-        //var_dump($users->toArray());
+        $filtered = $courses->filter(function($item) {
+            if ($item->enrollment->isAvaliable($this)) {
+                return $item;
+            }
+        });
 
-        return $courses;
+        return $filtered;
     }
 
 
