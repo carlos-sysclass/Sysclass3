@@ -8,6 +8,7 @@
         "react/zmq": "^0.3.0",
         "dompdf/dompdf": "dev-master",
         "piwik/piwik-php-tracker": "^1.0",
-        "mpdf/mpdf": "^6.0"
+        "mpdf/mpdf": "^6.0",
+        "fourlabs/qbjs-parser": "dev-master"
     }
 }

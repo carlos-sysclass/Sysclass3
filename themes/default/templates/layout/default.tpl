@@ -12,7 +12,7 @@
 		_lazy_init_functions = [];
 	</script>
 </head>
-<body class="page-boxed page-header-fixed backstrech-me" data-backstrech-fade="1000"  data-backstrech-duration="5000" data-backstrech-images='["{Plico_GetResource file='img/bg/default.jpg'}"]'>
+<body class="page-boxed page-header-fixed backstrech-me" data-backstrech-fade="1000"  data-backstrech-duration="5000" data-backstrech-images='["{Plico_GetResource file='img/bg/default2.jpg'}"]'>
 
 	{if (isset($T_SECTION_TPL['dialogs']) &&  ($T_SECTION_TPL['dialogs']|@count > 0))}
 	    <div id="dialogs-tempĺates">

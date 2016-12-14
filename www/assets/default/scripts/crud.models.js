@@ -61,13 +61,13 @@ $SC.module("crud.models", function(mod, app, Backbone, Marionette, $, _) {
     });
 
     //mod.addInitializer(function() {
-        if (typeof this.modelPrefix == "undefined") {
+        if (_.isUndefined(this.modelPrefix)) {
             this.itemModelClass = mod.baseItemModelClass.extend({
                 urlRoot : "/module/" + this.module_id + "/item/me"
             });
         } else {
             this.itemModelClass = mod.baseItemModelClass.extend({
-                urlRoot : "/module/" + this.module_id + "/" + this.modelPrefix + "/item/me"
+                urlRoot : "/module/" + this.module_id + "/item/" + this.modelPrefix
             });
         }
     //});

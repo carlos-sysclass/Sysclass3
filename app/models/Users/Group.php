@@ -38,4 +38,16 @@ class Group extends Model
             "id",  array('alias' => 'MessageGroup')
         );
     }
+
+    public function afterFetch() {
+        $this->definition = json_decode($this->definition);
+    }
+
+    public function beforeValidation() {
+        if ($this->dynamic == 1) {
+            if (!is_null($this->definition)) {
+                $this->definition = json_encode($this->definition);
+            }
+        }
+    }
 }

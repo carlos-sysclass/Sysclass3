@@ -482,7 +482,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $languages = Language::find("active = 1");
         $this->putitem("languages", $languages->toArray());
 
-        $groups = Group::find("active = 1");
+        $groups = Group::find("active = 1 AND dynamic = 0");
         $this->putItem("groups", $groups->toArray());
 
         parent::addPage();
@@ -499,7 +499,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $languages = Language::find("active = 1");
         $this->putitem("languages", $languages->toArray());
 
-        $groups = Group::find("active = 1");
+        $groups = Group::find("active = 1 AND dynamic = 0");
         $this->putItem("groups", $groups->toArray());
 
         parent::editPage($id);
@@ -526,6 +526,9 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
     public function afterModelCreate($evt, $model, $data) {
         if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+
+            $model->getUserGroups()->delete();
+
             foreach($data['usergroups'] as $group) {
                 $userGroup = new UsersGroups();
                 $userGroup->user_id = $model->id;

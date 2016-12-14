@@ -156,7 +156,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
                 'dashboard.linkable.view' => array(
                     'type'      => 'control-panel', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
                     'id'        => 'dashboard-control-panel',
-                    //'title'     => true,
+                    //'title'     => false,
                     //'icon'        => 'th-large',
                     'template'  => $this->template("dashboard.linkable.view.widget"),
                     'panel'     => true,
