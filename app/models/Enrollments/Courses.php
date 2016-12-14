@@ -2,6 +2,7 @@
 namespace Sysclass\Models\Enrollments;
 
 use Plico\Mvc\Model,
+    Sysclass\Models\Users\User,
     Sysclass\Models\Enrollments\CoursesRestrictGroups,
     Phalcon\Db\Column,
     Phalcon\Mvc\Model\MetaData,
@@ -20,7 +21,14 @@ class Courses extends Model
 
         $this->hasMany("id", "Sysclass\\Models\\Enrollments\\CoursesRestrictGroups", "enroll_course_id",  array('alias' => 'Enrollgroups'));
 
-
+        $this->hasManyToMany(
+            "id", 
+            "Sysclass\\Models\\Enrollments\\CoursesRestrictGroups", 
+            "enroll_course_id", "group_id",
+            "Sysclass\\Models\\Users\\Group", 
+            "id",
+            ['alias' => 'Groups']
+        );
     }
 
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
@@ -44,6 +52,29 @@ class Courses extends Model
                 $restrictGroup->save();
             }
         }
+    }
+
+    public function isAvaliable(User $user = null) {
+        if (is_null($user)) {
+            $user = $this->getDI()->get('user');
+        }
+        if (!$user) {
+            return false;
+        }
+
+        $groups =  $this->getGroups();
+
+        if ($groups->count() == 0) {
+            return true;
+        }
+
+        foreach($groups as $group) {
+            if ($group->hasUser($user)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /*

@@ -2,6 +2,7 @@
 namespace Sysclass\Models\Users;
 
 use Plico\Mvc\Model,
+    Phalcon\Mvc\Model\Resultset,
     Phalcon\Mvc\Model\Relation;
 
 class Group extends Model
@@ -40,7 +41,7 @@ class Group extends Model
     }
 
     public function afterFetch() {
-        $this->definition = json_decode($this->definition);
+        $this->definition = json_decode($this->definition, true);
     }
 
     public function beforeValidation() {
@@ -48,6 +49,27 @@ class Group extends Model
             if (!is_null($this->definition)) {
                 $this->definition = json_encode($this->definition);
             }
+        }
+    }
+
+    public function hasUser(User $user) {
+        if ($this->dynamic == 1) {
+            $parsed = $this->getDI()->get('sqlParser')->parse($this->definition);
+
+            $parsed['columns'] = "id";
+            $parsed['hydration'] = Resultset::HYDRATE_ARRAYS;
+
+            $result = User::find($parsed);
+
+            $users_ids = array_column($result->toArray(), 'id');
+
+            return in_array($user->id, $users_ids);
+        } else {
+            $count = $this->getUsers([
+                'conditions' => "user_id = ?0",
+                'bind' => [$user->id]
+            ]);
+            return $count->count() > 0;
         }
     }
 }
