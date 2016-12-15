@@ -2649,7 +2649,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   margin-top: 0px;
 }
 
-#messages-table-messages_wrapper table.dataTable {
+#course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {
   margin-top: 0px !important;
 }
 

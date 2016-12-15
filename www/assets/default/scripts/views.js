@@ -87,7 +87,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			this.childContainer.empty();
 
 			if (this.collection.size() === 0) {
-				this.childContainer.append(this.nofoundTemplate());
+				if (_.isFunction(this.nofoundTemplate)) {
+					this.childContainer.append(this.nofoundTemplate());
+				}
 				this.disableView();
 			} else {
 				this.enableView();

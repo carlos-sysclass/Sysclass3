@@ -6,6 +6,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
 		var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
 		var baseChildTabViewItemClass = app.module("views").baseChildTabViewItemClass;
+		var tableViewClass = $SC.module("utils.datatables").tableViewClass;
 
 		var navigationViewClass = Backbone.View.extend({
 			events : {
@@ -283,7 +284,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		})
 
 		var programCoursesTabViewClass = baseChildTabViewClass.extend({
-			nofoundTemplate : _.template($("#tab_program_courses-nofound-template").html()),
+			//nofoundTemplate : _.template($("#tab_program_courses-nofound-template").html()),
 			childViewClass : programCoursesTabViewItemClass,
 			initialize: function() {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
@@ -300,19 +301,52 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+    			// START DATATABLE HERE
+    		    this.tableView =  new tableViewClass({
+			        el : this.$("#course-table"),
+			        datatable : {
+			        	bAutoWidth: true,
+			        	serverSide : false,
+			        	searching : false,
+			        	ordering: false,
+			            //"sAjaxSource": message_context.ajax_source,
+			            //"aoColumns": message_context.datatable_fields,
+			            dom : "<t>",
+			            //bScrollInfinite: true,
+			            //bScrollCollapse: false,
+			            //sScrollY: "274px",
+			            sScrollY: true,
+			            paging: false,
+			            fixedHeader: false
+			        },
+			        scrollY : true,
+			        slimScroll : {
+					    height: '337px',
+					}
+			    });
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
 				this.render();
 			},
 			render : function(model) {
+				this.tableView.getApi().destroy(false);
+
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
 
 				this.navigationView.render();
 				this.renderProgress();
+
+				this.onVisible();
+			},
+			onVisible : function() {
+				console.warn("ON VISIBLE");
+				//this.tableView.getApi().destroy(false);
+				this.tableView.recreate();
 			},
 			renderProgress : function(collection, data, response) {
-				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
+				console.info('portlet.content/programCoursesTabViewClass::renderProgress');
 				//var totalUnits = mod.progressCollection.getTotalCourses();
 				var totalUnits = mod.programsCollection.getCurrentCourses().size();
 
@@ -488,7 +522,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		var courseUnitsTabViewClass = baseChildTabViewClass.extend({
-			nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
+			//nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
 			childViewClass : courseUnitsTabViewItemClass,
 	        events : {
 	            "click .close-content-sidebar" : "hideContentSidebar"
@@ -509,6 +543,32 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+    			// START DATATABLE HERE
+    		    this.tableView =  new tableViewClass({
+			        el : this.$("#unit-table"),
+			        datatable : {
+			        	bAutoWidth: true,
+			        	serverSide : false,
+			        	searching : false,
+			        	ordering: false,
+			            //"sAjaxSource": message_context.ajax_source,
+			            //"aoColumns": message_context.datatable_fields,
+			            dom : "<t>",
+			            //bScrollInfinite: true,
+			            //bScrollCollapse: false,
+			            //sScrollY: "274px",
+			            sScrollY: true,
+			            paging: false,
+			            fixedHeader: false
+			        },
+			        scrollY : true,
+			        slimScroll : {
+					    height: '337px',
+					}
+			    });
+    			//$SC.addTable("messages-table-messages", this.tableView);
+
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -516,14 +576,23 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function(model) {
+				this.tableView.getApi().destroy(false);
+
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
+
+				//this.tableView.recreate();
 
 				this.navigationView.render();
 				this.renderProgress();
 
+				this.onVisible();
 
-
-				app.module("ui").refresh(this.$el);
+				//app.module("ui").refresh(this.$el);
+			},
+			onVisible : function() {
+				console.warn("ON VISIBLE");
+				//this.tableView.getApi().destroy(false);
+				this.tableView.recreate();
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
@@ -998,7 +1067,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					.on('shown.bs.tab', function (e) {
 						console.warn($(e.target).data('settingUpdate'));
 
-						this.model.set("content_current_tab", $(e.target).data('settingUpdate'));
+						var current_tab = $(e.target).data('settingUpdate');
+
+						this.model.set("content_current_tab", current_tab);
+
+						if (current_tab == "course") {
+							this.programCoursesTabView.onVisible();
+						} else if (current_tab == "unit") {
+							this.courseUnitsTabView.onVisible();
+						}
+						
+
 						//this.model.save();
   						//e.target // newly activated tab
   						//e.relatedTarget // previous active tab
