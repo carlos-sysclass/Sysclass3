@@ -167,6 +167,23 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+
+    			var scrollOptions = {
+				    size: '7px',
+				    wrapperClass: "slimScrollDiv",
+				    color: '#a1b2bd',
+				    railColor: '#333',
+				    position: 'right',
+				    alwaysVisible: false,
+				    railVisible: false,
+				    disableFadeOut: true,
+				    allowPageScroll : true,
+				    wheelStep : 2,
+				    height: '365px',
+				};
+       			this.$(".program-description-content-scroller").slimScroll(scrollOptions);
+
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -322,7 +339,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '337px',
+					    height: '328px',
 					}
 			    });
 			},
@@ -564,7 +581,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '337px',
+					    height: '328px',
 					}
 			    });
     			//$SC.addTable("messages-table-messages", this.tableView);

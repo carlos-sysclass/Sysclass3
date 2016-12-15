@@ -520,8 +520,10 @@ _before_init_functions.push(function() {
                     </li>
                   </ul>
               </div>
+              <div class="program-description-content-scroller">
               <div class="program-description-content">
                 
+              </div>
               </div>
             </div>
           </div>

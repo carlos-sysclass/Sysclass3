@@ -62,7 +62,7 @@
 }
 
 @media (max-width: 767px) {
-  .header .navbar-nav .open .dropdown-menu > li {
+  .header .navbar-nav .open .dropdown-menu.mega-menu-container > li {
     height: 70%;
   }
   .navbar-program .navbar-nav, .navbar-course .navbar-nav {
@@ -80,6 +80,7 @@
     /* width: 150px; */
     overflow: hidden;
     display: inline-block;
+    padding-right: 20px !important;
   }
 
   .navbar-nav > li.dropdown > a > i.fa-caret-down {
