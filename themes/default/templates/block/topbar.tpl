@@ -16,7 +16,7 @@
 			<img src="{Plico_GetResource file='img/logo-sysclass-small.png'}" alt="logo" class="img-responsive visible-xs" />
 		</a>
 
-		<div class="navbar-text fb-like" data-href="https://www.facebook.com/sysclass" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+		<div class="navbar-text fb-like hidden-xs" data-href="https://www.facebook.com/sysclass" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 		<!--
@@ -38,7 +38,7 @@
 								{if $item.icon}
 					      		<i class="{$item.icon}"></i>
 					      		{/if}
-					      		<span class="hidden-xs">{$item.text}</span>
+					      		<span class="hidden-xs hidden-sm">{$item.text}</span>
 							</a>
 							<ul class="dropdown-menu mega-menu-container">
 								<li>
@@ -328,7 +328,7 @@
 							{/if}
 						</div>
 					{/if}
-					<span class="username">{$T_CURRENT_USER.name}</span>
+					<span class="username hidden-xs hidden-sm">{$T_CURRENT_USER.name}</span>
 				</a>
 				<ul class="dropdown-menu">
 					<li>

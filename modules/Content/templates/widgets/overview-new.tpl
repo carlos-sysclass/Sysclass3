@@ -15,8 +15,8 @@ _before_init_functions.push(function() {
                   <i class="fa fa-graduation-cap"></i>
                   <span class="progress-indicator program-indicator">
                     <span class="counter"></span>
-                    <span class="singular">{translateToken value="Program"}</span>
-                    <span class="plural">{translateToken value="Programs"}</span>
+                    <span class="singular hidden-xs">{translateToken value="Program"}</span>
+                    <span class="plural hidden-xs">{translateToken value="Programs"}</span>
                   </span>
                   
                 </a>
@@ -26,8 +26,8 @@ _before_init_functions.push(function() {
                   <i class="fa fa-sitemap"></i>
                   <span class="progress-indicator course-indicator">
                     <span class="counter"></span>
-                    <span class="singular">{translateToken value="Course"}</span>
-                    <span class="plural">{translateToken value="Courses"}</span>
+                    <span class="singular hidden-xs">{translateToken value="Course"}</span>
+                    <span class="plural hidden-xs">{translateToken value="Courses"}</span>
                   </span>
                 </a>
               </li>
@@ -36,8 +36,8 @@ _before_init_functions.push(function() {
                   <i class="fa fa-book"></i>
                   <span class="progress-indicator unit-indicator">
                     <span class="counter"></span>
-                    <span class="singular">{translateToken value="Unit"}</span>
-                    <span class="plural">{translateToken value="Units"}</span>
+                    <span class="singular hidden-xs">{translateToken value="Unit"}</span>
+                    <span class="plural hidden-xs">{translateToken value="Units"}</span>
                   </span>
                 </a>
               </li>
@@ -69,12 +69,12 @@ _before_init_functions.push(function() {
                   </a>
                   -->
 
-                  <li>
+                  <li class="hidden-xs">
                     <a href="javascript:void(0);">
                       <span class="program-title">{translateToken value="Program"}</span>
                     </a>
                   </li>
-                  <li>
+                  <li class="hidden-xs">
                     <a href="javascript:void(0);" class="no-padding-sides">
                       <span class="">&raquo;</span>
                     </a>
@@ -96,7 +96,7 @@ _before_init_functions.push(function() {
                   </a>
                   -->
                 </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li>
                       <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
                         <i class="fa fa-arrow-left"></i>
@@ -129,7 +129,7 @@ _before_init_functions.push(function() {
                 <div class="unit-video-container hidden pop-out" id="unit-video-container">
                   <div class="popupcontent">
                     <div class="popupcontent-header navbar navbar-default">
-                      <ul class="nav navbar-nav">
+                      <ul class="nav navbar-nav hidden-xs">
                         <li>
                           <a href="javascript:void(0);">
                             <span class="course-title">{translateToken value="Unit"}</span>
@@ -151,7 +151,7 @@ _before_init_functions.push(function() {
                       </ul>
 
                       <div class="popup-header-buttons">
-                        <a href="javascript: void(0);" class="btn btn-link minimize-action">
+                        <a href="javascript: void(0);" class="btn btn-link minimize-action hidden-xs">
                           <i class="fa fa-compress"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link fullscreen-action">
@@ -274,7 +274,7 @@ _before_init_functions.push(function() {
                   </a>
                   -->
                 </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li>
                       <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
                         <i class="fa fa-arrow-left"></i>
@@ -471,7 +471,7 @@ _before_init_functions.push(function() {
                   </a>
                   -->
                 </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li>
                       <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
                         <i class="fa fa-arrow-left"></i>

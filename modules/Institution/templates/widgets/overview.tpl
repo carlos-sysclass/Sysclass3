@@ -1,6 +1,6 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-xs-12 text-center">
+	<div class="col-lg-12 col-md-12 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
 		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 16px; margin-top: 11px;" />
     </div>
 </div>
@@ -57,7 +57,7 @@
 		{if $variable@index is div by 2}
 			<div class="row">
 		{/if}
-	    <div class="col-lg-6 col-md-6 col-xs-12">
+	    <div class="col-lg-6 col-md-6 col-xs-6">
 	        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
 	            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
 	        </a>

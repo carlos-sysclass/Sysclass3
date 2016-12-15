@@ -110,7 +110,8 @@ $di->setShared('environment', function() use ($di) {
 		'css/layout',
 		'css/themes/blue',
 
-		'css/custom'
+		'css/custom',
+		'css/custom-responsive'
 		//<!-- END THEME STYLES -->
 	);
 

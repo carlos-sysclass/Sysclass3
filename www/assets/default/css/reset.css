@@ -830,16 +830,18 @@ margin:0 4px 0 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+/*
 .panel-body h2 {
   margin: 20px 0 14px;
 }
 .panel-body h2 small {
   font-weight: lighter;
 }
+
 .class="fa fa-book" {
   margin: 33px 33px 33px 33px;
 }
-
+*/
 .fc-left h2 {
   font-size: 16px !important;
   font-weight: 100;

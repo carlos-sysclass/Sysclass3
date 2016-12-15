@@ -22,8 +22,8 @@ _before_init_functions.push(function() {
 	
 	</div>
 	<div class="col-md-6 col-sm-5 col-xs-12">
-		<img class="page-lock-img" src="{$user_details.country_image}" alt="" style="float: right; height: 32px; margin-top: 10px;">
-		<h2 class="users-panel-username" style="font-size: 22px;">
+		<img class="page-lock-img users-country-image" src="{$user_details.country_image}" alt="" style="">
+		<h2 class="users-panel-username">
 			<img class="visible-xs inline" src="{$user_details.avatars[0].url}" height="40" alt="">
 
 			{$user_details.name} {$user_details.surname} <br>
