@@ -12,7 +12,7 @@ widgets:
 
         - mData: timestamp
           sType: unix-moment-datetime
-          sClass: text-center
+          sClass: text-center hidden-xs
           label: Date
 
         - mData: options

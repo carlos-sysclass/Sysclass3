@@ -148,15 +148,15 @@
 	                <div class="page-quick-sidebar">
 						<ul class="nav nav-tabs">
 	                        <li class="active">
-	                            <a data-toggle="tab" data-target="#quick_sidebar_tab_1" href="javascript:;" aria-expanded="true"> Users
+	                            <a data-toggle="tab" data-target="#quick_sidebar_tab_1" href="javascript:;" aria-expanded="true">{translateToken value="Chats"}
 	                                <!-- <span class="badge badge-danger">2</span> -->
 	                            </a>
 	                        </li>
+	                        <!-- 
 	                        <li class="">
 	                            <a data-toggle="tab" data-target="#quick_sidebar_tab_1" href="javascript:;" aria-expanded="true"> Alerts
-	                                <!-- <span class="badge badge-danger">2</span> -->
-	                            </a>
-	                        </li>
+	                        </a>
+	                        </li> -->
 	                    </ul>
 
 		                {foreach $T_SECTION_TPL['sidebar'] as $template}

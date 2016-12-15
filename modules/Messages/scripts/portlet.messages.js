@@ -215,8 +215,9 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			            //bScrollInfinite: true,
 			            //bScrollCollapse: false,
 			            //sScrollY: "274px",
-			            sScrollY: true,  
-			            paging: false
+			            sScrollY: true,
+			            paging: false,
+			            fixedHeader: false
 			        },
 			        scrollY : true,
 			        slimScroll : {

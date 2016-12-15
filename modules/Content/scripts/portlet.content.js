@@ -190,11 +190,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".program-indicator span.singular").hide();
-					$(".program-indicator span.plural").show();
+					$(".program-indicator span.singular").css({
+						"display" : "none !important"
+					});
+					$(".program-indicator span.plural").css({
+						"display" : "inline !important"
+					});
 				} else {
-					$(".program-indicator span.singular").show();
-					$(".program-indicator span.plural").hide();
+					$(".program-indicator span.singular").css({
+						"display" : "inline !important"
+					});
+					$(".program-indicator span.plural").css({
+						"display" : "none !important"
+					})
 				}
 			},
 		});
@@ -317,11 +325,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".course-indicator span.singular").hide();
-					$(".course-indicator span.plural").show();
+					$(".course-indicator span.singular").css({
+						"display" : "none !important"
+					});
+					$(".course-indicator span.plural").css({
+						"display" : "inline !important"
+					});
 				} else {
-					$(".course-indicator span.singular").show();
-					$(".course-indicator span.plural").hide();
+					$(".course-indicator span.singular").css({
+						"display" : "inline !important"
+					});
+					$(".course-indicator span.plural").css({
+						"display" : "none !important"
+					});
 				}
 			},
 			makeCollection: function() {
@@ -521,11 +537,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".unit-indicator span.singular").hide();
-					$(".unit-indicator span.plural").show();
+					$(".unit-indicator span.singular").css({
+						"display" : "none !important"
+					});
+					$(".unit-indicator span.plural").css({
+						"display" : "inline !important"
+					});
 				} else {
-					$(".unit-indicator span.singular").show();
-					$(".unit-indicator span.plural").hide();
+					$(".unit-indicator span.singular").css({
+						"display" : "inline !important"
+					});
+					$(".unit-indicator span.plural").css({
+						"display" : "none !important"
+					});
 				}
 			},
 
