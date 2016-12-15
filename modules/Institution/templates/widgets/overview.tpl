@@ -1,6 +1,6 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
+	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
 		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 16px; margin-top: 11px;" />
     </div>
 </div>

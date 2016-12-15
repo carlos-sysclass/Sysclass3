@@ -339,7 +339,7 @@
 						{/if}
 					{/foreach}
 
-					<li class="divider visible-xs"></li>
+					<!-- <li class="divider visible-xs"></li> -->
 					<!--
 					<li class="hidden-sm hidden-xs">
 						<a href="javascript:;" id="trigger_fullscreen"><i class="ti-fullscreen"></i> {translateToken value="Full Screen"}</a>
