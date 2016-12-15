@@ -2472,11 +2472,9 @@ a.list-group-item,
  h2 {
   font-weight: 500;
  }
-.navbar-program {
+.navbar-program, .navbar-course, .navbar-widget {
     margin-bottom: 0px;
-}
-.navbar-course, .navbar-widget {
-    margin-bottom: 0px;
+    height: 43px;
 }
 
 .inter-navsuper-tabs .table-content-scrollable {
@@ -2649,7 +2647,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   margin-top: 0px;
 }
 
-#messages-table-messages_wrapper table.dataTable {
+#course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {
   margin-top: 0px !important;
 }
 

@@ -85,7 +85,7 @@
 					<% } else { %>
 						data-datatable-action="<%= item.key %>"
 					<% } %>
-
+					data-container="body"
 				>
 					<% if (item.icon != undefined) { %>
 						<i class="<%= item.icon %>"></i>

@@ -218,7 +218,7 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
             'icon'  => 'fa fa-envelope',
             'class' => 'btn-sm btn-primary tooltips',
             'attrs' => array(
-               'data-original-title' => 'View'
+               'data-original-title' => $this->translate->translate('View')
             )
         );
 
@@ -227,7 +227,7 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
                 'icon'  => 'fa fa-trash',
                 'class' => 'btn-sm btn-danger tooltips',
                 'attrs' => array(
-                    'data-original-title' => 'Remove'
+                    'data-original-title' => $this->translate->translate('Remove')
                 )
             );
         }
