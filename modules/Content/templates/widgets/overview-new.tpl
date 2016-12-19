@@ -155,7 +155,7 @@ _before_init_functions.push(function() {
                           <i class="fa fa-compress"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link fullscreen-action">
-                          <i class="fa fa-desktop"></i>
+                          <i class="fa fa-arrows-alt"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link close-action">
                           <i class="fa fa-times"></i>
