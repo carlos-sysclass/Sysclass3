@@ -5,7 +5,7 @@
         <li>
             <span class="pull-left">
                 <i class="fa fa-lg fa-slack text-default "></i>
-                {translateToken value="Try"}:
+                {translateToken value="Attempts"}:
             </span>
             <strong class="text-primary pull-right">
                 <span class="text-try-index-text">{$T_TEST.executions|@count}</span> 
