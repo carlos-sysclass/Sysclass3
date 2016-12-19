@@ -382,6 +382,12 @@ hr {
 	bottom: 0;
 	z-index: 10;
 }
+
+.page-quick-sidebar-open #off-windows {
+  right: 325px;
+}
+
+
 .chat-widget {
 	float: right;
 	margin-left: 5px;
