@@ -2682,3 +2682,12 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 .footer .footer-inner {
   color: #ffffff;
 }
+
+.query-builder .rules-group-container {
+    background: #fff !important;
+    border: 1px solid #ccc!important;
+}
+
+.query-builder .rule-container, .query-builder .rule-placeholder, .query-builder .rules-group-container {
+  border-radius: 0 !important;
+}

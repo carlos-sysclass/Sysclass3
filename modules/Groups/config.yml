@@ -53,30 +53,62 @@ crud:
 blocks:
   group.definition:
     context:
-      block_id: "group-definition"
-      datatable_fields:
-        - mData: id
-          sClass: text-center
-          label: "#"
+      static:
+        block_id: "group-static-definition"
+        datatable_fields:
+          - mData: id
+            sClass: text-center
+            label: "#"
 
-        - mData: name
-          label: Name
+          - mData: name
+            label: Name
 
-        - mData: surname
-          label: Surname
+          - mData: surname
+            label: Surname
 
-        - mData: email
-          label: Email
+          - mData: email
+            label: Email
 
-        - mData: active
-          sType: table-boolean
-          sClass: text-center
-          label: Active
+          - mData: active
+            sType: table-boolean
+            sClass: text-center
+            label: Active
 
+          - mData: options
+            sType: table-options
+            sClass: text-center
+            label: Actions
+      dynamic:
+        block_id: "group-dynamic-definition"
+        datatable_fields:
+          - mData: id
+            sClass: text-center
+            label: "#"
+
+          - mData: name
+            label: Name
+
+          - mData: surname
+            label: Surname
+
+          - mData: email
+            label: Email
+
+          - mData: active
+            sType: table-boolean
+            sClass: text-center
+            label: Active
 
 models:
   me: Sysclass\Models\Users\Group
   dynamic: Sysclass\Models\Users\DynamicGroup
+  non-users:
+    class: Sysclass\Models\Users\UsersGroups
+    listMethod: findNonGroupUsers
   users: 
     class: Sysclass\Models\Users\UsersGroups
-    findMethod: findByGroupId
+    listMethod: findGroupUsers
+    acl:
+      delete:
+        resource: groups
+        action: edit

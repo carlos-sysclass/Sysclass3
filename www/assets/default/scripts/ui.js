@@ -147,6 +147,8 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 
                             var formatAsCallback = jQuery(this.element).data('format-as');
+
+                            console.warn(formatAsCallback);
                             if (!_.has(mod.select2FormatFunctions, formatAsCallback)) {
                                 formatAsCallback = "default";
                             }
@@ -200,8 +202,11 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 	this.select2FormatFunctions = {
         "default" : function (item) { 
+            console.warn('default', item);
             if (_.isFunction(sprintf)) {
                 var formatString = jQuery(this.element).data('format-as-template');
+
+                console.warn(formatString);
                 if (!_.isUndefined(formatString)) {
                     return sprintf(formatString, item);
                 }
