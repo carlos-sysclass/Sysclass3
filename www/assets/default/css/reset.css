@@ -280,7 +280,7 @@ a:hover, a:focus {
 .inter-navsuper-tabs .table > thead > tr > th {
   font-size: 14px;
   color: #31708f;
-  font-weight: normal;
+  font-weight: 600;
   text-transform: uppercase;
 }
 inter-navsuper-tabs .table > thead > tr > th i.fa {
