@@ -63,43 +63,44 @@
 		{$variables.googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
 	{/if}
 -->
+{if $socials|count > 1}
+	<div class="institution-button-container row">
+		{foreach $variables as $index => $info}
+			<div class="col-lg-6 col-md-6 col-xs-6">
+				<h5>
+					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="">
+					{$socials[$index].country_name}
+				</h5>
 
-<div class="institution-button-container row">
-{foreach $variables as $index => $info}
-	<div class="col-lg-6 col-md-6 col-xs-6">
-		<h5>
-			<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="">
-			{$socials[$index].country_name}
-		</h5>
-
-		{foreach $info as $variable}
-	        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
-	            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
-	        </a>
+				{foreach $info as $variable}
+			        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
+			            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
+			        </a>
+				{/foreach}
+			</div>
 		{/foreach}
 	</div>
-{/foreach}
-</div>
+{else}
+	{$info=$variables[0]}
+	{$total=$info|count}
+	<div class="institution-button-container total-rows-{($total/2)|ceil}">
+		{foreach $info as $variable}
 
-<!--
-<div class="institution-button-container total-rows-{($total/2)|ceil}">
-	{foreach $variables as $variable}
-
-		{if $variable@index is div by 2}
-			<div class="row">
-		{/if}
-	    <div class="col-lg-6 col-md-6 col-xs-6">
-	        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
-	            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
-	        </a>
-		</div>
-		{if ($variable@iteration is div by 2) || ($variable@last)}
+			{if $variable@index is div by 2}
+				<div class="row">
+			{/if}
+		    <div class="col-lg-6 col-md-6 col-xs-6">
+		        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
+		            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
+		        </a>
 			</div>
-		{/if}
+			{if ($variable@iteration is div by 2) || ($variable@last)}
+				</div>
+			{/if}
 
-	{/foreach}
-</div>
--->
+		{/foreach}
+	</div>
+{/if}
 <!--
 <div class="row"  id="institution-chat-list">
 </div>
