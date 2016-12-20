@@ -130,7 +130,7 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '311px',
+					    height: '308px',
 					}
 			    });
     			$SC.addTable("messages-table-messages", this.tableView);

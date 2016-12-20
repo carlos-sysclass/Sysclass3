@@ -345,7 +345,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '337px',
+					    height: '329px',
 					}
 			    });
 			},
@@ -593,7 +593,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '337px',
+					    height: '329px',
 					}
 			    });
     			//$SC.addTable("messages-table-messages", this.tableView);
