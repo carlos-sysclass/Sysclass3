@@ -103,7 +103,7 @@
 					<div class="question-types-item question-type-true_or_false">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="The answer is..."}</label>
-							<input type="checkbox" name="answer" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='TRUE'}" data-off-color="warning" data-off-text="{translateToken value='FALSE'}" checked="checked" value="1" data-value-unchecked="0">
+							<input type="checkbox" name="answer" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='TRUE'}" data-off-color="warning" data-off-text="{translateToken value='FALSE'}" checked="checked" value="1" data-value-unchecked="0" data-update-single="true">
 						</div>
 					</div>
 					<div class="question-types-item question-type-simple_choice">
