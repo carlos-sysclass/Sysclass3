@@ -1,0 +1,31 @@
+widgets:
+  messages.inbox:
+    context:
+      messages:
+        ajax_source: "/module/messages/items/me/datatable"
+        datatable_fields:
+        - mData: from.name
+          label: From
+
+        - mData: subject
+          label: Subject
+
+        - mData: timestamp
+          sType: unix-moment-datetime
+          sClass: text-center hidden-xs
+          label: Date
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+models:
+  me: 
+    class: Sysclass\Models\Messages\Message
+    listMethod: ["find", ["deleted = 0 AND user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
+    bindVars : 
+      user_id: !user id
+    exportMethod: ["toFullArray", ["Groups", "Users"]]
+    acl: 
+      delete:
+        action: trash

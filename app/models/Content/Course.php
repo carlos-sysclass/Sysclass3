@@ -1,7 +1,8 @@
 <?php
 namespace Sysclass\Models\Content;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Users\User;
 
 class Course extends Model
 {
@@ -42,7 +43,7 @@ class Course extends Model
                 'alias' => 'Tests',
                 'params' => array(
                     'conditions' => "type = 'test'",
-                    'order' => '[Sysclass\Models\Courses\Lesson].position ASC, [Sysclass\Models\Courses\Lesson].id ASC'
+                    'order' => '[Sysclass\Models\Courses\Tests\Lesson].position ASC, [Sysclass\Models\Courses\Tests\Lesson].id ASC'
                 )
             )
         );
@@ -50,7 +51,7 @@ class Course extends Model
 
 		$this->hasOne(
             "id",
-            "Sysclass\\Models\\Courses\\ClasseProgress",
+            "Sysclass\\Models\\Content\\Progress\\Course",
             "class_id",
             array('alias' => 'Progress')
         );
@@ -62,39 +63,35 @@ class Course extends Model
             array('alias' => 'Professor')
         );
 
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Content\ProgramCourses",
-            "class_id", "course_id", 
+        $this->belongsTo(
+            "course_id",
             "Sysclass\Models\Content\Program",
             "id",
             array(
-                'alias' => 'Programs',
-                'params' => array(
-                    'order' => '[Sysclass\Models\Content\ProgramCourses].position'
-                )
+                'alias' => 'Program'
             )
         );
 
-        $this->hasManyToMany(
+        $this->belongsTo(
+            "period_id",
+            "Sysclass\\Models\\Content\\CoursePeriods",
             "id",
-            "Sysclass\Models\Courses\CourseClasses",
-            "class_id", "course_id", 
-            "Sysclass\Models\Courses\Course",
-            "id",
-            array(
-                'alias' => 'Courses',
-                'params' => array(
-                    'order' => '[Sysclass\Models\Courses\CourseClasses].position'
-                )
-            )
+            array('alias' => 'Period')
         );
+    }
+
+    protected function beforeValidation() {
+        if ($this->active) {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
     }
 
     protected function resetOrder($class_id) {
 		$manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
-		$phql = "UPDATE Sysclass\\Models\\Courses\\Lesson 
+		$phql = "UPDATE Sysclass\\Models\\Content\\Unit 
 			SET position = -1 WHERE class_id = :class_id:";
 
 		return $manager->executeQuery(
@@ -110,7 +107,7 @@ class Course extends Model
         $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
         foreach($order_ids as $index => $lesson_id) {
-			$phql = "UPDATE Sysclass\\Models\\Courses\\Lesson 
+			$phql = "UPDATE Sysclass\\Models\\Content\\Unit
 				SET position = :position: 
 				WHERE id = :id: AND class_id = :class_id:";
 
@@ -128,7 +125,11 @@ class Course extends Model
         return $status->success();
     }
 
-    public function getFullTree() {
+    public function getFullTree(User $user = null, $only_active = false) {
+        if (is_null($user)) {
+            $user = \Phalcon\DI::getDefault()->get('user');
+        }
+
         $result = $this->toArray();
         if ($professor =  $this->getProfessor()) {
             $result['professor'] = $professor->toArray();
@@ -136,12 +137,20 @@ class Course extends Model
             $result['professor'] = array();
         }
         $result['units'] = array();
-        $units = $this->getUnits();
-        foreach($units as $unit) {
-            $result['units'][] = $unit->getFullTree();
+
+        if ($only_active) {
+            $units = $this->getUnits([
+                'conditions' => "active = 1"
+            ]);
+        } else {
+            $units = $this->getUnits();
         }
 
-        $user_id = $this->getDI()->get("user")->id;
+        foreach($units as $unit) {
+            $result['units'][] = $unit->getFullTree($user, $only_active);
+        }
+
+        $user_id = $user->id;
 
         $progress = $this->getProgress(array(
             'conditions' => "user_id = ?0",

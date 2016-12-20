@@ -6,7 +6,7 @@ namespace Sysclass\Modules\Settings;
  */
 use Sysclass\Models\System\Settings as SystemSettings, 
     Sysclass\Models\Users\Settings,
-    Sysclass\Models\Courses\Course;
+    Sysclass\Models\Content\Program as Course;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -21,7 +21,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
         'content_id',
         'unit_id',
         'course_id',
-        'program_id'
+        'program_id',
+        'content_current_tab'
     );
     
     protected $defaults = array(
@@ -90,6 +91,8 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             $this->response->setContentType('application/json', 'UTF-8');
             
             if ($results = $this->getSettings(true)) {
+                $userPrograms = $user->getCourses();
+                $results['programs_count'] = $userPrograms->count();
                 $results['user_id'] = $user->id;
                 if (!is_null($user->websocket_key)) {
                     $results['websocket_key'] = $user->websocket_key;

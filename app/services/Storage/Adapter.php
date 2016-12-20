@@ -79,7 +79,9 @@ class Adapter extends Component implements IStorage
     }
 
 
-
+    public function fileExists(File $struct) {
+        return $this->backend->fileExists($struct);
+    }
 
     /* PROXY/ADAPTER PATTERN */
     public function getFullFilePath(File $struct) {
@@ -99,6 +101,5 @@ class Adapter extends Component implements IStorage
     public function getImageFileInfo(File $struct) {
         return $this->backend->getImageFileInfo($struct);
     }
-
 
 }

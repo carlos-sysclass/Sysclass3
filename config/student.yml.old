@@ -1,0 +1,53 @@
+dashboard:
+    rows:
+        0:
+            1:
+                weight:
+                    md: 9
+                    sm: 12
+                    xs: 12
+            2:
+                weight:
+                    md: 3
+                    sm: 12
+                    xs: 12
+        1:
+            3:
+                weight:
+                    md: 12
+                    sm: 12
+                    xs: 12
+        2:
+            4:
+                weight:
+                    md: 9
+                    sm: 12
+                    xs: 12
+            5:
+                weight:
+                    md: 3
+                    sm: 12
+                    xs: 12
+        3:
+            6:
+                weight:
+                    md: 12
+                    sm: 12
+                    xs: 12
+    widgets:
+        1: ["users.overview", "notification.lastest"]
+        2: ["institution.overview"]
+        3: ["content.overview"]
+        4: ["ads.leftbar.banner", "news.latest"]
+        5: ["advisor.chat", "ads.rightbar.banner", "messages.contactus", "messages.help", "messages.improvements"]
+        6: ["calendar"]
+        #1: []
+        #2: []
+        #3: ["content.overview"]
+        #4: []
+        #5: []
+        #6: []
+
+    sortable: false
+    resources:
+        users.overview.notification.order: ["Calendar", "Tests", "certificate"]

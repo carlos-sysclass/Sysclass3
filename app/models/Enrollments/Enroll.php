@@ -4,7 +4,7 @@ namespace Sysclass\Models\Enrollments;
 use Plico\Mvc\Model,
     Phalcon\DI,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Courses\Course,
+    Sysclass\Models\Content\Program as Course,
     Sysclass\Models\Enrollments\CourseUsers,
     Sysclass\Models\Enrollments\Fields as EnrollFields,
     Sysclass\Models\Forms\Fields as FormFields,
@@ -37,7 +37,12 @@ class Enroll extends Model
             "id",
             "Sysclass\Models\Enrollments\Fields",
             "enroll_id",
-            array('alias' => 'EnrollFields')
+            array(
+                'alias' => 'EnrollFields',
+                'params' => array(
+                    'order' => '[Sysclass\Models\Enrollments\Fields].position ASC'
+                )
+            )
         );
 
         $this->hasManyToMany(

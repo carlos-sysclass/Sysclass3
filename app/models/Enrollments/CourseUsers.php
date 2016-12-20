@@ -14,17 +14,42 @@ class CourseUsers extends Model
         $this->setSource("mod_enroll_course_to_users");
 
         $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'User', 'reusable' => true));
-        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course', 'reusable' => false));
+        $this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id",  array('alias' => 'Course', 'reusable' => false));
         /*
         $this->belongsTo("status_id", "Sysclass\\Models\\Enrollments\\CourseUsersStatus", "id",  array('alias' => 'Status', 'reusable' => false));
         */
 		$this->hasOne(
             array("course_id", "user_id"),
-            "Sysclass\Models\Courses\CourseProgress",
+            "Sysclass\Models\Content\Progress\Program",
             array("course_id", "user_id"),
             array('alias' => 'CourseProgress')
         );
 
+    }
+
+    public function beforeValidation() {
+        $depinj = DI::getDefault();
+        $translator = $depinj->get("translate");
+
+        $user = $depinj->get("user");
+        if (is_null($this->user_id)) {
+            $this->user_id = $user->id;
+        } else {
+            // CHECK IF THE USER HAS PERMISSION TO INCLUDE ANOTHER USER
+            if ($this->user_id != $user->id) {
+                $acl = $depinj->get("acl");
+                if (!$acl->isUserAllowed(null, "enroll", "users")) {
+                    $message = new Message(
+                        $translator->translate("You don't have access to this resource."
+                        ),
+                        null,
+                        "danger"
+                    );
+                    $this->appendMessage($message);
+                    return false;
+                }
+            }
+        }
     }
 
     public function beforeValidationOnCreate() {
@@ -33,12 +58,6 @@ class CourseUsers extends Model
         if (is_null($this->token)) {
             $random = new \Phalcon\Security\Random();
             $this->token = $random->uuid();
-        }
-
-        if (is_null($this->user_id)) {
-            
-            $user = $depinj->get("user");
-            $this->user_id = $user->id;
         }
 
         // CHECK FOR ENROLLMENT PARAMETERS
@@ -82,7 +101,7 @@ class CourseUsers extends Model
         
         
         // CREATE THE PAYMENT RECORDS
-    }    
+    }
 
     public static function getUserProgress($full = false) {
         $user = \Phalcon\DI::getDefault()->get("user");

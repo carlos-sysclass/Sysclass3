@@ -15,7 +15,8 @@ class Manager extends Component
 		'course',
 		'unit',
 		'certificate',
-		'progress'
+		'progress',
+		'enroll'
 	);
 
 	protected $listeners = array();
@@ -23,6 +24,7 @@ class Manager extends Component
 
 	public function initialize() {
 		foreach($this->types as $type) {
+			
 			$this->eventsManager->attach($type, function ($event, $component, $data) use ($type) {
 				$status = $this->publish(
 					$type,
@@ -36,6 +38,7 @@ class Manager extends Component
 		$DBlisteners = Listeners::find("active = 1");
 
 		foreach($DBlisteners as $listen) {
+			
 			if (!array_key_exists($listen->module, $this->modules)) {
 				$this->modules[$listen->module] = $this->loader->module($listen->module);
 			}

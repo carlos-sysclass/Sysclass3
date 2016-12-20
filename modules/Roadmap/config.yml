@@ -7,46 +7,56 @@ blocks:
       block_id: "roadmap_course"
 models:
   courses:
-    class: Sysclass\Models\Courses\Course
+    class: Sysclass\Models\Content\Program
     exportMethod: ["toFullArray", ["CourseClasses"]]
     exportParams: [null, true]
-  course-classes:
-    class: Sysclass\Models\Courses\CourseClasses
-    exportMethod: ["toFullClassArray", ["Classe",]]
-    acl:
-      view: 
-        resource: Courses
-        action: view
-      create:
-        resource: Courses
-        action: edit
-      edit:
-        resource: Courses
-        action: edit
-  classes:
-    class: Sysclass\Models\Courses\Classe
+  #course-classes:
+  #  class: Sysclass\Models\Courses\CourseClasses
+  # exportMethod: ["toFullClassArray", ["Classe",]]
+  #  acl:
+  #    view: 
+  #      resource: Courses
+  #      action: view
+  #    create:
+  #      resource: Courses
+  #      action: edit
+  #    edit:
+  #      resource: Courses
+  #      action: edit
+  #classes:
+  #  class: Sysclass\Models\Content\Course
     #listMethod: findFull
-    exportMethod: ["toFullArray", ["Lessons"]]
+  #  exportMethod: ["toFullArray", ["Lessons"]]
+  #  acl:
+  #    create:
+  #      resource: Classes
+  #      action: create
+  #lessons:
+  #  class: Sysclass\Models\Content\Unit
+  #  exportMethod: ["toFullLessonArray", ["Contents", "Progress"]]
+
+models:
+  course:
+    class: Sysclass\Models\Content\Course
     acl:
-      create:
+      create: 
         resource: Classes
         action: create
-  lessons:
-    class: Sysclass\Models\Courses\Lesson
-    exportMethod: ["toFullLessonArray", ["Contents", "Progress"]]
-  periods:
-    class: Sysclass\Models\Courses\CoursePeriods
-    exportMethod: ["toFullArray", []]
-    acl:
-      create:
-        resource: Courses
+      edit:
+        resource: Classes
         action: edit
+      delete:
+        resource: Classes
+        action: delete
+  periods:
+    class: Sysclass\Models\Content\CoursePeriods
+    exportMethod : ["toFullArray", ["Courses"]]
+    #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    #findMethod: findFirstById
   content-progress:
-    class: Sysclass\Models\Courses\Contents\Progress
-    createMethod: save
+    class: Sysclass\Models\Content\Progress\Content
+    createMethod: createOrUpdate
     acl:
-      create:
+      create: 
         resource: Lessons
         action: take
-    #listMethod: findFull
-    #exportMethod: ["toFullArray", ["Lessons"]]

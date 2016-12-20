@@ -87,7 +87,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			this.childContainer.empty();
 
 			if (this.collection.size() === 0) {
-				this.childContainer.append(this.nofoundTemplate());
+				if (_.isFunction(this.nofoundTemplate)) {
+					this.childContainer.append(this.nofoundTemplate());
+				}
 				this.disableView();
 			} else {
 				this.enableView();
@@ -381,7 +383,9 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	        }
 	    },
         renderViewItens : function(inputList) {
+        	console.info('views/baseClass::renderViewItens');
             // TEMPORARLY DISABLE UPDATE METHOD
+            //console.warn(inputList);
             this.disableDataPooling();
             inputList.each(function(index, inputDOM) {
                 var input = $(inputDOM);
@@ -454,11 +458,13 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                         }
                     } else {
 		                if (input.hasClass("select2-me")) {
+		                	//console.warn(modelField, values);
+
 		                	if (
 		                		!_.isUndefined(input.data("format-attr"))
 		                		&& _.isObject(_.first(values))
 		                	) {
-		                		var attr = "id";
+		                		var attr = input.data("format-attr");
 
 		                		input.select2("val", _.pluck(values, attr));
 		                	} else {
@@ -590,6 +596,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 							value[i] = {};
 							value[i][attr] = currentValue;
 						}
+						this.model.unset(prop, {silent: true});
 					}
 				}
 

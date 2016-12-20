@@ -90,6 +90,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 				if (type == 'display' || type == 'filter') {
 					return moment.unix(data).fromNow();
 				} else {
+					//console.warn(parseFloat( data ));
 					return parseFloat( data );
 				}
 				return data;

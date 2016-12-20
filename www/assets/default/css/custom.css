@@ -382,6 +382,12 @@ hr {
 	bottom: 0;
 	z-index: 10;
 }
+
+.page-quick-sidebar-open #off-windows {
+  right: 325px;
+}
+
+
 .chat-widget {
 	float: right;
 	margin-left: 5px;
@@ -412,13 +418,38 @@ hr {
     margin-bottom: 3px;
     margin-top: 0;
 }
+.chat-contents-previous, .chat-contents-current, .chat-message-item {
+  padding: 0 !important;
+}
 .chat-widget .subject, .chat-widget .message {
 	float: left !important;
 }
+.chat-message-item {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 2px;
+}
+.chat-widget .info {
+  word-wrap: break-word;
+  background: #eee;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+}
+.chat-widget .info i {
+  font-style: normal;
+  color: #999;
+}
+.chat-widget .info a {
+  font-style: normal;
+  padding: 0 4px;
+}
+
 .chat-widget .message {
 	word-wrap: break-word;
 	background: #eee;
-    padding: 10px;
+    padding: 4px 6px;
 }
 .chat-widget .subject {
 	position: relative;
@@ -439,11 +470,7 @@ hr {
 .chat-widget li:first-child {
 	padding-top: 5px;
 }
-.chat-widget li:first-child .message {
-	width: 100%;
-	text-align: center;
-	font-size: 10px;
-}
+
 .chat-widget li:first-child .message i {
 	font-style: normal;
     color: #999;
@@ -1430,14 +1457,21 @@ ul.test-sidebar-info {
     padding: 0;
 }
 ul.test-sidebar-info > li {
+    display: inline-block;
+    padding: 5px;
+}
+
+ul.test-sidebar-info > li > div {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
-    display: inline-block;
-    margin: 0 0 10px;
     padding: 5px;
     min-height: 32px;
     vertical-align: middle;
-    width: 24%;
+}
+/*
+ul.test-sidebar-info > li.large {
+  width: 50%;
+  margin: 0 -1px 10px;
 }
 
 @media (min-width: 601px) and (max-width: 1198px) {
@@ -1449,9 +1483,10 @@ ul.test-sidebar-info > li {
 @media (max-width: 600px) {
 	ul.test-sidebar-info > li {
 		width: 100%;	
+    margin: 0 0 10px 0;
 	}
 }
-
+*/
 
 ul.test-sidebar-info > li span.pull-left {
     margin-right: 10px;
@@ -1711,7 +1746,7 @@ button.calendar-news-item {
     color: #ddd;
     font-size: 11px;
     padding: 11px 5px;
-    border-right: 1px solid #003f69;
+    /* border-right: 1px solid #003f69; */
 }
 
 .header .navbar-nav > li.dropdown.mega-menu-dropdown > a > i {
@@ -2433,7 +2468,7 @@ a.list-group-item,
 	background: #fff;
 }
 
-#tab_program_description,#tab_course_info {
+#tab_program_description .program-description-content, #tab_course_info {
 	margin: 10px 10px 0 10px;
 }
 
@@ -2451,16 +2486,14 @@ a.list-group-item,
  h2 {
   font-weight: 500;
  }
-.navbar-program {
+.navbar-program, .navbar-course, .navbar-widget {
     margin-bottom: 0px;
+    height: 43px;
 }
-.navbar-course {
-    margin-bottom: 0px;
-}/
 
 .inter-navsuper-tabs .table-content-scrollable {
-  max-height: 335px;
-  height: 335px;
+  max-height: 334px;
+  height: 334px;
   overflow-y: auto;  
   overflow-x: hidden;
   display: block;
@@ -2526,7 +2559,7 @@ h2.users-panel-username {
 }
 
 .dropdown-menu li.subchild > a {
-  padding-left: 20px
+  padding-left: 20px !important;
 }
 
 .progress-indicator .plural {
@@ -2544,4 +2577,136 @@ h2.users-panel-username {
 */
 .alert.notification-alert {
   padding-right: 10px;
+}
+#enroll-avaliable-carroussel {
+  padding:0px 25px;
+}
+
+#enroll-avaliable-carroussel .bx-controls-direction .bx-prev {
+  left: -30px;
+}
+
+#enroll-avaliable-carroussel .bx-controls-direction .bx-next {
+  right: -30px;
+}
+
+#tab_messages_messages div.dataTables_filter label {
+  /* float: none; */
+}
+
+#message-body-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 417px;
+    left: 10px;
+    position: absolute;
+    top: 0;
+    width: 97.6%;
+    display: none;
+}
+
+#message-body-container .modal-header {
+  padding: 10px 15px;
+}
+#message-body-container .modal-header button.btn {
+  margin: 0 0 0 10px;
+}
+#message-body-container .modal-header a.btn > i {
+  font-size: 22px !important;
+}
+
+table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after, table.dataTable thead .sorting_asc_disabled::after, table.dataTable thead .sorting_desc_disabled::after {
+  font-family: "FontAwesome";
+}
+
+table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after {
+  content: "" !important;
+}
+#institution-widget {
+  margin-bottom: 0px;
+}
+#institution-widget .panel-body {
+  min-height: 260px;  
+}
+.btn-compressed {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.institution-button-container {
+  padding: 0px 10px;
+}
+.institution-button-container .row .col-md-6 {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.institution-button-container .row .col-md-6:last-child {
+  padding-right: 10px;
+}
+.institution-button-container .row .col-md-6:first-child {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.institution-button-container.total-rows-1 {
+  margin-top: 57px;
+}
+.institution-button-container.total-rows-2 {
+  margin-top: 38px;
+}
+.institution-button-container.total-rows-3 {
+  margin-top: 19px;
+}
+.institution-button-container.total-rows-4 {
+  margin-top: 0px;
+}
+
+#course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {
+  margin-top: 0px !important;
+}
+
+.inter-navsuper-tabs .tab-content.tab-content-messages {
+  height: 348px;
+  max-height: 348px;
+}
+
+.dir-menu-bar .dropdown.open .dropdown-toggle {
+  color: #fff;
+}
+
+.dir-menu-bar .dropdown-menu li {
+  display: block;
+}
+
+.page-quick-sidebar-chat-user-messages .chat-loader {
+    height: 100%;
+    margin: 45%;
+    width: 10%;
+}
+.page-quick-sidebar-chat-user-messages .chat-loader .fa {
+  font-size: 2.5em !important;
+}
+
+.footer .footer-inner {
+  color: #ffffff;
+}
+
+.query-builder .rules-group-container {
+    background: #fff !important;
+    border: 1px solid #ccc!important;
+}
+
+.query-builder .rule-container, .query-builder .rule-placeholder, .query-builder .rules-group-container {
+  border-radius: 0 !important;
+}
+
+.organization-country-image {
+  height: 15px;
+}
+
+.institution-button-container h5 {
+    border-bottom: 1px solid #ccc;
+    margin: 0 0 5px;
+    padding-bottom: 4px;
+    text-align: center;
 }

@@ -12,6 +12,21 @@
 	Coordinator:	Contact:
 -->
 
+
+
+<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
+	<label class="control-label">{translateToken value=""}
+	<input type="hidden" name="image_id" />
+    <ul class="list-group content-timeline-items">
+    </ul>
+
+	<span class="btn btn-primary fileinput-button">
+        <i class="fa fa-plus"></i>
+        <span>{translateToken value="Set program image"}</span>
+        <input type="file" name="files[]">
+    </span>
+</div>
+
 <div class="form-group">
 	<label class="control-label">{translateToken value="Objectives"}
         <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The objective to be achieved by this program'}">

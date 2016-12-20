@@ -414,7 +414,10 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     */
    
     protected function getDatatableItemOptions() {
-        return array(
+
+        $model_info = $this->model_info['me'];
+
+        $options = array(
             'edit'  => array(
                 'icon'  => 'fa fa-edit',
                 'link'  => 'javascript:void(0);',
@@ -438,13 +441,22 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'attrs' => [
                     'data-original-title' => $this->translate->translate("Define permissions")
                 ]
-            ),
-            'remove'    => array(
-                'icon'  => 'fa fa-remove',
-                'link'  => 'javascript:void(0);',
-                'class' => 'btn-sm btn-danger'
             )
         );
+
+        
+        if ($this->isResourceAllowed("delete", $model_info)) {
+            $options['remove'] = array(
+                'icon'  => 'fa fa-remove',
+                'link'  => 'javascript:void(0);',
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => [
+                    'data-original-title' => $this->translate->translate("Remove")
+                ]
+            );
+        }
+
+        return $options;
     }
     /**
      * [ add a description ]

@@ -1,14 +1,13 @@
 $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
-    this.startWithParent = true;
+    //ab.debug(true, false);
 
+    this.startWithParent = true;
+    /*
     this._chatViews = [];
-    this._canStart = false;
-    this._conn = null;
-    this._session_key = null;
-    this._token = null;
-    this._started = moment().unix();
-    this._subscribedTopics = {};
+    //this._canStart = false;
+    
     this._subscribedChats = {};
+    */
 
     this._wsUri = 'ws://' + window.location.hostname +':8080'; // DEFAULT
 
@@ -19,11 +18,15 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     }
 
     this.models = {
-        chat : Backbone.Model.extend({}),
+        //chat : Backbone.Model.extend({}),
+        queue : Backbone.DeepModel.extend({}),
         message : Backbone.DeepModel.extend({})
     };
 
     this.collections = {
+        queues : Backbone.Collection.extend({
+            models : this.models.queue
+        }),
         conversations : Backbone.Collection.extend({
             id: null,
             model : this.models.message,
@@ -33,19 +36,35 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         })
     };
 
-    mod.initialize = function(settings) {
+    this._session_key = null;
+    this._token = null;
+    this._started = moment().unix();
+    this._conn = null;
+
+
+    this._queues = new this.collections.queues(); // COLLECTION HOLDING HOLD ALL CONVERSATIONS COLLECTIONS
+    this._avaliableQueues = new this.collections.queues();
+    this._conversations = {}; // HOLD ALL CONVERSATIONS COLLECTIONS
+
+    this._subscribedTopics = {};
+
+
+
+
+    this.initialize = function(settings) {
+
+        this.listenTo(this._queues, "reset", this.subscribeQueues.bind(this));
 
         if (window.location.protocol == 'https:') {
             this._wsUri = 'wss://' + window.location.hostname +':' + app.userSettings.get("websocket_ssl_port");
         } else {
             this._wsUri = 'ws://' + window.location.hostname +':' + app.userSettings.get("websocket_port");
         }
-        console.warn(this._wsUri);
 
         this.on("errorConnection.chat", this.startRetryMode.bind(this));
 
         //this.on("errorConnection.chat", this.disableChatViews.bind(this));
-        this.on("afterConnection.chat", this.restoreSession.bind(this));
+        //this.on("afterConnection.chat", this.restoreSession.bind(this));
         
         this.startRetryMode(true);
     }
@@ -53,14 +72,14 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     mod.onChatConnected = function(result) {
     }
     */
-    mod.isConnected = function() {
+    this.isConnected = function() {
         if (!_.isNull(this._conn)) {
             session_id = this._conn.sessionid();
             return !_.isNull(session_id);
         }
         return false;
     }
-    mod.startConnection = function(force_close) {
+    this.startConnection = function(force_close) {
         if (_.isNull(app.userSettings.get("websocket_key"))) {
             return false;
         } 
@@ -92,13 +111,17 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                             this._session_key = session_key;
 
                             // ALWAYS SUBSCRIBE TO A PRIVATE 
-                            this._conn.subscribe(this._session_key, this.parseReceivedTopic.bind(this));
+                            //this.subscribe(this._session_key, true);
+
+                            this._subscribedTopics[this._session_key] = this._session_key;
+
+                            console.warn("afterConnection.chat");
+                            this.restoreSession();
 
                             this.trigger("afterConnection.chat", result);
+
                         }.bind(this), function (error) {
                             this.trigger("errorConnection.chat", error);
-                            console.warn("error", error);
-
                         }.bind(this));
 
                 }.bind(this),
@@ -115,11 +138,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         return this._conn;
     }
 
-    mod.startRetryMode = function(now) {
+    this.startRetryMode = function(now) {
         this._options.tryCount++;
         if (this._options.maxRetries > 0 && this._options.tryCount <= this._options.maxRetries) {
-            
-
             if (_.isBoolean(now) && now) {
                 console.warn('WebSocket connection Try #' + this._options.tryCount);
                 mod.startConnection();
@@ -131,14 +152,141 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         }
     }
 
-    this.restoreSession = function() {
+    mod.restoreSession = function() {
+        console.warn("chat->restoreSession");
+
         for (var topic in this._subscribedTopics) {
-            if (!_.isNull(this._subscribedTopics[topic])) {
-                this._conn.subscribe(this._subscribedTopics[topic], this.parseReceivedTopic.bind(this));
+
+            console.warn(topic, this._subscribedTopics);
+            this.unsubscribe(topic);
+            this.subscribe(topic);
+        }
+
+        this.getQueues();
+        this.getAvaliableQueues();
+    };
+    // CALLED ON QUEUE RESET COLLECTION
+    this.subscribeQueues = function(collection) {
+        console.warn("chat->subscribeQueues");
+        this._queues.each(function(item, index) {
+            var topic = item.get("topic");
+            this.subscribe(topic, true);
+            //this._conn.subscribe(this._subscribedTopics[topic], this.parseReceivedTopic.bind(this));
+        }.bind(this));
+    };
+
+    this.subscribe = function(topic, exclusive) {
+        console.warn("chat->subscribe", topic);
+        if (exclusive && _.has(this._subscribedTopics, topic) && !_.isNull(this._subscribedTopics[topic])) {
+            return false;
+        }
+        this._subscribedTopics[topic] = topic;
+        if (!_.has(this._conversations, topic)) {
+            this._conversations[topic] = new this.collections.conversations();
+        }
+
+        this._conn.subscribe(topic, this.parseReceivedTopic.bind(this));
+
+        return true;
+    }
+
+    this.parseReceivedTopic = function(topic, data) {
+        // CHECK IF IS A COMMAND OR A MESSAGE
+        if (topic == this._session_key) { // PRIVATE CHANNEL
+            this.parseCommandTopic(data);
+        } else {
+            // APPEND TO CONVERSATION COLLECTION
+            if (data.origin == this._token) {
+                data.mine = true;
+            } else {
+                data.mine = false;
             }
+            var model = new this.models.message(data);
+            this._conversations[topic].add(model);
+            this._conversations[topic].id = model.get("chat_id");
+
+            if (model.get("type") == "info") {
+                this.trigger("receiveInfo.chat", topic, model, this._conversations[topic]);
+            } else {
+                this.trigger("receiveChat.chat", topic, model, this._conversations[topic]);
+                document.getElementById('ping').play();
+            }
+
+
+
+            //this.trigger("receiveChat.chat", topic, model, this._conversations[topic]);
+
+            
+            /*
+            this.receiveChat(topic, function() {
+                if (data.origin == this._token) {
+                    data.mine = true;
+                } else {
+                    data.mine = false;
+                }
+
+                var model = new this.models.message(data);
+                console.warn("receiveMessage.chat", topic, model);
+                this.trigger("receiveMessage.chat", topic, model);
+
+                document.getElementById('ping').play();
+            }.bind(this));
+            */
         }
     }
 
+
+
+    // REMOTE FUNCTIONS
+    this.getQueues = function(callback) {
+        console.warn("chat->getQueues");
+        if (_.isNull(this._token)) {
+            this.trigger("notConnected.chat");
+            return false;
+        }
+        // CALL A FUNCTION TO CREATE THE TOPIC
+        this._conn
+            .call("getQueues")
+            .then(function (result) {
+                this.parseQueues(result);
+                callback(result);
+            }.bind(this), function (error) {
+                //this.trigger("errorConnection.chat", error);
+                console.warn("error", error);
+            }.bind(this));
+    };
+
+    this.parseQueues = function(queues) {
+        this._queues.reset(queues);
+    }
+
+    this.getAvaliableQueues = function(callback) {
+        console.warn("chat->getAvaliableQueues");
+        if (_.isNull(this._token)) {
+            this.trigger("notConnected.chat");
+            return false;
+        }
+
+        // CALL A FUNCTION TO CREATE THE TOPIC
+        this._conn
+            .call("getAvaliableQueues")
+            .then(function (result) {
+                
+                this._avaliableQueues.reset(result);
+
+                if (_.isFunction(callback)) {
+                    callback(result);
+                }
+            }.bind(this), function (error) {
+                //this.trigger("errorConnection.chat", error);
+                console.warn("error", error);
+            }.bind(this));
+    };
+
+
+
+
+    /*
     this.createQueue = function(topic, title, exclusive, startChat) {
         //console.warn("createQueue");
         if (_.isNull(this._token)) {
@@ -149,7 +297,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._conn
             .call("startQueue", topic, title)
             .then(function (result) {
-                //this.trigger("afterConnection.chat", result);
                 var model = new this.models.chat(result);
 
                 var new_topic = model.get("topic");
@@ -166,7 +313,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                 console.warn("error", error);
             }.bind(this));
     };
-
+    */
     this.createChat = function(user_id) {
         //console.warn("createQueue");
         if (_.isNull(this._token)) {
@@ -177,17 +324,18 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._conn
             .call("createChat", user_id)
             .then(function (result) {
-                console.warn(result);
-                //this.trigger("afterConnection.chat", result);
-                var model = new this.models.chat(result);
+                var model = new this.models.queue(result);
+                this._queues.add(model);
 
                 var new_topic = model.get("topic");
 
+                console.warn(new_topic, model, this.subscribe(new_topic, true));
+
+                this.subscribe(new_topic, true);
+
                 this.trigger("createChat.chat", new_topic, model);
 
-                
 
-                this.subscribeToChat(new_topic, model, true);
                 
                 //this.trigger("startQueue.chat", new_topic, model);
                 
@@ -198,6 +346,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             }.bind(this));
     };
 
+    /*
     this.receiveChat = function(topic, callback) {
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
@@ -214,7 +363,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                     //console.warn(result);
                     var model = new this.models.chat(result);
 
-                    this._subscribedChats[topic] = model;
+                    //this._subscribedChats[topic] = model;
 
                     this.trigger("receiveChat.chat", topic, model);
 
@@ -227,8 +376,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             callback();
         }
     };
-
-    this.subscribeToChat = function(topic, model, exclusive, startChat) {
+    */
+    /*
+    this.subscribe = function(topic, model, exclusive, startChat) {
         if (exclusive && _.has(this._subscribedTopics, topic)) {
             return false;
         }
@@ -244,35 +394,21 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             //this.startChatView(model);
         }
     }
+    */
 
-    this.unsubscribeToChat = function(topic) {
-        this._conn.unsubscribe(topic);
+    this.unsubscribe = function(topic) {
+        if (_.has(this._conn._subscriptions, topic)) {
+            this._conn.unsubscribe(topic);
+        }
         this._subscribedTopics[topic] = null;
     }
 
-    this.parseReceivedTopic = function(topic, data) {
-        // CHECK IF IS A COMMAND OR A MESSAGE
-        if (topic == this._session_key) { // PRIVATE CHANNEL
-            this.parseCommandTopic(data);
-        } else {
-            this.receiveChat(topic, function() {
-                if (data.origin == this._token) {
-                    data.mine = true;
-                } else {
-                    data.mine = false;
-                }
 
-                var model = new this.models.message(data);
-                console.warn("receiveMessage.chat", topic, model);
-                this.trigger("receiveMessage.chat", topic, model);
-            }.bind(this));
-        }
-    }
 
     this.parseCommandTopic = function(data) {
         if (data.command == "subscribe") {
-            console.warn(data);
-            this.subscribeToChat(data.data.topic);
+            this.subscribe(data.data.topic, true);
+            this.getQueues();
         }
     };
 
@@ -285,29 +421,12 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._conn.publish(topic, message, false);
     }
     /*
-    this.getQueues = function(callback) {
-        if (_.isNull(this._token)) {
-            this.trigger("notConnected.chat");
-            return false;
-        }
-        // CALL A FUNCTION TO CREATE THE TOPIC
-        this._conn
-            .call("getUnassignedQueues")
-            .then(function (result) {
-                callback(result);
-
-            }.bind(this), function (error) {
-                //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
-            }.bind(this));
-    };
-    */
-
     this.disableChatViews = function() {
         for (var topic in this._chatViews) {
             this._chatViews[topic].disable();
         }
     };
+    */
     /*
     this.startChatView = function(model) {
         console.warn("startChatView");
@@ -321,44 +440,23 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         }
     } 
     */
-    // REMOTE FUNCTIONS
-    this.getQueues = function(callback) {
-        if (_.isNull(this._token)) {
-            this.trigger("notConnected.chat");
-            return false;
-        }
-        // CALL A FUNCTION TO CREATE THE TOPIC
-        this._conn
-            .call("getQueues")
-            .then(function (result) {
-                console.warn("getQueues", result);
-                callback(result);
 
-            }.bind(this), function (error) {
-                //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
-            }.bind(this));
+
+    // GETTERS / SETTERS
+    this.getQueuesCollection = function() {
+        return this._queues;
     };
-
-    this.getAvaliableQueues = function(callback) {
-        if (_.isNull(this._token)) {
-            this.trigger("notConnected.chat");
-            return false;
-        }
-
-        // CALL A FUNCTION TO CREATE THE TOPIC
-        this._conn
-            .call("getAvaliableQueues")
-            .then(function (result) {
-                console.warn("getAvaliableQueues", result);
-                callback(result);
-
-            }.bind(this), function (error) {
-                //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
-            }.bind(this));
+    this.getAvaliableQueuesCollection = function() {
+        return this._avaliableQueues;
     };
-
+    /*
+    this.getQueueModel = function(topic) {
+        this._queues
+    };
+    */
+    this.getConversation = function(topic) {
+        return this._conversations[topic];
+    }
     /*
     this.startChat = function(who) {
         // CHECK IF USER IS ALLOWED 

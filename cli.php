@@ -126,7 +126,7 @@ $loader->register();
 
 $di = new FactoryDefault();
 $eventsManager = new Phalcon\Events\Manager();
-$di->set("eventManager", $eventsManager);
+$di->set("eventsManager", $eventsManager);
 
 
 

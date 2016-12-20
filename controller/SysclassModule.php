@@ -257,10 +257,16 @@ abstract class SysclassModule extends BaseSysclassModule
 
 
         $model_info = $this->model_info[$model];
+        $data = $this->request->getJsonRawBody(true);
 
-        if ($this->isResourceAllowed("create", $model_info)) {
+        $this->setArgs(array(
+            'model' => $model,
+            'data'  => $data
+        ));
+
+        if ($this->isResourceAllowed("create", $model_info, $model, $data)) {
             // TODO CHECK IF CURRENT USER CAN DO THAT
-            $data = $this->request->getJsonRawBody(true);
+            
 
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -277,6 +283,8 @@ abstract class SysclassModule extends BaseSysclassModule
             $itemModel = new $model_class();
             $itemModel->assign($data);
 
+            $itemModel->id = null;
+
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
 
             if (
@@ -290,6 +298,7 @@ abstract class SysclassModule extends BaseSysclassModule
             if (call_user_func(array($itemModel, $createMethod))) {
                 $event_data = array_merge($data, array('_args' => func_get_args()));
                 //$this->eventsManager->collectResponses(true);
+
                 $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
 
                 // @todo CREATE A WAY TO CUSTOMIZED MODULE MESSAGES ON OPERATIONS
@@ -304,7 +313,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         ),
                         $itemData 
@@ -312,13 +321,13 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('status')) {
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
                     $response = $this->createNonAdviseResponse(
-                        $this->translate->translate("Message sent."),
+                        $this->translate->translate("Success."),
                         "success"
                     );
                     if (!is_null($this->responseInfo)) {
@@ -328,7 +337,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     );
@@ -336,7 +345,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("Message sent."),
+                            $this->translate->translate("Success."),
                             "success"
                         )
                     );
@@ -391,8 +400,10 @@ abstract class SysclassModule extends BaseSysclassModule
     public function setItemRequest($model, $id)
     {
         $this->response->setContentType('application/json', 'UTF-8');
+        
+        $data = $this->request->getJsonRawBody(true);
 
-        $itemModel = $this->getModelData($model, $id);
+        $itemModel = $this->getModelData($model, $id, $data);
 
         $this->setArgs(array(
             'model' => $model,
@@ -401,12 +412,10 @@ abstract class SysclassModule extends BaseSysclassModule
         ));
         $model_info = $this->model_info[$model];
 
-        if ($this->isResourceAllowed("edit", $model_info)) {
 
-        //if ($allowed = $this->isUserAllowed("edit")) {
+        if ($this->isResourceAllowed("edit", $model_info, $model, $data)) {
+
             if ($itemModel) {
-
-                $data = $this->request->getJsonRawBody(true);
 
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
@@ -419,6 +428,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 }
                
                 $model_info = $this->model_info[$model];
+
                 /*
                 $model_class = $model_info['class'];
                 $itemModel = new $model_class();
@@ -452,7 +462,17 @@ abstract class SysclassModule extends BaseSysclassModule
                 $beforeMessages = $itemModel->getMessages();
                 $beforeMessages = is_null($beforeMessages) ? [] : $beforeMessages;
 
-                if ($itemModel->save()) {
+                if (
+                    array_key_exists('updateMethod', $model_info)
+                ) {
+                    $updateMethod = $model_info['updateMethod'];
+                } else {
+                    $updateMethod = "update";
+                }
+
+                if (call_user_func(array($itemModel, $updateMethod))) {
+
+                //if ($itemModel->save()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
 
                     $afterMessages = $itemModel->getMessages();
@@ -530,32 +550,28 @@ abstract class SysclassModule extends BaseSysclassModule
      * [ add a description ]
      *
      * @Delete("/item/{model}/{id}")
+     * @Delete("/item/{model}/{id:.+}")
      */
     public function deleteItemRequest($model, $id)
     {
+
+        $this->response->setContentType('application/json', 'UTF-8');
+
         $itemModel = $this->getModelData($model, $id);
 
         $model_info = $this->model_info[$model];
 
         $resource = null;
         $action = "delete";
-        if (
-            array_key_exists('acl', $model_info) && 
-            array_key_exists('delete', $model_info['acl']) &&
-            is_array($model_info['acl']['delete'])
-        ) {
-            $acl = $model_info['acl']['delete'];
-            $resource = $acl['resource'];
-            $action = @isset($acl['action']) ? $acl['action'] : $action;
-        }
+
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
             'object' => $itemModel
         ));
+        $model_info = $this->model_info[$model];
 
-        if ($allowed = $this->isUserAllowed($action, $resource)) {
-
+        if ($this->isResourceAllowed($action, $model_info)) {
             if ($itemModel) {
 
                 $this->eventsManager->fire("module-{$this->module_id}:beforeModelDelete", $itemModel);
@@ -616,47 +632,57 @@ abstract class SysclassModule extends BaseSysclassModule
                 }
             }
 
+            if (is_array($model_info['bindVars'])) {
+                $filterData = $model_info['bindVars'];
+            }
+
             if (!empty($filter)) {
 
                 if (!is_array($filter)) {
                     $filter = json_decode($filter, true);
                 }
 
-                $options = array();
+                if (array_key_exists('rules', $filter) && is_array($filter['rules'])) {
+                    $parsed = $this->sqlParser->parse($filter);
+                    $args['conditions'] = $parsed['conditions'];
+                    $args['bind'] = $parsed['bind'];
+                } else {
+                    $options = array();
 
-                foreach($filter as $key => $item) {
-                    if (strpos($key, "_") === 0) {
-                        $options[$key] = $item;
-                        unset($filter[$key]);
-                    }
-                }
-
-                $index = 0;
-
-                foreach($filter as $key => $item) {
-                    if (strpos($key, "_") === 0) {
-                        $opt[$key] = $item;
-                        unset($filter[$key]);
-                    }
-                    if (is_null($item)) {
-                        if (@$options['_exclude'] === TRUE) {
-                            $modelFilters[] = "{$key} IS NOT NULL";
-                        } else {
-                            $modelFilters[] = "{$key} IS NULL";
+                    foreach($filter as $key => $item) {
+                        if (strpos($key, "_") === 0) {
+                            $options[$key] = $item;
+                            unset($filter[$key]);
                         }
-                    } else {
-                        if (@$options['_exclude'] === TRUE) {
-                            $modelFilters[] = "{$key} <> ?{$index}";
-                        } else {
-                            $modelFilters[] = "{$key} = ?{$index}";
-                        }
-
-                        $filterData[$index] = $item;
-                        $index++;
                     }
-                }
 
-                $args['args'] = $filter;
+                    $index = 0;
+
+                    foreach($filter as $key => $item) {
+                        if (strpos($key, "_") === 0) {
+                            $opt[$key] = $item;
+                            unset($filter[$key]);
+                        }
+                        if (is_null($item)) {
+                            if (@$options['_exclude'] === TRUE) {
+                                $modelFilters[] = "{$key} IS NOT NULL";
+                            } else {
+                                $modelFilters[] = "{$key} IS NULL";
+                            }
+                        } else {
+                            if (@$options['_exclude'] === TRUE) {
+                                $modelFilters[] = "{$key} <> ?{$index}";
+                            } else {
+                                $modelFilters[] = "{$key} = ?{$index}";
+                            }
+
+                            $filterData[$index] = $item;
+                            $index++;
+                        }
+                    }
+                    $args['conditions'] = implode(" AND ", $modelFilters);
+                    $args['bind'] = $filterData;
+                }
             } else {
                 /*
                 $args = array(
@@ -665,21 +691,23 @@ abstract class SysclassModule extends BaseSysclassModule
                 */
             }
 
+            $args['order'] = $sort;
+            $args['args'] = $filter;
+
             if (!is_null($columns) && is_array($columns)) {
                 $args['columns'] = implode(",", $columns);
             }
 
-            $args['conditions'] = implode(" AND ", $modelFilters);
-            $args['bind'] = $filterData;
-            $args['order'] = $sort;
-
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
+            //var_dump( array($model_info['class'], $model_info['listMethod']), $args);
             
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
+
+            //exit;
 
             if ($type === 'datatable') {
                 //$items = array_values($items);
@@ -762,13 +790,19 @@ abstract class SysclassModule extends BaseSysclassModule
             $options['edit']  = array(
                 'icon'  => 'fa fa-pencil',
                 'link'  => $baseLink . 'edit/%id$s',
-                'class' => 'btn-sm btn-primary'
+                'class' => 'btn-sm btn-primary tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Edit'
+                )
             );
         }
         if ($deleteAllowed) {
             $options['remove']  = array(
                 'icon'  => 'fa fa-remove',
-                'class' => 'btn-sm btn-danger'
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Remove'
+                )
             );
         }
         return $options;

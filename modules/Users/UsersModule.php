@@ -2,6 +2,7 @@
 namespace Sysclass\Modules\Users;
 
 use Phalcon\DI,
+    Sysclass\Forms\BaseForm,
     Phalcon\Mvc\Model\Message,
     Sysclass\Models\Users\User,
     Sysclass\Models\Users\UserCurriculum,
@@ -13,7 +14,8 @@ use Phalcon\DI,
     Sysclass\Services\Authentication\Exception as AuthenticationException,
     Sysclass\Models\Users\UserPasswordRequest,
     Sysclass\Services\MessageBus\INotifyable,
-    Sysclass\Collections\MessageBus\Event;
+    Sysclass\Collections\MessageBus\Event,
+    Plico\Php\Image;
 
 /**
  * @RoutePrefix("/module/users")
@@ -77,6 +79,54 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 //$self->putItem("users_block_context", $block_context);
 
                 $self->putSectionTemplate("dialogs", "dialogs/select");
+
+                return true;
+            },
+            'users.details' => function($data, $self) {
+                //$country_codes = Country::findAll();
+                //$country_codes = $self->model("i18n/country")->getItems();
+                //$self->putItem("country_codes", $country_codes);
+
+                $userFields = array(
+                    'how_did_you_know',
+                    'supplier_name',
+                    'cnpj',
+                    'is_supplier'
+                );
+
+                $enrollments = $self->user->getEnrollments();
+
+                $info = array(
+                    'fields' => array()
+                );
+
+                foreach($enrollments as $enroll) {
+                    $fields = $enroll->getEnrollFields();
+
+                    foreach($fields as $enrollfield) {
+                        if (in_array($enrollfield->field->name, $userFields)) {
+                            $enrollfield->translate();
+
+                            $enrollfield->weight = 12;
+
+                            $info['fields'][] = $enrollfield->toAdditionalArray(["field", "options"]);
+                        }
+                    }
+                }
+
+                $form = new BaseForm(null, $info);
+
+                $info = [];
+
+                foreach ($form as $key => $value) {
+                    $value->weight = 12;
+                    $info['fields'][] = $value->toArray();
+
+                }
+
+                $self->putItem("user_details_info", $info);
+
+                $self->putSectionTemplate("users.details", "blocks/details");
 
                 return true;
             }
@@ -318,6 +368,110 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
     }
 
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/avatar/{id}")
+     * @Get("/avatar/{id}/{width}x{height}")
+     */
+    public function getAvatarRequest($id, $width, $height) {
+        $user = User::findFirstById($id);
+
+        if (is_null($size)) {
+            $width = 50;
+            $height = 50;
+        }
+        $file_slug = sprintf("avatar-%d-%d-%d", $id, $width, $height);
+
+        if ($stream = Image::getCached($file_slug, true)) {
+            $this->response->setContentType('image/png');
+            $this->response->setHeader('Content-Length', strlen($stream));
+            $this->response->setContent($stream);
+        } else {
+            if ($avatar = $user->getAvatar()) {
+                $file = $avatar->getFile();
+
+                // CHECK IF THE FILE EXISTS
+                if (!$this->storage->fileExists($file)) {
+                    $placeholder = true;
+                } else {
+                    //var_dump($file->toArray());
+
+                    $imageinfo = $this->storage->getImageFileInfo($file);
+
+                    $stream = $this->storage->getFilestream($file);
+
+                    $coords = array(
+                        'w' => $imageinfo['width'],
+                        'h' => $imageinfo['height'],
+                        'x' => 0,
+                        'y' => 0,
+                    );
+
+                    $image = new Image;
+                    $croped = $image->resize($stream, $coords, $width, $height);
+
+                    $stream = $image->cache(
+                        $croped,
+                        $file_slug,
+                        true
+                    );
+
+                    $this->response->setContentType('image/png');
+                    $this->response->setHeader('Content-Length', strlen($stream));
+
+                    $this->response->setContent($stream);
+                }
+            } else {
+                $placeholder = true;
+            }
+        }
+
+        if ($placeholder) {
+            $templatedPath = $this->environment['default/resource'] .'images/placeholder/avatar.jpg';
+
+            $themedPath = sprintf($templatedPath, $this->environment->view->theme);
+
+            //var_dump($plico->get('path/app/www') . $themedPath);
+            if (file_exists($this->environment['path/app/www'] . $themedPath)) {
+                $full_path = $this->environment['path/app/www'] . $themedPath;
+            } else {
+                $full_path = $this->environment['path/app/www'] . sprintf($templatedPath, $this->environment['default/theme']);
+            }
+
+            $file_slug = sprintf("avatar-placeholder-%d-%d", $width, $height);
+            if ($stream = Image::getCached($file_slug, true)) {
+                $this->response->setContentType('image/png');
+                $this->response->setHeader('Content-Length', strlen($stream));
+                $this->response->setContent($stream);
+            } else {
+                $imageinfo = getimagesize($full_path);
+                $coords = array(
+                    'w' => $imageinfo[0],
+                    'h' => $imageinfo[1],
+                    'x' => 0,
+                    'y' => 0,
+                );
+                $content = file_get_contents($full_path);
+
+                $image = new Image;
+                $croped = $image->resize($content, $coords, $width, $height);
+
+                $stream = $image->cache(
+                    $croped,
+                    $file_slug,
+                    true
+                );
+
+                $this->response->setContentType('image/png');
+                $this->response->setHeader('Content-Length', strlen($stream));
+
+                $this->response->setContent($stream);
+            }
+        }
+    }
+
     /**
      * [ add a description ]
      *
@@ -328,7 +482,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $languages = Language::find("active = 1");
         $this->putitem("languages", $languages->toArray());
 
-        $groups = Group::find("active = 1");
+        $groups = Group::find("active = 1 AND dynamic = 0");
         $this->putItem("groups", $groups->toArray());
 
         parent::addPage();
@@ -345,7 +499,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $languages = Language::find("active = 1");
         $this->putitem("languages", $languages->toArray());
 
-        $groups = Group::find("active = 1");
+        $groups = Group::find("active = 1 AND dynamic = 0");
         $this->putItem("groups", $groups->toArray());
 
         parent::editPage($id);
@@ -372,12 +526,22 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
     public function afterModelCreate($evt, $model, $data) {
         if (array_key_exists('usergroups', $data) && is_array($data['usergroups']) ) {
+
+            $model->getUserGroups()->delete();
+
             foreach($data['usergroups'] as $group) {
                 $userGroup = new UsersGroups();
                 $userGroup->user_id = $model->id;
                 $userGroup->group_id = $group['id'];
                 $userGroup->save();
             }
+        }
+
+        if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {
+            $curriculum = new UserCurriculum();
+            $data['curriculum']['id'] = $model->id;
+            $curriculum->assign($data['curriculum']);
+            $curriculum->save();
         }
 
         return true;

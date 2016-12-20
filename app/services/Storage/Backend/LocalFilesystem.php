@@ -55,4 +55,11 @@ class LocalFilesystem extends Component implements IStorage {
         }
         return false;
     }
+
+    public function fileExists(File $struct) {
+        if ($file_path = $this->getFullFilePath($struct)) {
+            return file_exists($file_path);
+        }
+        return false;
+    }
 }

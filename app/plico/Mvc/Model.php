@@ -24,6 +24,55 @@ class Model extends \Phalcon\Mvc\Model
 
         return $this;
     }
+    public function toAdditionalArray($relAliases = null, $itemData = null, $extended = false) {
+
+        if (is_null($itemData)) {
+            $itemData = $this->toArray();    
+        }
+        
+        if (is_array($relAliases)) {
+            foreach($relAliases as $index => $alias) {
+                if (!array_key_exists($alias, $itemData)) {
+                    $alias = ucfirst(strtolower($alias));
+                    $methodName = "get{$alias}";
+
+                    if (is_numeric($index)) {
+                        $key = strtolower($alias);
+                    } else {
+                        $key = $index;
+                    }
+                    $itemRel = $this->{$methodName}();
+
+                    $exportMethod = "toArray";
+                    if ($extended) {
+                        $exportMethod = "toFullArray";
+                    }
+
+                    if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
+                        $itemData[$key] = array();
+                        foreach($itemRel as $sub) {
+                            if (static::$_translate) {
+                                $sub->translate();
+                            }
+                            $itemData[$key][] = $sub->{$exportMethod}();
+                        }
+                    } else {
+                        if ($itemRel) {
+                            if (static::$_translate) {
+                                $itemRel->translate();
+                            }
+                            $itemData[$key] = $itemRel->{$exportMethod}();
+                        } else {
+                            $itemData[$key] = null;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return $itemData;
+    }
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
 
         if (is_null($itemData)) {
@@ -50,14 +99,14 @@ class Model extends \Phalcon\Mvc\Model
                 if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
                     $itemData[$key] = array();
                     foreach($itemRel as $sub) {
-                        if (static::$_translate) {
+                        if (static::$_translate && method_exists([$sub, 'translate'])) {
                             $sub->translate();
                         }
                         $itemData[$key][] = $sub->{$exportMethod}();
                     }
                 } else {
                     if ($itemRel) {
-                        if (static::$_translate) {
+                        if (static::$_translate && method_exists([$itemRel, 'translate'])) {
                             $itemRel->translate();
                         }
                         $itemData[$key] = $itemRel->{$exportMethod}();
@@ -85,7 +134,7 @@ class Model extends \Phalcon\Mvc\Model
 
                     $itemRel = $this->{$methodName}();
                     if ($itemRel) {
-                        if (static::$_translate) {
+                        if (static::$_translate && method_exists([$itemRel, 'translate'])) {
                             $itemRel->translate();
                         }
                         $itemData[$key] = $itemRel->toArray();
@@ -111,14 +160,14 @@ class Model extends \Phalcon\Mvc\Model
                     if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
                         $itemData[$key] = array();
                         foreach($itemRel as $sub) {
-                            if (static::$_translate) {
+                            if (static::$_translate && method_exists([$sub, 'translate'])) {
                                 $sub->translate();
                             }
                             $itemData[$key][] = $sub->{$exportMethod}();
                         }
                     } else {
                         if ($itemRel) {
-                            if (static::$_translate) {
+                            if (static::$_translate && method_exists([$itemRel, 'translate'])) {
                                 $itemRel->translate();
                             }
                             $itemData[$key] = $itemRel->{$exportMethod}();

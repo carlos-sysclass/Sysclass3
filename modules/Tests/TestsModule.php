@@ -6,7 +6,7 @@ namespace Sysclass\Modules\Tests;
  */
 use Phalcon\Acl\Adapter\Memory as AclList,
     Phalcon\Acl\Resource,
-    Sysclass\Models\Courses\Classe,
+    Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Courses\Tests\Lesson as TestLesson,
@@ -184,15 +184,11 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $block_context = $self->getConfig("blocks\\tests.execution.list.table\context");
 
-//var_dump($block_context['ajax_source'], array('filter' => $filter));
-
                 $block_context['ajax_source'] = $stringsHelper->vksprintf(
                     $block_context['ajax_source'],
                     array('filter' => $filter)
                 );
 
-//                var_dump($block_context['ajax_source']);
-//exit;
                 $self->putComponent("data-tables");
                 $self->putScript("scripts/utils.datatables");
 
@@ -311,6 +307,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             //exit;
             //
+
             $this->putItem("test", $testData);
             $this->createClientContext("execute", null, "open");
 
@@ -349,6 +346,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $testModel = TestLesson::findFirstById($identifier);
 
             $testData = $testModel->toArray();
+
+
+            $testData['course'] = $testModel->getCourse()->toArray();
 
             $testData['test'] = $testModel->getTest()->toArray();
             //$testData['questions'] = $testModel->getQuestions()->toArray();
@@ -398,8 +398,15 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             /// SAVE THE TEST QUESTIONS USED
 
+
+
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
+                /*
+                var_dump($testData);
+                var_dump($executionData);
+                exit;
+                */
 
                 $this->module("settings")->put("test_execution_id", $executionId);
 
@@ -518,14 +525,19 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
 
                 // LOAD USER PROGRESS ON THIS TEST
-                
+                // CHECK IF THE USER CAN EXECUTE AGAIN
+
+                $this->putBlock("tests.info.dialog");
 
                 $this->module("settings")->put("test_execution_id", $execution_id);
 
                 $testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+                
 
                 $this->putItem("test", $testData);
                 $this->putItem("execution", $executionData);
+                $this->putItem("can_execute_again", $execution->canExecuteAgain($this->user));
+                
 
                 $this->createClientContext("execute", null, "execute");
 

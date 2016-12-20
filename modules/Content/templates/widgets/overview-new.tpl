@@ -9,35 +9,35 @@ _before_init_functions.push(function() {
     <div class="row">
         <div class="col-sm-12 col-md-12">
           <div class="col-md-12 no-padding inter-navsuper">
-            <ul class="nav nav-tabs col-md-8 no-padding" role="tablist">
+            <ul class="nav nav-tabs col-md-8 no-padding widget-tabs-container" role="tablist">
               <li role="presentation" class="active">
-                <a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab">
+                <a href="#tab_program_description" aria-controls="tab_program_description" role="tab" data-toggle="tab" data-setting-update="program">
                   <i class="fa fa-graduation-cap"></i>
                   <span class="progress-indicator program-indicator">
                     <span class="counter"></span>
-                    <span class="singular">{translateToken value="Program"}</span>
-                    <span class="plural">{translateToken value="Programs"}</span>
+                    <span class="singular hidden-xs">{translateToken value="Program"}</span>
+                    <span class="plural hidden-xs">{translateToken value="Programs"}</span>
                   </span>
                   
                 </a>
               </li>
               <li role="presentation">
-                <a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab">
+                <a href="#tab_program_courses" aria-controls="tab_program_courses" role="tab" data-toggle="tab" data-setting-update="course">
                   <i class="fa fa-sitemap"></i>
                   <span class="progress-indicator course-indicator">
                     <span class="counter"></span>
-                    <span class="singular">{translateToken value="Course"}</span>
-                    <span class="plural">{translateToken value="Courses"}</span>
+                    <span class="singular hidden-xs">{translateToken value="Course"}</span>
+                    <span class="plural hidden-xs">{translateToken value="Courses"}</span>
                   </span>
                 </a>
               </li>
               <li role="presentation">
-              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab">
+              	<a href="#tab_course_units" aria-controls="tab_course_units" role="tab" data-toggle="tab" data-setting-update="unit">
                   <i class="fa fa-book"></i>
                   <span class="progress-indicator unit-indicator">
                     <span class="counter"></span>
-                    <span class="singular">{translateToken value="Unit"}</span>
-                    <span class="plural">{translateToken value="Units"}</span>
+                    <span class="singular hidden-xs">{translateToken value="Unit"}</span>
+                    <span class="plural hidden-xs">{translateToken value="Units"}</span>
                   </span>
                 </a>
               </li>
@@ -69,12 +69,12 @@ _before_init_functions.push(function() {
                   </a>
                   -->
 
-                  <li>
+                  <li class="hidden-xs">
                     <a href="javascript:void(0);">
                       <span class="program-title">{translateToken value="Program"}</span>
                     </a>
                   </li>
-                  <li>
+                  <li class="hidden-xs">
                     <a href="javascript:void(0);" class="no-padding-sides">
                       <span class="">&raquo;</span>
                     </a>
@@ -96,7 +96,7 @@ _before_init_functions.push(function() {
                   </a>
                   -->
                 </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li>
                       <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
                         <i class="fa fa-arrow-left"></i>
@@ -129,7 +129,7 @@ _before_init_functions.push(function() {
                 <div class="unit-video-container hidden pop-out" id="unit-video-container">
                   <div class="popupcontent">
                     <div class="popupcontent-header navbar navbar-default">
-                      <ul class="nav navbar-nav">
+                      <ul class="nav navbar-nav hidden-xs">
                         <li>
                           <a href="javascript:void(0);">
                             <span class="course-title">{translateToken value="Unit"}</span>
@@ -151,11 +151,11 @@ _before_init_functions.push(function() {
                       </ul>
 
                       <div class="popup-header-buttons">
-                        <a href="javascript: void(0);" class="btn btn-link minimize-action">
+                        <a href="javascript: void(0);" class="btn btn-link minimize-action hidden-xs">
                           <i class="fa fa-compress"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link fullscreen-action">
-                          <i class="fa fa-desktop"></i>
+                          <i class="fa fa-arrows-alt"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link close-action">
                           <i class="fa fa-times"></i>
@@ -222,23 +222,39 @@ _before_init_functions.push(function() {
                   </div>
                 </div>
               </div>
-              
+
+              <div class="backgrid-table">
+                  <table class="table table-striped table-bordered table-hover table-full-width data-table unit-table" id="unit-table">
+                      <thead>
+                        <tr>
+                          <th class="text-center">{translateToken value="Unit"}</th>
+                          <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
+                          <th class="text-center">{translateToken value="Video"}</th>
+                          <th class="text-center">{translateToken value="Materials"}</th>
+                          <th class="text-center">{translateToken value="Tests"}</th>
+                          <!--
+                          <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
+                          -->
+                          <!--
+                          <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
+                          -->
+                          <th class="text-center">{translateToken value="Status"}</th>
+                          <!-- <th></th> -->
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </table>
+              </div>
+
+              <!--
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th width="40%">{translateToken value="Unit"}</th>
-                    <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
                     <th width="15%" class="text-center">{translateToken value="Video"}</th>
                     <th width="15%" class="text-center">{translateToken value="Materials"}</th>
                     <th width="15%" class="text-center">{translateToken value="Tests"}</th>
-                    <!--
-                    <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
-                    -->
-                    <!--
-                    <th><i class="fa fa-"></i>{translateToken value="Exam"}</th>
-                    -->
                     <th width="15%" class="text-center">{translateToken value="Status"}</th>
-                    <!-- <th></th> -->
                   </tr>
                 </thead>
               </table>
@@ -248,6 +264,7 @@ _before_init_functions.push(function() {
                   </tbody>
                 </table>
               </div>
+              -->
             </div>
             <div role="tabpanel" class="tab-pane" id="tab_program_courses">
               <div class="navbar navbar-default navbar-program" role="navigation">
@@ -274,7 +291,7 @@ _before_init_functions.push(function() {
                   </a>
                   -->
                 </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li>
                       <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
                         <i class="fa fa-arrow-left"></i>
@@ -309,15 +326,28 @@ _before_init_functions.push(function() {
                 </form>
               </div>
               -->
+
+              <div class="backgrid-table">
+                  <table class="table table-striped table-bordered table-hover table-full-width data-table course-table" id="course-table">
+                      <thead>
+                        <tr>
+                          <th class="text-center">{translateToken value="Course"}</th>
+                          <th class="text-center">{translateToken value="Units"}</th>
+                          <th class="text-center">{translateToken value="Assignments"}</th>
+                          <th class="text-center">{translateToken value="Status"}</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </table>
+              </div>
+              <!--
               <table class="table table-striped">
                 <thead>
                   <tr>
                     <th width="40%">{translateToken value="Course"}</th>
-                    <!-- <th width="20%">{translateToken value="Coordinator"}</th> -->
                     <th width="15%" class="text-center">{translateToken value="Units"}</th>
                     <th width="30%">{translateToken value="Assignments"}</th>
                     <th width="15%" class="text-center">{translateToken value="Status"}</th>
-                    <!-- <th>{translateToken value="Cumulative Grade"}</th> -->
                   </tr>
                 </thead>
               </table>
@@ -327,6 +357,7 @@ _before_init_functions.push(function() {
                   </tbody>
                 </table>
               </div>
+              -->
             </div>
             <!--
             <div role="tabpanel" class="tab-pane" id="profile">
@@ -447,6 +478,53 @@ _before_init_functions.push(function() {
             </div>
             -->            
             <div role="tabpanel" class="tab-pane active" id="tab_program_description">
+              <div class="navbar navbar-default navbar-program" role="navigation">
+                <ul class="nav navbar-nav">
+                  <!--
+                  <a href="#" class="navbar-brand disabled">
+                    <strong>{translateToken value="You're in:"} </strong>
+                  </a>
+                  -->
+
+                  <li class="dropdown">
+                    <a data-close-others="true" data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">
+                      <span class="program-title">{translateToken value="Program"}</span>
+                      <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu program-dropdown">
+                    </ul>
+                  </li>
+                  <!--
+                  <a href="javascript: void(0);" class="navbar-brand viewed-status hidden">
+                    <span class="label label-success">
+                      <i class="ti-check"></i> <span class="hidden-xs">{translateToken value="Completed"}</span>
+                    </span>
+                  </a>
+                  -->
+                </ul>
+                  <ul class="nav navbar-nav navbar-right hidden-xs">
+                    <li>
+                      <a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous"}" data-placement="top">
+                        <i class="fa fa-arrow-left"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-info no-padding-sides disabled">
+                        <span class="entity-current"></span> / <span class="entity-count"></span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next"}" data-placement="top">
+                        <i class="fa fa-arrow-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+              </div>
+              <div class="program-description-content-scroller">
+              <div class="program-description-content">
+                
+              </div>
+              </div>
             </div>
           </div>
         </div>
@@ -518,8 +596,8 @@ _before_init_functions.push(function() {
     <td width="40%">
       <a href="javascript:void(0)" class="course-change-action"><%= model.name %></a>
       <div class="btn-group">
-        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
-          <i class="fa fa-caret-down"></i>
+        <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-link dropdown-toggle" href="javascript:void(0);">
+          <i class="fa fa-info-circle"></i>
         </a>
         <ul class="dropdown-menu">
           <li>
@@ -535,8 +613,8 @@ _before_init_functions.push(function() {
             </a>
           </li>
           <li class="subchild">
-            <a class="course-info-action" href="javascript:void(0);" class="select-item">
-              {translateToken value="Send message"}
+            <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%= model.professor_id %>" data-mode="user">
+              <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
             </a>
           </li>
           <% } %>
@@ -599,25 +677,37 @@ _before_init_functions.push(function() {
         }
       %>
       <% if (completed) { %>
-        <span class="concluido">
-          <i class="fa fa-check-square-o" aria-hidden="true"></i>
-          {translateToken value="Completed"}
-        </span>
+        <% if (_.size(model.units) == 0) { %>
+          <span class="andamento">
+            <i class="fa fa-warning" aria-hidden="true"></i>
+            {translateToken value="No units avaliable"}
+          </span>
+        <% } else { %>
+          <span class="concluido">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            {translateToken value="Completed"}
+          </span>
+        <% } %>
       <% } %>
     </td>
 
     <!-- Status -->
     <td  width="15%" class="text-center">
-    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
-      <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
+    <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
+      <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
-      <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
+      <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
         <i class="fa fa-clock-o" aria-hidden="true"></i>
       </span>
+    <% } else if (_.size(model.units) == 0) { %>
+      <span class="pendente tooltips" data-original-title="{translateToken value="Not avaliable"}" data-placement="top" data-container="body">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </span>
     <% } else { %>
-      <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top">
+
+      <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
         <i class="fa fa-circle" aria-hidden="true"></i>
       </span>
     <% } %>
@@ -639,7 +729,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
   <!-- Unidade -->
-  <td width="40%">
+  <td>
       <%= model.name %>
       <%
         var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
@@ -647,21 +737,20 @@ _before_init_functions.push(function() {
       %>
       <% if (hasDropdown) { %>
         <div class="btn-group">
-          <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" href="javascript:void(0);">
-            <i class="fa fa-caret-down"></i>
+          <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-link dropdown-toggle" href="javascript:void(0);">
+            <i class="fa fa-info-circle"></i>
           </a>
 
           <ul class="dropdown-menu">
             <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
-            <li role="separator" class="divider"></li>
             <li>
               <a href="javascript:void(0);">
                 {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
               </a>
             </li>
             <li class="subchild">
-              <a class="course-info-action" href="javascript:void(0);" class="select-item">
-                {translateToken value="Send Message"}
+              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
+                <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
               </a>
             </li>
             <% } %>
@@ -678,7 +767,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Video -->
-  <td width="15%" class="text-center">
+  <td class="text-center">
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -700,7 +789,7 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
   <!-- Material -->
-  <td width="15%" class="text-center">
+  <td class="text-center">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
       <% if (model.materialProgress >= 1) { %>
@@ -773,7 +862,7 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   
-  <td width="15%" class="text-center">
+  <td class="text-center">
   </td>
   
   <!-- Exame -->
@@ -783,17 +872,17 @@ _before_init_functions.push(function() {
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    --><!-- Status -->
-  <td width="15%"  class="text-center">
+  <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
         <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
       </span>
     <% } else { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
         <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
@@ -859,15 +948,15 @@ _before_init_functions.push(function() {
 
 <script type="text/template" id="tab_courses_tests-item-template">
   <!-- Unidade -->
-  <td width="40%">
+  <td >
     <%= model.name %>
   </td>
   <!-- Instructor -->
   <!-- <td width="15%" class="text-center"></td> -->
   <!-- Video -->
-  <td width="15%" class="text-center"></td>
+  <td class="text-center"></td>
   <!-- Material -->
-  <td width="15%" class="text-center">
+  <td class="text-center">
     <!--
     <span class="pendente">
       <i class="fa fa-ban" aria-hidden="true"></i>
@@ -885,7 +974,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Teste -->
-  <td width="15%" class="text-center">
+  <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
         <i class="fa fa-check-circle" aria-hidden="true"></i>
@@ -910,17 +999,17 @@ _before_init_functions.push(function() {
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    --><!-- Status -->
-  <td width="15%" class="text-center">
+  <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
         <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
         <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
       </span>
     <% } else { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
         <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>

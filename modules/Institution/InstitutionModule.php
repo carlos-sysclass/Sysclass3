@@ -8,7 +8,10 @@ namespace Sysclass\Modules\Institution;
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
  */
-use Sysclass\Models\Organizations\Organization;
+use Sysclass\Models\Organizations\Organization,
+    Sysclass\Services\I18n\Timezones,
+    Sysclass\Models\I18n\Countries,
+    Sysclass\Models\I18n\Language;
 /**
  * @RoutePrefix("/module/institution")
  */
@@ -25,6 +28,43 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
 
                 return true;
 
+            },
+            'organization.social.dialog' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+                $languages = Language::find("active = 1");
+                $this->putitem("languages", $languages->toArray());
+
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                //$self->putComponent("bootstrap-editable");
+
+                $block_context = $self->getConfig("blocks\\organization.social.dialog\\context");
+                $self->putItem("organization_social_dialog_context", $block_context);
+
+                $self->putModuleScript("dialogs.institution.social");
+                $self->setCache("organization.social.dialog", $block_context);
+
+                $self->putSectionTemplate("social", "blocks/social.list");
+
+                return true;
+            },
+            'organization.social.list' => function($data, $self) {
+                $this->putBlock("organization.social.dialog");
+
+
+                $self->putComponent("data-tables");
+                $self->putComponent("select2");
+                //$self->putComponent("bootstrap-editable");
+
+                $block_context = $self->getConfig("blocks\\organization.social.list\\context");
+                $self->putItem("organization_social_list_context", $block_context);
+
+                $self->putModuleScript("dialogs.institution.social");
+                $self->setCache("organization.social.dialog", $block_context);
+
+                $self->putSectionTemplate("dialogs", "dialogs/social");
+
+                return true;
             }
         );
     }
@@ -38,13 +78,35 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         if (in_array('institution.overview', $widgetsIndexes)) {
             //$this->putModuleScript("widget.institution");
 
+            $data = $organization->toArray(["details", "logo"]);
+
+            $time_at = Timezones::getTimeAt($organization->timezone);
+
+            if ($time_at) {
+                $data['time_at'] = $time_at->format('H:i');
+                foreach($data['details'] as $i => $detail) {
+                    $data['details'][$i]['time_at'] = $data['time_at'];
+                }
+            }
+
+            $countriesRS = Countries::find();
+            $countries = $countriesRS->toArray();
+
+            foreach($data['details'] as $index => $details) {
+                if (array_key_exists($details['country'], $countries)) {
+                    $data['details'][$index]['country_name'] = $countries[$details['country']];
+                    $data['details'][$index]['country_flag'] = Countries::getFlagUrl($details['country']);
+                }
+            }
+
         	return array(
         		'institution.overview' => array(
        				//'title' 	=> 'User Overview',
                     'id'        => 'institution-widget',
        				'template'	=> $this->template("widgets/overview"),
                     'panel'     => true,
-                    'data' => $organization->toFullArray()
+                    'body'      => "no-padding",
+                    'data'      => $data
         		)
         	);
         }
@@ -100,5 +162,23 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         }
         return $breadcrumbs;
     }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/edit/{id}")
+     * @allow(resource=users, action=edit)
+     */
+    public function editPage($id)
+    {
+        $timezones = Timezones::findAll();
+        $this->putitem("timezones", $timezones);
+
+        parent::editPage($id);
+    }
+
+
+
+
 
 }

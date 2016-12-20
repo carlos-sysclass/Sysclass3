@@ -16,8 +16,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             model : formView.model,
             form : formView
         });
-
-
     }
 
     this.on("start", function(opt) {
@@ -79,7 +77,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
         var baseSubviewViewClass = Backbone.View.extend({
             disabled : true,
             disable : function() {
-                console.info('views.form.questions/baseSubviewViewClass::ddisable');
+                console.info('views.form.questions/baseSubviewViewClass::disable');
                 this.disabled = true;
                 this.$el.hide();
             },

@@ -98,6 +98,33 @@ $di->set('view', function() use ($environment, $di) {
 
             // Set some options here
             return $volt;
+        },
+        '.volt' => function ($view, $di) {
+            $volt = new VoltEngine($view, $di);
+            
+            $volt->setOptions(array(
+                'compiledPath' => __DIR__ . "/../../cache/view/volt/compiled/",
+                //'compileAlways'     => true, // performance decrease
+            ));
+
+
+            $volt->getCompiler()->addFunction('strftime', 'strftime');
+            /*
+            $volt->getCompiler()->addFunction(
+                'strftime',
+                function($key, $params) {
+                    foreach($params as $param) {
+                        $values[] = $param['expr']['value'];
+                    }
+                    print_r($params);
+                    exit;
+                    return "\\strftime({$format}, {$timestamp})";
+                }
+            );
+            */
+
+            // Set some options here
+            return $volt;
         }
     ));
 

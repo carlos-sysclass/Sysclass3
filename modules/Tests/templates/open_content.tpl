@@ -14,6 +14,7 @@
         {translateToken value='Test Info'}: <strong>{$T_TEST.name}</strong>
     </h4>
     -->
+    {if $T_TEST.info || $T_TEST.test.instructors|@count > 0}
     <div class="row">
         <div class="col-md-12">
             {if $T_TEST.info}
@@ -38,6 +39,7 @@
             {/if}
         </div>
     </div>
+    {/if}
     <div class="row">
         <div class="{if $last_try}col-md-6 col-sm-6{else}col-md-12 col-sm-12{/if}">
             <div class="portlet box blue">
@@ -59,7 +61,8 @@
                         {if ($T_TEST.test.test_max_questions <= 0)}
                             {$T_TEST.questions|@count}
                         {else}
-                            {$T_TEST.test.test_max_questions}
+                            {$test_questions_size=$T_TEST.questions|@count}
+                            {math equation="min(a, b)" a=$T_TEST.test.test_max_questions b=$test_questions_size}
                         {/if}
                         </strong>
                     </p>

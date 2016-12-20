@@ -162,6 +162,7 @@ class Translator extends Component
         $language_selected = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $this->getSource() : $language_code;
 
         $exists = array_search($token, $this->source_tokens_index);
+
         /*
         $exists = $this->source_tokens->filter(function($item) use ($token) {
             //if ($item['token'] === $token) {
@@ -191,13 +192,14 @@ class Translator extends Component
                         $translated = $this->translateText($this->getSystemLanguageCode(), $this->source_lang, $token);
                     } else {
                         $translated = $this->translateText($language_selected, $this->source_lang, $token);
-                        
+
+                       
                     }
                 } else {
                     $translated = $token;
                 }
                 
-                if ($translated !== FALSE) {
+                if ($translated !== FALSE && !is_object($translated)) {
                     $tokenModel = new Tokens();
                     $tokenModel->assign(array(
                         'language_code' => $this->source_lang,
@@ -211,14 +213,16 @@ class Translator extends Component
             }
         }
 
+
         // IF NOT FOUND, CHECK FOR CONSTANTS
         if (!is_null($vars)) {
             if (!is_array($vars)) {
                 $vars = array($vars);
             }
-            $translated = vsprintf($token, $vars);
+            $translated = vsprintf($translated, $vars);
+        } else {
+            $this->session_tokens[$token] = $translated;
         }
-        $this->session_tokens[$token] = $translated;
         try {
             $this->cache->save("session_tokens", $this->session_tokens);
         } catch(Exception $e) {

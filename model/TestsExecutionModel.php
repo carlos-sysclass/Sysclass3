@@ -1,7 +1,7 @@
 <?php
 use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
-    Sysclass\Models\Courses\ClasseProgress,
-    Sysclass\Models\Courses\LessonProgress;
+    Sysclass\Models\Content\Progress\Course as ClasseProgress,
+    Sysclass\Models\Content\Progress\Unit as LessonProgress;
 
 class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
@@ -145,8 +145,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             $testQuestions = $testModel->shuffleTestQuestions($executionData['id']);
 
-            //var_dump($testQuestions);
-
 
             $questionsData = $questionModel->addFilter(array(
                 'lesson_id' => $executionData['test_id']
@@ -183,7 +181,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
                         }
                     }
                 }
-
             }
 
             $pass = $userScore > (floatval($testData['minimum_score']) / 100);

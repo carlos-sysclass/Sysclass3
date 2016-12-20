@@ -3,21 +3,12 @@ dashboard:
         0:
             1:
                 weight:
-                    lg: 8
-                    md: 8
-                    sm: 12
-                    xs: 12
-
-        1:
-            2:
-                weight:
                     lg: 12
                     md: 12
                     sm: 12
                     xs: 12
     widgets:
-        #1: ['users.overview']
-        2: ["dashboard.linkable.view"]
+        1: ["dashboard.linkable.view"]
     sortable: false
     resources:
         users.overview.notification.order: ["courses", "tutoria", "calendar", "advisor", "tests"]

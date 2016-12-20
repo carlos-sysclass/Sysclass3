@@ -53,9 +53,46 @@ crud:
         page_subtitle: Create a new Organization
     'edit/{id}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch", "jquery-file-upload-image", "jquery-mask", "phone-field"]
-      blocks: ["dropbox.upload", "address.book"]
+      blocks: ["dropbox.upload", "address.book", "organization.social.list"]
+      scripts: ["views.institution.edit"]
       template: form.tpl
       variables:
         page_subtitle: Edit your Organization
+blocks:
+  organization.social.list:
+    context:
+      sAjaxSource: /module/insitution/items/details/datatable/
+      datatable_fields:
+
+        - mData: website
+          label: Web Site
+
+        - mData: facebook
+          label: Facebook
+
+        - mData: linkedin
+          label: Linked In
+
+        - mData: skype
+          label: Skype
+
+        - mData: googleplus
+          label: Google+
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
 models:
   me: Sysclass\Models\Organizations\Organization
+  details: 
+    class: Sysclass\Models\Organizations\OrganizationL10n
+    findMethod : "findUnique"
+    updateMethod: "save"
+    acl:
+      create:
+        resource: Institution
+        action: edit
+      edit:
+        resource: Institution
+        action: edit

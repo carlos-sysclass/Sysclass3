@@ -122,8 +122,6 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
             $questionData = $this->getItem($question);
         }
 
-        //var_dump($questionData['question']['type_id']);
-
         switch ($questionData['question']['type_id']) {
             case "simple_choice" : {
                 return $this->correctSingleChoice($questionData, $answer);
@@ -145,7 +143,13 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
 
         $options = $questionData['question']['options'];
         foreach($options as $opt) {
-            if ($opt['answer'] === TRUE && $answer == $opt['index']) {
+            if (is_numeric($answer)) {
+                $answer = intval($answer);
+            } else {
+                return 0;
+            }
+
+            if ($opt['answer'] === TRUE && $answer === intval($opt['index'])) {
                 return ($questionData['points'] * $questionData['weight']);
             }
         }
@@ -153,6 +157,15 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
     }
 
     protected function correctTrueOrFalse($questionData, $answer) {
+        if (!is_numeric($questionData['question']['answer'])) {
+            $questionData['question']['answer'] = 1;
+        }
+        if (is_numeric($answer)) {
+            $answer = intval($answer);
+        } else {
+            return 0;
+        }
+
         if ($questionData['question']['answer'] == $answer) {
             return ($questionData['points'] * $questionData['weight']);
         } else {

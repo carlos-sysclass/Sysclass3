@@ -45,7 +45,7 @@ $di->setShared('environment', function() use ($di) {
 		'path/modules'			=> $appRootDir . 'modules/',
 		'path/template'			=> '%s/templates/',
 		'path/plugins'			=> '%s/plugins/',
-		'path/cache'			=> $plicoLibDir . 'cache/',
+		'path/cache'			=> $appRootDir . 'cache/',
 		'path/app/www'			=> $appRootDir . 'www',
 		'path/files/public'		=> $appRootDir . 'files',
 		'path/files'			=> $appRootDir . 'files',
@@ -110,7 +110,8 @@ $di->setShared('environment', function() use ($di) {
 		'css/layout',
 		'css/themes/blue',
 
-		'css/custom'
+		'css/custom',
+		'css/custom-responsive'
 		//<!-- END THEME STYLES -->
 	);
 
@@ -199,8 +200,8 @@ $di->setShared('environment', function() use ($di) {
 		),
 		'datatables' => array(
 			'name'	=> 'datatables',
-			'css'	=> array('plugins/datatables/datatables'),
-			'js'	=> array('plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
+			'css'	=> array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
+			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation','plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
 
 		'bootstrap-switch' => array(
@@ -319,7 +320,19 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/bxslider/jquery.bxslider.min'),
 			'js'	=> array('plugins/bxslider/jquery.bxslider.min')
 
-		)
+		),
+		'jquery-jscrollpane' => array(
+			'name' => 'query-jscrollpane',
+			'css'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane'),
+			'js'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane.min')
+		),
+		'jquery-builder' => array(
+			'name' => 'jquery-builder',
+			'css'	=> array('plugins/jquery-builder/query-builder.default.min'),
+			'js'	=> array('plugins/jquery-builder/query-builder.standalone.min', 'plugins/jquery-builder/sql-parser')
+		),
+
+
 	);
 
 	// MOVE TO module config.yml!!!

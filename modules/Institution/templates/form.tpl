@@ -8,7 +8,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['address']) &&  ($T_SECTION_TPL['address']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Address Book"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Address"}</a>
 			</li>
 			{/if}
 			<li>
@@ -22,6 +22,17 @@
 					<label class="control-label">{translateToken value="Name"}</label>
 					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 				</div>
+
+				<div class="form-group">
+					<label class="control-label">{translateToken value="Timezone"}</label>
+					<select name="timezone" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+						{foreach $T_TIMEZONES as $key => $value}
+							<option value="{$key}">{$value.name}</option>
+						{/foreach}
+					</select>
+				</div>
+
+
 				<!--
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Full Name"}</label>
@@ -58,22 +69,20 @@
 				<div class="tab-pane fade in" id="tab_1_2">
 			    {foreach $T_SECTION_TPL['address'] as $template}
 					{include file=$template}
+					<div class="clearfix"></div>
 				{/foreach}
 				</div>
 			{/if}
 
  			<div class="tab-pane fade in" id="tab_1_3">
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Website"}</label>
-					<input name="website" value="" type="text" placeholder="Website" class="form-control" data-rule-url="true" />
-				</div>
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Facebook"}</label>
-					<div class="input-group">
-						<span class="input-group-text btn-info">  https://www.facebook.com/  </span>
-						<input name="facebook" value="" type="text" placeholder="Facebook" class="form-control" />
-					</div>
-				</div>
+                {include "`$smarty.current_dir`/blocks/social.tpl"}
+
+				{if (isset($T_SECTION_TPL['social']) &&  ($T_SECTION_TPL['social']|@count > 0))}
+		    		{foreach $T_SECTION_TPL['social'] as $template}
+						{include file=$template}
+						<div class="clearfix"></div>
+					{/foreach}
+				{/if}
 			</div>
 		</div>
 <!--

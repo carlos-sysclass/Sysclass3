@@ -132,7 +132,6 @@ class Queue extends Component implements WampServerInterface
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        //var_dump($e);
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
@@ -150,7 +149,6 @@ class Queue extends Component implements WampServerInterface
                     $user = $userTimes->getUser();
 
                     if ($user && !is_null($user->websocket_key) && $user->websocket_key == $params[0]) {
-                        //var_dump($userTimes->toArray());
 
                         $lastPing = UserTimes:: maximum([
                             'column' => 'started',
@@ -242,47 +240,18 @@ class Queue extends Component implements WampServerInterface
                 //var_dump($conn->wrappedConn->WAMP->sessionId, $this->users);
 
                 if ($this->acl->isUserAllowed($user, "Chat", "View")) {
-                    $chatList = Chat::find(array(
+                    $chatList = Chat::find([
                         //'columns' => "closed, id, ping, requester_id, started, subject, topic, type",
-                        'conditions' => "receiver_id = ?0 OR receiver_id IS NULL",
-                        'bind' => array($user['id']),
+                        'conditions' => "receiver_id = :user_id: OR requester_id = :user_id: OR receiver_id IS NULL",
+                        'bind' => array('user_id' => $user['id']),
                         'order' => 'ping ASC'
-                    ));
+                    ]);
 
                     $result = array();
 
                     foreach($chatList as $chat) {
-                        $item = $chat->toArray();
-                        unset($item['websocket_token']);
-                        $requester = $chat->getRequester();
-                        $item['requester'] = $requester->toArray();
-
-                        if (array_key_exists($requester->id, $this->usersIds)) {
-                            $item['online'] = true;
-                            $item['session_id'] = $this->usersIds[$requester->id];
-                        } else {
-                            $item['online'] = false;
-                        }
-                        //var_dump($user['last_ping']);
-                        
-                        $chat_messages = $chat->getChatMessages([
-                            'conditions' => 'sent > ?0',
-                            'bind' => [$user['last_ping']],
-                            'order' => 'sent DESC'
-                        ]);
-                        $item['new_count'] = 0;
-                        foreach($chat_messages as $message) {
-                            if ($message->user_id == $user['id']) {
-                                break;
-                            }
-                            $item['new_count']++;
-                        }
-
-                        //$chat_messages
-
-                        $result[] = $item;
+                        $result[] = $this->mapChatObject($conn, $chat);
                     }
-
 
                     $conn->callResult($id, $result);
                 } else {
@@ -352,8 +321,7 @@ class Queue extends Component implements WampServerInterface
                     $technical_users = User::findByPermissionId($resource->id);
                 }
 
-
-
+                /*
                 $coordinator_group_id = $this->configuration->get('chat_role_coordinator');
                 //$technical_group_id = $this->configuration->get('chat_role_technical_support');
 
@@ -387,30 +355,51 @@ class Queue extends Component implements WampServerInterface
                         }
                     }
                 }
+                */
+
+                //var_dump($technical_users);
+
+                $result = array();
+
+                
+
+                $currentUserData = $this->users[$conn->wrappedConn->WAMP->sessionId];
+                $currentUser = User::findFirstById($currentUserData['id']);
+                $lang = $currentUser->getLanguage();
+                $this->translate->setSource($lang->code);
+                
+
                 if (count($technical_users) > 0) {
-                    $result['technical'] = array(
-                        'topic' => 'technical-support',
-                        'name' => 'Technical Support'
-                    );
+                    foreach($technical_users as $tech_user) {
+                        $user = User::findFirstById($tech_user['id']);
 
-                    foreach($technical_users as $item) {
+                        $lang = $user->getLanguage();
+
                         //$item = $user->toArray();
+                        $item = array(
+                            'topic' => 'technical-support',
+                            'name' => $this->translate->translate('Technical Support'),
+                        );
 
-                        $user = User::findFirstById($item['id']);
+                        //var_dump($this->translate->translate('Technical Support', null, $lang->code), $lang->code);
 
-                        $item['language'] = $user->getLanguage()->toArray();
-                        $item['avatars'] = $user->getAvatars()->toArray();
+
+                        $item['user'] = $user->toArray();
+
+                        $item['user']['language'] = $lang->toArray();
+                        $item['user']['avatars'] = $user->getAvatars()->toArray();
                         //$item['avatar'] = $user->getAvatar();
 
                         if (array_key_exists($user->id, $this->usersIds)) {
-                            $result['technical']['online'] = true;
-                            $result['technical']['session_id'] = $this->usersIds[$user->id];
-
-                            $result['technical']['user'] = $item;
+                            $item['online'] = true;
+                            $item['session_id'] = $this->usersIds[$user->id];
+                            //$item['user'] = $item;
                         } else {
-                            $result['technical']['online'] = false;
-                            $result['technical']['user'] = $item;
+                            $item['online'] = false;
+                            //$item['user'] = $item;
                         }
+
+                        $result[] = $item;
                     }
                 }
 
@@ -429,6 +418,46 @@ class Queue extends Component implements WampServerInterface
         //var_dump("CALL", $id, $topic->getId(), $params);
         $conn->callError($id, $topic, 'Please especify a valid procedure method');
         return true;
+    }
+
+    protected function mapChatObject(ConnectionInterface $conn, Chat $chat) {
+        $user = $this->users[$conn->wrappedConn->WAMP->sessionId];
+
+        $item = $chat->toArray();
+
+        if ($chat->requester_id == $user['id']) {
+            $another = $chat->getReceiver();
+        } else {
+            $another = $chat->getRequester();
+        }
+        $item['another'] = $another->toArray();
+
+        unset($item['websocket_token']);
+        //$item['from'] = $requester->toArray();
+
+        if (array_key_exists($another->id, $this->usersIds)) {
+            $item['online'] = true;
+            $item['session_id'] = $this->usersIds[$another->id];
+        } else {
+            $item['online'] = false;
+        }
+                       
+        $chat_messages = $chat->getChatMessages([
+            'conditions' => 'sent > ?0',
+            'bind' => [$user['last_ping']],
+            'order' => 'sent DESC'
+        ]);
+        $item['new_count'] = 0;
+        foreach($chat_messages as $message) {
+            if ($message->user_id == $user['id']) {
+                break;
+            }
+            $item['new_count']++;
+        }
+
+        //$chat_messages
+
+        return $item;
     }
 
     protected function RPC_createChat(ConnectionInterface $conn, $id, $user_id) {
@@ -484,18 +513,17 @@ class Queue extends Component implements WampServerInterface
         // SUBSCRIBE THE RECEIVER AS WELL
         if (array_key_exists($user_id, $this->sessionIds)) {
             $privateTopic = ($this->subscribedTopics[$this->sessionIds[$user_id]]);
-            
-            $command = $this->createCommandResponse("subscribe", array(
-                'topic' => $new_topic
-            ));
 
-            $privateTopic->broadcast($command);
+            if ($privateTopic) {
+                $command = $this->createCommandResponse("subscribe", array(
+                    'topic' => $new_topic
+                ));
+
+                $privateTopic->broadcast($command);
+            }
         }
 
-
-        //var_dump($id, $queueModel->toArray());
-
-        $conn->callResult($id, $queueModel->toArray());
+        $conn->callResult($id, $this->mapChatObject($conn, $queueModel));
         return true;
     }
 
@@ -560,14 +588,10 @@ class Queue extends Component implements WampServerInterface
         $messageModel->user_id = $user['id'];
         $messageModel->save();
 
-        //var_dump($messageModel->getMessages());
-        //var_dump($event, $exclude, $eligible);
-
         $topic->broadcast($event, $exclude, $eligible);
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-        //var_dump("SUBSCRIBE",  get_class($topic));
         if (!array_key_exists($conn->wrappedConn->WAMP->sessionId, $this->users)) {
             $conn->close();
             return true;

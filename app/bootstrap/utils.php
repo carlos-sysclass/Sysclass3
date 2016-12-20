@@ -6,6 +6,7 @@ use
     Sysclass\Services\Debug\Adapter as DebugAdapter,
     Sysclass\Services\Loader\Adapter as LoaderAdapter,
     Sysclass\Services\Notifications\Manager as NotificationManager,
+    Sysclass\Services\Utils\YmlParser,
     Plico\Php\Helpers\Strings as stringsHelper,
     Plico\Php\Helpers\Arrays as arrayHelper,
     Phalcon\Flash\Direct as FlashDirect,
@@ -80,6 +81,27 @@ if (!$session->isStarted()) {
 }
 $di->setShared('session', $session);
 
+$di->set('yaml', function () {
+    $parser = new Sysclass\Services\Utils\YmlParser();
+    // Set a global encryption key
+    //$crypt->setKey();
+    return $parser;
+}, true);
+
+$di->set('sqlParser', function () {
+    $parser = new Sysclass\Services\Utils\QueryBuilderParser();
+    // Set a global encryption key
+    //$crypt->setKey();
+
+    $parser->initialize();
+    return $parser;
+}, true);
+
+
+
+
+
+
 
 
 if (APP_TYPE === "WEB") {
@@ -120,7 +142,7 @@ if (APP_TYPE === "WEB") {
 
         $translator->setSource("en");
 
-        // TODO: MAKE A WAY THE SELECT THE USER 
+        // TODO: MAKE A WAY THE SELECT THE USER
         /*
         $user = $di->get("user");
 
@@ -145,10 +167,13 @@ $di->setShared('queue', function () {
     return $queue;
 });
 
-$messagebus = new Sysclass\Services\MessageBus\Manager();
-$messagebus->setEventsManager($eventsManager);
-$messagebus->initialize();
-$di->setShared('messagebus', $messagebus);
+$di->setShared('messagebus', function () use ($eventsManager) {
+    $messagebus = new Sysclass\Services\MessageBus\Manager();
+    $messagebus->setEventsManager($eventsManager);
+    return $messagebus;
+});
+
+
 
 
 $di->setShared('mail', function () {

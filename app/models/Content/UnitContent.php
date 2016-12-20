@@ -1,7 +1,8 @@
 <?php
 namespace Sysclass\Models\Content;
 
-use Plico\Mvc\Model;
+use Plico\Mvc\Model,
+    Sysclass\Models\Users\User;
 
 class UnitContent extends Model
 {
@@ -27,7 +28,7 @@ class UnitContent extends Model
 
         $this->hasOne(
             "id",
-            "Sysclass\Models\Courses\Contents\Progress",
+            "Sysclass\Models\Content\Progress\Content",
             "content_id",
             array('alias' => 'Progress')
         );
@@ -52,7 +53,7 @@ class UnitContent extends Model
         return $item;
     }
 
-    public function getFullTree() {
+    public function getFullTree(User $user = null, $only_active = false) {
         $result = $this->toFullContentArray();
         $result['info'] = json_decode($result['info']);
         

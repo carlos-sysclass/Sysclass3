@@ -29,7 +29,7 @@ class Timezones extends Component
 
                     $zone['name'] = sprintf("%s  (%s)",
                         $zone['timezone_id'],
-                        $negative ? $interval->recalculate()->format("-%H:%I") : $interval->format("+%H:%I")
+                        $negative ? $interval->recalculate()->format("-%H:%I") : $interval->recalculate()->format("+%H:%I")
                     );
 
                     $cities[$zone['timezone_id']] = $zone;
@@ -46,5 +46,23 @@ class Timezones extends Component
         array_multisort($index, SORT_ASC, $cities);
 
         return $cities;
+    }
+
+    public static function getTimeAt($timezone, DateTime $datetime = null) {
+        if (is_null($datetime)) {
+            $datetime = new \DateTime; // current time = server time
+        }
+        try {
+            $timezones = self::findAll();
+
+            if (array_key_exists($timezone, $timezones)) {
+                $otherTZ  = new \DateTimeZone($timezone);
+                $datetime->setTimezone($otherTZ);
+            }
+        } catch (Exception $e) {
+        }
+
+
+        return $datetime;
     }
 }

@@ -84,7 +84,7 @@ blocks:
       - mData: signup_enable_new_users
         sType: table-boolean
         sClass: text-center
-        label: Public enroll 
+        label: Public enrollment
 
       - mData: signup_active
         sType: table-boolean
@@ -174,12 +174,15 @@ models:
     exportMethod: ["toFullArray", ["Field"]]
   courses: 
     class: Sysclass\Models\Enrollments\Courses
-    exportMethod: ["toExtendArray"]
+    exportMethod: ["toExtendArray", ["Enrollgroups"]]
   users: 
     class: Sysclass\Models\Enrollments\CourseUsers
     exportMethod: ["toFullArray", ["User", "Course"]]
     acl:
+      create: 
+        resource: Enroll
+        action: myself
       edit:
         resource: Enroll
-        action: edit
+        action: users
 

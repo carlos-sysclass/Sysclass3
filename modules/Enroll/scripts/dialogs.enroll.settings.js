@@ -7,6 +7,7 @@ $SC.module("dialogs.enroll.settings", function(mod, app, Backbone, Marionette, $
         var dialogViewClass = $SC.module("views").dialogViewClass;
         
         var enrollUserDialogViewClass = dialogViewClass.extend({
+            renderType : "byView",
         	/*
             initialize: function() {
                 console.info('dialogs.enroll.settings/enrollUserDialogViewClass::initialize');
@@ -16,8 +17,11 @@ $SC.module("dialogs.enroll.settings", function(mod, app, Backbone, Marionette, $
             open : function() {
             	dialogViewClass.prototype.open.apply(this, arguments);
 
-				var values = this.model.toJSON();
-				this.renderItens(values);
+				//var values = this.model.toJSON();
+                //console.warn(values);
+				//this.renderItens(values);
+
+                this.render();
             },
 			setModel : function(model) {
 				this.stopListening(this.model);

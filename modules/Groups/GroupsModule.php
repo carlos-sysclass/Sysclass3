@@ -12,7 +12,7 @@ namespace Sysclass\Modules\Groups;
 /**
  * @RoutePrefix("/module/groups")
  */
-class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable
+class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
 
     /* ILinkable */
@@ -96,10 +96,37 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
         return $actions[$request];
     }
+
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'group.definition' => function($data, $self) {
+                $self->putComponent("sprintf");
+                $self->putComponent("select2");
+                $self->putComponent("data-tables");
+                $self->putComponent("jquery-builder");
+
+
+                // CREATE BLOCK CONTEXT
+                $block_context = $self->getConfig("blocks\\group.definition\\context");
+
+                $self->putItem("group_definition_static_context", $block_context['static']);
+                $self->putItem("group_definition_dynamic_context", $block_context['dynamic']);
+
+                return true;
+            }
+        );
+    }
+
+
+
+
+
     /**
      * [ add a description ]
      *
      * @Get("/item/users/{group_id}")
+     * @deprecated 3.4.1
     */
     public function getUsersInGroup($group_id) {
         $data = $this->getHttpData(func_get_args());
@@ -115,6 +142,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
      * [ add a description ]
      *
      * @Post("/item/users/switch")
+     * @deprecated 3.4.1
     */
     public function switchUserInGroup() {
         $data = $this->getHttpData(func_get_args());
@@ -138,147 +166,27 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         return array_merge($response, $info);
     }
 
-    /**
-     * [ add a description ]
-     *
-     * @url GET /item/me/:id
-    */
-    /*
-    public function getItemAction($id) {
-        $editItem = $this->model("users/groups/collection")->getItem($id);
-        return $editItem;
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url POST /item/me
-     */
-    /*
-    public function addItemAction($id)
-    {
-        $request = $this->getMatchedUrl();
+    protected function getDatatableItemOptions($item, $model) {
+        if ($model == "users") {
+            // RETURN THE OPTION TO EXCLUDE THE 
+            $model_info = $this->model_info[$model];
+            $editAllowed = $this->isResourceAllowed("edit", $model_info);
 
-        $itemModel = $this->model("user/groups/item");
-
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            //$data['login'] = $userData['login'];
-            if (($data['id'] = $itemModel->addItem($data)) !== FALSE) {
-                return $this->createRedirectResponse(
-                    $this->getBasePath() . "edit/" . $data['id'],
-                    $this->translate->translate("Group created."),
-                    "success"
-                );
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url PUT /item/me/:id
-     */
-    /*
-    public function setItemAction($id)
-    {
-        $itemModel = $this->model("user/groups/item");
-
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            if ($itemModel->setItem($data, $id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Group updated."), "success");
-                return array_merge($response, $data);
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }  
-    */
-
-    /**
-     * [ add a description ]
-     *
-     * @url DELETE /item/me/:id
-     */
-    /*
-    public function deleteItemAction($id)
-    {
-        if ($userData = $this->getCurrentUser()) {
-            $data = $this->getHttpData(func_get_args());
-
-            $itemModel = $this->model("user/groups/item");
-            if ($itemModel->deleteItem($id) !== FALSE) {
-                $response = $this->createAdviseResponse($this->translate->translate("Group removed."), "success");
-                return $response;
-            } else {
-                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("Não foi possível completar a sua requisição. Dados inválidos ", "error");
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-    */
-    /**
-     * [ add a description ]
-     *
-     * @url GET /items/me
-     * @url GET /items/me/:type
-     */
-    /*
-    public function getItemsAction($type)
-    {
-        $currentUser    = $this->getCurrentUser(true);
-        $dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
-
-        $modelRoute = "users/groups/collection";
-        $baseLink = $this->getBasePath();
-
-        $itemsCollection = $this->model($modelRoute);
-        $itemsData = $itemsCollection->getItems();
-
-
-        $items = $itemsData;
-
-        if ($type === 'combo') {
- 
-        } elseif ($type === 'datatable') {
-
-            $items = array_values($items);
-            foreach($items as $key => $item) {
-                $items[$key]['options'] = array(
-                    'edit'  => array(
-                        'icon'  => 'icon-edit',
-                        'link'  => $baseLink . "edit/" . $item['id'],
-                        'class' => 'btn-sm btn-primary'
-                    ),
-                    'remove'    => array(
-                        'icon'  => 'icon-remove',
-                        'class' => 'btn-sm btn-danger'
+            if ($editAllowed) {
+                $options['remove']  = array(
+                    'icon'  => 'fa fa-remove',
+                    'class' => 'btn-sm btn-danger tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Remove'
                     )
                 );
             }
-            return array(
-                'sEcho'                 => 1,
-                'iTotalRecords'         => count($items),
-                'iTotalDisplayRecords'  => count($items),
-                'aaData'                => array_values($items)
-            );
+            return $options;
+        } else {
+            return parent::getDatatableItemOptions($item, $model);
         }
-
-        return array_values($items);
     }
-    */
+
+
 
 }

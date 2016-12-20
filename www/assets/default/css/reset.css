@@ -277,14 +277,16 @@ a:hover, a:focus {
 .inter-navsuper-tabs .table-tab:first-child {
   border-top: none;
 }
-.inter-navsuper-tabs .table>thead>tr>th {
-  font-size: 16px;
+.inter-navsuper-tabs .table > thead > tr > th {
+  font-size: 14px;
   color: #31708f;
-  font-weight: normal;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 inter-navsuper-tabs .table > thead > tr > th i.fa {
 margin:0 4px 0 0;
 }
+/*
 .inter-navsuper-tabs .table>tbody>tr>td:first-child .fa-eye {
   text-align: center;
 }
@@ -295,6 +297,7 @@ margin:0 4px 0 0;
   float: left;
   cursor: pointer;
 }
+*/
 .inter-navsuper-tabs .table>tbody>tr>td>.at-difinf{
   float: left;
   font-size: 12px;
@@ -436,7 +439,7 @@ margin:0 4px 0 0;
   font-size: 16px !important;
 }
 .inter-navsuper-tabs .avalialbe {
-  color: #05ae0e;
+  color: #1976d2;
 }
 .inter-navsuper-tabs .avalialbe i {
   font-size: 16px !important;
@@ -445,12 +448,14 @@ margin:0 4px 0 0;
   font-size: 16px;
 }
 .inter-navsuper-tabs input {
+  /*
   width: 90%;
   background: transparent;
   border: none;
   font-style: italic;
   font-size: 24px;
   font-weight: lighter;
+  */
 }
 .inter-navsuper-tabs .btn {
   /*
@@ -467,23 +472,36 @@ margin:0 4px 0 0;
   padding: 0;
   margin: 0;
 }
-.dir-menu-bar .fa {
+.dir-menu-bar > li > a > .fa {
   margin: 0 !important;
   font-size: 19px;
 }
-.dir-menu-bar li {
+.dir-menu-bar > li {
   float: right;
   list-style: none;
   display: flex;
 }
-.dir-menu-bar li a {
+.dir-menu-bar > li > a {
   border-left: 1px solid #fff;
-  padding: 12px 13px;
   color: #fff;
-  width: 45px;
-  height: 42px;
+  height: 38px;
+  padding: 10px;
   text-align: center;
+  width: 40px;
 }
+
+.dir-menu-bar .search-container {
+  display: none;
+}
+
+.dir-menu-bar .search-container input {
+    background: #fff none repeat scroll 0 0;
+    border-width: 0;
+    height: 36px;
+    margin-top: 1px;
+    padding: 9px;
+}
+
 .inter-navsuper-tabs h3 {
   font-size: 18px;
   padding: 8px;
@@ -492,6 +510,8 @@ margin:0 4px 0 0;
   margin-bottom: 0;
   margin-top: 0;
 }
+
+
 
 /*MODAL*/
 .new-modal-v .modal-dialog {
@@ -782,13 +802,13 @@ margin:0 4px 0 0;
 .unit-table tbody tr td:first-child {
 
 }
-#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a {
+#tab_course_units .navbar-nav > li > a, #tab_program_courses .navbar-nav > li > a, #tab_program_description .navbar-nav > li > a, .navbar-widget .navbar-nav > li > a {
     padding-bottom: 2px;
     padding-top: 2px;
     padding: 9px 10px;
 	text-transform: uppercase;
 }
-#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right {
+#tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right, .navbar-widget .navbar-right {
     float: right !important;
     margin-right: 0 !important;
 }
@@ -810,16 +830,18 @@ margin:0 4px 0 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+/*
 .panel-body h2 {
   margin: 20px 0 14px;
 }
 .panel-body h2 small {
   font-weight: lighter;
 }
+
 .class="fa fa-book" {
   margin: 33px 33px 33px 33px;
 }
-
+*/
 .fc-left h2 {
   font-size: 16px !important;
   font-weight: 100;

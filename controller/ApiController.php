@@ -4,7 +4,7 @@ namespace Sysclass\Controllers;
 use Phalcon\DI,
 	Phalcon\Mvc\Dispatcher,
 	Sysclass\Models\Users\User,
-	Sysclass\Models\Courses\Course,
+	Sysclass\Models\Content\Program as Course,
 	Sysclass\Models\Enrollments\CourseUsers as Enrollment,
 	Sysclass\Models\Enrollments\Enroll,
 	Sysclass\Models\I18n\Language,
@@ -272,21 +272,26 @@ class ApiController extends \AbstractSysclassController
 												'name' => $course->name
 											);
 										} else {
-
+											// REMOVE THE USER
 											$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
 											$error = true;
 											break;
 										}
 									} else {
+										// REMOVE THE USER
 										$messages[] = $this->createResponse(400, "Course does not exists!", "error");
 										$error = true;
 									}
 								}
 							} else {
-								$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");
-								$error = true;
+								// CHECK IF THE CONFIGURATION ALLOWS THE USER TO ENTER THE SYSTEM WITHOUT A COURSE
+								if ($this->configuration->get("signup_require_program")) {
+									$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");	
+									$error = true;	
+								} else {
+									// USER CAN PROCEED WITHOUT A COURSE
+								}
 							}
-
 	 					} else {
 							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please check your info and try again!"), "error");
 							$error = true;
@@ -406,8 +411,9 @@ class ApiController extends \AbstractSysclassController
 					 */
 
 					'form_title' => $enroll->name,
-					'form_subtitle' => $this->translate->translate("Cursos de Fornecedores à Distância", null, "pt"),
-					'confirmation_text' => $this->translate->translate("<p>Your registration has been received. In a few minutes you will receive a confirmation email containing a link to conclude your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you can't find it, please return to this page and try again.</p>", null, "pt")
+					'form_subtitle' => $enroll->subtitle,
+					'confirmation_title' => $this->translate->translate("Thank You" ),
+					'confirmation_text' => $this->translate->translate("<p>Your registration has been received. In a few minutes you will receive a confirmation email containing a link to conclude your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you can't find it, please return to this page and try again.</p>")
 				];
 
 				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));

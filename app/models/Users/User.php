@@ -23,6 +23,15 @@ class User extends Model
 
         $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
 
+        $this->hasManyToMany(
+            "id",
+            "Sysclass\\Models\\Enrollments\\CourseUsers",
+            "user_id", "enroll_id",
+            "Sysclass\\Models\\Enrollments\\Enroll",
+            "id",
+            array('alias' => 'Enrollments')
+        );
+
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",
@@ -42,12 +51,14 @@ class User extends Model
                 'bind' => (new \DateTime('now'))->format('Y-m-d H:i:s')
             )
         );
-
+        /**
+          * @deprecated 3.2 Use the "Programs" identifier below
+         */
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Enrollments\\CourseUsers",
             "user_id", "course_id",
-            "Sysclass\\Models\\Courses\\Course",
+            "Sysclass\\Models\\Content\\Program",
             "id",
             array('alias' => 'Courses')
         );
@@ -346,9 +357,13 @@ class User extends Model
         $query = new Query($sql, DI::getDefault());
         $courses   = $query->execute($params);
 
-        //var_dump($users->toArray());
+        $filtered = $courses->filter(function($item) {
+            if ($item->enrollment->isAvaliable($this)) {
+                return $item;
+            }
+        });
 
-        return $courses;
+        return $filtered;
     }
 
 

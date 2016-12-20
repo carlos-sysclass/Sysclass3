@@ -7,7 +7,10 @@ namespace Sysclass\Modules\Messages;
 use Sysclass\Models\Users\Group as UserGroup,
     Sysclass\Models\Messages\Group as MessageGroup,
     Sysclass\Models\Messages\Message,
-    Sysclass\Models\Messages\Receivers;
+    Sysclass\Models\Messages\GroupReceiver,
+    Sysclass\Models\Messages\UserReceiver,
+    Sysclass\Models\Acl\Role;
+    
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -15,25 +18,8 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \IBlockProvider, \ISectionMenu, \IWidgetContainer
+class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidgetContainer
 {
-    // ISummarizable
-    public function getSummary() {
-        //$data = $this->dataAction();
-        //return false;
-        //$total = $this->getTotalUnviewed();
-        return array(
-            'type'  => 'primary',
-            //'count' => count($data),
-            'count' => 0,
-            'text'  => $this->translate->translate('Emails'),
-            'link'  => array(
-                'text'  => $this->translate->translate('View'),
-                'link'  => $this->getBasePath() . 'inbox'
-            )
-        );
-    }
-
     // IBlockProvider
     public function registerBlocks() {
         return array(
@@ -59,13 +45,11 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 $self->putComponent("wysihtml5");
                 $self->putComponent("select2");
 
-
                 $receiverGroups = UserGroup::findConnectBy(array(
                     'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
                     'connect_by' => 'behaviour_allow_messages'
                 ));
                 $self->putItem("receivers", $receiverGroups);
-
 
                 $messageGroupsRS = MessageGroup::find();
                 $messageGroups = array();
@@ -74,6 +58,10 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 }
                 $self->putItem("message_groups", $messageGroups);
 
+                $teacherRole = Role::findFirstByName('Teacher');
+                $users = $teacherRole->getAllUsers();
+
+                $this->putItem("USER_RECEIVERS", $users);
 
                 $self->putModuleScript("dialogs.messages.send");
                 $self->putSectionTemplate("dialogs", "dialogs/send");
@@ -81,58 +69,11 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
                 return true;
             }
         );
-
     }
 
-    // ISectionMenu
-    public function getSectionMenu($section_id) {
-        /*
-    	if ($section_id == "topbar") {
-
-            $total = $this->getTotalUnviewed();
-
-            $currentUser = $this->getCurrentUser();
-            $currentFolder = $this->getDefaultFolder($currentUser);
-
-            $messages = $this->getUnviewedMessages(array($currentFolder));
-
-            $items = array();
-            foreach($messages as $msg) {
-                $items[] = array(
-                    'link'      => $this->getBasePath() . "view/" . $msg['id'],
-                    'values' => array(
-                        'photo'     => 'img/avatar2.jpg',
-                        'from'      => $msg['sender'],
-                        'time'      => $msg['timestamp'],
-                        'message'   => substr(strip_tags($msg['body']), 0, 50) . "..."
-                    )
-                );
-            }
-
-    		$menuItem = array(
-    			'icon' 		=> 'envelope',
-    			'notif' 	=> $total,
-    			'text'		=> $this->translate->translate('You have %s new messages', $total),
-    			'external'	=> array(
-    				'link'	=> $this->getBasePath() . "inbox",
-    				'text'	=> $this->translate->translate('See all messages')
-    			),
-                'link'  => array(
-                    'link'  => $this->getBasePath() . "inbox",
-                    'text'  => $this->translate->translate('Messages')
-                ),
-    			'type'		=> 'inbox',
-    			'items'		=> $items,
-                'extended'  => true
-    		);
-
-    		return $menuItem;
-    	}
-        */
-    	return false;
-    }
     // IWidgetContainer
     public function getWidgets($widgetsIndexes = array(), $caller = null) {
+        /*
         $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
 
         if (
@@ -154,9 +95,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
             //$this->putCss("plugins/bootstrap-toastr/toastr.min");
             //$this->putScript("plugins/bootstrap-toastr/toastr.min");
 
-
             //$this->putModuleScript("messages");
-
 
             $this->putBlock("messages.send.dialog");
 
@@ -164,9 +103,7 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
             $recipients = $this->getMessageReceivers();
 
-
             $groupsRS = MessageGroup::find();
-
 
             foreach($groupsRS as $group) {
                 $widgets[$widgetsNames[$group->id]] = array(
@@ -183,548 +120,117 @@ class MessagesModule extends \SysclassModule implements /* \ISummarizable, */ \I
 
             return $widgets;
         }
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @Post("/item/me");
-     */
-    public function addItemAction($id)
-    {
-        $request = $this->getMatchedUrl();
-
-        if ($userData = $this->getCurrentUser(true)) {
-            //$itemModel = $this->model("user/item");
-            // TODO CHECK IF CURRENT USER CAN DO THAT
-            $data = $this->getHttpData(func_get_args());
-            $itemModel = new Message();
-            $itemModel->assign($data);
-
-            $itemModel->user_id = $userData->id;
-
-            if ($itemModel->save()) {
-
-                if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
-                    //UsersGroups::find("user_id = {$userModel->id}")->delete();
-                    
-                    foreach($data['group_id'] as $group) {
-                        $receiverModel = new Receivers();
-                        $receiverModel->message_id = $itemModel->id;
-                        $receiverModel->group_id = $group['id'];
-                        $receiverModel->save();
-                    }
-                }
-
-                return $this->createAdviseResponse(
-                    $this->translate->translate("Message created. You can check the message in your inbox."),
-                    "success"
-                );
-            } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
-                return $response;
-            }
-        } else {
-            return $this->notAuthenticatedError();
-        }
-    }
-
-    /**
-     * [getMessageGroups description]
-     * @deprecated 3.0.14
-     */
-    /*
-    protected function getMessageGroups() {
-        return $this->_getTableData(
-            "mod_messages_groups",
-            "id as id, name, icon",
-            "",
-            "id ASC"
-        );
-    }
-    */
-    /**
-     * [getMessageReceivers description]
-     * @param  [type] $group_id [description]
-     * @return [type]           [description]
-     * @deprecated 3.0.14
-     */
-    protected function getMessageReceivers($group_id = null) {
-        if (!($user instanceof MagesterUser)) {
-            $user = $this->getCurrentUser();
-        }
-        /* CREATE AN ENTRY POINT TO xentify Module */
-        //$xentifyModule = $this->loadModule("xentify");
-        $receiversCollection = $this->model("messages/receivers/collection");
-
-        $contactListData = $receiversCollection->getItems();
-
-
-        /*
-        $contactListData = $this->_getTableData(
-            "mod_messages_recipients qmr
-            LEFT OUTER JOIN mod_messages_recipients_list scope ON (scope.recipient_id = qmr.id)
-            LEFT OUTER JOIN mod_messages_groups qmg ON (qmr.group_id = qmg.id)
-            LEFT OUTER JOIN users u ON (scope.user_id = u.id)",
-            "qmr.id as recipient_id, scope.xscope_id, scope.xentify_id, qmr.qm_type, qmr.link, qmr.title, qmr.image, qmr.group_id, qmg.name as group_name",
-            "",
-            "recipient_id ASC"
-        );
         */
-        $contactList = array();
+        if (in_array("messages.inbox", $widgetsIndexes)) {
+            $this->putCss("css/reset");
 
-        foreach ($contactListData as $key => $recp) {
+            $this->putComponent("select2");
+            //$this->putComponent("bootstrap-confirmation");
+            $this->putComponent("datatables");
+            $this->putComponent("jquery-jscrollpane");
 
-            //if (!$xentifyModule->isUserInScope($user, $recp['xscope_id'], $recp['xentify_id'])) {
-            //    unset($contactListData[$key]);
-            //} else {
-                $item           = array();
-                $item['id']     = $recp['recipient_id'];
-                $item['text']   = $this->translate->translate($recp['title']);
+            $this->putModuleScript("portlet.messages");
+            
+            $this->putBlock("messages.send.dialog");
 
-                //if ($recp['qm_type'] == 'link') {
-                //    $item['href'] = $recp['link'];
-                //} else {
-                $item['link']   = $this->getBasePath() . "send/" . $recp['recipient_id'] . "?popup";
-                //}
-                //$image = explode("/", $recp['image']);
-                $item['icon'] = $recp['image'];
-                $item['color'] = $recp['image_type'];
-
-                if (!is_array($contactList[$recp['group_id']])) {
-                    $contactList[$recp['group_id']] = array();
-                }
-                $contactList[$recp['group_id']][$recp['recipient_id']] = $item;
-            //}
-        }
-        return $contactList;
-
-    }
-
-    /**
-     * Send Page Action
-     *
-     * @url GET /inbox
-     */
-    public function inboxPage($recipient_id) {
-        $this->putCss("css/pages/inbox");
-        $this->putScript("scripts/inbox");
-
-        $this->putModuleScript("inbox");
-
-        $this->display("inbox.tpl");
-    }
-
-    /**
-     * Send Page Action
-     *
-     * @url GET /send/:recipient_id
-     * @url POST /send/:recipient_id
-     * @deprecated 3.0.14
-     */
-    public function sendPage($recipient_id) {
-        $current_user = $this -> getCurrentUser(true);
-        /*
-        //$smarty -> assign("T_MODULE_CURRENT_USER" , $current_user ->getType());
-        $form = new HTML_QuickForm("mod_messages_form", "post", $_SERVER['REQUEST_URI'], "", "id = 'mod_messages_form'");
-
-        $form -> addElement('hidden', 'recipients', $recipient_id);
-
-        //$form -> addElement('hidden', 'email', $_GET['email']);
-        //$form -> addElement('hidden', 'name', $_GET['name']);
-
-        $form -> addElement('text', 'subject', $this->translate->translate("Subject"), 'class = "form-control placeholder-no-fix"');
-        $form -> addElement('textarea', 'body', $this->translate->translate("Message Body"), 'class = "wysihtml5 form-control placeholder-no-fix"');
-        //$form -> addElement('checkbox', 'email', _SENDASEMAILALSO, null, 'class = "inputCheckBox"');
-        //$form -> addRule('subject',   _THEFIELD.' "'._SUBJECT.'" '._ISMANDATORY,   'required', null, 'client');
-        //$form -> addRule('recipients',   _THEFIELD.' "'._RECIPIENTS.'" '._ISMANDATORY,   'required', null, 'client');
-        $form -> addElement('file', 'attachment[0]', $this->translate->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
-        //$form -> addElement('file', 'attachment[1]', $this->translate->translate("Attachment"), null, 'class = "form-control placeholder-no-fix"');
-        $form -> addElement('submit', 'submit_mail', _SEND);
-        */
-        //$contactList = $this->getUserContactList();
-        /*
-        if ($form -> isSubmitted() && $form -> validate()) {
-            $values = $form -> exportValues();
-
-            $userGroupsItemModel = $this->model("user/groups/item");
-
-            if (is_numeric($values['recipients'])) {
-                $recipients = $userGroupsItemModel->getUsersInGroup($values['recipients']);
-                if (count($recipients) > 0) {
-
-                    foreach ($recipients as $recipient) {
-                        $user_recipients[] = $recipient['login'];
-                        $mail_recipients[] = array(
-                            'login' => $recipient['login'],
-                            'email' => $recipient['email'],
-                            'fullname'  => $recipient['name'] . ' ' . $recipient['surname']
-                        );
-                    }
-                }
-            } else {
-            }
-
-            // ALWAYS SEND A E-MAIL
-            $values['send_email'] = 1;
-
-            //$list = implode(",",$mail_recipients);
-
-            if (count($user_recipients) == 0) {
-                $message      = $this->translate->translate("No recipients defined");
-                $message_type = 'failure';
-            } else {
-                $pm = new sC_PersonalMessage($current_user->user['login'], $user_recipients, $values['subject'], $values['body'], true);
-
-                $attachFile = array();
-
-                if (count($_POST['attachment'])) {
-                    $user = $this->getCurrentUser();
-
-                    //if (!is_dir($user['directory'])) {
-                    //    mkdir($user['directory']);
-                    //}
-
-                    $fileWrapper = $this->helper("file/wrapper");
-
-                    foreach($_POST['attachment'] as $file_name) {
-                        $filesystem = new FileSystemTree($user['directory']);
-
-                        $file = array(
-                            'error'     => 0,
-                            'size'      => $fileWrapper->getFilesize($user['login'], $file_name),
-                            'name'      => $file_name,
-                            'tmp_name'  => $fileWrapper->getFullPath($user['login'], $file_name)
-                        );
-
-                        $uploadedFile = $filesystem -> uploadFile($file, $user_dir, 0, true);
-
-                        $pm->sender_attachment_fileId =  $uploadedFile['id'];
-                        $pm->setAttachment();
-                    }
-
-                }
-
-                $result = true;
-
-                if ($values['send_email']) {
-                    set_time_limit(0);
-
-                    $courses = $current_user->getUserCourses();
-
-                    if (count($courses) > 2) {
-                        $lessonHide = true;
-                    } else {
-                        $userLessons = $current_user->getLessons();
-                    }
-
-                    $courseArray = array();
-                    foreach ($courses as $course) {
-                        if (!$lessonHide) {
-                            $lessons = $course->getCourseLessons();
-                            $lessonArray = array();
-                            foreach ($lessons as $lesson) {
-                                if (in_array($lesson->lesson['id'], array_keys($userLessons))) {
-                                    $lessonArray[] = "<li>" . $lesson->lesson['name'] . "</li>";
-                                }
-
-                                //$lessons = $course->getLessons()
-                            }
-
-                            $courseArray[] = "<li>" . "<strong>" . $course->course['name'] . "</strong><ul>" . implode(",", $lessonArray) . "</ul></li>";
-                        } else {
-                            $courseArray[] = "<li>" . $course->course['name'] . "</li>";
-                        }
-                    }
-
-                    foreach ($mail_recipients as $key => $mail) {
-                        // PREPEND USER NAME MESSAGE
-                        $email_body = $this->translate->translate(
-                            sprintf("Mensagem de: %s <strong>(%s)</strong> &lt;%s&gt;", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['login'], $current_user->user['email']) .
-                                "\n<br />" .
-                                "Matriculado nos seguintes cursos/disciplinas:\n<br />" .
-                                sprintf("<ul>%s</ul>", implode("", $courseArray)) .
-                                "Corpo da Mensagem:\n<br /><br />" .
-                            $values['body']
-                        );
-
-                        $result = $result && sC_mail(
-                            // CHECK IF IS NECESSARY TO CHANGE DE SENDER E-MAIL
-                            //sprintf("%s <%s>", $current_user->user['name'] . ' ' . $current_user->user['surname'], $current_user->user['email']), // EMAIL FROM => COMMA SEP LIST
-                            null,
-                            //sprintf("%s <%s>", $mail['fullname'], $mail['email']), // EMAIL TO => COMMA SEP LIST
-                            sprintf("%s", $mail['email']), // EMAIL TO => COMMA SEP LIST
-                            $values['subject'], // EMAIL SUBJECT
-                            $email_body,    // EMAIL BODY
-                            $attachFile,        // ATTACHMENTS
-                            false,              // ONLY TEXT ?
-                            false               // SEND AS BCC ?
-                        );
-                    }
-                }
-
-                if ($result && $pm -> send($values['email'])) { // DO NOT SEND EMAIL
-                    $message      = $this->translate->translate("Your message was sent.");
-                    $message_type = 'success';
-                } else {
-                    $message      = $pm -> errorMessage;
-                    $message_type = 'danger';
-                }
-            }
-            // RETURN A JSON TO CLIENT
-            return array(
-                'message'       => $message,
-                'message_type'  => $message_type
-            );
-            exit;
-        }
-        */
-       /*
-        $renderer = new HTML_QuickForm_Renderer_ArraySmarty($smarty);                  //Create a smarty renderer
-        $renderer -> setRequiredTemplate (
-             '{$html}{if $required}
-            &nbsp;<span class = "formRequired">*</span>
-            {/if}');
-        $form -> setJsWarnings(_BEFOREJAVASCRIPTERROR, _AFTERJAVASCRIPTERROR);          //Set javascript error messages
-        $form -> setRequiredNote(_REQUIREDNOTE);
-        $form -> accept($renderer);                                                     //Assign this form to the renderer, so that corresponding template code is created
-
-        $this->putItem('MOD_MESSAGES_FORM', $renderer -> toArray());
-        $this->putItem("MESSAGE_MAIL" , $message);
-        $this->putItem("MESSAGE_MAIL_TYPE" , $message_type);
-        */
-
-        $this->display("send.form.tpl");
-    }
-
-    /**
-     * Attach File Action
-     *
-     * @url POST /attach_file
-     * @deprecated 3.0.14
-     */
-    public function attachFile($recipient_id) {
-        if (count($_FILES) > 0) {
-            $fileWrapper = $this->helper("file/wrapper");
-
-            $user = $this->getCurrentUser();
-            $result = array();
-            foreach($_FILES as $index => $file) {
+            $block_context = $this->getConfig("widgets\\messages.inbox\context");
+            $this->putItem("messages_block_context", $block_context);
                 /*
-                array(5) {
-                ["name"]=> string(14) "2014-11-28.txt"
-                ["type"]=> string(10) "text/plain"
-                ["tmp_name"]=> string(14) "/tmp/phpsYLhov"
-                ["error"]=> int(0)
-                ["size"]=> int(10423)
+                $receiverGroups = UserGroup::findConnectBy(array(
+                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
+                    'connect_by' => 'behaviour_allow_messages'
+                ));
+                */
+                $receiverGroups = UserGroup::find([
+                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1'
+                ]);
+
+                $receivers = [];
+
+                foreach($receiverGroups as $receiverModel) {
+                    $receiverModel->translate();
+
+                    $receivers[] = $receiverModel->toArray();
                 }
+
+                $this->putItem("messages_group_receivers", $receivers);
+                /*
+                $messageGroupsRS = MessageGroup::find();
+                $messageGroups = array();
+                foreach($messageGroupsRS as $messageGroup) {
+                    $messageGroups[$messageGroup->id] = $messageGroup->name;
+                }
+                $this->putItem("message_groups", $messageGroups);
                 */
 
-                $result = $fileWrapper->uploadObjectByPath(
-                    $user['login'],
-                    $file['name'],
-                    $file['tmp_name']
-                );
+            return array(
+                "messages.inbox" => array(
+                    //'title'     => $this->translate->translate($group['name']),
+                    'type'      => 'messages', // USED BY JS SUBMODULE 
+                    'id'        => 'messages-widget',
+                    'template'  => $this->template("widgets/inbox"),
+                    'box'       => 'dark-blue tabbable tabbable-left',
+                    'panel'     => true,
+                    'body'      => 'no-padding'
+                )
+            );
+        }
+        return false;
 
+    }
+
+    public function afterModelCreate($evt, $model, $data) {
+        if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
+            //UsersGroups::find("user_id = {$userModel->id}")->delete();
+            foreach($data['group_id'] as $group) {
+                $receiverModel = new GroupReceiver();
+                $receiverModel->message_id = $model->id;
+                $receiverModel->group_id = $group['id'];
+                $receiverModel->save();
             }
-            return $result;
+        }
+        if (array_key_exists('user_id', $data) && is_array($data['user_id']) ) {
+            foreach($data['user_id'] as $user) {
+                $receiverModel = new UserReceiver();
+                $receiverModel->message_id = $model->id;
+                $receiverModel->user_id = $user['id'];
+                $receiverModel->save();
+            }
         }
 
-        return $this->invalidRequestError();
+        /**
+          * @todo TRIGGER EVENT TO SENT THE EMAILL OR TO CREATE THE QUEUE FOR THE EMAIL OVERVIEW
+         */
+        
+        return true;
     }
 
+    protected function getDatatableItemOptions($item, $model = 'me') {
+        $options = parent::getDatatableItemOptions($item, $model);
+        $model_info = $this->model_info[$model];
 
+        $trashAllowed = $this->isResourceAllowed("trash", $model_info);
 
+        $options = array();
 
-
-    /**
-     * Send Page Action
-     *
-     * @url GET /data/folders
-     * @deprecated
-     */
-    public function dataFoldersAction() {
-        $currentUser = $this->getCurrentUser();
-        $currentFolder = $this->getDefaultFolder($currentUser);
-
-        $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
-
-        return array_values($folders);
-    }
-    /**
-     * Send Page Action
-     *
-     * @url GET /data/messages
-     * @deprecated
-     */
-    public function dataAction() {
-        $currentUser = $this->getCurrentUser();
-        $currentFolder = $this->getDefaultFolder($currentUser);
-
-        $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
-
-        $foldersID = array_keys($folders);
-
-        $folderMessages = sC_getTableData(
-            "f_personal_messages",
-            "*",
-            sprintf("users_LOGIN='%s' and f_folders_ID IN (%s) ", $currentUser['login'], implode(",", $foldersID)),
-            "priority desc, viewed,timestamp desc"
+        $options['view']  = array(
+            'link'  => 'javascript:void(0)',
+            'icon'  => 'fa fa-envelope',
+            'class' => 'btn-sm btn-primary tooltips',
+            'attrs' => array(
+               'data-original-title' => $this->translate->translate('View')
+            )
         );
 
-        /*
-
-        if (isset($_GET['flag']) && sC_checkParameter($_GET['flag'], 'id')) {
-
-            sC_updateTableData("f_personal_messages", array('priority' => 1), "id=".$_GET['flag']);
-
-        } elseif (isset($_GET['unflag']) && sC_checkParameter($_GET['unflag'], 'id')) {
-
-            sC_updateTableData("f_personal_messages", array('priority' => 0), "id=".$_GET['unflag']);
-
-        } elseif (isset($_GET['read']) && sC_checkParameter($_GET['read'], 'id')) {
-
-            sC_updateTableData("f_personal_messages", array('viewed' => 1), "id=".$_GET['read']);
-
-        } elseif (isset($_GET['unread']) && sC_checkParameter($_GET['unread'], 'id')) {
-
-            sC_updateTableData("f_personal_messages", array('viewed' => 0), "id=".$_GET['unread']);
-
+        if ($trashAllowed) {
+            $options['remove']  = array(
+                'icon'  => 'fa fa-trash',
+                'class' => 'btn-sm btn-danger tooltips',
+                'attrs' => array(
+                    'data-original-title' => $this->translate->translate('Remove')
+                )
+            );
         }
-
-        isset($_GET['page']) && sC_checkParameter($_GET['page'], 'uint') ? $page = $_GET['page'] : $page = 1;
-
-        $p_messages_per_page = sC_getTableData("f_configuration", "value", "name='personal_messages_per_page'");
-
-        $p_messages_per_page[0]['value'] ? $p_messages_per_page = $p_messages_per_page[0]['value'] : $p_messages_per_page = 20;
-
-        */
-        // Create ajax enabled table for employees
-        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
-            $sort = $_GET['sort'];
-            isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
-        } else {
-            $sort = 'priority';
-        }
-        $folderMessages = sC_multiSort($folderMessages, $_GET['sort'], $order);
-        if (isset($_GET['filter'])) {
-            $folderMessages = sC_filterData($folderMessages , $_GET['filter']);
-        }
-        //$smarty -> assign("T_MESSAGES_SIZE", sizeof($folderMessages));
-        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
-            $folderMessages = array_slice($folderMessages, $offset, $limit);
-        }
-        // Keep only the first characters of the recipient's list
-        //$subject_chars   = 50;
-        //$recipient_chars = 30;
-        /*
-
-            foreach ($messages as $key => $p_message) {
-
-                if (strlen($p_message['title']) > ($subject_chars - (($p_message['attachments'])? 4:0))) {
-
-                    $messages[$key]['title'] = mb_substr($p_message['title'],0,$subject_chars - (($p_message['attachments'])? 4:0) - 3) . "...";
-
-                }
-
-                if (strlen($p_message['recipient']) > $recipient_chars) {
-
-                    $messages[$key]['recipient'] = mb_substr($p_message['recipient'],0,$recipient_chars - 3) . "...";
-
-                }
-
-            }
-
-        */
-        foreach ($folderMessages as $key => $value) {
-            $recipients = explode(",", $folderMessages[$key]['recipient']);
-            foreach ($recipients as $k => $login) {
-                $recipients[$k] = formatLogin(trim($login));
-            }
-            $folderMessages[$key]['recipient'] = implode(", ", $recipients);
-        }
-        //$smarty -> assign("T_MESSAGES", $folderMessages);
-        return $folderMessages;
+        return $options;
     }
-
-    /* MODEL FUNCTIONS */
-    /**
-     * @deprecated
-     */
-    public function getTotalUnviewed($currentUser = null, $folder = null)
-    {
-        if (is_null($currentUser)) {
-            $currentUser = $this->getCurrentUser(false);
-        }
-        if (is_null($folder)) {
-            $folder = $this->getDefaultFolder($currentUser);
-        }
-
-        /** @todo CHECK FOR TRANSLATION MODE */
-        $folderMessages = $this->_countTableData(
-            "f_personal_messages",
-            "*",
-            "users_LOGIN = '".$currentUser['login']."' AND f_folders_ID=".$folder . " AND viewed = 0",
-            "priority desc, viewed,timestamp desc"
-        );
-        return $folderMessages[0]['count'];
-    }
-    /**
-     * @deprecated
-     */
-    public function getUnviewedMessages($foldersID = null) {
-        $currentUser = $this->getCurrentUser();
-        $currentFolder = $this->getDefaultFolder($currentUser);
-
-        if (is_null($foldersID)) {
-            $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
-            $foldersID = array_keys($folders);
-        }
-
-        $folderMessages = sC_getTableData(
-            "f_personal_messages",
-            "*",
-            sprintf("users_LOGIN='%s' and f_folders_ID IN (%s) AND viewed = 0", $currentUser['login'], implode(",", $foldersID)),
-            "priority desc, viewed,timestamp desc"
-        );
-
-        // Create ajax enabled table for employees
-        isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'uint') ? $limit = $_GET['limit'] : $limit = G_DEFAULT_TABLE_SIZE;
-        if (isset($_GET['sort']) && sC_checkParameter($_GET['sort'], 'text')) {
-            $sort = $_GET['sort'];
-            isset($_GET['order']) && $_GET['order'] == 'desc' ? $order = 'desc' : $order = 'asc';
-        } else {
-            $sort = 'priority';
-        }
-        $folderMessages = sC_multiSort($folderMessages, $_GET['sort'], $order);
-        if (isset($_GET['filter'])) {
-            $folderMessages = sC_filterData($folderMessages , $_GET['filter']);
-        }
-        //$smarty -> assign("T_MESSAGES_SIZE", sizeof($folderMessages));
-        if (isset($_GET['limit']) && sC_checkParameter($_GET['limit'], 'int')) {
-            isset($_GET['offset']) && sC_checkParameter($_GET['offset'], 'int') ? $offset = $_GET['offset'] : $offset = 0;
-            $folderMessages = array_slice($folderMessages, $offset, $limit);
-        }
-
-        foreach ($folderMessages as $key => $value) {
-            $recipients = explode(",", $folderMessages[$key]['recipient']);
-            foreach ($recipients as $k => $login) {
-                $recipients[$k] = formatLogin(trim($login));
-            }
-            $folderMessages[$key]['recipient'] = implode(", ", $recipients);
-        }
-        //$smarty -> assign("T_MESSAGES", $folderMessages);
-        return $folderMessages;
-    }
-    /**
-     * @deprecated
-     */
-    public function getDefaultFolder($currentUser) {
-        $folders = sC_PersonalMessage :: getUserFolders($currentUser['login']);
-        reset($folders);
-        return $currentFolder = key($folders); //key($folders) is the id of the first folder, which is always the Incoming
-    }
-
 }

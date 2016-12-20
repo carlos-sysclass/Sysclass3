@@ -6,6 +6,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
 		var baseChildTabViewClass = app.module("views").baseChildTabViewClass;
 		var baseChildTabViewItemClass = app.module("views").baseChildTabViewItemClass;
+		var tableViewClass = $SC.module("utils.datatables").tableViewClass;
 
 		var navigationViewClass = Backbone.View.extend({
 			events : {
@@ -156,19 +157,44 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				console.info('portlet.content/programDescriptionTabViewClass::initialize');
 				//this.listenTo(this.model, 'sync', this.render.bind(this));
+
+				this.navigationView 	= new navigationViewClass({
+					el : this.$(".navbar-program"),
+					collection : mod.programsCollection.getCurrentPrograms.bind(mod.programsCollection),
+					pointer : mod.programsCollection.getProgramIndex.bind(mod.programsCollection)
+				});
 				this.render();
 
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+
+    			var scrollOptions = {
+				    size: '7px',
+				    wrapperClass: "slimScrollDiv",
+				    color: '#a1b2bd',
+				    railColor: '#333',
+				    position: 'right',
+				    alwaysVisible: false,
+				    railVisible: false,
+				    disableFadeOut: true,
+				    allowPageScroll : true,
+				    wheelStep : 2,
+				    height: '365px',
+				};
+       			this.$(".program-description-content-scroller").slimScroll(scrollOptions);
+
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
+
 				this.render();
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
-				this.$el.empty().append(this.template(this.model.toJSON()));
+				this.$(".program-description-content").empty().append(this.template(this.model.toJSON()));
 
+				this.navigationView.render();
 				this.renderProgress();
 			},
 			renderProgress : function(collection, data, response) {
@@ -181,12 +207,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					$(".program-indicator span.counter").hide();
 				}
 
+
 				if (totalUnits > 1) {
-					$(".program-indicator span.singular").hide();
-					$(".program-indicator span.plural").show();
+					$(".program-indicator span.singular").attr(
+						"style",
+						"display: none !important"
+					);
+					$(".program-indicator span.plural").attr(
+						"style",
+						"display: inline !important"
+					);
 				} else {
-					$(".program-indicator span.singular").show();
-					$(".program-indicator span.plural").hide();
+					$(".program-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+
+					$(".program-indicator span.plural").attr(
+						"style",
+						"display: none !important"
+					);
 				}
 			},
 		});
@@ -267,7 +307,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		})
 
 		var programCoursesTabViewClass = baseChildTabViewClass.extend({
-			nofoundTemplate : _.template($("#tab_program_courses-nofound-template").html()),
+			//nofoundTemplate : _.template($("#tab_program_courses-nofound-template").html()),
 			childViewClass : programCoursesTabViewItemClass,
 			initialize: function() {
 				console.info('portlet.content/classInfoTabViewClass::initialize');
@@ -284,19 +324,52 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "program.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+    			// START DATATABLE HERE
+    		    this.tableView =  new tableViewClass({
+			        el : this.$("#course-table"),
+			        datatable : {
+			        	bAutoWidth: true,
+			        	serverSide : false,
+			        	searching : false,
+			        	ordering: false,
+			            //"sAjaxSource": message_context.ajax_source,
+			            //"aoColumns": message_context.datatable_fields,
+			            dom : "<t>",
+			            //bScrollInfinite: true,
+			            //bScrollCollapse: false,
+			            //sScrollY: "274px",
+			            sScrollY: true,
+			            paging: false,
+			            fixedHeader: false
+			        },
+			        scrollY : true,
+			        slimScroll : {
+					    height: '329px',
+					}
+			    });
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
 				this.render();
 			},
 			render : function(model) {
+				this.tableView.getApi().destroy(false);
+
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
 
 				this.navigationView.render();
 				this.renderProgress();
+
+				this.onVisible();
+			},
+			onVisible : function() {
+				console.warn("ON VISIBLE");
+				//this.tableView.getApi().destroy(false);
+				this.tableView.recreate();
 			},
 			renderProgress : function(collection, data, response) {
-				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
+				console.info('portlet.content/programCoursesTabViewClass::renderProgress');
 				//var totalUnits = mod.progressCollection.getTotalCourses();
 				var totalUnits = mod.programsCollection.getCurrentCourses().size();
 
@@ -309,12 +382,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".course-indicator span.singular").hide();
-					$(".course-indicator span.plural").show();
+					$(".course-indicator span.singular").attr(
+						"style",
+						"display: none !important"
+					);
+					$(".course-indicator span.plural").attr(
+						"style",
+						"display: inline !important"
+					);
 				} else {
-					$(".course-indicator span.singular").show();
-					$(".course-indicator span.plural").hide();
+					$(".course-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+
+					$(".course-indicator span.plural").attr(
+						"style",
+						"display: none !important"
+					);
 				}
+
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentCourses();
@@ -464,7 +551,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 		var courseUnitsTabViewClass = baseChildTabViewClass.extend({
-			nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
+			//nofoundTemplate : _.template($("#tab_courses_child-nofound-template").html()),
 			childViewClass : courseUnitsTabViewItemClass,
 	        events : {
 	            "click .close-content-sidebar" : "hideContentSidebar"
@@ -485,6 +572,32 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(mod.programsCollection, "course.changed", this.setModel.bind(this));
 				this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
+
+    			// START DATATABLE HERE
+    		    this.tableView =  new tableViewClass({
+			        el : this.$("#unit-table"),
+			        datatable : {
+			        	bAutoWidth: true,
+			        	serverSide : false,
+			        	searching : false,
+			        	ordering: false,
+			            //"sAjaxSource": message_context.ajax_source,
+			            //"aoColumns": message_context.datatable_fields,
+			            dom : "<t>",
+			            //bScrollInfinite: true,
+			            //bScrollCollapse: false,
+			            //sScrollY: "274px",
+			            sScrollY: true,
+			            paging: false,
+			            fixedHeader: false
+			        },
+			        scrollY : true,
+			        slimScroll : {
+					    height: '329px',
+					}
+			    });
+    			//$SC.addTable("messages-table-messages", this.tableView);
+
 			},
 			setModel : function(model) {
 				baseChildTabViewClass.prototype.setModel.apply(this, arguments);
@@ -492,14 +605,23 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function(model) {
+				this.tableView.getApi().destroy(false);
+
 				baseChildTabViewClass.prototype.render.apply(this, arguments);
+
+				//this.tableView.recreate();
 
 				this.navigationView.render();
 				this.renderProgress();
 
+				this.onVisible();
 
-
-				app.module("ui").refresh(this.$el);
+				//app.module("ui").refresh(this.$el);
+			},
+			onVisible : function() {
+				console.warn("ON VISIBLE");
+				//this.tableView.getApi().destroy(false);
+				this.tableView.recreate();
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
@@ -513,15 +635,27 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".unit-indicator span.singular").hide();
-					$(".unit-indicator span.plural").show();
+					$(".unit-indicator span.singular").attr(
+						"style",
+						"display: none !important"
+					);
+					$(".unit-indicator span.plural").attr(
+						"style",
+						"display: inline !important"
+					);
 				} else {
-					$(".unit-indicator span.singular").show();
-					$(".unit-indicator span.plural").hide();
+					$(".unit-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+
+					$(".unit-indicator span.plural").attr(
+						"style",
+						"display: none !important"
+					);
 				}
+
 			},
-
-
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			},
@@ -926,6 +1060,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.renderCourse();
 				this.renderUnit();
 
+				this.renderTabs();
+
 				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
 			
@@ -958,6 +1094,31 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 				//this.$(".unit-title").html(this.collection.getCurrentUnit().get("name"));
 				this.$(".unit-count").html(this.collection.getCurrentUnits().size());
+			},
+			renderTabs : function() {
+				this.$(".widget-tabs-container a[data-toggle='tab']")
+					.on('shown.bs.tab', function (e) {
+						console.warn($(e.target).data('settingUpdate'));
+
+						var current_tab = $(e.target).data('settingUpdate');
+
+						this.model.set("content_current_tab", current_tab);
+
+						if (current_tab == "course") {
+							this.programCoursesTabView.onVisible();
+						} else if (current_tab == "unit") {
+							this.courseUnitsTabView.onVisible();
+						}
+						
+
+						//this.model.save();
+  						//e.target // newly activated tab
+  						//e.relatedTarget // previous active tab
+					}.bind(this));
+
+				var current_tab = this.model.get("content_current_tab");
+				this.$(".widget-tabs-container a[data-toggle='tab'][data-setting-update='" + current_tab + "']")
+					.tab('show');
 			},
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
@@ -1539,6 +1700,28 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   					this.getCurrentUnit()
 				);
 			},
+			toPreviousProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex <= 0) {
+					return false;
+				}
+				programIndex--;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
+			toNextProgramIndex : function() {
+				var programIndex = this.getProgramIndex();
+				if (programIndex >= this.size()) {
+					return false;
+				}
+				programIndex++;
+				var model = this.at(programIndex);
+				if (!_.isUndefined(model)) {
+					this.moveToProgram(model.get("id"));
+				}
+			},
 			moveToProgram : function(program_id) {
 				var model = this.findWhere({id : program_id});
 				//var model = this.courses.findWhere({id : course_id});
@@ -1631,7 +1814,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			// COLLECTIONS
 			getCurrentPrograms : function() {
-				return this;
+				if (_.isNull(this.programs)) {
+					this.programs = this;
+
+					this.listenTo(this.programs, "previous", this.toPreviousProgramIndex.bind(this));
+					this.listenTo(this.programs, "next", this.toNextProgramIndex.bind(this));
+				}
+				return this.programs;
 			},
 			getCurrentCourses : function() {
 				if (_.isNull(this.courses)) {
@@ -1780,9 +1969,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	mod.programsCollection = null;
 	mod.progressCollection = null;
 
-	mod.on("start", function() {
-		//var userSettingsModel = new userSettingsModelClass();
-		//
+	this.listenTo(app, "settings.sysclass", function() {
 		var contentInfo = $SC.getResource("content_widget_data");
 
 		mod.programsCollection = new this.collections.programs({
@@ -1800,7 +1987,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			collection : mod.programsCollection,
 			el: '#content-widget'
 		});
-
 	});
 
 	/*

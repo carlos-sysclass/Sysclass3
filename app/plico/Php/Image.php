@@ -7,6 +7,8 @@ class Image extends Component
 {
     protected static $cfg;
 
+    protected static $cache_dir = "images/";
+
     public function resize($src, $coords, $width, $height) {
         $img_r = \imagecreatefromstring($src);
 
@@ -44,6 +46,38 @@ class Image extends Component
         $result = \imagejpeg($resource, $full_path, $quality);
 
         return ($result) ? $full_path : FALSE;
+    }
+
+    public static function getCached($cache_slug, $as_stream) {
+        // GET CACHE DIRECTORY FROM CONFIGURATION, SAVE THE FILE AND RETURN
+        $environment = \Phalcon\DI::getDefault()->get('environment');
+        $cache_dir = $environment['path/cache'] . self::$cache_dir;
+
+        $full_path = $cache_dir . $cache_slug . ".png";
+
+        if (file_exists($full_path)) {
+            if ($as_stream) {
+                return file_get_contents($full_path);
+            } else {
+                return $full_path;
+            }
+        }
+    }    
+
+    public function cache($resource, $cache_slug, $as_stream, $type = "png") {
+        // GET CACHE DIRECTORY FROM CONFIGURATION, SAVE THE FILE AND RETURN
+
+        $cache_dir = $this->environment['path/cache'] . self::$cache_dir;
+
+        $full_path = $cache_dir . $cache_slug . ".png";
+
+        $result = \imagepng($resource, $full_path, $quality);
+
+        if ($result) {
+            return self::getCached($cache_slug, $as_stream);
+        }
+        return false;
+        
     }
     
 }

@@ -2,19 +2,81 @@
 namespace Sysclass\Models\Enrollments;
 
 use Plico\Mvc\Model,
+    Sysclass\Models\Users\User,
+    Sysclass\Models\Enrollments\CoursesRestrictGroups,
     Phalcon\Db\Column,
     Phalcon\Mvc\Model\MetaData,
     Phalcon\Mvc\Model\Message as Message;
 
 class Courses extends Model
 {
+    protected $assignedData = null;
+
     public function initialize()
     {
         $this->setSource("mod_enroll_courses");
 
         $this->belongsTo("enroll_id", "Sysclass\\Models\\Enrollments\\Enroll", "id",  array('alias' => 'Enroll'));
-        $this->belongsTo("course_id", "Sysclass\\Models\\Courses\\Course", "id",  array('alias' => 'Course'));
+        $this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id",  array('alias' => 'Course'));
+
+        $this->hasMany("id", "Sysclass\\Models\\Enrollments\\CoursesRestrictGroups", "enroll_course_id",  array('alias' => 'Enrollgroups'));
+
+        $this->hasManyToMany(
+            "id", 
+            "Sysclass\\Models\\Enrollments\\CoursesRestrictGroups", 
+            "enroll_course_id", "group_id",
+            "Sysclass\\Models\\Users\\Group", 
+            "id",
+            ['alias' => 'Groups']
+        );
     }
+
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        $this->assignedData = $data;
+
+        return parent::assign($data, $dataColumnMap, $whiteList);
+    }
+
+    public function afterSave() {
+        // SAVE THE LINKED TEST
+        if (array_key_exists('enrollgroups', $this->assignedData) && is_array($this->assignedData['enrollgroups'])) {
+
+            $this->getEnrollgroups()->delete();
+
+            foreach ($this->assignedData['enrollgroups'] as $group) {
+                $restrictGroup = new CoursesRestrictGroups();
+                $restrictGroup->assign([
+                    'group_id' => $group['group_id']
+                ]);
+                $restrictGroup->enroll_course_id = $this->id;
+                $restrictGroup->save();
+            }
+        }
+    }
+
+    public function isAvaliable(User $user = null) {
+        if (is_null($user)) {
+            $user = $this->getDI()->get('user');
+        }
+        if (!$user) {
+            return false;
+        }
+
+        $groups =  $this->getGroups();
+
+        if ($groups->count() == 0) {
+            return true;
+        }
+
+        foreach($groups as $group) {
+            if ($group->hasUser($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /*
     public function userCanEnroll($user_id, $course_id) {
         $depinj = DI::getDefault();

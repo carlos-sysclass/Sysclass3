@@ -11,6 +11,9 @@
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group Behaviour"}</a>
 			</li>
 			{/if}
+			<li>
+				<a href="#tab-group-definition" data-toggle="tab">{translateToken value="Definition"}</a>
+			</li>
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 			<li>
 				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Users"}</a>
@@ -49,6 +52,83 @@
 				    {/foreach}
 				{/if}
 			</div>
+			<div class="tab-pane fade in" id="tab-group-definition">
+				<div class="form-body">
+					<h5 class="form-section margin-bottom-10 margin-top-10">
+						<i class="fa fa-cogs"></i>
+						{translateToken value="Group Type"}
+						<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='For static groups, you can manually select the users inside this group. For dynamic groups, you select the criteria used to automaticaly select the users.'}">
+					        <i class="fa fa-question"></i>
+					    </span>
+					</h5>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+					            <label>
+					                <input type="radio" name="admittance_type" data-update="dynamic" class="icheck-me" data-skin="square" data-color="green" value="0"> {translateToken value='Static'}
+					            </label>
+					        </div>
+					    </div>
+						<div class="col-md-6">
+							<div class="form-group">
+					            <label>
+					                <input type="radio" name="admittance_type" data-update="dynamic" class="icheck-me" data-skin="square" data-color="blue" value="1"> {translateToken value='Dynamic'}
+					            </label>
+					        </div>
+					    </div>
+					</div>
+				</div>
+
+				<div class="admittance-type-container">
+					<div class="dynamic-item dynamic-item-static hidden">
+						<!-- PUT HERE THE USER WIDGET TO ADD USERS -->
+
+					    <div class="alert alert-info">
+					        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
+					        <p>
+					            {translateToken value="Here you can select the current users inside this group."}
+					        </p>
+					    </div>
+				        <div class="form-group">
+				            <label class="">{translateToken value="Search for a User"}</label>
+				            <input type="hidden" class="select2-me form-control col-md-12 user-search" name="user" data-placeholder="{translateToken value='Please Select'}" data-url="/module/groups/items/non-users/combo/"
+				            data-format-as="default"
+				            data-format-as-template="%(name)s %(surname)s <%(email)s>"
+				             />
+				        </div>
+					    <div class="row margin-top-20">
+					        <div class="col-md-12">
+					            {include "`$smarty.current_dir`/blocks/table.tpl" 
+					            T_MODULE_CONTEXT=$T_GROUP_DEFINITION_STATIC_CONTEXT
+					            T_MODULE_ID=$T_GROUP_DEFINITION_STATIC_CONTEXT.block_id}
+					        </div>
+					    </div>
+					</div>
+					<div class="dynamic-item dynamic-item-dynamic hidden">
+
+
+					    <div class="alert alert-info">
+					        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
+					        <p>
+					            {translateToken value="Here you can select the criteria used to select the users inside this group."}
+					        </p>
+					    </div>
+
+						<div class="jquery-builder"></div>
+
+						<h5 class="form-section">
+							<i class="fa fa-users"></i>
+							{translateToken value="User List"}
+						</h5>
+
+						{include "`$smarty.current_dir`/blocks/table.tpl" T_MODULE_CONTEXT=$T_GROUP_DEFINITION_DYNAMIC_CONTEXT T_MODULE_ID=$T_GROUP_DEFINITION_DYNAMIC_CONTEXT.block_id}
+
+						<div class="builder-users-list"></div>
+					</div>
+				</div>
+			</div>
+
+
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
 

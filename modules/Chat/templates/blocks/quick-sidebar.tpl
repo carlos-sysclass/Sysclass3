@@ -67,22 +67,22 @@
         -->
         {if $receiveAllowed}
             <% if (!model.isOwner) { %>
-            <button type="button" class="btn btn-circle btn-sm btn-primary hidden tooltips show-hover assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
+            <button type="button" class="btn btn-sm btn-primary hidden tooltips show-hover assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
                 <i class="fa fa-sign-in"></i>
             </button>
             <% } %> 
         {/if}
         {if $assignAllowed}
-            <button type="button" class="btn btn-circle btn-sm btn-info hidden tooltips show-hover assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
+            <button type="button" class="btn btn-sm btn-info hidden tooltips show-hover assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
                 <i class="fa fa-sign-out"></i>
             </button>
         {/if}
-        <button type="button" class="btn btn-circle btn-sm btn-warning hidden tooltips show-hover resolve-action" data-original-title="{translateToken value='Set Resolution'}">
+        <button type="button" class="btn btn-sm btn-warning hidden tooltips show-hover resolve-action" data-original-title="{translateToken value='Set Resolution'}">
             <i class="fa fa-check-square-o"></i>
         </button>
 
         <button type="button"
-            class="btn btn-circle btn-sm btn-danger hidden show-hover delete-action"
+            class="btn btn-sm btn-danger hidden show-hover delete-action"
             data-toggle="confirmation"
             data-original-title="{translateToken value='Do you really want to remove this conversation?'}"
             data-placement="left"
@@ -99,51 +99,52 @@
         </button>
 
         <% if ( model.new_count > 0) { %>
-            <button type="button" class="btn btn-circle btn-sm btn-danger btn-disabled">
+            <button type="button" class="btn btn-sm btn-danger btn-disabled">
                 <%= model.new_count %>
             </button>
         <% } %>
     </div>
     <div class="media-body">
-        <h4 class="media-heading"><%= model.requester.name %> <%= model.requester.surname %></h4>
-        <div class="media-heading-sub"> CEO, Loop Inc </div>
+        <h4 class="media-heading"><%= model.another.name %> <%= model.another.surname %></h4>
+        <!-- <div class="media-heading-sub"> CEO, Loop Inc </div> -->
         <div class="media-heading-small"><%= moment.unix(model.ping).fromNow() %></div>
     </div>
 </script>
 
 <script type="text/template" id="sidebar-chat-item-template">
-<div class="post <% if (model.mine) { %>out<% } else { %>in<% } %>">
-    <img class="avatar" alt="" src="../assets/layouts/layout/img/avatar3.jpg" />
-    <div class="message">
-        <span class="arrow"></span>
-        <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
-        <span class="datetime"><%= moment.unix(model.sent).format("HH:mm:ss") %></span>
-        <span class="body"> <%= model.message %> </span>
+    <div class="post <% if (model.mine) { %>out<% } else { %>in<% } %>">
+        <img class="avatar" alt="" src="/module/users/avatar/<%= model.from.id %>" />
+        <div class="message">
+            <span class="arrow"></span>
+            <a href="javascript:;" class="name"><%= model.from.name %> <%= model.from.surname %></a>
+            <span class="datetime"><%= moment.unix(model.sent).format("HH:mm:ss") %></span>
+            <span class="body"> <%= model.message %> </span>
+        </div>
     </div>
-</div>
+    </script>
+    <script type="text/template" id="sidebar-chat-item-info-template">
+    <hr />
+    <div class="message text-center"><i><%= model.message %></i></div>
+    <hr />
 </script>
-<script type="text/template" id="sidebar-chat-item-info-template">
-<hr />
-<div class="message text-center"><i><%= model.message %></i></div>
-<hr />
-</script>
+
 <script type="text/template" id="sidebar-conversation-item-template">
     <div class="page-quick-sidebar-nav">
-        <button type="button" class="btn btn-circle btn-sm btn-default show-hover page-quick-sidebar-back-to-list">
+        <button type="button" class="btn btn-sm btn-default show-hover page-quick-sidebar-back-to-list">
             <i class="fa fa-arrow-left"></i>
           Back
         </button>
         {if $receiveAllowed}
-        <button type="button" class="btn btn-circle btn-sm btn-primary tooltips assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
+        <button type="button" class="btn btn-sm btn-primary tooltips assign-to-me-action" data-original-title="{translateToken value='Assign to me'}">
             <i class="fa fa-sign-in"></i>
         </button>
         {/if}
         {if $assignAllowed}
-        <button type="button" class="btn btn-circle btn-sm btn-info tooltips assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
+        <button type="button" class="btn btn-sm btn-info tooltips assign-to-other-action" data-original-title="{translateToken value='Assign to Another User'}">
             <i class="fa fa-sign-out"></i>
         </button>
         {/if}
-        <button type="button" class="btn btn-circle btn-sm btn-warning tooltips resolve-action" data-original-title="{translateToken value='Set Resolution'}">
+        <button type="button" class="btn btn-sm btn-warning tooltips resolve-action" data-original-title="{translateToken value='Set Resolution'}">
             <i class="fa fa-check-square-o"></i>
         </button>
 
@@ -154,7 +155,12 @@
     </div>
 
     <div class="page-quick-sidebar-chat-user-messages"  data-height="auto" data-rail-visible="1" data-rail-color="#ddd">
-        <div class="page-quick-sidebar-chat-user-messages-previous"></div>
+        <div class="page-quick-sidebar-chat-user-messages-previous">
+        </div>
+        <div class="chat-loader" align="center">
+            <i class="fa fa-lg fa-refresh fa-spin"></i>
+        </div>
+
         <div class="page-quick-sidebar-chat-user-messages-current"></div>
     </div>
     <div class="page-quick-sidebar-chat-user-form">

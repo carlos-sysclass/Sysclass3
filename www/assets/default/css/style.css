@@ -374,11 +374,11 @@ Dashboard resets
     text-align: center;
     width: 100%;
     margin-bottom: 5px;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: lighter;
 }
 #institution-widget .row div:last-child a {
-   margin-bottom: 0 !important;
+/*   margin-bottom: 0 !important; */
 }
 .navbar-lesson {
     position: relative;
@@ -513,7 +513,7 @@ Header and header elements.
   margin: 0px;
   padding: 15px 10px 7px 10px;
   height: 42px;
-  border-right: 1px solid #003f69;
+  /* border-right: 1px solid #003f69; */
 }
 .header .navbar-nav > li.dropdown:last-child .dropdown-toggle {
   border: none;
@@ -1377,7 +1377,7 @@ Portlets
 .portlet > .portlet-title > .caption {
   float: left;
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 18px;
   font-weight: 100;
   margin: 0;
@@ -1645,7 +1645,7 @@ Box portlet
 }
 
 .portlet.box > .portlet-title {
-   padding:11px 10px 2px 10px;
+   padding: 10px 10px 2px 10px;
    border-bottom: 1px solid #eee;
    color: #fff !important;
 }
@@ -1704,7 +1704,7 @@ Box portlet
 
 .portlet.box.dark-blue > .portlet-title {
   background-color: #1565c0;
-  height: 43px;
+  height: 41px;
 }
 
 .portlet.box.dark-blue {

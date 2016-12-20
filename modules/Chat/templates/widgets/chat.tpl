@@ -28,26 +28,16 @@
             
         </ul>
     </div>
-    <div class="row" id="chat-action-container">
-        <div class="col-md-12">
-            <div class="text-center">
-
-            </div>
-        </div>
-    </div>
 </div>
-
-
-
 
 <script type="text/template" id="widget-chat-queue-template">
     <div class="row">
         <% if (model.online) { %>
-        <a href="javascript: void(0);" class="pull-right start-chat-action">
+        <a href="javascript: void(0);" class="start-chat-action">
         <% } else { %>
-        <a href="javascript: void(0);" class="pull-right start-chat-action">
+        <a href="javascript: void(0);" class="start-chat-action">
         <% } %>
-            <div class="col-md-4 col-sm-4 col-xs-4 text-center no-padding-right">
+            <div class="col-md-4 col-sm-3 col-xs-2 text-center no-padding-right">
                 <% if (_.size(model.user.avatars) > 0) { %>
                     <img class="avatar img-responsive" alt="" src="<%= model.user.avatars[0].url %>" style="width: 160px;" />
                 <% } else { %>
@@ -60,7 +50,7 @@
                 <span class="btn btn-danger btn-sm">{translateToken value="Offline"}</span>
                 <% } %>
             </div>
-            <div class="col-md-8 col-sm-8 col-xs-8">
+            <div class="col-md-8 col-sm-9 col-xs-10">
                 <h5><%= model.name %></h5>
                 <small><%= model.user.name %> <%= model.user.surname %></small>
                 <p>

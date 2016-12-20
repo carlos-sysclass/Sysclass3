@@ -1,102 +1,188 @@
-$SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
-	this.config = $SC.module("crud.config").getConfig();
-	var entity_id = mod.config.entity_id;
-	mod.addInitializer(function() {
-		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
-		var userGroupsCollectionClass = Backbone.Collection.extend({
-			url : "/module/groups/item/users/" + entity_id
-		});
-		var userGroupsCollection = new userGroupsCollectionClass();
-		userGroupsCollection.fetch();
+	this.startWithParent = false;
 
-		app.on("added.table", function(name, table) {
-			if (name == "view-users") {
-				mod.bindTableEvents(table);
-			}
-		}.bind(this));
+    var baseModelClass = app.module("models").getBaseModel();
 
-		var userGroupsSwitchModelClass = Backbone.Model.extend({
-			urlRoot : "/module/groups/item/users/switch"
-		});
-		/*
-		app.module("utils.datatables").on("datatable:item:draw", function(row, data) {
-			console.warn(row, data);
-			var exists = userGroupsCollection.findWhere({user_id: data['id']});
-			if (typeof exists != "undefined") {
-				$(row).find(".datatable-option-check").removeClass("btn-danger").addClass("btn-success");
-			} else {
-				$(row).find(".datatable-option-check").removeClass("btn-success").addClass("btn-danger");
-			}
-		});
+    mod.models = {
+        groups : {
+        	users : baseModelClass.extend({
+            	idAttribute : "user_id",
+            	response_type : "object",
+            	urlRoot : function() {
+            		return "/module/groups/item/users/" + this.get("group_id");
+            	}
+            })
+        }
+    };
 
-		app.module("utils.datatables").on("datatable:item:check", function(data) {
+	mod.on('start', function(opt) {
+		var tableViewClass = app.module("utils.datatables").tableViewClass;
 
+		var staticTableViewClass = tableViewClass.extend({
+        	getTableItemModel : function(info) {
+        		if (!info) {
+        			return false;
+        		}
+				return new mod.models.groups.users({
+					'group_id' : this.getVar("group_id"),
+                    'user_id' : info['id']
+                });
+        	}
+		})
 
 
-			var userGroupsSwitchModel = new userGroupsSwitchModelClass();
-			userGroupsSwitchModel.set("group_id", entity_id);
-			userGroupsSwitchModel.set("user_id", data['id']);
-			userGroupsSwitchModel.save();
+		var queryBuilderViewClass = Backbone.View.extend({
+			dynamicField : "definition",
+			initialize : function() {
+				this.listenTo(this.model, "change:dynamic", this.render.bind(this));
+				this.initializeStatic();
+				this.initializeDynamic();
+			},
+			initializeStatic : function() {
 
-			var exists = userGroupsCollection.findWhere({user_login: data['login']});
-			if (typeof exists != "undefined") {
-				// REMOVE FROM COLLECTION
-				userGroupsCollection.remove(exists);
-			} else {
-				userGroupsCollection.add([{
-					"group_id"		: entity_id,
-					"user_login"	: data['login']
+				var config = app.getResource("group-static-definition_context");
+		        this.staticTableView = new staticTableViewClass({
+		            el : "#view-group-static-definition",
+		            datatable : config,
+		            url : "/module/groups/items/users/datatable/" + JSON.stringify({
+                    	group_id : this.model.get("id")
+                	})
+		        });
 
-				}]);
-			}
-		});
-		*/
+		        this.staticTableView.putVar("group_id", this.model.get("id"));
 
- 		mod.bindTableEvents = function(table) {
- 			/*
-			this.listenTo(this.collection, "sync", function() {
-				table.redraw();
-			});
-			*/
-        	this.listenTo(table, "draw.datatables", function(row, data) {
-				var exists = userGroupsCollection.findWhere({user_id: data['id']});
+                var self = this;
 
-				//var exists = this.collection.findWhere({resource_id: data['id']});
+                this.select2Obj = this.$(".select2-me.user-search");
 
-				var innerInput = $(row).find(".datatable-option-switch");
+                this.select2Obj.select2("destroy");
+                
+                this.select2Obj.data("url", 
+                    this.select2Obj.data("url") + JSON.stringify({
+                        group_id : this.model.get("id")
+                    })
+                );
 
-				if (typeof exists != "undefined") {
-					innerInput.bootstrapSwitch('state', true, true);
-				} else {
-					innerInput.bootstrapSwitch('state', false, true);
-				}
-			}.bind(this));
+                app.module("ui").handleSelect2(this.$el);
 
-			this.listenTo(table, "switchItem.datatables", function(el, data, state) {
-				var resourceSwitchModelClass = Backbone.Model.extend({
-					urlRoot : "/module/roles/item/resources/toggle"
+
+                this.select2Obj.on("change", function (e, a,b,c,d) { 
+                    var data = e.added;
+
+                    var model = new mod.models.groups.users({
+                        'group_id' : this.model.get("id"),
+                        'user_id' : data['id']
+                    });
+                    model.save();
+
+                    this.staticTableView.refresh();
+                }.bind(this));
+			},
+			initializeDynamic : function() {
+				this.$(".jquery-builder").queryBuilder({
+				  plugins: [
+				    'bt-tooltip-errors',
+				    //'not-group',
+
+				  ],
+				  filters: [{
+				    id: 'email',
+				    label: 'Email',
+				    type: 'string',
+				    no_invert: true
+				  }, 
+				  {
+				    id: 'is_supplier',
+				    label: 'Is Supplier',
+				    type: 'integer',
+				    input: 'radio',
+				    values: {
+				      1: 'Yes',
+				      0: 'No'
+				    },
+				    operators: ['equal'],
+				    no_invert: true
+				  }]
 				});
 
-				var exists = userGroupsCollection.findWhere({user_id: data['id']});
+				var config = app.getResource("group-dynamic-definition_context");
+		        this.dynamicTableView = new tableViewClass({
+		            el : "#view-group-dynamic-definition",
+		            datatable : config
+		        });
 
-				if (typeof exists != "undefined") {
-					userGroupsCollection.remove(exists);
+
+				this.$(".jquery-builder").on('afterAddRule.queryBuilder', this.updateModel.bind(this));
+				this.$(".jquery-builder").on('afterDeleteRule.queryBuilder', this.updateModel.bind(this));
+
+				this.$(".jquery-builder").on('afterUpdateRuleValue.queryBuilder', this.updateModel.bind(this));
+				this.$(".jquery-builder").on('afterUpdateGroupCondition.queryBuilder', this.updateModel.bind(this));
+				
+				this.$(".jquery-builder").on('afterAddGroup.queryBuilder', this.updateModel.bind(this));
+				this.$(".jquery-builder").on('afterDeleteGroup.queryBuilder', this.updateModel.bind(this));
+
+				//if (this.model.get("definition.rules"))
+			},
+			updateModel : function() {
+				this.model.unset(this.dynamicField, {silent : true});
+				this.model.set(this.dynamicField, this.$(".jquery-builder").queryBuilder('getRules'));
+
+				// CHECK IF IS NEED TO UPDATE THE TABLE
+				var definition = this.model.get(this.dynamicField);
+				if (_.has(definition, 'rules') && _.size(definition.rules) > 0) {
+					this.dynamicTableView
+						.setUrl("/module/users/items/me/datatable/" + JSON.stringify(definition) + "?block")
+						.redraw();
 				} else {
-					userGroupsCollection.add([{
-						"group_id"		: entity_id,
-						"user_id"	: data['id']
-					}]);
+					// CLEAR THE TABLE
 				}
-				//console.warn('SWITCH', data, exists, this.collection.toJSON());
+			},
+			render : function() {
+				var definition = this.model.get(this.dynamicField);
 
-				var userGroupsSwitchModel = new userGroupsSwitchModelClass();
-				userGroupsSwitchModel.set("group_id", entity_id);
-				userGroupsSwitchModel.set("user_id", data['id']);
-				userGroupsSwitchModel.save();
+				if (_.has(definition, 'rules') && _.size(definition.rules) > 0) {
+					this.$(".jquery-builder").queryBuilder('setRules', definition);
+				}
 
-			}.bind(this));
-        };
+				if (this.model.get("dynamic") == 1) {
+					this.renderDynamic();
+				} else {
+					this.renderStatic();
+				}
+			},
+			renderStatic : function() {
+				this.$(".dynamic-item-dynamic").addClass("hidden");
+				this.$(".dynamic-item-static").removeClass("hidden");
+			},
+			renderDynamic : function() {
+				this.$(".dynamic-item-static").addClass("hidden");
+				this.$(".dynamic-item-dynamic").removeClass("hidden");
+			}
+		})
+
+		//alert(1);
+		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
+		//$('#jquery-builder').queryBuilder('destroy');
+		
+
+		this.queryBuilderView = new queryBuilderViewClass({
+			el : '#tab-group-definition',
+			model: opt.module.getModel()
+		})
 	});
+
+
+	app.module("crud.views.add").on("start", function() {
+		mod.start({
+			module : this
+		});
+	});
+	app.module("crud.views.edit").on("start", function() {
+		mod.start({
+			module : this
+		});
+	});
+
 
 });

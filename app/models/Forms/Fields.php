@@ -15,7 +15,24 @@ class Fields extends Model
     }
 
     public function toArray() {
-    	return $this->toFullArray(array('Type'), parent::toArray());
+        //var_dump($this->getDI());
+        $translate = $this->getDI()->get("translate");
+
+        $result = parent::toArray();
+
+        $type = $this->getType([
+            'conditions' => "language_code = ?0",
+            'bind' => [$translate->getSource()]
+        ]);
+
+        if (!$type) {
+            $type = $this->getType([
+                'conditions' => "language_code = 'en'"
+            ]);
+        }
+        $result['type'] = $type->toArray();
+
+        return $result;
     }
     /*
     public function translate() {

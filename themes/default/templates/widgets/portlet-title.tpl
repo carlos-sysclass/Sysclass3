@@ -42,7 +42,7 @@
          </div>
       {/if}
       {if isset($T_DATA.tools.filter)}
-         <a class="filter glyphicon glyphicon-filter" href="javascript:void(0);">
+         <a class="filter glyphicon glyphicon-search" href="javascript:void(0);">
          </a>
       {/if}
       {if isset($T_DATA.tools.collapse)}

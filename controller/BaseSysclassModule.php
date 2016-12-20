@@ -77,7 +77,7 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->context['*config*'] = null;
 
         if (file_exists($filename)) {
-            $this->context['*config*'] = yaml_parse_file($filename);
+            $this->context['*config*'] = $this->yaml->parseFile($filename);
         }
 
     }
@@ -186,7 +186,18 @@ abstract class BaseSysclassModule extends AbstractSysclassController
 
         if (array_key_exists("model-prefix", $config)) {
             $this->clientContext['model-prefix'] = $config['model-prefix'];
+        } else {
+            //$this->clientContext['model-prefix'] = "me";
         }
+
+        if (array_key_exists("model-id", $config)) {
+            $this->clientContext['model-id'] = $config['model-id'];
+        } else {
+            $this->clientContext['model-id'] = "me";
+        }
+
+
+
         if (is_array($data)) {
             $this->clientContext = array_replace_recursive($this->clientContext, $data);
         }
@@ -310,11 +321,11 @@ abstract class BaseSysclassModule extends AbstractSysclassController
         $this->putItem("module_tplpath", $this->module_folder. "/templates/");
     }
 
-    public function putSectionTemplate($key, $tpl) {
+    public function putSectionTemplate($key, $tpl, $type) {
         if (is_null($key)) {
             $key = $this->module_id;
         }
-        return parent::putSectionTemplate($key, $this->template($tpl));
+        return parent::putSectionTemplate($key, $this->template($tpl), $type);
     }
     protected function putCrossSectionTemplate($module, $key, $tpl)
     {
