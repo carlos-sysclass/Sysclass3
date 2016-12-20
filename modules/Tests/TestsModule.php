@@ -402,11 +402,12 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
-/*
+                /*
                 var_dump($testData);
                 var_dump($executionData);
                 exit;
-*/
+                */
+
                 $this->module("settings")->put("test_execution_id", $executionId);
 
                 //$this->putModuleScript();

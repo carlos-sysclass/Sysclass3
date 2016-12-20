@@ -50,7 +50,8 @@
                     {if ($T_TEST.test.test_max_questions <= 0)}
                         {$T_TEST.questions|@count}
                     {else}
-                        {$T_TEST.test.test_max_questions}
+                        {$test_questions_size=$T_TEST.questions|@count}
+                        {math equation="min(a, b)" a=$T_TEST.test.test_max_questions b=$test_questions_size}
                     {/if}
                 </strong>
             </div>
