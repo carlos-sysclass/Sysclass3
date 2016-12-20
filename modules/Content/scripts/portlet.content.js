@@ -207,20 +207,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					$(".program-indicator span.counter").hide();
 				}
 
+
 				if (totalUnits > 1) {
-					$(".program-indicator span.singular").css({
-						"display" : "none !important"
-					});
-					$(".program-indicator span.plural").css({
-						"display" : "inline !important"
-					});
+					$(".program-indicator span.singular").attr(
+						"style",
+						"display: none !important"
+					);
+					$(".program-indicator span.plural").attr(
+						"style",
+						"display: inline !important"
+					);
 				} else {
-					$(".program-indicator span.singular").css({
-						"display" : "inline !important"
-					});
-					$(".program-indicator span.plural").css({
-						"display" : "none !important"
-					})
+					$(".program-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+
+					$(".program-indicator span.plural").attr(
+						"style",
+						"display: none !important"
+					);
 				}
 			},
 		});
@@ -339,7 +345,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '328px',
+					    height: '337px',
 					}
 			    });
 			},
@@ -376,20 +382,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".course-indicator span.singular").css({
-						"display" : "none !important"
-					});
-					$(".course-indicator span.plural").css({
-						"display" : "inline !important"
-					});
+					$(".course-indicator span.singular").attr(
+						"style",
+						"display: none !important"
+					);
+					$(".course-indicator span.plural").attr(
+						"style",
+						"display: inline !important"
+					);
 				} else {
-					$(".course-indicator span.singular").css({
-						"display" : "inline !important"
-					});
-					$(".course-indicator span.plural").css({
-						"display" : "none !important"
-					});
+					$(".course-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+
+					$(".course-indicator span.plural").attr(
+						"style",
+						"display: none !important"
+					);
 				}
+
 			},
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentCourses();
@@ -581,7 +593,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '328px',
+					    height: '337px',
 					}
 			    });
     			//$SC.addTable("messages-table-messages", this.tableView);
@@ -623,23 +635,27 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
-					$(".unit-indicator span.singular").css({
-						"display" : "none !important"
-					});
-					$(".unit-indicator span.plural").css({
-						"display" : "inline !important"
-					});
+					$(".unit-indicator span.singular").attr(
+						"style",
+						"display: none !important"
+					);
+					$(".unit-indicator span.plural").attr(
+						"style",
+						"display: inline !important"
+					);
 				} else {
-					$(".unit-indicator span.singular").css({
-						"display" : "inline !important"
-					});
-					$(".unit-indicator span.plural").css({
-						"display" : "none !important"
-					});
+					$(".unit-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+
+					$(".unit-indicator span.plural").attr(
+						"style",
+						"display: none !important"
+					);
 				}
+
 			},
-
-
 			makeCollection: function() {
 				return mod.programsCollection.getCurrentUnits();
 			},

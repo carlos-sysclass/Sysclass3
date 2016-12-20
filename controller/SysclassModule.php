@@ -550,6 +550,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * [ add a description ]
      *
      * @Delete("/item/{model}/{id}")
+     * @Delete("/item/{model}/{id:.+}")
      */
     public function deleteItemRequest($model, $id)
     {
@@ -700,10 +701,13 @@ abstract class SysclassModule extends BaseSysclassModule
             /**
              * @todo Get parameters to filter, if possibile, the info
              */
+            //var_dump( array($model_info['class'], $model_info['listMethod']), $args);
             
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
+
+            //exit;
 
             if ($type === 'datatable') {
                 //$items = array_values($items);

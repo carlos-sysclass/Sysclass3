@@ -109,6 +109,11 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        	 //= opt.datatable_fields;
 		        }
 
+		        if (_.has(opt, 'url')) {
+		        	opt.datatable.sAjaxSource = opt.url;
+		        	 //= opt.datatable_fields;
+		        }
+
 		        this.oTable = this.$el.dataTable(opt.datatable);
 		        this.getApi().on("init", this.startScrollUI.bind(this));
 
@@ -193,6 +198,8 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 
 				var model = this.getTableItemModel(data[0]);
+
+				console.warn(model);
 
 				this.oTable
 					.api()

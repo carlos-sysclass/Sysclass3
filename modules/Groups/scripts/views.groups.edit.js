@@ -1,14 +1,83 @@
 $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.startWithParent = false;
+
+    var baseModelClass = app.module("models").getBaseModel();
+
+    mod.models = {
+        groups : {
+        	users : baseModelClass.extend({
+            	idAttribute : "user_id",
+            	response_type : "object",
+            	urlRoot : function() {
+            		return "/module/groups/item/users/" + this.get("group_id");
+            	}
+            })
+        }
+    };
+
 	mod.on('start', function(opt) {
+		var tableViewClass = app.module("utils.datatables").tableViewClass;
+
+		var staticTableViewClass = tableViewClass.extend({
+        	getTableItemModel : function(info) {
+        		if (!info) {
+        			return false;
+        		}
+				return new mod.models.groups.users({
+					'group_id' : this.getVar("group_id"),
+                    'user_id' : info['id']
+                });
+        	}
+		})
+
 
 		var queryBuilderViewClass = Backbone.View.extend({
 			dynamicField : "definition",
 			initialize : function() {
 				this.listenTo(this.model, "change:dynamic", this.render.bind(this));
-
+				this.initializeStatic();
 				this.initializeDynamic();
+			},
+			initializeStatic : function() {
+
+				var config = app.getResource("group-static-definition_context");
+		        this.staticTableView = new staticTableViewClass({
+		            el : "#view-group-static-definition",
+		            datatable : config,
+		            url : "/module/groups/items/users/datatable/" + JSON.stringify({
+                    	group_id : this.model.get("id")
+                	})
+		        });
+
+		        this.staticTableView.putVar("group_id", this.model.get("id"));
+
+                var self = this;
+
+                this.select2Obj = this.$(".select2-me.user-search");
+
+                this.select2Obj.select2("destroy");
+                
+                this.select2Obj.data("url", 
+                    this.select2Obj.data("url") + JSON.stringify({
+                        group_id : this.model.get("id")
+                    })
+                );
+
+                app.module("ui").handleSelect2(this.$el);
+
+
+                this.select2Obj.on("change", function (e, a,b,c,d) { 
+                    var data = e.added;
+
+                    var model = new mod.models.groups.users({
+                        'group_id' : this.model.get("id"),
+                        'user_id' : data['id']
+                    });
+                    model.save();
+
+                    this.staticTableView.refresh();
+                }.bind(this));
 			},
 			initializeDynamic : function() {
 				this.$(".jquery-builder").queryBuilder({
@@ -37,10 +106,9 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				  }]
 				});
 
-				var tableViewClass = app.module("utils.datatables").tableViewClass;
-				var config = app.getResource("group-definition_context");
+				var config = app.getResource("group-dynamic-definition_context");
 		        this.dynamicTableView = new tableViewClass({
-		            el : "#view-group-definition",
+		            el : "#view-group-dynamic-definition",
 		            datatable : config
 		        });
 
@@ -57,8 +125,6 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				//if (this.model.get("definition.rules"))
 			},
 			updateModel : function() {
-				console.warn(arguments);
-				console.warn(this.$(".jquery-builder").queryBuilder('getRules'));
 				this.model.unset(this.dynamicField, {silent : true});
 				this.model.set(this.dynamicField, this.$(".jquery-builder").queryBuilder('getRules'));
 
@@ -78,7 +144,6 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				if (_.has(definition, 'rules') && _.size(definition.rules) > 0) {
 					this.$(".jquery-builder").queryBuilder('setRules', definition);
 				}
-				//console.warn();
 
 				if (this.model.get("dynamic") == 1) {
 					this.renderDynamic();
@@ -101,7 +166,7 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 		//$('#jquery-builder').queryBuilder('destroy');
 		
 
-		var queryBuilderView = new queryBuilderViewClass({
+		this.queryBuilderView = new queryBuilderViewClass({
 			el : '#tab-group-definition',
 			model: opt.module.getModel()
 		})

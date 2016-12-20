@@ -82,8 +82,38 @@
 				<div class="admittance-type-container">
 					<div class="dynamic-item dynamic-item-static hidden">
 						<!-- PUT HERE THE USER WIDGET TO ADD USERS -->
+
+					    <div class="alert alert-info">
+					        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
+					        <p>
+					            {translateToken value="Here you can select the current users inside this group."}
+					        </p>
+					    </div>
+				        <div class="form-group">
+				            <label class="">{translateToken value="Search for a User"}</label>
+				            <input type="hidden" class="select2-me form-control col-md-12 user-search" name="user" data-placeholder="{translateToken value='Please Select'}" data-url="/module/groups/items/non-users/combo/"
+				            data-format-as="default"
+				            data-format-as-template="%(name)s %(surname)s <%(email)s>"
+				             />
+				        </div>
+					    <div class="row margin-top-20">
+					        <div class="col-md-12">
+					            {include "`$smarty.current_dir`/blocks/table.tpl" 
+					            T_MODULE_CONTEXT=$T_GROUP_DEFINITION_STATIC_CONTEXT
+					            T_MODULE_ID=$T_GROUP_DEFINITION_STATIC_CONTEXT.block_id}
+					        </div>
+					    </div>
 					</div>
 					<div class="dynamic-item dynamic-item-dynamic hidden">
+
+
+					    <div class="alert alert-info">
+					        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
+					        <p>
+					            {translateToken value="Here you can select the criteria used to select the users inside this group."}
+					        </p>
+					    </div>
+
 						<div class="jquery-builder"></div>
 
 						<h5 class="form-section">
@@ -91,7 +121,7 @@
 							{translateToken value="User List"}
 						</h5>
 
-						{include "`$smarty.current_dir`/blocks/table.tpl" T_MODULE_CONTEXT=$T_GROUP_DEFINITION_CONTEXT T_MODULE_ID=$T_GROUP_DEFINITION_CONTEXT.block_id}
+						{include "`$smarty.current_dir`/blocks/table.tpl" T_MODULE_CONTEXT=$T_GROUP_DEFINITION_DYNAMIC_CONTEXT T_MODULE_ID=$T_GROUP_DEFINITION_DYNAMIC_CONTEXT.block_id}
 
 						<div class="builder-users-list"></div>
 					</div>

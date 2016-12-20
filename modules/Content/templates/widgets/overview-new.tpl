@@ -155,7 +155,7 @@ _before_init_functions.push(function() {
                           <i class="fa fa-compress"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link fullscreen-action">
-                          <i class="fa fa-desktop"></i>
+                          <i class="fa fa-arrows-alt"></i>
                         </a>
                         <a href="javascript: void(0);" class="btn btn-link close-action">
                           <i class="fa fa-times"></i>
@@ -227,7 +227,7 @@ _before_init_functions.push(function() {
                   <table class="table table-striped table-bordered table-hover table-full-width data-table unit-table" id="unit-table">
                       <thead>
                         <tr>
-                          <th >{translateToken value="Unit"}</th>
+                          <th class="text-center">{translateToken value="Unit"}</th>
                           <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
                           <th class="text-center">{translateToken value="Video"}</th>
                           <th class="text-center">{translateToken value="Materials"}</th>
@@ -331,9 +331,9 @@ _before_init_functions.push(function() {
                   <table class="table table-striped table-bordered table-hover table-full-width data-table course-table" id="course-table">
                       <thead>
                         <tr>
-                          <th>{translateToken value="Course"}</th>
+                          <th class="text-center">{translateToken value="Course"}</th>
                           <th class="text-center">{translateToken value="Units"}</th>
-                          <th>{translateToken value="Assignments"}</th>
+                          <th class="text-center">{translateToken value="Assignments"}</th>
                           <th class="text-center">{translateToken value="Status"}</th>
                         </tr>
                       </thead>

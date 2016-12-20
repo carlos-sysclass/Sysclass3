@@ -85,20 +85,20 @@
 			                    <label class="control-label">{translateToken value="Total Price"}: </label>
 			                </div>
 			                <div class="inline-item">
-			                    <input name="price_total" value="" type="text" placeholder="{translateToken value="Price"}" class="form-control" data-rule-required="true" data-helper="float" />
+			                    <input name="price_total" value="" type="text" placeholder="{translateToken value="Price"}" class="form-control" data-helper="float" />
 			                </div>
 			                <div class="inline-item">
 			                    <label class="control-label">
 			                    {translateToken value="Installments"}: </label>
 			                </div>
  							<div class="inline-item">
-			                    <input name="price_step_units" value="" type="text" placeholder="{translateToken value="Installments"}" class="form-control" data-rule-required="true" data-helper="integer" />
+			                    <input name="price_step_units" value="" type="text" placeholder="{translateToken value="Installments"}" class="form-control" data-helper="integer" />
 			                </div>
 			                <div class="inline-item">
 			                    <label class="control-label">{translateToken value="Period"}: </label>
 			                </div>
 			                <div class="inline-item">
-			                    <select class="select2-me form-control input-block-level" name="price_step_type" style="min-width: 150px;" data-rule-required="true">
+			                    <select class="select2-me form-control input-block-level" name="price_step_type" style="min-width: 150px;">
 			                        <option>{translateToken value="Select a Period"}</option>
 			                        <option value="week">{translateToken value="Week(s)"}</option>
 			                        <option value="month">{translateToken value="Month(s)"}</option>

@@ -242,10 +242,13 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $items =  $this->model("users/collection")->addFilter(array(
-            'can_be_coordinator' => true
-        ))->getItems();
-        $this->putItem("coordinators", $items);
+        $teacherRole = Role::findFirstByName('Teacher');
+        $users = $teacherRole->getAllUsers();
+
+        $this->putItem("instructors", $users);
+
+        $languageRS = Language::find();
+        $this->putitem("languages", $languageRS->toArray());
 
         parent::addPage();
     }
