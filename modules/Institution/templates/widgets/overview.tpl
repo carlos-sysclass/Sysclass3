@@ -1,7 +1,7 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
-		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 16px; margin-top: 11px;" />
+		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 12px; margin-top: 10px;" />
     </div>
 </div>
 
@@ -68,7 +68,7 @@
 		{foreach $variables as $index => $info}
 			<div class="col-lg-6 col-md-6 col-xs-6">
 				<h5>
-					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="">
+					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="height: 15px;">
 					{$socials[$index].country_name}
 				</h5>
 
