@@ -267,8 +267,8 @@ a:hover, a:focus {
 }
 .inter-navsuper-tabs .tab-content {
   border: 1px solid #ddd;
-  height: 412px;
-  max-height: 430px;
+  height: 424px;
+  max-height: 424px;
 }
 .inter-navsuper-tabs .table-tab {
   border-top: 1px solid #ddd;
@@ -352,7 +352,7 @@ margin:0 4px 0 0;
   border-top: 0;
 }
 .inter-navsuper-tabs .table>tbody>tr>td, .inter-navsuper-tabs .table>tbody>tr>th, .inter-navsuper-tabs .table>tfoot>tr>td, .inter-navsuper-tabs .table>tfoot>tr>th {
-  padding: 10px 8px;
+  padding: 5px 8px;
   font-size: 13px;
   vertical-align: middle;
 }
