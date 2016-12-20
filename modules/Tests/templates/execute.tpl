@@ -1,110 +1,146 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
 <div id="tests-execute-block">
+
     <ul class="test-sidebar-info">
-        <li>
-            <span class="pull-left">
-                <i class="fa fa-lg fa-slack text-default "></i>
-                {translateToken value="Attempts"}:
-            </span>
-            <strong class="text-primary pull-right">
-                <span class="text-try-index-text">{$T_TEST.executions|@count}</span> 
-                {if $T_TEST.test.test_repetition > 0}
-                / {$T_TEST.test.test_repetition}
-                {/if}
-            </strong>
+        <li class="col-md-6">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa-sitemap text-default "></i>
+                    {translateToken value="Course"}:
+                </span>
+                <strong class="text-primary">
+                    {$T_TEST.course.name}
+                </strong>
+            </div>
+        </li>
+        <li class="col-md-6">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa fa-list text-default "></i>
+                    {translateToken value="Name"}:
+                </span>
+                <strong class="text-primary">
+                    {$T_TEST.name}
+                </strong>
+            </div>
+        </li>
+        <li class="col-md-3">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa-slack text-default "></i>
+                    {translateToken value="Attempts"}:
+                </span>
+                <strong class="text-primary pull-right">
+                    <span class="text-try-index-text">{$T_TEST.executions|@count}</span> 
+                    {if $T_TEST.test.test_repetition > 0}
+                    / {$T_TEST.test.test_repetition}
+                    {/if}
+                </strong>
+            </div>
         </li>
         {if $T_EXECUTION.pending == 1}
-        <li>
-            <span class="pull-left">
-                <i class="fa fa-lg fa-slack text-default "></i>
-                {translateToken value="Total Questions"}:
-            </span>
-            <strong class="text-primary pull-right">
-                {if ($T_TEST.test.test_max_questions <= 0)}
-                    {$T_TEST.questions|@count}
-                {else}
-                    {$T_TEST.test.test_max_questions}
-                {/if}
-
-                
-            </strong>
+        <li class="col-md-3">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa-slack text-default "></i>
+                    {translateToken value="Total Questions"}:
+                </span>
+                <strong class="text-primary pull-right">
+                    {if ($T_TEST.test.test_max_questions <= 0)}
+                        {$T_TEST.questions|@count}
+                    {else}
+                        {$test_questions_size=$T_TEST.questions|@count}
+                        {math equation="min(a, b)" a=$T_TEST.test.test_max_questions b=$test_questions_size}
+                    {/if}
+                </strong>
+            </div>
         </li>
         {/if}
-        <li>
-            <span class="pull-left">
-                <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                {translateToken value="Maximum Score"}:
-            </span>
-            <strong class="text-primary pull-right">
-                {$T_TEST.score} {translateToken value="points"}
-            </strong>
+        <li class="col-md-3">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa-graduation-cap text-default"></i>
+                    {translateToken value="Maximum Score"}:
+                </span>
+                <strong class="text-primary pull-right">
+                    {$T_TEST.score} {translateToken value="points"}
+                </strong>
+            </div>
         </li>
         {if $T_EXECUTION.pending == 0}
-        <li>
-            <span class="pull-left">
-                <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                {translateToken value="Your Score"}:
-            </span>
-            <strong class="text-primary pull-right">
-                {if ($T_EXECUTION.pass == 0)}
-                    <span class="label label-danger">{$T_EXECUTION.user_grade}</span>
-                {else}
-                    <span class="label label-primary">{$T_EXECUTION.user_grade}</span>
-                {/if}
-                <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
-            </strong>
+        <li class="col-md-3">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa-graduation-cap text-default"></i>
+                    {translateToken value="Your Score"}:
+                </span>
+                <strong class="text-primary pull-right">
+                    {if ($T_EXECUTION.pass == 0)}
+                        <span class="label label-danger">{$T_EXECUTION.user_grade|round:1}</span>
+                    {else}
+                        <span class="label label-primary">{$T_EXECUTION.user_grade|round:1}</span>
+                    {/if}
+                    <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
+                </strong>
+            </div>
         </li>
-        <li>
-            <span class="pull-left">
-                <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                {translateToken value="Approved"}:
-            </span>
-            <strong class="text-primary pull-right">
-                {if ($T_EXECUTION.pass == 0)}
-                    <span class="label label-danger">{translateToken value="No"}</span>
-                {else}
-                    <span class="label bg-green font-green">{translateToken value="Yes"}</span>
-                {/if}
-            </strong>
+        <li class="col-md-3">
+            <div>
+                <span class="pull-left">
+                    <i class="fa fa-lg fa-graduation-cap text-default"></i>
+                    {translateToken value="Approved"}:
+                </span>
+                <strong class="text-primary pull-right">
+                    {if ($T_EXECUTION.pass == 0)}
+                        <span class="label label-danger">{translateToken value="No"}</span>
+                    {else}
+                        <span class="label bg-green font-green">{translateToken value="Yes"}</span>
+                    {/if}
+                </strong>
+            </div>
         </li>
 
         {/if}
 
         {if $T_TEST.time_limit > 0}
            <li>
-                <span class="pull-left">
-                    <i class="fa fa-lg fa-clock-o text-default"></i>
-                    {translateToken value="Time limit"}:
-                </span>
-                <strong class="text-primary pull-right">
-                    {$T_TEST.time_limit} {translateToken value="minutes"}
-                </strong>
-            </li>
-            <li class="test-time-limit">
-                {if $T_EXECUTION.pending == 0}
+                <div>
                     <span class="pull-left">
                         <i class="fa fa-lg fa-clock-o text-default"></i>
-                        {translateToken value="Completed In"}:
+                        {translateToken value="Time limit"}:
                     </span>
-                {else}
-                    <span class="pull-left">
-                        <i class="fa fa-lg fa-clock-o text-default"></i>
-                        {translateToken value="Time left"}:
-                    </span>
-                {/if}
-                <strong class="pull-right">
-                    <span class="test-time-limit-text"></span>
-                </strong>
-                <div class="clearfix"></div>
-                <div class="progress progress-striped no-margin margin-top-10 active">
-                    <div style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar">
-                        <span class="progress-text"></span>
+                    <strong class="text-primary pull-right">
+                        {$T_TEST.time_limit} {translateToken value="minutes"}
+                    </strong>
+                </li>
+                <li class="test-time-limit">
+                    <div>
+                    {if $T_EXECUTION.pending == 0}
+                        <span class="pull-left">
+                            <i class="fa fa-lg fa-clock-o text-default"></i>
+                            {translateToken value="Completed In"}:
+                        </span>
+                    {else}
+                        <span class="pull-left">
+                            <i class="fa fa-lg fa-clock-o text-default"></i>
+                            {translateToken value="Time left"}:
+                        </span>
+                    {/if}
+                    <strong class="pull-right">
+                        <span class="test-time-limit-text"></span>
+                    </strong>
+                    <div class="clearfix"></div>
+                    <div class="progress progress-striped no-margin margin-top-10 active">
+                        <div style="width: 0%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" class="progress-bar">
+                            <span class="progress-text"></span>
+                        </div>
                     </div>
                 </div>
             </li>
         {/if}
     </ul>
+    <div class="clearfix"></div>
     <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
         <div class="form-body">
             {foreach $T_TEST.questions as $index => $item}

@@ -145,8 +145,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
             $testQuestions = $testModel->shuffleTestQuestions($executionData['id']);
 
-            //var_dump($testQuestions);
-
 
             $questionsData = $questionModel->addFilter(array(
                 'lesson_id' => $executionData['test_id']
@@ -183,7 +181,6 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
                         }
                     }
                 }
-
             }
 
             $pass = $userScore > (floatval($testData['minimum_score']) / 100);
