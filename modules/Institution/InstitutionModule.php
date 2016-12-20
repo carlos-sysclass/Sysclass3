@@ -10,6 +10,7 @@ namespace Sysclass\Modules\Institution;
  */
 use Sysclass\Models\Organizations\Organization,
     Sysclass\Services\I18n\Timezones,
+    Sysclass\Models\I18n\Countries,
     Sysclass\Models\I18n\Language;
 /**
  * @RoutePrefix("/module/institution")
@@ -77,13 +78,25 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
         if (in_array('institution.overview', $widgetsIndexes)) {
             //$this->putModuleScript("widget.institution");
 
-            $data = $organization->toFullArray();
+            $data = $organization->toArray(["details", "logo"]);
 
             $time_at = Timezones::getTimeAt($organization->timezone);
 
             if ($time_at) {
                 $data['time_at'] = $time_at->format('H:i');
-                $data['details']['time_at'] = $data['time_at'];
+                foreach($data['details'] as $i => $detail) {
+                    $data['details'][$i]['time_at'] = $data['time_at'];
+                }
+            }
+
+            $countriesRS = Countries::find();
+            $countries = $countriesRS->toArray();
+
+            foreach($data['details'] as $index => $details) {
+                if (array_key_exists($details['country'], $countries)) {
+                    $data['details'][$index]['country_name'] = $countries[$details['country']];
+                    $data['details'][$index]['country_flag'] = Countries::getFlagUrl($details['country']);
+                }
             }
 
         	return array(

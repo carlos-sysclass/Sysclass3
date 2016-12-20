@@ -6,6 +6,7 @@ use Plico\Mvc\Model;
 class Organization extends Model
 {
     public $details = [];
+    public $logo = [];
     public function initialize()
     {
         $this->setSource("mod_organization");
@@ -18,13 +19,27 @@ class Organization extends Model
 
     public function afterFetch()
     {
-
         $translate = $this->getDI()->get("translate");
+
+        $logo = $this->getLogo();
+        if ($logo) {
+            $this->logo = $logo->toArray();
+        } else {
+            $this->logo = [];
+        }
+
+        $details = $this->getDetails([
+            'conditions' => "id = ?0",
+            'bind' => [$this->id]
+        ]);
+
+        $this->details = $details->toArray();
 
         $details = $this->getDetails([
             'conditions' => "language_code = ?0",
             'bind' => [$translate->getSource()]
         ]);
+
 
         if ($details->count() > 0) {
             $detailsRec = $details->getFirst();
@@ -51,18 +66,13 @@ class Organization extends Model
 
         $detailsRec->timezone = is_null($detailsRec->timezone) ? $this->timezone : $detailsRec->timezone;
 
-        $this->details = $detailsRec->toArray();
-       
-        /*
-
-		$this->timezone = $details->timezone;
-
-        */
+        array_unshift($this->details, $detailsRec->toArray());
     }
 
     public function toArray() {
         $item = parent::toArray();
         $item['details'] = $this->details;
+        $item['logo'] = $this->logo;
 
         return $item;
     }

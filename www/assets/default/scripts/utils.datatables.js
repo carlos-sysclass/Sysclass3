@@ -158,7 +158,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	},
         	switchItem: function(e, state) {
 				e.preventDefault();
-				//console.warn(e);
 
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 				this.trigger("switchItem.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), state);
@@ -198,8 +197,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 
 				var model = this.getTableItemModel(data[0]);
-
-				console.warn(model);
 
 				this.oTable
 					.api()
