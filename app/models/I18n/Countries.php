@@ -258,4 +258,11 @@ class Countries extends Component
     public function toArray() {
         return $this->countryList;
     }
+
+    public static function getFlagUrl($code) {
+      $depinj = \Phalcon\DI::getDefault();
+
+      return $depinj->get("resourceUrl")->get(sprintf("/images/flags/%s.png", strtolower($code)));
+
+    }
 }

@@ -378,7 +378,7 @@ Dashboard resets
     font-weight: lighter;
 }
 #institution-widget .row div:last-child a {
-   margin-bottom: 0 !important;
+/*   margin-bottom: 0 !important; */
 }
 .navbar-lesson {
     position: relative;

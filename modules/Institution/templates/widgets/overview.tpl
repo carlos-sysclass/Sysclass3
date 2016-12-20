@@ -6,69 +6,101 @@
 </div>
 
 {if $context.details}
-	{assign var="social" value=$context.details}
+	{assign var="socials" value=$context.details}
 {/if}
 
 {$variables=[]}
 
-{if $social.website}
-	{$text=translateToken value="Website"}
 
-	{$variables.website=['link' => $social.website,'icon'=>'fa-laptop','text'=>$text]}
-{/if}
-{if $T_CONFIGURATION.organization_show_current_time && $social.time_at}
-	{$variables.time_at=['icon'=>'fa-clock-o','text'=>$social.time_at]}
-{/if}
-{if $social.facebook}
-	{$text=translateToken value="Facebook"}
+{foreach $socials as $index => $social}
+	{$variables[$index]=[]}
 
-	{$variables.facebook=['link' => "https://facebook.com/{$social.facebook}",'icon'=>'fa-facebook','text'=>$text]}
-{/if}
-{if $social.street && $social.street_number}
-	{$text=translateToken value="View Map"}
+	{if $social.website}
+		{$text=translateToken value="Website"}
 
-	{$variables.address=['link' => "https://www.google.com.br/maps/place/{$social.street}, {$social.street_number} - {$social.city}",'icon'=>'fa-map','text'=>$text]}
+		{$variables[$index].website=['link' => $social.website,'icon'=>'fa-laptop','text'=>$text]}
+	{/if}
 
-{/if}
-{if $social.skype}
-	{$text=translateToken value="Skype"}
+	{if $social.facebook}
+		{$text=translateToken value="Facebook"}
 
-	{$variables.skype=['link' => "skype://{$social.skype}",'icon'=>'fa-skype','text'=>$text]}
-{/if}
-{if $social.linkedin}
-	{$text=translateToken value="Linked In"}
+		{$variables[$index].facebook=['link' => "https://facebook.com/{$social.facebook}",'icon'=>'fa-facebook','text'=>$text]}
 
-	{$variables.linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
-{/if}
-{if $social.googleplus}
-	{$text=translateToken value="Google+"}
+	{/if}	
 
-	{$variables.googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
-{/if}
-{if $social.phone}
-	{$variables.phone=['link' => "callto://+{$social.phone}",'icon'=>'fa-phone','text'=>$social.phone]}
-{/if}
+	{if $social.street && $social.street_number}
+		{$text=translateToken value="View Map"}
 
-{$total=$variables|count}
+		{$variables[$index].address=['link' => "https://www.google.com.br/maps/place/{$social.street}, {$social.street_number} - {$social.city}",'icon'=>'fa-map','text'=>$text]}
 
-<div class="institution-button-container total-rows-{($total/2)|ceil}">
-	{foreach $variables as $variable}
+	{/if}
 
-		{if $variable@index is div by 2}
-			<div class="row">
-		{/if}
-	    <div class="col-lg-6 col-md-6 col-xs-6">
-	        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
-	            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
-	        </a>
-		</div>
-		{if ($variable@iteration is div by 2) || ($variable@last)}
+	{if $social.phone}
+		{$variables[$index].phone=['link' => "callto://+{$social.phone}",'icon'=>'fa-phone','text'=>$social.phone]}
+	{/if}
+
+{/foreach}
+
+<!--
+	{if $T_CONFIGURATION.organization_show_current_time && $social.time_at}
+		{$variables.time_at=['icon'=>'fa-clock-o','text'=>$social.time_at]}
+	{/if}
+
+
+	{if $social.skype}
+		{$text=translateToken value="Skype"}
+
+		{$variables.skype=['link' => "skype://{$social.skype}",'icon'=>'fa-skype','text'=>$text]}
+	{/if}
+	{if $social.linkedin}
+		{$text=translateToken value="Linked In"}
+
+		{$variables.linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
+	{/if}
+	{if $social.googleplus}
+		{$text=translateToken value="Google+"}
+
+		{$variables.googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
+	{/if}
+-->
+{if $socials|count > 1}
+	<div class="institution-button-container row">
+		{foreach $variables as $index => $info}
+			<div class="col-lg-6 col-md-6 col-xs-6">
+				<h5>
+					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="">
+					{$socials[$index].country_name}
+				</h5>
+
+				{foreach $info as $variable}
+			        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
+			            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
+			        </a>
+				{/foreach}
 			</div>
-		{/if}
+		{/foreach}
+	</div>
+{else}
+	{$info=$variables[0]}
+	{$total=$info|count}
+	<div class="institution-button-container total-rows-{($total/2)|ceil}">
+		{foreach $info as $variable}
 
-	{/foreach}
-</div>
+			{if $variable@index is div by 2}
+				<div class="row">
+			{/if}
+		    <div class="col-lg-6 col-md-6 col-xs-6">
+		        <a href="{if $variable.link}{$variable.link}{else}javascript:void(0);{/if}" target="_blank" class="btn btn-primary btn-compressed">
+		            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
+		        </a>
+			</div>
+			{if ($variable@iteration is div by 2) || ($variable@last)}
+				</div>
+			{/if}
 
+		{/foreach}
+	</div>
+{/if}
 <!--
 <div class="row"  id="institution-chat-list">
 </div>

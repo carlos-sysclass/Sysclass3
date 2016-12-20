@@ -2626,7 +2626,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 
 .institution-button-container {
-  padding: 6px 10px;
+  padding: 0px 10px;
 }
 .institution-button-container .row .col-md-6 {
   padding-right: 5px;
@@ -2690,4 +2690,15 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 
 .query-builder .rule-container, .query-builder .rule-placeholder, .query-builder .rules-group-container {
   border-radius: 0 !important;
+}
+
+.organization-country-image {
+  height: 15px;
+}
+
+.institution-button-container h5 {
+    border-bottom: 1px solid #ccc;
+    margin: 0 0 5px;
+    padding-bottom: 4px;
+    text-align: center;
 }
