@@ -1457,14 +1457,21 @@ ul.test-sidebar-info {
     padding: 0;
 }
 ul.test-sidebar-info > li {
+    display: inline-block;
+    padding: 5px;
+}
+
+ul.test-sidebar-info > li > div {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
-    display: inline-block;
-    margin: 0 0 10px;
     padding: 5px;
     min-height: 32px;
     vertical-align: middle;
-    width: 24%;
+}
+/*
+ul.test-sidebar-info > li.large {
+  width: 50%;
+  margin: 0 -1px 10px;
 }
 
 @media (min-width: 601px) and (max-width: 1198px) {
@@ -1476,9 +1483,10 @@ ul.test-sidebar-info > li {
 @media (max-width: 600px) {
 	ul.test-sidebar-info > li {
 		width: 100%;	
+    margin: 0 0 10px 0;
 	}
 }
-
+*/
 
 ul.test-sidebar-info > li span.pull-left {
     margin-right: 10px;

@@ -347,6 +347,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             $testData = $testModel->toArray();
 
+
+            $testData['course'] = $testModel->getCourse()->toArray();
+
             $testData['test'] = $testModel->getTest()->toArray();
             //$testData['questions'] = $testModel->getQuestions()->toArray();
             $testQuestions = $testModel->shuffleTestQuestions($executionId);
@@ -395,9 +398,15 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             /// SAVE THE TEST QUESTIONS USED
 
+
+
             if ($executionId) {
                 $executionData = $executionModel->getItem($executionId);
-
+/*
+                var_dump($testData);
+                var_dump($executionData);
+                exit;
+*/
                 $this->module("settings")->put("test_execution_id", $executionId);
 
                 //$this->putModuleScript();
