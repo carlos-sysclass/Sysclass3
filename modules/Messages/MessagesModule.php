@@ -262,8 +262,6 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
           * @todo TRIGGER EVENT TO SENT THE EMAILL OR TO CREATE THE QUEUE FOR THE EMAIL OVERVIEW
          */
 
-        var_dump(func_get_args());
-
         if ($data['model_id'] == "me") {
             $this->eventsManager->fire("messages:created", $this, $model->toArray());
         }
