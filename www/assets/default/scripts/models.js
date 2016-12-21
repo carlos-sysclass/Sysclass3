@@ -17,10 +17,18 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         },
         sync : function(method, model, options) {
             if (method == "update" || method == "create") {
+                //if (method == "update") {
+                    //options.url = _.result(model, 'urlRoot') + "/" + model.get("id");
+                //} else {
+                //}
+
+                var base = _.result(model, 'urlRoot');
+
                 if (method == "update") {
-                    options.url = model.urlRoot + "/" + model.get("id");
+                    var id = this.get(this.idAttribute);
+                    options.url = base.replace(/[^\/]$/, '$&/') + encodeURIComponent(id);
                 } else {
-                    options.url = model.urlRoot;
+                    options.url = base;
                 }
 
                 var params = [];

@@ -148,7 +148,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
                             var formatAsCallback = jQuery(this.element).data('format-as');
 
-                            console.warn(formatAsCallback);
                             if (!_.has(mod.select2FormatFunctions, formatAsCallback)) {
                                 formatAsCallback = "default";
                             }
@@ -202,11 +201,9 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 	this.select2FormatFunctions = {
         "default" : function (item) { 
-            console.warn('default', item);
             if (_.isFunction(sprintf)) {
                 var formatString = jQuery(this.element).data('format-as-template');
 
-                console.warn(formatString);
                 if (!_.isUndefined(formatString)) {
                     return sprintf(formatString, item);
                 }
@@ -237,7 +234,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 		// datepicker
 		if($('.date-picker', context).length > 0){
-            console.warn(moment.localeData().longDateFormat('L').toLowerCase());
+            //console.warn(moment.localeData().longDateFormat('L').toLowerCase());
             
 			$('.date-picker', context).datepicker({
                 format: moment.localeData().longDateFormat('L').toLowerCase(),
@@ -483,7 +480,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         if ($.fn.mask) {
             if ($("[data-mask-type]", context).size() > 0) {
                 $("[data-mask-type]", context).each(function() {
-                    console.warn($(this).data("mask-type"), $(this).data("maskType"));
+                    //console.warn($(this).data("mask-type"), $(this).data("maskType"));
                     if ($(this).data("maskType") == "date") {
                         $(this).mask('00/00/0000', {selectOnFocus: true});
                     }

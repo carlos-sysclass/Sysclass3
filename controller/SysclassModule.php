@@ -250,8 +250,9 @@ abstract class SysclassModule extends BaseSysclassModule
      * [ add a description ]
      *
      * @Post("/item/{model}")
+     * @Post("/item/{model}/{id:.+}")
      */
-    public function addItemRequest($model)
+    public function addItemRequest($model, $id)
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
@@ -396,6 +397,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * [ add a description ]
      *
      * @Put("/item/{model}/{id}")
+     * @Put("/item/{model}/{id:.+}")
      */
     public function setItemRequest($model, $id)
     {
@@ -404,6 +406,9 @@ abstract class SysclassModule extends BaseSysclassModule
         $data = $this->request->getJsonRawBody(true);
 
         $itemModel = $this->getModelData($model, $id, $data);
+
+        var_dump($itemModel);
+        exit;
 
         $this->setArgs(array(
             'model' => $model,
