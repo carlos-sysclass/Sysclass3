@@ -296,10 +296,10 @@ abstract class SysclassModule extends BaseSysclassModule
             }
 
             if (call_user_func(array($itemModel, $createMethod))) {
-                $event_data = array_merge($data, array('_args' => func_get_args()));
+                $event_data = array_merge($data, array('model_id' => $model, '_args' => func_get_args()));
                 //$this->eventsManager->collectResponses(true);
 
-                $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
+                $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data, $model);
 
                 // @todo CREATE A WAY TO CUSTOMIZED MODULE MESSAGES ON OPERATIONS
 

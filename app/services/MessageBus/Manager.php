@@ -12,6 +12,7 @@ class Manager extends Component
 	protected $types = array(
 		'user',
 		'api',
+		'messages',
 		'course',
 		'unit',
 		'certificate',
@@ -86,6 +87,8 @@ class Manager extends Component
 
 	public function processEvents() {
 		$events = $this->messagebus->receive(false);
+
+		var_dump($this->listeners);
 
 		$result = array();
 
