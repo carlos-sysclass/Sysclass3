@@ -233,6 +233,13 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	redraw : function() {
         		this.oTable.api().draw(false);
         	},
+			doSearch : function(e, text) {
+			    this.getApi().search(
+			        text,
+			        false,
+			        true
+			    ).draw();
+			},
         	/**
         	 * Get a variable from view bags
         	 * @param  {[type]} name [description]
