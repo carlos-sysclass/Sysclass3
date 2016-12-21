@@ -57,6 +57,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
                 // TODO MOVE TO YOUR OWN COMPONENT
                 //$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
+                $this->putComponent("datatables");
                 $this->putComponent("bootstrap-switch");
                 $this->putComponent("icheck");
                 $this->putComponent("easy-pie-chart");

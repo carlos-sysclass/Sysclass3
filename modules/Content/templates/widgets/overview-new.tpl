@@ -978,21 +978,38 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   <td class="text-center">
-    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
-      <span class="concluido">
-        <i class="fa fa-check-circle" aria-hidden="true"></i>
-        {translateToken value="Completed"}
-      </span>
-    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
-      <a href="javascript: void(0);" class="btn btn-sm btn-continue view-test-action">
-          <i class="fa fa-clock-o" aria-hidden="true"></i>
-          {translateToken value="In Progress"}
-      </a>
+    <% if (_.has(model, 'testExecution') && !_.isNull(model.testExecution.user_grade)) { %>  
+      <% if (model.testExecution.pass == "1") { %>  
+        <span class="concluido">
+          <strong><%= sprintf("%2.1f%%", model.testExecution.user_grade) %></strong>
+        </span>
+      <% } else { %>
+        <span class="pendente">
+          <strong><%= sprintf("%2.1f%%", model.testExecution.user_grade) %></strong>
+        </span>
+        <% if (model.test.test_repetition <= 0 || _.size(model.executions) < model.test.test_repetition) { %>
+        <a href="javascript: void(0);" class="view-test-action">
+            {translateToken value="Try Again"}
+        </a>
+        <% } %>
+      <% } %>
     <% } else { %>
-      <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
-          <i class="fa fa-check" aria-hidden="true"></i>
-          {translateToken value="Avaliable"}
-      </a>
+      <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
+        <span class="concluido">
+          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          {translateToken value="Completed"}
+        </span>
+      <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
+        <a href="javascript: void(0);" class="btn btn-sm btn-continue view-test-action">
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {translateToken value="In Progress"}
+        </a>
+      <% } else { %>
+        <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            {translateToken value="Avaliable"}
+        </a>
+      <% } %>
     <% } %>
   </td>
   <!-- Exame -->
