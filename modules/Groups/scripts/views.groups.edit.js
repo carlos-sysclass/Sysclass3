@@ -7,7 +7,7 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
     mod.models = {
         groups : {
         	users : baseModelClass.extend({
-            	idAttribute : "id",
+            	idAttribute : "user_id",
             	response_type : "object",
 				sync : function(method, model, options) {
 		            if (method == "update") {
