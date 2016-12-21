@@ -331,7 +331,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        datatable : {
 			        	bAutoWidth: true,
 			        	serverSide : false,
-			        	searching : false,
+			        	//searching : false,
 			        	ordering: false,
 			            //"sAjaxSource": message_context.ajax_source,
 			            //"aoColumns": message_context.datatable_fields,
@@ -367,6 +367,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.warn("ON VISIBLE");
 				//this.tableView.getApi().destroy(false);
 				this.tableView.recreate();
+			},
+			doSearch : function(e, text) {
+				this.tableView.doSearch(e, text);
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/programCoursesTabViewClass::renderProgress');
@@ -579,7 +582,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        datatable : {
 			        	bAutoWidth: true,
 			        	serverSide : false,
-			        	searching : false,
+			        	//searching : false,
 			        	ordering: false,
 			            //"sAjaxSource": message_context.ajax_source,
 			            //"aoColumns": message_context.datatable_fields,
@@ -622,6 +625,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.warn("ON VISIBLE");
 				//this.tableView.getApi().destroy(false);
 				this.tableView.recreate();
+			},
+			doSearch : function(e, text) {
+				this.tableView.doSearch(e, text);
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/courseUnitsTabViewClass::renderProgress');
@@ -1036,6 +1042,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	    */
 	
 		this.widgetViewClass = parent.widgetViewClass.extend({
+			activeTab : null,
+			activeView : null,
+	    	events : function() {
+	    		return {
+		    		"click .content-widget-search-action" : "showSearch",
+		    		"blur .search-container input" : "hideSearch",
+		    		"keyup .search-container input" : "doSearch",
+		    	};
+    		},
 			programTabView : null,
 			courseTabView : null,
 			unitTabView : null,
@@ -1064,7 +1079,27 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.listenTo(mod.progressCollection, "sync", this.renderProgress.bind(this));
 			},
-			
+			showSearch : function() {
+				// GET THE CURRENT ACTIVE TAB
+				//content-widget
+				if (!_.isNull(this.activeView)) {
+					// OPEN SEARCH INPUT
+					this.$(".content-widget-search-action").fadeOut(500, function() {
+						this.$(".search-container").fadeIn(500);
+						this.$(".search-container input").focus();
+					}.bind(this));
+				}
+			},
+			hideSearch : function() {
+				this.$(".search-container").fadeOut(500, function() {
+					this.$(".content-widget-search-action").fadeIn(500);
+				}.bind(this));
+			},
+			doSearch : function(e) {
+				if (!_.isNull(this.activeView)) {
+					this.activeView.doSearch(e, $(e.currentTarget).val());
+				}
+			},
 			renderProgram : function() {
 				console.info('portlet.content/widgetViewClass::render');
 				this.$(".program-title").html(this.collection.getCurrentProgram().get("name"));
@@ -1109,6 +1144,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						} else if (current_tab == "unit") {
 							this.courseUnitsTabView.onVisible();
 						}
+
+						this.activeTab = current_tab;
+						this.onTabChange();
 						
 
 						//this.model.save();
@@ -1119,6 +1157,28 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var current_tab = this.model.get("content_current_tab");
 				this.$(".widget-tabs-container a[data-toggle='tab'][data-setting-update='" + current_tab + "']")
 					.tab('show');
+
+				this.activeTab = current_tab;
+
+				this.onTabChange();
+			},
+			onTabChange : function() {
+				console.warn('onTabChange', this.activeTab)
+				if (this.activeTab == "program") {
+					this.activeView = null;
+					this.$(".content-widget-search-action-container").hide();
+
+				} else if (this.activeTab == "course") {
+					this.activeView = this.programCoursesTabView;
+					console.warn(this.activeView);
+					this.$(".content-widget-search-action-container").show();
+				} else if (this.activeTab == "unit") {
+					// ACTIVE TAB IS MESSAGE, SEARCH ON HIS DATATABLE
+					this.activeView = this.courseUnitsTabView;
+					this.$(".content-widget-search-action-container").show();
+				} else {
+					this.activeView = null;
+				}
 			},
 			startOverallProgress : function() {
 				//this.overallProgressView = new overallProgressViewClass();
@@ -1241,7 +1301,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			}
 			*/
 		});
-
+		/*
 		this.onFilter = function(e, portlet) {
 			// INJECT
 			//this.contentView.$el.hide();
@@ -1253,11 +1313,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		};
 
 		this.onSearch = function(e, portlet,q) {
-			/*
-			// INJECT
-			this.contentView.$el.hide();
-			this.filterActionView.reload();
-			*/
 			return false;
 		};
 		this.onResized = function(e, portlet) {
@@ -1269,6 +1324,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		this.onRestorescreen = function(e, portlet) {
 			return true;
 		};
+		*/
 	});
 	var baseModel = app.module("models").getBaseModel();
 

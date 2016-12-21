@@ -49,11 +49,14 @@ _before_init_functions.push(function() {
 
             </ul>
             <ul class="dir-menu-bar">
-              <!--
-              <li><a href=""><i class="fa fa-search" aria-hidden="true"></i></a></li>
-              <li><a href=""><i class="fa fa-info" aria-hidden="true"></i></a></li>
-              <li><a href=""><i class="fa fa-dropbox" aria-hidden="true"></i></a></li>
-              -->
+              <li class="content-widget-search-action-container">
+                <a href="javascript: void(0);" class="content-widget-search-action tooltips" data-original-title="{translateToken value='Search'}">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </a>
+                <div class="search-container">
+                  <input type="text" class="form-control" name="_search" placeholder={translateToken value='Search'} />
+                </div>
+              </li>
             </ul>
           </div>
           <!-- Tab panes -->
