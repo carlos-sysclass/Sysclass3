@@ -2656,6 +2656,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 
 #course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {
   margin-top: 0px !important;
+  border: none;
 }
 
 .inter-navsuper-tabs .tab-content.tab-content-messages {
@@ -2720,3 +2721,8 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
     padding: 5px;
   }
 
+
+.inter-navsuper-tabs .navbar {
+  border-left-width: 0;
+  border-right-width: 0;
+}

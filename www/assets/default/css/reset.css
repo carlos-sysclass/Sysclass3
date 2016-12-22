@@ -313,11 +313,10 @@ margin:0 4px 0 0;
 }
 
 .inter-navsuper-tabs .table > thead > tr > th, .inter-navsuper-tabs .table > tbody > tr > td {
+  border-top: 0 none;
+  border-bottom: 1px solid #ddd;
 }
 
-.inter-navsuper-tabs .table > tbody > tr:last-child > td {
-  border-bottom: none;
-}
 
 .inter-navsuper .nav-tabs>li.active>a, .inter-navsuper .nav-tabs>li.active>a:focus, .inter-navsuper .nav-tabs>li.active>a:hover {
   background: #1976d2;
