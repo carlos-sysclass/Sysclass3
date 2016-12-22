@@ -88,7 +88,7 @@ class Manager extends Component
 	public function processEvents() {
 		$events = $this->messagebus->receive(false);
 
-		var_dump($this->listeners);
+//		var_dump($this->listeners);
 
 		$result = array();
 

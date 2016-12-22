@@ -60,6 +60,11 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
                     $message_type = 'info';
                     break;
                 }
+                case AuthenticationException :: USER_ACCOUNT_IS_NOT_APPROVED : {
+                    $message = $this->translate->translate("Your account was not approved yet. Please try again later.");
+                    $message_type = 'warning';
+                    break;
+                }
                 case AuthenticationException :: API_TOKEN_TIMEOUT : {
                     $message = $this->translate->translate("Your token has expired. Please generate a new one");
                     $message_type = 'info';
@@ -379,6 +384,11 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
 
                 $user = $userTimes->getUser();
 
+                if ($user->pending == 1) {
+                    throw new AuthenticationException("USER_IS_NOT_APPROVED_YET", AuthenticationException::USER_ACCOUNT_IS_NOT_APPROVED);
+                }
+
+
                 if ($user) {
 
                     $this->checkForMaintenance($user);
@@ -441,6 +451,10 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
                     if (!$user) {
                         throw new AuthenticationException("API_TOKEN_INVALID", AuthenticationException::API_TOKEN_INVALID);
                     }
+
+                    if ($user->pending == 1) {
+                        throw new AuthenticationException("USER_IS_NOT_APPROVED_YET", AuthenticationException::USER_ACCOUNT_IS_NOT_APPROVED);
+                    }                    
 
                     $backend = $this->getBackend($user);
 

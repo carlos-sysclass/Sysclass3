@@ -14,6 +14,7 @@ class Exception extends \Phalcon\Exception
     const USER_PUBLIC_SIGNUP_IS_FORBIDEN = 908;
     const USER_DATA_IS_INVALID_OR_INCOMPLETE = 909;
     const RESET_HASH_ISNT_VALID_ANYMORE = 910;
+    const USER_ACCOUNT_IS_NOT_APPROVED = 911;
     const API_TOKEN_TIMEOUT = 950;
     const API_TOKEN_INVALID = 951;
     const API_TOKEN_NOT_FOUND = 952;

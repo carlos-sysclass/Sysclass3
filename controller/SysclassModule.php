@@ -407,8 +407,8 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $itemModel = $this->getModelData($model, $id, $data);
 
-        var_dump($itemModel);
-        exit;
+        //var_dump($itemModel);
+        //exit;
 
         $this->setArgs(array(
             'model' => $model,

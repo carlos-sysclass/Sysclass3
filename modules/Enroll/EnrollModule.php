@@ -578,10 +578,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
     protected function isResourceAllowed($action = null, $model_info = null, $model, $data) {
         $isAllowed = parent::isResourceAllowed($action, $model_info);
-        
+
         if ($isAllowed && $model == "users") {
             if (array_key_exists('user_id', $data) && $data['user_id'] != $this->user->id) {
-                $isAllowed = $this->isUserAllowed($this->user, "enroll", "users");
+                $isAllowed = $this->isUserAllowed("users", "enroll");
             }
         }
         return $isAllowed;

@@ -49,7 +49,6 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             } else {
                 $userPointers = Unit::getContentPointers();
             }
-            
 
             $tree = Program::getUserContentTree($this->user, true);
 
@@ -150,7 +149,9 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
             $this->putScript("scripts/ui.menu.content");
 
-            $courses = $this->user->getCourses();
+            $courses = $this->user->getPrograms([
+                'conditions' => "approved = 1"
+            ]);
 
             $items = array();
             foreach($courses as $course) {

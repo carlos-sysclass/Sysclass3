@@ -38,7 +38,7 @@ class ResourceUrl extends Url
 		}
 		// INJECT THEME
 		
-		var_dump($baseUri);
+//		var_dump($baseUri);
 
 		
 	}
