@@ -9,8 +9,14 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
         	users : baseModelClass.extend({
             	idAttribute : "user_id",
             	response_type : "object",
+				sync : function(method, model, options) {
+		            if (method == "update") {
+		            	method = "create";
+		            }
+		            return baseModelClass.prototype.sync.apply(this, [method, model, options]);
+		        },
             	urlRoot : function() {
-            		return "/module/groups/item/users/" + this.get("group_id");
+            		return "/module/groups/item/users/" + this.get("group_id") /* + "/" + this.get("user_id")*/;
             	}
             })
         }
@@ -74,6 +80,8 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
                         'group_id' : this.model.get("id"),
                         'user_id' : data['id']
                     });
+
+                    console.warn(_.result(model, 'urlRoot'));
                     model.save();
 
                     this.staticTableView.refresh();

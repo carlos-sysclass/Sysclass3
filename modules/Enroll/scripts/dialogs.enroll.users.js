@@ -71,7 +71,6 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 							.find("i.fa")
 							.addClass("fa-refresh fa-spin");
 
-                    	console.warn(data, item, model);
                     	var model = new mod.models.enroll.user(data);
                     	model.set('approved', 1);
                     	model.save();
@@ -119,22 +118,15 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 
 	                	this.tableView.refresh();
                 	}
+
+                	this.select2Obj.select2("val", "");
 				}.bind(this));
             },
             open : function() {
-                //this.select2Obj.off("select2:select");
             	this.select2Obj.select2("destroy");
 
                 this.$el.modal("show");
                 app.module("ui").handleSelect2(this.$el);
-                /*
-                this.select2Obj = this.$(".select2-me");
-
-                this.select2Obj.on("change", function (e, a,b,c,d) { 
-                	console.warn(e,a,b,c,d);
-				});
-				*/
-
             },
             close : function() {
                 this.$el.modal("hide");
@@ -151,9 +143,6 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 					exclude : true
 				}));
 
-				console.warn(this.model.toJSON());
-
-
 				this.tableView
 					.putVar('enroll_id', this.model.get("enroll_id"))
 					.putVar('course_id', this.model.get("course_id"))
@@ -161,11 +150,6 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 						enroll_id : this.model.get("enroll_id"),
 						course_id : this.model.get("course_id"),
 					}) + "?block");
-
-            	//app.module("ui").handleSelect2(this.$el);
-
-            	//this.collection.role_id = this.model.get("id");
-            	//this.collection.fetch();
             }
         });
 

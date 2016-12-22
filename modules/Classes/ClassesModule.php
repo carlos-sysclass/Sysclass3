@@ -51,7 +51,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             array(
                 'icon'  => 'icon-bookmark',
                 'link'  => $this->getBasePath() . "view",
-                'text'  => $this->translate->translate("Classes")
+                'text'  => $this->translate->translate("Courses")
             )
         );
 
@@ -80,7 +80,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Class'),
+                    'text'      => $this->translate->translate('New Course'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -123,12 +123,13 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Get("/add")
      */
-    /*
     public function addPage()
     {
-        parent::addPage($id);
+        $programs = Program::find();
+        $this->putItem("programs", $programs->toArray());
+
+        parent::addPage();
     }
-    */
 
     /**
      * [ add a description ]

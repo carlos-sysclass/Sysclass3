@@ -250,8 +250,9 @@ abstract class SysclassModule extends BaseSysclassModule
      * [ add a description ]
      *
      * @Post("/item/{model}")
+     * @Post("/item/{model}/{id:.+}")
      */
-    public function addItemRequest($model)
+    public function addItemRequest($model, $id)
     {
         $this->response->setContentType('application/json', 'UTF-8');
 
@@ -296,10 +297,10 @@ abstract class SysclassModule extends BaseSysclassModule
             }
 
             if (call_user_func(array($itemModel, $createMethod))) {
-                $event_data = array_merge($data, array('_args' => func_get_args()));
+                $event_data = array_merge($data, array('model_id' => $model, '_args' => func_get_args()));
                 //$this->eventsManager->collectResponses(true);
 
-                $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data);
+                $this->eventsManager->fire("module-{$this->module_id}:afterModelCreate", $itemModel, $event_data, $model);
 
                 // @todo CREATE A WAY TO CUSTOMIZED MODULE MESSAGES ON OPERATIONS
 
@@ -396,6 +397,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * [ add a description ]
      *
      * @Put("/item/{model}/{id}")
+     * @Put("/item/{model}/{id:.+}")
      */
     public function setItemRequest($model, $id)
     {
@@ -404,6 +406,9 @@ abstract class SysclassModule extends BaseSysclassModule
         $data = $this->request->getJsonRawBody(true);
 
         $itemModel = $this->getModelData($model, $id, $data);
+
+        //var_dump($itemModel);
+        //exit;
 
         $this->setArgs(array(
             'model' => $model,
@@ -644,8 +649,11 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 if (array_key_exists('rules', $filter) && is_array($filter['rules'])) {
                     $parsed = $this->sqlParser->parse($filter);
-                    $args['conditions'] = $parsed['conditions'];
-                    $args['bind'] = $parsed['bind'];
+                    $modelFilters[] = $parsed['conditions'];
+                    $filterData = $filterData ? array_merge($filterData, $parsed['bind']) : $parsed['bind'];
+
+                    //$args['conditions'] = $parsed['conditions'];
+                    //$args['bind'] = $parsed['bind'];
                 } else {
                     $options = array();
 
@@ -680,16 +688,26 @@ abstract class SysclassModule extends BaseSysclassModule
                             $index++;
                         }
                     }
-                    $args['conditions'] = implode(" AND ", $modelFilters);
-                    $args['bind'] = $filterData;
+
+                    /*
+                    if (!empty($modelFilters)) {
+                        $args['conditions'] = $modelFilters;
+                        $args['bind'] = $filterData;
+                    }
+                    */
+
+                    //$args['conditions'] = implode(" AND ", $modelFilters);
+                    //$args['bind'] = $filterData;
                 }
             } else {
-                /*
-                $args = array(
-                    'order'  => $sort
-                );
-                */
             }
+
+            if (count($modelFilters) > 0) {
+                $args['conditions'] = implode(" AND ", $modelFilters);
+                $args['bind'] = $filterData;
+            }
+
+
 
             $args['order'] = $sort;
             $args['args'] = $filter;
@@ -702,11 +720,13 @@ abstract class SysclassModule extends BaseSysclassModule
              * @todo Get parameters to filter, if possibile, the info
              */
             //var_dump( array($model_info['class'], $model_info['listMethod']), $args);
+            //exit;
             
             $resultRS = call_user_func(
                 array($model_info['class'], $model_info['listMethod']), $args
             );
 
+            //var_dump($resultRS->count());
             //exit;
 
             if ($type === 'datatable') {

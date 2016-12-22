@@ -1,5 +1,7 @@
 <?php
-use Sysclass\Services\Authentication\Exception as AuthenticationException;
+use 
+    Sysclass\Services\Authentication\Exception as AuthenticationException,
+    Sysclass\Models\Users\User;
 
 
 // TODO: Load Autentication Backends, based on configuration
@@ -9,24 +11,45 @@ $di->set("authentication", function() use ($eventsManager) {
     return $authentication;
 });
 
-$di->setShared("user", function() use ($di, $eventsManager) {
-    try {
-        $user = $di->get("authentication")->checkAccess();
+if (APP_TYPE !== "CONSOLE") {
+    $di->setShared("user", function() use ($di, $eventsManager) {
+        try {
+            $user = $di->get("authentication")->checkAccess();
 
-        if ($user) {
-            $userlanguage = $user->getLanguage();
+            if ($user) {
+                $userlanguage = $user->getLanguage();
 
-            if ($userlanguage) {
-                $locale = $userlanguage->code . "_" . $userlanguage->country_code . "." . "utf8";
-                setlocale(LC_ALL, $locale);
+                if ($userlanguage) {
+                    $locale = $userlanguage->code . "_" . $userlanguage->country_code . "." . "utf8";
+                    setlocale(LC_ALL, $locale);
+                }
             }
-        }
 
-        return $user;
-    } catch (AuthenticationException $e) {
-        return false;
-    }
-});
+            return $user;
+        } catch (AuthenticationException $e) {
+            return false;
+        }
+    });
+} else {
+    $di->setShared("user", function() use ($di, $eventsManager) {
+        try {
+            $user = User::findFirstById(1);
+
+            if ($user) {
+                $userlanguage = $user->getLanguage();
+
+                if ($userlanguage) {
+                    $locale = $userlanguage->code . "_" . $userlanguage->country_code . "." . "utf8";
+                    setlocale(LC_ALL, $locale);
+                }
+            }
+
+            return $user;
+        } catch (AuthenticationException $e) {
+            return false;
+        }
+    });
+}
 if (APP_TYPE === "WEB" || APP_TYPE === "CONSOLE") {
     $di->setShared("acl", function() use ($di, $eventsManager) {
         // GET CURRENT USER

@@ -65,14 +65,14 @@
 						<div class="col-md-6">
 							<div class="form-group">
 					            <label>
-					                <input type="radio" name="admittance_type" data-update="dynamic" class="icheck-me" data-skin="square" data-color="green" value="0"> {translateToken value='Static'}
+					                <input type="radio" name="dynamic" data-update="dynamic" class="icheck-me" data-skin="square" data-color="green" value="0"> {translateToken value='Static'}
 					            </label>
 					        </div>
 					    </div>
 						<div class="col-md-6">
 							<div class="form-group">
 					            <label>
-					                <input type="radio" name="admittance_type" data-update="dynamic" class="icheck-me" data-skin="square" data-color="blue" value="1"> {translateToken value='Dynamic'}
+					                <input type="radio" name="dynamic" data-update="dynamic" class="icheck-me" data-skin="square" data-color="blue" value="1"> {translateToken value='Dynamic'}
 					            </label>
 					        </div>
 					    </div>

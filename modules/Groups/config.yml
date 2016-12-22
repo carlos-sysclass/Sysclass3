@@ -26,6 +26,11 @@ crud:
         - mData: description
           label: Description
 
+        - mData: dynamic
+          sType: table-boolean
+          sClass: text-center
+          label: "Dynamic"
+
         - mData: active
           sType: table-boolean
           sClass: text-center
@@ -37,7 +42,7 @@ crud:
           label: Actions
 
     add:
-      components: ["validation", "wysihtml5", "bootstrap-switch","select2"]
+      components: ["validation", "wysihtml5", "bootstrap-switch","select2", "icheck"]
       blocks: ["messages.group.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
@@ -108,6 +113,7 @@ models:
   users: 
     class: Sysclass\Models\Users\UsersGroups
     listMethod: findGroupUsers
+    updateMethod: save
     acl:
       delete:
         resource: groups

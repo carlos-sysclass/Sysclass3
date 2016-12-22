@@ -93,14 +93,16 @@ class Unit extends Model
         if (is_null($user)) {
             $user = \Phalcon\DI::getDefault()->get('user');
         }
-        $courses = $user->getPrograms();
+        $programs = $user->getPrograms([
+            "conditions" => 'approved = 1'
+        ]);
 
-        if ($courses->count() > 0) {
+        if ($programs->count() > 0) {
             //$course_ids = array_column($courses->toArray(), 'id');
 
-            $course_ids = [];
-            foreach($courses as $course) {
-                    $course_ids[] = $course->id;
+            $program_ids = [];
+            foreach($programs as $program) {
+                    $program_ids[] = $program->id;
             }
 
             switch($by) {
@@ -113,7 +115,7 @@ class Unit extends Model
                     $unit = $content->getUnit();
                     $course = $unit->getCourse();
                     $program = $course->getProgram();
-                    if (!in_array($program->id, $course_ids)) {
+                    if (!in_array($program->id, $program_ids)) {
                         return self::getContentPointers($user, 'unit');
                     }
 
@@ -128,7 +130,7 @@ class Unit extends Model
                     }
                     $course = $unit->getCourse();
                     $program = $course->getProgram();
-                    if (!in_array($program->id, $course_ids)) {
+                    if (!in_array($program->id, $program_ids)) {
                         return self::getContentPointers($user, 'course');
                     }
                     $content = $unit->getContents()->getFirst();
@@ -144,7 +146,7 @@ class Unit extends Model
                         return self::getContentPointers($user, 'program');
                     }
                     $program = $course->getProgram();
-                    if (!in_array($program->id, $course_ids)) {
+                    if (!in_array($program->id, $program_ids)) {
                         return self::getContentPointers($user, 'program');
                     }
 
@@ -178,7 +180,7 @@ class Unit extends Model
                 }
                 case 'default' :
                 default : {
-                    $program = $user->getPrograms()->getFirst();
+                    $program = $programs->getFirst();
                     if ($program) {
                         $course = $program->getCourses()->getFirst();
                     } else {
@@ -200,7 +202,7 @@ class Unit extends Model
                 }
             }
 
-            if (!in_array($program->id, $course_ids)) {
+            if (!in_array($program->id, $program_ids)) {
                 return false;
             }
 

@@ -9,7 +9,9 @@ use Sysclass\Models\Users\Group as UserGroup,
     Sysclass\Models\Messages\Message,
     Sysclass\Models\Messages\GroupReceiver,
     Sysclass\Models\Messages\UserReceiver,
-    Sysclass\Models\Acl\Role;
+    Sysclass\Models\Acl\Role,
+    Sysclass\Services\MessageBus\INotifyable,
+    Sysclass\Collections\MessageBus\Event;
     
 /**
  * [NOT PROVIDED YET]
@@ -18,7 +20,7 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidgetContainer
+class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidgetContainer, INotifyable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -179,7 +181,64 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
 
     }
 
-    public function afterModelCreate($evt, $model, $data) {
+    /* INotifyable */
+    public function getAllActions() {
+
+    }
+
+    public function processNotification($action, Event $event) {
+        switch($action) {
+            case "inform-receiver" : {
+                // SEND EMAIL PASSWORD RESET 
+                $data = $event->data;
+
+
+                $message = Message::findFirstById($data['id']);
+
+                if ($message) {
+
+                    $users = $message->getUsers();
+
+                    foreach($users as $user) {
+                        $status = $this->mail->send(
+                            $user->email, 
+                            "Um nova mensagem recebida. Email automático, não é necessário responder.",
+                            "email/" . $this->sysconfig->deploy->environment . "/messages-created.email",
+                            true,
+                            [
+                                'user' => $user,
+                                'message' => $message,
+                                'from' => $message->getFrom()
+                            ]
+                        );
+                        /*
+                        $this->notification->createForUser(
+                            $receiver,
+                            'An user enrolled a program.',
+                            'activity',
+                            array(
+                                'text' => "View",
+                                'link' => $this->getBasePath() . "edit/" . $data['enroll_id'] . '#tab_1_3'
+                            ),
+                            false,
+                            "ENROLL:" . "E" . $data['enroll_id'] . "U" . $user->id . "P" . $program->id
+                        );
+                        */
+                    }
+
+                    return array(
+                        'status' => true
+                    );
+                }
+                return array(
+                    'status' => false,
+                    'unqueue' => true
+                );
+            }
+        }
+    }
+
+    public function afterModelCreate($evt, $model, $data, $model_id) {
         if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
             //UsersGroups::find("user_id = {$userModel->id}")->delete();
             foreach($data['group_id'] as $group) {
@@ -198,9 +257,14 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
             }
         }
 
+
         /**
           * @todo TRIGGER EVENT TO SENT THE EMAILL OR TO CREATE THE QUEUE FOR THE EMAIL OVERVIEW
          */
+
+        if ($data['model_id'] == "me") {
+            $this->eventsManager->fire("messages:created", $this, $model->toArray());
+        }
         
         return true;
     }
