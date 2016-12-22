@@ -73,7 +73,32 @@ class Model extends \Phalcon\Mvc\Model
 
         return $itemData;
     }
+
+    public function getItemRel($method) {
+        /*
+        if (strpos($method, ".")) {
+            $chainMethods = explode(".", $method);
+            $method = ucfirst(strtolower(reset($chainMethods)));
+        } else {
+        */
+            $chainMethods = [$method];
+            $method = ucfirst(strtolower($method));    
+        //}
+        $methodName = "get{$method}";
+        $itemRel = $this->{$methodName}();
+        /*
+        if (count($chainMethods) > 1) {
+            var_dump($chainMethods);
+
+            return $itemRel->getItemRel(array_shift($chainMethods));
+        }
+        */
+        return $itemRel;
+
+    }
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
+
+//        var_dump($manyAliases);
 
         if (is_null($itemData)) {
             $itemData = $this->toArray();    
@@ -81,20 +106,43 @@ class Model extends \Phalcon\Mvc\Model
         
         if (is_array($manyAliases)) {
             foreach($manyAliases as $index => $alias) {
-                $alias = ucfirst(strtolower($alias));
-                $methodName = "get{$alias}";
 
+                if (is_array($alias)) {
+                    $exportArgs = $alias;
+                    $exportMethod = "toFullArray";
+                    $itemRel = $this->getItemRel($index);
+                } else {
+                    $itemRel = $this->getItemRel($alias);    
+
+                    $exportMethod = "toArray";
+                    if ($extended) {
+                        $exportMethod = "toFullArray";
+                    }
+                }
+                
+
+                /*
+                if (strpos($alias, ".")) {
+                    $chainMethods = explode(".", $alias);
+                    $alias = ucfirst(strtolower(reset($chainMethods)));
+                } else {
+                    $chainMethods = [$alias];
+                    $alias = ucfirst(strtolower($alias));    
+                }
+                
+                $methodName = "get{$alias}";
+                */
                 if (is_numeric($index)) {
                     $key = strtolower($alias);
                 } else {
-                    $key = $index;
+                    $key = strtolower($index);
                 }
-                $itemRel = $this->{$methodName}();
 
-                $exportMethod = "toArray";
-                if ($extended) {
-                    $exportMethod = "toFullArray";
-                }
+                //$itemRel = $this->{$methodName}();
+
+                
+                //print_r(get_class($itemRel));
+
 
                 if (get_class($itemRel) == 'Phalcon\Mvc\Model\Resultset\Simple') {
                     $itemData[$key] = array();
@@ -102,7 +150,8 @@ class Model extends \Phalcon\Mvc\Model
                         if (static::$_translate && method_exists([$sub, 'translate'])) {
                             $sub->translate();
                         }
-                        $itemData[$key][] = $sub->{$exportMethod}();
+                        print_r($index, $exportMethod, $exportArgs);
+                        $itemData[$key][] = call_user_func(array($sub, $exportMethod), $exportArgs);
                     }
                 } else {
                     if ($itemRel) {

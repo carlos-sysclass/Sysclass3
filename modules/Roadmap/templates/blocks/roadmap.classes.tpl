@@ -243,22 +243,22 @@
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 <span>{translateToken value="Total Lessons"}</span>
-                <% if (data.total_units == 0) { %>
-                    <strong class="text-danger pull-right"><%= data.total_units %></strong>
+                <% if (_.size(data.units) == 0) { %>
+                    <strong class="text-danger pull-right">0</strong>
                 <% } else { %>
-                    <strong class="text-primary pull-right"><%= data.total_units %></strong>
+                    <strong class="text-primary pull-right"><%= _.size(data.units) %></strong>
                 <% } %>
             </div>
             <% if (_.isObject(data.professor)) { %>
             <div class="col-md-6 col-sm-6">
                 <span>{translateToken value="Professor"}</span>
-                <strong class="text-primary pull-right"><<% print(data.professor.name  + " " + data.professor.surname); %></strong>
+                <strong class="text-primary pull-right"><%= sprintf('%(name)s %(surname)s', data.professor) %></strong>
             </div>
             <% } else { %>
                 <div class="col-md-6 col-sm-6">
                     <p>
                         <span>{translateToken value="Instructors"}</span>
-                        <strong class="text-danger pull-right">{translateToken value="No Instructors defined"}</strong>
+                        <strong class="text-danger pull-right">{translateToken value="No Instructors"}</strong>
                     </p>
                 </div>
             <% } %>

@@ -38,6 +38,7 @@ models:
 models:
   course:
     class: Sysclass\Models\Content\Course
+    exportMethod : ["toFullArray", ["Professor", "Units"]]
     acl:
       create: 
         resource: Classes
@@ -50,7 +51,7 @@ models:
         action: delete
   periods:
     class: Sysclass\Models\Content\CoursePeriods
-    exportMethod : ["toFullArray", ["Courses"]]
+    exportMethod : ["toFullArray", {"Courses": ["Professor", "Units"]}]
     acl:
       create: 
         resource: Classes

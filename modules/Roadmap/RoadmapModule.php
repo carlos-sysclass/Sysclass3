@@ -25,6 +25,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
         return array(
             'roadmap.classes' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
+                $self->putComponent("sprintf");
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
