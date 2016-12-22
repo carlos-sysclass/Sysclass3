@@ -4,6 +4,7 @@ namespace Sysclass\Models\Enrollments;
 use Plico\Mvc\Model,
     Phalcon\DI,
     Sysclass\Models\Enrollments\Courses as EnrollCourses,
+    Sysclass\Models\Users\User,
     Phalcon\Mvc\Model\Message as Message,
     Phalcon\Mvc\Model\Query;
 
@@ -61,39 +62,49 @@ class CourseUsers extends Model
         }
 
         // CHECK FOR ENROLLMENT PARAMETERS
-        $enrollment = EnrollCourses::findFirstById($this->enroll_id);
+        $enrollment = EnrollCourses::findFirst([
+            'conditions' => 'enroll_id = ?0 AND course_id = ?1',
+            'bind' => [$this->enroll_id, $this->course_id]
+        ]);
 
-        if ($enrollment->signup_active) {
-            // @todo CHECK FOR ENROLLMENT DATES
-            if ($enrollment->signup_auto_approval) {
-                $this->approved = 1;
+        $user = User::findFirstById($this->user_id);
+
+        if ($enrollment && $user) {
+
+            if ($enrollment->signup_active) {
+                // @todo CHECK FOR ENROLLMENT DATES
+                if ($enrollment->signup_auto_approval) {
+                    $this->approved = 1;
+                } else {
+                    $this->approved = 0;
+                }
             } else {
-                $this->approved = 0;
+                $message = new Message(
+                    $translator->translate("This enrollment options is not avaliable right now"
+                    ),
+                    null,
+                    "warning"
+                );
+                $this->appendMessage($message);
+                return false;
             }
-        } else {
-            $message = new Message(
-                $translator->translate("This enrollment options is not avaliable right now"
-                ),
-                null,
-                "warning"
-            );
-            $this->appendMessage($message);
-            return false;
-        }
 
-        $count = self::count(array(
-            'conditions' => "user_id = ?0 AND course_id = ?1",
-            'bind' => array($this->user_id, $this->course_id)
-        ));
-        if ($count > 0) {
-            $message = new Message(
-                $translator->translate("It's already a enrollment registered. Please try again."),
-                null,
-                "warning"
-            );
-            $this->appendMessage($message);
+            $count = self::count(array(
+                'conditions' => "user_id = ?0 AND course_id = ?1",
+                'bind' => array($this->user_id, $this->course_id)
+            ));
+            if ($count > 0) {
+                $message = new Message(
+                    $translator->translate("It's already a enrollment registered. Please try again."),
+                    null,
+                    "warning"
+                );
+                $this->appendMessage($message);
+            }
+            return $count == 0;
+        } else {
+
         }
-        return $count == 0;
     }
 
     public function afterCreate() {

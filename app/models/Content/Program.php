@@ -242,7 +242,7 @@ class Program extends Model
         }
         if ($only_active) {
             $programs = $user->getPrograms([
-                'conditions' => "active = 1"
+                'conditions' => "approved = 1 AND active = 1"
             ]);    
         } else {
             $programs = $user->getPrograms();

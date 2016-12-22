@@ -461,7 +461,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /**
      * [ add a description ]
      *
-     * @Post("/item/resources/toggle")
+     * @Post("/datasource/resources/toggle")
      */
     public function toggleRoleInResourceRequest() {
         $data = $this->getHttpData(func_get_args());

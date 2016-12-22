@@ -50,7 +50,7 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 
 				this.listenTo(table, "switchItem.datatables", function(el, data, state) {
 					var resourceSwitchModelClass = Backbone.Model.extend({
-						urlRoot : "/module/roles/item/resources/toggle"
+						urlRoot : "/module/roles/datasource/resources/toggle"
 					});
 
 					var exists = this.collection.findWhere({resource_id: data['id']});

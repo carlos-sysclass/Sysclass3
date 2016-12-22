@@ -55,25 +55,26 @@ class Courses extends Model
     }
 
     public function isAvaliable(User $user = null) {
-        if (is_null($user)) {
-            $user = $this->getDI()->get('user');
-        }
-        if (!$user) {
-            return false;
-        }
+        if ($this->signup_active) {
+            if (is_null($user)) {
+                $user = $this->getDI()->get('user');
+            }
+            if (!$user) {
+                return false;
+            }
 
-        $groups =  $this->getGroups();
+            $groups =  $this->getGroups();
 
-        if ($groups->count() == 0) {
-            return true;
-        }
-
-        foreach($groups as $group) {
-            if ($group->hasUser($user)) {
+            if ($groups->count() == 0) {
                 return true;
             }
-        }
 
+            foreach($groups as $group) {
+                if ($group->hasUser($user)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

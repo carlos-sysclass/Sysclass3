@@ -113,6 +113,7 @@ models:
   users: 
     class: Sysclass\Models\Users\UsersGroups
     listMethod: findGroupUsers
+    updateMethod: save
     acl:
       delete:
         resource: groups
