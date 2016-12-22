@@ -61,15 +61,15 @@
       <div class="container-fluid">
             <div class="row" align="center">
                   <div class="col-md-12 inner-text">
-                        A Superintendência de Compras da Itaipu Binacional<br /> certifica que<br />
+                        {{ translate.translate("The Superintendence of Purchases of Itaipu Binacional") }}<br /> {{ translate.translate("certifies that") }}<br />
                         <span style="color: #1E345D;"><i>{{ username|upper }}</i></span><br />
-                        Participou do curso <br />
+                        {{ translate.translate("Participated in the course") }}<br />
                         <span style="color: #1E345D;"><i>{{ modulename|upper }}</i></span>,
                         <br />
-                        na modalidade de Ensino a Distância do <br />
-                        Programa de Desenvolvimento de Fornecedores.
+                        {{ translate.translate("In the Distance Learning mode of the ") }}<br />
+                        {{ translate.translate("Supplier Development Program. ") }}
                         <br />
-                        Curitiba, {{ datetime.format("d") }} de {{ strftime("%B", datetime.format("U") ) }} de {{ datetime.format("Y") }}.
+                        Curitiba, {{ datetime.format("d") }} {{ translate.translate("of") }} {{ strftime("%B", datetime.format("U") ) }} {{ translate.translate("of") }} {{ datetime.format("Y") }}.
                         <br />
                   </div>
             </div>

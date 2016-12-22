@@ -306,6 +306,20 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
             switch($certificate->type) {
                 case 'course' : {
                     $module = Course::findFirstById($certificate->entity_id);
+
+                    $program = $module->getProgram();
+                    $language = $program->getLanguage();
+                    if ($language) {
+                        $this->translate->setSource($language->code);
+
+                        $locale = $language->code . "_" . $language->country_code . "." . "utf8";
+
+                        setlocale(LC_TIME, $locale);
+                    }
+
+                    //$this->translate->setSource($language->code);
+                    //var_dump($language->toArray());
+                    //exit;
                     if ($module) {
                         $user = User::findFirstById($certificate->user_id);
 
@@ -326,6 +340,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
 
             $vars['datetime'] = \DateTime::createFromFormat("U", $vars['timestamp']);
+ 
             $this->view->setVars($vars);
             //$course->complete();
             //$this->view->setVar("course", $course->getCourse());    
