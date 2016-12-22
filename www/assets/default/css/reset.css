@@ -313,8 +313,6 @@ margin:0 4px 0 0;
 }
 
 .inter-navsuper-tabs .table > thead > tr > th, .inter-navsuper-tabs .table > tbody > tr > td {
-  border-top: 0 none;
-  border-bottom: 1px solid #ddd;
 }
 
 .inter-navsuper-tabs .table > tbody > tr:last-child > td {

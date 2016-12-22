@@ -59,7 +59,7 @@
 
 					<span class="btn btn-primary fileinput-button">
                         <i class="fa fa-plus"></i>
-                        <span>{translateToken value="Set logo image"}</span>
+                        <span>{translateToken value="Set logo"}</span>
                         <input type="file" name="files[]">
                     </span>
 				</div>
