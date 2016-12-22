@@ -231,9 +231,9 @@ _before_init_functions.push(function() {
                       <thead>
                         <tr>
                           <th class="text-center">{translateToken value="Status"}</th>
-                          <th class="text-center">{translateToken value="Unit"}</th>
+                          <th class="text-center">{translateToken value="Units"}</th>
                           <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
-                          <th class="text-center">{translateToken value="Video"}</th>
+                          <th class="text-center">{translateToken value="Videos"}</th>
                           <th class="text-center">{translateToken value="Materials"}</th>
                           <th class="text-center">{translateToken value="Tests"}</th>
                           <!--
@@ -335,7 +335,7 @@ _before_init_functions.push(function() {
                       <thead>
                         <tr>
                           <th class="text-center">{translateToken value="Status"}</th>
-                          <th class="text-center">{translateToken value="Course"}</th>
+                          <th class="text-center">{translateToken value="Courses"}</th>
                           <th class="text-center">{translateToken value="Units"}</th>
                           <th class="text-center">{translateToken value="Assignments"}</th>
                         </tr>
