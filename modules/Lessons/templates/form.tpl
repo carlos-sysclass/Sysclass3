@@ -59,7 +59,7 @@
 				<div class="form-actions nobg">
 					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 
-					<button class="btn btn-warning save-and-add-action" type="button">{translateToken value="Save and Add another Lesson"}</button>
+					<button class="btn btn-warning save-and-add-action" type="button">{translateToken value="Save and add another unit"}</button>
 				</div>
 			</div>
 
