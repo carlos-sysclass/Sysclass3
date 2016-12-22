@@ -77,9 +77,9 @@
                 </span>
                 <strong class="text-primary pull-right">
                     {if ($T_EXECUTION.pass == 0)}
-                        <span class="label label-danger">{$T_EXECUTION.user_grade|round:1}</span>
+                        <span class="label label-danger">{$T_EXECUTION.user_grade|round:0}</span>
                     {else}
-                        <span class="label label-primary">{$T_EXECUTION.user_grade|round:1}</span>
+                        <span class="label label-primary">{$T_EXECUTION.user_grade|round:0}</span>
                     {/if}
                     <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
                 </strong>
