@@ -2185,14 +2185,7 @@ button.calendar-news-item {
     border-bottom: 0px;
     margin-bottom: 0px;
 }
-@media (max-width: 767px) {
-	.course_name {
-		padding: 15px 0 0 7px;
-	}
-	.summary-list > div.summary-item {
-	    padding: 0 5px 7px;
-	}
-}
+
 @media (min-width: 768px) {
 	#users-panel {
 		height: auto;
