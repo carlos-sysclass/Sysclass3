@@ -337,7 +337,7 @@ _before_init_functions.push(function() {
                           <th class="text-center">{translateToken value="Status"}</th>
                           <th class="text-center">{translateToken value="Courses"}</th>
                           <th class="text-center">{translateToken value="Units"}</th>
-                          <th class="text-center">{translateToken value="Assignments"}</th>
+                          <th class="text-center">{translateToken value="Completion"}</th>
                         </tr>
                       </thead>
                       <tbody></tbody>
@@ -685,7 +685,11 @@ _before_init_functions.push(function() {
       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
     -->
     <!-- Next Unit -->
-    <td >
+    <td class="text-center"> 
+      <span class="avalialbe">
+        {translateToken value="No date set"}
+      </span>
+      <!--
       <%
         var completed = true;
         for (var index in model.units) {
@@ -714,6 +718,7 @@ _before_init_functions.push(function() {
           </span>
         <% } %>
       <% } %>
+      -->
     </td>
 
     <!-- Cumulative Grade -->
@@ -998,7 +1003,7 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   <td class="text-center">
-    <% if (_.has(model, 'testExecution') && !_.isNull(model.testExecution.user_grade)) { %>  
+    <% if (_.has(model, 'testExecution') && !_.isNull(model.testExecution.user_grade)) { %>
       <% if (model.testExecution.pass == "1") { %>  
         <span class="concluido">
           <strong class="small-box"><%= sprintf("%d%%", model.testExecution.user_grade) %></strong>

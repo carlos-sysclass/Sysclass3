@@ -314,7 +314,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Success."),
+                            $this->translate->translate("Success"),
                             "success"
                         ),
                         $itemData 
@@ -322,13 +322,13 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('status')) {
                     $this->response->setJsonContent(array_merge(
                         $this->createAdviseResponse(
-                            $this->translate->translate("Success."),
+                            $this->translate->translate("Success"),
                             "success"
                         )
                     ));
                 } elseif ($this->request->hasQuery('silent')) {
                     $response = $this->createNonAdviseResponse(
-                        $this->translate->translate("Success."),
+                        $this->translate->translate("Success"),
                         "success"
                     );
                     if (!is_null($this->responseInfo)) {
@@ -338,7 +338,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
-                            $this->translate->translate("Success."),
+                            $this->translate->translate("Success"),
                             "success"
                         )
                     );
@@ -346,7 +346,7 @@ abstract class SysclassModule extends BaseSysclassModule
                     $this->response->setJsonContent(
                         $this->createRedirectResponse(
                             $this->getBasePath() . "edit/" . $itemModel->id,
-                            $this->translate->translate("Success."),
+                            $this->translate->translate("Success"),
                             "success"
                         )
                     );
