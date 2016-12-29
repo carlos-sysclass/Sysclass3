@@ -186,10 +186,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
             },
             url: function() {
-                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
+                return "/module/lessons/items/lesson-content/default/" + JSON.stringify({
+                    'lesson_id' : this.lesson_id
+                });
             },
             model: function(attrs, options) {
                 if (options.add) {
+                    attrs.file = _.first(attrs.files);
                     if (attrs.content_type == "file") {
                         return new lessonFileContentModelClass(attrs, _.extend(options, {
                             collection: this,
@@ -409,11 +412,45 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     */
                 }
 
+                if (this.$(".external-view").size() > 0) {
+                    this.renderExternalView();
+                }
+
                 app.module("ui").refresh(this.$el);
 
                 this.$el.attr("data-content-id", this.model.get("id"));
                 this.$el.data("viewObject", this);
                 return this;
+            },
+            renderExternalView : function() {
+                // CALLED WHEN A FILE NEED TO BE PARSED ON REMOTE
+
+                file = this.model.get("file");
+
+                var file_type = "other";
+                if (/^video\/.*$/.test(file.type)) {
+                    file_type = "video";
+                    this.renderExternalVideoView();
+                } else if (/^image\/.*$/.test(file.type)) {
+                    file_type = "image";
+                } else if (/^audio\/.*$/.test(file.type)) {
+                    file_type = "audio";
+                } else if (/.*\/pdf$/.test(file.type)) {
+                    file_type = "pdf";
+                }
+
+                // LOAD TRANSCODING INFO (IF ITS A VIDEO)
+                    // IF EXISTS, SHOW ALL FORMATS AVALIABLE, AND UPDATE 
+                    // IF NOT, SHOW THE PRIMARY SOURCE
+
+                // OTHERWISE, GRAB THE FILE FROM REMOTE AND SHOW
+            },
+            renderExternalVideoView : function() {
+                file = this.model.get("file");
+                var sourceClass = app.module("models").storage().source;
+                var source = new sourceClass;
+                source.set("id", file.id);
+                source.fetch();
             },
             initializeFileSubtitleUpload : function() {
                 var self = this;
@@ -1019,6 +1056,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var contentTimelineViewClass = Backbone.View.extend({
             events : {
+                "click .timeline-addlibrary" : "openStorageLibrary",
                 "click .timeline-addurl" : "addUrlContent",
                 "click .timeline-addtext" : "addTextContent",
                 "click .timeline-addexercise" : "addExercisesContent",
@@ -1027,6 +1065,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
             downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
+            libraryModule : app.module("dialogs.storage.library"),
             collectionFilter : null,
             jqXHR : null,
             subviews : {},
@@ -1192,6 +1231,62 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             collapseAll : function() {
                 this.$(".content-timeline-items .timeline-body-content-wrapper").addClass("hidden");
             },
+            openStorageLibrary : function(e) {
+                var self = this;
+                if (!this.libraryModule.started) { 
+                    this.libraryModule.start();
+                }
+                var path = $(e.currentTarget).data("library-path");
+
+                this.libraryModule.setPath(path);
+
+                this.libraryModule.getValue(function(files) {
+                    console.warn("openStorageLibrary", files);
+
+                    // SAVE THE FILE REFERENCE IN DATABASE
+                    var modelClass = app.module("models").dropbox().item;
+
+                    for(var i in files) {
+                        var model = files[i];
+                        model.set("upload_type", "lesson");
+                        model.save(null, {
+                            success : function(model, data, options) {
+                                var model = new lessonFileContentModelClass(null, {
+                                    collection: this.collection,
+                                });
+                                model.mergeWithinFileObject(data);
+                                self.collection.add(model);
+                                self.renderFileContent(model, {
+                                    upload : false
+                                }).completeEvents();
+                                /*
+                                self.addFileContent(
+                                    {
+                                        upload : false,
+                                        file : data
+                                    }
+                                );
+                                */
+
+                                /*
+                                var contentModel = new lessonFileContentModelClass(null, {
+                                    collection: this.collection,
+                                });
+
+                                model.mergeWithinFileObject(model);
+
+                                self.renderFileContent(model, {
+                                    upload : false
+                                });
+                                */
+                            }
+                        });
+                    }
+
+                });
+            },
+
+
             addUrlContent : function(options) {
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL

@@ -4,7 +4,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         save: function(key, val, options) {
             this.trigger("before:save", this);
             //this.trigger('change:' + changes[i], this, current[changes[i]], options);
-            Backbone.DeepModel.prototype.save.apply(this);
+            Backbone.DeepModel.prototype.save.apply(this, arguments);
 
             this.trigger("after:save", this);
         },
@@ -70,15 +70,38 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
             user : baseModelClass.extend({
                 urlRoot : "/module/users/item/me"
             })
+        },
+        dropbox : {
+            item : baseModelClass.extend({
+                urlRoot : "/module/dropbox/item/me" // CHANGE ALL TO STORAGE MODULE
+            }),
+        },
+        storage : {
+            info : baseModelClass.extend({
+                urlRoot : "/module/storage/item/info" // CHANGE ALL TO STORAGE MODULE
+            }),
+            source : baseModelClass.extend({
+                urlRoot : "/module/storage/item/source" // CHANGE ALL TO STORAGE MODULE
+            })
         }
+
     };
 
     this.getBaseModel = function() {
        return models.base.default; 
-    }
+    };
 
     this.users = function() {
         return models.users;
-    }
+    };
+
+    this.dropbox = function() {
+        return models.dropbox;
+    };
+
+    this.storage = function() {
+        return models.storage;
+    };
+
 
 });
