@@ -16,6 +16,10 @@
             <span>{translateToken value="Add File"}</span>
             <input type="file" name="files[]">
         </span>
+        <span class="btn btn-sm btn-link timeline-addlibrary" data-library-path="library">
+            <i class="fa fa-plus"></i>
+            <span>{translateToken value="Add from library"}</span>
+        </span>
         <!--
         <span class="btn btn-sm btn-link timeline-addtext">
             <i class="fa fa-plus"></i>
@@ -544,17 +548,36 @@
         <div class="timeline-body-content">
             <div class="timeline-body-content-wrapper row">
                 <div class="preview col-md-6">
-                    <% if (file_type == "video") { %>
-                        <video src="<%= file.url %>" style="max-width: 100%;" controls="true"></video>
-                    <% } else if (file_type == "image") { %>
-                        <img src="<%= file.url %>" style="max-width: 100%;" />
-                    <% } else if (file_type == "audio") { %>
-                        <audio src="<%= file.url %>" style="max-width: 100%;" controls="true"></audio>
-                    <% } else if (file_type == "pdf") { %>
-                        <a href="<%= file.url %>" target="_blank">View File</a>
+                    <% if (!_.isEmpty(file.storage) && file.storage != "local_storage") { %>
+                        <div class="external-view">
+                        <% if (file_type == "video") { %>
+                            <video src="<%= file.url %>" style="max-width: 100%;" controls="true" class="videojs">
+                                
+                            </video>
+                        <% } else if (file_type == "image") { %>
+                            <img src="<%= file.url %>" style="max-width: 100%;" />
+                        <% } else if (file_type == "audio") { %>
+                            <audio src="<%= file.url %>" style="max-width: 100%;" controls="true"></audio>
+                        <% } else if (file_type == "pdf") { %>
+                            <a href="<%= file.url %>" target="_blank">View File</a>
+                        <% } else { %>
+                            <a href="<%= file.url %>" target="_blank">View File</a>
+                        <% } %>
+                        </div>
                     <% } else { %>
-                        <a href="<%= file.url %>" target="_blank">View File</a>
-                    <% }  %>
+                        <% if (file_type == "video") { %>
+                            <!-- RENDER VIDEO VIEW -->
+                            <video src="<%= file.url %>" style="max-width: 100%;" controls="true"></video>
+                        <% } else if (file_type == "image") { %>
+                            <img src="<%= file.url %>" style="max-width: 100%;" />
+                        <% } else if (file_type == "audio") { %>
+                            <audio src="<%= file.url %>" style="max-width: 100%;" controls="true"></audio>
+                        <% } else if (file_type == "pdf") { %>
+                            <a href="<%= file.url %>" target="_blank">View File</a>
+                        <% } else { %>
+                            <a href="<%= file.url %>" target="_blank">View File</a>
+                        <% } %>
+                    <% } %>
                 </div>
                 <div class="preview col-md-6">
                     <% if (file_type == "video") { %>

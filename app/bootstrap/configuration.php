@@ -203,7 +203,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
 			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation','plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
-
+		'jstree' => array(
+			'name'	=> 'jstree',
+			'css'	=> array('plugins/jstree/dist/themes/default/style'),
+			'js'	=> array('plugins/jstree/dist/jstree')
+		),
 		'bootstrap-switch' => array(
 			'name'	=> 'bootstrap-switch',
 			'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),

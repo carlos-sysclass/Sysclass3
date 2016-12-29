@@ -4,7 +4,8 @@ namespace Sysclass\Services\Storage;
 use Phalcon\Mvc\User\Component,
     Sysclass\Services\Storage\Interfaces\IStorage,
     Sysclass\Services\Storage\Exception as StorageException,
-    Sysclass\Models\Dropbox\File;
+    Sysclass\Models\Dropbox\File,
+    Sysclass\Services\Storage\Adapter as StorageAdapter;
 
 /*
     Phalcon\Events\EventsAwareInterface,
@@ -17,7 +18,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Models\Users\UserApiTokens,
     Sysclass\Models\Users\UserTimes;
 */
-class Adapter extends Component /* implements IStorage */
+class Library extends Component /* implements IStorage */
 {
     /*
     public function getEventsManager()
@@ -25,43 +26,58 @@ class Adapter extends Component /* implements IStorage */
         return $this->_eventsManager;
     }
     */
-    protected $backend_class = null;
-    protected $backend = null;
+    public function initialize() {
+        /*
+        $remote_storage = $this->environment->remote_storage;
+        var_dump($remote_storage);
+        exit;
 
-    private static $instances = [];
+        $this->setBackend($backend_class);
 
-    public static function getInstance($storage) {
-        if (array_key_exists($storage, self::$instances)) {
-            return $instances[$storage];
+        $this->backend->initialize();
+        */
+    }
+
+    public static function find($params) {
+        $args = $params['args'];
+
+        //$remote_storage = \Phalcon\DI::getDefault()->get('remote_storage');
+        $remote_storage = StorageAdapter::getInstance('remote_storage');
+
+        //$args['path'] = "video-queue";
+        $status = $remote_storage->getFilesInFolder($args['path']);
+
+        return $status;
+    }
+
+    public static function findSourcesById($id) {
+        $file = File::findFirstById($id);
+
+        if ($file) {
+            if ($file->storage)
+
+                $storage = StorageAdapter::getInstance($file->storage);
+
+                $storage->getFullFileUrl($file);
+
+                var_dump($file->toArray());
+                exit;
         }
-        $instances[$storage] = new self();
-        $instances[$storage]->initialize($storage);
-
-        return $instances[$storage]->backend;
+        return false;
     }
 
-    public function initialize($storage) {
-        $this->setBackend($storage);
-    }
-    public function getBackend() {
-        return $this->backend;
-    }
-    public function setBackend($storage) {
-        $this->backend_class = $this->environment->$storage->backend;
+    /*
 
-        if (class_exists($this->backend_class)) {
-            $this->backend = new $this->backend_class();
-
-            $this->backend->initialize($this->environment->$storage);
+    public function setBackend($class) {
+        if (class_exists($class)) {
+            $this->backend = new $class();
         } else {
             throw new StorageException("NO_BACKEND_DISPONIBLE", StorageException::NO_BACKEND_DISPONIBLE);
         }
         return true;
+
     }
 
-
-
-/*
     public function getDefaultBackend() {
         // TODO: GET FROM CONFIGURATION
         $default_backend = ucfirst(strtolower($this->configuration->get("default_auth_backend")));
@@ -93,21 +109,14 @@ class Adapter extends Component /* implements IStorage */
         }
         return false;
     }
-*/
-
-    public function beforeFileCreate(File $struct) {
-        return $this->backend->beforeFileCreate($struct);
-    }
 
 
     public function fileExists(File $struct) {
         return $this->backend->fileExists($struct);
     }
-
+    */
     /* PROXY/ADAPTER PATTERN */
-    public function getFilesInFolder($folder) {
-        return $this->backend->getFilesInFolder($folder);
-    }
+    /*
     public function getFullFilePath(File $struct) {
         return $this->backend->getFullFilePath($struct);
     }
@@ -125,5 +134,6 @@ class Adapter extends Component /* implements IStorage */
     public function getImageFileInfo(File $struct) {
         return $this->backend->getImageFileInfo($struct);
     }
+    */
 
 }

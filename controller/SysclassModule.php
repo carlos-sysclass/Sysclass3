@@ -741,11 +741,15 @@ abstract class SysclassModule extends BaseSysclassModule
                 $items = array();
 
                 foreach($resultRS as $key => $item) {
-                    // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func(
-                        array($item, $model_info['exportMethod'][0]),
-                        $model_info['exportMethod'][1]
-                    );
+                    if (!is_object($item)) {
+                        $items[$key] = $item;    
+                    } else {
+                        // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                        $items[$key] = call_user_func(
+                            array($item, $model_info['exportMethod'][0]),
+                            $model_info['exportMethod'][1]
+                        );
+                    }
                     $items[$key]['options'] = array();
 
                     $options = $this->getDatatableSingleItemOptions($item);
@@ -773,10 +777,14 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func(
-                        array($item, $model_info['exportMethod'][0]),
-                        count($model_info['exportMethod'][1]) > 0 ? $model_info['exportMethod'][1] : null
-                    );
+                    if (!is_object($item)) {
+                        $items[$key] = $item;    
+                    } else {
+                        $items[$key] = call_user_func(
+                            array($item, $model_info['exportMethod'][0]),
+                            count($model_info['exportMethod'][1]) > 0 ? $model_info['exportMethod'][1] : null
+                        );
+                    }
                 }
                 
                 $this->response->setJsonContent($items);

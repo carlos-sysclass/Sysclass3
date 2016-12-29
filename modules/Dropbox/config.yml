@@ -4,7 +4,9 @@
 models:
   me: 
     class: Sysclass\Models\Dropbox\File
-    acl:
-      create:
-        resource: Settings
-        action: manage
+    createMethod: addOrUpdate
+    updateMethod: addOrUpdate
+#    acl:
+#      create:
+#        resource: Settings
+#        action: manage

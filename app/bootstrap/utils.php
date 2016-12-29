@@ -88,6 +88,13 @@ $di->set('yaml', function () {
     return $parser;
 }, true);
 
+$di->set('xml', function () {
+    $parser = new Sysclass\Services\Utils\XmlParser();
+    // Set a global encryption key
+    //$crypt->setKey();
+    return $parser;
+}, true);
+
 $di->set('sqlParser', function () {
     $parser = new Sysclass\Services\Utils\QueryBuilderParser();
     // Set a global encryption key
