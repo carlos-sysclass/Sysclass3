@@ -199,6 +199,8 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
 
                     $users = $message->getUsers();
 
+                    $from = $message->getFrom();
+
                     foreach($users as $user) {
                         $status = $this->mail->send(
                             $user->email, 
@@ -208,7 +210,10 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
                             [
                                 'user' => $user,
                                 'message' => $message,
-                                'from' => $message->getFrom()
+                                'from' => $from
+                            ],
+                            [
+                                $from->email => $from->name . " " . $from->surname
                             ]
                         );
                         /*
