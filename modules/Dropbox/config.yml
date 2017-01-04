@@ -6,7 +6,3 @@ models:
     class: Sysclass\Models\Dropbox\File
     createMethod: addOrUpdate
     updateMethod: addOrUpdate
-#    acl:
-#      create:
-#        resource: Settings
-#        action: manage
