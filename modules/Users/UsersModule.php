@@ -702,7 +702,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     if ($userModel->viewed_license == 1) {
                         return $this->createRedirectResponse(
                             "/dashboard",
-                            $this->translate->translate("You have agreed with the license. Thanks for using Sysclass"),
+                            $this->translate->translate("You have agreed with the license. Thanks for using SysClass"),
                             "success"
                         );
                     } else {

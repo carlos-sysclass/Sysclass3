@@ -82,7 +82,7 @@ The precise terms and conditions for copying, distribution and modification foll
 
 
 TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-0. This License Agreement applies to any software library or other program which contains a notice placed by the copyright holder or other authorized party saying it may be distributed under the terms of this Lesser General Public License (also called "this License"). Each licensee is addressed as "you".
+0. This Terms of Use applies to any software library or other program which contains a notice placed by the copyright holder or other authorized party saying it may be distributed under the terms of this Lesser General Public License (also called "this License"). Each licensee is addressed as "you".
 
 A "library" means a collection of software functions and/or data prepared so as to be conveniently linked with application programs (which use some of those functions and data) to form executables.
 
