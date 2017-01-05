@@ -346,7 +346,7 @@ class LoginController extends \AbstractSysclassController
 
 			$di->get("authentication")->logout($user);
 
-		    $message = $this->translate->translate("You have been logout sucessfully. Thanks for using Sysclass.");
+		    $message = $this->translate->translate("You have been logout sucessfully. Thanks for using SysClass.");
 		    $message_type = 'warning';
 
 			$this->redirect("/login", $message, $message_type);

@@ -309,7 +309,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $messages = array(
                 'success' => "Lesson order updated.",
-                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
             );
 
             if ($itemModel->setLessonOrder($data['position'])) {
