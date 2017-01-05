@@ -1297,7 +1297,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var contentSubtitleItemViewClass = Backbone.View.extend({
             events : {
-                "confirmed.bs.confirmation .delete-subtitle"    : "delete"
+                "confirmed.bs.confirmation .delete-subtitle"    : "delete",
+                "change :input[name='country_code']" : "updateCountry"
             },
             tagName : "li",
             className : "list-item",
@@ -1314,6 +1315,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
 
                 return this;
+            },
+            updateCountry : function(e, data) {
+                if (e.added) {
+                    this.model.set("country_code", e.added.id);
+                    this.model.save();
+                }
             },
             delete : function() {
                 this.model.destroy({success: function(model, response) {
@@ -1465,7 +1472,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var contentMaterialItemViewClass = Backbone.View.extend({
             events : {
-                "confirmed.bs.confirmation .delete-material"    : "delete"
+                "confirmed.bs.confirmation .delete-material"    : "delete",
+                "change :input[name='country_code']" : "updateCountry"
             },
             tagName : "li",
             className : "list-item",
@@ -1477,6 +1485,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
 
                 return this;
+            },
+            updateCountry : function(e, data) {
+                if (e.added) {
+                    var files = this.model.getFiles();
+                    console.warn(files);
+                    var file = files.first();
+                    file.set("country_code", e.added.id);
+                    file.save();
+                }
             },
             delete : function() {
                 console.warn("destroy", this);

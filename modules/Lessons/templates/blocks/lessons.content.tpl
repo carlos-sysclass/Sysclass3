@@ -29,8 +29,8 @@
 
 li.list-item {
     border-bottom: 1px solid #ddd;
-    margin: 2px 0 5px;
-    padding-bottom: 10px;
+    margin: 2px 0 10px;
+    padding-bottom: 4px;
 }
 
 </style>
@@ -120,28 +120,12 @@ li.list-item {
                             </div>
                             <h5 class="form-section margin-bottom-10 margin-top-10">
                                 <i class="fa fa-language"></i>
-                                {translateToken value="Subtitles"}
+                                {translateToken value="Subtitle"}
 
-                                <div class="dropdown pull-right">
-                                    <a href="javascript: void(0);" data-close-others="true" data-toggle="dropdown" class="dropdown-toggle btn btn-sm btn-primary">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                        {translateToken value="Add a Legend"}
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li>
-                                            <a href="javascript: void(0);" class="content-addfile content-addsubtitle" data-library-path="library" data-library-type="subtitle">
-                                                <i class="fa fa-book" aria-hidden="true"></i>
-                                            {translateToken value="From media library"}
-                                            </a>              
-                                        </li>
-                                        <li>
-                                            <a href="javascript: void(0);" class="dialogs-messages-send-action" data-mode="user">
-                                                <i class="fa fa-language" aria-hidden="true"></i>
-                                            {translateToken value="Automatic Translation"}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="subtitle">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    {translateToken value="Subtitle"}
+                                </a>
                             </h5>
                             <div class="row content-subtitles">
                                 <ul class="list-group margin-top-10 col-md-12 subtitle-container"></ul>
@@ -191,7 +175,7 @@ li.list-item {
 
                                     <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="poster">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
-                                        {translateToken value="Add a Poster"}
+                                        {translateToken value="Poster"}
                                     </a>
                                 </h5>
                                 <div class="row">
@@ -268,7 +252,7 @@ li.list-item {
                                 <div class="dropdown pull-right">
                                     <a href="javascript: void(0);" class="btn btn-sm btn-primary content-addfile" data-library-path="library" data-library-type="file">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
-                                        {translateToken value="Add a material"}
+                                        {translateToken value="Material"}
                                     </a>
                                 </div>
                                 <!--
@@ -336,38 +320,72 @@ li.list-item {
 
 <script type="text/template" id="content-subtitle-item">
 
-    <span class="text-upper text-primary">
-        <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
-        <strong><%= model.language_code %></strong>
-    </span>
+    <select class="select2-me form-control" name="country_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+        {foreach $T_LANGUAGES as $lang}
+            <option value="{$lang.country_code}" <% if (model.country_code == '{$lang.country_code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+        {/foreach}
+    </select>
 
     <a href="<%= model.url %>">
         <%= model.name %>
     </a>
+
+
     <div class="list-file-item-options">
-        <a class="btn btn-sm btn-danger delete-subtitle" href="javascript: void(0);" data-content-id="<%= model.id %>"
-                data-toggle="confirmation"
-                data-original-title="{translateToken value="Are you sure?"}"
-                data-placement="left"
-                data-singleton="true"
-                data-popout="true"
-                data-btn-ok-icon="fa fa-trash"
-                data-btn-ok-class="btn-sm btn-danger"
-                data-btn-cancel-icon="fa fa-times"
-                data-btn-cancel-class="btn-sm btn-warning"
-                data-btn-ok-label="{translateToken value="Yes"}"
-                data-btn-cancel-label="{translateToken value="No"}"
-                style="display: inline-block;"
+
+        <!--
+        <div class="dropdown" style="display: inline-block;">
+            <a href="javascript: void(0);" data-close-others="true" data-toggle="dropdown" class="dropdown-toggle btn btn-sm btn-default">
+                <% if (model.language_code) { %>
+                    <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
+                    <i class="fa fa-caret-down"></i>
+                <% } else { %>
+                    <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
+                    <i class="fa fa-caret-down"></i>
+                <% } %>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                {foreach $T_LANGUAGES as $lang}
+                    <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+                {/foreach}
+            </ul>
+        </div>
+        -->
+
+        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Automatic translate to...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
             >
-                <i class="fa fa-trash"></i>
+                <i class="fa fa-language"></i>
         </a>
 
+        <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+            <a class="btn btn-sm btn-danger delete-subtitle" href="javascript: void(0);" data-content-id="<%= model.id %>"
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+                >
+                    <i class="fa fa-trash"></i>
+            </a>
+        </div>
     </div>
 </script>
 
 <script type="text/template" id="content-material-item">
     <% var file = _.first(model.files); %>
     <% if (!_.isUndefined(file)) { %>
+
+        <select class="select2-me form-control" name="country_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+            {foreach $T_LANGUAGES as $lang}
+                <option value="{$lang.country_code}" <% if (file.country_code == '{$lang.country_code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+            {/foreach}
+        </select>
 
         <%
             var file_type = "other";

@@ -22,6 +22,8 @@ class ContentFile extends Model
             "id",
             array("alias" => 'File')
         );
+
+
     }
 
     public function addOrUpdate() {
@@ -35,5 +37,6 @@ class ContentFile extends Model
             return $this->create();
         }
     }
+   
 }
 

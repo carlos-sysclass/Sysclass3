@@ -4,5 +4,6 @@
 models:
   me: 
     class: Sysclass\Models\Dropbox\File
+    exportMethod: ["toFullArray", ["Language"]]
     createMethod: addOrUpdate
     updateMethod: addOrUpdate

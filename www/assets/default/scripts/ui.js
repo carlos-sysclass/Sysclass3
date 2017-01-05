@@ -216,6 +216,10 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
             return model.get(prop);
         },
+        "country" : function (state) {
+            if (!state.id) return state.text; // optgroup
+            return '<img class="flag flag-' + state.id.toLowerCase() + '" src="/assets/default/img/blank.png"/>&nbsp;&nbsp;' + state.text;
+        },
 		"country-list" : function (state) {
             if (!state.id) return state.text; // optgroup
             return "<img class='flag' src='/assets/default/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
