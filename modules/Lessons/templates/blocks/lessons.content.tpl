@@ -45,41 +45,7 @@ li.list-item {
                             <a class="btn btn-sm btn-default tooltips toogle-visible-item" data-original-title="{translateToken value="Expand / Collpase"}">
                                 <i class="fa fa-angle-up"></i>
                             </a>
-
-                                {translateToken value="Video"}
-                            <div class="list-file-item-options">
-                                <!--
-                                <span class="btn btn-default btn-sm"><span class="period-counter">X</span> / <span class="period-total">X</span></span>
-
-                                <input type="checkbox" name="active" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" <% if (data.active == "1") { %>checked="checked"<% } %> value="1">
-
-
-                                <a class="btn btn-sm btn-danger delete-item-action" href="javascript: void(0);"
-                                    data-toggle="confirmation"
-                                    data-original-title="{translateToken value="Are you sure?"}"
-                                    data-placement="left"
-                                    data-singleton="true"
-                                    data-popout="true"
-                                    data-btn-ok-icon="fa fa-trash"
-                                    data-btn-ok-class="btn-sm btn-danger"
-                                    data-btn-cancel-icon="fa fa-times"
-                                    data-btn-cancel-class="btn-sm btn-warning"
-                                    data-btn-ok-label="{translateToken value="Yes"}"
-                                    data-btn-cancel-label="{translateToken value="No"}"
-                                >
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                                -->
-                            </div>
-
-                            <!--
-                            <a class="btn btn-xs btn-default tooltips" data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= data.id %>">
-                                <i class="icon-minus"></i>
-                            </a>
-                            <a class="btn btn-xs btn-default tooltips" data-toggle="collapse" data-parent="#tab_course_roadmap-accordion" href="#season-<%= data.id %>">
-                                <i class="fa fa-arrows"></i>
-                            </a>
-                            -->
+                            {translateToken value="Video"}
                         </div>
                         <div id="content-video-widget-container" class="panel-body in subitems-container">
                             <div class="row content-videos">
@@ -99,7 +65,7 @@ li.list-item {
                             <h5 class="form-section margin-bottom-10 margin-top-10">
                                 <i class="fa fa-language"></i>
                                 {translateToken value="Description"}
-                                <a href="javascript: void(0);" class="btn btn-sm btn-success pull-right">
+                                <a href="javascript: void(0);" class="btn btn-sm btn-success content-save pull-right">
                                     {translateToken value="Save"}
                                 </a>
                             </h5>
@@ -114,7 +80,7 @@ li.list-item {
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">{translateToken value="Tags"}</label>
-                                        <input type="hidden" class="select2-me form-control" name="tags" data-placeholder="{translateToken value="Choose tags"}" multiple="true" data-tags="true" />
+                                        <input type="hidden" class="select2-me form-control" name="tags" data-placeholder="{translateToken value="Choose tags"}" multiple="true" data-tags="true" data-allow-clear="true" data-token-separators="[',', ' ']" />
                                     </div>
                                 </div>
                             </div>
@@ -129,43 +95,6 @@ li.list-item {
                             </h5>
                             <div class="row content-subtitles">
                                 <ul class="list-group margin-top-10 col-md-12 subtitle-container"></ul>
-                                <!--
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">{translateToken value="Original Language"}</label>
-                                        <div class="input-group ">
-                                            <select class="select2-me form-control" name="related[lang_from]" data-placeholder="{translateToken value="Choose language"}">
-                                                {foreach $T_LANGUAGES as $lang}
-                                                    <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
-                                                {/foreach}
-                                            </select>
-                                            <div class="input-group-btn">
-                                                <button class="btn green save-file-content" type="button">
-                                                    {translateToken value="Save"}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">{translateToken value="Automatic translate to"}</label>
-                                        <div class="input-group ">
-                                            <select class="select2-me form-control" name="related[lang_to]" data-placeholder="{translateToken value="Choose language"}">
-                                                {foreach $T_LANGUAGES as $lang}
-                                                    <option value="{$lang.code}" <% if (model.language_code != '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
-                                                {/foreach}
-                                            </select>
-                                            <div class="input-group-btn">
-                                                <button class="btn green translate-file-content" type="button">
-                                                    <i class="fa fa-language"></i>
-                                                    {translateToken value="Translate"}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                -->
                             </div>
 
                             <div class="content-videos-poster">
@@ -178,59 +107,10 @@ li.list-item {
                                         {translateToken value="Poster"}
                                     </a>
                                 </h5>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        No subtitles found
-                                    </div>
-                                    <!--
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">{translateToken value="Original Language"}</label>
-                                            <div class="input-group ">
-                                                <select class="select2-me form-control" name="related[lang_from]" data-placeholder="{translateToken value="Choose language"}">
-                                                    {foreach $T_LANGUAGES as $lang}
-                                                        <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
-                                                    {/foreach}
-                                                </select>
-                                                <div class="input-group-btn">
-                                                    <button class="btn green save-file-content" type="button">
-                                                        {translateToken value="Save"}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label">{translateToken value="Automatic translate to"}</label>
-                                            <div class="input-group ">
-                                                <select class="select2-me form-control" name="related[lang_to]" data-placeholder="{translateToken value="Choose language"}">
-                                                    {foreach $T_LANGUAGES as $lang}
-                                                        <option value="{$lang.code}" <% if (model.language_code != '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
-                                                    {/foreach}
-                                                </select>
-                                                <div class="input-group-btn">
-                                                    <button class="btn green translate-file-content" type="button">
-                                                        <i class="fa fa-language"></i>
-                                                        {translateToken value="Translate"}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    -->
+                                <div class="row content-posters">
+                                    <ul class="list-group margin-top-10 col-md-12 poster-container"></ul>
                                 </div>
                             </div>
-
-
-                            <!-- <ul class="list-group ui-sortable margin-bottom-10"></ul> -->
-                            
-                            <!--
-                            <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
-                                <i class="fa fa-plus"></i>
-                                    {translateToken value="Create Class"}
-                            </a>
-                            -->
                         </div>
                     </div>
                 </div>
@@ -299,7 +179,8 @@ li.list-item {
         </video>
     </div>
     <div class="col-md-1 content-video-sidebar">
-        <a class="btn btn-sm btn-danger delete-video" href="javascript: void(0);" data-content-id="<%= model.id %>"
+        <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+            <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                 data-toggle="confirmation"
                 data-original-title="{translateToken value="Are you sure?"}"
                 data-placement="left"
@@ -314,7 +195,8 @@ li.list-item {
                 style="display: inline-block;"
             >
                 <i class="fa fa-trash"></i>
-        </a>
+            </a>
+        </div>
     </div>
 </script>
 
@@ -330,35 +212,47 @@ li.list-item {
         <%= model.name %>
     </a>
 
-
     <div class="list-file-item-options">
-
-        <!--
-        <div class="dropdown" style="display: inline-block;">
-            <a href="javascript: void(0);" data-close-others="true" data-toggle="dropdown" class="dropdown-toggle btn btn-sm btn-default">
-                <% if (model.language_code) { %>
-                    <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
-                    <i class="fa fa-caret-down"></i>
-                <% } else { %>
-                    <img src="{Plico_GetResource file='img/blank.png'}" class="flag flag-<%= model.language_code %>" alt="<%= model.language_code %>" />
-                    <i class="fa fa-caret-down"></i>
-                <% } %>
-            </a>
-            <ul class="dropdown-menu pull-right">
-                {foreach $T_LANGUAGES as $lang}
-                    <option value="{$lang.code}" <% if (model.language_code == '{$lang.code}') { %>selected="selected"<% } %>>{$lang.name}</option>
-                {/foreach}
-            </ul>
-        </div>
-        -->
-
         <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Automatic translate to...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
             >
                 <i class="fa fa-language"></i>
         </a>
 
         <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
-            <a class="btn btn-sm btn-danger delete-subtitle" href="javascript: void(0);" data-content-id="<%= model.id %>"
+            <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+                >
+                    <i class="fa fa-trash"></i>
+            </a>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="content-poster-item">
+
+    <select class="select2-me form-control" name="country_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+        {foreach $T_LANGUAGES as $lang}
+            <option value="{$lang.country_code}" <% if (model.country_code == '{$lang.country_code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+        {/foreach}
+    </select>
+
+    <a href="<%= model.url %>">
+        <%= model.name %>
+    </a>
+
+    <div class="list-file-item-options">
+        <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+            <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"
                     data-placement="left"
@@ -417,7 +311,8 @@ li.list-item {
             <%= model.title %>
         </a>
         <div class="list-file-item-options">
-            <a class="btn btn-sm btn-danger delete-material" href="javascript: void(0);" data-content-id="<%= model.id %>"
+            <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+                <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"
                     data-placement="left"
@@ -432,8 +327,8 @@ li.list-item {
                     style="display: inline-block;"
                 >
                     <i class="fa fa-trash"></i>
-            </a>
-
+                </a>
+            </div>
         </div>
     <% } %>
 </script>

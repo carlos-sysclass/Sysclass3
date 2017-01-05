@@ -164,6 +164,10 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 isSubtitle : function() {
                     return this.get("upload_type") == "subtitle" || this.get("upload_type") == "subtitle-translation";
                 },
+                isPoster : function() {
+                    return this.get("upload_type") == "poster" || (this.get("upload_type") == "default" && this.isImage());
+                },
+
                 /*
                 isExercise : function() {
                     return this.get("content_type") == "exercise";
@@ -240,17 +244,15 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 },
                 model: function(attrs, options) {
                     if (options.add) {
-                        attrs.file = _.first(attrs.files);
+                        //attrs.file = _.first(attrs.files);
+                        console.warn(options);
                         if (attrs.content_type == "video") {
-                            return new models.content.item.video(attrs, _.extend(options, {
-                                collection: this,
-                            }));
+                            return new models.content.item.video(attrs, options);
                         } else if (attrs.content_type == "file") {
                             return new models.content.item.file(attrs, _.extend(options, {
                                 collection: this,
                             }));
                         } else if (attrs.content_type == "subtitle") {
-
                             return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
                                 collection: this,
                             }));
