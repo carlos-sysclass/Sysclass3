@@ -104,6 +104,18 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                     //"state" : { "key" : "demo3" },
                     "plugins" : [ "types" ]
                 });
+
+                this.$("#library_tree").on("dblclick.jstree", function (e, data) {
+                    //console.warn($(this).jstree(true).get_node(e.target));
+                    var values = this.getValues();
+                    if (_.size(values) > 0) {
+                        this.trigger("selected.dialog", values);
+                    }
+                    //var node = $(event.target).closest("li");
+                    //var data = node.data("jstree");
+                    // Do some action
+                }.bind(this));
+
                 /*
                 this.$("#library_tree").on("changed.jstree", function (e, data) {
                     console.log(data.selected);
@@ -184,7 +196,7 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                 return result;
             },
             selectAction : function() {
-                this.trigger("selected.dialog", this.getValues());    
+                this.trigger("selected.dialog", this.getValues());
             }
 
             /*

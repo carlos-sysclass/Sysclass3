@@ -7,7 +7,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonModel = app.module("crud.views.edit").itemModel;
         
-        var baseLessonContentModelClass = app.module("models").content().item.base;
+        //var baseLessonContentModelClass = app.module("models").content().item.base;
         /*
         var lessonUrlContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
@@ -17,7 +17,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
         */
-
+        /*
         var lessonFileContentModelClass = app.module("models").content().item.file;
 
         var lessonFileSubtitleContentModelClass = lessonFileContentModelClass.extend({
@@ -68,11 +68,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 console.warn(data, opt);
                 this.content_id = opt.content_id;
             },
-            /*
-            url: function() {
-                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
-            },
-            */
             initialize: function(data, opt) {
                 this.listenTo(this, "add", function(model, collection, opt) {
                     model.set("content_id", this.content_id);
@@ -80,19 +75,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     // SET POSITION
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
-                    /*
-                    var self = this;
-
-                    var subfiles = collection.where({parent_id : model.get("id")});
-
-                    console.warn(model, collection, opt, this, subfiles);
-
-                    _.each(subfiles, function(item) {
-                        self.remove(item.id);
-                    });
-
-                    model.destroy();
-                    */
                 });
             }
         });
@@ -121,22 +103,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     this.save();
                 });
 
-            }/*,
-            addQuestion : function(questionModel) {
-                $.ajax(
-                    "/module/lessons/item/question-content",
-                    {
-                        data: {
-                            content_id : this.get("id"),
-                            question_id: questionModel.get("id")
-                        },
-                        method : "POST"
-                    }
-                );
             }
-            */
         });
-
+        */
         /**
          * SUB VIEW BASE CLASS
          *
@@ -1286,59 +1255,414 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             lesson_id :  mod.entity_id
         });
 
+
+        var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
+
         var contentVideoItemViewClass = Backbone.View.extend({
+            events: {
+                "mouseenter" : "showSidebar",
+                "mouseleave" : "hideSidebar",
+                "confirmed.bs.confirmation .delete-video"    : "delete"
+            },
             tagName : "div",
             className : "content-video-item col-md-6 col-lg-6 col-sm-6 col-xs-12",
             template: _.template($("#content-video-item").html(), null, {variable: 'model'}),
             emptyTemplate: _.template($("#content-video-empty").html(), null, {variable: 'model'}),
+            initialize : function(opt) {
+                this.index = opt.index;
+                this.$el.on("hover")
+            },
+            showSidebar : function() {
+                this.$(".content-video-sidebar").show();
+            },
+            hideSidebar : function() {
+                this.$(".content-video-sidebar").hide();
+            },
             render : function() {
                 if (this.model) {
-                    this.$el.html(this.template(this.model.toJSON()));
+                    this.$el.html(this.template(_.extend(this.model.toJSON(), {view_index: this.index})));
                 } else {
-                    this.$el.html(this.emptyTemplate());
+                    this.$el.html(this.emptyTemplate({view_index: this.index}));
                     this.$el.addClass("content-video-empty");
                 }
 
                 return this;
+            },
+            delete : function() {
+                this.model.destroy({success: function(model, response) {
+                    this.remove();
+                }.bind(this)});
+            }
+        });
+
+        var contentSubtitleItemViewClass = Backbone.View.extend({
+            events : {
+                "confirmed.bs.confirmation .delete-subtitle"    : "delete"
+            },
+            tagName : "li",
+            className : "list-item",
+            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'}),
+            //emptyTemplate: _.template($("#content-video-empty").html(), null, {variable: 'model'}),
+            render : function() {
+                if (this.model) {
+                    this.$el.html(this.template(this.model.toJSON()));
+                    /*
+                } else {
+                    this.$el.html(this.emptyTemplate());
+                    this.$el.addClass("content-video-empty");
+                    */
+                }
+
+                return this;
+            },
+            delete : function() {
+                this.model.destroy({success: function(model, response) {
+                    this.remove();
+                }.bind(this)});
             }
         });
 
 
-        var contentVideoContainerViewClass = Backbone.View.extend({
-            //blockTemplate : _.template($("#content-video-block").html(), null, {variable: 'model'}),
-            //emptyTemplate : _.template($("#content-video-empty").html(), null, {variable: 'model'}),
-            videoViews : {},
-            initialize : function() {
-                this.listenTo(this.collection, "sync", this.render.bind(this))
+        var contentVideoContainerViewClass = baseChangeModelViewClass.extend({
+            events : {
+                "click .content-addfile" : "openStorageLibrary",
+                "click .toogle-visible-item" : "toggleVisible",
+            },
+            libraryModule : app.module("dialogs.storage.library"),
+            eventsBinded : false,
+            videoViews : [],
+            subtitleViews : [],
+            parent : null,
+            initialize : function(opt) {
+                //this.listenTo(this.collection, "sync", this.render.bind(this))
+                this.parent = opt.parent;
+            },
+            bindViewEvents : function() {
+                if (this.collection) {
+                    this.listenTo(this.collection, "add", this.addOne.bind(this));
+                    this.listenTo(this.collection, "remove", this.checkRemove.bind(this));
+                    this.eventsBinded = true;
+                }
+            },
+            checkRemove : function(model) {
+                this.videoViews = _.reject(this.videoViews, function(view) {
+                    return view.model.cid == model.cid; 
+                });
+
+                /*
+                for(var i in this.videoViews) {
+                    if (this.videoViews[i].model.cid == model.cid) {
+                        console.warn(this.videoViews[i]);
+                        delete this.videoViews[i];
+                        break;
+                    }
+                }
+                */
+                console.warn(_.size(this.videoViews));
+                if (_.size(this.videoViews) < 2) {
+                    this.$(".content-video-empty-container").show();
+                }
+                //console.warn(this.videoViews);
+                //console.warn(a,b,c,d,e);
+
+            },
+            addOne : function(model) {
+                //console.warn('ADD ONE', model);
+                if (model.isVideo()) {
+
+                    /*
+                    var videoIndex = null;
+                    for(var i in this.videoViews) {
+                        if (_.has(this.videoViews[i], 'model')) {
+                            continue;
+                        } else {
+                            videoIndex = i;
+                            break;
+                        }
+                    }
+                    */
+                    
+                    childView = new contentVideoItemViewClass({
+                        model : model,
+                        index: _.size(this.videoViews),
+                        parent: this
+                    });
+
+                    this.$(".content-videos-inner").append(childView.render().el);
+
+                    this.videoViews.push(childView);
+
+                    app.module("ui").refresh(childView.el);
+
+                    if (_.size(this.videoViews) >= 2) {
+                        this.$(".content-video-empty-container").hide();
+                    }
+
+                    //videoCount++;
+                } else if (model.isSubtitle()) { 
+                    childView = new contentSubtitleItemViewClass({
+                        model : model
+                    });
+
+                    this.$(".content-subtitles .subtitle-container").append(childView.render().el);
+
+                    app.module("ui").refresh(childView.el);
+
+                    this.subtitleViews.push(childView);
+
+                    //subtitleCount++;
+                }
             },
             render : function() {
                 //this.$el
-                this.$(".content-videos").empty();
-                var videos = this.collection.getVideos();
+                //this.$(".content-videos-inner").empty();
+                
+                this.collection = this.model.getFiles();
 
-                for(var i in videos) {
-                    this.videoViews[i] = new contentVideoItemViewClass({
-                        model : videos[i]
-                    });
-
-                    this.$(".content-videos").append(this.videoViews[i].render().el);
+                if (!this.eventsBinded) {
+                    this.bindViewEvents();
                 }
 
-                if (_.size(videos) < 2) {
-                    this.videoViews[_.size(videos)] = new contentVideoItemViewClass();
-                    this.$(".content-videos").append(this.videoViews[_.size(videos)].render().el);   
+                
+                var subtitleCount = 0;
+                this.collection.each(this.addOne.bind(this));
+            },
+            openStorageLibrary : function(e) {
+                var self = this;
+                if (!this.libraryModule.started) { 
+                    this.libraryModule.start();
                 }
+                var path = $(e.currentTarget).data("library-path");
+                var type = $(e.currentTarget).data("library-type");
 
-                console.warn(this.videoViews);
+                this.libraryModule.setPath(path);
+
+                this.libraryModule.getValue(function(files) {
+                    console.warn("openStorageLibrary", files);
+
+                    // SAVE THE FILE REFERENCE IN DATABASE
+                    var modelClass = app.module("models").dropbox().item;
+
+                    for(var i in files) {
+                        var model = files[i];
+                        model.set("upload_type", _.isEmpty(type) ? "lesson" : type);
+                        model.save(null, {
+                            success : function(model, data, options) {
+                                // SAVE THE FILE UNDER THE VIEW MODEL
+                                this.model.addFile(data);
+                            }.bind(self)
+                        });
+                    }
+
+                });
+            },
+            toggleVisible : function(e) {
+                e.preventDefault();
+                this.$(".subitems-container").toggle(500);
+                $(e.currentTarget).find("i.fa").toggleClass("fa-angle-up").toggleClass("fa-angle-down");
             }
         });
+
+        var contentMaterialItemViewClass = Backbone.View.extend({
+            events : {
+                "confirmed.bs.confirmation .delete-material"    : "delete"
+            },
+            tagName : "li",
+            className : "list-item",
+            template: _.template($("#content-material-item").html(), null, {variable: 'model'}),
+            //emptyTemplate: _.template($("#content-video-empty").html(), null, {variable: 'model'}),
+            render : function() {
+                if (this.model) {
+                    this.$el.html(this.template(this.model.toJSON()));
+                }
+
+                return this;
+            },
+            delete : function() {
+                console.warn("destroy", this);
+                this.model.destroy({success: function(model, response) {
+                    this.remove();
+                }.bind(this)});
+            }
+        });
+
+        var contentMaterialsContainerViewClass = baseChangeModelViewClass.extend({
+            events : {
+                "click .content-addfile" : "openStorageLibrary",
+                "click .toogle-visible-item" : "toggleVisible",
+            },
+            libraryModule : app.module("dialogs.storage.library"),
+            eventsBinded : false,
+            childViews : [],
+            parent : null,
+            initialize : function(opt) {
+                //this.listenTo(this.collection, "sync", this.render.bind(this))
+                this.parent = opt.parent;
+                this.bindViewEvents();
+            },
+            bindViewEvents : function() {
+                if (this.collection) {
+                    this.listenTo(this.collection, "add", this.addOne.bind(this));
+                    this.listenTo(this.collection, "remove", this.removeOne.bind(this));
+                    this.eventsBinded = true;
+                }
+            },
+            removeOne : function(model) {
+                /*
+                this.videoViews = _.reject(this.videoViews, function(view) {
+                    return view.model.cid == model.cid; 
+                });
+
+                console.warn(_.size(this.videoViews));
+                if (_.size(this.videoViews) < 2) {
+                    this.$(".content-video-empty-container").show();
+                }
+                //console.warn(this.videoViews);
+                //console.warn(a,b,c,d,e);
+                */
+            },
+            addOne : function(model) {
+
+                if (model.getFiles().size() > 0) {
+                    var childView = new contentMaterialItemViewClass({
+                        model : model
+                    });
+
+                    this.$(".content-materials .materials-container").append(childView.render().el);
+
+                    app.module("ui").refresh(childView.el);
+
+                    this.childViews.push(childView);
+                }
+            },
+            render : function() {
+                //this.$el
+                //this.$(".content-videos-inner").empty();
+                
+                //this.collection = this.model.getFiles();
+
+                if (!this.eventsBinded) {
+                    this.bindViewEvents();
+                }
+                
+                //var subtitleCount = 0;
+                this.collection.each(this.addOne.bind(this));
+            },
+            openStorageLibrary : function(e) {
+                var self = this;
+                if (!this.libraryModule.started) { 
+                    this.libraryModule.start();
+                }
+                var path = $(e.currentTarget).data("library-path");
+                var type = $(e.currentTarget).data("library-type");
+
+                this.libraryModule.setPath(path);
+
+                this.libraryModule.getValue(function(files) {
+                    console.warn("openStorageLibrary", files);
+
+                    // SAVE THE FILE REFERENCE IN DATABASE
+                    var modelClass = app.module("models").dropbox().item;
+
+                    for(var i in files) {
+                        var model = files[i];
+                        model.set("upload_type", _.isEmpty(type) ? "lesson" : type);
+                        model.save(null, {
+                            success : function(model, data, options) {
+                                // SAVE THE FILE UNDER THE VIEW MODEL
+                                var contentFileModelClass = app.module("models").content().item.file;
+
+                                var contentFileModel = new contentFileModelClass({
+                                    title : data.name,
+                                    info : JSON.stringify(data),
+                                    files: [data]
+                                });
+
+                                this.collection.add(contentFileModel);
+
+                                contentFileModel.save(null, {
+                                    success : function() {
+                                        //contentFileModel.addFile(data)
+                                    }
+                                });
+
+
+
+                                
+
+                                //this.model.addFile(data);
+                            }.bind(self)
+                        });
+                    }
+
+                });
+            },
+            toggleVisible : function(e) {
+                e.preventDefault();
+                this.$(".subitems-container").toggle(500);
+                $(e.currentTarget).find("i.fa").toggleClass("fa-angle-up").toggleClass("fa-angle-down");
+            }
+        });
+
+        var contentContainerViewClass = Backbone.View.extend({
+            contentVideoContainerView : null,
+            contentMaterialsContainerView : null,
+            initialize : function() {
+                this.listenTo(this.collection, "sync", this.render.bind(this));
+            },
+            render : function() {
+                // RENDERING VIDEOS
+                var videos = this.collection.getVideos();
+                var videoModel = _.first(videos);
+
+                if (_.isNull(this.contentVideoContainerView)) {
+                    this.contentVideoContainerView = new contentVideoContainerViewClass({
+                        el : this.$("#content-video-widget"),
+                        model  : videoModel,
+                        parent : this
+                    });
+                } else {
+                    // JUST SET THE MODEL
+                    this.contentVideoContainerView.setModel(videoModel);
+                }
+                this.contentVideoContainerView.render();
+
+
+                // RENDERING MATERIALS
+                var materials = this.collection.getMaterials();
+                
+                var materialsCollection = new unitContentCollectionClass(materials, {
+                    lesson_id :  mod.entity_id
+                });
+
+                console.warn(materialsCollection);
+
+                if (_.isNull(this.contentMaterialsContainerView)) {
+                    this.contentMaterialsContainerView = new contentMaterialsContainerViewClass({
+                        el : this.$("#content-materials-widget"),
+                        collection  : materialsCollection,
+                        parent : this
+                    });
+                    console.warn(this.$("#content-materials-widget"));
+                } else {
+                    // JUST SET THE MODEL
+                    this.contentMaterialsContainerView.setCollection(materialsCollection);
+                }
+
+                this.contentMaterialsContainerView.render();
+
+            }
+        });
+       
 
         this.listenToOnce(lessonModel, "sync", function() {
             mod.unitContentCollection.fetch();
         });
 
-        mod.contentVideoContainerView = new contentVideoContainerViewClass({
-            el : "#content-video-widget",
+
+
+        mod.contentContainerView = new contentContainerViewClass({
+            el : "#content-editor",
             collection : mod.unitContentCollection /*,
             collectionFilter : {parent_id: null} */
         });
