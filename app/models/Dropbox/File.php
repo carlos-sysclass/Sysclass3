@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Models\Dropbox;
 
-use Phalcon\Mvc\Model,
+use Plico\Mvc\Model,
     Sysclass\Models\Users\User,
     Sysclass\Services\Storage\Adapter as StorageAdapter;
 
@@ -10,6 +10,13 @@ class File extends Model
     public function initialize()
     {
         $this->setSource("mod_dropbox");
+
+        $this->belongsTo(
+            "language_code",
+            "Sysclass\Models\I18n\Language",
+            "code",
+            array("alias" => 'Language')
+        );
     }
 
     public function getFileStream() {
@@ -45,6 +52,12 @@ class File extends Model
 
         $storage = StorageAdapter::getInstance($this->storage);
         $this->url = $storage->getFullFileUrl($this);
+
+        if (is_null($this->language_code)) {
+            $translator = $this->getDI()->get('translate');
+
+            $this->language_code = $translator->getSource();
+        }
     }
 
     public function beforeSave() {

@@ -44,7 +44,7 @@
     -->
     <h5 class="form-section margin-bottom-10 margin-top-10">
         <i class="fa fa-calendar"></i>
-        {translateToken value="Classes Disponible"}
+        {translateToken value="Courses Disponible"}
     </h5>
 
     <div class="row">
@@ -56,8 +56,7 @@
             <div class="margin-bottom-10 items-container">
 
             </div>
-            <div class="no-period-container">
-            </div>
+            <div class="no-period-container"></div>
             <a class="btn btn-sm btn-link btn-link add-block-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create Block"}
@@ -108,7 +107,6 @@
 </div>
 
 <script type="text/template" id="period-edit-item">
-    <% console.warn(data) %>
     <div class="panel-heading">
         <% if (!_.isEmpty(data.id)) { %>
         <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">

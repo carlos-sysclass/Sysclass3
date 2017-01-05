@@ -115,7 +115,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                 $self->putModuleScript("blocks.lessons.content");
 
-                $languages = Language::find()->toArray();
+                $languages = Language::find([
+                    'conditions' => 'active = 1'
+                ])->toArray();
 
 
                 $userLanguageCode = $this->translate->getSource();

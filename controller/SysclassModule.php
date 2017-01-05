@@ -606,7 +606,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * 
      * @Get("/items/{model}")
      * @Get("/items/{model}/{type}")
-     * @Get("/items/{model}/{type}/{filter}")
+     * @Get("/items/{model}/{type}/{filter:.+}")
      */
     public function getItemsRequest($model, $type, $filter, $columns = null)
     {
