@@ -35,6 +35,18 @@
 
 	{/if}
 
+	{if $social.googleplus}
+		{$text=translateToken value="Google+"}
+
+		{$variables[$index].googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
+	{/if}
+
+	{if $social.linkedin}
+		{$text=translateToken value="Linked In"}
+
+		{$variables[$index].linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
+	{/if}
+
 	{if $social.phone}
 		{$variables[$index].phone=['link' => "callto://+{$social.phone}",'icon'=>'fa-phone','text'=>$social.phone]}
 	{/if}
