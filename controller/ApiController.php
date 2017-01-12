@@ -39,7 +39,7 @@ class ApiController extends \AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
 					$code = 403;
-		            $message = "The system can't authenticate you using the current methods. Please came back in a while.";
+		            $message = "Incorrect username or password. To reset your password click bellow on FORGOT YOUR PASSWORD.";
 		            $message_type = 'warning';
 		            break;
 				}
@@ -144,7 +144,7 @@ class ApiController extends \AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
 					$code = 403;
-		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("Incorrect username or password. To reset your password click bellow on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}
