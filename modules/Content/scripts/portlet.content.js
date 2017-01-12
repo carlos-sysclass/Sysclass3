@@ -364,8 +364,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.onVisible();
 			},
 			onVisible : function() {
-				console.warn("ON VISIBLE");
-				//this.tableView.getApi().destroy(false);
 				this.tableView.recreate();
 			},
 			doSearch : function(e, text) {
@@ -465,14 +463,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				var materials = this.model.getMaterials();
 
-				console.warn(materials);
-
 				materials.each(function(item, i) {
 					var progress = mod.progressCollection.getContentProgress(item.get("id"));
 					item.set("progress", progress);
 				});
 
-				console.warn(materials);
 				/*
 				materials.each(function(item, i) {
 					var progress = mod.progressCollection.getContentProgress(item.get("id"));
@@ -486,7 +481,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				var result = this.model.toJSON();
 
-				console.warn('RESULT', result);
 				result.video = videoInfo;	
 				//result.materials = materials.toJSON();
 
@@ -513,7 +507,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						this.lessonTemplate(this.getMappedModel())
 					);
 				} else {
-					//console.warn(this.getMappedModel());
 					this.$el.html(
 						this.testTemplate(this.getMappedModel())
 					);
@@ -645,8 +638,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//app.module("ui").refresh(this.$el);
 			},
 			onVisible : function() {
-				console.warn("ON VISIBLE");
-				//this.tableView.getApi().destroy(false);
 				this.tableView.recreate();
 			},
 			doSearch : function(e, text) {
@@ -686,7 +677,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			},
 			makeCollection: function() {
-				console.warn(mod.programsCollection.getCurrentUnits());
 				return mod.programsCollection.getCurrentUnits();
 			},
 			showContentArea : function() {
@@ -794,20 +784,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
 	            var self = this;
 
-	            console.warn('VIDEO-MODEL', this.model.toJSON());
-
 	            if (!this.model.get("videos")) {
 	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
-
-
-
 	                this.disableView();
-
 	            } else {
 	                this.enableView();
 
 	                this.videoModel = this.model.get("videos");
-
 
 					var progress = mod.progressCollection.getContentProgress(this.model.get("id"));
 					this.model.set("progress", progress);
@@ -823,9 +806,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                }
 
 	                if (videosCollection.size() > 0) {
-
-	                	console.warn(videosCollection);
-
 						if (this.childContainerSelector) {
 							this.childContainer = this.$(this.childContainerSelector);
 						} else {
@@ -839,8 +819,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						var videoIndex = 0;
 
 	                	videosCollection.each(function(videoModel) {
-	                		console.warn(videoModel.toJSON());
-
 			        		var subtitles = [];
 			        		var poster = null;
 
@@ -849,7 +827,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 			        		videoModel.getFiles().each(function(fileModel) {
 			        			if (fileModel.isSubtitle()) {
-			        				console.warn(fileModel);
 			        				//this.videoJS[index].addTextTrack("subtitles", )
 			        				subtitles.push(fileModel.toJSON());
 			        			} else if (fileModel.isPoster()) {
@@ -899,7 +876,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				                        });
 				                    }
 				                    videoIndex++;
-				                    console.warn(videoDomID);
 				                    this.videoJSIds.push(videoDomID);
 			                    }
 							}.bind(this));
@@ -944,7 +920,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        	this.$("a.change-view-type[data-view-type='" + type + "']").click();
 	        },
 	        bindStartVideoEvents : function(videoDomID, index) {
-	        	console.warn('EVENT', arguments);
 	            var self = this;
 
 	            this.currentProgress = parseFloat(this.model.get("progress.factor"));
@@ -952,8 +927,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            if (_.isNaN(this.currentProgress)) {
 	                this.currentProgress = 0;
 	            }
-
-
 
             	var progress = this.model.get("progress");
 				this.videoJS[index].on("loadedmetadata", function() {
@@ -1001,16 +974,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        	}.bind(this));
 
 						this.syncVideos();
-
-						/*
-			        	_.each(this.videoJS, function(video, index) {
-			        		if (index == videoIndex) {
-			        			return;
-			        		}
-			        		video.pause();
-			        	}.bind(this));
-			        	*/ 
-
 					}.bind(this, index));
 
                 	this.videoJS[index].on("timeupdate", this.updateProgress.bind(this));
@@ -1039,7 +1002,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		        		}
 
 		        		if ((video.currentTime() - currentTime) > 1 || (video.currentTime() - currentTime) < -1) {
-							console.warn(video.currentTime(), currentTime, video.currentTime() - currentTime);
 		        			video.currentTime(currentTime);
 		        		}
 		        	}.bind(this));
@@ -1257,8 +1219,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			renderTabs : function() {
 				this.$(".widget-tabs-container a[data-toggle='tab']")
 					.on('shown.bs.tab', function (e) {
-						console.warn($(e.target).data('settingUpdate'));
-
 						var current_tab = $(e.target).data('settingUpdate');
 
 						this.model.set("content_current_tab", current_tab);
@@ -1287,14 +1247,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.onTabChange();
 			},
 			onTabChange : function() {
-				console.warn('onTabChange', this.activeTab)
 				if (this.activeTab == "program") {
 					this.activeView = null;
 					this.$(".content-widget-search-action-container").hide();
 
 				} else if (this.activeTab == "course") {
 					this.activeView = this.programCoursesTabView;
-					console.warn(this.activeView);
 					this.$(".content-widget-search-action-container").show();
 				} else if (this.activeTab == "unit") {
 					// ACTIVE TAB IS MESSAGE, SEARCH ON HIS DATATABLE
@@ -1502,7 +1460,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					return model.isVideo();
 				});
 
-				console.warn('VIDEOS', videos);
 				*/
 				//this.set('video', contents.getMainVideo(_.first(videos)));
 
@@ -1645,8 +1602,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
-
-				//console.warn(progressPrograms);
 
 				var total = programs.reduce(function(count, program) {
 				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
@@ -2105,8 +2060,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		mod.programsCollection = new this.collections.programs({
 			current : contentInfo.current
 		});
-
-		console.warn('CONTENT TREE', contentInfo.tree);
 
 		mod.programsCollection.reset(contentInfo.tree);
 
