@@ -1151,7 +1151,7 @@ _before_init_functions.push(function() {
   <% console.warn("_ MODEL", model) %>
     <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
       width="auto"  height="auto"
-      <% if (!_.has(model, 'poster')) { %>
+      <% if (_.isNull(model.poster)) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"
       <% } else { %>
         poster="<%= model.poster.url %>"

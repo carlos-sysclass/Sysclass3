@@ -858,7 +858,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				                        //var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 				                        videojs(videoDomID, {
 				                            "controls": (videoIndex == this.mainVideoIndex),
-				                            "autoplay": false,
+				                            "autoplay": true,
 				                            "preload": "auto",
 				                            "width" : "auto",
 				                            "height" : "617",
