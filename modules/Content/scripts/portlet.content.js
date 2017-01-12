@@ -770,6 +770,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	    var unitVideoTabViewClass = contentPopoutViewClass.extend({
 	        videoJS : [],
 	        videoJSIds : [],
+	        videoJSReady : [],
 	        mainVideoIndex : 0,
 	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
@@ -875,17 +876,22 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			                            	))
 				                        );
 
-				                        console.warn(html);
-
 				                        this.makeDraggable();
 
 				                        //var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
 				                        videojs(videoDomID, {
-				                            "controls": true,
+				                            "controls": (videoIndex == this.mainVideoIndex),
 				                            "autoplay": false,
 				                            "preload": "auto",
 				                            "width" : "auto",
 				                            "height" : "617",
+				                            "loadingSpinner" : (videoIndex == this.mainVideoIndex),
+				                            /*
+				                            "controlBar" : {
+				                            	muteToggle : (videoIndex == this.mainVideoIndex),
+				                            },
+				                            */
+				                            "bigPlayButton" : (videoIndex == this.mainVideoIndex),
 				                            "techOrder" : [
 				                                'html5', 'flash'
 				                            ]
@@ -908,6 +914,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	                	_.each(this.videoJSIds, function(videoDomID, index) {
 							this.videoJS[index] = videojs(videoDomID);
+							this.videoJSReady[index] = false;
 	                    	this.videoJS[index].ready(this.bindStartVideoEvents.bind(this, videoDomID, index));
 	                	}.bind(this));
 
@@ -956,9 +963,56 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                     }
 				});
 
+				this.videoJS[index].on("loadeddata", function(index) {
+		            this.videoJSReady[index] = true;
+
+		            if (_.every(this.videoJSReady)) {
+		            	_.each(this.videoJS, function(video) {
+		            		video.play();
+		            	});
+		            	
+		            }
+				}.bind(this, index));
+
+
+
+
+
 				this.videoJS[index].volume(0.5);
 
 				if (index == this.mainVideoIndex) {
+
+					this.videoJS[index].on("pause", function(videoIndex) {
+			        	_.each(this.videoJS, function(video, index) {
+			        		if (index == videoIndex) {
+			        			return;
+			        		}
+			        		video.pause();
+			        	}.bind(this));
+
+					}.bind(this, index));
+
+					this.videoJS[index].on("play", function(videoIndex) {
+			        	_.each(this.videoJS, function(video, index) {
+			        		if (index == videoIndex) {
+			        			return;
+			        		}
+			        		video.play();
+			        	}.bind(this));
+
+						this.syncVideos();
+
+						/*
+			        	_.each(this.videoJS, function(video, index) {
+			        		if (index == videoIndex) {
+			        			return;
+			        		}
+			        		video.pause();
+			        	}.bind(this));
+			        	*/ 
+
+					}.bind(this, index));
+
                 	this.videoJS[index].on("timeupdate", this.updateProgress.bind(this));
 
 	                this.videoJS[index].on("ended", function() {
@@ -972,14 +1026,27 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            } else {
 	            	this.videoJS[index].muted(true); // mute the volume
 	            }
-
 				//this.videoJS[index].play();
-                // SETTING VOLUME 
-              	
+                // SETTING VOLUME
 	        },
+	        syncVideos : function() {
+	        	if (!this.videoJS[this.mainVideoIndex].paused()) {
+	        		var currentTime = this.videoJS[this.mainVideoIndex].currentTime();
 
+		        	_.each(this.videoJS, function(video, index) {
+		        		if (index == this.mainVideoIndex) {
+		        			return;
+		        		}
 
+		        		if ((video.currentTime() - currentTime) > 1 || (video.currentTime() - currentTime) < -1) {
+							console.warn(video.currentTime(), currentTime, video.currentTime() - currentTime);
+		        			video.currentTime(currentTime);
+		        		}
+		        	}.bind(this));
 
+					requestAnimationFrame(this.syncVideos.bind(this));
+				}
+	        },
 	        updateProgress : function() {
                 var currentProgress = this.videoJS[this.mainVideoIndex].currentTime() / this.videoJS[this.mainVideoIndex].duration();
 
