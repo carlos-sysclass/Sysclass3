@@ -84,6 +84,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 			this.collection = this.makeCollection();
 
+			console.warn(this.collection);
+
 			this.childContainer.empty();
 
 			if (this.collection.size() === 0) {

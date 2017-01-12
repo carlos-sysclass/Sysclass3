@@ -17,6 +17,20 @@ class File extends Model
             "code",
             array("alias" => 'Language')
         );
+
+        $this->belongsTo(
+            "locale_code",
+            "Sysclass\Models\I18n\Language",
+            "locale_code",
+            array("alias" => 'Locale')
+        );
+
+        $this->belongsTo(
+            "country_code",
+            "Sysclass\Models\I18n\Countries",
+            "code",
+            array("alias" => 'Country')
+        );
     }
 
     public function getFileStream() {

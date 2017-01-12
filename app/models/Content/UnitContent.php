@@ -83,9 +83,14 @@ class UnitContent extends Model
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
         $files = $this->getFiles(array(
-            'conditions' => 'Sysclass\Models\Content\ContentFile.active = 1',
-            'limit' => '1'
+            'conditions' => 'Sysclass\Models\Content\ContentFile.active = 1'
         ));
+
+        $item['files'] = [];
+        foreach($files as $file) {
+            $item['files'][] = $file->toFullArray();
+        }
+
         $file = $files->getFirst();
         if ($file) {
             $item['file'] = $files->getFirst()->toArray();

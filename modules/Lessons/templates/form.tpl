@@ -1,6 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
-<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
@@ -27,7 +27,7 @@
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
-				<div id="form-{$T_MODULE_ID}">
+				<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 					<div class="form-group">
 						<label class="control-label">{translateToken value="Name"}</label>
 						<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
@@ -61,7 +61,7 @@
 
 						<button class="btn btn-warning save-and-add-action" type="button">{translateToken value="Save and add another unit"}</button>
 					</div>
-				</div>
+				</form>
 			</div>
 
 			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
@@ -87,9 +87,6 @@
 			{/if}
 		</div>
 	</div>
-
-</form>
-</div>
 <!--
 <script type="text/template" id="file-upload-new-video-item">
 	<li class="row">

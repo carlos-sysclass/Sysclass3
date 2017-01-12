@@ -202,9 +202,10 @@ li.list-item {
 
 <script type="text/template" id="content-subtitle-item">
 
-    <select class="select2-me form-control" name="country_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+        <option></option>
         {foreach $T_LANGUAGES as $lang}
-            <option value="{$lang.country_code}" <% if (model.country_code == '{$lang.country_code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+            <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>
         {/foreach}
     </select>
 
@@ -240,9 +241,10 @@ li.list-item {
 
 <script type="text/template" id="content-poster-item">
 
-    <select class="select2-me form-control" name="country_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+        <option></option>
         {foreach $T_LANGUAGES as $lang}
-            <option value="{$lang.country_code}" <% if (model.country_code == '{$lang.country_code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+            <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>
         {/foreach}
     </select>
 
@@ -275,10 +277,12 @@ li.list-item {
     <% var file = _.first(model.files); %>
     <% if (!_.isUndefined(file)) { %>
 
-        <select class="select2-me form-control" name="country_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+        <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+            <option></option>
             {foreach $T_LANGUAGES as $lang}
-                <option value="{$lang.country_code}" <% if (file.country_code == '{$lang.country_code}') { %>selected="selected"<% } %>>{$lang.name}</option>
+                <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>
             {/foreach}
+
         </select>
 
         <%

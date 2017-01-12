@@ -217,8 +217,14 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
             return model.get(prop);
         },
         "country" : function (state) {
+            var country = $(state.element).data("country");
+
+            if (_.isEmpty(country)) {
+                country = state.id;
+            }
+
             if (!state.id) return state.text; // optgroup
-            return '<img class="flag flag-' + state.id.toLowerCase() + '" src="/assets/default/img/blank.png"/>&nbsp;&nbsp;' + state.text;
+            return '<img class="flag flag-' + country.toLowerCase() + '" src="/assets/default/img/blank.png"/>&nbsp;&nbsp;' + state.text;
         },
 		"country-list" : function (state) {
             if (!state.id) return state.text; // optgroup

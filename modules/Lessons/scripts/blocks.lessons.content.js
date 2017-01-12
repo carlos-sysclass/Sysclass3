@@ -1264,20 +1264,25 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         var baseContentItemViewClass = baseChangeModelViewClass.extend({
             events : {
                 "confirmed.bs.confirmation .delete-item"    : "delete",
-                "change :input[name='country_code']" : "updateCountry"
+                "change :input[name='locale_code']" : "updateLocale"
             },
             tagName : "li",
             className : "list-item",
             render : function() {
                 if (this.model) {
                     this.$el.html(this.template(this.model.toJSON()));
+
+                    if (_.isEmpty(this.model.get("locale_code"))) {
+
+                        this.$(":input[name='locale_code']").select2("val", "");
+                    }
                 }
 
                 return this;
             },
-            updateCountry : function(e, data) {
+            updateLocale : function(e, data) {
                 if (e.added) {
-                    this.model.set("country_code", e.added.id);
+                    this.model.set("locale_code", e.added.id);
                     this.model.save();
                 }
             },
@@ -1325,7 +1330,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         var contentSubtitleItemViewClass = baseContentItemViewClass.extend({
-            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'}),
+            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'})
         });
 
         var contentPosterItemViewClass = baseContentItemViewClass.extend({
@@ -1387,7 +1392,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
             },
             addOne : function(model) {
-                console.warn('ADD ONE', model);
+                //console.warn('ADD ONE', model);
                 if (model.isVideo()) {
 
                     /*
@@ -1539,12 +1544,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         var contentMaterialItemViewClass = baseContentItemViewClass.extend({
             template: _.template($("#content-material-item").html(), null, {variable: 'model'}),
             //emptyTemplate: _.template($("#content-video-empty").html(), null, {variable: 'model'}),
-            updateCountry : function(e, data) {
+            updateLocale : function(e, data) {
                 if (e.added) {
                     var files = this.model.getFiles();
                     console.warn(files);
                     var file = files.first();
-                    file.set("country_code", e.added.id);
+                    file.set("locale_code", e.added.id);
                     file.save();
                 }
             }
