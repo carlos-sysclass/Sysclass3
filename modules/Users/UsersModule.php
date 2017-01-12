@@ -702,20 +702,20 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     if ($userModel->viewed_license == 1) {
                         return $this->createRedirectResponse(
                             "/dashboard",
-                            $this->translate->translate("You agreed within the license. Thanks for using Sysclass"),
+                            $this->translate->translate("You have agreed with the license. Thanks for using SysClass"),
                             "success"
                         );
                     } else {
                         $di = DI::getDefault();
                         $di->get("authentication")->logout($userModel);
-                        $message = $this->translate->translate("You cannot access the system before you accepted ther terms of use.");
+                        $message = $this->translate->translate("You cannot access the system before you accept the terms of use.");
                         $message_type = 'warning';
                         return $this->createRedirectResponse(
                             "/login", $message, $message_type
                         );
                     }
                 } else {
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when trying to save you data. Please try again."), "warning");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {

@@ -37,6 +37,23 @@ class UnitContent extends Model
         );
     }
 
+    public function afterFetch() {
+        $this->tags = json_decode($this->tags, true);
+    }
+
+    public function beforeSave() {
+        $this->tags = json_encode($this->tags);
+    }
+
+    public function toArray() {
+        if (!is_array($this->tags) && !empty($this->tags)) {
+            $this->tags = json_decode($this->tags, true);       
+        }
+
+        return parent::toArray();
+
+    }
+
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
         $this->assignedData = $data;
         return parent::assign($data, $dataColumnMap, $whiteList);
@@ -60,13 +77,20 @@ class UnitContent extends Model
         }
     }
 
+
+
     public function toFullContentArray() {
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
         $files = $this->getFiles(array(
-            'conditions' => 'Sysclass\Models\Courses\Contents\ContentFile.active = 1',
-            'limit' => '1'
+            'conditions' => 'Sysclass\Models\Content\ContentFile.active = 1'
         ));
+
+        $item['files'] = [];
+        foreach($files as $file) {
+            $item['files'][] = $file->toFullArray();
+        }
+
         $file = $files->getFirst();
         if ($file) {
             $item['file'] = $files->getFirst()->toArray();

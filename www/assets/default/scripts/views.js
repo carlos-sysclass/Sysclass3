@@ -84,6 +84,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 			this.collection = this.makeCollection();
 
+			console.warn(this.collection);
+
 			this.childContainer.empty();
 
 			if (this.collection.size() === 0) {
@@ -553,6 +555,10 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			    }
 
 				var value = $el.val();
+
+				if ($el.hasClass("select2-me") && $el.is("[data-tags]")) {
+					value = $el.select2("val");
+				}
 
 				if ($el.is("[type='checkbox']"))  {
 					// CHECK FOR ANOTHER VALUES, BECAUSE THE ELEMENT TRIGGERING THE EVENT IS JUST ONE OFF MULTIPLE CHECKBOXES

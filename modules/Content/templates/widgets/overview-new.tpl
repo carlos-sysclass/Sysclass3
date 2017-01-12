@@ -154,6 +154,40 @@ _before_init_functions.push(function() {
                       </ul>
 
                       <div class="popup-header-buttons">
+                        <div class="btn-group inline-block change-view-type-dropdown" style="">
+                          <a href="javascript: void(0);" data-toggle="dropdown" class="btn btn-link hidden-xs dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-video-camera"></i>
+                            <span class="view-type"></span>
+                            <span class="caret"></span>
+                          </a>
+                          <ul class="pull-right dropdown-menu">
+                            <li>
+                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="pip">
+                                PIP
+                              </a>
+                            </li>
+                            <li>
+                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="sbs">
+                                SBS
+                              </a>
+                            </li>
+                            <li class="separator"></li>
+                            <li>
+                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only1">
+                                Video 1
+                              </a>
+                            </li>
+                            <li>
+                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only2" to-pip-action">
+                                Video 1
+                              </a>
+                            </li>
+
+
+
+                          </ul>
+                        </div>
+
                         <a href="javascript: void(0);" class="btn btn-link minimize-action hidden-xs">
                           <i class="fa fa-compress"></i>
                         </a>
@@ -589,7 +623,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's any courses registered for this course"}
+				{translateToken value="Ops! There's no courses registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -1091,7 +1125,7 @@ _before_init_functions.push(function() {
   	<td class="text-center">
   		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
   			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
-  				{translateToken value="Do now!"}
+  				{translateToken value="Do now"}
   			</a>
   		<% } %>
   		<% if (total_questions > 0) { %>
@@ -1110,27 +1144,37 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_unit_video-nofound-template">
   <div class="alert alert-info">
     <span class="text-info"><i class="icon-warning-sign"></i></span>
-    {translateToken value="Ops! There's any content for this lesson"}
+    {translateToken value="Ops! There's no content for this lesson"}
   </div>
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
-    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height"
+  <% console.warn("_ MODEL", model) %>
+    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
       width="auto"  height="auto"
       <% if (!_.has(model, 'poster')) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"
       <% } else { %>
-        poster="<%= model.poster.file.url %>"
+        poster="<%= model.poster.url %>"
       <% } %>
       >
-      <% if (_.has(model, 'file')) { %>
-        <source src="<%= model.file.url %>" type='<%= model.file.type %>' />
+      <% if (_.has(model, 'url')) { %>
+        <source src="<%= model.url %>" type='<%= model.type %>' />
       <% } else if (_.has(model, 'content')) { %>
-        <source src="<%= model.content %>" />
+        <!-- <source src="<%= model.content %>" /> -->
       <% } %>
-
-      <% _.each(model.childs, function(item, index){ %>
-        <track kind="subtitles" src="<%= item.file.url %>" srclang="<%= item.language_code %>" label="<%= item.language_code %>"></track>
-      <% }); %>
+      <% if (_.has(model, 'subtitles')) { %>
+        <% _.each(model.subtitles, function(item, index){ %>
+          <track 
+            kind="subtitles" 
+            src="<%= item.url %>" 
+            <% if (_.isObject(item.locale)) { %>
+            srclang="<%= item.locale.locale_code %>" 
+            label="<%= item.locale.local_name %>"
+            <% } else { %>
+            <% } %>
+          ></track>
+        <% }); %>
+      <% } %>
     </video>
 </script>
 
@@ -1142,7 +1186,7 @@ _before_init_functions.push(function() {
     <td colspan="5">
       <span class="text-info">
         <i class="icon-warning-sign"></i>
-        {translateToken value="Ops! There's any materials registered for this course"}
+        {translateToken value="Ops! There's no materials registered for this course"}
       </span>
     </td>
   </tr>
@@ -1200,7 +1244,7 @@ _before_init_functions.push(function() {
 		<td colspan="4"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's any exercises registered for this course"}
+				{translateToken value="Ops! There's no exercises registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -1221,7 +1265,7 @@ _before_init_functions.push(function() {
 			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
 				{translateToken value="Do it again!"}
 			<% } else { %>
-				{translateToken value="Do now!"}
+				{translateToken value="Do now"}
 			<% } %>
 		</a>
 	</td>

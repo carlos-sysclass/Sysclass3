@@ -9,6 +9,8 @@ models:
       create:
         resource: lessons
         action: edit
+      edit:
+        resource: lessons
       delete:
         resource: lessons
         action: edit

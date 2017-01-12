@@ -3,7 +3,7 @@ namespace Sysclass\Modules\Translate;
 
 use Sysclass\Models\I18n\Language,
     Sysclass\Models\I18n\Tokens,
-    Sysclass\Models\I18n\Countries,
+    Sysclass\Models\I18n\CountriesStatic as Countries,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Services\Queue\AsyncCall;
 

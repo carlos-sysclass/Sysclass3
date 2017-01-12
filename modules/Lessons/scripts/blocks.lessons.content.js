@@ -1255,14 +1255,49 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             lesson_id :  mod.entity_id
         });
 
-
         var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
 
-        var contentVideoItemViewClass = Backbone.View.extend({
+        var baseViewClass = app.module("views").baseClass;
+
+        
+
+        var baseContentItemViewClass = baseChangeModelViewClass.extend({
+            events : {
+                "confirmed.bs.confirmation .delete-item"    : "delete",
+                "change :input[name='locale_code']" : "updateLocale"
+            },
+            tagName : "li",
+            className : "list-item",
+            render : function() {
+                if (this.model) {
+                    this.$el.html(this.template(this.model.toJSON()));
+
+                    if (_.isEmpty(this.model.get("locale_code"))) {
+
+                        this.$(":input[name='locale_code']").select2("val", "");
+                    }
+                }
+
+                return this;
+            },
+            updateLocale : function(e, data) {
+                if (e.added) {
+                    this.model.set("locale_code", e.added.id);
+                    this.model.save();
+                }
+            },
+            delete : function() {
+                this.model.destroy({success: function(model, response) {
+                    this.remove();
+                }.bind(this)});
+            }
+        });
+
+        var contentVideoItemViewClass = baseContentItemViewClass.extend({
             events: {
                 "mouseenter" : "showSidebar",
                 "mouseleave" : "hideSidebar",
-                "confirmed.bs.confirmation .delete-video"    : "delete"
+                "confirmed.bs.confirmation .delete-item"    : "delete"
             },
             tagName : "div",
             className : "content-video-item col-md-6 col-lg-6 col-sm-6 col-xs-12",
@@ -1281,9 +1316,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             render : function() {
                 if (this.model) {
                     this.$el.html(this.template(_.extend(this.model.toJSON(), {view_index: this.index})));
-                } else {
-                    this.$el.html(this.emptyTemplate({view_index: this.index}));
-                    this.$el.addClass("content-video-empty");
+
+                    // ADD VIDEOSJS SCRIPT, REQUESTS POSTER AND SUBTITLES
                 }
 
                 return this;
@@ -1295,56 +1329,39 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var contentSubtitleItemViewClass = Backbone.View.extend({
-            events : {
-                "confirmed.bs.confirmation .delete-subtitle"    : "delete",
-                "change :input[name='country_code']" : "updateCountry"
-            },
-            tagName : "li",
-            className : "list-item",
-            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'}),
-            //emptyTemplate: _.template($("#content-video-empty").html(), null, {variable: 'model'}),
-            render : function() {
-                if (this.model) {
-                    this.$el.html(this.template(this.model.toJSON()));
-                    /*
-                } else {
-                    this.$el.html(this.emptyTemplate());
-                    this.$el.addClass("content-video-empty");
-                    */
-                }
+        var contentSubtitleItemViewClass = baseContentItemViewClass.extend({
+            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'})
+        });
 
-                return this;
-            },
-            updateCountry : function(e, data) {
-                if (e.added) {
-                    this.model.set("country_code", e.added.id);
-                    this.model.save();
-                }
-            },
-            delete : function() {
-                this.model.destroy({success: function(model, response) {
-                    this.remove();
-                }.bind(this)});
-            }
+        var contentPosterItemViewClass = baseContentItemViewClass.extend({
+            template: _.template($("#content-poster-item").html(), null, {variable: 'model'}),
         });
 
 
         var contentVideoContainerViewClass = baseChangeModelViewClass.extend({
-            events : {
-                "click .content-addfile" : "openStorageLibrary",
-                "click .toogle-visible-item" : "toggleVisible",
+            events : function() {
+                //var events = baseViewClass.prototype.events.apply(this, arguments);
+                var events = {};
+                return _.extend(events, {
+                    "change :input"                 : "update",
+                    "click .content-addfile"        : "openStorageLibrary",
+                    "click .toogle-visible-item"    : "toggleVisible",
+                    "click .content-save"           : "save"
+                });
             },
             libraryModule : app.module("dialogs.storage.library"),
             eventsBinded : false,
             videoViews : [],
             subtitleViews : [],
+            posterViews : [],
             parent : null,
+            renderType : "byView",
             initialize : function(opt) {
-                //this.listenTo(this.collection, "sync", this.render.bind(this))
+                //baseViewClass.prototype.initialize.apply(this, arguments);
                 this.parent = opt.parent;
             },
             bindViewEvents : function() {
+                baseViewClass.prototype.bindViewEvents.apply(this, arguments);
                 if (this.collection) {
                     this.listenTo(this.collection, "add", this.addOne.bind(this));
                     this.listenTo(this.collection, "remove", this.checkRemove.bind(this));
@@ -1352,6 +1369,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
             },
             checkRemove : function(model) {
+                console.warn('REMOVE ONE', model);
                 this.videoViews = _.reject(this.videoViews, function(view) {
                     return view.model.cid == model.cid; 
                 });
@@ -1418,21 +1436,74 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     this.subtitleViews.push(childView);
 
                     //subtitleCount++;
+                } else if (model.isPoster()) { 
+                    
+
+                    childView = new contentPosterItemViewClass({
+                        model : model
+                    });
+
+                    this.$(".content-posters .poster-container").append(childView.render().el);
+
+                    app.module("ui").refresh(childView.el);
+
+                    this.posterViews.push(childView);
                 }
+            },
+            clear : function() {
+                this.$(".content-videos-inner").empty();
+                this.$(".content-subtitles .subtitle-container").empty();
+                this.$(".content-posters .poster-container").empty();
+
+                _.each(this.videoViews, function(view) {
+                    view.remove();
+                });
+                _.each(this.subtitleViews, function(view) {
+                    view.remove();
+                });
+                _.each(this.posterViews, function(view) {
+                    view.remove();
+                });
             },
             render : function() {
                 //this.$el
-                //this.$(".content-videos-inner").empty();
-                
+                this.clear();
+                /*
+                this.$(".content-videos-inner").empty();
+                this.$(".content-subtitles .subtitle-container").empty();
+                this.$(".content-posters .poster-container").empty();
+                */
+                this.$("[name='title']").val(this.model.get("title"));
+                this.$("[name='tags']").select2('val', this.model.get("tags"));
                 this.collection = this.model.getFiles();
 
                 if (!this.eventsBinded) {
                     this.bindViewEvents();
                 }
-
                 
-                var subtitleCount = 0;
                 this.collection.each(this.addOne.bind(this));
+            },
+            update : function() {
+                console.info('views/contentVideoContainerViewClass::update');
+                this.model.set("title", this.$("[name='title']").val());
+                this.model.set("tags", this.$("[name='tags']").select2('val'));
+            },
+            save : function(e) {
+                console.info('views/contentVideoContainerViewClass::save');
+                var self = this;
+
+                this.model.save(null, {
+                    success : function(model, response, options) {
+                        //self.trigger("after:save", model);
+                    },
+                    error : function(model, xhr, options) {
+                        //self.trigger("error:save", model);
+                    }
+                });
+
+                //this.renderUiItems();
+
+                //self.trigger("complete:save", this.model);
             },
             openStorageLibrary : function(e) {
                 var self = this;
@@ -1470,36 +1541,17 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var contentMaterialItemViewClass = Backbone.View.extend({
-            events : {
-                "confirmed.bs.confirmation .delete-material"    : "delete",
-                "change :input[name='country_code']" : "updateCountry"
-            },
-            tagName : "li",
-            className : "list-item",
+        var contentMaterialItemViewClass = baseContentItemViewClass.extend({
             template: _.template($("#content-material-item").html(), null, {variable: 'model'}),
             //emptyTemplate: _.template($("#content-video-empty").html(), null, {variable: 'model'}),
-            render : function() {
-                if (this.model) {
-                    this.$el.html(this.template(this.model.toJSON()));
-                }
-
-                return this;
-            },
-            updateCountry : function(e, data) {
+            updateLocale : function(e, data) {
                 if (e.added) {
                     var files = this.model.getFiles();
                     console.warn(files);
                     var file = files.first();
-                    file.set("country_code", e.added.id);
+                    file.set("locale_code", e.added.id);
                     file.save();
                 }
-            },
-            delete : function() {
-                console.warn("destroy", this);
-                this.model.destroy({success: function(model, response) {
-                    this.remove();
-                }.bind(this)});
             }
         });
 
@@ -1629,6 +1681,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             render : function() {
                 // RENDERING VIDEOS
+                console.info('views/contentContainerViewClass::render');
                 var videos = this.collection.getVideos();
                 var videoModel = _.first(videos);
 
@@ -1638,13 +1691,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         model  : videoModel,
                         parent : this
                     });
+                    this.contentVideoContainerView.render();
                 } else {
                     // JUST SET THE MODEL
-                    this.contentVideoContainerView.setModel(videoModel);
+                    //this.contentVideoContainerView.setModel(videoModel);
                 }
-                this.contentVideoContainerView.render();
-
-
+                
+                
                 // RENDERING MATERIALS
                 var materials = this.collection.getMaterials();
                 
@@ -1653,6 +1706,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
 
                 console.warn(materialsCollection);
+                console.warn(materialsCollection.toJSON());
 
                 if (_.isNull(this.contentMaterialsContainerView)) {
                     this.contentMaterialsContainerView = new contentMaterialsContainerViewClass({
@@ -1660,10 +1714,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         collection  : materialsCollection,
                         parent : this
                     });
-                    console.warn(this.$("#content-materials-widget"));
+                    //console.warn(this.$("#content-materials-widget"));
                 } else {
                     // JUST SET THE MODEL
-                    this.contentMaterialsContainerView.setCollection(materialsCollection);
+                    //this.contentMaterialsContainerView.setCollection(materialsCollection);
                 }
 
                 this.contentMaterialsContainerView.render();

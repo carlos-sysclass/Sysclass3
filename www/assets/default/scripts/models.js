@@ -62,6 +62,15 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         }
     });
 
+    var baseNavigableCollection = Backbone.Collection.extend({
+        prev : function() {
+            this.trigger("previous");
+        },
+        next : function() {
+            this.trigger("next");
+        }
+    });
+
     var baseContentModelClass = baseModelClass.extend({
         files : null,
         defaults : function() {
@@ -164,6 +173,10 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 isSubtitle : function() {
                     return this.get("upload_type") == "subtitle" || this.get("upload_type") == "subtitle-translation";
                 },
+                isPoster : function() {
+                    return this.get("upload_type") == "poster" || (this.get("upload_type") == "default" && this.isImage());
+                },
+
                 /*
                 isExercise : function() {
                     return this.get("content_type") == "exercise";
@@ -200,6 +213,36 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                         this.set("file", file);
                     }
                 }),
+                subtitle : baseContentModelClass.extend({
+                    defaults : function() {
+                        var defaults = baseContentModelClass.prototype.defaults.apply(this);
+                        defaults['content_type'] = 'subtitle';
+                        return defaults;
+                    },
+                    //urlRoot: "/module/lessons/datasource/lesson_content/",
+                    translate : function(from, to) {
+                        $.ajax(
+                            this.url() + "/translate",
+                            {
+                                data: {
+                                    from: from,
+                                    to: to
+                                },
+                                method : "PUT",
+                                success : function(data, textStatus, jqXHR ) {
+                                    mod.lessonContentCollection.add(data);
+                                }
+                            }
+                        );
+                    }
+                }),
+                poster : baseContentModelClass.extend({
+                    defaults : function() {
+                        var defaults = baseContentModelClass.prototype.defaults.apply(this);
+                        defaults['content_type'] = 'poster';
+                        return defaults;
+                    },
+                }),
                 video : baseContentModelClass.extend({
                     files : null,
                     defaults : function() {
@@ -212,9 +255,11 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                     urlRoot : "/module/content/item/file"
                 })
             },
-            collection : Backbone.Collection.extend({
+            collection : baseNavigableCollection.extend({
                 initialize: function(data, opt) {
-                    this.lesson_id = opt.lesson_id;
+                    if (_.has(opt, 'lesson_id')) {
+                        this.lesson_id = opt.lesson_id;
+                    }
                     this.listenTo(this, "add", function(model, collection, opt) {
                         model.set("lesson_id", this.lesson_id);
                         // SET POSITION
@@ -240,20 +285,19 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 },
                 model: function(attrs, options) {
                     if (options.add) {
-                        attrs.file = _.first(attrs.files);
+                        //attrs.file = _.first(attrs.files);
+                        console.warn(options);
                         if (attrs.content_type == "video") {
-                            return new models.content.item.video(attrs, _.extend(options, {
-                                collection: this,
-                            }));
+                            return new models.content.item.video(attrs, options);
                         } else if (attrs.content_type == "file") {
                             return new models.content.item.file(attrs, _.extend(options, {
                                 collection: this,
                             }));
                         } else if (attrs.content_type == "subtitle") {
-
-                            return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
+                            return new models.content.item.subtitle(attrs, _.extend(options, {
                                 collection: this,
                             }));
+
                         } else if (attrs.content_type == "text") {
                             return new lessonTextContentModelClass(attrs, _.extend(options, {
                                 collection: this,
@@ -263,7 +307,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                                 collection: this,
                             }));
                         } else if (attrs.content_type == "poster") {
-                            return new lessonFilePosterContentModelClass(attrs, _.extend(options, {
+                            return new models.content.item.poster(attrs, _.extend(options, {
                                 collection: this,
                             }));
                         } else {

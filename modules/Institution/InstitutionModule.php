@@ -10,7 +10,7 @@ namespace Sysclass\Modules\Institution;
  */
 use Sysclass\Models\Organizations\Organization,
     Sysclass\Services\I18n\Timezones,
-    Sysclass\Models\I18n\Countries,
+    Sysclass\Models\I18n\CountriesStatic as Countries,
     Sysclass\Models\I18n\Language;
 /**
  * @RoutePrefix("/module/institution")
