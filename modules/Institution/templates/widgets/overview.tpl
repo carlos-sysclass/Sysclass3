@@ -35,6 +35,18 @@
 
 	{/if}
 
+	{if $social.googleplus}
+		{$text=translateToken value="Google+"}
+
+		{$variables[$index].googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
+	{/if}
+
+	{if $social.linkedin}
+		{$text=translateToken value="Linked In"}
+
+		{$variables[$index].linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
+	{/if}
+
 	{if $social.phone}
 		{$variables[$index].phone=['link' => "callto://+{$social.phone}",'icon'=>'fa-phone','text'=>$social.phone]}
 	{/if}
@@ -45,22 +57,10 @@
 	{if $T_CONFIGURATION.organization_show_current_time && $social.time_at}
 		{$variables.time_at=['icon'=>'fa-clock-o','text'=>$social.time_at]}
 	{/if}
-
-
 	{if $social.skype}
 		{$text=translateToken value="Skype"}
 
 		{$variables.skype=['link' => "skype://{$social.skype}",'icon'=>'fa-skype','text'=>$text]}
-	{/if}
-	{if $social.linkedin}
-		{$text=translateToken value="Linked In"}
-
-		{$variables.linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
-	{/if}
-	{if $social.googleplus}
-		{$text=translateToken value="Google+"}
-
-		{$variables.googleplus=['link' => "https://plus.google.com/{$social.googleplus}",'icon'=>'fa-google-plus','text'=>$text]}
 	{/if}
 -->
 {if $socials|count > 1}

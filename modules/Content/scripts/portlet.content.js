@@ -364,8 +364,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.onVisible();
 			},
 			onVisible : function() {
-				console.warn("ON VISIBLE");
-				//this.tableView.getApi().destroy(false);
 				this.tableView.recreate();
 			},
 			doSearch : function(e, text) {
@@ -450,13 +448,15 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.parentView.trigger("list:materials", this.model);
 			},
 			getMappedModel : function() {
-				var video = this.model.getVideo();
+				var videos = this.model.getVideos();
 				// UPDAT PROGRESS
 
-				if (video) {
+				if (videos.size() > 0) {
+					var video = videos.first();
 					var progress = mod.progressCollection.getContentProgress(video.get("id"));
 					video.set("progress", progress);
-					var videoInfo = video.toJSON();	
+
+					var videoInfo = video.toJSON();
 				} else {
 					var videoInfo = false;
 				}
@@ -468,17 +468,25 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					item.set("progress", progress);
 				});
 
+				/*
+				materials.each(function(item, i) {
+					var progress = mod.progressCollection.getContentProgress(item.get("id"));
+					item.set("progress", progress);
+				});
+				*/
+
 				var materialProgressFactor = materials.reduce(function(factor, item) {
 					return factor + parseFloat(item.get("progress.factor"));
 				}, 0);
 
-
-
 				var result = this.model.toJSON();
+
 				result.video = videoInfo;	
+				//result.materials = materials.toJSON();
+
 				result.materials = materials.toJSON();
 
-				result.materialProgress = materialProgressFactor / materials.size();
+				result.materialProgress = materialProgressFactor / _.size(materials);
 
 				var executions = this.model.getTestExecutions();
 				result.executions = executions.toJSON();
@@ -499,7 +507,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						this.lessonTemplate(this.getMappedModel())
 					);
 				} else {
-					//console.warn(this.getMappedModel());
 					this.$el.html(
 						this.testTemplate(this.getMappedModel())
 					);
@@ -631,8 +638,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//app.module("ui").refresh(this.$el);
 			},
 			onVisible : function() {
-				console.warn("ON VISIBLE");
-				//this.tableView.getApi().destroy(false);
 				this.tableView.recreate();
 			},
 			doSearch : function(e, text) {
@@ -689,14 +694,35 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 
-	    var contentPopoutViewClass = baseChangeModelViewClass.extend({
-	        videoJS : null,
-	        //nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
-	        //template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	    var unitVideoTabViewClass = baseChangeModelViewClass.extend({
 	        events : {
 	        	"click .popupcontent-header a.minimize-action" : "minimize",
 	        	"click .popupcontent-header a.fullscreen-action" : "fullscreen",
-	        	"click .popupcontent-header a.close-action" : "stopAndClose"
+	        	"click .popupcontent-header a.close-action" : "stopAndClose",
+	        	"click .popupcontent-header a.change-view-type" : "changeViewType"
+	        },
+	        videoJS : [],
+	        videoJSIds : [],
+	        videoJSReady : [],
+	        mainVideoIndex : 0,
+	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
+	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	        menuDropdownItemTemplate : _.template($("#tab_unit_video-multi-video-dropdown-item-template").html(), null, {variable: "model"}).bind(this),
+	        onScreenStatus : true,
+	        onScreenTime : null,
+	        onScreelThreshold : 0.5 * 1000, // 5 seconds
+	        scrollEvent : null,
+	        viewType : "normal", // normal or float
+	        childContainerSelector : false,
+	        childContainer : false,
+	        initialize: function(opt) {
+	            console.info('portlet.content/unitVideosTabViewClass::initialize');
+
+				if (_.has(opt, 'childContainer')) {
+					this.childContainerSelector = opt.childContainer;
+				} else {
+					this.childContainerSelector = false;
+				}
 	        },
 	        makeDraggable : function() {
 	        	this.$el.removeClass("hidden");
@@ -715,6 +741,326 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				    handle: ".popupcontent-header"
 				});
 	        },
+	        addSecVideoDraggable : function() {
+				this.$(".sec-video").draggable({
+				    start: function( event, ui ) {
+				        $(this).css({
+				            top: "auto",
+				            bottom: "auto",
+				            left: "auto",
+				            right: "auto",
+				            cursor: "move"
+				        });
+				    },
+				    cursor: "move",
+				    //handle: ".popupcontent-header"
+				});
+	        },
+	        removeSecVideoDraggable : function() {
+	        	this.$(".sec-video").removeAttr('style');
+	        	if (this.$(".sec-video").data('draggable')) {
+	        		this.$(".sec-video").draggable('destroy');	
+	        	}
+	        },
+	        render : function(e) {
+	            console.info('portlet.content/unitVideosTabViewClass::render');
+	            var self = this;
+
+	            if (!this.model.get("videos")) {
+	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
+	                this.disableView();
+	            } else {
+	                this.enableView();
+
+	                this.videoModel = this.model.get("videos");
+
+					var progress = mod.progressCollection.getContentProgress(this.model.get("id"));
+					this.model.set("progress", progress);
+
+	                var videosCollection = this.model.get("videos");
+
+	                if (!_.isEmpty(this.videoJS)) {
+	                	_.each(this.videoJS, function(video) {
+	                    	video.dispose();
+	                	});
+
+	                	this.videoJSIds = [];
+	                }
+
+	                if (videosCollection.size() > 0) {
+						if (this.childContainerSelector) {
+							this.childContainer = this.$(this.childContainerSelector);
+						} else {
+							this.childContainer = this.$el;
+						}
+
+						this.childContainer.empty();
+
+						this.mainVideoIndex = 0;
+
+						var videoIndex = 0;
+
+	                	videosCollection.each(function(videoModel) {
+			        		var subtitles = [];
+			        		var poster = null;
+
+	                		// ADD POSTER TO ALL INSTANCES
+	                		// ADD SUBTITLE TO ALL INSTANCES
+
+			        		videoModel.getFiles().each(function(fileModel) {
+			        			if (fileModel.isSubtitle()) {
+			        				//this.videoJS[index].addTextTrack("subtitles", )
+			        				subtitles.push(fileModel.toJSON());
+			        			} else if (fileModel.isPoster()) {
+			        				poster = fileModel.toJSON();
+			        			}
+			        		});
+
+							videoModel.getFiles().each(function(fileModel) {
+
+								if (fileModel.isVideo()) {
+
+				                    var videoDomID = "unit-video-" + fileModel.get("id");
+
+				                    if (this.$("#" + videoDomID).size() === 0) {
+				                        var html = this.childContainer.append(
+				                            this.template(_.extend(
+				                            	fileModel.toJSON(),
+				                            	{
+				                            		subtitles : subtitles,
+				                            		poster : poster,
+				                            		is_main : (videoIndex == this.mainVideoIndex),
+				                            		video_index : videoIndex
+				                            	}
+			                            	))
+				                        );
+
+				                        this.makeDraggable();
+
+				                        //var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
+				                        videojs(videoDomID, {
+				                            "controls": (videoIndex == this.mainVideoIndex),
+				                            "autoplay": true,
+				                            "preload": "auto",
+				                            "width" : "auto",
+				                            "height" : "617",
+				                            "loadingSpinner" : (videoIndex == this.mainVideoIndex),
+				                            /*
+				                            "controlBar" : {
+				                            	muteToggle : (videoIndex == this.mainVideoIndex),
+				                            },
+				                            */
+				                            "bigPlayButton" : (videoIndex == this.mainVideoIndex),
+				                            "techOrder" : [
+				                                'html5', 'flash'
+				                            ]
+				                        }, function() {
+				                        });
+				                    }
+				                    videoIndex++;
+				                    this.videoJSIds.push(videoDomID);
+			                    }
+							}.bind(this));
+	                	}.bind(this));
+
+
+	                	if (_.size(this.videoJSIds) > 1) { 
+	                		this.manualChangeViewType("pip");
+	                		//this.childContainer.addClass("popupcontent-multiple");
+	                	} else {
+	                		this.childContainer.removeClass("popupcontent-multiple");
+	                	}
+
+	                	_.each(this.videoJSIds, function(videoDomID, index) {
+							this.videoJS[index] = videojs(videoDomID);
+							this.videoJSReady[index] = false;
+	                    	this.videoJS[index].ready(this.bindStartVideoEvents.bind(this, videoDomID, index));
+	                	}.bind(this));
+
+	                	this.renderMultiVideoMenu();
+
+	                    mod.videoJS = this.videoJS;
+	                }
+
+	                app.module("ui").refresh(this.$el);
+
+	                this.onScreenStatus = this.$el.isOnScreen(1, 0);
+	                this.onScreenTime = Date.now();
+
+	                //this.onScreenInterval = window.setInterval(this.checkViewType.bind(this), this.onScreelThreshold);
+	            }
+	        },
+	        renderMultiVideoMenu : function() {
+	        	if (_.size(this.videoJS) > 1) {
+	        		var menuDropdown = this.$(".change-view-type-dropdown");
+	        		menuDropdown.removeClass("hidden");
+	        		menuDropdown.find(".dynamic-view-item").remove();
+
+	        		_.each(this.videoJS, function(video, index) {
+	        			menuDropdown
+	        				.find(".dropdown-menu")
+	        				.append(
+	        					this.menuDropdownItemTemplate({
+		        					index : index
+		        				})
+		        			);
+	        		}.bind(this));
+	        	} else {
+	        		this.$(".change-view-type-dropdown").addClass("hidden");
+	        	}
+	        },
+	        changeViewType : function(evt) {
+	        	var target = $(evt.currentTarget);
+	        	var type = target.data("view-type");
+
+	        	this.childContainer.removeClass("popupcontent-sbs");
+	        	this.childContainer.removeClass("popupcontent-pip");
+	        	this.childContainer.removeClass("popupcontent-only");
+
+	        	this.childContainer.addClass("popupcontent-" + type);
+
+	        	if (type == "pip") {
+	        		this.addSecVideoDraggable();
+	        	} else {
+	        		this.removeSecVideoDraggable();
+	        	}
+
+	        	console.warn(type);
+
+	        	if (type == "only") {
+	        		var videoIndex = target.data("view-index");
+	        		_.each(this.videoJS, function(video, index) {
+	        			if (videoIndex == index) {
+	        				$(video.el()).removeClass("hidden");
+	        				// ADD CONTROLS
+	        				video.controls(true);
+
+	        			} else {
+	        				$(video.el()).addClass("hidden");
+
+	        			}
+	        		});
+	        	} else {
+	        		_.each(this.videoJS, function(video, index) {
+	        			$(video.el()).removeClass("hidden");
+	        			// REMOVE CONTROLS FROM SEC VIDEOS
+	        			if (index != this.mainVideoIndex) {
+	        				video.controls(false);
+	        			}
+	        		}.bind(this));
+	        	}
+
+
+
+	        	this.$(".view-type").html(target.html());
+	        },
+	        manualChangeViewType : function(type) {
+	        	this.$("a.change-view-type[data-view-type='" + type + "']").click();
+	        },
+	        bindStartVideoEvents : function(videoDomID, index) {
+	            var self = this;
+
+	            this.currentProgress = parseFloat(this.model.get("progress.factor"));
+
+	            if (_.isNaN(this.currentProgress)) {
+	                this.currentProgress = 0;
+	            }
+
+            	var progress = this.model.get("progress");
+				this.videoJS[index].on("loadedmetadata", function() {
+                    if (progress && progress.factor < 1) {
+                    	var start = this.duration() * progress.factor;
+                    	this.currentTime(start - 5); 
+                    }
+				});
+
+				this.videoJS[index].on("loadeddata", function(index) {
+		            this.videoJSReady[index] = true;
+
+		            if (_.every(this.videoJSReady)) {
+		            	_.each(this.videoJS, function(video) {
+		            		video.play();
+		            	});
+		            	
+		            }
+				}.bind(this, index));
+
+
+
+
+
+				this.videoJS[index].volume(0.5);
+
+				if (index == this.mainVideoIndex) {
+
+					this.videoJS[index].on("pause", function(videoIndex) {
+			        	_.each(this.videoJS, function(video, index) {
+			        		if (index == videoIndex) {
+			        			return;
+			        		}
+			        		video.pause();
+			        	}.bind(this));
+
+					}.bind(this, index));
+
+					this.videoJS[index].on("play", function(videoIndex) {
+			        	_.each(this.videoJS, function(video, index) {
+			        		if (index == videoIndex) {
+			        			return;
+			        		}
+			        		video.play();
+			        	}.bind(this));
+
+						this.syncVideos();
+					}.bind(this, index));
+
+                	this.videoJS[index].on("timeupdate", this.updateProgress.bind(this));
+
+	                this.videoJS[index].on("ended", function() {
+	                    this.currentProgress = 1;
+	                    var model = this.model.get("videos").first();
+	                    var progressModel = new mod.models.content_progress(model.get("progress"));
+	                    progressModel.setAsViewed(model, this.currentProgress);
+
+	                    this.trigger("video:viewed");
+	                }.bind(this));
+	            } else {
+	            	this.videoJS[index].muted(true); // mute the volume
+	            }
+				//this.videoJS[index].play();
+                // SETTING VOLUME
+	        },
+	        syncVideos : function() {
+	        	if (!this.videoJS[this.mainVideoIndex].paused()) {
+	        		var currentTime = this.videoJS[this.mainVideoIndex].currentTime();
+
+		        	_.each(this.videoJS, function(video, index) {
+		        		if (index == this.mainVideoIndex) {
+		        			return;
+		        		}
+
+		        		if ((video.currentTime() - currentTime) > 1 || (video.currentTime() - currentTime) < -1) {
+		        			video.currentTime(currentTime);
+		        		}
+		        	}.bind(this));
+
+					requestAnimationFrame(this.syncVideos.bind(this));
+				}
+	        },
+	        updateProgress : function() {
+                var currentProgress = this.videoJS[this.mainVideoIndex].currentTime() / this.videoJS[this.mainVideoIndex].duration();
+
+                if (currentProgress > this.currentProgress) {
+                    var progressDiff =  currentProgress - this.currentProgress;
+                    if (progressDiff > 0.03 ) {
+                        this.currentProgress = currentProgress;
+                        //this.videoModel.set("progress", this.currentProgress);
+                        var model = this.model.get("videos").first();
+                        var progressModel = new mod.models.content_progress(model.get("progress"));
+                        progressModel.setAsViewed(model, this.currentProgress);
+                    }
+                }
+    		},
 	        minimize : function() {
 	        	// RESIZE TO MINIMUM VALUE
 				this.$(".popupcontent").toggleClass("popup-minimized");
@@ -733,11 +1079,23 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.makeDraggable();
 				}
 	        },
-	        fullscreen : function() {
-
-	        },
+    		fullscreen : function() {
+				if (!_.isNull(this.videoJS[this.mainVideoIndex])) {
+					this.videoJS[this.mainVideoIndex].requestFullscreen();	
+				}
+    		},
 	        stopAndClose : function() {
-                this.$el.hide();
+                if (!_.isEmpty(this.videoJS)) {
+                	this.updateProgress();
+
+                	_.each(this.videoJS, function(video) {
+                    	video.dispose();
+                	});
+
+                	this.videoJS = [];
+                	this.videoJSIds = [];
+                	this.$el.hide();
+                }
 	        },
 	        disableView : function() {
 	            //$("[href='#tab_unit_video'").hide();
@@ -748,222 +1106,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            //$("[href='#tab_unit_video'").show().tab('show');
 	            this.$el.show();
 	        }
-	    });
 
-
-	    var unitVideoTabViewClass = contentPopoutViewClass.extend({
-	        videoJS : null,
-	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
-	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
-	        /*
-	        events : {
-	        	"click .close-action" : "stopAndClose"
-	        },
-	        */
-	        onScreenStatus : true,
-	        onScreenTime : null,
-	        onScreelThreshold : 0.5 * 1000, // 5 seconds
-	        scrollEvent : null,
-	        viewType : "normal", // normal or float
-	        childContainerSelector : false,
-	        childContainer : false,
-	        initialize: function(opt) {
-	            console.info('portlet.content/unitVideosTabViewClass::initialize');
-
-				if (_.has(opt, 'childContainer')) {
-					this.childContainerSelector = opt.childContainer;
-				} else {
-					this.childContainerSelector = false;
-				}
-	        },
-	        render : function(e) {
-	            console.info('portlet.content/unitVideosTabViewClass::render');
-	            var self = this;
-
-	            if (!this.model.get("video")) {
-	                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
-	                this.disableView();
-
-	            } else {
-	                this.enableView();
-
-	                this.videoModel = this.model.get("video");
-
-					var progress = mod.progressCollection.getContentProgress(this.videoModel.get("id"));
-					this.videoModel.set("progress", progress);
-
-
-	                if (!_.isNull(this.videoJS)) {
-	                    this.videoJS.dispose();
-	                }
-
-	                if (this.videoModel) {
-	                    var videoDomID = "unit-video-" + this.videoModel.get("id");
-
-	                    if (this.$("#" + videoDomID).size() === 0) {
-
-							if (this.childContainerSelector) {
-								this.childContainer = this.$(this.childContainerSelector);
-							} else {
-								this.childContainer = this.$el;
-							}
-
-	                        this.childContainer.empty().append(
-	                            this.template(this.videoModel.toJSON())
-	                        );
-
-	                        this.makeDraggable();
-
-	                        //var videoData = _.pick(entityData["data"], "controls", "preload", "autoplay", "poster", "techOrder", "width", "height", "ytcontrols");
-	                        videojs(videoDomID, {
-	                            "controls": true,
-	                            "autoplay": false,
-	                            "preload": "auto",
-	                            "width" : "auto",
-	                            "height" : "617",
-	                            "techOrder" : [
-	                                'html5', 'flash'
-	                            ]
-	                        }, function() {
-	                        });
-	                    }
-
-	                    this.videoJS = videojs(videoDomID);
-
-	                    this.videoJS.ready(this.bindStartVideoEvents.bind(this));
-
-	                    mod.videoJS = this.videoJS;
-   
-	                }
-
-	                app.module("ui").refresh(this.$el);
-
-
-	                this.onScreenStatus = this.$el.isOnScreen(1, 0);
-	                this.onScreenTime = Date.now();
-
-	                //this.onScreenInterval = window.setInterval(this.checkViewType.bind(this), this.onScreelThreshold);
-	            }
-	        },
-	        checkViewType : function(evt) {
-	        	/*
-	        	console.info('portlet.content/unitVideosTabViewClass::checkViewType');
-	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
-	            var currentScreenTime = Date.now();
-
-	            if (currentScreenStatus != this.onScreenStatus) {
-	            	// RESET THE COUNTER AND STATUS
-	            	this.onScreenTime = Date.now();
-	                this.onScreenStatus = currentScreenStatus;
-
-	                this.onScreenInterval = window.setTimeout(this.changeViewType.bind(this), this.onScreelThreshold + 150);
-	            }
-	            */
-	        },
-	        changeViewType : function(evt) {
-	        	/*
-	        	console.info('portlet.content/unitVideosTabViewClass::changeViewType');
-	            var currentScreenStatus = this.$el.isOnScreen(1, 0);
-	            var currentScreenTime = Date.now();
-
-	            if ((currentScreenStatus == this.onScreenStatus) && (currentScreenTime - this.onScreenTime >= this.onScreelThreshold)) {
-	            	// THE SAME STATUS MORE THAN 5 SECONDS, IF THE VIEW  
-	            	if (currentScreenStatus && this.viewType == "float") {
-	            		// SWITCH TO NORMAL
-						this.$el.removeClass("pop-out");
-
-	                	// RESET THE COUNTER AND STATUS
-	                	this.viewType = "normal";
-	                	this.onScreenStatus = currentScreenStatus;
-	                	this.onScreenTime = Date.now();
-	            	} else if (!currentScreenStatus && this.viewType == "normal") {
-	            		// SWITCH TO FLOAT
-	            		this.$el.css({
-	            			height : this.$el.height() + "px",
-	            		});
-
-	            		this.$el.addClass("pop-out-start");
-	            		window.setTimeout(function() {
-	            			this.$el.removeClass("pop-out-start");
-							this.$el.addClass("pop-out");
-	            		}.bind(this), 550)
-	                	
-	                	// RESET THE COUNTER AND STATUS
-	                	this.viewType = "float";
-	                	this.onScreenStatus = currentScreenStatus;
-	                	this.onScreenTime = Date.now();
-	            	} else {
-	            	}
-	            } else {
-					// RESET THE COUNTER AND STATUS
-					if (currentScreenStatus != this.onScreenStatus) {
-						this.onScreenTime = Date.now();
-					}
-	                this.onScreenStatus = currentScreenStatus;
-	            }
-	            */
-	        },
-	        bindStartVideoEvents : function() {
-	            var self = this;
-	            //this.videoJS.play();
-	            this.currentProgress = parseFloat(this.videoModel.get("progress.factor"));
-
-	            if (_.isNaN(this.currentProgress)) {
-	                this.currentProgress = 0;
-	            }
-
-            	var progress = this.model.get("progress");
-				this.videoJS.on("loadedmetadata", function() {
-                    if (progress.factor < 1) {
-                    	var start = this.duration() * progress.factor;
-                    	this.currentTime(start - 5); 
-                    }
-				});
-
-                this.videoJS.on("timeupdate", this.updateProgress.bind(this));
-
-                this.videoJS.on("ended", function() {
-                    this.currentProgress = 1;
-                    var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
-                    progressModel.setAsViewed(this.videoModel, this.currentProgress);
-
-                    this.trigger("video:viewed");
-                }.bind(this));
-
-
-                this.videoJS.play();
-
-                // SETTING VOLUME 
-                this.videoJS.volume(0.5);
-
-	        },
-	        updateProgress : function() {
-                var currentProgress = this.videoJS.currentTime() / this.videoJS.duration();
-
-                if (currentProgress > this.currentProgress) {
-                    var progressDiff =  currentProgress - this.currentProgress;
-                    if (progressDiff > 0.03 ) {
-                        this.currentProgress = currentProgress;
-                        //this.videoModel.set("progress", this.currentProgress);
-                        var progressModel = new mod.models.content_progress(this.videoModel.get("progress"));
-                        progressModel.setAsViewed(this.videoModel, this.currentProgress);
-
-                    }
-                }
-    		},
-    		fullscreen : function() {
-				if (!_.isNull(this.videoJS)) {
-					this.videoJS.requestFullscreen();	
-				}
-    		},
-	        stopAndClose : function() {
-				if (!_.isNull(this.videoJS)) {
-					this.updateProgress()
-	                this.videoJS.dispose();
-	                this.videoJS = null;
-	                this.$el.hide();
-	            }
-	        }
 	    });
 		/*
 	    var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
@@ -1142,8 +1285,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			renderTabs : function() {
 				this.$(".widget-tabs-container a[data-toggle='tab']")
 					.on('shown.bs.tab', function (e) {
-						console.warn($(e.target).data('settingUpdate'));
-
 						var current_tab = $(e.target).data('settingUpdate');
 
 						this.model.set("content_current_tab", current_tab);
@@ -1172,14 +1313,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.onTabChange();
 			},
 			onTabChange : function() {
-				console.warn('onTabChange', this.activeTab)
 				if (this.activeTab == "program") {
 					this.activeView = null;
 					this.$(".content-widget-search-action-container").hide();
 
 				} else if (this.activeTab == "course") {
 					this.activeView = this.programCoursesTabView;
-					console.warn(this.activeView);
 					this.$(".content-widget-search-action-container").show();
 				} else if (this.activeTab == "unit") {
 					// ACTIVE TAB IS MESSAGE, SEARCH ON HIS DATATABLE
@@ -1374,33 +1513,40 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				return this.get('course');
 			},
-			getVideo : function() {
-				if (this.get('video')) {
-					return this.get('video');
+			getVideos : function() {
+				if (this.get('videos')) {
+					return this.get('videos');
 				}
 				
 				var contents = new mod.collections.contents(this.get("contents"));
 
+				this.set('videos', new mod.collections.contents(contents.getVideos()));
+				/*
 				var videos = contents.filter(function(model, index) {
 					return model.isVideo();
 				});
 
-				this.set('video', contents.getMainVideo(_.first(videos)));
+				*/
+				//this.set('video', contents.getMainVideo(_.first(videos)));
 
-				return this.get('video');
+				return this.get('videos');
 			},
 			getMaterials : function() {
 				if (this.get('materials')) {
 					return this.get('materials');
 				}
 
+				var contents = new mod.collections.contents(this.get("contents"));
+
+				this.set('materials', new mod.collections.contents(contents.getMaterials()));
+				/*
 				var filteredCollection = _.filter(this.get("contents"), function(model, index) {
 					var object = new mod.models.content(model);
 					return object.isMaterial();
 				});
 
 				this.set('materials', new mod.collections.contents(filteredCollection));
-
+				*/
 				return this.get('materials');
 			},
 			getExercises : function() {
@@ -1420,7 +1566,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				return this.contents['exercises'];
 			},
-
 			getTestExecutions : function() {
 				if (_.has(this.contents, 'executions')) {
 					return this.contents['executions'];
@@ -1523,8 +1668,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			getTotalPendingPrograms : function(programs) {
 				var progressPrograms = this.get("programs");
-
-				//console.warn(progressPrograms);
 
 				var total = programs.reduce(function(count, program) {
 				  var progress = _.findWhere(progressPrograms, {course_id : program.get("id")});
@@ -1643,6 +1786,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			this.trigger("next");
 		}
 	});
+
+
 
 	this.collections = {
 		programs : navigableCollection.extend({
@@ -1967,88 +2112,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		units : navigableCollection.extend({
 			model : this.models.unit,
 		}),
-		contents : navigableCollection.extend({
-			model : this.models.content,
-			getMainVideo : function(videoModel) {
-				var mainVideo = null;				
-				if (_.isUndefined(videoModel)) {
-					var filteredCollection = this.where({
-						content_type : "file"
-					});
-
-					var filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-						return model.isVideo();
-					});
-
-					if (_.size(filteredVideoCollection) === 0) {
-						filteredCollection = this.where({
-							content_type : "url"
-						});
-						filteredVideoCollection = _.filter(filteredCollection, function(model, index) {
-							return model.isRemoteVideo();
-						});
-						if (_.size(filteredVideoCollection) === 0) {
-							return false;
-						}
-					}
-
-					var mainVideo = _.findWhere(filteredVideoCollection, {main : "1"});
-
-					if (_.size(mainVideo) === 0) {
-						mainVideo = _.first(filteredVideoCollection);
-					}
-				} else {
-					mainVideo = videoModel;
-				}
-				
-
-				// GET CHILDS OBJECTS
-				var poster = _.map(
-					this.where({
-						parent_id : mainVideo.get("id"),
-						content_type : "poster"
-					}),
-					function(model, index) {
-						return model.toJSON();
-					}
-				);
-
-				if (_.size(poster) > 0) {
-					mainVideo.set("poster", _.first(poster));
-				}
-
-				// GET CHILDS OBJECTS
-				var childs = _.map(
-					this.where({
-						parent_id : mainVideo.get("id"),
-						content_type : "subtitle"
-					}),
-					function(model, index) {
-						return model.toJSON();
-					}
-				);
-
-				if (_.size(childs) > 0) {
-					// GET SUBTITLES CHILDS
-					var subchilds = _.map(
-						this.where({
-							parent_id : childs[0].id
-						}),
-						function(model, index) {
-							return model.toJSON();
-						}
-					);
-					mainVideo.set("childs", _.union(childs, subchilds));
-				} else {
-					mainVideo.set("childs", childs);
-				}
-
-				return mainVideo;
-			},
-			getMaterials : function() {
-
-			}
-		}),
+		contents : app.module("models").content().collection,
 		executions : navigableCollection.extend({
 			model : this.models.execution,
 		}),

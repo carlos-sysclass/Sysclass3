@@ -23,6 +23,8 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
         
 		if (in_array('content.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 
+            $this->putScript("plugins/screenfull/screenfull");
+
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);
 
@@ -51,6 +53,20 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             }
 
             $tree = Program::getUserContentTree($this->user, true);
+            //echo "<pre>";
+            //print_r($tree);
+            //exit;
+
+            //print_r(\ResourceBundle::getLocales(''));
+            /*
+            var_dump(setlocale(LC_ALL, 0));
+            var_dump(strftime('%B'));
+            var_dump(setlocale(LC_ALL, 'en_US.utf8'));
+            //var_dump(\Locale::setDefault('en_US'));
+            //var_dump(\Locale::getDefault());
+            */
+            //var_dump(strftime('%B'));
+            //exit;
 
             if ($userPointers) {
 

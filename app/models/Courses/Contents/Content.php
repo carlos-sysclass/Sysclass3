@@ -18,7 +18,7 @@ class Content extends Model
         
 		$this->hasManyToMany(
             "id",
-            "Sysclass\Models\Courses\Contents\ContentFile",
+            "Sysclass\Models\Content\ContentFile",
             "content_id", "file_id",
             "Sysclass\Models\Dropbox\File",
             "id",
@@ -29,7 +29,7 @@ class Content extends Model
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
         $files = $this->getFiles(array(
-            'conditions' => 'Sysclass\Models\Courses\Contents\ContentFile.active = 1',
+            'conditions' => 'Sysclass\Models\Content\ContentFile.active = 1',
             'limit' => '1'
         ));
         $item['file'] = $files->getFirst()->toArray();

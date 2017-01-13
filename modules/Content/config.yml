@@ -1,0 +1,23 @@
+#######################
+# GENERAL DEFINITIONS #
+#######################
+models:
+  me: 
+    class: Sysclass\Models\Content\UnitContent
+    exportMethod: ["toFullArray", ["Files"]]
+    acl:
+      create:
+        resource: lessons
+        action: edit
+      edit:
+        resource: lessons
+      delete:
+        resource: lessons
+        action: edit
+  file:
+    class: Sysclass\Models\Content\ContentFile
+    acl:
+      create:
+        resource: lessons
+        action: edit
+    #exportMethod: ["toFullArray", ["Files"]]
