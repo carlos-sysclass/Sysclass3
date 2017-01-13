@@ -707,6 +707,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        mainVideoIndex : 0,
 	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	        menuDropdownItemTemplate : _.template($("#tab_unit_video-multi-video-dropdown-item-template").html(), null, {variable: "model"}).bind(this),
 	        onScreenStatus : true,
 	        onScreenTime : null,
 	        onScreelThreshold : 0.5 * 1000, // 5 seconds
@@ -862,6 +863,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 							}.bind(this));
 	                	}.bind(this));
 
+
 	                	if (_.size(this.videoJSIds) > 1) { 
 	                		this.manualChangeViewType("pip");
 	                		//this.childContainer.addClass("popupcontent-multiple");
@@ -875,6 +877,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    	this.videoJS[index].ready(this.bindStartVideoEvents.bind(this, videoDomID, index));
 	                	}.bind(this));
 
+	                	this.renderMultiVideoMenu();
+
 	                    mod.videoJS = this.videoJS;
 	                }
 
@@ -885,6 +889,25 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	                //this.onScreenInterval = window.setInterval(this.checkViewType.bind(this), this.onScreelThreshold);
 	            }
+	        },
+	        renderMultiVideoMenu : function() {
+	        	if (_.size(this.videoJS) > 1) {
+	        		var menuDropdown = this.$(".change-view-type-dropdown");
+	        		menuDropdown.removeClass("hidden");
+	        		menuDropdown.find(".dynamic-view-item").remove();
+
+	        		_.each(this.videoJS, function(video, index) {
+	        			menuDropdown
+	        				.find(".dropdown-menu")
+	        				.append(
+	        					this.menuDropdownItemTemplate({
+		        					index : index
+		        				})
+		        			);
+	        		}.bind(this));
+	        	} else {
+	        		this.$(".change-view-type-dropdown").addClass("hidden");
+	        	}
 	        },
 	        changeViewType : function(evt) {
 	        	var target = $(evt.currentTarget);
