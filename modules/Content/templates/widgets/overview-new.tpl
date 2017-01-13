@@ -172,14 +172,14 @@ _before_init_functions.push(function() {
                               </a>
                             </li>
                             <li class="separator"></li>
-                            <li>
-                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only1">
+                            <li class="dynamic-view">
+                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only" data-view-index="0">
                                 Video 1
                               </a>
                             </li>
-                            <li>
-                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only2" to-pip-action">
-                                Video 1
+                            <li class="dynamic-view">
+                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only" data-view-index="1">
+                                Video 2
                               </a>
                             </li>
 

@@ -694,70 +694,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 
-	    var contentPopoutViewClass = baseChangeModelViewClass.extend({
-	        videoJS : null,
-	        //nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
-	        //template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	    var unitVideoTabViewClass = baseChangeModelViewClass.extend({
 	        events : {
 	        	"click .popupcontent-header a.minimize-action" : "minimize",
 	        	"click .popupcontent-header a.fullscreen-action" : "fullscreen",
 	        	"click .popupcontent-header a.close-action" : "stopAndClose",
 	        	"click .popupcontent-header a.change-view-type" : "changeViewType"
 	        },
-	        makeDraggable : function() {
-	        	this.$el.removeClass("hidden");
-	            this.$el.addClass("pop-out");
-
-				this.$(".popupcontent").draggable({
-				    start: function( event, ui ) {
-				        $(this).css({
-				            top: "auto",
-				            bottom: "auto",
-				            left: "auto",
-				            right: "auto"
-				        });
-				    },
-				    //cursor: "crosshair",
-				    handle: ".popupcontent-header"
-				});
-	        },
-	        minimize : function() {
-	        	// RESIZE TO MINIMUM VALUE
-				this.$(".popupcontent").toggleClass("popup-minimized");
-				if (this.$(".popupcontent").hasClass("popup-minimized")) {
-					this.$(".popupcontent .minimize-action .fa")
-						.removeClass("fa-compress")
-						.addClass("fa-expand");
-
-					this.$(".popupcontent").draggable("destroy");
-				} else {
-					this.$(".popupcontent .minimize-action .fa")
-						.removeClass("fa-expand")
-						.addClass("fa-compress");
-
-					this.$(".popupcontent").removeAttr("style");
-					this.makeDraggable();
-				}
-	        },
-	        fullscreen : function() {
-
-	        },
-	        stopAndClose : function() {
-                this.$el.hide();
-	        },
-	        disableView : function() {
-	            //$("[href='#tab_unit_video'").hide();
-	            //$("[href='#tab_unit_materials']").tab('show');
-	            this.$el.hide();
-	        },
-	        enableView : function() {
-	            //$("[href='#tab_unit_video'").show().tab('show');
-	            this.$el.show();
-	        }
-	    });
-
-
-	    var unitVideoTabViewClass = contentPopoutViewClass.extend({
 	        videoJS : [],
 	        videoJSIds : [],
 	        videoJSReady : [],
@@ -779,6 +722,44 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.childContainerSelector = false;
 				}
+	        },
+	        makeDraggable : function() {
+	        	this.$el.removeClass("hidden");
+	            this.$el.addClass("pop-out");
+
+				this.$(".popupcontent").draggable({
+				    start: function( event, ui ) {
+				        $(this).css({
+				            top: "auto",
+				            bottom: "auto",
+				            left: "auto",
+				            right: "auto"
+				        });
+				    },
+				    //cursor: "crosshair",
+				    handle: ".popupcontent-header"
+				});
+	        },
+	        addSecVideoDraggable : function() {
+				this.$(".sec-video").draggable({
+				    start: function( event, ui ) {
+				        $(this).css({
+				            top: "auto",
+				            bottom: "auto",
+				            left: "auto",
+				            right: "auto",
+				            cursor: "move"
+				        });
+				    },
+				    cursor: "move",
+				    //handle: ".popupcontent-header"
+				});
+	        },
+	        removeSecVideoDraggable : function() {
+	        	this.$(".sec-video").removeAttr('style');
+	        	if (this.$(".sec-video").data('draggable')) {
+	        		this.$(".sec-video").draggable('destroy');	
+	        	}
 	        },
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
@@ -911,8 +892,42 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	        	this.childContainer.removeClass("popupcontent-sbs");
 	        	this.childContainer.removeClass("popupcontent-pip");
+	        	this.childContainer.removeClass("popupcontent-only");
 
 	        	this.childContainer.addClass("popupcontent-" + type);
+
+	        	if (type == "pip") {
+	        		this.addSecVideoDraggable();
+	        	} else {
+	        		this.removeSecVideoDraggable();
+	        	}
+
+	        	console.warn(type);
+
+	        	if (type == "only") {
+	        		var videoIndex = target.data("view-index");
+	        		_.each(this.videoJS, function(video, index) {
+	        			if (videoIndex == index) {
+	        				$(video.el()).removeClass("hidden");
+	        				// ADD CONTROLS
+	        				video.controls(true);
+
+	        			} else {
+	        				$(video.el()).addClass("hidden");
+
+	        			}
+	        		});
+	        	} else {
+	        		_.each(this.videoJS, function(video, index) {
+	        			$(video.el()).removeClass("hidden");
+	        			// REMOVE CONTROLS FROM SEC VIDEOS
+	        			if (index != this.mainVideoIndex) {
+	        				video.controls(false);
+	        			}
+	        		}.bind(this));
+	        	}
+
+
 
 	        	this.$(".view-type").html(target.html());
 	        },
@@ -1023,6 +1038,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 }
     		},
+	        minimize : function() {
+	        	// RESIZE TO MINIMUM VALUE
+				this.$(".popupcontent").toggleClass("popup-minimized");
+				if (this.$(".popupcontent").hasClass("popup-minimized")) {
+					this.$(".popupcontent .minimize-action .fa")
+						.removeClass("fa-compress")
+						.addClass("fa-expand");
+
+					this.$(".popupcontent").draggable("destroy");
+				} else {
+					this.$(".popupcontent .minimize-action .fa")
+						.removeClass("fa-expand")
+						.addClass("fa-compress");
+
+					this.$(".popupcontent").removeAttr("style");
+					this.makeDraggable();
+				}
+	        },
     		fullscreen : function() {
 				if (!_.isNull(this.videoJS[this.mainVideoIndex])) {
 					this.videoJS[this.mainVideoIndex].requestFullscreen();	
@@ -1040,7 +1073,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                 	this.videoJSIds = [];
                 	this.$el.hide();
                 }
+	        },
+	        disableView : function() {
+	            //$("[href='#tab_unit_video'").hide();
+	            //$("[href='#tab_unit_materials']").tab('show');
+	            this.$el.hide();
+	        },
+	        enableView : function() {
+	            //$("[href='#tab_unit_video'").show().tab('show');
+	            this.$el.show();
 	        }
+
 	    });
 		/*
 	    var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
