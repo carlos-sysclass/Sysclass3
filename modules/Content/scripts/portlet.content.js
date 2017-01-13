@@ -694,15 +694,35 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 
-	    var contentPopoutViewClass = baseChangeModelViewClass.extend({
-	        videoJS : null,
-	        //nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
-	        //template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	    var unitVideoTabViewClass = baseChangeModelViewClass.extend({
 	        events : {
 	        	"click .popupcontent-header a.minimize-action" : "minimize",
 	        	"click .popupcontent-header a.fullscreen-action" : "fullscreen",
 	        	"click .popupcontent-header a.close-action" : "stopAndClose",
 	        	"click .popupcontent-header a.change-view-type" : "changeViewType"
+	        },
+	        videoJS : [],
+	        videoJSIds : [],
+	        videoJSReady : [],
+	        mainVideoIndex : 0,
+	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
+	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
+	        menuDropdownItemTemplate : _.template($("#tab_unit_video-multi-video-dropdown-item-template").html(), null, {variable: "model"}).bind(this),
+	        onScreenStatus : true,
+	        onScreenTime : null,
+	        onScreelThreshold : 0.5 * 1000, // 5 seconds
+	        scrollEvent : null,
+	        viewType : "normal", // normal or float
+	        childContainerSelector : false,
+	        childContainer : false,
+	        initialize: function(opt) {
+	            console.info('portlet.content/unitVideosTabViewClass::initialize');
+
+				if (_.has(opt, 'childContainer')) {
+					this.childContainerSelector = opt.childContainer;
+				} else {
+					this.childContainerSelector = false;
+				}
 	        },
 	        makeDraggable : function() {
 	        	this.$el.removeClass("hidden");
@@ -721,64 +741,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				    handle: ".popupcontent-header"
 				});
 	        },
-	        minimize : function() {
-	        	// RESIZE TO MINIMUM VALUE
-				this.$(".popupcontent").toggleClass("popup-minimized");
-				if (this.$(".popupcontent").hasClass("popup-minimized")) {
-					this.$(".popupcontent .minimize-action .fa")
-						.removeClass("fa-compress")
-						.addClass("fa-expand");
-
-					this.$(".popupcontent").draggable("destroy");
-				} else {
-					this.$(".popupcontent .minimize-action .fa")
-						.removeClass("fa-expand")
-						.addClass("fa-compress");
-
-					this.$(".popupcontent").removeAttr("style");
-					this.makeDraggable();
-				}
+	        addSecVideoDraggable : function() {
+				this.$(".sec-video").draggable({
+				    start: function( event, ui ) {
+				        $(this).css({
+				            top: "auto",
+				            bottom: "auto",
+				            left: "auto",
+				            right: "auto",
+				            cursor: "move"
+				        });
+				    },
+				    cursor: "move",
+				    //handle: ".popupcontent-header"
+				});
 	        },
-	        fullscreen : function() {
-
-	        },
-	        stopAndClose : function() {
-                this.$el.hide();
-	        },
-	        disableView : function() {
-	            //$("[href='#tab_unit_video'").hide();
-	            //$("[href='#tab_unit_materials']").tab('show');
-	            this.$el.hide();
-	        },
-	        enableView : function() {
-	            //$("[href='#tab_unit_video'").show().tab('show');
-	            this.$el.show();
-	        }
-	    });
-
-
-	    var unitVideoTabViewClass = contentPopoutViewClass.extend({
-	        videoJS : [],
-	        videoJSIds : [],
-	        videoJSReady : [],
-	        mainVideoIndex : 0,
-	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
-	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
-	        onScreenStatus : true,
-	        onScreenTime : null,
-	        onScreelThreshold : 0.5 * 1000, // 5 seconds
-	        scrollEvent : null,
-	        viewType : "normal", // normal or float
-	        childContainerSelector : false,
-	        childContainer : false,
-	        initialize: function(opt) {
-	            console.info('portlet.content/unitVideosTabViewClass::initialize');
-
-				if (_.has(opt, 'childContainer')) {
-					this.childContainerSelector = opt.childContainer;
-				} else {
-					this.childContainerSelector = false;
-				}
+	        removeSecVideoDraggable : function() {
+	        	this.$(".sec-video").removeAttr('style');
+	        	if (this.$(".sec-video").data('draggable')) {
+	        		this.$(".sec-video").draggable('destroy');	
+	        	}
 	        },
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
@@ -881,6 +863,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 							}.bind(this));
 	                	}.bind(this));
 
+
 	                	if (_.size(this.videoJSIds) > 1) { 
 	                		this.manualChangeViewType("pip");
 	                		//this.childContainer.addClass("popupcontent-multiple");
@@ -894,6 +877,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    	this.videoJS[index].ready(this.bindStartVideoEvents.bind(this, videoDomID, index));
 	                	}.bind(this));
 
+	                	this.renderMultiVideoMenu();
+
 	                    mod.videoJS = this.videoJS;
 	                }
 
@@ -905,14 +890,67 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                //this.onScreenInterval = window.setInterval(this.checkViewType.bind(this), this.onScreelThreshold);
 	            }
 	        },
+	        renderMultiVideoMenu : function() {
+	        	if (_.size(this.videoJS) > 1) {
+	        		var menuDropdown = this.$(".change-view-type-dropdown");
+	        		menuDropdown.removeClass("hidden");
+	        		menuDropdown.find(".dynamic-view-item").remove();
+
+	        		_.each(this.videoJS, function(video, index) {
+	        			menuDropdown
+	        				.find(".dropdown-menu")
+	        				.append(
+	        					this.menuDropdownItemTemplate({
+		        					index : index
+		        				})
+		        			);
+	        		}.bind(this));
+	        	} else {
+	        		this.$(".change-view-type-dropdown").addClass("hidden");
+	        	}
+	        },
 	        changeViewType : function(evt) {
 	        	var target = $(evt.currentTarget);
 	        	var type = target.data("view-type");
 
 	        	this.childContainer.removeClass("popupcontent-sbs");
 	        	this.childContainer.removeClass("popupcontent-pip");
+	        	this.childContainer.removeClass("popupcontent-only");
 
 	        	this.childContainer.addClass("popupcontent-" + type);
+
+	        	if (type == "pip") {
+	        		this.addSecVideoDraggable();
+	        	} else {
+	        		this.removeSecVideoDraggable();
+	        	}
+
+	        	console.warn(type);
+
+	        	if (type == "only") {
+	        		var videoIndex = target.data("view-index");
+	        		_.each(this.videoJS, function(video, index) {
+	        			if (videoIndex == index) {
+	        				$(video.el()).removeClass("hidden");
+	        				// ADD CONTROLS
+	        				video.controls(true);
+
+	        			} else {
+	        				$(video.el()).addClass("hidden");
+
+	        			}
+	        		});
+	        	} else {
+	        		_.each(this.videoJS, function(video, index) {
+	        			$(video.el()).removeClass("hidden");
+	        			// REMOVE CONTROLS FROM SEC VIDEOS
+	        			if (index != this.mainVideoIndex) {
+	        				video.controls(false);
+	        			}
+	        		}.bind(this));
+	        	}
+
+
 
 	        	this.$(".view-type").html(target.html());
 	        },
@@ -1023,6 +1061,24 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 }
     		},
+	        minimize : function() {
+	        	// RESIZE TO MINIMUM VALUE
+				this.$(".popupcontent").toggleClass("popup-minimized");
+				if (this.$(".popupcontent").hasClass("popup-minimized")) {
+					this.$(".popupcontent .minimize-action .fa")
+						.removeClass("fa-compress")
+						.addClass("fa-expand");
+
+					this.$(".popupcontent").draggable("destroy");
+				} else {
+					this.$(".popupcontent .minimize-action .fa")
+						.removeClass("fa-expand")
+						.addClass("fa-compress");
+
+					this.$(".popupcontent").removeAttr("style");
+					this.makeDraggable();
+				}
+	        },
     		fullscreen : function() {
 				if (!_.isNull(this.videoJS[this.mainVideoIndex])) {
 					this.videoJS[this.mainVideoIndex].requestFullscreen();	
@@ -1040,7 +1096,17 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                 	this.videoJSIds = [];
                 	this.$el.hide();
                 }
+	        },
+	        disableView : function() {
+	            //$("[href='#tab_unit_video'").hide();
+	            //$("[href='#tab_unit_materials']").tab('show');
+	            this.$el.hide();
+	        },
+	        enableView : function() {
+	            //$("[href='#tab_unit_video'").show().tab('show');
+	            this.$el.show();
 	        }
+
 	    });
 		/*
 	    var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({

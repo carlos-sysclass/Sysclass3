@@ -23,6 +23,8 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
         
 		if (in_array('content.overview', $widgetsIndexes) && $currentUser = $this->getCurrentUser(true)) {
 
+            $this->putScript("plugins/screenfull/screenfull");
+
             // LOAD THE CURRENT USER UNIT, OR COURSE, OR PROGRAM, AND LOAD ALL ON WIDGET
             $settings = $this->module("settings")->getSettings(true);
 
