@@ -850,6 +850,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				                            	muteToggle : (videoIndex == this.mainVideoIndex),
 				                            },
 				                            */
+				                            "controlBar" : {
+				                            	"fullscreenToggle" : false
+				                            },
 				                            "bigPlayButton" : (videoIndex == this.mainVideoIndex),
 				                            "techOrder" : [
 				                                'html5', 'flash'
@@ -1027,6 +1030,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            } else {
 	            	this.videoJS[index].muted(true); // mute the volume
 	            }
+
+	            if (screenfull.enabled) {
+					$(document).on(screenfull.raw.fullscreenchange, function() {
+						var popup = this.$('.popupcontent');
+						if (_.isNull(screenfull.element)) {
+    						popup.removeClass("popupcontent-fullscreen");
+  						} else {
+    						popup.addClass("popupcontent-fullscreen");
+  						}
+  					}.bind(this));
+  				}
+
 				//this.videoJS[index].play();
                 // SETTING VOLUME
 	        },
@@ -1080,9 +1095,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 	        },
     		fullscreen : function() {
+    			/*
 				if (!_.isNull(this.videoJS[this.mainVideoIndex])) {
 					this.videoJS[this.mainVideoIndex].requestFullscreen();	
 				}
+				*/
+				var popup = $('.popupcontent');
+				//popup.addClass("popupcontent-fullscreen");
+				screenfull.request(popup[0]);
     		},
 	        stopAndClose : function() {
                 if (!_.isEmpty(this.videoJS)) {
