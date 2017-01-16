@@ -22,7 +22,8 @@ $loader->registerDirs(
         __DIR__ . "/../../helper/", // CAN BE REMOVED AFTER ALL UPDATE
         PLICOLIB_PATH . "controller/", // CAN BE REMOVED AFTER ALL UPDATE
         PLICOLIB_PATH . "inc/", // CAN BE REMOVED AFTER ALL UPDATE
-        PLICOLIB_PATH . "" // CAN BE REMOVED AFTER ALL UPDATE
+        PLICOLIB_PATH . "", // CAN BE REMOVED AFTER ALL UPDATE
+        __DIR__ . '/../../vendor/sabre/uri/lib/'
     )
 );
 
@@ -40,7 +41,12 @@ $loader->registerNamespaces(array(
     "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/',
     'Phalcon\Script' => __DIR__ . '/../../vendor/phalcon/devtools/scripts/Phalcon/Script',
     "Dompdf" => __DIR__ . '/../../vendor/dompdf/dompdf/src/',
-    "FontLib" => __DIR__ . '/../../vendor/phenx/php-font-lib/src/FontLib/'
+    "FontLib" => __DIR__ . '/../../vendor/phenx/php-font-lib/src/FontLib/',
+    //'Sabre\DAV' => __DIR__ . '/../../vendor/sabre/dav/lib/DAV/',
+    //'Sabre\HTTP' => __DIR__ . '/../../vendor/sabre/http/lib/',
+    //'Sabre\Event' => __DIR__ . '/../../vendor/sabre/event/lib/',
+    //'Sabre\Xml' => __DIR__ . '/../../vendor/sabre/xml/lib/',
+    
     /*
     "Ratchet" => __DIR__ . '/../../vendor/cboden/ratchet/src/Ratchet/',
     "React\EventLoop" => __DIR__ . '/../../vendor/react/event-loop/',
@@ -68,6 +74,9 @@ $loader-> registerClasses(array(
 
 // Register autoloader
 $loader->register();
+
+// LOAD THE COMPOSER AUTOLOADER
+include __DIR__ . '/../../vendor/autoload.php';
 
 
 $plico = PlicoLib::instance(__DIR__ . "/../");

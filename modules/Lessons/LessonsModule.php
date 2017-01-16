@@ -115,7 +115,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                 $self->putModuleScript("blocks.lessons.content");
 
-                $languages = Language::find()->toArray();
+                $languages = Language::find([
+                    'conditions' => 'active = 1'
+                ])->toArray();
 
 
                 $userLanguageCode = $this->translate->getSource();
@@ -135,6 +137,8 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
+
+                $self->putBlock("storage.library");
 
                 return true;
             },
@@ -376,6 +380,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemsData = $itemsCollection->getItems();
 
         } elseif ($model == "lesson-content") {
+            // MAKE THE SYSTEM CALL THE PARENT (NEW) ROUTE
+            return call_user_func_array([parent, 'getItemsRequest'], func_get_args());
+
             $modelRoute = "lessons/content";
             $optionsRoute = "edit";
 

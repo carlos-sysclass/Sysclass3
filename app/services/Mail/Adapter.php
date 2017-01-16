@@ -39,7 +39,7 @@ class Adapter extends Component
 	  	return $this->_mailer;
     }
 
-    public function send($to, $subject, $template, $render = false, $vars = null) {
+    public function send($to, $subject, $template, $render = false, $vars = null, $reply_to = null) {
   		//Settings
   		$mailSettings = $this->environment->mail;
   		if ($render) {
@@ -59,6 +59,10 @@ class Adapter extends Component
     				$mailSettings->from_email => $mailSettings->from_name
     			))
     			->setBody($template, 'text/html');
+
+      if (!is_null($reply_to)) {
+        $this->getMessage()->setReplyTo($reply_to);
+      }
 
   	  	// Create the Mailer using your created Transport
 

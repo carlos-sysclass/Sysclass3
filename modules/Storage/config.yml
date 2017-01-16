@@ -1,0 +1,41 @@
+blocks:
+  storage.library:
+    context:
+      table:
+        block_id: "storage-library-table"
+        ajax_source: "/module/storage/items/library/datatable"
+        datatable_fields:
+        - mData: type
+          label: Type
+
+        - mData: url
+          label: Name
+
+        - mData: last_modified
+          sType: unix-moment-datetime
+          sClass: text-center hidden-xs
+          label: Last Modified
+
+        - mData: mime_type
+          sType: unix-moment-datetime
+          sClass: text-center hidden-xs
+          label: Type
+
+        - mData: options
+          sType: table-options
+          sClass: text-center
+          label: Actions
+models:
+  library: 
+    class: Sysclass\Services\Storage\Library
+    #listMethod: ["find", ["deleted = 0 AND user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
+    #bindVars : 
+    #  user_id: !user id
+    #exportMethod: ["toFullArray", ["Groups", "Users"]]
+    acl:
+      view:
+        resource: storage
+        action: library
+  source:
+    class: Sysclass\Services\Storage\Library
+    findMethod : findSourcesById

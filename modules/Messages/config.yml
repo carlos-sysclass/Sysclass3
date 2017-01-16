@@ -22,7 +22,7 @@ widgets:
 models:
   me: 
     class: Sysclass\Models\Messages\Message
-    listMethod: ["find", ["deleted = 0 AND user_id = :user_id: AND reply_to IS NULL"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
+    listMethod: ["find", ["deleted = 0 AND reply_to IS NULL AND (user_id = :user_id: OR id IN (SELECT ur.message_id FROM Sysclass\\Models\\Messages\\UserReceiver ur WHERE ur.user_id = :user_id:))"]] # [METHOD, BASE_CONDITIONS, BIND_VARS]
     bindVars : 
       user_id: !user id
     exportMethod: ["toFullArray", ["Groups", "Users"]]
