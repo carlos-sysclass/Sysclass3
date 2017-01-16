@@ -878,3 +878,20 @@ margin:0 4px 0 0;
   font-size: 16px !important;
   font-weight: 100;
 }
+
+.content-container .popupcontent-fullscreen .vjs-auto-height {
+  height: 100vh !important;
+}
+
+.content-container .popupcontent-fullscreen .popupcontent-pip .sec-video {
+  width: 16vw !important;
+  height: 9vw !important;
+}
+
+.content-container .popupcontent-fullscreen .popupcontent-sbs .vjs-auto-height {
+
+}
+
+.content-container .popupcontent-fullscreen .fullscreen-action {
+  display: none;
+}
