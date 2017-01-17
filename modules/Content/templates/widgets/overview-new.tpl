@@ -158,7 +158,7 @@ _before_init_functions.push(function() {
                           <a href="javascript: void(0);" data-toggle="dropdown" class="btn btn-link hidden-xs dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-video-camera"></i>
                             <span class="view-type"></span>
-                            <span class="caret"></span>
+                            <i class="fa fa-caret-down"></i>
                           </a>
                           <ul class="pull-right dropdown-menu">
                             <li>

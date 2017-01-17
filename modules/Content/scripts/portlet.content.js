@@ -729,6 +729,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            this.$el.addClass("pop-out");
 
 				this.$(".popupcontent").draggable({
+					containment: "body",
+					scroll : false,
 				    start: function( event, ui ) {
 				        $(this).css({
 				            top: "auto",
@@ -743,9 +745,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        },
 	        addSecVideoDraggable : function() {
 				this.$(".sec-video").draggable({
+					containment: "parent",
+					scroll : false,
 				    start: function( event, ui ) {
 				        $(this).css({
-				            top: "auto",
+				            top: "40px",
 				            bottom: "auto",
 				            left: "auto",
 				            right: "auto",
@@ -759,7 +763,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        removeSecVideoDraggable : function() {
 	        	this.$(".sec-video").removeAttr('style');
 	        	if (this.$(".sec-video").data('draggable')) {
-	        		this.$(".sec-video").draggable('destroy');	
+	        		this.$(".sec-video").draggable('destroy');
 	        	}
 	        },
 	        render : function(e) {
@@ -928,7 +932,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        		this.removeSecVideoDraggable();
 	        	}
 
-	        	console.warn(type);
+	        	//console.warn(type);
 
 	        	if (type == "only") {
 	        		var videoIndex = target.data("view-index");
@@ -937,10 +941,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        				$(video.el()).removeClass("hidden");
 	        				// ADD CONTROLS
 	        				video.controls(true);
-
 	        			} else {
 	        				$(video.el()).addClass("hidden");
-
 	        			}
 	        		});
 	        	} else {
