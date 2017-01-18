@@ -5,6 +5,17 @@ _before_init_functions.push(function() {
 });
 </script>
 
+<style>
+/*
+.video-js .vjs-text-track-display {
+  font-size: 1.4em;
+  text-align: center;
+  margin-bottom: 0.1em;
+  background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.50);
+}
+*/
+</style>
+
 <div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -1148,7 +1159,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
   <% console.warn("_ MODEL", model) %>
-    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
+    <video crossorigin="anonymous" id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
       width="auto"  height="auto"
       <% if (_.isNull(model.poster)) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"
