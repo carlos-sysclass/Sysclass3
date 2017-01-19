@@ -240,7 +240,7 @@ class Nextcloud extends Component implements IStorage
                 $fileEntry = [
                     'id' => $id,
                     'text'  => $path_info['basename'],
-                    //'url' => $url,
+                    'url' => $url,
                     //'full_url' => str_replace($this->webdav_path . "/", "", $item['href']),
                     'last_modified' => $item['propstat']['prop']['getlastmodified'],
                     //'mime_type' => $item['propstat']['prop']['getcontenttype'],
@@ -278,6 +278,10 @@ class Nextcloud extends Component implements IStorage
         }
 
         return $treeStruct;
+    }
+
+    public function addFile($storage_path, $file_path, $is_stream = false) {
+        
     }
 
 

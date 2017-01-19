@@ -5,17 +5,6 @@ _before_init_functions.push(function() {
 });
 </script>
 
-<style>
-/*
-.video-js .vjs-text-track-display {
-  font-size: 1.4em;
-  text-align: center;
-  margin-bottom: 0.1em;
-  background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.50);
-}
-*/
-</style>
-
 <div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -29,7 +18,6 @@ _before_init_functions.push(function() {
                     <span class="singular hidden-xs">{translateToken value="Program"}</span>
                     <span class="plural hidden-xs">{translateToken value="Programs"}</span>
                   </span>
-                  
                 </a>
               </li>
               <li role="presentation">

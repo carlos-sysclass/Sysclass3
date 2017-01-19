@@ -116,6 +116,8 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                     // Do some action
                 }.bind(this));
 
+                this.initializeFileUpload();
+
                 /*
                 this.$("#library_tree").on("changed.jstree", function (e, data) {
                     console.log(data.selected);
@@ -154,6 +156,113 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                 }.bind(this));
                 */
             },
+            initializeFileTree : function() {
+
+            },
+            initializeFileUpload : function() {
+                console.info('dialogs.storage.library/storageLibraryDialogViewClass::initializeFileUpload');
+                // CREATE FILEUPLOAD WIDGET
+
+                console.warn(this.$el);
+
+                var fileInput = this.$(".fileupload-widget");
+
+                var baseUrl = fileInput.data("fileuploadUrl");
+
+                console.warn(baseUrl);
+
+                var self = this;
+
+                var opt = {
+                    url: baseUrl,
+                    //paramName : fileInput.attr("name"),
+                    dataType: 'json',
+                    singleFileUploads: true,
+                    autoUpload : true,
+                    maxChunkSize: 1*1024*1024,
+                    //maxChunkSize: 100*1024,
+                    bitrateInterval : 1000,
+                    disableImageResize: true,
+                    //filesContainer: this.$("div.content-timeline-items"),
+                    /*
+                    uploadTemplate: function (o) {
+                        return fileUploadItem.data("upload-contexts");
+                    },
+                    
+                    done: function() {
+                        console.warn('done', arguments);
+                    },
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                        );
+                    }
+                    */
+                };
+
+                fileInput.fileupload(opt)
+                    /*
+                    .bind('fileuploadsubmit', function(e, data) {
+
+                    })
+                    */
+                    .bind('fileuploadadd', function (e, data) {
+                        console.warn('fileuploadadd', this, arguments);
+
+                        var directories = self.getDirectories();
+
+                        console.warn(directories);
+
+                        if (_.size(directories) > 0) {
+                            data.formData = _.first(directories);
+                            return true;
+                        }
+                        return false;
+                    })
+                    .bind('fileuploadfail', function (e, data) {
+                        console.warn('fileuploadfail', arguments);
+                        // CALL AJAX TO REMOVE THE FILE, IF EXISTS
+
+                    })
+                    .bind('fileuploaddone', function (e, data) {
+                        console.warn('fileuploaddone', arguments);  
+                        // CALL AJAX TO MOVE TO REAL STORAGE
+                        var files = data.result.files
+
+                        console.warn(files);
+
+                        for(var i in files) {
+                            var file = files[i];
+                            $.ajax({
+                                url : "/module/storage/move",
+                                data : file,
+                                method : "POST",
+                                success : function() {
+                                    console.warn(arguments);
+                                }
+
+                            });
+                        }
+                        /*
+                        
+                        */
+                    })
+                    .bind('fileuploadalways', function (e, data) {
+                        //console.warn("fileuploadalways");
+                    })
+                    .bind('fileuploadprogress', function (e, data) {
+                        console.warn('fileuploadprogress', arguments);
+                        /*
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        data.context.find(".load-total").html(self.formatFileSize(data.loaded));
+                        data.context.find(".load-bitrate").html(self.formatFileSize(data._progress.bitrate / 8));
+                        data.context.find(".load-percent").html(progress);
+                        */
+                    });
+                
+            },
             setPath : function(path) {
                 this.$("#library_tree").jstree(true).settings.core.data = { 
                     "url": "/module/storage/items/library/default/" + JSON.stringify({
@@ -168,6 +277,30 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                     .putVar('path', path)
                     .setUrl("/module/storage/items/library/datatable/" + ;
                 */
+            },
+            getDirectories : function() {
+                var selected = this.$("#library_tree").jstree(true).get_selected(true);
+                var modelClass = app.module("models").dropbox().item;
+                var result = [];
+
+                for (var i in selected) {
+                  var node = selected[i];
+
+                  console.warn(node.original.type);
+                  
+                  if (node.original.type != 'dir') {
+                    continue;
+                  }
+
+
+
+
+                  result.push({
+                    filename : node.original.url,
+                    storage : node.original.storage
+                  });
+                }
+                return result;
             },
             getValues : function() {
                 var selected = this.$("#library_tree").jstree(true).get_selected(true);
