@@ -281,7 +281,44 @@ class Nextcloud extends Component implements IStorage
     }
 
     public function addFile($storage_path, $file_path, $is_stream = false) {
-        
+        if (file_exists($file_path)) {
+            $request = new CurlRequest();
+
+            $stream = fopen($file_path, 'rb');
+
+            $file_parts = explode("/", $storage_path);
+            $file_parts = array_map('rawurlencode', $file_parts);
+            $storage_path = implode("/", $file_parts);
+
+            $response = $request->setInfo([
+                CURLOPT_URL => $this->webdav_url . "/" . $storage_path,
+                CURLOPT_INFILE => $stream,
+                CURLOPT_INFILESIZE => filesize($file_path),
+                CURLOPT_UPLOAD => 1,
+                CURLOPT_RETURNTRANSFER => true,
+                //CURLOPT_ENCODING => "",
+                //CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_VERBOSE => 1,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_PUT => 1,
+                CURLOPT_HTTPHEADER => [
+                    "OCS-APIREQUEST: true",
+                    "Authorization: Basic " . base64_encode($this->user . ":" . $this->password), 
+                    //"Cache-Control: no-cache",
+                    //"Content-Type: application/x-www-form-urlencoded"
+                ]
+            ])->send();
+
+            //echo "<pre>";
+            //var_dump($response);
+
+            if (in_array($response['info']['http_code'], [201,204])) {
+                // SUCCESS
+                return true;
+            }
+        }
+        return false;
     }
 
 

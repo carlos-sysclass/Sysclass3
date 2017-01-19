@@ -4,6 +4,8 @@
  * @filesource
  */
 namespace Sysclass\Modules\Storage;
+
+use Sysclass\Services\Storage\Adapter as StorageAdapter;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -54,14 +56,24 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
         'storage' => string 'remote_storage' (length=14)
         'directory' => string 'library/' (length=8)
         */
-         $filewrapper = $this->helper("file/wrapper");
+        $filewrapper = $this->helper("file/wrapper");
 
         $storage_path = $postData['directory'] . $postData['filename'];
+
         $file_path = $filewrapper->getPublicPath($postData['full_path']);
 
         $storage = StorageAdapter::getInstance($postData['storage']);
 
         $status = $storage->addFile($storage_path, $file_path);
+
+        if ($status) {
+            $this->response->setJsonContent($this->createAdviseResponse(
+                $this->translate->translate("Success"),
+                "success"
+            ));
+        } else {
+            $this->response->setJsonContent($this->invalidRequestError());
+        }
     }
 
     /**

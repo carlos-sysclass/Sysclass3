@@ -213,8 +213,6 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
 
                         var directories = self.getDirectories();
 
-                        console.warn(directories);
-
                         if (_.size(directories) > 0) {
                             data.formData = _.first(directories);
                             return true;
@@ -241,6 +239,8 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                                 method : "POST",
                                 success : function() {
                                     console.warn(arguments);
+
+                                    self.$("#library_tree").jstree(true).refresh();
                                 }
 
                             });
