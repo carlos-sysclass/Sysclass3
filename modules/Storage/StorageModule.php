@@ -44,10 +44,10 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
     /**
      * [add a description]
      *
-     * @Post("/move")
+     * @Post("/send")
      * @allow(resource=dropbox, action=edit)
      */
-    public function moveToStorageRequest() {
+    public function sendToStorageRequest() {
         $postData = $this->request->getPost();
         /*
         array (size=4)
@@ -67,6 +67,7 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
         $status = $storage->addFile($storage_path, $file_path);
 
         if ($status) {
+            @unlink($file_path);
             $this->response->setJsonContent($this->createAdviseResponse(
                 $this->translate->translate("Success"),
                 "success"
@@ -75,6 +76,38 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
             $this->response->setJsonContent($this->invalidRequestError());
         }
     }
+
+    /**
+     * [add a description]
+     *
+     * @Post("/move")
+     * @allow(resource=dropbox, action=edit)
+     */
+    public function moveRequest() {
+        $postData = $this->request->getPost();
+
+        try {
+
+            $storage = StorageAdapter::getInstance($postData['storage']);
+
+            $from_path = $postData['from'] . $postData['name'];
+            $dest_path = $postData['dest'] . $postData['name'];
+
+            $status = $storage->moveFile($from_path, $dest_path);
+
+            if ($status) {
+                $this->response->setJsonContent($this->createAdviseResponse(
+                    $this->translate->translate("Success"),
+                    "success"
+                ));
+            } else {
+                $this->response->setJsonContent($this->invalidRequestError());
+            }
+        } catch(\Sysclass\Services\Storage\Exception $e) {
+            $this->response->setJsonContent($this->invalidRequestError());
+        }
+    }
+
 
     /**
      * [add a description]

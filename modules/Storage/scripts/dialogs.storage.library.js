@@ -75,7 +75,10 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
 
                 var context = app.getResource("storage-library-table_context");
 
-
+                this.initializeFileTree();
+                this.initializeFileUpload();
+            },
+            initializeFileTree : function() {
                 this.$("#library_tree").jstree({
                     "core" : {
                         /*
@@ -84,7 +87,15 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         },
                         */ 
                         // so that create works
-                        "check_callback" : true,
+                        "check_callback" : function(operation, node, parent, position) {
+                            //console.warn(operation, node, parent, position);
+                            
+                            switch (operation) {
+                                case "move_node" :
+                                    return $.inArray(this.get_type(node), this.get_rules(parent).valid_children) != -1;
+                            }
+                            return false;
+                        },
                         /*
                         'data' : {
                             'url' : function (node) {
@@ -94,15 +105,24 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         */
                     },
                     "types" : {
+                        //"valid_children" : [ "root" ],
+                        "root" : {
+                            "valid_children" : [ "dir", "file" ],
+                            "icon" : "fa fa-home icon-state-primary icon-lg"
+                        },
                         "dir" : {
+                            "valid_children" : ["dir", "file"],
                             "icon" : "fa fa-folder icon-state-warning icon-lg"
                         },
                         "file" : {
-                            "icon" : "fa fa-file icon-state-warning icon-lg"
+                            "valid_children" : "none",
+                            "max_children" : 0,
+                            "max_depth" : 0,
+                            "icon" : "fa fa-file icon-state-default icon-lg"
                         }
                     },
                     //"state" : { "key" : "demo3" },
-                    "plugins" : [ "types" ]
+                    "plugins" : [ "types", "dnd" ]
                 });
 
                 this.$("#library_tree").on("dblclick.jstree", function (e, data) {
@@ -116,47 +136,33 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                     // Do some action
                 }.bind(this));
 
-                this.initializeFileUpload();
 
-                /*
-                this.$("#library_tree").on("changed.jstree", function (e, data) {
-                    console.log(data.selected);
-                    //console.warn(this.get_node(data.selected))
+                this.$("#library_tree").on("move_node.jstree", function (e, data) {
+                    // MOVE FROM data.old_parent TO data.parent
+                    var filename = data.node;
+
+                    var from = $(this).jstree(true).get_node(data.old_parent);
+                    var dest = $(this).jstree(true).get_node(data.parent);
+
+                    var data = {
+                        name : filename.original.text,
+                        from : from.original.url,
+                        dest : dest.original.url,
+                        storage : filename.original.storage
+                    };
+
+                    $.ajax({
+                        url : "/module/storage/move",
+                        data : data,
+                        method : "POST",
+                        success : function() {
+                            self.$("#library_tree").jstree(true).refresh();
+                        }
+
+                    });
+                    
+
                 });
-                */
-
-                /*
-                this.tableView = new storageLibraryTableViewClass({
-                    el : "#view-storage-library-table",
-                    datatable : {
-                        //"sAjaxSource": "{$T_MODULE_CONTEXT.ajax_source}",
-                        "aoColumns": context.datatable_fields
-                    }
-                });
-                */
-
-                //console.warn(context);
-
-                /*
-                this.tableView
-                    .putVar('enroll_id', this.model.get("enroll_id"))
-                    .putVar('course_id', this.model.get("course_id"))
-                    .setUrl("/module/enroll/datasource/users/datatable/" + JSON.stringify({
-                        enroll_id : this.model.get("enroll_id"),
-                        course_id : this.model.get("course_id"),
-                    }) + "?block");
-                */
-                /*
-
-                this.on("complete:save", this.close.bind(this));
-                this.on("complete:save", function() {
-                    app.trigger("sent.messages", [
-                        this.model
-                    ]);
-                }.bind(this));
-                */
-            },
-            initializeFileTree : function() {
 
             },
             initializeFileUpload : function() {
@@ -229,12 +235,12 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         // CALL AJAX TO MOVE TO REAL STORAGE
                         var files = data.result.files
 
-                        console.warn(files);
+                        //console.warn(files);
 
                         for(var i in files) {
                             var file = files[i];
                             $.ajax({
-                                url : "/module/storage/move",
+                                url : "/module/storage/send",
                                 data : file,
                                 method : "POST",
                                 success : function() {

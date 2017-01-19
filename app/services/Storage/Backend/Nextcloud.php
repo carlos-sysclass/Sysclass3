@@ -273,6 +273,7 @@ class Nextcloud extends Component implements IStorage
             } else {
                 $fileEntry['parent'] = "#";
                 $fileEntry['state'] = "opened";
+                $fileEntry['type'] = 'root';
             }
             $treeStruct[] = $fileEntry;
         }
@@ -317,6 +318,42 @@ class Nextcloud extends Component implements IStorage
                 // SUCCESS
                 return true;
             }
+        }
+        return false;
+    }
+
+    public function moveFile($from_path, $dest_path) {
+        $request = new CurlRequest();
+
+        $file_parts = explode("/", $from_path);
+        $file_parts = array_map('rawurlencode', $file_parts);
+        $from_path = implode("/", $file_parts);
+
+        $file_parts = explode("/", $dest_path);
+        $file_parts = array_map('rawurlencode', $file_parts);
+        $dest_path = implode("/", $file_parts);
+
+        $response = $request->setInfo([
+            CURLOPT_URL => $this->webdav_url . "/" . $from_path,
+            CURLOPT_RETURNTRANSFER => true,
+            //CURLOPT_ENCODING => "",
+            //CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_VERBOSE => 1,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'MOVE',
+            CURLOPT_HTTPHEADER => [
+                "OCS-APIREQUEST: true",
+                "Authorization: Basic " . base64_encode($this->user . ":" . $this->password), 
+                "Destination: " . $this->webdav_url . "/" . $dest_path,
+                //"Cache-Control: no-cache",
+                //"Content-Type: application/x-www-form-urlencoded"
+            ]
+        ])->send();
+
+        if (in_array($response['info']['http_code'], [201])) {
+            // SUCCESS
+            return true;
         }
         return false;
     }
