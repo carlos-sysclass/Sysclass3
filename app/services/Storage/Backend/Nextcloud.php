@@ -358,6 +358,39 @@ class Nextcloud extends Component implements IStorage
         return false;
     }
 
+    public function deleteFile($path) {
+        $request = new CurlRequest();
+
+        $file_parts = explode("/", $path);
+        $file_parts = array_map('rawurlencode', $file_parts);
+        $path = implode("/", $file_parts);
+
+        $response = $request->setInfo([
+            CURLOPT_URL => $this->webdav_url . "/" . $path,
+            CURLOPT_RETURNTRANSFER => true,
+            //CURLOPT_ENCODING => "",
+            //CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_VERBOSE => 1,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => [
+                "OCS-APIREQUEST: true",
+                "Authorization: Basic " . base64_encode($this->user . ":" . $this->password), 
+                //"Cache-Control: no-cache",
+                //"Content-Type: application/x-www-form-urlencoded"
+            ]
+        ])->send();
+
+        if (in_array($response['info']['http_code'], [204])) {
+            // SUCCESS
+            return true;
+        }
+        return false;
+    }
+
+    
+
 
 
     public function getFilestream(File $struct) {

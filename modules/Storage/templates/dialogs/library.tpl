@@ -15,11 +15,21 @@
                     <i class="fa fa-language"></i>
                     {translateToken value="Files"}
 
+                    <a href="javascript: void(0);" class="btn btn-sm btn-danger pull-right deletefile-action" >
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        {translateToken value="Delete"}
+                    </a>
+                    
                     <span class="btn btn-sm btn-primary pull-right fileupload-widget fileinput-button" data-fileupload-url="/module/storage/upload">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         <span>{translateToken value="File"}</span>
                         <input type="file" id="file-upload" name="files[]">
                     </span>
+
+
+
+
+
                 </h5>
                 <div id="library_tree"></div>
             </div>

@@ -65,7 +65,8 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
         var dialogViewClass = app.module("views").dialogViewClass;
         var storageLibraryDialogViewClass = dialogViewClass.extend({
             events: {
-                "click .select-action" : "selectAction"
+                "click .select-action" : "selectAction",
+                "click .deletefile-action" : "deleteAction"
             },
             initialize: function() {
                 console.info('dialogs.storage.library/storageLibraryDialogViewClass::initialize');
@@ -298,9 +299,6 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                     continue;
                   }
 
-
-
-
                   result.push({
                     filename : node.original.url,
                     storage : node.original.storage
@@ -336,6 +334,38 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
             },
             selectAction : function() {
                 this.trigger("selected.dialog", this.getValues());
+            },
+            deleteAction : function() {
+                var jstree = this.$("#library_tree").jstree(true);
+                var selected = jstree.get_selected(true);
+
+                for (var i in selected) {
+                    var node = selected[i];
+                    console.warn(jstree.get_type(node));
+                    console.warn($.inArray(jstree.get_type(node), ["file", "dir"]));
+                    if ($.inArray(jstree.get_type(node), ["file", "dir"]) !== -1) {
+                        console.warn('was');
+
+                        var data = {
+                            name : node.original.text,
+                            url : node.original.url,
+                            storage : node.original.storage
+                        };
+
+                        $.ajax({
+                            url : "/module/storage/delete",
+                            data : data,
+                            method : "POST",
+                            success : function() {
+                                self.$("#library_tree").jstree(true).refresh();
+                            }
+
+                        });
+                    }
+                }
+
+                //console.warn(selected);
+                //this.trigger("selected.dialog", this.getValues());
             }
 
             /*

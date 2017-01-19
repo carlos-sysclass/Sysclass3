@@ -108,6 +108,35 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
         }
     }
 
+    /**
+     * [add a description]
+     *
+     * @Post("/delete")
+     * @allow(resource=dropbox, action=edit)
+     */
+    public function deleteRequest() {
+        $postData = $this->request->getPost();
+
+        try {
+
+            $storage = StorageAdapter::getInstance($postData['storage']);
+            $path = $postData['url'];
+            $status = $storage->deleteFile($path);
+
+            if ($status) {
+                $this->response->setJsonContent($this->createAdviseResponse(
+                    $this->translate->translate("Success"),
+                    "success"
+                ));
+            } else {
+                $this->response->setJsonContent($this->invalidRequestError());
+            }
+        } catch(\Sysclass\Services\Storage\Exception $e) {
+            $this->response->setJsonContent($this->invalidRequestError());
+        }
+    }
+
+
 
     /**
      * [add a description]
