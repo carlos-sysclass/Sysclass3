@@ -78,13 +78,13 @@ class Bing extends Component {
             //Decode the returned JSON string.
             $objResponse = json_decode($strResponse);
             if ($objResponse->error){
-                throw new Exception($objResponse->error_description);
+                throw new \Exception($objResponse->error_description);
             }
             $this->_responseToken = $objResponse;
             return $this;
             //return ->access_token;
-        } catch (Exception $e) {
-            echo "Exception-".$e->getMessage();
+        } catch (\Exception $e) {
+            return $this;
         }
     }
     public function getToken() {
@@ -94,43 +94,48 @@ class Bing extends Component {
     public function translateText($text, $from, $to) {
         $accessToken = $this->token()->getToken();
 
-        $url = sprintf(
-            "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=%s&from=%s&to=%s&appId=&contentType=text/html",
-            urlencode($text), $from, $to
-        );
+        if ($accessToken) {
 
-        //Initialize the Curl Session.
-        $ch = curl_init();
-        //Set the Curl url.
-        curl_setopt ($ch, CURLOPT_URL, $url);
-        //Set the HTTP HEADER Fields.
-        curl_setopt ($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer " . $accessToken, "Content-type: text/xml"));
-        //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
-        curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, False);
-        //if($postData) {
-            //Set HTTP POST Request.
-        //    curl_setopt($ch, CURLOPT_POST, TRUE);
-            //Set data to POST in HTTP "POST" Operation.
-        //    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        //}
-        //Execute the  cURL session.
-        $curlResponse = curl_exec($ch);
+            $url = sprintf(
+                "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=%s&from=%s&to=%s&appId=&contentType=text/html",
+                urlencode($text), $from, $to
+            );
 
-        $xmlObj = simplexml_load_string($curlResponse);
-        foreach((array)$xmlObj[0] as $val){
-            $translatedStr = $val;
+            //Initialize the Curl Session.
+            $ch = curl_init();
+            //Set the Curl url.
+            curl_setopt ($ch, CURLOPT_URL, $url);
+            //Set the HTTP HEADER Fields.
+            curl_setopt ($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer " . $accessToken, "Content-type: text/xml"));
+            //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
+            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, False);
+            //if($postData) {
+                //Set HTTP POST Request.
+            //    curl_setopt($ch, CURLOPT_POST, TRUE);
+                //Set data to POST in HTTP "POST" Operation.
+            //    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            //}
+            //Execute the  cURL session.
+            $curlResponse = curl_exec($ch);
+
+            $xmlObj = simplexml_load_string($curlResponse);
+            foreach((array)$xmlObj[0] as $val){
+                $translatedStr = $val;
+            }
+            //Get the Error Code returned by Curl.
+            $curlErrno = curl_errno($ch);
+            if ($curlErrno) {
+                $curlError = curl_error($ch);
+                throw new Exception($curlError);
+            }
+            //Close a cURL session.
+            curl_close($ch);
+            return $translatedStr;
+        } else {
+            return $text;
         }
-        //Get the Error Code returned by Curl.
-        $curlErrno = curl_errno($ch);
-        if ($curlErrno) {
-            $curlError = curl_error($ch);
-            throw new Exception($curlError);
-        }
-        //Close a cURL session.
-        curl_close($ch);
-        return $translatedStr;
     }
 
     public function translateArray($texts, $from, $to) {

@@ -106,9 +106,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         return array(
             'lessons.content' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $self->putComponent("jquery-file-upload-image");
-                $self->putComponent("jquery-file-upload-video");
-                $self->putComponent("jquery-file-upload-audio");
+//                $self->putComponent("jquery-file-upload-image");
+//                $self->putComponent("jquery-file-upload-video");
+//                $self->putComponent("jquery-file-upload-audio");
                 $self->putComponent("bootstrap-confirmation");
 
                 $self->putModuleScript("translate", "models.translate");

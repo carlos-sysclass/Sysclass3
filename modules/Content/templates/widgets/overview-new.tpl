@@ -18,7 +18,6 @@ _before_init_functions.push(function() {
                     <span class="singular hidden-xs">{translateToken value="Program"}</span>
                     <span class="plural hidden-xs">{translateToken value="Programs"}</span>
                   </span>
-                  
                 </a>
               </li>
               <li role="presentation">
@@ -1148,7 +1147,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
   <% console.warn("_ MODEL", model) %>
-    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
+    <video crossorigin="anonymous" id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
       width="auto"  height="auto"
       <% if (_.isNull(model.poster)) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"

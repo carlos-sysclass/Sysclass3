@@ -860,8 +860,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				                            "bigPlayButton" : (videoIndex == this.mainVideoIndex),
 				                            "techOrder" : [
 				                                'html5', 'flash'
-				                            ]
-				                        }, function() {
+				                            ],
+				                            html5: {
+				                            	nativeTextTracks: false
+				                            }
+			                            }, function() {
 				                        });
 				                    }
 				                    videoIndex++;
@@ -984,14 +987,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		            if (_.every(this.videoJSReady)) {
 		            	_.each(this.videoJS, function(video) {
+		            		
+							video.textTrackSettings.setValues({
+  								backgroundOpacity : "0.5"
+							});
+
 		            		video.play();
 		            	});
 		            	
 		            }
 				}.bind(this, index));
-
-
-
 
 
 				this.videoJS[index].volume(0.5);
