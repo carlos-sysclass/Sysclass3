@@ -281,6 +281,8 @@ class Nextcloud extends Component implements IStorage
         return $treeStruct;
     }
 
+
+
     public function addFile($storage_path, $file_path, $is_stream = false) {
         if (file_exists($file_path)) {
             $request = new CurlRequest();
@@ -299,7 +301,7 @@ class Nextcloud extends Component implements IStorage
                 CURLOPT_RETURNTRANSFER => true,
                 //CURLOPT_ENCODING => "",
                 //CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
+                CURLOPT_TIMEOUT => 0,
                 CURLOPT_VERBOSE => 1,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_PUT => 1,
@@ -311,8 +313,9 @@ class Nextcloud extends Component implements IStorage
                 ]
             ])->send();
 
-            //echo "<pre>";
-            //var_dump($response);
+            echo "<pre>";
+            var_dump($response);
+            exit;
 
             if (in_array($response['info']['http_code'], [201,204])) {
                 // SUCCESS
@@ -320,6 +323,38 @@ class Nextcloud extends Component implements IStorage
             }
         }
         return false;
+    }
+
+    public function addFolder($path) {
+        $request = new CurlRequest();
+
+        $file_parts = explode("/", $path);
+        $file_parts = array_map('rawurlencode', $file_parts);
+        $path = implode("/", $file_parts);
+
+        $response = $request->setInfo([
+            CURLOPT_URL => $this->webdav_url . "/" . $path,
+            CURLOPT_RETURNTRANSFER => true,
+            //CURLOPT_ENCODING => "",
+            //CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_VERBOSE => 1,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'MKCOL',
+            CURLOPT_HTTPHEADER => [
+                "OCS-APIREQUEST: true",
+                "Authorization: Basic " . base64_encode($this->user . ":" . $this->password), 
+                //"Cache-Control: no-cache",
+                //"Content-Type: application/x-www-form-urlencoded"
+            ]
+        ])->send();
+
+        if (in_array($response['info']['http_code'], [201])) {
+            // SUCCESS
+            return true;
+        }
+        return false;
+
     }
 
     public function moveFile($from_path, $dest_path) {

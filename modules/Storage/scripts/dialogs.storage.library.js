@@ -78,8 +78,10 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
 
                 this.initializeFileTree();
                 this.initializeFileUpload();
+                this.initializeEditable();
             },
             initializeFileTree : function() {
+                var self = this;
                 this.$("#library_tree").jstree({
                     "core" : {
                         /*
@@ -89,21 +91,33 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         */ 
                         // so that create works
                         "check_callback" : function(operation, node, parent, position) {
-                            //console.warn(operation, node, parent, position);
-                            
                             switch (operation) {
-                                case "move_node" :
+                                case "create_node" : {
+                                    var directories = self.getDirectories();
+
+                                    if (_.size(directories) == 0) {
+                                        return false;
+                                    }
+
+                                    var new_folder = node.text;
+
+                                    for(var i in parent.children) {
+                                        var childId = parent.children[i];
+
+                                        var child = this.get_node(childId);
+
+                                        if (child.text.toLowerCase() == new_folder.toLowerCase()) {
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                }
+                                case "move_node" : {
                                     return $.inArray(this.get_type(node), this.get_rules(parent).valid_children) != -1;
+                                }
                             }
                             return false;
                         },
-                        /*
-                        'data' : {
-                            'url' : function (node) {
-                              return '/module/storage/items/library';
-                            }
-                        }
-                        */
                     },
                     "types" : {
                         //"valid_children" : [ "root" ],
@@ -127,16 +141,35 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                 });
 
                 this.$("#library_tree").on("dblclick.jstree", function (e, data) {
-                    //console.warn($(this).jstree(true).get_node(e.target));
                     var values = this.getValues();
                     if (_.size(values) > 0) {
                         this.trigger("selected.dialog", values);
                     }
-                    //var node = $(event.target).closest("li");
-                    //var data = node.data("jstree");
-                    // Do some action
                 }.bind(this));
 
+
+                this.$("#library_tree").on("create_node.jstree", function (e, data) {
+                    // MOVE FROM data.old_parent TO data.parent
+                    var folder = data.node;
+
+                    var dest = $(this).jstree(true).get_node(data.parent);
+                   
+                    var data = {
+                        name : folder.original.text,
+                        parent : dest.original.url,
+                        storage : dest.original.storage
+                    };
+
+                    $.ajax({
+                        url : "/module/storage/folder",
+                        data : data,
+                        method : "POST",
+                        success : function() {
+                            self.$("#library_tree").jstree(true).refresh();
+                        }
+
+                    });
+                });
 
                 this.$("#library_tree").on("move_node.jstree", function (e, data) {
                     // MOVE FROM data.old_parent TO data.parent
@@ -159,84 +192,93 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         success : function() {
                             self.$("#library_tree").jstree(true).refresh();
                         }
-
                     });
-                    
-
                 });
 
+                this.$("#library_tree").on("refresh.jstree", this.toggleActions.bind(this));
+                this.$("#library_tree").on("select_node.jstree", this.toggleActions.bind(this));
+                this.$("#library_tree").on("deselect_node.jstree", this.toggleActions.bind(this));
+            },
+            toggleActions : function() {
+                var api = this.$("#library_tree").jstree(true);
+                var selected = api.get_selected(true);
+
+
+                if (_.size(selected) == 0) {
+                    this.$(".editable-me").addClass("disabled").editable("disable")
+                    this.$(".fileupload-widget").addClass("disabled").fileupload('disable');  
+                    this.$(".deletefile-action").addClass("disabled").attr("disabled", "disabled");
+                } else if (_.size(selected) > 1) {
+                    this.$(".editable-me").addClass("disabled").editable("disable")
+                    this.$(".fileupload-widget").addClass("disabled").fileupload('disable');
+                    this.$(".deletefile-action").removeClass("disabled").removeAttr("disabled", "disabled");
+                } else {
+                    this.$(".editable-me").removeClass("disabled").editable("enable")
+                    this.$(".fileupload-widget").removeClass("disabled").fileupload('enable');  
+                    this.$(".deletefile-action").removeClass("disabled").removeAttr("disabled");
+                }
+
+                for (var i in selected) {
+                    var item = selected[i];
+
+                    if (item.type == "root") {
+                        this.$(".deletefile-action").attr("disabled", "disabled");
+                        break;
+                    }
+                }
             },
             initializeFileUpload : function() {
                 console.info('dialogs.storage.library/storageLibraryDialogViewClass::initializeFileUpload');
                 // CREATE FILEUPLOAD WIDGET
 
-                console.warn(this.$el);
-
                 var fileInput = this.$(".fileupload-widget");
 
                 var baseUrl = fileInput.data("fileuploadUrl");
-
-                console.warn(baseUrl);
 
                 var self = this;
 
                 var opt = {
                     url: baseUrl,
-                    //paramName : fileInput.attr("name"),
                     dataType: 'json',
                     singleFileUploads: true,
                     autoUpload : true,
                     maxChunkSize: 1*1024*1024,
-                    //maxChunkSize: 100*1024,
                     bitrateInterval : 1000,
                     disableImageResize: true,
-                    //filesContainer: this.$("div.content-timeline-items"),
-                    /*
-                    uploadTemplate: function (o) {
-                        return fileUploadItem.data("upload-contexts");
-                    },
-                    
-                    done: function() {
-                        console.warn('done', arguments);
-                    },
-                    progressall: function (e, data) {
-                        var progress = parseInt(data.loaded / data.total * 100, 10);
-                        $('#progress .progress-bar').css(
-                            'width',
-                            progress + '%'
-                        );
-                    }
-                    */
                 };
 
                 fileInput.fileupload(opt)
-                    /*
-                    .bind('fileuploadsubmit', function(e, data) {
-
-                    })
-                    */
                     .bind('fileuploadadd', function (e, data) {
-                        console.warn('fileuploadadd', this, arguments);
+                        var api = self.$("#library_tree").jstree(true);
+                        var selected = api.get_selected(true);
 
-                        var directories = self.getDirectories();
+                        if (_.size(selected) == 1) {
+                            if ($.inArray(selected[0].type, ['dir', 'root'] !== -1)) {
+                                item = _.first(selected);
 
-                        if (_.size(directories) > 0) {
-                            data.formData = _.first(directories);
-                            return true;
+                                data.formData = {
+                                    filename : item.original.url,
+                                    storage : item.original.storage
+                                };
+
+                                self.$(".file-total").html(self.formatFileSize(data.files[0].size));
+
+                                self.startLoader();
+                                
+
+                                console.warn(data);
+                                return true;
+                            }
                         }
+                        console.warn(2);
                         return false;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        console.warn('fileuploadfail', arguments);
                         // CALL AJAX TO REMOVE THE FILE, IF EXISTS
-
                     })
                     .bind('fileuploaddone', function (e, data) {
-                        console.warn('fileuploaddone', arguments);  
                         // CALL AJAX TO MOVE TO REAL STORAGE
                         var files = data.result.files
-
-                        //console.warn(files);
 
                         for(var i in files) {
                             var file = files[i];
@@ -245,9 +287,10 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                                 data : file,
                                 method : "POST",
                                 success : function() {
-                                    console.warn(arguments);
+                                    self.finishLoader();
 
                                     self.$("#library_tree").jstree(true).refresh();
+
                                 }
 
                             });
@@ -257,18 +300,84 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         */
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         console.warn('fileuploadprogress', arguments);
-                        /*
+                        
                         var progress = parseInt(data.loaded / data.total * 100, 10);
-                        data.context.find(".load-total").html(self.formatFileSize(data.loaded));
-                        data.context.find(".load-bitrate").html(self.formatFileSize(data._progress.bitrate / 8));
-                        data.context.find(".load-percent").html(progress);
-                        */
+                        self.$(".load-total").html(self.formatFileSize(data.loaded));
+                        self.$(".load-bitrate").html(self.formatFileSize(data._progress.bitrate / 8));
+                        self.$(".load-percent").html(progress);
+
+                        self.$(".file-loader-progress .progress-bar").width(progress + "%");
                     });
+            },
+            startLoader : function() {
+               this.$(".loader-spinner")
+                    .removeClass("fa-check font-green")
+                    .addClass("fa-spinner fa-spin");
+                this.$(".file-loader-progress .progress-bar").width("0%");
+                this.$(".file-loader").show();
+            },
+            finishLoader : function() {
+                this.$(".loader-spinner")
+                    .removeClass("fa-spinner fa-spin")
+                    .addClass("fa-check font-green");
+                self.$(".file-loader").hide();
+            },
+
+            formatFileSize: function (bytes) {
+                if (typeof bytes !== 'number') {
+                    return '';
+                }
+                if (bytes >= (1024*1024*1024)) {
+                    return (bytes / (1024*1024*1024)).toFixed(2) + ' GB';
+                }
+                if (bytes >= (1024*1024)) {
+                    return (bytes / (1024*1024)).toFixed(2) + ' MB';
+                }
+                return (bytes / 1024).toFixed(2) + ' KB';
+            },
+            initializeEditable : function() {
+                var editableItem = this.$(".editable-me");
+
+                //if (this.opened) {
+                    /*
+                    window.setTimeout(function() {
+                        editableItem.editable('show');
+                    }, 350);
+                    */
+                //}
+
+                editableItem.editable("option", {
+                    display : false,
+                    autotext : "never",
+                    value: ""
+                });
+
+
                 
+
+                var self = this;
+                editableItem.on('shown', function(e, params) {
+                    $(this).editable("setValue", "");
+                });
+
+                editableItem.on('save', function(e, params) {
+
+                    var directories = self.getDirectories();
+
+                    if (_.size(directories) > 0) {
+                        var parent = _.first(directories);
+
+                        self.$("#library_tree").jstree(true).create_node(parent.node, {
+                            text: params.newValue,
+                            type: "dir"
+                        }, 'last');
+
+                        return true;
+                    }
+                });
             },
             setPath : function(path) {
                 this.$("#library_tree").jstree(true).settings.core.data = { 
@@ -293,13 +402,12 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                 for (var i in selected) {
                   var node = selected[i];
 
-                  console.warn(node.original.type);
-                  
                   if (node.original.type != 'dir') {
                     continue;
                   }
 
                   result.push({
+                    node : node,
                     filename : node.original.url,
                     storage : node.original.storage
                   });
@@ -341,10 +449,7 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
 
                 for (var i in selected) {
                     var node = selected[i];
-                    console.warn(jstree.get_type(node));
-                    console.warn($.inArray(jstree.get_type(node), ["file", "dir"]));
                     if ($.inArray(jstree.get_type(node), ["file", "dir"]) !== -1) {
-                        console.warn('was');
 
                         var data = {
                             name : node.original.text,
@@ -363,27 +468,11 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                         });
                     }
                 }
-
-                //console.warn(selected);
-                //this.trigger("selected.dialog", this.getValues());
             }
-
-            /*
-            open : function() {
-                this.$el.modal("show");
-            },
-            close : function() {
-                this.$el.modal("hide");
-                this.trigger("hide.dialog");
-            }
-            */
         });
 
-
-
         this.dialogView = new storageLibraryDialogViewClass({
-            el : "#dialogs-storage-library"/*,
-            model : new mod.models.message()*/
+            el : "#dialogs-storage-library"
         });
 
         // BIND TO DEFAULT CALLER

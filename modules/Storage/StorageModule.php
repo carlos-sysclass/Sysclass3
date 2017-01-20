@@ -26,10 +26,11 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
                 //$self->putComponent("jquery-file-upload-audio");
                 //$self->putComponent("bootstrap-confirmation");
 
-
                 $block_context = $self->getConfig("blocks\\storage.library\\context");
                 $self->putItem("storage_library_context", $block_context);
 
+                $self->putComponent("bootstrap-confirmation");
+                $self->putComponent("bootstrap-editable");
                 $self->putComponent("fileupload");
 
                 $self->putModuleScript("dialogs.storage.library");
@@ -62,18 +63,30 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
 
         $file_path = $filewrapper->getPublicPath($postData['full_path']);
 
-        $storage = StorageAdapter::getInstance($postData['storage']);
+        $filesize = filesize($file_path);
 
-        $status = $storage->addFile($storage_path, $file_path);
-
-        if ($status) {
-            @unlink($file_path);
+        if ($filesize > 2*1024*1024) { // IF GREATER THAN 2MB, SEND IN BACKGROUND
             $this->response->setJsonContent($this->createAdviseResponse(
-                $this->translate->translate("Success"),
+                $this->translate->translate("File received. You will notified when the file is avaliable"),
                 "success"
             ));
+
+            // SEND A EVENT TO SEND THE FILE TO THE CLOUD.
+
         } else {
-            $this->response->setJsonContent($this->invalidRequestError());
+            $storage = StorageAdapter::getInstance($postData['storage']);
+
+            $status = $storage->addFile($storage_path, $file_path);
+
+            if ($status) {
+                @unlink($file_path);
+                $this->response->setJsonContent($this->createAdviseResponse(
+                    $this->translate->translate("Success"),
+                    "success"
+                ));
+            } else {
+                $this->response->setJsonContent($this->invalidRequestError());
+            }
         }
     }
 
@@ -94,6 +107,34 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
             $dest_path = $postData['dest'] . $postData['name'];
 
             $status = $storage->moveFile($from_path, $dest_path);
+
+            if ($status) {
+                $this->response->setJsonContent($this->createAdviseResponse(
+                    $this->translate->translate("Success"),
+                    "success"
+                ));
+            } else {
+                $this->response->setJsonContent($this->invalidRequestError());
+            }
+        } catch(\Sysclass\Services\Storage\Exception $e) {
+            $this->response->setJsonContent($this->invalidRequestError());
+        }
+    }
+
+    /**
+     * [add a description]
+     *
+     * @Post("/folder")
+     * @allow(resource=dropbox, action=edit)
+     */
+    public function newFolderRequest() {
+        $postData = $this->request->getPost();
+
+        try {
+
+            $storage = StorageAdapter::getInstance($postData['storage']);
+            $path = $postData['parent'] . $postData['name'];
+            $status = $storage->addFolder($path);
 
             if ($status) {
                 $this->response->setJsonContent($this->createAdviseResponse(

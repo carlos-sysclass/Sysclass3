@@ -2735,3 +2735,25 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   background: #fff;
   border:1px solid #ccc;
 }
+
+.editable-click, 
+a.editable-click, 
+a.editable-click:hover {
+    border-bottom: none !important;
+}
+
+
+.file-loader {
+  border: 1px solid #ccc;
+  display: none;
+}
+
+.file-loader .file-loader-text {
+  color: #666;
+  font-size: 13px;
+  padding: 5px 8px 2px;
+}
+
+.file-loader .progress-mini {
+  height: 5px;
+}
