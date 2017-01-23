@@ -571,7 +571,7 @@ _before_init_functions.push(function() {
     <% if (!_.isUndefined(model.progress)) { %>
       <% if (model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
         </span>
       <% } else if (model.progress.factor > 0) { %>
         <span class="andamento">
@@ -579,7 +579,7 @@ _before_init_functions.push(function() {
         </span>
       <% } else { %>
         <span class="avalialbe">
-          <i class="fa fa-circle" aria-hidden="true"></i>
+          <i class="fa fa-square-o" aria-hidden="true"></i>
         </span>
       <% } %>
     <% } %>
@@ -632,7 +632,7 @@ _before_init_functions.push(function() {
     <td class="text-center">
     <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -645,7 +645,7 @@ _before_init_functions.push(function() {
     <% } else { %>
 
       <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle" aria-hidden="true"></i>
+        <i class="fa fa-square-o" aria-hidden="true"></i>
       </span>
     <% } %>
     </td>
@@ -773,7 +773,7 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -781,7 +781,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
   </td>
@@ -994,7 +994,7 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -1002,7 +1002,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
   </td>
@@ -1053,7 +1053,7 @@ _before_init_functions.push(function() {
     <% } else { %>
       <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
           {translateToken value="Completed"}
         </span>
       <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
@@ -1232,12 +1232,12 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
-        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
         {translateToken value="Viewed"}
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-square-o" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
