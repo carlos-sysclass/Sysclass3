@@ -565,7 +565,7 @@ h4.border-bottom {
 
 .ajax-loader {
     padding: 4px;
-    position: absolute;
+    position: fixed;
     text-decoration: none;
     top: 0;
     width: 100%;

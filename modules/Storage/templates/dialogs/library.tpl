@@ -53,9 +53,6 @@
 
                 <div id="library_tree"></div>
 
-
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default select-action">Select</button>

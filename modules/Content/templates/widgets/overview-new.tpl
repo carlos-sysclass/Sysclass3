@@ -5,6 +5,52 @@ _before_init_functions.push(function() {
 });
 </script>
 
+<style>
+/****** Style Star Rating Widget *****/
+
+.rating { 
+  text-align: center;
+  white-space: nowrap;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 3.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating-stars-loader {
+  margin-top: 15px;
+}
+.rating-stars-loader .fa.fa-spin { 
+  font-size: 2.25em !important;
+}
+
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+</style>
+
 <div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -571,7 +617,7 @@ _before_init_functions.push(function() {
     <% if (!_.isUndefined(model.progress)) { %>
       <% if (model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
         </span>
       <% } else if (model.progress.factor > 0) { %>
         <span class="andamento">
@@ -579,7 +625,7 @@ _before_init_functions.push(function() {
         </span>
       <% } else { %>
         <span class="avalialbe">
-          <i class="fa fa-circle" aria-hidden="true"></i>
+          <i class="fa fa-square-o" aria-hidden="true"></i>
         </span>
       <% } %>
     <% } %>
@@ -632,7 +678,7 @@ _before_init_functions.push(function() {
     <td class="text-center">
     <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -645,7 +691,7 @@ _before_init_functions.push(function() {
     <% } else { %>
 
       <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle" aria-hidden="true"></i>
+        <i class="fa fa-square-o" aria-hidden="true"></i>
       </span>
     <% } %>
     </td>
@@ -769,11 +815,11 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-   <!-- Status -->
+  <!-- Status -->
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -781,7 +827,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
   </td>
@@ -990,11 +1036,11 @@ _before_init_functions.push(function() {
 
 
 <script type="text/template" id="tab_courses_tests-item-template">
-   <!-- Status -->
+  <!-- Status -->
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -1002,7 +1048,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
   </td>
@@ -1053,7 +1099,7 @@ _before_init_functions.push(function() {
     <% } else { %>
       <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
           {translateToken value="Completed"}
         </span>
       <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
@@ -1136,8 +1182,6 @@ _before_init_functions.push(function() {
 </script>
 
 
-
-
 <!-- USED HERE AND IN CONTENT DIALOG -->
 <script type="text/template" id="tab_unit_video-nofound-template">
   <div class="alert alert-info">
@@ -1175,7 +1219,6 @@ _before_init_functions.push(function() {
       <% } %>
     </video>
 </script>
-
 <script type="text/template" id="tab_unit_video-multi-video-dropdown-item-template">
   <li class="dynamic-view-item">
     <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only" data-view-index="<%= model.index %>">
@@ -1184,9 +1227,51 @@ _before_init_functions.push(function() {
   </li>
 </script>
 
+<script type="text/template" id="tab_unit_video-rating-view">
+  <div class="rating-view">
+    <div class="row">
+      <div class="col-md-12" align="center">
+        <h3>Please rate this class</h3>
+      </div>
+    </div>
+    <div class="row rating-stars-container">
+      <div class="col-md-12 rating" align="center">
+        <input type="radio" id="star5" name="content-rating" value="5" />
+        <label class = "full" for="star5" title="Awesome - 5 stars"></label>
 
+        <input type="radio" id="star4" name="content-rating" value="4" />
+        <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
 
+        <input type="radio" id="star3" name="content-rating" value="3" />
+        <label class = "full" for="star3" title="Meh - 3 stars"></label>
 
+        <input type="radio" id="star2" name="content-rating" value="2" />
+        <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+
+        <input type="radio" id="star1" name="content-rating" value="1" />
+        <label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+      </div>
+    </div>
+    <div class="row rating-stars-loader hidden">
+      <div class="col-md-12" align="center">
+        <i class="fa fa-spin fa-circle-o-notch"></i>
+      </div>
+    </div>
+    <div class="row rating-stars-message hidden">
+      <div class="col-md-12" align="center">
+        <h4>Thank You!</h4>
+        
+      </div>
+    </div>
+    <div class="row rating-stars-text-container">
+      <div class="col-md-12" align="center">
+        <span class="rating-text">Awesome!</span>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!--
 <script type="text/template" id="tab_unit_materials-nofound-template">
   <tr>
     <td colspan="5">
@@ -1232,17 +1317,21 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
-        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
         {translateToken value="Viewed"}
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-square-o" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
   </td>
 </script>
+-->
+
+
+
 
 <!-- 
 <script type="text/template" id="tab_unit_exercises-nofound-template">
