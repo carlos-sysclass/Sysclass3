@@ -1231,25 +1231,25 @@ _before_init_functions.push(function() {
   <div class="rating-view">
     <div class="row">
       <div class="col-md-12" align="center">
-        <h3>Please rate this class</h3>
+        <h3>{translateToken value="Rate this unit"}</h3>
       </div>
     </div>
     <div class="row rating-stars-container">
       <div class="col-md-12 rating" align="center">
         <input type="radio" id="star5" name="content-rating" value="5" />
-        <label class = "full" for="star5" title="Awesome - 5 stars"></label>
+        <label class="full" for="star5" title=""></label>
 
         <input type="radio" id="star4" name="content-rating" value="4" />
-        <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+        <label class="full" for="star4" title=""></label>
 
         <input type="radio" id="star3" name="content-rating" value="3" />
-        <label class = "full" for="star3" title="Meh - 3 stars"></label>
+        <label class="full" for="star3" title=""></label>
 
         <input type="radio" id="star2" name="content-rating" value="2" />
-        <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+        <label class="full" for="star2" title=""></label>
 
         <input type="radio" id="star1" name="content-rating" value="1" />
-        <label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+        <label class="full" for="star1" title=""></label>
       </div>
     </div>
     <div class="row rating-stars-loader hidden">
@@ -1261,11 +1261,6 @@ _before_init_functions.push(function() {
       <div class="col-md-12" align="center">
         <h4>Thank You!</h4>
         
-      </div>
-    </div>
-    <div class="row rating-stars-text-container">
-      <div class="col-md-12" align="center">
-        <span class="rating-text">Awesome!</span>
       </div>
     </div>
   </div>
