@@ -677,7 +677,7 @@ margin:0 4px 0 0;
 
 .content-container .popupcontent .popupcontent-body {
   width: 100% !important;
-  transition: all 1s linear 0s;
+/*   transition: all 1s linear 0s; */
   max-height: 28vw;
 
 }
@@ -699,7 +699,7 @@ margin:0 4px 0 0;
     height: 7.18vw;
     left: 0;
     position: absolute;
-    top: 40px;
+    /* top: 40px; */
     width: 12.8vw !important;
 }
 
