@@ -116,7 +116,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
 
         return count($widgets) > 0 ? $widgets : false;
     }
-    protected function getDatatableItemOptions() {
+    protected function getDatatableItemOptions($model = "me") {
         if ($this->request->hasQuery('block')) {
             return array(
                 'view'  => array(
@@ -160,7 +160,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 )
             );
         } else {
-            return parent::getDatatableItemOptions();
+            return parent::getDatatableItemOptions($model);
         }
     }
 

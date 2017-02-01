@@ -14,7 +14,7 @@ use Sysclass\Models\Acl\Resource as AclResource;
  */
 class PermissionModule extends \SysclassModule
 {
-    protected function getDatatableItemOptions() {
+    protected function getDatatableItemOptions($model = "me") {
         // TODO: THINK ABOUT MOVING THIS TO config.yml
         if ($this->request->hasQuery('block')) {
         	return array(

@@ -1,13 +1,15 @@
 <?php
 namespace Sysclass\Models\Reports;
 
-use Phalcon\Mvc\Model;
+use Plico\Mvc\Model;
 
 class Report extends Model
 {
     public function initialize()
     {
         $this->setSource("mod_reports");
+
+        $this->belongsTo("datasource_id", "Sysclass\\Models\\Reports\\ReportDatasource", "name",  array('alias' => 'Datasource'));
     }
 
     public function mergeOptions($baseOptions) {
@@ -35,4 +37,22 @@ class Report extends Model
 
     }
 
+    public function afterFetch() {
+        $this->report_fields = json_decode($this->report_fields, true);
+        $this->filters = json_decode($this->filters, true);
+    }
+
+    public function afterSave() {
+        $this->report_fields = json_decode($this->report_fields, true);
+        $this->filters = json_decode($this->filters, true);
+    }
+
+    public function beforeValidation() {
+        if (!is_null($this->report_fields)) {
+            $this->report_fields = json_encode($this->report_fields);
+        }
+        if (!is_null($this->filters)) {
+            $this->filters = json_encode($this->filters);
+        }
+    }
 }

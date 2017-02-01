@@ -413,7 +413,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     }
     */
    
-    protected function getDatatableItemOptions() {
+    protected function getDatatableItemOptions($model = "me") {
 
         $model_info = $this->model_info['me'];
 

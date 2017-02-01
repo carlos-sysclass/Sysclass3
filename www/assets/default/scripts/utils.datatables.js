@@ -12,6 +12,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
         mod.tableViewClass = Backbone.View.extend({
         	_vars : {},
+        	_filter : {},
 			events : {
 				"click .datatable-option-remove" : "removeItem",
 				"confirmed.bs.confirmation .datatable-option-remove" : "removeItem",
@@ -109,13 +110,21 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        	 //= opt.datatable_fields;
 		        }
 
+		        if (_.isObject(opt.datatable.aoColumns)) {
+		        	opt.datatable.aoColumns = _.toArray(opt.datatable.aoColumns);
+		        }
+
 		        if (_.has(opt, 'url')) {
 		        	opt.datatable.sAjaxSource = opt.url;
 		        	 //= opt.datatable_fields;
 		        }
 
+		        console.warn(opt.datatable);
+
 		        this.oTable = this.$el.dataTable(opt.datatable);
 		        this.getApi().on("init", this.startScrollUI.bind(this));
+
+		        this._baseUrl = this.oTable.api().ajax.url();
 
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
@@ -223,7 +232,21 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
 				}
         	},
+        	setFilter : function(filter) {
+        		var url = this._baseUrl + "/" + JSON.stringify(filter);
+				return this.setUrl(url).redraw();
+        	},
+        	clearFilter : function(filter) {
+        		console.warn(this.oTable.api().ajax.url());
+        		console.warn(this._baseUrl);
+        		if (this.oTable.api().ajax.url() != this._baseUrl) {
+        			var url = this._baseUrl;
+					return this.setUrl(url).redraw();
+				}
+				return this;
+        	},
         	setUrl : function(url) {
+        		
         		this.oTable.api().ajax.url(url).load();
         		return this;
         	},

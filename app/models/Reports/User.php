@@ -1,10 +1,7 @@
 <?php
 namespace Sysclass\Models\Reports;
 
-use Plico\Mvc\Model,
-    Sysclass\Models\Users\User as BaseUser,
-    Sysclass\Models\Acl\Resource,
-    Sysclass\Models\Acl\RolesUsers;
+use Sysclass\Models\Users\User as BaseUser;
 
 class User extends BaseUser
 {
