@@ -1683,19 +1683,39 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 // RENDERING VIDEOS
                 console.info('views/contentContainerViewClass::render');
                 var videos = this.collection.getVideos();
-                var videoModel = _.first(videos);
 
-                if (_.isNull(this.contentVideoContainerView)) {
-                    this.contentVideoContainerView = new contentVideoContainerViewClass({
-                        el : this.$("#content-video-widget"),
-                        model  : videoModel,
-                        parent : this
-                    });
-                    this.contentVideoContainerView.render();
+                if (_.size(videos) == 0) {
+                    this.collection.addVideoContent({
+                        title : ""
+                    }, function(videoModel) {
+                        console.warn()
+                        if (_.isNull(this.contentVideoContainerView)) {
+                            this.contentVideoContainerView = new contentVideoContainerViewClass({
+                                el : this.$("#content-video-widget"),
+                                model  : videoModel,
+                                parent : this
+                            });
+                            this.contentVideoContainerView.render();
+                        } else {
+                            this.contentVideoContainerView.setModel(videoModel);
+                        }
+                    }.bind(this));
                 } else {
-                    // JUST SET THE MODEL
-                    //this.contentVideoContainerView.setModel(videoModel);
+                    var videoModel = _.first(videos);
+
+                    if (_.isNull(this.contentVideoContainerView)) {
+                        this.contentVideoContainerView = new contentVideoContainerViewClass({
+                            el : this.$("#content-video-widget"),
+                            model  : videoModel,
+                            parent : this
+                        });
+                        this.contentVideoContainerView.render();
+                    } else {
+                        this.contentVideoContainerView.setModel(videoModel);
+                    }
+
                 }
+
                 
                 
                 // RENDERING MATERIALS

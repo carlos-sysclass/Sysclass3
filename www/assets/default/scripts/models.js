@@ -328,6 +328,19 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                         }
                     );
                 },
+                addVideoContent(attrs, callback) {
+                    var model = new models.content.item.video(_.extend(attrs, {
+                        lesson_id : this.lesson_id
+                    }));
+                    model.save(null, {
+                        success : function(model) {
+                            this.add(model);
+                            if (_.isFunction(callback)) {
+                                callback(model);
+                            }
+                        }.bind(this)
+                    });
+                },
                 getVideos : function() {
                     var videos = this.where({content_type : "video"});
                     /*
