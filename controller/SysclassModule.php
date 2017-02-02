@@ -728,7 +728,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 //$items = array_values($items);
                 $baseLink = $this->getBasePath();
 
-                $globalOptions = $this->getDatatableItemOptions($item, $model);
+                $globalOptions = $this->getDatatableItemOptions($model);
 
                 //$editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
                 //$deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
@@ -797,7 +797,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * MUST return a options array, to bve applied to all finded records.
      * @return [array|null] [description]
      */
-    protected function getDatatableItemOptions($item, $model = 'me') {
+    protected function getDatatableItemOptions($model = 'me') {
 
         $model_info = $this->model_info[$model];
 

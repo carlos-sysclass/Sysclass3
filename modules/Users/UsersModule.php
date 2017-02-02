@@ -620,7 +620,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         }
     }
 
-    protected function getDatatableItemOptions() {
+    protected function getDatatableItemOptions($model = "me") {
         if ($this->request->hasQuery('block')) {
             return array();
             /*
@@ -641,7 +641,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
             );
             */
         } else {
-            return parent::getDatatableItemOptions();
+            return parent::getDatatableItemOptions($model);
         }
     }
 
