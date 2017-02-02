@@ -6540,7 +6540,7 @@
 						"position"		: "absolute",
 						"top"			: "-2000px",
 						"lineHeight"	: "16px",
-						"zIndex"		: "10000"
+						"zIndex"		: "10100"
 					});
 				}
 				$(document).on("mousemove.vakata.jstree touchmove.vakata.jstree", $.vakata.dnd.drag);

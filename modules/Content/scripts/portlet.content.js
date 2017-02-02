@@ -704,6 +704,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        videoJS : [],
 	        videoJSIds : [],
 	        videoJSReady : [],
+	        ratingShown : false,
 	        mainVideoIndex : 0,
 	        nofoundTemplate : _.template($("#tab_unit_video-nofound-template").html()),
 	        template : _.template($("#tab_unit_video-item-template").html(), null, {variable: "model"}).bind(this),
@@ -729,6 +730,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            this.$el.addClass("pop-out");
 
 				this.$(".popupcontent").draggable({
+					containment: "body",
+					scroll : false,
 				    start: function( event, ui ) {
 				        $(this).css({
 				            top: "auto",
@@ -743,9 +746,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        },
 	        addSecVideoDraggable : function() {
 				this.$(".sec-video").draggable({
+					containment: "parent",
+					scroll : false,
 				    start: function( event, ui ) {
 				        $(this).css({
-				            top: "auto",
+				            top: "40px",
 				            bottom: "auto",
 				            left: "auto",
 				            right: "auto",
@@ -759,7 +764,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        removeSecVideoDraggable : function() {
 	        	this.$(".sec-video").removeAttr('style');
 	        	if (this.$(".sec-video").data('draggable')) {
-	        		this.$(".sec-video").draggable('destroy');	
+	        		this.$(".sec-video").draggable('destroy');
 	        	}
 	        },
 	        render : function(e) {
@@ -856,8 +861,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				                            "bigPlayButton" : (videoIndex == this.mainVideoIndex),
 				                            "techOrder" : [
 				                                'html5', 'flash'
-				                            ]
-				                        }, function() {
+				                            ],
+				                            html5: {
+				                            	nativeTextTracks: false
+				                            }
+			                            }, function() {
 				                        });
 				                    }
 				                    videoIndex++;
@@ -928,7 +936,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        		this.removeSecVideoDraggable();
 	        	}
 
-	        	console.warn(type);
+	        	//console.warn(type);
 
 	        	if (type == "only") {
 	        		var videoIndex = target.data("view-index");
@@ -937,10 +945,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        				$(video.el()).removeClass("hidden");
 	        				// ADD CONTROLS
 	        				video.controls(true);
-
 	        			} else {
 	        				$(video.el()).addClass("hidden");
-
 	        			}
 	        		});
 	        	} else {
@@ -982,14 +988,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		            if (_.every(this.videoJSReady)) {
 		            	_.each(this.videoJS, function(video) {
+		            		
+							video.textTrackSettings.setValues({
+  								backgroundOpacity : "0.5"
+							});
+
 		            		video.play();
 		            	});
 		            	
 		            }
 				}.bind(this, index));
-
-
-
 
 
 				this.videoJS[index].volume(0.5);
@@ -1026,6 +1034,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	                    progressModel.setAsViewed(model, this.currentProgress);
 
 	                    this.trigger("video:viewed");
+
+	                    this.startRatingView();
 	                }.bind(this));
 	            } else {
 	            	this.videoJS[index].muted(true); // mute the volume
@@ -1044,6 +1054,58 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				//this.videoJS[index].play();
                 // SETTING VOLUME
+	        },
+	        startRatingView : function() {
+
+	        	if (this.$(".popupcontent").hasClass("popup-minimized")) {
+	        		this.minimize(); // "UNMINIMIZE WINDOW"
+	        		this.$(".minimize-action").addClass("hidden");
+	        	}
+	        	this.manualChangeViewType("pip");
+
+	        	var videosCollection = this.model.get("videos");
+
+	        	videoModel = videosCollection.first();
+	        	
+				var ratingView = new unitVideoTabItemRatingViewClass({
+					//el : this.$(".popupcontent-body"),
+					model : videoModel
+				});
+				// HIDE ALL VIDEOS
+				/*
+        		_.each(this.videoJS, function(video, index) {
+       				$(video.el()).addClass("hidden");
+       			});
+       			*/
+       			this.listenToOnce(ratingView, "rating:updated", function() {
+       				setTimeout(
+       					this.stopAndClose.bind(this),
+       					1500
+       				);
+       			}.bind(this));
+
+				this.$(".popupcontent-body").block({
+					message: ratingView.render().$el.html(),
+					//baseZ: options.zIndex ? options.zIndex : 1000,
+					centerY: true,
+					css: {
+						width: '50%', 
+						top: '10%',
+						border: '0',
+						padding: '0',
+						backgroundColor: '#fff'
+					},
+					overlayCSS: {
+						backgroundColor: '#555',
+						opacity: 0.8,
+						cursor: 'wait'
+					}
+				});
+
+				this.ratingShown = true;
+
+				ratingView.bindEvents();
+
 	        },
 	        syncVideos : function() {
 	        	if (!this.videoJS[this.mainVideoIndex].paused()) {
@@ -1127,6 +1189,81 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            this.$el.show();
 	        }
 
+	    });
+
+	    var unitVideoTabItemRatingViewClass = baseChangeModelViewClass.extend({
+	        className : 'rating-view',
+	        template : _.template($("#tab_unit_video-rating-view").html(), null, {variable: "model"}).bind(this),
+	        childContainerSelector : false,
+	        childContainer : false,
+	        initialize: function(opt) {
+	            console.info('portlet.content/unitVideoTabItemRatingViewClass::initialize');
+
+				if (_.has(opt, 'childContainer')) {
+					this.childContainerSelector = opt.childContainer;
+				} else {
+					this.childContainerSelector = false;
+				}
+	        },
+	        render : function(e) {
+	            console.info('portlet.content/unitVideoTabItemRatingViewClass::render');
+	            var self = this;
+
+				if (this.childContainerSelector) {
+					this.childContainer = this.$(this.childContainerSelector);
+				} else {
+					this.childContainer = this.$el;
+				}
+
+				this.childContainer.empty();
+
+                this.childContainer.append(
+                    this.template(this.model.toJSON())
+                );
+
+                return this;
+	        },
+	        unbindEvents : function() {
+	        	$("body").off("change", ":input[name='content-rating']");
+	        	$("body").off("mouseenter", ".rating-view label.full");
+	        },
+	        bindEvents : function() {
+	        	$("body").on("change", ":input[name='content-rating']", this.updateRating.bind(this));
+
+	        	$("body").on("mouseenter", ".rating-view label.full", this.updateText.bind(this));
+	        },
+	        updateText : function(e) {
+				var label = $(e.currentTarget);
+
+				console.warn(label);
+				console.warn($(".rating-view .rating-text"));
+				console.warn(this.$(".rating-view .rating-text"));
+
+				$(".rating-view .rating-text").html(label.attr("title"));
+	        },
+	        updateRating : function(e) {
+	        	this.unbindEvents();
+
+	        	$('.rating-view .rating-stars-container').addClass("hidden");
+	        	$('.rating-view .rating-stars-text-container').addClass("hidden");
+	        	$('.rating-view .rating-stars-loader').removeClass("hidden");
+
+
+	        	var rating = $(e.currentTarget).val();
+
+	        	console.warn(this.model.toJSON());
+
+				var progressModel = new mod.models.content_progress(this.model.get("progress"));
+                progressModel.setRating(this.model, rating);
+
+                this.listenToOnce(progressModel, "sync", function() {
+                	// SHOW SUCCESS MESSAGE, AND TRIGGERS WINDOW CLOSE
+                	$(".rating-stars-loader").addClass("hidden");
+                	$(".rating-stars-message").removeClass("hidden");
+	                this.trigger("rating:updated");
+                });
+
+	        }
 	    });
 		/*
 	    var unitMaterialsTabViewItemClass = baseChildTabViewItemClass.extend({
@@ -1657,7 +1794,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				//}
 
 				model.set("progress", this.toJSON());
-			}
+			},
+			setRating : function(model, factor) {
+				if (_.isUndefined(factor)) {
+					factor = -1;
+				}
+				this.set("content_id", model.get("id"));
+				this.set("rating", factor);
+				this.save();
+
+				mod.progressCollection.fetch();
+
+				model.set("progress", this.toJSON());
+			},
 		}),
 		progress : contentBaseModel.extend({
 			url : "/module/content/datasource/progress",

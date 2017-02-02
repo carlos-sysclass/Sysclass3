@@ -565,7 +565,7 @@ h4.border-bottom {
 
 .ajax-loader {
     padding: 4px;
-    position: absolute;
+    position: fixed;
     text-decoration: none;
     top: 0;
     width: 100%;
@@ -2729,4 +2729,31 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 
 .jstree-node, .jstree-children, .jstree-container-ul {
   text-align: left;
+}
+
+.vakata-dnd {
+  background: #fff;
+  border:1px solid #ccc;
+}
+
+.editable-click, 
+a.editable-click, 
+a.editable-click:hover {
+    border-bottom: none !important;
+}
+
+
+.file-loader {
+  border: 1px solid #ccc;
+  display: none;
+}
+
+.file-loader .file-loader-text {
+  color: #666;
+  font-size: 13px;
+  padding: 5px 8px 2px;
+}
+
+.file-loader .progress-mini {
+  height: 5px;
 }

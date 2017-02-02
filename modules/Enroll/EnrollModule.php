@@ -374,7 +374,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     }
 
 
-    public function getDatatableItemOptions() {
+    public function getDatatableItemOptions($model = "me") {
         if ($this->_args['model'] == 'courses') {
             return array(
                 'enroll' => array(
@@ -402,7 +402,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 )
             );
         }
-        return parent::getDatatableItemOptions();
+        return parent::getDatatableItemOptions($model);
     }
 
     /**
