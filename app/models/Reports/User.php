@@ -1,14 +1,13 @@
 <?php
 namespace Sysclass\Models\Reports;
 
-use Sysclass\Models\Users\User as BaseUser;
+use Plico\Mvc\Model;
 
-class User extends BaseUser
+class User extends Model
 {
     public function initialize()
     {
-        parent::initialize();
-        $this->setSource("users");
+        $this->setSource("mod_report_users");
     }
 
 }

@@ -133,6 +133,118 @@ reports:
         sType: table-boolean
         sClass: text-center
 
+      - name: n_courses
+        type: integer
+        label: "# Enrolled programs"
+        category: Enrollment
+        mData: n_courses
+        sClass: text-center
+
+      - name: n_approved_courses
+        type: integer
+        label: "# Enrolled approved programs"
+        category: Enrollment
+        mData: n_approved_courses
+        sClass: text-center
+
+      - name: first_enrollment
+        type: datetime
+        label: "Date of first enroll"
+        category: Enrollment
+        mData: first_enrollment
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: last_enrollment
+        type: datetime
+        label: "Date of last enroll"
+        category: Enrollment
+        mData: last_enrollment
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: n_access
+        type: integer
+        label: "# times logged in"
+        category: Access
+        mData: n_access
+        sClass: text-center
+
+      - name: first_access
+        type: datetime
+        label: "Date of first access"
+        category: Access
+        mData: first_access
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: last_access
+        type: datetime
+        label: "Date of last access"
+        category: Access
+        mData: last_access
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: min_rating
+        type: integer
+        label: "minimum rate"
+        category: Rating
+        mData: min_rating
+        sClass: text-center
+
+      - name: max_rating
+        type: integer
+        label: "maximum rate"
+        category: Rating
+        mData: max_rating
+        sClass: text-center
+
+      - name: avg_rating
+        type: float
+        label: "Average rate"
+        category: Rating
+        mData: avg_rating
+        sType: table-float1
+        sClass: text-center
+
+      - name: n_rating
+        type: integer
+        label: "# of content rated"
+        category: Rating
+        mData: n_rating
+        sClass: text-center
+
+      - name: n_content
+        type: integer
+        label: "# of content enrolled"
+        category: Roadmap
+        mData: n_content
+        sClass: text-center
+
+      - name: n_progress
+        type: integer
+        label: "# of started content"
+        category: Roadmap
+        mData: n_progress
+        sClass: text-center
+
+      - name: avg_progress
+        type: float
+        label: "Overall progress"
+        category: Roadmap
+        mData: avg_progress
+        sType: table-percentage1
+        sClass: text-center
+
+      - name: avg_started_progress
+        type: float
+        label: "Overall started progress"
+        category: Roadmap
+        mData: avg_started_progress
+        sType: table-percentage1
+        sClass: text-center
+
     filters: 
     - id: email
       label: Email
