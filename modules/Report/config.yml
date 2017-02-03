@@ -245,6 +245,65 @@ reports:
         sType: table-percentage1
         sClass: text-center
 
+      - name: n_tests_avaliable
+        type: integer
+        label: "# Avaliable tests"
+        category: Tests
+        mData: n_tests_avaliable
+        sClass: text-center
+
+      - name: n_tests_tried
+        type: integer
+        label: "# Test taken"
+        category: Tests
+        mData: n_tests_tried
+        sClass: text-center
+
+      - name: n_execution_tries
+        type: integer
+        label: "# Test executions taken"
+        category: Tests
+        mData: n_execution_tries
+        sClass: text-center
+
+      - name: max_tries_in_test
+        type: integer
+        label: "Maximum test repetition"
+        category: Tests
+        mData: max_tries_in_test
+        sClass: text-center
+
+      - name: all_tries_avg_score
+        type: float
+        label: "Average score in teste on all tries"
+        category: Tests
+        mData: all_tries_avg_score
+        sType: table-percentage1
+        sClass: text-center
+
+
+      - name: avg_user_score
+        type: float
+        label: "Average score in tests"
+        category: Tests
+        mData: avg_user_score
+        sType: table-percentage1
+        sClass: text-center
+
+      - name: n_total_pass
+        type: integer
+        label: "# Tests passed"
+        category: Tests
+        mData: n_total_pass
+        sClass: text-center
+
+      - name: n_total_failed
+        type: integer
+        label: "# Tests failed"
+        category: Tests
+        mData: n_total_failed
+        sClass: text-center
+
     filters: 
     - id: email
       label: Email
