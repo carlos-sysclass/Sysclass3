@@ -219,7 +219,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 			dynamicField : "filters",
 			initialize : function() {
 				this.listenTo(this.model, "change:datasource_id", this.render.bind(this));
-				this.listenTo(this.model, "change:report_fields", this.renderFields.bind(this));
 				//this.listenTo(this.model, "change:datasource_id", this.render.bind(this));
 
 				//this.initializeFilters();
@@ -263,10 +262,12 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 	            });
 			},
 			clearDatasource : function() {
+				this.stopListening(this.model, "change:report_fields");
 				this.$(".jquery-builder").off('*.queryBuilder');
 			},
 			renderDatasource(name, info) {
 				// RENDER FILTER
+				alert(1);
 
 				this.$(".datasource-title").html(info.title);
 
@@ -313,6 +314,8 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 
 				// FIELDS EVENTS
 				this.renderFields();
+
+				this.listenTo(this.model, "change:report_fields", this.renderFields.bind(this));
 			},
 			renderFields : function() {
 				var api = this.tableView.getApi();
@@ -333,25 +336,33 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
 		//$('#jquery-builder').queryBuilder('destroy');
 
-		this.listenToOnce(opt.module.getModel(), "sync", function() {
+		if (opt.waitSync) {
+
+			this.listenToOnce(opt.module.getModel(), "sync", function() {
+				this.queryBuilderView = new queryBuilderViewClass({
+					el : '#tab-report-definition',
+					model: opt.module.getModel()
+				});
+			}.bind(this));
+		} else {
 			this.queryBuilderView = new queryBuilderViewClass({
 				el : '#tab-report-definition',
 				model: opt.module.getModel()
 			});
-		}.bind(this));
-		
-
+		}		
 	});
 
 
 	app.module("crud.views.add").on("start", function() {
 		mod.start({
-			module : this
+			module : this,
+			waitSync : false
 		});
 	});
 	app.module("crud.views.edit").on("start", function() {
 		mod.start({
-			module : this
+			module : this,
+			waitSync : true
 		});
 	});
 
