@@ -140,6 +140,19 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
     /**
      * [ add a description ]
      *
+     * @Get("/add")
+     */
+    public function addPage()
+    {
+        $datasources = ReportDatasource::find();
+        $this->putItem("datasources", $datasources->toArray());
+
+        parent::addPage($id);
+    }
+
+    /**
+     * [ add a description ]
+     *
      * @Get("/edit/{id}")
      */
     public function editPage($id)

@@ -44,6 +44,14 @@ crud:
           sClass: text-center
           label: Actions
     
+    add:
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
+      blocks: ["report.definition"]
+      template: form.tpl
+      scripts: ["views.report.form"]
+      variables:
+        page_subtitle: Configure your report 
+
     'edit/{id}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       blocks: ["report.definition"]

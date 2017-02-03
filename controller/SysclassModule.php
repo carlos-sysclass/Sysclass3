@@ -284,6 +284,7 @@ abstract class SysclassModule extends BaseSysclassModule
             $itemModel = new $model_class();
             $itemModel->assign($data);
 
+
             $itemModel->id = null;
 
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
