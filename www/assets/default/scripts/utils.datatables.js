@@ -25,6 +25,11 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 			options : null,
         	initialize : function(opt) {
 		        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
+
+		        if ($.fn.dataTable.isDataTable(this.$el)) {
+		        	this.$el.DataTable().destroy();
+		        }
+
 		        this.options = opt;
 		        var view = this;
 		        var datatableOpt = {
@@ -94,10 +99,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				    fixedHeader: true
 		        };
 
-		        if ($.fn.dataTable.isDataTable(this.$el)) {
-		        	this.$el.DataTable().destroy();
-		        }
-
 
 		        if (opt.datatable != undefined) {
 		        	opt.datatable = _.extend(datatableOpt, opt.datatable);
@@ -157,13 +158,16 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	getApi : function() {
         		return this.oTable.api();
         	},
-        	recreate : function() {
+        	recreate : function(options) {
+        		if (_.isUndefined(options)) {
+        			options = this.options;
+        		}
         		/*
 				var settings = this.oTable.api().init();
 				
 				$(this.oTable).dataTable(settings);
 				*/
-				this.initialize(this.options);
+				this.initialize(options);
         	},
         	switchItem: function(e, state) {
 				e.preventDefault();

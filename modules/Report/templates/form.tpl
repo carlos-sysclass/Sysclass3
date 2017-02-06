@@ -7,7 +7,7 @@
 				<a href="#tab-report-general" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
 			<li>
-				<a href="#tab-report-definition" data-toggle="tab">{translateToken value="Definition"}</a>
+				<a href="#tab-report-definition" data-toggle="tab">{translateToken value="Criteria"}</a>
 			</li>
 			<li>
 				<a href="#tab-report-presentation" data-toggle="tab">{translateToken value="Presentation"}</a>
@@ -99,10 +99,10 @@
                     <h5 class="form-section datasource-title">
                     </h5>
 
-					<div class="backgrid-table">
+					<div class="backgrid-table" id="report-datatable-container">
 						<table class="table table-striped table-bordered table-hover table-full-width data-table" id="report-datatable">
-						<thead></thead>
-						<tbody></tbody>
+							<thead></thead>
+							<tbody></tbody>
 						</table>
 					</div>
 
@@ -120,6 +120,13 @@
 	</div>
 </form>
 
+
+<script type="text/template" id="dynamic-table-template">
+	<table class="table table-striped table-bordered table-hover table-full-width data-table" id="report-datatable">
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+</script>
 <script type="text/template" id="dynamic-table-header-item-template">
 	<th class="<%= field.sClass %> <% if (field.sType) { %> <%= field.sType %> <% } %>">
     	<% if (!field.label) { %>
