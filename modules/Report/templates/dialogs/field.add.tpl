@@ -42,6 +42,6 @@
     <li class="col-md-3 <% if (model.freeze) { %> freeze bg-grey<% } else if (model.selected) { %> bg-green<% } %>" data-field-name="<%= model.name %>">
 
         <%= model.label %>
-        <span class="badge badge-sm badge-default pull-right"><%= model.type %></span>
+        <span class="label label-sm label-default pull-right"><%= model.type %></span>
     </li>
 </script>

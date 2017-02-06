@@ -44,7 +44,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 			render : function() {
 				// RENDER CATEGORY AND ITENS
 				var categories = _.uniq(_.pluck(this.columns, "category"));
-				console.warn(categories);
 
 				this.$(".nav-tabs, .tab-content").empty();
 
@@ -69,7 +68,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 
 
 				for (var i in category.columns) {
-					console.warn(category.columns[i]);
 					this.$("#tab-report-add-field-" + category.name + " .report-field-list").append(
 						this.itemFieldTemplate(_.extend(
 							category.columns[i],
@@ -119,24 +117,37 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.addFieldDialogView, "tooglefield.report", this.toggleField.bind(this));
 				this.listenTo(this.model, "change:report_fields", this.render.bind(this));
 
-				this.columns = opt1.columns;
-				this.fields = this.model.get('report_fields');
+				console.warn(this.model.toJSON());
 
-				// FIRST 
-				if (_.isUndefined(this.fields)) {
-					this.fields = [];
+				this.setInfo(opt1.columns, this.model.get('report_fields'));
+			},
+			setInfo : function(columns, fields) {
+				this.columns = columns;
+				//var fields = this.model.get('report_fields');
+				this.fields = [];
+				// CHECK IF FIELDS ARE IN COLUMNS
+				for(var i in fields) {
+					var field = fields[i];
+					for(var i in this.columns) {
+						console.warn(this.columns[i], field);
+						if (field == this.columns[i].name) {
+							this.fields.push(field);
+							break;
+						}
+					}
+				}
+				if (_.size(this.fields) == 0) {
 					for(var i in this.columns) {
 						if (this.columns[i].freeze || this.columns[i].default) {
 							this.fields.push(this.columns[i].name);
 						}
 					}
-
-					this.model.set("report_fields", this.fields);
-				} else {
-					this.render();
 				}
-				
-				//this.render();
+				//console.warn(this.fields);
+				this.model.unset("report_fields", {
+					silent : true
+				});
+				this.model.set("report_fields", this.fields);
 			},
 			render : function() {
 				this.$(".report-field-list").empty();
@@ -182,8 +193,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				var avaliable = _.filter(this.columns, function(col) {
 					return !col.freeze && $.inArray(col.name, this.fields) == -1;
 				}, this);
-				console.warn(this.columns);
-				console.warn(avaliable);
 
 				this.addFieldDialogView.setFields(this.columns, this.fields);
 				this.addFieldDialogView.open();
@@ -193,6 +202,12 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 		var dynamicHeaderTableViewClass = tableViewClass.extend({
 			headerTemplate : _.template($("#dynamic-table-header-item-template").html(), null, {variable : 'field'}),
 			initialize : function(opt) {
+		        if ($.fn.dataTable.isDataTable(this.$el)) {
+		        	console.warn("destroying");
+		        	this.getApi().clear(true);
+		        	this.getApi().destroy(false);
+		        }
+
 				this.createHeader(opt.fields);
 
 				opt.datatable_fields = opt.fields;
@@ -205,7 +220,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				var row = $("<tr></tr>");
 
 				for (var i in fields) {
-					console.warn(this.headerTemplate(fields[i]));
 					row.append(
 						this.headerTemplate(fields[i])
 					);
@@ -217,6 +231,8 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 
 		var queryBuilderViewClass = Backbone.View.extend({
 			dynamicField : "filters",
+			fieldListView : null,
+			tableView : null,
 			initialize : function() {
 				this.listenTo(this.model, "change:datasource_id", this.render.bind(this));
 				//this.listenTo(this.model, "change:datasource_id", this.render.bind(this));
@@ -262,14 +278,23 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 	            });
 			},
 			clearDatasource : function() {
+				/*
+				this.model.unset("report_fields", {
+					silent : true
+				});
+				*/
+				this.$(".jquery-builder").queryBuilder('destroy');
+
+				//this.model.unset(this.dynamicField);
+
 				this.stopListening(this.model, "change:report_fields");
 				this.$(".jquery-builder").off('*.queryBuilder');
 			},
 			renderDatasource(name, info) {
 				// RENDER FILTER
-				alert(1);
-
 				this.$(".datasource-title").html(info.title);
+
+				
 
 				this.filterView = this.$(".jquery-builder").queryBuilder({
 					plugins: [
@@ -278,20 +303,35 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 					],
 					filters: info.filters 
 				});
-				
-				this.fieldListView = new fieldListViewClass({
-					el: "#field-list-container",
-					columns: info.fields,
-					model: this.model
-				});
+
+
+				if (_.isNull(this.fieldListView)) {
+					this.fieldListView = new fieldListViewClass({
+						el: "#field-list-container",
+						columns: info.fields,
+						model: this.model
+					});
+				} else {
+					this.fieldListView.setInfo(info.fields, this.model.get("report_fields"));
+				}
 
 				info.datatable.aoColumns = info.fields;
-				
-		        this.tableView = new dynamicHeaderTableViewClass({
-		            el : "#report-datatable",
-		            datatable : info.datatable,
-		            fields : info.fields
-		        });
+
+
+
+				if (_.isNull(this.tableView)) {
+				    this.tableView = new dynamicHeaderTableViewClass({
+			            el : "#report-datatable",
+			            datatable : info.datatable,
+			            fields : info.fields
+			        });
+			    } else {
+			    	this.tableView.recreate({
+			    		el : "#report-datatable",
+			            datatable : info.datatable,
+			            fields : info.fields
+			        });
+			    }
 
 				this.startDatasource();
 			},
@@ -299,8 +339,27 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				var definition = this.model.get(this.dynamicField);
 
 				if (_.has(definition, 'rules') && _.size(definition.rules) > 0) {
-					this.$(".jquery-builder").queryBuilder('setRules', definition);
-					this.tableView.setFilter(definition);
+
+					// REMOVING UNMATCHED RULES
+					var fields = this.model.get("report_fields");
+					var rules = [];
+					for (var i in definition.rules) {
+						var rule = definition.rules[i];
+						if ($.inArray(rule.field, fields) != -1) {
+							rules.push(rule);
+						}
+					}
+					
+					definition.rules = rules;
+
+					if (_.size(definition.rules) > 0) {
+						this.$(".jquery-builder").queryBuilder('setRules', definition, {allow_invalid : true});
+						//this.tableView.setFilter(definition);
+					} else {
+						$(".jquery-builder").queryBuilder('reset');
+						//this.tableView.clearFilter();
+					}
+					this.updateModel();
 				}
 
 				// FILTER EVENTS
@@ -322,10 +381,7 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 
 				var fields = this.model.get("report_fields");
 
-				console.warn(fields);
-
 				api.columns().every(function () {
-					console.warn(this.dataSrc(), $.inArray(this.dataSrc(), fields));
 					this.visible($.inArray(this.dataSrc(), fields) != -1);
 				});
 			}
@@ -339,6 +395,9 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 		if (opt.waitSync) {
 
 			this.listenToOnce(opt.module.getModel(), "sync", function() {
+
+				console.warn(opt.module.getModel().toJSON());
+
 				this.queryBuilderView = new queryBuilderViewClass({
 					el : '#tab-report-definition',
 					model: opt.module.getModel()

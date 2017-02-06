@@ -65,6 +65,8 @@ models:
     exportMethod: ["toFullArray"]
   users:
     class: Sysclass\Models\Reports\User
+  programs:
+    class: Sysclass\Models\Reports\Program
     #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
     #findMethod: findFirstById
 reports:
@@ -112,7 +114,7 @@ reports:
       - name: pending
         type: bool
         label: Pending aproval
-        category: Extra
+        category: General
         mData: pending
         sType: table-boolean
         sClass: text-center
@@ -120,7 +122,7 @@ reports:
       - name: viewed_license
         type: bool
         label: License Viewed
-        category: Extra
+        category: General
         mData: viewed_license
         sType: table-boolean
         sClass: text-center
@@ -128,7 +130,7 @@ reports:
       - name: active
         type: bool
         label: Active
-        category: Extra
+        category: General
         mData: active
         sType: table-boolean
         sClass: text-center
@@ -136,7 +138,7 @@ reports:
       - name: how_did_you_know
         type: bool
         label: How did you know?
-        category: Extra
+        category: General
         mData: how_did_you_know
         sType: table-boolean
         sClass: text-center
@@ -406,4 +408,91 @@ reports:
       #      sClass: text-left
       #      label: Country
 
+  programs:
+    title: > 
+      <i class="fa fa-graduation-cap"></i>
+      Programs
+    model: programs
+    fields:
+        #`c`.`area_id` AS `area_id`,
+        #`c`.`description` AS `description`,
+        #`c`.`objectives` AS `objectives`,
+        #`c`.`goals` AS `goals`,
+        #`c`.`duration_units` AS `duration_units`,
+        #`c`.`duration_type` AS `duration_type`,
+        #`c`.`price_total` AS `price_total`,
+        #`#`.`price_step_units` AS `price_step_units`,
+        #`c`.`price_step_type` AS `price_step_type`,
+        #`c`.`archive` AS `archive`,
+        #`c`.`created` AS `created`,
+        #`c`.`language_id` AS `language_id`,
+        #`c`.`image_id` AS `image_id`,
+      - name: id
+        type: integer
+        label: Id
+        category: General
+        default: true
+        freeze: true
+        mData: id
+        sClass: text-center
 
+      - name: name
+        type: string
+        label: Name
+        category: General
+        default: true
+        mData: name
+
+      #- name: coordinator.name
+      #  type: string
+      #  label: Coordinator Name
+      #  category: General
+      #  default: false
+      #  mData: coordinator.name
+
+      #- name: coordinator.surname
+      #  type: string
+      #  label: Coordinator SurName
+      #  category: General
+      #  default: false
+      #  mData: coordinator.surname
+
+      - name: active
+        type: bool
+        label: Active
+        category: General
+        mData: active
+        sType: table-boolean
+        sClass: text-center
+
+      - name: n_users
+        type: integer
+        label: "# of enrolled Users"
+        category: General
+        mData: n_users
+        sClass: text-center
+
+      - name: n_courses
+        type: integer
+        label: "# of courses"
+        category: General
+        mData: n_courses
+        sClass: text-center
+
+    filters: 
+    - id: name
+      label: Name
+      type: string
+      no_invert: true
+    
+    - id: is_supplier
+      label: Is Supplier
+      type: integer
+      input: radio
+      values: {1: "Yes", 0: "No"}
+      operators: [equal]
+      no_invert: true
+    datatable :
+      fixedHeader: true
+      sAjaxSource: /module/report/items/programs/datatable
+      buttons: []
