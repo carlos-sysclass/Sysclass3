@@ -69,9 +69,10 @@ class Bing extends Component {
             $strResponse = curl_exec($ch);
             //Get the Error Code returned by Curl.
             $curlErrno = curl_errno($ch);
+
             if($curlErrno){
                 $curlError = curl_error($ch);
-                throw new Exception($curlError);
+                throw new \Exception($curlError);
             }
             //Close the Curl Session.
             curl_close($ch);

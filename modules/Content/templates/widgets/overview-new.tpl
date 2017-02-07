@@ -49,6 +49,11 @@ _before_init_functions.push(function() {
 .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+
+.fa.rating-star {
+  color: #ffc20e;
+  font-size: 18px !important;
+}
 </style>
 
 <div>
@@ -311,6 +316,7 @@ _before_init_functions.push(function() {
                           <th class="text-center">{translateToken value="Status"}</th>
                           <th class="text-center">{translateToken value="Units"}</th>
                           <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
+                          <th class="text-center">{translateToken value="Rating"}</th>
                           <th class="text-center">{translateToken value="Videos"}</th>
                           <th class="text-center">{translateToken value="Materials"}</th>
                           <th class="text-center">{translateToken value="Tests"}</th>
@@ -833,7 +839,7 @@ _before_init_functions.push(function() {
   </td>
 
   <!-- Unidade -->
-  <td>
+  <td width="30%">
       <%= model.name %>
       <%
         var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
@@ -862,6 +868,33 @@ _before_init_functions.push(function() {
         </div>
       <% } %>
 
+  </td>
+  <!-- Rating -->
+  <td class="text-center">
+    <% if (_.has(model, 'rating')) { %>
+      <%
+      count = 0; 
+      for (var i=1; i <= model.rating; i++) {
+        print ('<i class="fa fa-star rating-star"></i>');
+        count++;
+      } 
+      if (count < model.rating) {
+        var diff = model.rating - count;
+        if (diff > 0) {
+          print ('<i class="fa fa-star-half-o rating-star"></i>');
+          count++;
+        }
+      }
+      if (count < 5) {
+        diff = 5 - count;
+        for (var i=1; i <= diff; i++) {
+          print ('<i class="fa fa-star-o rating-star"></i>');
+          count++;
+        } 
+      }
+      %>
+    <% } else { %>
+    <% } %>
   </td>
   <!--
   <td width="20%">
