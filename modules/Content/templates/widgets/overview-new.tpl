@@ -822,7 +822,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
   <!-- Status -->
-  <td class="text-center">
+  <td class="text-center" width="10%">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
         <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
@@ -839,7 +839,7 @@ _before_init_functions.push(function() {
   </td>
 
   <!-- Unidade -->
-  <td width="30%">
+  <td width="40%">
       <%= model.name %>
       <%
         var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
@@ -870,7 +870,7 @@ _before_init_functions.push(function() {
 
   </td>
   <!-- Rating -->
-  <td class="text-center">
+  <td class="text-center" width="10%">
     <% if (_.has(model, 'rating')) { %>
       <%
       count = 0; 
@@ -904,7 +904,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Video -->
-  <td class="text-center">
+  <td class="text-center" width="10%">
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -926,7 +926,7 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
   <!-- Material -->
-  <td class="text-center">
+  <td class="text-center" width="10%">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
       <% if (model.materialProgress >= 1) { %>
@@ -999,7 +999,7 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   
-  <td class="text-center">
+  <td class="text-center" width="10%">
   </td>
   
   <!-- Exame -->

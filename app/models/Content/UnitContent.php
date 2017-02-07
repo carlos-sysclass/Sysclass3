@@ -116,7 +116,8 @@ class UnitContent extends Model
 
         if ($progress) {
             $result['rating'] = $progress->average([
-                "conditions" => "rating >= 0",
+                "conditions" => "rating >= 0 and content_id = ?0",
+                "bind" => [$this->id],
                 'column' => "rating"
             ]);
 
