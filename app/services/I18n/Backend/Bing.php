@@ -71,8 +71,6 @@ class Bing extends Component {
             $curlErrno = curl_errno($ch);
 
             if($curlErrno){
-                var_dump($curlErrno);
-                exit;
                 $curlError = curl_error($ch);
                 throw new \Exception($curlError);
             }
