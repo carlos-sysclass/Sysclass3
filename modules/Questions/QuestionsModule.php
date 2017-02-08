@@ -235,7 +235,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
     }
 
 
-    public function getDatatableItemOptions() {
+    public function getDatatableItemOptions($model = "me") {
         if ($this->_args['model'] == 'lesson-content') {
             $options['select'] = array(
                 'icon'  => 'icon-check',
@@ -245,7 +245,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
             return $options;
 
         } else {
-            return parent::getDatatableItemOptions();
+            return parent::getDatatableItemOptions($model);
         }
     }
 

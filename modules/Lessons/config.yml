@@ -53,4 +53,7 @@ crud:
 models:
   me: 
     class: Sysclass\Models\Content\Unit
-    exportMethod: ["toFullArray", ["Classe"]]
+    exportMethod: ["toFullArray", ["Course"]]
+  lesson-content:
+    class: Sysclass\Models\Content\UnitContent
+    exportMethod: ["toFullArray", ["Files"]]

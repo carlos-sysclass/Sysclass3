@@ -83,7 +83,7 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 
         //Create a MongoDB cache
         $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, array(
-            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : $environment->mongo->server,
+            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
             'db' => $environment->mongo->database . "-" . $environment_name,
             'collection' => 'cache'
         ));

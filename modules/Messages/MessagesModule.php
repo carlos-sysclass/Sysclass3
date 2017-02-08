@@ -274,8 +274,8 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
         return true;
     }
 
-    protected function getDatatableItemOptions($item, $model = 'me') {
-        $options = parent::getDatatableItemOptions($item, $model);
+    protected function getDatatableItemOptions($model = "me") {
+        $options = parent::getDatatableItemOptions($model);
         $model_info = $this->model_info[$model];
 
         $trashAllowed = $this->isResourceAllowed("trash", $model_info);

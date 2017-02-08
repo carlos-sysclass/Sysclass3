@@ -272,7 +272,7 @@ class LoginController extends \AbstractSysclassController
 			$url = null;
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}
@@ -346,7 +346,7 @@ class LoginController extends \AbstractSysclassController
 
 			$di->get("authentication")->logout($user);
 
-		    $message = $this->translate->translate("You have been logout sucessfully. Thanks for using Sysclass.");
+		    $message = $this->translate->translate("You have been logout sucessfully. Thanks for using SysClass.");
 		    $message_type = 'warning';
 
 			$this->redirect("/login", $message, $message_type);
@@ -391,7 +391,7 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
@@ -478,7 +478,7 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
@@ -574,7 +574,7 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
@@ -664,7 +664,7 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
@@ -758,7 +758,7 @@ class LoginController extends \AbstractSysclassController
 
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}
@@ -805,7 +805,7 @@ class LoginController extends \AbstractSysclassController
 			$url = "/login";
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = $this->translate->translate("The system can't authenticate you using the current methods. Please came back in a while.");
+		            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}

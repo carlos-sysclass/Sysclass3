@@ -4,7 +4,6 @@
 models:
   me: 
     class: Sysclass\Models\Dropbox\File
-    acl:
-      create:
-        resource: Settings
-        action: manage
+    exportMethod: ["toFullArray", ["Language"]]
+    createMethod: addOrUpdate
+    updateMethod: addOrUpdate

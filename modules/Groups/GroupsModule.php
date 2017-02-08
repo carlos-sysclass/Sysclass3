@@ -166,7 +166,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         return array_merge($response, $info);
     }
 
-    protected function getDatatableItemOptions($item, $model) {
+    protected function getDatatableItemOptions($model = "me") {
         if ($model == "users") {
             // RETURN THE OPTION TO EXCLUDE THE 
             $model_info = $this->model_info[$model];
@@ -183,7 +183,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             }
             return $options;
         } else {
-            return parent::getDatatableItemOptions($item, $model);
+            return parent::getDatatableItemOptions($model);
         }
     }
 
