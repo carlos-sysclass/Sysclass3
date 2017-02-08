@@ -413,7 +413,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     }
     */
    
-    protected function getDatatableItemOptions() {
+    protected function getDatatableItemOptions($model = "me") {
 
         $model_info = $this->model_info['me'];
 
@@ -500,7 +500,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /**
      * [ add a description ]
      *
-     * @Put("/item/users/{role_id}/{user_id}")
+     * @Put("/users/{role_id}/{user_id}")
      */
     public function createUserRoleItemRequest($role_id, $user_id) {
         if ($userData = $this->getCurrentUser()) {
@@ -525,7 +525,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /**
      * [ add a description ]
      *
-     * @Delete("/item/users/{role_id}/{user_id}")
+     * @Delete("/users/{role_id}/{user_id}")
      */
     public function deleteUserRoleItemRequest($role_id, $user_id)
     {
@@ -550,7 +550,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /**
      * [ add a description ]
      *
-     * @Put("/item/groups/{role_id}/{user_id}")
+     * @Put("/groups/{role_id}/{user_id}")
      */
     public function createGroupRoleItemRequest($role_id, $user_id)
     {
@@ -575,7 +575,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     /**
      * [ add a description ]
      *
-     * @Delete("/item/groups/{role_id}/{user_id}")
+     * @Delete("/groups/{role_id}/{user_id}")
      */
     public function deleteGroupRoleItemRequest($role_id, $user_id)
     {

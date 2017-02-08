@@ -2,10 +2,13 @@
 namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model,
-    Sysclass\Models\Users\User;
+    Sysclass\Models\Users\User,
+    Sysclass\Models\Content\ContentFile;
 
 class UnitContent extends Model
 {
+    protected $assignedData = null;
+
     public function initialize()
     {
         $this->setSource("mod_lessons_content");
@@ -19,7 +22,7 @@ class UnitContent extends Model
         
 		$this->hasManyToMany(
             "id",
-            "Sysclass\Models\Courses\Contents\ContentFile",
+            "Sysclass\Models\Content\ContentFile",
             "content_id", "file_id",
             "Sysclass\Models\Dropbox\File",
             "id",
@@ -32,16 +35,62 @@ class UnitContent extends Model
             "content_id",
             array('alias' => 'Progress')
         );
+    }
+
+    public function afterFetch() {
+        $this->tags = json_decode($this->tags, true);
+    }
+
+    public function beforeSave() {
+        $this->tags = json_encode($this->tags);
+    }
+
+    public function toArray() {
+        if (!is_array($this->tags) && !empty($this->tags)) {
+            $this->tags = json_decode($this->tags, true);       
+        }
+
+        return parent::toArray();
 
     }
+
+    public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
+        $this->assignedData = $data;
+        return parent::assign($data, $dataColumnMap, $whiteList);
+    }
+
+    public function afterSave() {
+        // SAVE THE LINKED TEST
+        if (array_key_exists('files', $this->assignedData) && is_array($this->assignedData['files'])) {
+
+            foreach($this->assignedData['files'] as $file) {
+                $contentFileModel = new ContentFile();
+
+                $contentFileModel->assign([
+                    'content_id' => $this->id,
+                    'file_id' => $file['id'],
+                    'active' => 1
+                ]);
+
+                $contentFileModel->addOrUpdate();
+            }
+        }
+    }
+
+
 
     public function toFullContentArray() {
         // GRAB FILES AND OTHER INFO
         $item = $this->toArray();
         $files = $this->getFiles(array(
-            'conditions' => 'Sysclass\Models\Courses\Contents\ContentFile.active = 1',
-            'limit' => '1'
+            'conditions' => 'Sysclass\Models\Content\ContentFile.active = 1'
         ));
+
+        $item['files'] = [];
+        foreach($files as $file) {
+            $item['files'][] = $file->toFullArray();
+        }
+
         $file = $files->getFirst();
         if ($file) {
             $item['file'] = $files->getFirst()->toArray();
@@ -64,7 +113,14 @@ class UnitContent extends Model
             'bind' => array($user_id)
         ));
 
+
         if ($progress) {
+            $result['rating'] = $progress->average([
+                "conditions" => "rating >= 0 and content_id = ?0",
+                "bind" => [$this->id],
+                'column' => "rating"
+            ]);
+
             $result['progress'] = $progress->toArray();   
             $result['progress']['factor'] = floatval($result['progress']['factor']);
         } else {

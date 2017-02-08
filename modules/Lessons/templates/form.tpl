@@ -1,7 +1,6 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
-<div id="form-{$T_MODULE_ID}">
-<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
@@ -28,39 +27,41 @@
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Name"}</label>
-					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
-				</div>
-				<div class="form-group">
-					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-					<label class="control-label">{translateToken value="Course"}</label>
-					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select Course"}">
-						<option value=""></option>
-						{foreach $T_CLASSES as $classe}
-							<option value="{$classe.id}">{$classe.name}</option>
-						{/foreach}
-					</select>
-				</div>
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Instructor"}</label>
-					<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
-					<select class="select2-me form-control" name="instructor_id">
-						<option value="">{translateToken value="Please Select"}</option>
-						{foreach $T_INSTRUCTORS as $id => $instructor}
-							<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
-						{/foreach}
-					</select>
-				</div>
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Active"}</label>
-					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
-				</div>
-				<div class="form-actions nobg">
-					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+				<form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
+					<div class="form-group">
+						<label class="control-label">{translateToken value="Name"}</label>
+						<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+					</div>
+					<div class="form-group">
+						<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+						<label class="control-label">{translateToken value="Course"}</label>
+						<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select Course"}">
+							<option value=""></option>
+							{foreach $T_CLASSES as $classe}
+								<option value="{$classe.id}">{$classe.name}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">{translateToken value="Instructor"}</label>
+						<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
+						<select class="select2-me form-control" name="instructor_id">
+							<option value="">{translateToken value="Please Select"}</option>
+							{foreach $T_INSTRUCTORS as $id => $instructor}
+								<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label">{translateToken value="Active"}</label>
+						<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+					</div>
+					<div class="form-actions nobg">
+						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
 
-					<button class="btn btn-warning save-and-add-action" type="button">{translateToken value="Save and add another unit"}</button>
-				</div>
+						<button class="btn btn-warning save-and-add-action" type="button">{translateToken value="Save and add another unit"}</button>
+					</div>
+				</form>
 			</div>
 
 			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
@@ -86,9 +87,6 @@
 			{/if}
 		</div>
 	</div>
-
-</form>
-</div>
 <!--
 <script type="text/template" id="file-upload-new-video-item">
 	<li class="row">

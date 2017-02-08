@@ -284,6 +284,7 @@ abstract class SysclassModule extends BaseSysclassModule
             $itemModel = new $model_class();
             $itemModel->assign($data);
 
+
             $itemModel->id = null;
 
             $this->eventsManager->fire("module-{$this->module_id}:beforeModelCreate", $itemModel, $data);
@@ -477,14 +478,9 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 if (call_user_func(array($itemModel, $updateMethod))) {
 
-                //if ($itemModel->save()) {
                     $this->eventsManager->fire("module-{$this->module_id}:afterModelUpdate", $itemModel, $data);
 
                     $afterMessages = $itemModel->getMessages();
-
-
-
-
 
                     $modelMessages = array_merge($beforeMessages, $afterMessages);
 
@@ -606,7 +602,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * 
      * @Get("/items/{model}")
      * @Get("/items/{model}/{type}")
-     * @Get("/items/{model}/{type}/{filter}")
+     * @Get("/items/{model}/{type}/{filter:.+}")
      */
     public function getItemsRequest($model, $type, $filter, $columns = null)
     {
@@ -733,7 +729,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 //$items = array_values($items);
                 $baseLink = $this->getBasePath();
 
-                $globalOptions = $this->getDatatableItemOptions($item, $model);
+                $globalOptions = $this->getDatatableItemOptions($model);
 
                 //$editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
                 //$deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
@@ -741,11 +737,15 @@ abstract class SysclassModule extends BaseSysclassModule
                 $items = array();
 
                 foreach($resultRS as $key => $item) {
-                    // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func(
-                        array($item, $model_info['exportMethod'][0]),
-                        $model_info['exportMethod'][1]
-                    );
+                    if (!is_object($item)) {
+                        $items[$key] = $item;    
+                    } else {
+                        // TODO THINK ABOUT MOVE THIS TO config.yml FILE
+                        $items[$key] = call_user_func(
+                            array($item, $model_info['exportMethod'][0]),
+                            $model_info['exportMethod'][1]
+                        );
+                    }
                     $items[$key]['options'] = array();
 
                     $options = $this->getDatatableSingleItemOptions($item);
@@ -773,10 +773,14 @@ abstract class SysclassModule extends BaseSysclassModule
 
                 foreach($resultRS as $key => $item) {
                     // TODO THINK ABOUT MOVE THIS TO config.yml FILE
-                    $items[$key] = call_user_func(
-                        array($item, $model_info['exportMethod'][0]),
-                        count($model_info['exportMethod'][1]) > 0 ? $model_info['exportMethod'][1] : null
-                    );
+                    if (!is_object($item)) {
+                        $items[$key] = $item;    
+                    } else {
+                        $items[$key] = call_user_func(
+                            array($item, $model_info['exportMethod'][0]),
+                            count($model_info['exportMethod'][1]) > 0 ? $model_info['exportMethod'][1] : null
+                        );
+                    }
                 }
                 
                 $this->response->setJsonContent($items);
@@ -794,7 +798,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * MUST return a options array, to bve applied to all finded records.
      * @return [array|null] [description]
      */
-    protected function getDatatableItemOptions($item, $model = 'me') {
+    protected function getDatatableItemOptions($model = 'me') {
 
         $model_info = $this->model_info[$model];
 

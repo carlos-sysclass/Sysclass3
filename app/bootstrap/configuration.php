@@ -96,7 +96,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/bootstrap-daterangepicker/daterangepicker-bs3',
 		'plugins/jqvmap/jqvmap/jqvmap',
 		//'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
-		'plugins/bootstrap-fileupload/bootstrap-fileupload',
+		//'plugins/bootstrap-fileupload/bootstrap-fileupload',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
 		'css/pageguide/pageguide',
  		//<!-- BEGIN THEME STYLES -->
@@ -203,7 +203,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
 			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation','plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
 		),
-
+		'jstree' => array(
+			'name'	=> 'jstree',
+			'css'	=> array('plugins/jstree/dist/themes/default/style'),
+			'js'	=> array('plugins/jstree/dist/jstree')
+		),
 		'bootstrap-switch' => array(
 			'name'	=> 'bootstrap-switch',
 			'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
@@ -251,6 +255,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/icheck/skins/square/_all'),
 			'js'	=> array('plugins/icheck/icheck.min')
 		),
+		"fileupload" => [
+			'name'	=> 'fileupload',
+			'css' => ['plugins/fileupload/css/jquery.fileupload'],
+			'js' => ['plugins/fileupload/js/jquery.iframe-transport', 'plugins/fileupload/js/jquery.fileupload']
+		],
 		"jquery-file-upload-image" => array(
 			'name'	=> 'jquery-file-upload-image',
 			'css'	=> array(

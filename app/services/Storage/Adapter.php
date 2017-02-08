@@ -17,7 +17,7 @@ use Phalcon\Mvc\User\Component,
     Sysclass\Models\Users\UserApiTokens,
     Sysclass\Models\Users\UserTimes;
 */
-class Adapter extends Component implements IStorage
+class Adapter extends Component /* implements IStorage */
 {
     /*
     public function getEventsManager()
@@ -28,24 +28,40 @@ class Adapter extends Component implements IStorage
     protected $backend_class = null;
     protected $backend = null;
 
-    public function initialize() {
-        $backend_class = $this->environment->storage->backend;
+    private static $instances = [];
 
-        $this->setBackend($backend_class);
+    public static function getInstance($storage) {
+        if (array_key_exists($storage, self::$instances)) {
+            return $instances[$storage];
+        }
+        $instances[$storage] = new self();
+        $instances[$storage]->initialize($storage);
 
-        $this->backend->initialize();
+        return $instances[$storage]->backend;
     }
 
-    public function setBackend($class) {
-        if (class_exists($class)) {
-            $this->backend = new $class();
+    public function initialize($storage) {
+        $this->setBackend($storage);
+    }
+    public function getBackend() {
+        return $this->backend;
+    }
+    public function setBackend($storage) {
+        $this->backend_class = $this->environment->$storage->backend;
+
+        if (class_exists($this->backend_class)) {
+            $this->backend = new $this->backend_class();
+
+            $this->backend->initialize($this->environment->$storage);
         } else {
             throw new StorageException("NO_BACKEND_DISPONIBLE", StorageException::NO_BACKEND_DISPONIBLE);
         }
         return true;
-
     }
 
+
+
+/*
     public function getDefaultBackend() {
         // TODO: GET FROM CONFIGURATION
         $default_backend = ucfirst(strtolower($this->configuration->get("default_auth_backend")));
@@ -77,6 +93,11 @@ class Adapter extends Component implements IStorage
         }
         return false;
     }
+*/
+
+    public function beforeFileCreate(File $struct) {
+        return $this->backend->beforeFileCreate($struct);
+    }
 
 
     public function fileExists(File $struct) {
@@ -84,6 +105,9 @@ class Adapter extends Component implements IStorage
     }
 
     /* PROXY/ADAPTER PATTERN */
+    public function getFilesInFolder($folder) {
+        return $this->backend->getFilesInFolder($folder);
+    }
     public function getFullFilePath(File $struct) {
         return $this->backend->getFullFilePath($struct);
     }
