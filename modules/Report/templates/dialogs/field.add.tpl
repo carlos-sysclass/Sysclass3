@@ -40,7 +40,8 @@
 
 <script type="text/template" id="report-field-add-field-item-template">
     <li class="col-md-3 <% if (model.freeze) { %> freeze bg-grey<% } else if (model.selected) { %> bg-green<% } %>" data-field-name="<%= model.name %>">
-        <i class="fa fa-<%= model.type %>"></i>
+
         <%= model.label %>
+        <span class="label label-sm label-default pull-right"><%= model.type %></span>
     </li>
 </script>

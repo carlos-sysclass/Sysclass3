@@ -44,6 +44,14 @@ crud:
           sClass: text-center
           label: Actions
     
+    add:
+      components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
+      blocks: ["report.definition"]
+      template: form.tpl
+      scripts: ["views.report.form"]
+      variables:
+        page_subtitle: Configure your report 
+
     'edit/{id}':
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       blocks: ["report.definition"]
@@ -57,6 +65,8 @@ models:
     exportMethod: ["toFullArray"]
   users:
     class: Sysclass\Models\Reports\User
+  programs:
+    class: Sysclass\Models\Reports\Program
     #exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
     #findMethod: findFirstById
 reports:
@@ -104,7 +114,7 @@ reports:
       - name: pending
         type: bool
         label: Pending aproval
-        category: Extra
+        category: General
         mData: pending
         sType: table-boolean
         sClass: text-center
@@ -112,7 +122,7 @@ reports:
       - name: viewed_license
         type: bool
         label: License Viewed
-        category: Extra
+        category: General
         mData: viewed_license
         sType: table-boolean
         sClass: text-center
@@ -120,7 +130,7 @@ reports:
       - name: active
         type: bool
         label: Active
-        category: Extra
+        category: General
         mData: active
         sType: table-boolean
         sClass: text-center
@@ -128,9 +138,180 @@ reports:
       - name: how_did_you_know
         type: bool
         label: How did you know?
-        category: Extra
+        category: General
         mData: how_did_you_know
         sType: table-boolean
+        sClass: text-center
+
+      - name: n_courses
+        type: integer
+        label: "# Enrolled programs"
+        category: Enrollment
+        mData: n_courses
+        sClass: text-center
+
+      - name: n_approved_courses
+        type: integer
+        label: "# Enrolled approved programs"
+        category: Enrollment
+        mData: n_approved_courses
+        sClass: text-center
+
+      - name: first_enrollment
+        type: datetime
+        label: "Date of first enroll"
+        category: Enrollment
+        mData: first_enrollment
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: last_enrollment
+        type: datetime
+        label: "Date of last enroll"
+        category: Enrollment
+        mData: last_enrollment
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: n_access
+        type: integer
+        label: "# times logged in"
+        category: Access
+        mData: n_access
+        sClass: text-center
+
+      - name: first_access
+        type: datetime
+        label: "Date of first access"
+        category: Access
+        mData: first_access
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: last_access
+        type: datetime
+        label: "Date of last access"
+        category: Access
+        mData: last_access
+        sType: datetime-moment
+        sClass: text-center
+
+      - name: min_rating
+        type: integer
+        label: "minimum rate"
+        category: Rating
+        mData: min_rating
+        sClass: text-center
+
+      - name: max_rating
+        type: integer
+        label: "maximum rate"
+        category: Rating
+        mData: max_rating
+        sClass: text-center
+
+      - name: avg_rating
+        type: float
+        label: "Average rate"
+        category: Rating
+        mData: avg_rating
+        sType: table-float1
+        sClass: text-center
+
+      - name: n_rating
+        type: integer
+        label: "# of content rated"
+        category: Rating
+        mData: n_rating
+        sClass: text-center
+
+      - name: n_content
+        type: integer
+        label: "# of content enrolled"
+        category: Roadmap
+        mData: n_content
+        sClass: text-center
+
+      - name: n_progress
+        type: integer
+        label: "# of started content"
+        category: Roadmap
+        mData: n_progress
+        sClass: text-center
+
+      - name: avg_progress
+        type: float
+        label: "Overall progress"
+        category: Roadmap
+        mData: avg_progress
+        sType: table-percentage1
+        sClass: text-center
+
+      - name: avg_started_progress
+        type: float
+        label: "Overall started progress"
+        category: Roadmap
+        mData: avg_started_progress
+        sType: table-percentage1
+        sClass: text-center
+
+      - name: n_tests_avaliable
+        type: integer
+        label: "# Avaliable tests"
+        category: Tests
+        mData: n_tests_avaliable
+        sClass: text-center
+
+      - name: n_tests_tried
+        type: integer
+        label: "# Test taken"
+        category: Tests
+        mData: n_tests_tried
+        sClass: text-center
+
+      - name: n_execution_tries
+        type: integer
+        label: "# Test executions taken"
+        category: Tests
+        mData: n_execution_tries
+        sClass: text-center
+
+      - name: max_tries_in_test
+        type: integer
+        label: "Maximum test repetition"
+        category: Tests
+        mData: max_tries_in_test
+        sClass: text-center
+
+      - name: all_tries_avg_score
+        type: float
+        label: "Average score in teste on all tries"
+        category: Tests
+        mData: all_tries_avg_score
+        sType: table-percentage1
+        sClass: text-center
+
+
+      - name: avg_user_score
+        type: float
+        label: "Average score in tests"
+        category: Tests
+        mData: avg_user_score
+        sType: table-percentage1
+        sClass: text-center
+
+      - name: n_total_pass
+        type: integer
+        label: "# Tests passed"
+        category: Tests
+        mData: n_total_pass
+        sClass: text-center
+
+      - name: n_total_failed
+        type: integer
+        label: "# Tests failed"
+        category: Tests
+        mData: n_total_failed
         sClass: text-center
 
     filters: 
@@ -227,4 +408,91 @@ reports:
       #      sClass: text-left
       #      label: Country
 
+  programs:
+    title: > 
+      <i class="fa fa-graduation-cap"></i>
+      Programs
+    model: programs
+    fields:
+        #`c`.`area_id` AS `area_id`,
+        #`c`.`description` AS `description`,
+        #`c`.`objectives` AS `objectives`,
+        #`c`.`goals` AS `goals`,
+        #`c`.`duration_units` AS `duration_units`,
+        #`c`.`duration_type` AS `duration_type`,
+        #`c`.`price_total` AS `price_total`,
+        #`#`.`price_step_units` AS `price_step_units`,
+        #`c`.`price_step_type` AS `price_step_type`,
+        #`c`.`archive` AS `archive`,
+        #`c`.`created` AS `created`,
+        #`c`.`language_id` AS `language_id`,
+        #`c`.`image_id` AS `image_id`,
+      - name: id
+        type: integer
+        label: Id
+        category: General
+        default: true
+        freeze: true
+        mData: id
+        sClass: text-center
 
+      - name: name
+        type: string
+        label: Name
+        category: General
+        default: true
+        mData: name
+
+      #- name: coordinator.name
+      #  type: string
+      #  label: Coordinator Name
+      #  category: General
+      #  default: false
+      #  mData: coordinator.name
+
+      #- name: coordinator.surname
+      #  type: string
+      #  label: Coordinator SurName
+      #  category: General
+      #  default: false
+      #  mData: coordinator.surname
+
+      - name: active
+        type: bool
+        label: Active
+        category: General
+        mData: active
+        sType: table-boolean
+        sClass: text-center
+
+      - name: n_users
+        type: integer
+        label: "# of enrolled Users"
+        category: General
+        mData: n_users
+        sClass: text-center
+
+      - name: n_courses
+        type: integer
+        label: "# of courses"
+        category: General
+        mData: n_courses
+        sClass: text-center
+
+    filters: 
+    - id: name
+      label: Name
+      type: string
+      no_invert: true
+    
+    - id: is_supplier
+      label: Is Supplier
+      type: integer
+      input: radio
+      values: {1: "Yes", 0: "No"}
+      operators: [equal]
+      no_invert: true
+    datatable :
+      fixedHeader: true
+      sAjaxSource: /module/report/items/programs/datatable
+      buttons: []

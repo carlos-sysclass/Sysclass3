@@ -238,7 +238,14 @@ class Unit extends Model
         }
 
         foreach($contents as $content) {
-            $result['contents'][] = $content->getFullTree($user, $only_active);
+            $content_tree = $content->getFullTree($user, $only_active);
+
+            if ($content->content_type == "video") {
+                $result['rating'] = $content_tree['rating'];
+                //$result['rating'] = '0.7548';
+            }
+
+            $result['contents'][] = $content_tree;
         }
 
         if ($this->type == "test" && ($test = $this->getTest())) {

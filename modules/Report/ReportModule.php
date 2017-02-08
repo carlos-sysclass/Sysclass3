@@ -24,14 +24,14 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             $total = Report::count("active = 1");
             $report = Report::FindFirst();
 
-            if ($total == 1) {
-                $report = Report::FindFirst("active = 1");
-                $link = 'show/' . $report->id;
-            } elseif ($total > 1) {
+            //if ($total == 1) {
+            //    $report = Report::FindFirst("active = 1");
+            //    $link = 'show/' . $report->id;
+            //} elseif ($total > 1) {
                 $link = 'view';
-            } else {
-                return false;
-            }
+            //} else {
+            //    return false;
+            //}
 
             return array(
                 'administration' => array(
@@ -135,6 +135,19 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 return true;
             }
         );
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/add")
+     */
+    public function addPage()
+    {
+        $datasources = ReportDatasource::find();
+        $this->putItem("datasources", $datasources->toArray());
+
+        parent::addPage($id);
     }
 
     /**

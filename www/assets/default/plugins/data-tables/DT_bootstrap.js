@@ -198,9 +198,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-icon' ]
 		},
-
-
-
 		/**
 		 * PLEASE REMOVE THIS FUNCTION FROM HERE, BECAUSE THE STRONG COUPLING
 		 */
@@ -212,6 +209,39 @@ $.extend( true, $.fn.dataTable.defaults, {
 				return "";
 			},
 			"aTargets": [ 'concatenate-user' ]
+		},
+
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					// CHECK IF ROW HAS A CURRENCY FIELD AND UPDATE BY TYPE
+					return data;
+					return numeral(data).format('0.0');
+				} else {
+					return parseFloat( data );
+				}
+				return data;
+			},
+			"bSearchable" 	: true,
+			"bSortable"		: true,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-float1' ]
+		},
+		{
+			"mRender": function ( data, type, row ) {
+				if (type == 'display' || type == 'filter') {
+					// CHECK IF ROW HAS A CURRENCY FIELD AND UPDATE BY TYPE
+					//var floatValue = parseFloat( data );
+					console.warn(data);
+					return numeral(data).format('0[.]0%');
+				} else {
+					return parseFloat( data );
+				}
+			},
+			"bSearchable" 	: true,
+			"bSortable"		: true,
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-percentage1' ]
 		},
 		{
 			"mRender": function ( data, type, row ) {

@@ -8,13 +8,13 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
 			user : Backbone.Model.extend({
 				idAttribute : "user_id",
 				urlRoot : function() {
-					return "/module/roles/item/users/" + this.get("role_id")
+					return "/module/roles/users/" + this.get("role_id")
 				} 
 			}),
 			group : Backbone.Model.extend({
 				idAttribute : "group_id",
 				urlRoot : function() {
-					return "/module/roles/item/groups/" + this.get("role_id")
+					return "/module/roles/groups/" + this.get("role_id")
 				} 
 			})
 		}
