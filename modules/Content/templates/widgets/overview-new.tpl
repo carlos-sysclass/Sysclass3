@@ -52,7 +52,7 @@ _before_init_functions.push(function() {
 
 .fa.rating-star {
   color: #ffc20e;
-  font-size: 18px !important;
+  font-size: 14px !important;
   letter-spacing: 0.5px;
 }
 </style>
