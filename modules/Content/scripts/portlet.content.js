@@ -180,7 +180,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				    disableFadeOut: true,
 				    allowPageScroll : true,
 				    wheelStep : 2,
-				    height: '379px',
+				    height: '349px',
 				};
        			this.$(".program-description-content-scroller").slimScroll(scrollOptions);
 
@@ -345,7 +345,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '342px',
+					    height: '312px',
 					}
 			    });
 			},
@@ -612,7 +612,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			        },
 			        scrollY : true,
 			        slimScroll : {
-					    height: '342px',
+					    height: '312px',
 					}
 			    });
     			//$SC.addTable("messages-table-messages", this.tableView);
