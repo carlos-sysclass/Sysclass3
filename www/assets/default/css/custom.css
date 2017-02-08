@@ -2710,13 +2710,13 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
     padding: 5px;
 }
 .concluido .small-box {
-    border: 1px solid #05ae0e;
+/*    border: 1px solid #05ae0e; */
     font-weight: 600;
     padding: 5px;
 }
 
 .pendente .small-box {
-    border: 1px solid #ff3b30;
+/*    border: 1px solid #ff3b30; */
     font-weight: 600;
     padding: 5px;
   }

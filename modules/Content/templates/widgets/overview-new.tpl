@@ -52,7 +52,8 @@ _before_init_functions.push(function() {
 
 .fa.rating-star {
   color: #ffc20e;
-  font-size: 18px !important;
+  font-size: 16px !important;
+  letter-spacing: 1px;
 }
 </style>
 
@@ -1089,6 +1090,32 @@ _before_init_functions.push(function() {
   <!-- Unidade -->
   <td >
     <%= model.name %>
+  </td>
+  <td class="text-center" width="10%">
+    <% if (_.has(model, 'rating')) { %>
+      <%
+      count = 0; 
+      for (var i=1; i <= model.rating; i++) {
+        print ('<i class="fa fa-star rating-star"></i>');
+        count++;
+      } 
+      if (count < model.rating) {
+        var diff = model.rating - count;
+        if (diff > 0) {
+          print ('<i class="fa fa-star-half-o rating-star"></i>');
+          count++;
+        }
+      }
+      if (count < 5) {
+        diff = 5 - count;
+        for (var i=1; i <= diff; i++) {
+          print ('<i class="fa fa-star-o rating-star"></i>');
+          count++;
+        } 
+      }
+      %>
+    <% } else { %>
+    <% } %>
   </td>
   <!-- Instructor -->
   <!-- <td width="15%" class="text-center"></td> -->
