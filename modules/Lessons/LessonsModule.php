@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Lessons;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Contents\Exercise,
+use Sysclass\Services\Storage\Adapter as StorageAdapter,
+    Sysclass\Models\Courses\Contents\Exercise,
     Sysclass\Models\I18n\Language,
     Sysclass\Models\Dropbox\File,
     Sysclass\Models\Content\Course as Classe,
@@ -106,9 +107,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         return array(
             'lessons.content' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
-//                $self->putComponent("jquery-file-upload-image");
-//                $self->putComponent("jquery-file-upload-video");
-//                $self->putComponent("jquery-file-upload-audio");
+
                 $self->putComponent("bootstrap-confirmation");
 
                 $self->putModuleScript("translate", "models.translate");
@@ -119,10 +118,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'conditions' => 'active = 1'
                 ])->toArray();
 
-
                 $userLanguageCode = $this->translate->getSource();
-
-
 
                 foreach ($languages as &$value) {
                     if ($value['code'] == $userLanguageCode) {
@@ -140,7 +136,29 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                 $self->putBlock("storage.library");
 
+                $self->putBlock("lessons.dialogs.auto_translate");
+
                 return true;
+            },
+            'lessons.dialogs.auto_translate' => function($data, $self) {
+                $languages = Language::find([
+                    'conditions' => 'active = 1'
+                ])->toArray();
+
+                $userLanguageCode = $this->translate->getSource();
+
+                foreach ($languages as &$value) {
+                    if ($value['code'] == $userLanguageCode) {
+                        $value['selected'] = true;
+                        break;
+                    }
+                }
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                $self->putItem("languages", $languages);
+
+                $self->putModuleScript("dialogs.auto_translate");
+                $self->putSectionTemplate("dialogs", "dialogs/auto_translate");
             },
             'lessons.dialogs.exercises' => function($data, $self) {
                 $self->putModuleScript("dialogs.exercises");
@@ -725,7 +743,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @Put("/item/lesson_content/{id}/translate")
+     * @Put("/translate/{id}")
      */
     public function translateContent($id)
     {
@@ -736,9 +754,16 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $http_data = $this->request->getPut();
 
 
+        $fileModel = File::findFirstById($id);
 
+        $storage = StorageAdapter::getInstance($fileModel->storage);
+
+
+        /*
         $translateModel = $this->model("translate");
         $lang_codes = $translateModel->getDisponibleLanguagesCodes();
+
+
 
         if (!is_array($http_data) && !in_array($http_data['to'], $lang_codes)) {
             return $this->invalidRequestError($this->translate->translate(""));
@@ -746,41 +771,83 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         if (!in_array($http_data['from'], $lang_codes)) {
             $http_data['from'] = $translateModel->getUserLanguageCode();
         }
+        */
         
         // 1. GET FILE DATA
+        /*
         $contentData = $itemModel->getItem($id);
         if (in_array($contentData['content_type'], self::$suitable_translate_contents)) {
             //var_dump($contentData);
             if (array_key_exists("file", $contentData) && is_array($contentData['file']) && is_numeric($contentData['file']['id'])) {
                 $fileInfo = $this->model("dropbox")->getItem($contentData['file']['id']);
-                //$fileInfo = $this->model("dropbox")->getItem(1453485);
-                if (count($fileInfo) > 0) {
-                    $filestream = $this->model("dropbox")->getFileContents($fileInfo);
 
-                    $parsed = $this->parseWebVTTFile($filestream);
+
+                */
+                //$fileInfo = $this->model("dropbox")->getItem(1453485);
+                //if (count($fileInfo) > 0) {
+
+                    $filestream = $storage->getFilestream($fileModel);
+
+                    if ($filestream) {
+                        $parsed = $this->parseWebVTTFile($filestream);
+
+
+                        $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
+
+                        $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
+
+                        $info = \pathinfo($fileModel->filename);
+
+                        $new_filename = $info['filename'] . "." . $http_data['to'] . "." . $info['extension'];
+                        $remote_path = $info['dirname'] . "/" . $new_filename;
+
+                        $full_path = $fileModel->storage . "/" . $info['dirname'];
+
+                        $filewrapper = $this->helper("file/wrapper");
+
+                        $upload_dir = $filewrapper->getPublicPath($full_path);
+
+                        file_put_contents($upload_dir . "/" . $new_filename , $translatedFilestream);
+
+
+
+                        $status = $storage->addFile($remote_path, $upload_dir . "/" . $new_filename);
+
+                        if ($status) {
+                            $size = filesize($upload_dir . "/" . $new_filename);
+                            @unlink($upload_dir . "/" . $new_filename);
+
+                            $newFile = new File();
+
+                            $newFile->owner_id = $this->user->id;
+                            $newFile->upload_type = $fileModel->upload_type;
+                            $newFile->name = $new_filename;
+                            $newFile->filename = $remote_path;
+                            $newFile->type = $fileModel->type;
+                            $newFile->storage = $fileModel->storage;
+                            $newFile->language_code =  \Locale::getPrimaryLanguage($http_data['to']);
+                            $newFile->locale_code =  $http_data['to'];
+
+                            $newFile->size = $size;
+
+                            $saved = $newFile->save();
+
+                            if ($saved) {
+                                $response = $this->createAdviseResponse($this->translate->translate("File translated."), "success");
+
+                                $contentData = $newFile->toArray();
+
+                            }
+
+                        }
+                    }
 
                     //$tokens = array_column($parsed, "text");
                     // TRANSLATE TOKENS
-
-                    $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
-
-
-                    $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
-
-                    // CREATE FILE
-                    $fileinfo = $this->model("dropbox")->createFile($translatedFilestream, $fileInfo);
-
-                    unset($contentData['id']);
-                    $contentData['info'] = json_encode($fileinfo);
-                    $contentData['file'] = $fileinfo;
-                    $contentData['language_code'] = $http_data['to'];
-                    $contentData['content_type'] = "subtitle-translation";
-                    $contentData['parent_id'] = $id;
-
-                    $contentData['id'] = $itemModel->addItem($contentData);
-
-                    $response = $this->createAdviseResponse($this->translate->translate("File translated."), "success");
+                    
                     return array_merge($response, $contentData);
+
+                    /*
 
                 }
                 exit;
@@ -789,7 +856,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         } else {
             return $this->invalidRequestError($this->translate->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
         }
-
+        */
 
 
 
@@ -798,15 +865,6 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         // 3. SEND TO TRANSLATE SERVICE, PASS A CALLBACK TO RECEIVE THE RESULTS (THE CALLBACK WILL CREATE A NEW FILE IN THE SAME FORMAT)
         // 4. RETURN THE SERVICE INFO TO UI PROCESSING
         exit;
-        // APPLY FILTER
-        if (is_null($filter) || !is_numeric($filter)) {
-            return $this->invalidRequestError();
-        }
-        $itemsData = $itemsCollection->addFilter(array(
-            'active'    => 1,
-            'lesson_id' => $filter/*,
-            "parent_id" => null*/
-        ))->getItems();
     }
 
     public function normatizeSubtitleFile($fileInfo) {
