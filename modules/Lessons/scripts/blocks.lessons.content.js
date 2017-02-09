@@ -1262,10 +1262,19 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         
 
         var baseContentItemViewClass = baseChangeModelViewClass.extend({
+            /*
             events : {
                 "confirmed.bs.confirmation .delete-item"    : "delete",
                 "change :input[name='locale_code']" : "updateLocale"
             },
+            */
+            events : function() {
+                return {
+                    "confirmed.bs.confirmation .delete-item"    : "delete",
+                    "change :input[name='locale_code']" : "updateLocale"
+                }
+            }, 
+
             tagName : "li",
             className : "list-item",
             render : function() {
@@ -1330,7 +1339,27 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         });
 
         var contentSubtitleItemViewClass = baseContentItemViewClass.extend({
-            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'})
+            events : function() {
+                var baseEvents = baseContentItemViewClass.prototype.events.apply(this, arguments);
+
+                baseEvents["click .auto-translate-subtitle"] = "beginAutoTranslation";
+                return baseEvents;
+            }, 
+            template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'}),
+            autoTranslateDialog : app.module("dialogs.auto_translate"),
+            beginAutoTranslation : function() {
+                if (!this.autoTranslateDialog.started) {
+                    this.autoTranslateDialog.start();
+                }
+                this.autoTranslateDialog.getValue(function(data, model) {
+                    this.model.translate(data.locale_code, function() {
+                        // ADD THE NEW CONTENT TO THE COLLLECTION
+                        console.warn(arguments);
+                    });
+
+                    
+                }.bind(this))
+            }
         });
 
         var contentPosterItemViewClass = baseContentItemViewClass.extend({
