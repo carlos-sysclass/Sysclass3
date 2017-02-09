@@ -1348,14 +1348,21 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             template: _.template($("#content-subtitle-item").html(), null, {variable: 'model'}),
             autoTranslateDialog : app.module("dialogs.auto_translate"),
             beginAutoTranslation : function() {
+
                 if (!this.autoTranslateDialog.started) {
                     this.autoTranslateDialog.start();
                 }
                 this.autoTranslateDialog.getValue(function(data, model) {
-                    this.model.translate(data.locale_code, function() {
+                    this.model.translate(data.locale_code, function(data) {
                         // ADD THE NEW CONTENT TO THE COLLLECTION
                         console.warn(arguments);
-                    });
+
+                        var modelClass = app.module("models").dropbox().item;
+
+                        var newFile = new modelClass(data);
+
+                        this.trigger("subtitle:translated", newFile);
+                    }.bind(this));
 
                     
                 }.bind(this))
@@ -1458,11 +1465,22 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         model : model
                     });
 
+                    childView.on("subtitle:translated", function(model) {
+                        // ADDED THE CONTENT
+                        console.warn(this.model);
+
+                        this.model.addFile(model.toJSON());
+
+                        //this.collection.add(model);
+                    }.bind(this));
+
                     this.$(".content-subtitles .subtitle-container").append(childView.render().el);
 
                     app.module("ui").refresh(childView.el);
 
                     this.subtitleViews.push(childView);
+
+
 
                     //subtitleCount++;
                 } else if (model.isPoster()) { 
