@@ -233,6 +233,7 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 			dynamicField : "filters",
 			fieldListView : null,
 			tableView : null,
+			_info : null,
 			initialize : function() {
 				this.listenTo(this.model, "change:datasource_id", this.render.bind(this));
 				//this.listenTo(this.model, "change:datasource_id", this.render.bind(this));
@@ -294,8 +295,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				// RENDER FILTER
 				this.$(".datasource-title").html(info.title);
 
-				
-
 				this.filterView = this.$(".jquery-builder").queryBuilder({
 					plugins: [
 						'bt-tooltip-errors',
@@ -333,15 +332,25 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 			        });
 			    }
 
+				this._info = info;
+
 				this.startDatasource();
 			},
 			startDatasource : function() {
 				var definition = this.model.get(this.dynamicField);
 
 				if (_.has(definition, 'rules') && _.size(definition.rules) > 0) {
+					var fields = this.model.get("report_fields");
+
+					var avaliable_filters = _.pluck(this._info.filters, 'id')
+
+					definition.rules = this.sanitizeRules(definition.rules, avaliable_filters);
+
+					console.warn(definition);
 
 					// REMOVING UNMATCHED RULES
-					var fields = this.model.get("report_fields");
+					/*
+					
 					var rules = [];
 					for (var i in definition.rules) {
 						var rule = definition.rules[i];
@@ -351,6 +360,7 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 					}
 					
 					definition.rules = rules;
+					*/
 
 					if (_.size(definition.rules) > 0) {
 						this.$(".jquery-builder").queryBuilder('setRules', definition, {allow_invalid : true});
@@ -384,8 +394,20 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				api.columns().every(function () {
 					this.visible($.inArray(this.dataSrc(), fields) != -1);
 				});
+			},
+			sanitizeRules : function(rules, fields) {
+				var result = [];
+				for (var i in rules) {
+					var rule = rules[i];
+					if (_.has(rule, 'rules')) {
+						rule.rules = this.sanitizeRules(rule.rules, fields);
+						result.push(rule);
+					} else if ($.inArray(rule.field, fields) != -1) {
+						result.push(rule);
+					}
+				}
+				return result;
 			}
-
 		});
 
 		//alert(1);
