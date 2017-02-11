@@ -3,8 +3,7 @@
     {include "`$smarty.current_dir`/../blocks/table.tpl" 
     
     T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_LIST_CONTEXT
-    T_MODULE_ID="organization-list"
-    FORCE_INIT=1}
+    T_MODULE_ID="organization-social-list"}
 
 
 	<a href="javascript:void(0);" class="btn btn-sm btn-link social-addanother">

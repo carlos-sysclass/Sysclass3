@@ -205,20 +205,25 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			removeItem : function(e) {
-				
 				e.preventDefault();
-				var data = this.oTable._($(e.currentTarget).closest("tr"));
+				//var data = this.oTable._($(e.currentTarget).closest("tr"));
 
-				var model = this.getTableItemModel(data[0]);
+				//console.warn(data);
 
-				this.oTable
-					.api()
-					.row( $(e.currentTarget).closest("tr") )
+				var tr = $(e.currentTarget).closest("tr");
+				var row = this.getApi().row(tr);
+        		var data = row.data();				
+				var model = this.getTableItemModel(data);
+
+				row
 					.remove()
 					.draw();
 
+					console.warn(model.toJSON());
+
 				if (model) {
 					model.destroy();
+					alert(2);
 				} else {
 					this.trigger("action.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), "remove");
 				}
@@ -300,11 +305,14 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
         	// EVENT HANDLERS HELPERS
         	_cellClickHandler : function(e) {
-        		var el = $(e.currentTarget);
-				var tr = el.closest('tr');
-    			var row = this.getApi().row(tr);
-        		var data = row.data();
-        		var model = this.getTableItemModel(data);
+        		var el = $(e.currentTarget)
+				var tr = el.closest("tr");
+				var row = this.getApi().row(tr);
+        		var data = row.data();				
+				var model = this.getTableItemModel(data);
+       		
+        		//var model = this.getTableItemModel(data);
+        		//console.warn(model);
 
         		this.trigger("cellclick.datatable", model, data, el);
         	},

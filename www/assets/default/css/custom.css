@@ -2757,3 +2757,7 @@ a.editable-click:hover {
 .file-loader .progress-mini {
   height: 5px;
 }
+
+#organization-details-carroussel {
+  padding: 0 15px;
+}
