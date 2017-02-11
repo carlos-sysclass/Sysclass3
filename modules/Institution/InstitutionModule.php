@@ -31,10 +31,13 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             },
             'organization.social.dialog' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $languages = Language::find("active = 1");
-                $this->putitem("languages", $languages->toArray());
+                $languages = Language::find([
+                    'conditions' => 'active = 1'
+                ])->toArray();
 
-                $self->putComponent("data-tables");
+                $self->putItem("languages", $languages);
+
+                //$self->putComponent("datatables");
                 $self->putComponent("select2");
                 //$self->putComponent("bootstrap-editable");
 
@@ -52,9 +55,8 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
                 $this->putBlock("organization.social.dialog");
 
 
-                $self->putComponent("data-tables");
+                $self->putComponent("datatables");
                 $self->putComponent("select2");
-                //$self->putComponent("bootstrap-editable");
 
                 $block_context = $self->getConfig("blocks\\organization.social.list\\context");
                 $self->putItem("organization_social_list_context", $block_context);

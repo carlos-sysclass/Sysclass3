@@ -374,8 +374,27 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
             source : baseModelClass.extend({
                 urlRoot : "/module/storage/item/source" // CHANGE ALL TO STORAGE MODULE
             })
-        }
+        },
+        organization : {
+            item : {
+                me : baseModelClass.extend({
+                    urlRoot : "/module/institution/item/me"
+                }),
+                details : baseModelClass.extend({
+                    idAttribute : 'locale_code',
+                    urlRoot : function() {
+                        var baseUrl = "/module/institution/item/details";
 
+                        if (this.get("id")) {
+                            baseUrl = baseUrl + "/" + this.get("id");
+                        }
+
+                        return baseUrl;
+                        
+                    }
+                })
+            }
+        }
     };
 
     this.getBaseModel = function() {
@@ -396,6 +415,10 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
 
     this.content = function() {
         return models.content;
+    };
+
+    this.organization = function() {
+        return models.organization;
     };
 
 
