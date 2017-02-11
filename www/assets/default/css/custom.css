@@ -2619,7 +2619,8 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   margin-bottom: 0px;
 }
 #institution-widget .panel-body {
-  min-height: 260px;  
+  max-height: 260px;  
+  min-height: 260px;
 }
 .btn-compressed {
   padding-left: 3px;
@@ -2694,8 +2695,14 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   border-radius: 0 !important;
 }
 
+.organization-country-title {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .organization-country-image {
   height: 15px;
+  display: inline !important;
 }
 
 .institution-button-container h5 {
@@ -2759,5 +2766,5 @@ a.editable-click:hover {
 }
 
 #organization-details-carroussel {
-  padding: 0 15px;
+  padding: 0 10px;
 }

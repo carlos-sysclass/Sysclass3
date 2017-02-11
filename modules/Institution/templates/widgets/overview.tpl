@@ -83,7 +83,7 @@
 		{foreach $variables as $index => $info}
 			<li>
 			<!-- <div class="col-lg-6 col-md-6 col-xs-6"> -->
-				<h5>
+				<h5 class="organization-country-title">
 					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="height: 15px;">
 					{$socials[$index].country_name}
 				</h5>
