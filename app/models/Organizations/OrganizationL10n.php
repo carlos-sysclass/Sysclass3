@@ -13,10 +13,16 @@ class OrganizationL10n extends Model
 
     public static function findUnique($id, $data) {
 
-    	if (array_key_exists('language_code', $data)) {
+        $ids = explode("/", $id);
+
+        $id = $id[0];
+
+        $lang_code = $data['locale_code'] ? $data['locale_code'] : $ids[1];
+
+    	//if (array_key_exists('language_code', $data)) {
     		$item = self::findFirst([
-    			'conditions' => 'id = ?0 AND language_code = ?1',
-    			'bind' => [$id, $data['language_code']]
+    			'conditions' => 'id = ?0 AND locale_code = ?1',
+    			'bind' => [$id, $lang_code]
     		]);
 
     		if (!$item) {
@@ -26,7 +32,7 @@ class OrganizationL10n extends Model
     		}
 
     		return $item;
-    	}
+    	//}
     }
 
 }
