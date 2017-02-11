@@ -187,7 +187,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 },
                 translate : function(to, callback) {
                     if (!_.isEmpty(this.get("locale_code"))) {
-                    $.ajax(
+                        $.ajax(
                             "/module/lessons/translate/" + this.get("id"),
                             {
                                 data: {

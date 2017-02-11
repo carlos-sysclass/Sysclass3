@@ -29,6 +29,11 @@ class QueryBuilderParser extends Component {
         );
     }
     public function parse($rules) {
+        /*
+        echo "<pre>";
+        print_r($rules);
+        */
+        
         $this->conditions = "";
         $this->bind = [];
 
