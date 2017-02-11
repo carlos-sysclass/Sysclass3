@@ -22,6 +22,7 @@ $SC.module("panel.institution", function(mod, app, Backbone, Marionette, $, _) {
 				responsive : true,
 				infiniteLoop : true,
 				controls : false,
+				pager : false,
 				auto : true
             });
 	    }
