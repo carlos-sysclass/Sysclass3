@@ -36,12 +36,12 @@ dashboard:
                     sm: 12
                     xs: 12
     widgets:
-        #1: ["users.overview", "notification.lastest"]
+        1: ["users.overview", "notification.lastest"]
         2: ["institution.overview"]
-        #3: ["content.overview"]
-        #4: ["messages.inbox"]
-        #6: ["advisor.chat"]
-        #7: ["calendar"]
+        3: ["content.overview"]
+        4: ["messages.inbox"]
+        6: ["advisor.chat"]
+        7: ["calendar"]
         #1: []
         #2: []
         #3: []
