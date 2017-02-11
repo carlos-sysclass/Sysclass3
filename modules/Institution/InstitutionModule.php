@@ -73,12 +73,11 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
 
     public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
-
-
         $organization = Organization::findFirstById(1);
 
         if (in_array('institution.overview', $widgetsIndexes)) {
-            //$this->putModuleScript("widget.institution");
+            $this->putComponent("bxslider");
+            $this->putModuleScript("widget.institution");
 
             $data = $organization->toArray(["details", "logo"]);
 

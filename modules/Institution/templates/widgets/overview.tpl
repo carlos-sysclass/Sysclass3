@@ -28,6 +28,20 @@
 
 	{/if}	
 
+	{if $social.twitter}
+		{$text=translateToken value="Twitter"}
+
+		{$variables[$index].twitter=['link' => "https://twitter.com/{$social.twitter}",'icon'=>'fa-twitter','text'=>$text]}
+
+	{/if}	
+
+	{if $social.skype}
+		{$text=translateToken value="Skype"}
+
+		{$variables[$index].skype=['link' => "skype://{$social.skype}",'icon'=>'fa-skype','text'=>$text]}
+
+	{/if}	
+
 	{if $social.street && $social.street_number}
 		{$text=translateToken value="View Map"}
 
@@ -64,9 +78,11 @@
 	{/if}
 -->
 {if $socials|count > 1}
-	<div class="institution-button-container row">
+<div class="" id="organization-details-carroussel">
+    <ul class="carroussel">
 		{foreach $variables as $index => $info}
-			<div class="col-lg-6 col-md-6 col-xs-6">
+			<li>
+			<!-- <div class="col-lg-6 col-md-6 col-xs-6"> -->
 				<h5>
 					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="height: 15px;">
 					{$socials[$index].country_name}
@@ -77,9 +93,11 @@
 			            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
 			        </a>
 				{/foreach}
-			</div>
+			<!-- </div> -->
+			</li>
 		{/foreach}
-	</div>
+    </ul>
+</div>
 {else}
 	{$info=$variables[0]}
 	{$total=$info|count}
