@@ -90,25 +90,29 @@ class Unit extends Model
         return $result;
     }
 
-    public static function findWithRating($params) {
+    public static function findUnitsWithRating($params) {
         $items = self::find($params);
 
         $result = [];
  
         foreach($items as $itemObj) {
-            $item = $itemObj->toArray(); 
-            $contents = $itemObj->getContents();
+            if ($itemObj->type == 'lesson') {
+                $item = $itemObj->toArray(); 
+                $course = $itemObj->getCourse();
+                $item['course'] = $course->toArray();
+                $contents = $itemObj->getContents();
 
-            foreach($contents as $content) {
-                $content_tree = $content->getFullTree($user, $only_active);
+                foreach($contents as $content) {
+                    $content_tree = $content->getFullTree($user, $only_active);
 
-                if ($content->content_type == "video") {
-                    $item['rating'] = $content_tree['rating'];
-                    //$result['rating'] = '0.7548';
+                    if ($content->content_type == "video") {
+                        $item['rating'] = $content_tree['rating'];
+                        //$result['rating'] = '0.7548';
+                    }
+                   
                 }
-               
+                $result[] = $item;
             }
-            $result[] = $item;
         }
 
         return $result;

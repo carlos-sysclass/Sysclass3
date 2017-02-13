@@ -210,9 +210,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 			"sClass"		: "text-center",
 			"aTargets": [ 'table-rating' ]
 		},
-
-
-
 		{
 			"mRender": function ( data, type, row ) {
 				if (!_.isNull(data)) {
