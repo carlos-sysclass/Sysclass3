@@ -50,11 +50,6 @@ _before_init_functions.push(function() {
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
 
-.fa.rating-star {
-  color: #ffc20e;
-  font-size: 16px !important;
-  letter-spacing: 1px;
-}
 </style>
 
 <div>

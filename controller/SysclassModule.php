@@ -755,7 +755,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     if (is_array($globalOptions)) {
                         foreach($globalOptions as $index => $option) {
-                            $option['link'] = Plico\Text::vksprintf($option['link'], $item->toArray());
+                            $option['link'] = Plico\Text::vksprintf($option['link'], $items[$key]);
 
                             $items[$key]['options'][$index] = $option;
                         }

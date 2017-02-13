@@ -175,6 +175,46 @@ $.extend( true, $.fn.dataTable.defaults, {
 		},
 		{
 			"mRender": function ( data, type, row ) {
+				if (_.isNull(data)) {
+					data = 0;
+				}
+				if (type == 'display') {
+					
+					var rating = parseFloat(data);
+					var result = "";
+					var count = 0; 
+					
+      				for (var i=1; i <= rating; i++) {
+        				result = result + '<i class="fa fa-star rating-star"></i>';
+        				count++;
+      				} 
+      				if (count < rating) {
+        				var diff = rating - count;
+        				if (diff > 0) {
+        					result = result + '<i class="fa fa-star-half-o rating-star"></i>';
+					        count++;
+        				}
+      				}
+      				if (count < 5) {
+        				diff = 5 - count;
+        				for (var i=1; i <= diff; i++) {
+          					result = result + '<i class="fa fa-star-o rating-star"></i>';
+          					count++;
+        				} 
+      				}
+
+      				return result;
+				}
+				return parseFloat(data);;
+			},
+			"sClass"		: "text-center",
+			"aTargets": [ 'table-rating' ]
+		},
+
+
+
+		{
+			"mRender": function ( data, type, row ) {
 				if (!_.isNull(data)) {
 					var floatValue = parseFloat( data );
 					if (type == 'display') {
