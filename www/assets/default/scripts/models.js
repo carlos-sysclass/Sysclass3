@@ -184,6 +184,25 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 */
                 isMaterial : function() {
                     return !this.isVideo() && !this.isSubtitle() && !this.isAudio() && !this.isImage() /* && !this.isExercise()*/;
+                },
+                translate : function(to, callback) {
+                    if (!_.isEmpty(this.get("locale_code"))) {
+                        $.ajax(
+                            "/module/lessons/translate/" + this.get("id"),
+                            {
+                                data: {
+                                    from: this.get("locale_code"),
+                                    to: to
+                                },
+                                method : "PUT",
+                                success : function(data, textStatus, jqXHR ) {
+                                    if (_.isFunction(callback)) {
+                                        callback(data);
+                                    }
+                                }
+                            }
+                        );
+                    }
                 }
             }),
             collection : Backbone.Collection.extend({
@@ -219,22 +238,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                         defaults['content_type'] = 'subtitle';
                         return defaults;
                     },
-                    //urlRoot: "/module/lessons/datasource/lesson_content/",
-                    translate : function(from, to) {
-                        $.ajax(
-                            this.url() + "/translate",
-                            {
-                                data: {
-                                    from: from,
-                                    to: to
-                                },
-                                method : "PUT",
-                                success : function(data, textStatus, jqXHR ) {
-                                    mod.lessonContentCollection.add(data);
-                                }
-                            }
-                        );
-                    }
+
                 }),
                 poster : baseContentModelClass.extend({
                     defaults : function() {
@@ -370,8 +374,27 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
             source : baseModelClass.extend({
                 urlRoot : "/module/storage/item/source" // CHANGE ALL TO STORAGE MODULE
             })
-        }
+        },
+        organization : {
+            item : {
+                me : baseModelClass.extend({
+                    urlRoot : "/module/institution/item/me"
+                }),
+                details : baseModelClass.extend({
+                    idAttribute : 'locale_code',
+                    urlRoot : function() {
+                        var baseUrl = "/module/institution/item/details";
 
+                        if (this.get("id")) {
+                            baseUrl = baseUrl + "/" + this.get("id");
+                        }
+
+                        return baseUrl;
+                        
+                    }
+                })
+            }
+        }
     };
 
     this.getBaseModel = function() {
@@ -392,6 +415,10 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
 
     this.content = function() {
         return models.content;
+    };
+
+    this.organization = function() {
+        return models.organization;
     };
 
 

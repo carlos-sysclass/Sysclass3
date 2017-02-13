@@ -31,6 +31,11 @@ crud:
           sClass: text-center
           label: Active
 
+        - mData: rating
+          sType: table-rating
+          sClass: text-center
+          label: Rating
+
         - mData: options
           sType: table-options
           sClass: text-center
@@ -53,6 +58,7 @@ crud:
 models:
   me: 
     class: Sysclass\Models\Content\Unit
+    listMethod: findWithRating
     exportMethod: ["toFullArray", ["Course"]]
   lesson-content:
     class: Sysclass\Models\Content\UnitContent

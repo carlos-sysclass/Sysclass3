@@ -408,9 +408,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $itemModel = $this->getModelData($model, $id, $data);
 
-        //var_dump($itemModel);
-        //exit;
-
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
@@ -441,7 +438,10 @@ abstract class SysclassModule extends BaseSysclassModule
                 */
 
                 $itemModel->assign($data);
-                $itemModel->id = $id;
+                $ids = explode("/", $id);
+                if (count($ids) == 1) {
+                    $itemModel->id = $id;
+                }
 
                 $this->eventsManager->collectResponses(true);
                 
@@ -755,7 +755,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     if (is_array($globalOptions)) {
                         foreach($globalOptions as $index => $option) {
-                            $option['link'] = Plico\Text::vksprintf($option['link'], $item->toArray());
+                            $option['link'] = Plico\Text::vksprintf($option['link'], $items[$key]);
 
                             $items[$key]['options'][$index] = $option;
                         }

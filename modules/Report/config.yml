@@ -138,8 +138,16 @@ reports:
       - name: how_did_you_know
         type: bool
         label: How did you know?
-        category: General
+        category: Custom
         mData: how_did_you_know
+        sType: table-boolean
+        sClass: text-center
+
+      - name: is_supplier
+        type: bool
+        label: Is Supplier?
+        category: Custom
+        mData: is_supplier
         sType: table-boolean
         sClass: text-center
 

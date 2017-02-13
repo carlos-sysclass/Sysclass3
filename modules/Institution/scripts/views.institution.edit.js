@@ -7,23 +7,75 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 
 	mod.on("start", function(opt) {
 
+		var detailsClass = app.module("models").organization().item.details;
+
+		var tableViewClass = $SC.module("utils.datatables").tableViewClass;
+
+		var detailsTableViewClass = tableViewClass.extend({
+			getTableItemModel : function(data) {
+				return new detailsClass(data);
+			}
+		})
+
+
+//datatable-option-edit
+		
+
 		var socialInfoViewClass = Backbone.View.extend({
 			events : {
 				"click .social-addanother" : "addNewSocialInfo"
 			},
 			socialInfoDialog : app.module("dialogs.institution.social"),
+
 			initialize : function() {
 				if (!this.socialInfoDialog.started) {
 					this.socialInfoDialog.start();
 				}
-				this.socialInfoDialog.setModel(
-					opt.module.getModel()
-				);
 
+				this.model = opt.module.getModel();
+				/*
+				this.socialInfoDialog.setModel(
+					
+				);
+				*/
+
+				var additionalContext = $SC.getResource("organization-social-list_context");
+
+        		this.tableView = new detailsTableViewClass({
+            		el : "#organization-social-list-table",
+            		datatable : {
+                		"sAjaxSource": additionalContext.sAjaxSource + "/" + JSON.stringify({
+                			id : entity_id
+                		}),
+                		"aoColumns" : additionalContext.datatable_fields
+            		}
+        		});
+
+				this.socialInfoDialog.dialogView.on("complete.save", function() {
+					this.tableView.refresh();
+				}.bind(this));
+
+        		var self = this;
+
+        		this.tableView.on("action.datatables", function(el, data, action, evt) {
+        			console.warn(el, data, action, evt);
+        			evt.preventDefault();
+
+        			var model = this.getTableItemModel(data);
+
+        			self.socialInfoDialog.setModel(model);
+        			self.socialInfoDialog.dialogView.render();
+        			self.socialInfoDialog.open();
+        		});
 
 
 			},
 			addNewSocialInfo : function() {
+				var model = new detailsClass({
+					id : this.model.get("id")
+				})
+    			this.socialInfoDialog.setModel(model);
+    			this.socialInfoDialog.dialogView.render();
 				this.socialInfoDialog.open();
 			}
 		});
