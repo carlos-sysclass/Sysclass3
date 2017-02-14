@@ -2619,8 +2619,8 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   margin-bottom: 0px;
 }
 #institution-widget .panel-body {
-  max-height: 260px;  
-  min-height: 260px;
+  max-height: 270px;  
+  min-height: 270px;
 }
 .btn-compressed {
   padding-left: 3px;

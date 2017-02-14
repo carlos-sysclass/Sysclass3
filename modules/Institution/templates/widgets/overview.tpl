@@ -1,7 +1,7 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
-		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 12px; margin-top: 10px; max-height: 70px;" />
+		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 12px; margin-top: 10px; max-height: 80px;" />
     </div>
 </div>
 
