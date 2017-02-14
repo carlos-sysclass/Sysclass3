@@ -49,8 +49,6 @@ $SC.module("grades.form", function(mod, app, Backbone, Marionette, $, _) {
                 		var previousValue = previousSlider.noUiSlider.get();
 
 
-                		console.warn(previousValue);
-
                 		if (!_.isArray(previousValue)) {
 	                		var newValue = previousValue / 2;
 	                		previousSlider.noUiSlider.set(newValue);

@@ -74,7 +74,6 @@ $SC.module("ui.field.phone", function(mod, app, Backbone, Marionette, $, _){
                     var options =  {
                         onKeyPress: function(cep, e, field, options) {
                             var country = mod._getCountryFromInput(field);
-                            //console.warn(this, mod._getCountryFromInput(field));
 
                             if (_.has(mod._Masks, country)) {
                                 var mask_value = mod._Masks[country];

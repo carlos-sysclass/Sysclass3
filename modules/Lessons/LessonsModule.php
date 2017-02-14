@@ -370,6 +370,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function getItemsRequest($model = "me", $type = "default", $filter = null)
     {
         if ($model == "me") {
+
+            return call_user_func_array([parent, 'getItemsRequest'], func_get_args());
+            /*
             $modelRoute = "lessons";
             $optionsRoute = "edit";
 
@@ -382,6 +385,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 }
             }
             $itemsData = $itemsCollection->getItems();
+            */
 
         } elseif ($model == "lesson-and-test") {
             $modelRoute = "base/lessons";

@@ -84,8 +84,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 			this.collection = this.makeCollection();
 
-			console.warn(this.collection);
-
 			this.childContainer.empty();
 
 			if (this.collection.size() === 0) {
@@ -387,7 +385,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
         renderViewItens : function(inputList) {
         	console.info('views/baseClass::renderViewItens');
             // TEMPORARLY DISABLE UPDATE METHOD
-            //console.warn(inputList);
             this.disableDataPooling();
             inputList.each(function(index, inputDOM) {
                 var input = $(inputDOM);
@@ -460,8 +457,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                         }
                     } else {
 		                if (input.hasClass("select2-me")) {
-		                	//console.warn(modelField, values);
-
 		                	if (
 		                		!_.isUndefined(input.data("format-attr"))
 		                		&& _.isObject(_.first(values))

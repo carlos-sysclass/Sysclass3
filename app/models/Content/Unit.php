@@ -20,6 +20,13 @@ class Unit extends Model
 			array('alias' => 'Course')
 		);
 
+        $this->hasOne(
+            "id",
+            "Sysclass\\Models\\Reports\\Report\\Unit",
+            "lesson_id",
+            array('alias' => 'Progress')
+        );
+
 		$this->hasOne(
             "id",
             "Sysclass\\Models\\Content\\Progress\\Unit",
@@ -53,9 +60,6 @@ class Unit extends Model
             "id",
             array('alias' => 'Professor')
         );
-
-
-
     }
 
     public function toFullLessonArray() {
@@ -78,6 +82,34 @@ class Unit extends Model
             $result['progress'] = $progress->toArray();
         } else {
             $result['progress'] = array();
+        }
+
+        return $result;
+    }
+
+    public static function findUnitsWithRating($params) {
+        $items = self::find($params);
+
+        $result = [];
+ 
+        foreach($items as $itemObj) {
+            if ($itemObj->type == 'lesson') {
+                $item = $itemObj->toArray(); 
+                $course = $itemObj->getCourse();
+                $item['course'] = $course->toArray();
+                $contents = $itemObj->getContents();
+
+                foreach($contents as $content) {
+                    $content_tree = $content->getFullTree($user, $only_active);
+
+                    if ($content->content_type == "video") {
+                        $item['rating'] = $content_tree['rating'];
+                        //$result['rating'] = '0.7548';
+                    }
+                   
+                }
+                $result[] = $item;
+            }
         }
 
         return $result;

@@ -606,7 +606,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				$("[href='#unit-tab']").tab('show');
 			},
 			getMappedModel : function() {
-				console.warn(this.model);
+
 			},
 			render : function(e) {
 				console.info('portlet.content/courseUnitsTabViewItemClass::render');

@@ -57,7 +57,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             this._conn = new ab.Session(
                 this._wsUri,
                 function() {
-                    console.warn('WebSocket connection open');
                     var websocket_key = app.userSettings.get("websocket_key");
                     var session_key = $.cookie("SESSIONID");
 
@@ -72,13 +71,11 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                             this.trigger("afterConnection.chat", result);
                         }.bind(this), function (error) {
                             this.trigger("errorConnection.chat", error);
-                            console.warn("error", error);
 
                         }.bind(this));
 
                 }.bind(this),
                 function(code, reason, detail) {
-                    console.warn('WebSocket connection closed');
                     this._conn = null;
                     this.trigger("errorConnection.chat");
 
@@ -96,11 +93,9 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             
 
             if (_.isBoolean(now) && now) {
-                console.warn('WebSocket connection Try #' + this._options.tryCount);
                 mod.startConnection();
             } else {
                 var delay = this._options.delayTime + this._options.tryCount * this._options.tryCount * 25;
-                console.warn('WebSocket connection Try #' + this._options.tryCount + ", delaying for " + delay + "ms");
                 setTimeout(mod.startConnection.bind(this), delay);
             }
         }
@@ -115,7 +110,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     }
 
     this.createQueue = function(topic, title) {
-        console.warn("createQueue");
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
             return false;
@@ -125,7 +119,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             .call("startQueue", topic, title)
             .then(function (result) {
                 //this.trigger("afterConnection.chat", result);
-                console.warn("success", result);
                 var model = new this.models.chat(result);
 
                 var new_topic = model.get("topic");
@@ -137,7 +130,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
 
@@ -162,7 +154,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
     this.parseReceivedTopic = function(topic, data) {
         // CHECK IF IS A COMMAND OR A MESSAGE
-        console.warn("RECEIVE", topic, data);
         if (data.origin == this._token) {
             data.mine = true;
         } else {
@@ -177,7 +168,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             this.trigger("notConnected.chat", error);
             return false;
         }
-        console.warn("SEND", topic, message);
         this._conn.publish(topic, message, false);
     }
 
@@ -194,7 +184,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
 
@@ -207,7 +196,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
     /*
     this.startChatView = function(model) {
-        console.warn("startChatView");
         var topic = model.get("topic");
         if (mod._chatViews[topic] == undefined) {
             mod._chatViews[topic] = new chatViewClass({
@@ -232,7 +220,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
 

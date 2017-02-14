@@ -110,7 +110,6 @@ $SC.module("portlet", function(mod, app, Backbone, Marionette, $, _){
             } else {
 
                 this.scrollEvent = $(document).on("scroll."+this.cid + " resize"+this.cid, function(e) {
-                    //console.warn("isOnScreen", this.$el.isOnScreen(1, 0.3), this);
                     if (this.$el.isOnScreen(1, 0.3)) {
                         $(document).off("scroll."+this.cid + " resize"+this.cid);
                         // CALl VIEW START

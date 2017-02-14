@@ -23,13 +23,18 @@ crud:
         - mData: name
           label: Name
 
-        - mData: class
+        - mData: course.name
           label: Course
 
         - mData: active
           sType: table-boolean
           sClass: text-center
           label: Active
+
+        - mData: rating
+          sType: table-rating
+          sClass: text-center
+          label: Rating
 
         - mData: options
           sType: table-options
@@ -53,6 +58,7 @@ crud:
 models:
   me: 
     class: Sysclass\Models\Content\Unit
+    listMethod: findUnitsWithRating
     exportMethod: ["toFullArray", ["Course"]]
   lesson-content:
     class: Sysclass\Models\Content\UnitContent

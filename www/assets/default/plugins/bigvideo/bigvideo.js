@@ -291,7 +291,6 @@
 				});
 				/*
 				player.one("loadedalldata", function() {
-					console.warn("loadedalldata");
 					wrap.css("visibility", "visible");
 				})
 				*/

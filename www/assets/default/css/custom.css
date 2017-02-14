@@ -2768,3 +2768,9 @@ a.editable-click:hover {
 #organization-details-carroussel {
   padding: 0 10px;
 }
+
+.fa.rating-star {
+  color: #ffc20e;
+  font-size: 16px !important;
+  letter-spacing: 1px;
+}

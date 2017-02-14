@@ -33,7 +33,6 @@ $SC.module("fields", function(mod, app, Backbone, Marionette, $, _) {
                         // Até 31 de dezembro de 2016 para os Códigos Nacionais 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61,62, 63, 64, 65, 66, 67, 68 e 69.
                         //41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 63, 64, 65, 66, 67, 68, 69
                     ];
-                    console.warn(_.contains(ddd9digitos, parseInt(ddd)));
                     if (_.contains(ddd9digitos, parseInt(ddd))) {
                         return '(00) 00000-0000';
                     } else {
@@ -41,7 +40,6 @@ $SC.module("fields", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 } else {
 
-                    console.warn('(00) 0000-0000');
                     return '(00) 0000-0000';
                 }
             },
@@ -50,8 +48,6 @@ $SC.module("fields", function(mod, app, Backbone, Marionette, $, _) {
                     field.mask(phoneBrMaskBehavior.apply({}, arguments), options);
                 }
             };
-
-            console.warn(phoneBrMaskBehavior, spOptions);
 
             $(el).mask(phoneBrMaskBehavior, spOptions);
 
@@ -77,7 +73,6 @@ $SC.module("fields", function(mod, app, Backbone, Marionette, $, _) {
     };
 
     this.handle = function(name, el) {
-        console.warn(name, el);
         if (_.has(handleFunctions, name)) {
             return handleFunctions[name](el);
         }
