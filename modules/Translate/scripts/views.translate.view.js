@@ -31,7 +31,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 			editItem : function(e) {
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 				data = data[0];
-				//console.warn(data[0]);
 				e.preventDefault();
 
 				var modelData = {
@@ -59,7 +58,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 			translateItemWindows : function(e) {
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
 				data = data[0];
-				//console.warn(data[0]);
 				e.preventDefault();
 
 				var modelData = {
@@ -120,7 +118,6 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 				});
 
 				//this.oSettings = this.oTable.api().settings();
-				//console.warn(this.oSettings);
 			}
 		});
 

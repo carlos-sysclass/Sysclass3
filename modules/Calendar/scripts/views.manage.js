@@ -160,7 +160,6 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                         copiedEventObject.className = $(this).attr("data-class");
 
                         // CREATE THE EVENT AND AFTER THAT, RENDER INTO CALENDAR
-                        console.warn(copiedEventObject);
 
                         var model = new mod.models.event(copiedEventObject);
                         model.save();
@@ -222,7 +221,6 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                     */
                     eventClick : function(event, jsEvent, view)
                     {
-                        console.warn(jsEvent);
                         if ($(jsEvent.target).hasClass("remove-event")) {
                             // CREATE THE MODEL AND REMOVE
                             // OPEN DELETE CONFIRMATON DIALOG
@@ -240,7 +238,6 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                             self.stopListening(model);
 
                             self.listenTo(model, "sync", function(model, b, c, d) {
-                                console.warn(model, b, c, d);
 
                                 this.$('#calendar').fullCalendar('refetchEvents');
 
@@ -325,7 +322,6 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                 this.render();
             },
             createEventModel : function (event) {
-                console.warn(event);
                 var eventObject = jQuery.extend(true, {}, event);
 
                 eventObject.start = moment.utc(event.start).unix();
@@ -356,8 +352,6 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                 var type_id = EventObject.type_id;
 
                 var sourceModel = this.collection.get(type_id);
-
-                //console.warn(sourceModel);
 
                 var html = $('<div class="external-event label ' + sourceModel.get("className") + '" ' +
                     'data-class="' + sourceModel.get("className") + '"' +

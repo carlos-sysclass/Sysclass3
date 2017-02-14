@@ -71,7 +71,6 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                     model.set("course_id", this.course_id);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
-                    //console.warn(model);
                 });
             },
             model : mod.periodModelClass,
@@ -129,9 +128,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 //if (this.invalidated || !this.model.get("id")) {
                     this.$el.html(this.template(this.model.toJSON()));
 
-                    //console.warn(this.model.toJSON());
                     if (this.model.get("id")) {
-                        console.warn(this.model.get("id"), this.model.get("active"));
                         if (this.model.get("active") == 0) {
                             this.$el.removeClass("green-stripe");
                             this.$el.removeClass("blue-stripe");
@@ -346,8 +343,6 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 this.opened = opt.opened ? opt.opened : false;
 
                 this.listenTo(this.model, 'sync', this.render.bind(this));
-
-                console.warn('roadmapBlockPeriodItemViewClass.model', this.model.toJSON());
 
                 // CREATE A COLLECTION BASED ON MODEL courses attribute
                 this.collection = new mod.coursesCollectionClass(
@@ -609,7 +604,6 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
 
     app.module("crud.views.edit").on("start", function() {
         var self = this;
-        //console.warn(this.getForm());
 
         mod.listenToOnce(this.getForm(), "form:rendered", function() {
             mod.start({

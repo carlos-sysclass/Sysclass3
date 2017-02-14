@@ -42,7 +42,6 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                     model.set("course_id", this.course_id);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
-                    //console.warn(model);
                 });
             },
             model : mod.groupingModelClass,

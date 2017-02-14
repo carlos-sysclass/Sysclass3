@@ -91,7 +91,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                             $(this).removeAttr("checked");
                         }
                         $(this).trigger("change");
-                        console.warn(event, state, this);
                     }
 
                 }*/);
@@ -143,8 +142,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         };
 						opt.formatResult = function (item, container, query, escapeMarkup) {
 							///console.log(item, container, query, escapeMarkup);
-                            //console.warn(this, item);
-
 
                             var formatAsCallback = jQuery(this.element).data('format-as');
 
@@ -175,7 +172,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         }
                         opt.formatSelection = mod.select2FormatFunctions[formatAsCallback];
                         //opt.minimumResultsForSearch = 3;
-                        //console.warn(opt);
 						$el.select2(opt);
 					} else {
 						opt.minimumResultsForSearch = 10;
@@ -244,7 +240,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 		// datepicker
 		if($('.date-picker', context).length > 0){
-            //console.warn(moment.localeData().longDateFormat('L').toLowerCase());
             
 			$('.date-picker', context).datepicker({
                 format: moment.localeData().longDateFormat('L').toLowerCase(),
@@ -441,7 +436,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     this.handleBootstrapConfirmation = function(context) {
         if ($("[data-toggle=confirmation]", context).size() > 0) {
             $("[data-toggle='confirmation']", context).each(function() {
-//                console.warn($(this).data('confirmationTitle'));
                 $(this).confirmation();
             });
         }
@@ -490,7 +484,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         if ($.fn.mask) {
             if ($("[data-mask-type]", context).size() > 0) {
                 $("[data-mask-type]", context).each(function() {
-                    //console.warn($(this).data("mask-type"), $(this).data("maskType"));
                     if ($(this).data("maskType") == "date") {
                         $(this).mask('00/00/0000', {selectOnFocus: true});
                     }

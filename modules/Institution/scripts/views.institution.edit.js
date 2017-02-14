@@ -58,7 +58,6 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
         		var self = this;
 
         		this.tableView.on("action.datatables", function(el, data, action, evt) {
-        			console.warn(el, data, action, evt);
         			evt.preventDefault();
 
         			var model = this.getTableItemModel(data);
@@ -91,7 +90,6 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 		/*
 		var bindTableEvents = function(table) {
 			this.listenTo(table, "draw.datatables", function(row, data) {
-	    		//console.warn('DRAW', row, data);
 				var exists = userCollection.findWhere({user_id: data['id']});
 
 				var innerInput = $(row).find(".datatable-option-switch");
@@ -122,11 +120,8 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 				} else {
 					userCollection.add(userSwitchModel);
 				}
-				//console.warn('SWITCH', data, exists, this.collection.toJSON());
 			}.bind(this));
 		}.bind(this);
-
-		console.warn(app.getTable('view-users'));
 
 
 		// HANDLE PERMISSION VIEWS, TO INJECT NEWS OBJECT
@@ -176,7 +171,6 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 
 	var bindTableEvents = function(table) {
 		this.listenTo(table, "draw.datatables", function(row, data) {
-    		//console.warn('DRAW', row, data);
 			var exists = userCollection.findWhere({user_id: data['id']});
 
 			var innerInput = $(row).find(".datatable-option-switch");
@@ -207,7 +201,6 @@ $SC.module("views.institution.edit", function(mod, app, Backbone, Marionette, $,
 			} else {
 				userCollection.add(userSwitchModel);
 			}
-			//console.warn('SWITCH', data, exists, this.collection.toJSON());
 		}.bind(this));
 	}.bind(this);
 

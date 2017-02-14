@@ -33,9 +33,6 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 
 				opt.datatable.datatable_fields = opt.fields;
 
-				console.warn(opt.datatable.datatable_fields);
-
-
 				tableViewClass.prototype.initialize.apply(this, [opt]);
 			},
 			createHeader : function(fields) {
@@ -92,8 +89,7 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 					return ($.inArray(field.name, report_fields) != -1);
 				});
 
-				console.warn(fields);
-				
+			
 		        this.tableView = new dynamicHeaderTableViewClass({
 		            el : "#report-datatable",
 		            datatable : _.extend(info.datatable, {
@@ -127,8 +123,6 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 				var api = this.tableView.getApi();
 
 				var fields = this.model.get("report_fields");
-
-				console.warn(fields);
 
 				api.columns().every(function () {
 					this.visible($.inArray(this.dataSrc(), fields) != -1);

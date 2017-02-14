@@ -146,8 +146,6 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				this.model.get('lessons.completed'), this.model.get('lessons.total')
 			);
 			*/
-			//console.warn(this.collection.toJSON());
-
 			this.renderUnit(
 				this.collection.getTotalCompleteUnits(), this.collection.getTotalUnits()
 			);

@@ -126,7 +126,6 @@ $SC.module("dialogs.questions.select", function(mod, app, Backbone, Marionette, 
                 this.close();
 
                 // DESTROY ???
-                //console.warn(_.isFunction(callback));
                 if (_.isFunction(callback)) {
                     callback(this.model.toJSON(), this.model);
                 }
