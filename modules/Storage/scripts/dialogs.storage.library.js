@@ -266,11 +266,9 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                                 self.startLoader();
                                 
 
-                                console.warn(data);
                                 return true;
                             }
                         }
-                        console.warn(2);
                         return false;
                     })
                     .bind('fileuploadfail', function (e, data) {
@@ -302,8 +300,6 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
                     .bind('fileuploadalways', function (e, data) {
                     })
                     .bind('fileuploadprogress', function (e, data) {
-                        console.warn('fileuploadprogress', arguments);
-                        
                         var progress = parseInt(data.loaded / data.total * 100, 10);
                         self.$(".load-total").html(self.formatFileSize(data.loaded));
                         self.$(".load-bitrate").html(self.formatFileSize(data._progress.bitrate / 8));

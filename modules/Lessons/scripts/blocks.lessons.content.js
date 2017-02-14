@@ -65,7 +65,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonExerciseContentQuestionCollectionClass = Backbone.Collection.extend({
             initialize: function(data, opt) {
-                console.warn(data, opt);
                 this.content_id = opt.content_id;
             },
             initialize: function(data, opt) {
@@ -151,7 +150,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             render : function() {
                 var self = this;
 
-                console.warn(this.model.toJSON());
 
                 this.$el.html(this.template(this.model.toJSON()));
                 this.$el.attr("data-content-id", this.model.get("id"));
@@ -159,7 +157,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 this.editor = this.$(":input[type='text']");
 
-                console.warn(this.editor);
 
                 this.editor.on("change", function(e) {
                     self.model.set("content", self.editor.val());
@@ -373,10 +370,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return rows;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -454,10 +449,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         return rows;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -473,7 +466,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
             },
             addRelatedFileContent : function(options) {
-                console.warn(options);
                 var self = this;
                 
                 var model = null;
@@ -566,7 +558,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 // IF MODEL IS SAVED, SO DELETE FROM SERVER
                 this.trigger("timeline-file-content:delete", this.model);
-                //console.warn(this.$el, this.$(".fileupload-subtitle"));
                 //this.$(".fileupload-subtitle").removeClass("disabled").fileupload("enable");
             }
         });
@@ -825,14 +816,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 app.module("dialogs.questions.create").open();
             },
             createQuestion : function(model) {
-                console.warn(model);
 
                 //app.module("dialogs.questions.select").close();
                 this.model.get("exercise").add(model);
                 //this.model.addQuestion(model);
             },
             openSelectDialog : function() {
-                console.warn(this.questionSelectDialog);
                 this.questionSelectDialog.setFilter({
                     content_id : this.model.get("id")
                 }).getValue(function(result) {
@@ -959,10 +948,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         self.jqXHR = null;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -991,7 +978,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         }
                     } else {
                         // GET parent_id SUBVIEW AND DELEGATE RENDERING
-                        //console.warn(this.subviews);
                         //this.subviews[model.get("id")]
                     }
                 }
@@ -1033,7 +1019,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.libraryModule.setPath(path);
 
                 this.libraryModule.getValue(function(files) {
-                    console.warn("openStorageLibrary", files);
 
                     // SAVE THE FILE REFERENCE IN DATABASE
                     var modelClass = app.module("models").dropbox().item;
@@ -1123,13 +1108,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
 
                 this.listenTo(fileContentTimelineView, "timeline-file-content:save", function(model) {
-                    //console.warn(e, model);
                     self.collection.add(model);
                     model.save();
                 });
 
                 this.listenTo(fileContentTimelineView, "timeline-file-content:translate", function(model) {
-                    //console.warn(e, model);
                     self.collection.add(model);
                     model.save();
                 });
@@ -1174,7 +1157,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
 
                 this.listenTo(textContentTimelineView, "timeline-text-content:save", function(model) {
-                    //console.warn(e, model);
                     //self.collection.add(model);
                     //model.save();
                 });
@@ -1355,7 +1337,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.autoTranslateDialog.getValue(function(data, model) {
                     this.model.translate(data.locale_code, function(data) {
                         // ADD THE NEW CONTENT TO THE COLLLECTION
-                        console.warn(arguments);
 
                         var modelClass = app.module("models").dropbox().item;
 
@@ -1405,7 +1386,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
             },
             checkRemove : function(model) {
-                console.warn('REMOVE ONE', model);
                 this.videoViews = _.reject(this.videoViews, function(view) {
                     return view.model.cid == model.cid; 
                 });
@@ -1413,36 +1393,20 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 /*
                 for(var i in this.videoViews) {
                     if (this.videoViews[i].model.cid == model.cid) {
-                        console.warn(this.videoViews[i]);
                         delete this.videoViews[i];
                         break;
                     }
                 }
                 */
-                console.warn(_.size(this.videoViews));
                 if (_.size(this.videoViews) < 2) {
                     this.$(".content-video-empty-container").show();
                 }
-                //console.warn(this.videoViews);
-                //console.warn(a,b,c,d,e);
 
             },
             addOne : function(model) {
-                //console.warn('ADD ONE', model);
                 if (model.isVideo()) {
 
-                    /*
-                    var videoIndex = null;
-                    for(var i in this.videoViews) {
-                        if (_.has(this.videoViews[i], 'model')) {
-                            continue;
-                        } else {
-                            videoIndex = i;
-                            break;
-                        }
-                    }
-                    */
-                    
+                   
                     childView = new contentVideoItemViewClass({
                         model : model,
                         index: _.size(this.videoViews),
@@ -1467,7 +1431,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                     childView.on("subtitle:translated", function(model) {
                         // ADDED THE CONTENT
-                        console.warn(this.model);
 
                         this.model.addFile(model.toJSON());
 
@@ -1563,7 +1526,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.libraryModule.setPath(path);
 
                 this.libraryModule.getValue(function(files) {
-                    console.warn("openStorageLibrary", files);
 
                     // SAVE THE FILE REFERENCE IN DATABASE
                     var modelClass = app.module("models").dropbox().item;
@@ -1594,7 +1556,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             updateLocale : function(e, data) {
                 if (e.added) {
                     var files = this.model.getFiles();
-                    console.warn(files);
                     var file = files.first();
                     file.set("locale_code", e.added.id);
                     file.save();
@@ -1629,12 +1590,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     return view.model.cid == model.cid; 
                 });
 
-                console.warn(_.size(this.videoViews));
                 if (_.size(this.videoViews) < 2) {
                     this.$(".content-video-empty-container").show();
                 }
-                //console.warn(this.videoViews);
-                //console.warn(a,b,c,d,e);
                 */
             },
             addOne : function(model) {
@@ -1675,7 +1633,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.libraryModule.setPath(path);
 
                 this.libraryModule.getValue(function(files) {
-                    console.warn("openStorageLibrary", files);
 
                     // SAVE THE FILE REFERENCE IN DATABASE
                     var modelClass = app.module("models").dropbox().item;
@@ -1735,7 +1692,6 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     this.collection.addVideoContent({
                         title : ""
                     }, function(videoModel) {
-                        console.warn()
                         if (_.isNull(this.contentVideoContainerView)) {
                             this.contentVideoContainerView = new contentVideoContainerViewClass({
                                 el : this.$("#content-video-widget"),
@@ -1772,16 +1728,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     lesson_id :  mod.entity_id
                 });
 
-                console.warn(materialsCollection);
-                console.warn(materialsCollection.toJSON());
-
                 if (_.isNull(this.contentMaterialsContainerView)) {
                     this.contentMaterialsContainerView = new contentMaterialsContainerViewClass({
                         el : this.$("#content-materials-widget"),
                         collection  : materialsCollection,
                         parent : this
                     });
-                    //console.warn(this.$("#content-materials-widget"));
                 } else {
                     // JUST SET THE MODEL
                     //this.contentMaterialsContainerView.setCollection(materialsCollection);

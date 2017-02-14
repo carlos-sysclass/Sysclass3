@@ -23,7 +23,6 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             saveProgress : function() {
                 console.info('tests.execute/testExecutionViewClass::saveProgress');
 
-                console.warn(this.model.toJSON());
                 this.model.save();
             },
             onRender : function() {
@@ -39,7 +38,6 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                     /// SET INPUT AS READ_ONLY
 
                 } else {
-                    //console.warn("write");
                 }
             }
         });
@@ -142,10 +140,8 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                     }
 
                     this.renderProgress();
-                    console.warn("readonly");
                     /// SET INPUT AS READ_ONLY
                 } else {
-                    console.warn("write");
                 }
             }
         });
@@ -182,7 +178,6 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                 if (!this.testInfoModule.started) {
                     this.testInfoModule.start();
                 }
-                console.warn(this.model.toJSON());
                 
                 var testModel = new mod.models.test({
                     id : this.model.get("test_id")

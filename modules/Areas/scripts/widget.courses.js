@@ -256,8 +256,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//this.$(".video-js").hide();
 				var entityData = this.model.get("data");
 
-				console.warn(this.videoJS);
-
 				if (this.videoJS != false) {
 					this.videoJS.dispose();
 				}
@@ -528,7 +526,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 	                forcePlaceholderSize: true,
 	                tolerance: "intersect",
 					sort : function( event, ui ) {
-						console.warn(event, ui);
+						
 					}
 	            });
 
@@ -555,7 +553,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 							// FILTER CLASSES TO RETURN ONLY CLASSES IN THAT SEASON
 							/*
 							var classesArray = this.collections.classes.filter(function (classModel) {
-								console.warn(model.get("classes"), classModel.get("id"), _.contains(model.get("classes"), classModel.get("id")));
 								return _.contains(model.get("classes"), classModel.get("id"));
 							});
 							*/
@@ -791,8 +788,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			//courseRoadmapTabView : null,
 			initialize: function() {
 				console.info('portlet.courses/classViewClass::initialize');
-
-				//console.warn(this.model.toJSON());
 
 				/*
 				var classesCollectionClass = app.module("models.courses").classesCollectionClass;

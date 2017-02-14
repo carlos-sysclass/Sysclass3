@@ -21,8 +21,6 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
         } else if (status == Strophe.Status.CONNECTED) {
             console.log('Strophe is connected.');
 
-            console.warn($pres().tree());
-
             this.send($pres().tree());
 
             defered = this.roster.get();

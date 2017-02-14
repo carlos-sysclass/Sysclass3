@@ -397,7 +397,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
-				console.warn(this.model.toJSON());
 				console.info('portlet.courses/courseDescriptionTabViewClass::render');
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
@@ -410,7 +409,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function(e) {
-				console.warn(this.model.toJSON());
 				console.info('portlet.courses/programMoreinfoTabViewClass::render');
 				this.$(".scroller").empty().append(this.template(this.model.toJSON()));
 			}
@@ -481,7 +479,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			tagName : "tr",
 			template : _.template($("#tab_course_classes-item-template").html(), null, {variable: "model"}),
 			setClassId : function(e) {
-				//console.warn(this.model.toJSON());
 				app.userSettings.set("class_id", this.model.get("id"));
 
 				//$("[href='#class-tab']").click();
@@ -696,8 +693,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					el : this.$("#tab_class_tests table tbody"),
 					model : this.model
 				});
-
-				console.warn(this.model.toJSON());
 
 				this.blockUi('No Class Selected');
 
@@ -1234,7 +1229,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var contentsCollection = new mod.collections.contents(this.model.get("contents"));
 				this.collection = contentsCollection.getExercises();
 
-				console.warn(this.collection);
 			},
 			loadExerciseDetails : function(model) {
 				/*

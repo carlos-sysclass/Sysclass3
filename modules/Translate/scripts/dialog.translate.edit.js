@@ -122,7 +122,6 @@ $SC.module("dialog.translate.edit", function(mod, app, Backbone, Marionette, $, 
 		 		*/
 		 		baseFormClass.prototype.save.apply(this);
 
-		 		//console.warn(this.model.toJSON());
 		 		this.trigger("token:save", this.model);
 		 		this.close();
 		 	},

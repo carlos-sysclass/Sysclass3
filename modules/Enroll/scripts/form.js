@@ -42,7 +42,6 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                 },
                 /*
                 setOrder : function(order) {
-                    console.warn(order);
 
                     for(var i in order) {
                         var item = this.get(order[i]);
@@ -63,12 +62,10 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                             method : "PUT"
                         },
                         function() {
-                            //alert('fcjsklfjklsdfjksd');
                         }
                     );
                 },
                 comparator : function(first, last) {
-                    //console.warn("COMPARATOR", first.get("position"), last.get("position"), parseInt(first.get("position")) < parseInt(last.get("position")));
                     if (parseInt(first.get("position")) < parseInt(last.get("position"))) {
                         return -1;
                     }
@@ -375,7 +372,6 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                 listManagerCreatorViewClass.prototype.initialize.apply(this);
 
                 this.listenTo(this.collection, "add remove change", function() {
-                    console.warn("changed");
                 });
 
             }*/

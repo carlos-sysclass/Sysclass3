@@ -127,7 +127,6 @@ $SC.module("dialogs.content.info", function(mod, app, Backbone, Marionette, $, _
         //var sAjaxSource = "/module/questions/items/lesson-content/datatable/";
 
         //var config = app.getResource("questions-select_context");
-        //console.warn(config);
         /*
         var tableViewClass = app.module("utils.datatables").tableViewClass;
         this.tableView = new tableViewClass({

@@ -93,7 +93,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             this._conn = new ab.Session(
                 this._wsUri,
                 function() {
-                    console.warn('WebSocket connection open');
                     var websocket_key = app.userSettings.get("websocket_key");
                     var session_key = $.cookie("SESSIONID");
                     if (_.isEmpty(session_key)) {
@@ -115,7 +114,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
                             this._subscribedTopics[this._session_key] = this._session_key;
 
-                            console.warn("afterConnection.chat");
                             this.restoreSession();
 
                             this.trigger("afterConnection.chat", result);
@@ -126,7 +124,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
                 }.bind(this),
                 function(code, reason, detail) {
-                    console.warn('WebSocket connection closed');
                     this._conn = null;
                     this.trigger("errorConnection.chat");
 
@@ -142,22 +139,20 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this._options.tryCount++;
         if (this._options.maxRetries > 0 && this._options.tryCount <= this._options.maxRetries) {
             if (_.isBoolean(now) && now) {
-                console.warn('WebSocket connection Try #' + this._options.tryCount);
+                console.info('WebSocket connection Try #' + this._options.tryCount);
                 mod.startConnection();
             } else {
                 var delay = this._options.delayTime + this._options.tryCount * this._options.tryCount * 25;
-                console.warn('WebSocket connection Try #' + this._options.tryCount + ", delaying for " + delay + "ms");
+                console.info('WebSocket connection Try #' + this._options.tryCount + ", delaying for " + delay + "ms");
                 setTimeout(mod.startConnection.bind(this), delay);
             }
         }
     }
 
     mod.restoreSession = function() {
-        console.warn("chat->restoreSession");
 
         for (var topic in this._subscribedTopics) {
 
-            console.warn(topic, this._subscribedTopics);
             this.unsubscribe(topic);
             this.subscribe(topic);
         }
@@ -167,7 +162,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
     // CALLED ON QUEUE RESET COLLECTION
     this.subscribeQueues = function(collection) {
-        console.warn("chat->subscribeQueues");
         this._queues.each(function(item, index) {
             var topic = item.get("topic");
             this.subscribe(topic, true);
@@ -176,7 +170,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     };
 
     this.subscribe = function(topic, exclusive) {
-        console.warn("chat->subscribe", topic);
         if (exclusive && _.has(this._subscribedTopics, topic) && !_.isNull(this._subscribedTopics[topic])) {
             return false;
         }
@@ -226,7 +219,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                 }
 
                 var model = new this.models.message(data);
-                console.warn("receiveMessage.chat", topic, model);
                 this.trigger("receiveMessage.chat", topic, model);
 
                 document.getElementById('ping').play();
@@ -239,7 +231,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
     // REMOTE FUNCTIONS
     this.getQueues = function(callback) {
-        console.warn("chat->getQueues");
+        console.info("chat->getQueues");
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
             return false;
@@ -252,7 +244,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                 callback(result);
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
 
@@ -261,7 +252,7 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     }
 
     this.getAvaliableQueues = function(callback) {
-        console.warn("chat->getAvaliableQueues");
+        console.info("chat->getAvaliableQueues");
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
             return false;
@@ -279,7 +270,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
                 }
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
 
@@ -288,7 +278,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
     /*
     this.createQueue = function(topic, title, exclusive, startChat) {
-        //console.warn("createQueue");
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
             return false;
@@ -310,12 +299,10 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
     */
     this.createChat = function(user_id) {
-        //console.warn("createQueue");
         if (_.isNull(this._token)) {
             this.trigger("notConnected.chat");
             return false;
@@ -329,8 +316,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
                 var new_topic = model.get("topic");
 
-                console.warn(new_topic, model, this.subscribe(new_topic, true));
-
                 this.subscribe(new_topic, true);
 
                 this.trigger("createChat.chat", new_topic, model);
@@ -342,7 +327,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
             }.bind(this), function (error) {
                 //this.trigger("errorConnection.chat", error);
-                console.warn("error", error);
             }.bind(this));
     };
 
@@ -353,14 +337,11 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             return false;
         }
 
-        console.warn(this._subscribedChats, topic);
-
         if (!_.has(this._subscribedChats, topic) || _.isNull(this._subscribedChats[topic])) {
             // CALL A FUNCTION TO CREATE THE TOPIC
             this._conn
                 .call("receiveChat", topic)
                 .then(function (result) {
-                    //console.warn(result);
                     var model = new this.models.chat(result);
 
                     //this._subscribedChats[topic] = model;
@@ -369,10 +350,8 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
 
                     callback();
                 }.bind(this), function (error) {
-                    console.warn("error", error);
                 }.bind(this));
         } else {
-            //console.warn("receiveChat-error");
             callback();
         }
     };
@@ -417,7 +396,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
             this.trigger("notConnected.chat", error);
             return false;
         }
-        console.warn("SEND", topic, message);
         this._conn.publish(topic, message, false);
     }
     /*
@@ -429,7 +407,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
     */
     /*
     this.startChatView = function(model) {
-        console.warn("startChatView");
         var topic = model.get("topic");
         if (mod._chatViews[topic] == undefined) {
             mod._chatViews[topic] = new chatViewClass({
@@ -473,7 +450,6 @@ $SC.module("utils.chat", function(mod, app, Backbone, Marionette, $, _) {
         this.initialize(app.userSettings);
     } else {
         mod.listenTo(app, "settings.sysclass", function( model,data, xhR) {
-            //console.warn( model,data, xhR);
             this.initialize(model);
         });
     }        

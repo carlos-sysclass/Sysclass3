@@ -6,7 +6,6 @@ $SC.module("views.roles.view", function(mod, app, Backbone, Marionette, $, _) {
 			this.tableView.listenTo(app.module("dialogs.roles.create").dialogView, "hide.dialog", this.tableView.refresh);
 
 			this.listenTo(this.tableView, "action.datatable", function(data, item) {
-				console.warn(data, item);
 
 				if ($(item).hasClass("datatable-option-edit")) {
 					var itemModelClass = app.module("crud.models").itemModelClass;

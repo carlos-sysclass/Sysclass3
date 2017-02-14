@@ -777,10 +777,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            } else {
 	                this.enableView();
 
-	                this.videoModel = this.model.get("videos");
-
-					var progress = mod.progressCollection.getContentProgress(this.model.get("id"));
-					this.model.set("progress", progress);
 
 	                var videosCollection = this.model.get("videos");
 
@@ -811,7 +807,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 	                		// ADD POSTER TO ALL INSTANCES
 	                		// ADD SUBTITLE TO ALL INSTANCES
+							var progress = mod.progressCollection.getContentProgress(videoModel.get("id"));
+							this.model.set("progress", progress);
 
+	                		
 			        		videoModel.getFiles().each(function(fileModel) {
 			        			if (fileModel.isSubtitle()) {
 			        				//this.videoJS[index].addTextTrack("subtitles", )
@@ -936,8 +935,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        		this.removeSecVideoDraggable();
 	        	}
 
-	        	//console.warn(type);
-
 	        	if (type == "only") {
 	        		var videoIndex = target.data("view-index");
 	        		_.each(this.videoJS, function(video, index) {
@@ -979,6 +976,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.videoJS[index].on("loadedmetadata", function() {
                     if (progress && progress.factor < 1) {
                     	var start = this.duration() * progress.factor;
+
                     	this.currentTime(start - 5); 
                     }
 				});
@@ -1235,10 +1233,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        updateText : function(e) {
 				var label = $(e.currentTarget);
 
-				console.warn(label);
-				console.warn($(".rating-view .rating-text"));
-				console.warn(this.$(".rating-view .rating-text"));
-
 				$(".rating-view .rating-text").html(label.attr("title"));
 	        },
 	        updateRating : function(e) {
@@ -1250,8 +1244,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 
 	        	var rating = $(e.currentTarget).val();
-
-	        	console.warn(this.model.toJSON());
 
 				var progressModel = new mod.models.content_progress(this.model.get("progress"));
                 progressModel.setRating(this.model, rating);

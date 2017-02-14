@@ -78,8 +78,6 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 //this.$el.data("lessonId", this.model.get("id"));
                 this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
 
-                console.warn(this.el, this.model.get("id"));
-
                 if (this.$el.length) {
                     app.module("ui").refresh(this.$el);
                 }
