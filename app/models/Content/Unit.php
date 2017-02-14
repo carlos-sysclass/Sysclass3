@@ -96,7 +96,11 @@ class Unit extends Model
             if ($itemObj->type == 'lesson') {
                 $item = $itemObj->toArray(); 
                 $course = $itemObj->getCourse();
-                $item['course'] = $course->toArray();
+                if ($course) {
+                    $item['course'] = $course->toArray();
+                } else {
+                    $item['course'] = [];
+                }
                 $contents = $itemObj->getContents();
 
                 foreach($contents as $content) {
@@ -146,7 +150,16 @@ class Unit extends Model
                     }
                     $unit = $content->getUnit();
                     $course = $unit->getCourse();
-                    $program = $course->getProgram();
+
+                    if ($course) {
+                        $program = $course->getProgram();
+                        if (!in_array($program->id, $program_ids)) {
+                            return self::getContentPointers($user, 'unit');
+                        }
+                    } else {
+                        return self::getContentPointers($user, 'unit');
+                    }
+
                     if (!in_array($program->id, $program_ids)) {
                         return self::getContentPointers($user, 'unit');
                     }
