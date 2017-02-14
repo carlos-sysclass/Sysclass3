@@ -117,8 +117,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				this.listenTo(this.addFieldDialogView, "tooglefield.report", this.toggleField.bind(this));
 				this.listenTo(this.model, "change:report_fields", this.render.bind(this));
 
-				console.warn(this.model.toJSON());
-
 				this.setInfo(opt1.columns, this.model.get('report_fields'));
 			},
 			setInfo : function(columns, fields) {
@@ -129,7 +127,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				for(var i in fields) {
 					var field = fields[i];
 					for(var i in this.columns) {
-						console.warn(this.columns[i], field);
 						if (field == this.columns[i].name) {
 							this.fields.push(field);
 							break;
@@ -143,7 +140,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 						}
 					}
 				}
-				//console.warn(this.fields);
 				this.model.unset("report_fields", {
 					silent : true
 				});
@@ -153,8 +149,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 				this.$(".report-field-list").empty();
 
 				this.fields = this.model.get('report_fields');
-
-				console.warn(this.fields);
 
 				var fieldnames = [];
 
@@ -203,7 +197,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 			headerTemplate : _.template($("#dynamic-table-header-item-template").html(), null, {variable : 'field'}),
 			initialize : function(opt) {
 		        if ($.fn.dataTable.isDataTable(this.$el)) {
-		        	console.warn("destroying");
 		        	this.getApi().clear(true);
 		        	this.getApi().destroy(false);
 		        }
@@ -346,8 +339,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 
 					definition.rules = this.sanitizeRules(definition.rules, avaliable_filters);
 
-					console.warn(definition);
-
 					// REMOVING UNMATCHED RULES
 					/*
 					
@@ -417,8 +408,6 @@ $SC.module("views.report.form", function(mod, app, Backbone, Marionette, $, _) {
 		if (opt.waitSync) {
 
 			this.listenToOnce(opt.module.getModel(), "sync", function() {
-
-				console.warn(opt.module.getModel().toJSON());
 
 				this.queryBuilderView = new queryBuilderViewClass({
 					el : '#tab-report-definition',

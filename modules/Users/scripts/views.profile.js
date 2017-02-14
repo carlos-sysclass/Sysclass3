@@ -29,8 +29,6 @@ $SC.module("views.profile", function(mod, app, Backbone, Marionette, $, _) {
         });
 
         this.listenTo(app.module("blocks.dropbox.upload"), "uploadComplete.dropbox", function(model) {
-            //console.warn(model.get("url") + '?' + Math.random());
-
             /**
              * TODO: MAKE A WAY TO RELOAD THE PROFILE IMAGES
              */

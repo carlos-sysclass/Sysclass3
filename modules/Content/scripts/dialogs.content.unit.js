@@ -43,7 +43,6 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
     };
 
     mod.setInfo = function(info) {
-        console.warn(info.model);
         this.dialogView.setModel(info.model);
         this.dialogView.setCollection(info.collection);
 
@@ -253,7 +252,6 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
     });
 
     mod.on("start", function(opt) {
-        console.warn(opt);
         this.started = true;
 
         this.dialogView = null;
@@ -276,7 +274,6 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
         //var sAjaxSource = "/module/questions/items/lesson-content/datatable/";
 
         //var config = app.getResource("questions-select_context");
-        //console.warn(config);
         /*
         var tableViewClass = app.module("utils.datatables").tableViewClass;
         this.tableView = new tableViewClass({

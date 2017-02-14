@@ -7,7 +7,6 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 
 		var bindTableEvents = function(table) {
 			this.listenTo(table, "draw.datatables", function(row, data) {
-	    		//console.warn('DRAW', row, data);
 				var exists = userCollection.findWhere({user_id: data['id']});
 
 				var innerInput = $(row).find(".datatable-option-switch");
@@ -38,11 +37,8 @@ $SC.module("views.groups.edit", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					userCollection.add(userSwitchModel);
 				}
-				//console.warn('SWITCH', data, exists, this.collection.toJSON());
 			}.bind(this));
 		}.bind(this);
-
-		console.warn(app.getTable('view-users'));
 
 		app.on("added.table", function(name, table) {
 			if (name == "view-users") {

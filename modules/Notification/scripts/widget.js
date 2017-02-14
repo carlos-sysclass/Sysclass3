@@ -87,7 +87,6 @@ $SC.module("panel.notification", function(mod, app, Backbone, Marionette, $, _) 
 				next.fadeIn(1000);
 	    	});
 
-	    	console.warn(current, next);
 	    }
 	    */
   	});

@@ -104,7 +104,6 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
 				app.module("utils.datatables").on("datatable:item:draw", function(row, data) {
 					var exists = this.collection.findWhere({resource_id: data['id']});
 
-					console.warn({resource_id: data['id']}, exists);
 					if (typeof exists != "undefined") {
 						$(row).find(".datatable-option-check").removeClass("btn-danger").addClass("btn-success");
 					} else {
@@ -113,7 +112,6 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
 				}.bind(this));
 				
 				app.module("utils.datatables").on("datatable:item:check", function(data,a,b,c) {
-					console.warn(data,a,b,c);
 					
 					var resourceSwitchModelClass = Backbone.Model.extend({
 						urlRoot : "/module/roles/item/resources/toggle"
@@ -138,7 +136,6 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
                 this.select2Obj = this.$(".select2-me");
 
                 this.select2Obj.on("change", function (e, a,b,c,d) { 
-                	console.warn(e,a,b,c,d);
 				});
 				*/
 
@@ -201,7 +198,6 @@ $SC.module("dialogs.roles.users", function(mod, app, Backbone, Marionette, $, _)
 		});
 
 		app.module("utils.datatables").on("datatable:item:check", function(data,a,b,c) {
-			console.warn(data,a,b,c);
 			
 			var resourceSwitchModelClass = Backbone.Model.extend({
 				urlRoot : "/module/roles/item/resources/toggle"

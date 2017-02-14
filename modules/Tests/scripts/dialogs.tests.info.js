@@ -32,8 +32,6 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
                 this.render();
             },
             render : function() {
-                //console.warn(this.model.toJSON());
-
                 //this.$(".modal-content").html(this.template(this.model.toJSON()));
                 //
                 this.$(".modal-content").load("/module/tests/open/" + this.model.get("id") + "?dialog", function() {

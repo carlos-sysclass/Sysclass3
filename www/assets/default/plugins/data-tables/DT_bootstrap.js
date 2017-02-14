@@ -90,7 +90,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 				if (type == 'display' || type == 'filter') {
 					return moment.unix(data).fromNow();
 				} else {
-					//console.warn(parseFloat( data ));
 					return parseFloat( data );
 				}
 				return data;
@@ -269,7 +268,6 @@ $.extend( true, $.fn.dataTable.defaults, {
 				if (type == 'display' || type == 'filter') {
 					// CHECK IF ROW HAS A CURRENCY FIELD AND UPDATE BY TYPE
 					//var floatValue = parseFloat( data );
-					console.warn(data);
 					return numeral(data).format('0[.]0%');
 				} else {
 					return parseFloat( data );

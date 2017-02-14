@@ -73,7 +73,6 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    },
 		                eventClick : function(event, jsEvent, view)
 		                {
-		                	console.warn(event);
 		                	mod.view.calendarDialog.find(".event-title").html(event.title);
 		                	mod.view.calendarDialog.find(".event-description").html(event.description);
 		                	mod.view.calendarDialog.modal('show');
@@ -121,7 +120,6 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		            	this.$(".fc-event").show();
 		            	if (!_.isEmpty(data.id)) {
 		            		var class_name = data.id;
-							console.warn(this.$(".fc-event").filter("." + class_name));
 
 							this.$(".fc-event").not("." + class_name).hide();
 		            	}
@@ -137,7 +135,6 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                } else {
 	                    this.$("#calendar").removeClass("mobile");
 	                }
-	                //console.warn(this.calOptions);
 			        this.$("#calendar").fullCalendar(this.calOptions);
 			    }
 		  	});

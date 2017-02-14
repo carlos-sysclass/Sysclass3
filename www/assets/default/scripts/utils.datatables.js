@@ -120,8 +120,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        	 //= opt.datatable_fields;
 		        }
 
-		        console.warn(opt.datatable);
-
 		        this.oTable = this.$el.dataTable(opt.datatable);
 		        this.getApi().on("init", this.startScrollUI.bind(this));
 
@@ -208,8 +206,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				e.preventDefault();
 				//var data = this.oTable._($(e.currentTarget).closest("tr"));
 
-				//console.warn(data);
-
 				var tr = $(e.currentTarget).closest("tr");
 				var row = this.getApi().row(tr);
         		var data = row.data();				
@@ -218,8 +214,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				row
 					.remove()
 					.draw();
-
-					console.warn(model.toJSON());
 
 				if (model) {
 					model.destroy();
@@ -246,8 +240,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				return this.setUrl(url).redraw();
         	},
         	clearFilter : function(filter) {
-        		console.warn(this.oTable.api().ajax.url());
-        		console.warn(this._baseUrl);
         		if (this.oTable.api().ajax.url() != this._baseUrl) {
         			var url = this._baseUrl;
 					return this.setUrl(url).redraw();
@@ -312,7 +304,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				var model = this.getTableItemModel(data);
        		
         		//var model = this.getTableItemModel(data);
-        		//console.warn(model);
 
         		this.trigger("cellclick.datatable", model, data, el);
         	},

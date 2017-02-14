@@ -60,9 +60,6 @@ class Unit extends Model
             "id",
             array('alias' => 'Professor')
         );
-
-
-
     }
 
     public function toFullLessonArray() {

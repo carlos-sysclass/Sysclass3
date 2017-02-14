@@ -290,7 +290,6 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 model: function(attrs, options) {
                     if (options.add) {
                         //attrs.file = _.first(attrs.files);
-                        console.warn(options);
                         if (attrs.content_type == "video") {
                             return new models.content.item.video(attrs, options);
                         } else if (attrs.content_type == "file") {

@@ -75,8 +75,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 	            "click .load-previous-messages-action" : "loadPrevious"
 	        },
 	        initialize: function(opt) {
-	        	console.warn(this.model);
-
 	            this.$el.addClass("chat-widget");
 
 	            //this.render();
@@ -154,7 +152,7 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				});
 			},
 	        addPreviousOne : function(model) {
-				console.warn('widget/chatViewClass->addPreviousOne');
+				console.info('widget/chatViewClass->addPreviousOne');
 
 	            if (model.get("chat.topic") == this.model.get("topic")) {
 	                var view = new messageViewClass({model: model});
@@ -162,9 +160,8 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 	            }
 	        },
 	        render : function() {
-	        	console.warn('widget/chatViewClass->render');
+	        	console.info('widget/chatViewClass->render');
 	            this.$el.empty();
-	            console.warn(this.model.toJSON());
 	            this.$el.html(this.chatTemplate(this.model.toJSON()));
 
 	            $("#off-windows").append(this.$el);
@@ -285,7 +282,6 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 
 
 		this.listenTo(this.chatModule, "createChat.chat", function(topic, model) {
-			console.warn("createChat.chat", topic, model);
 			mod.startChatView(topic, model);
 		});
 		this.listenTo(this.chatModule, "receiveChat.chat", function(topic, model, collection) {
@@ -331,16 +327,11 @@ $SC.module("widget.chat", function(mod, app, Backbone, Marionette, $, _) {
 				//this.chatModule.subscribeToChat(this.model.get("topic"), this.model, true, false);
 			},
 			render : function() {
-				console.warn(this.model.toJSON());
 				this.$el.html(this.template(this.model.toJSON()));
 				return this;
 			},
 			startChat : function() {
 				var topic = this.model.get("topic");
-
-				//console.warn(this.model.toJSON(), this.model.get("user").id, this.model.get("user.id"));
-
-				//console.warn(topic, this.model.get("name"), this.model.get("user"), this.model.get("user.id"));
 
 				this.chatModule.createChat(this.model.get("user").id);
 			}

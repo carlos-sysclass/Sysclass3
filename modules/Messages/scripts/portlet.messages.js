@@ -72,12 +72,10 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 					this.messagesBodyView.setModel(model);
         			this.messagesBodyView.show();
 
-					console.warn(row, data, action, e);
 				}.bind(this));
 
 				/*
 				this.listenTo(this, "cellclick.datatable", function(model data, el) {
-					console.warn(model data, el);
 				})
 				*/
 				/*
@@ -85,7 +83,6 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 					var tr = $(this).closest('tr');
         			var row = self.getApi().row( tr );
 
-        			console.warn(tr, row, row.data());
         		});
         		*/
 			},
@@ -340,6 +337,5 @@ $SC.module("portlet.messages", function(mod, app, Backbone, Marionette, $, _) {
 			el: '#messages-widget'
 		});
 
-		console.warn(this.widgetView);
 	});
 });
