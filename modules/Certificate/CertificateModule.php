@@ -347,6 +347,8 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
             $organization = Organization::findFirst();
             $this->view->setVar("organization", $organization);
+            
+
 
             $this->assets
                 ->collection('header')
@@ -359,19 +361,46 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                 */
                 //->addCss('http://fonts.googleapis.com/css?family=Roboto', true)
                 //->addCss('/assets/default/plugins/bootstrap/css/bootstrap.css', true)
-                ->addCss('assets/default/css/certificate.css')
+                ->addCss('assets/default/css/certificate.css');
+
+            $this->assets
+                ->collection('header')
                 ->addCss('assets/default/css/certificates/itaipu.css');
 
-            $html = $this->view->render("certificate/" . $certificate->type . ".cert");
+            
+
+            $custom_css = sprintf(
+                "assets/%s/css/certificate.css",
+                $this->environment->view->theme
+            );
+
+
+            // ADD CSS FOR ENVIRONMENT
+            if (file_exists($this->environment['path/app/www'] . "/" . $custom_css)) {
+                $this->assets
+                    ->collection('header')
+                    ->addCss($custom_css);
+            }
+
+            $environment = $this->sysconfig->deploy->environment;
+
+            $cert_template = "certificate/" . $environment . "/" . $certificate->type . ".cert";
+            
+            if (!$this->view->exists($cert_template)) {
+                $cert_template = "certificate/" . $certificate->type . ".cert";
+            }
+
+            $html = $this->view->render($cert_template);
+           
             
             $this->response->setContent($html);
             //return true;
 
             global $_dompdf_show_warnings;
-            //$_dompdf_show_warnings = true;
+            $_dompdf_show_warnings = true;
 
             global $_dompdf_debug;
-            //$_dompdf_debug = true;
+            $_dompdf_debug = true;
             
             $pdf = new \mPdf("","A4-L");
 
