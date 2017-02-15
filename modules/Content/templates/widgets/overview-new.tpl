@@ -1036,7 +1036,16 @@ _before_init_functions.push(function() {
           file_type = "pdf";
       }
   %>
-  <a target="_blank" class="select-item" href="<%= model['file'].url %>" class="select-item">
+  <a 
+    <% if (file_type == "pdf") { %>
+      class="select-item open-pdf-viewer" 
+      href="<%= model['file'].url %>" 
+    <% } else { %>
+      target="_blank" 
+      class="select-item" 
+      href="<%= model['file'].url %>" 
+    <% } %>
+  >
     <% if (file_type == "video") { %>
         <i class="fa fa-file-video-o"></i>
     <% } else if (file_type == "image") { %>

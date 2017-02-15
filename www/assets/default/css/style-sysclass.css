@@ -1285,9 +1285,13 @@ Bootstrap modal
   font-weight: 300;
 }
 
-/*.modal-wide {
+.modal-wide {
   width: 60% !important;
-}*/
+}
+
+.modal-big {
+  width: 80% !important;
+}
 
 .modal-full {
   width: 100% !important;

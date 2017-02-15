@@ -17,7 +17,9 @@ class Content extends Model
     }
 
     public function beforeValidation() {
-
+        if (is_null($this->rating)) {
+            $this->rating = -1;
+        }
 
 
     }
