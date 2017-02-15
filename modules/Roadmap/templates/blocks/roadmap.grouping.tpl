@@ -18,7 +18,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
-                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control student admittance'}">
+                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user admittance'}">
                         <i class="fa fa-question"></i>
                     </span>
                     {translateToken value="Enable Course Groupings"}

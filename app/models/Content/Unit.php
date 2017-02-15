@@ -58,7 +58,7 @@ class Unit extends Model
             "instructor_id",
             "Sysclass\\Models\\Users\\User",
             "id",
-            array('alias' => 'Professor')
+            array('alias' => 'Instructor')
         );
     }
 
@@ -267,10 +267,10 @@ class Unit extends Model
         }
 
         $result = $this->toArray();
-        if ($professor =  $this->getProfessor()) {
-            $result['professor'] = $professor->toArray();
+        if ($instructor =  $this->getProfessor()) {
+            $result['instructor'] = $instructor->toArray();
         } else {
-            $result['professor'] = array();
+            $result['instructor'] = array();
         }
         $result['contents'] = array();
 

@@ -7,7 +7,7 @@ class DashboardController extends \AbstractSysclassController
     // 
 /*
     protected function startEnviroment($request) {
-        // @todo put here the merge content from student.php administrator.php and professor.php
+        // @todo put here the merge content from user.php administrator.php and instructor.php
 
         $smarty = $this->getSmarty();
 
@@ -20,9 +20,9 @@ class DashboardController extends \AbstractSysclassController
 
         //Create shorthands for user type, to avoid long variable names
         $_student_ = $_professor_ = $_admin_ = 0;
-        if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'student') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'student')) {
+        if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'user') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'user')) {
             $_student_ = 1;
-        } elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'professor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'professor')) {
+        } elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'instructor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'instructor')) {
             $_professor_ = 1;
         } else {
             $_admin_ = 1;

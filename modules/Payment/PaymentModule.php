@@ -264,7 +264,7 @@ class PaymentModule extends \SysclassModule /*implements \ISummarizable,  \ILink
              'payment.overview' => array(
                     'id'        => 'payment-panel',
                     'type'      => 'payment',
-                    'title'     => 'Payment Student',
+                    'title'     => 'Payment User',
                     'template'  => $this->template("widgets/overview"),
                     'panel'     => true,
                     'data'      => $data,

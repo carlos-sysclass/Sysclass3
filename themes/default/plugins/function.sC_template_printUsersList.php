@@ -17,11 +17,11 @@ function smarty_function_sC_template_printUsersList($params, &$smarty)
                 $admin_str .= '
                     <option value = "'.$params['data'][$i]['login'].'" '.$selected.'>'.$params['data'][$i]['login'].' ('.$params['data'][$i]['name'].'&nbsp;'.$params['data'][$i]['surname'].')</option>';
                 break;
-            case 'professor':
+            case 'instructor':
                 $professor_str .= '
                     <option value = "'.$params['data'][$i]['login'].'" '.$selected.'>'.$params['data'][$i]['login'].' ('.$params['data'][$i]['name'].'&nbsp;'.$params['data'][$i]['surname'].')</option>';
                 break;
-            case 'student':
+            case 'user':
                 $student_str .= '
                     <option value = "'.$params['data'][$i]['login'].'" '.$selected.'>'.$params['data'][$i]['login'].' ('.$params['data'][$i]['name'].'&nbsp;'.$params['data'][$i]['surname'].')</option>';
                 break;

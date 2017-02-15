@@ -4,7 +4,7 @@
 
 {has_permission resource="Users" action="change-password" assign="canChangePassword"}
 
-{has_role role="Teacher" assign="isTeacher"}
+{has_role role="Instructor" assign="isTeacher"}
 
 
 
@@ -26,7 +26,7 @@
 				<div class="form-body">
 					<h5 class="form-section margin-bottom-10 margin-top-10">
 						<i class="fa fa-edit"></i>
-						{translateToken value="Personal Info"}
+						{translateToken value="Your info"}
 					</h5>
 					{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 				</div>
@@ -53,7 +53,7 @@
 					<div class="form-body">
 						<h5 class="form-section margin-bottom-10 margin-top-10">
 							<i class="fa fa-camera"></i>
-							{translateToken value="Teacher Info"}
+							{translateToken value="Instructor Info"}
 						</h5>
 						{include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
 					</div>
