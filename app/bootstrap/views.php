@@ -82,6 +82,9 @@ $di->set('view', function() use ($environment, $di) {
 
 
             $volt->getCompiler()->addFunction('strftime', 'strftime');
+            $volt->getCompiler()->addFunction('sprintf', 'sprintf');
+
+            
             /*
             $volt->getCompiler()->addFunction(
                 'strftime',

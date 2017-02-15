@@ -20,11 +20,12 @@
             
             <p>{{ strftime("%b,", datetime.format("U") ) }} {{ date("jS. Y", datetime.format("U") ) }}</p>
       </div>
-
-      <!-- <div class="container-fluid">
-            <div class="signatures-container"  align="center">
-                  <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/signatures.png" />
+      <htmlpagefooter name="footer" style="display:none">
+            <div class="container">
+                  <span class="identifier">
+                        &nbsp; DCN {{ sprintf("%08d", id) }} &nbsp;
+                  </span>
             </div>
-      </div> -->
+      </htmlpagefooter>
 </body>
 </html>

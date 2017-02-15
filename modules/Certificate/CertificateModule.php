@@ -302,6 +302,8 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
             $vars = json_decode($certificate->vars, true);
 
+            $vars['id'] = $id;
+
             // CALCULATE
             switch($certificate->type) {
                 case 'course' : {
