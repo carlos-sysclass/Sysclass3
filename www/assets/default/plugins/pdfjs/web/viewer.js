@@ -8678,14 +8678,18 @@ var PDFViewerApplication = {
   }
 };
 
-var HOSTED_VIEWER_ORIGINS = ['null', 'http://local.sysclass.com', 'https://cloud.sysclass.com'];
+var HOSTED_VIEWER_ORIGINS = ['null'];
 function validateFileURL(file) {
   try {
+    var host = new URL(window.location.href).host;
+
+    if (host.endsWith('sysclass.com')) {
+      // Hosted or local viewer, allow for any file locations
+      return;
+    }
+
     var viewerOrigin = new URL(window.location.href).origin || 'null';
-
-    console.warn(viewerOrigin);
-
-
+    
     if (HOSTED_VIEWER_ORIGINS.indexOf(viewerOrigin) >= 0) {
       // Hosted or local viewer, allow for any file locations
       return;
