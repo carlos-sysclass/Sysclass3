@@ -420,7 +420,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				"click .watch-video-action" : "watchVideo",
 				"click .list-materials-action" : "listMaterials",
 				"click .view-test-action" : "openDialog",
-				"click .open-test-action" : "doTest"
+				"click .open-test-action" : "doTest",
+				"click .open-pdf-viewer" : "doTest",
 			},
 			testInfoModule : app.module("dialogs.tests.info"),
 			dialogContentUnit : app.module("dialogs.content.unit"),
