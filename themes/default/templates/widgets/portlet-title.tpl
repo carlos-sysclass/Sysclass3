@@ -31,7 +31,7 @@
                         <ul role="menu" class="dropdown-menu pull-right">
                            <li><a href="#">Class</a></li>
                            <li><a href="#">Topic</a></li>
-                           <li><a href="#">Professor</a></li>
+                           <li><a href="#">Instructor</a></li>
                            <li class="divider"></li>
                            <li><a href="#">All</a></li>
                         </ul>

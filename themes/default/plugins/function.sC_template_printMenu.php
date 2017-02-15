@@ -14,9 +14,9 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
     var detect = navigator.userAgent.toLowerCase();
     detect.indexOf("msie") > 0 ? ie_str = "?ie=1" :ie_str = "";
     ';
-    //if($params['user_type']=='student')
+    //if($params['user_type']=='user')
     //      $str .= "var active_id = 'control_panel'";
-    //else if($params['user_type']=='professor')
+    //else if($params['user_type']=='instructor')
     //      $str .= "var active_id = 'control_panel'";
     //else
     //      $str .= "var active_id = 'control'";
@@ -50,10 +50,10 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
       function changeColorOnRefresh()
       {
         ';
-        if ($params['user_type']=='student') {
+        if ($params['user_type']=='user') {
               $str .= "var temp_id = 'control_panel';
                 ";
-        } elseif ($params['user_type']=='professor') {
+        } elseif ($params['user_type']=='instructor') {
               $str .= "var temp_id = 'control_panel';
                 ";
         } else {

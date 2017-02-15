@@ -10,15 +10,15 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
     $str = '';
 
     $str .= '<table style = "width:100%;text-align:left">';
-        if ( strcmp($params['user_type'],"professor") == 0 ) {
+        if ( strcmp($params['user_type'],"instructor") == 0 ) {
             $str .='<tr>
                     <td>
                         <table width="100%" border="0px">
                         <tr>
                             <td class="headerImage" width="2%" align="right">
-                                <a href="professor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&lessons_ID='.$_SESSION['s_lessons_ID'].'"><img src="images/16x16/add.png" title='._CREATESURVEY.' border="0px" /></a>
+                                <a href="instructor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&lessons_ID='.$_SESSION['s_lessons_ID'].'"><img src="images/16x16/add.png" title='._CREATESURVEY.' border="0px" /></a>
                             </td>
-                            <td class="headerTitle"><a href="professor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&lessons_ID='.$_SESSION['s_lessons_ID'].'">'._CREATESURVEY.'</a></td>
+                            <td class="headerTitle"><a href="instructor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&lessons_ID='.$_SESSION['s_lessons_ID'].'">'._CREATESURVEY.'</a></td>
                         </tr>
                         </table>
                     </td>
@@ -36,7 +36,7 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
                 <td class="topTitle" align="left">'._SURVEYAVALIABLEFROM.'</td>
                 <td class="topTitle" align="left" colspan="1">'._SURVEYUNTIL.'</td>
                 <td class="topTitle" align="center">'._SURVEYSTATUS.'</td>';
-                if ( strcmp($params['user_type'],"professor") == 0 ) {
+                if ( strcmp($params['user_type'],"instructor") == 0 ) {
                     $str .= '<td class="topTitle" align="center">'._PARTICIPATION.'</td>
                          <td class="topTitle" align="center">'._OPERATIONS.'</td>
                          <td class="topTitle" align="left">'._PUBLISH.'</td>';
@@ -77,9 +77,9 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
                                 $now = time();
 								if (time() < $params['data'][$i]['end_date']) {
 									if ($value == 1) {
-										$str .= '<td align="center"><a href="professor.php?ctg=survey&action=change_status&survey_action=deactivate_survey&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/trafficlight_green.png" border="0px" title="'._DEACTIVATE.'" /></a></td>';
+										$str .= '<td align="center"><a href="instructor.php?ctg=survey&action=change_status&survey_action=deactivate_survey&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/trafficlight_green.png" border="0px" title="'._DEACTIVATE.'" /></a></td>';
 									} else {
-										$str .= '<td align="center"><a href="professor.php?ctg=survey&action=change_status&survey_action=activate_survey&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/trafficlight_red.png" border="0px" title="'._ACTIVATE.'" /></a></td>';
+										$str .= '<td align="center"><a href="instructor.php?ctg=survey&action=change_status&survey_action=activate_survey&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/trafficlight_red.png" border="0px" title="'._ACTIVATE.'" /></a></td>';
 									}
 								} else {
 									if ($value == 1) {
@@ -96,17 +96,17 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
                                 continue;
                             }
                         }
-                        if (strcmp($params['user_type'],"professor") == 0) {
-                            $str .='<td align="center"><a href="professor.php?ctg=survey&action=view_users&surveys_ID='.$params['data'][$i]['id'].'">'.$users['done_users'][0]['count(*)'].'/'.$users['total_users'][0]['count(*)'].'</a></td>
+                        if (strcmp($params['user_type'],"instructor") == 0) {
+                            $str .='<td align="center"><a href="instructor.php?ctg=survey&action=view_users&surveys_ID='.$params['data'][$i]['id'].'">'.$users['done_users'][0]['count(*)'].'/'.$users['total_users'][0]['count(*)'].'</a></td>
                                 <td align="center">
-                                    <a href="professor.php?ctg=survey&action=create_survey&survey_action=update&surveys_ID='.$params['data'][$i]['id'].'&screen=1"><img src="images/16x16/edit.png" border="0px" title="'._EDITSURVEY.'"/></a>
-                                    <a href="professor.php?ctg=survey&action=preview&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/search.png" border="0px" title="'._PREVIEW.'"/></a>
-                                    <a href="professor.php?ctg=survey&action=statistics&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/reports.png" border="0px" title="'._SURVEYSTATISTICS.'"/></a>
+                                    <a href="instructor.php?ctg=survey&action=create_survey&survey_action=update&surveys_ID='.$params['data'][$i]['id'].'&screen=1"><img src="images/16x16/edit.png" border="0px" title="'._EDITSURVEY.'"/></a>
+                                    <a href="instructor.php?ctg=survey&action=preview&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/search.png" border="0px" title="'._PREVIEW.'"/></a>
+                                    <a href="instructor.php?ctg=survey&action=statistics&surveys_ID='.$params['data'][$i]['id'].'"><img src="images/16x16/reports.png" border="0px" title="'._SURVEYSTATISTICS.'"/></a>
                                     <a href="'.$params['user_type'].'.php?ctg=survey&surveys_ID='.$params['data'][$i]['id'].'&screen_survey=2"><img src="images/16x16/add.png" border="0px" title="'._EDITQUESTION.'" /></a>
-                                    <a href="professor.php?ctg=survey&action=delete&surveys_ID='.$params['data'][$i]['id'].'" onclick="return confirm(\''._IRREVERSIBLEACTIONAREYOUSURE.'\');"><img src="images/16x16/error_delete.png" border="0px" title="'._DELETE.'"/></a>
+                                    <a href="instructor.php?ctg=survey&action=delete&surveys_ID='.$params['data'][$i]['id'].'" onclick="return confirm(\''._IRREVERSIBLEACTIONAREYOUSURE.'\');"><img src="images/16x16/error_delete.png" border="0px" title="'._DELETE.'"/></a>
                                 </td>';
                         }
-                        if (strcmp($params['user_type'] , "professor") == 0) {
+                        if (strcmp($params['user_type'] , "instructor") == 0) {
                             if (time() > $params['data'][$i]['end_date']) {
                                 $str .='
                                     <td><input class="flatButton" type="button" value="'._PUBLISH.'" disabled></td>
@@ -114,7 +114,7 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
                                     ';
                             } else {
                                 $str .='
-                                    <td><input class="flatButton" type="button" value="'._PUBLISH.'" onclick="Javascript:self.location=\'professor.php?ctg=survey&action=publish&lessons_ID='.$params['lessons_ID'].'&surveys_ID='.$params['data'][$i]['id'].'\'" ></td>
+                                    <td><input class="flatButton" type="button" value="'._PUBLISH.'" onclick="Javascript:self.location=\'instructor.php?ctg=survey&action=publish&lessons_ID='.$params['lessons_ID'].'&surveys_ID='.$params['data'][$i]['id'].'\'" ></td>
                                     </tr>
                                     ';
                             }

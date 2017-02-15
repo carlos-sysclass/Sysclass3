@@ -198,7 +198,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>During this course you will...</h5>
 									<p class="">... be exposed to research methods and state of the art medical devices and technologies in diferent medical fields</p>
-									<p class="">... meet international researchers and interact with European students in an intercultural and interdisciplinary context</p>
+									<p class="">... meet international researchers and interact with European users in an intercultural and interdisciplinary context</p>
 									<p class="">... and much more.</p>
 									<hr />
 									<table class="table table-striped table-bordered table-advance table-hover">
@@ -242,7 +242,7 @@
 							</div>
 							<div id="tab_class_instructor" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-							   		<h5 class="text-danger block"><strong>Professor Dr. Joe Walters</strong></h5>
+							   		<h5 class="text-danger block"><strong>Instructor Dr. Joe Walters</strong></h5>
 
 							   		<ul class="media-list">
 										<li class="media">
@@ -252,7 +252,7 @@
 											<div class="media-body">
 												<p class="">
 													<span>{translateToken value="Position:"}</span>
-													<strong class="text-default pull-right">Emeritus Professor</strong>
+													<strong class="text-default pull-right">Emeritus Instructor</strong>
 												</p>
 												<hr />
 												<p class="">
@@ -304,13 +304,13 @@
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> {translateToken value="Professor Files"} </a> -
+										<a href="javascript: void(0)"> {translateToken value="Instructor Files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 
 										</small>
 									</h5>
-									<div class="tree tree-professor tree-plus-minus tree-no-line tree-unselectable">
+									<div class="tree tree-instructor tree-plus-minus tree-no-line tree-unselectable">
 										<div class = "tree-folder" style="display:none;">
 											<div class="tree-folder-header">
 												<i class="icon-folder-close"></i>
@@ -340,7 +340,7 @@
 
 										</small>
 									</h5>
-									<div class="tree tree-student tree-plus-minus tree-no-line tree-unselectable">
+									<div class="tree tree-user tree-plus-minus tree-no-line tree-unselectable">
 										<div class = "tree-folder" style="display:none;">
 											<div class="tree-folder-header">
 												<i class="icon-folder-close"></i>

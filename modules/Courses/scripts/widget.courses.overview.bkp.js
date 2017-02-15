@@ -865,12 +865,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					this.template()
 				);
 				*/
-	            this.$('.tree-professor').tree({
+	            this.$('.tree-instructor').tree({
 	                selectable: false,
 	                dataSource: this.fileTree,
 	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
 	            });
-	            this.$('.tree-student').tree({
+	            this.$('.tree-user').tree({
 	                selectable: false,
 	                dataSource: this.fileTree,
 	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',

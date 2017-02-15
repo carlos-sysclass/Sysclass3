@@ -40,11 +40,11 @@
 <div class="form-group">
 	<label class="control-label">
 		{translateToken value="Goals"}
-        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The goals to be achieved by the students'}">
+        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The goals to be achieved by the users'}">
             <i class="fa fa-question"></i>
         </span>
 	</label>
-	<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="goals" rows="6" placeholder="{translateToken value="Students Goals"}"></textarea>
+	<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="goals" rows="6" placeholder="{translateToken value="Users Goals"}"></textarea>
 </div>
  -->
 <div class="form-group">
