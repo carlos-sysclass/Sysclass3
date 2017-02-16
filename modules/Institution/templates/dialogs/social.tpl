@@ -68,7 +68,7 @@
             </div>
             -->
             <div class="modal-footer">
-                <button class="btn btn-success save-action" type="submit">{translateToken value="Save Changes"}</button>
+                <button class="btn btn-success save-action" type="submit">{translateToken value="Save changes"}</button>
                 <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
             </div>
         </div><!-- /.modal-content -->

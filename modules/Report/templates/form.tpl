@@ -116,7 +116,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success save-action" type="button">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success save-action" type="button">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 

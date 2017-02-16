@@ -9,7 +9,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['enroll']) &&  ($T_SECTION_TPL['enroll']|@count > 0))}
 				<li class="">
-					<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled Courses"}</a>
+					<a href="#tab_1_2" data-toggle="tab">{translateToken value="Enrolled courses"}</a>
 				</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['users.details']) &&  ($T_SECTION_TPL['users.details']|@count > 0))}
@@ -62,9 +62,9 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Primary Language"}</label>
+							<label class="control-label">{translateToken value="Main language"}</label>
 							<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Language'}">
-								<option value="">{translateToken value="Please Select"}</option>
+								<option value="">{translateToken value="Please select"}</option>
 								{foreach $T_LANGUAGES as $lang}
 									<option value="{$lang.id}">{$lang.name}</option>
 								{/foreach}
@@ -81,7 +81,7 @@
 				{has_permission resource="Users" action="change-password" assign="allowed"}
 
 				{if $T_MODULE_CONTEXT_NAME == "add" || ($T_MODULE_CONTEXT_NAME == "edit" && $allowed)}
-				<h5 class="form-section margin-bottom-10">{translateToken value="Log in details"}</h5>
+				<h5 class="form-section margin-bottom-10">{translateToken value="Login details"}</h5>
 					<div class="row">
 						{if $T_MODULE_CONTEXT_NAME == "add"}
 							{include file="./profile/login_and_password.tpl"}
@@ -99,7 +99,7 @@
 								<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a course coordinator'}">
 		                        	<i class="fa fa-question"></i>
 		                    	</span>
-		                    	{translateToken value="Can be Coordinator?"}
+		                    	{translateToken value="Can be coordinator?"}
 		                    </label>
 		                    <input type="checkbox" name="can_be_coordinator" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
@@ -109,7 +109,7 @@
 							<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a class/lesson instructor'}">
 		                        	<i class="fa fa-question"></i>
 		                    </span>
-		                    <label class="control-label">{translateToken value="Can be Instructor?"}</label>
+		                    <label class="control-label">{translateToken value="Can be instructor?"}</label>
 		                    <input type="checkbox" name="can_be_instructor" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
 		            </div>
@@ -158,7 +158,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}

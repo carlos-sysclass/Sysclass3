@@ -108,7 +108,7 @@
                                         <table class="table table-striped table-bordered table-hover table-full-width data-table" id="view-{$T_MODULE_ID}">
                                             <thead>
                                                 <tr>
-                                                    <th align="center">Disponible Event Sources</th>
+                                                    <th align="center">Avaliable event sources</th>
                                                 </tr>
                                             </thead>
                                                 {foreach $T_EVENT_SOURCES as $evt}

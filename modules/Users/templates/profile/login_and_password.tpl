@@ -9,7 +9,7 @@
 </div>
 {/if}
 <div class="form-group {if !$T_CONFIGURATION.enable_email_login}col-md-12{else}col-md-12{/if}">
-	<label class="control-label">{translateToken value="New Password"}</label>
+	<label class="control-label">{translateToken value="New password"}</label>
 	<input type="password" name="new-password" class="form-control password_strength" autocomplete="off" />
     <span class="pwstrength_viewport_progress"></span>
     <span class="pwstrength_viewport_verdict"></span>

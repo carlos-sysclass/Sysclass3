@@ -50,7 +50,7 @@
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="New Password"}</label>
 					<div class="input-icon">
 						<i class="fa fa-asterisk"></i>
-						<input type="password" id="password" name="password" value="" placeholder="{translateToken value="New Password"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
+						<input type="password" id="password" name="password" value="" placeholder="{translateToken value="New password"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 					</div>
 				</div>
 				<div class="form-group">
@@ -71,7 +71,7 @@
 						{if ($T_IS_CONFIRMATION)}
 							{translateToken value="Define my password"}
 						{else}
-							{translateToken value="Reset my Pass"}
+							{translateToken value="Reset my password"}
 						{/if}
 
 					</button>

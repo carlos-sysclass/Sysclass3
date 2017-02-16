@@ -44,7 +44,7 @@
             <div>
                 <span class="pull-left">
                     <i class="fa fa-lg fa-slack text-default "></i>
-                    {translateToken value="Total Questions"}:
+                    {translateToken value="Total questions"}:
                 </span>
                 <strong class="text-primary pull-right">
                     {if ($T_TEST.test.test_max_questions <= 0)}
@@ -61,7 +61,7 @@
             <div>
                 <span class="pull-left">
                     <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                    {translateToken value="Maximum Score"}:
+                    {translateToken value="Maximum score"}:
                 </span>
                 <strong class="text-primary pull-right">
                     {$T_TEST.score} {translateToken value="points"}
@@ -73,7 +73,7 @@
             <div>
                 <span class="pull-left">
                     <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                    {translateToken value="Your Score"}:
+                    {translateToken value="Score"}:
                 </span>
                 <strong class="text-primary pull-right">
                     {if ($T_EXECUTION.pass == 0)}
