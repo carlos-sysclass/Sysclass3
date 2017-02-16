@@ -142,7 +142,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $this->putItem("programs", $programs->toArray());
 
         // GET THE PROFESSORS
-        $teacherRole = Role::findFirstByName('Instructor');
+        $teacherRole = Role::findFirstByName('Teacher');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);

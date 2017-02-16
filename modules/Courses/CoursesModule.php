@@ -242,7 +242,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $teacherRole = Role::findFirstByName('Instructor');
+        $teacherRole = Role::findFirstByName('Teacher');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
@@ -649,7 +649,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
-			'condition' => "(uc.user_type = 'user' OR uc.user_type IN (SELECT id FROM user_types WHERE basic_user_type = 'user'))",
+			'condition' => "(uc.user_type = 'student' OR uc.user_type IN (SELECT id FROM user_types WHERE basic_user_type = 'student'))",
 			'sort'      => 'name'
 		);
 

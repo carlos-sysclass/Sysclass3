@@ -217,12 +217,10 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
 				if (model) {
 					model.destroy();
-					alert(2);
 				} else {
 					this.trigger("action.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), "remove");
 				}
 			},
-
         	checkItem: function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
