@@ -3,7 +3,7 @@
 * Smarty plugin: smarty_function_sC_template_printForumMessages function.
 *
 * This function prints a list with forum messages titles and the corresponding list
-* It is used to both student and professor pages, at the front page, and wherever we need
+* It is used to both user and instructor pages, at the front page, and wherever we need
 * a list of forum messages.
 *
 */

@@ -12,7 +12,7 @@ class Execution extends Model
 
 		$this->belongsTo(
             "test_id",
-            "Sysclass\\Models\\Courses\\Tests\\Test",
+            "Sysclass\\Models\\Content\\UnitTest",
             "id",
             array('alias' => 'Test')
         );

@@ -340,6 +340,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/jquery-builder/query-builder.default.min'),
 			'js'	=> array('plugins/jquery-builder/query-builder.standalone.min', 'plugins/jquery-builder/sql-parser')
 		),
+		'pdfjs' => [
+			'name' => 'pdfjs',
+			//'css'	=> ['plugins/pdfjs/web/viewer'],
+			//'js'	=> ['plugins/pdfjs/web/compatibility', 'plugins/pdfjs/build/pdf', 'plugins/pdfjs/web/viewer']
+		]
 
 
 	);

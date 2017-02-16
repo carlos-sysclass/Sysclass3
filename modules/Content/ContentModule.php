@@ -90,6 +90,10 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
                 $this->putModuleScript("portlet.content");
                 $this->putBlock("tests.info.dialog");
+
+                $this->putBlock("storage.pdfviewer.dialog");
+
+                
                 //$this->putBlock("lessons.dialogs.exercises");
                 
                 //$this->putBlock("content.unit.dialog");
@@ -173,7 +177,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             foreach($courses as $course) {
                 $items[] = array(
                     'link' => "javascript:void(0);",
-                    'text' => sprintf("#%s %s", $course->id, $course->name),
+                    'text' => sprintf("%s", $course->name),
                     'attrs' => array(
                         'data-entity-id' => $course->id
                     )

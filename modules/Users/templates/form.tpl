@@ -121,7 +121,7 @@
 
 				<h5 class="form-section margin-bottom-100">
 					<i class="fa fa-camera"></i>
-					{translateToken value="Teacher Info"}
+					{translateToken value="Instructor Info"}
 				</h5>
 				{include file="./profile/curriculum.tpl"}
 				<div class="clearfix"></div>

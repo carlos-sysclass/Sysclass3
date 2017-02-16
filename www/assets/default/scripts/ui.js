@@ -633,6 +633,28 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
             this.submodules[i].start();
         }
 
+
+
+
+        $(document).on("click", ".open-pdf-viewer", function(e) {
+            //if (PDFJS) {
+                e.preventDefault();
+
+                var url = $(e.currentTarget).attr("href");
+
+                $("#dialogs-storage-pdfviewer iframe").attr(
+                    "src", 
+                    "/assets/default/plugins/pdfjs/web/viewer.html?file=" + encodeURIComponent(url)
+                );
+
+                $("#dialogs-storage-pdfviewer").modal();
+            //}
+
+
+            
+
+        })
+
 		this.refresh(document);
 	});
 

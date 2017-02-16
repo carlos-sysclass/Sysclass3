@@ -61,15 +61,22 @@ class Lesson extends BaseUnit
         if ($executionQuestions->count() == 0) {
 
             $questionsArray = $questions->toArray();
-            $questions_indexes = array_rand(
-                $questionsArray, 
-                min(intval($questions_size), count($questionsArray))
-            );
+
+            if ($test->randomize_questions || $questions_size < $questions->count()) {
+                // IF LESS QUESTIONS THAN TOTAL, WILL RANDOMIZE
+
+                $questions_indexes = array_rand(
+                    $questionsArray, 
+                    min(intval($questions_size), count($questionsArray))
+                );
+            } else {
+                $questions_indexes = array_keys($questionsArray);
+            }
+
             if (!is_array($questions_indexes)) {
                 $questions_indexes = array($questions_indexes);
             }
 
-           
             foreach($questions as $i => $question) {
                 if (in_array($i, $questions_indexes)) {
                     $result[] = $question;
@@ -84,6 +91,7 @@ class Lesson extends BaseUnit
                 $object->position = $index+1;
                 $object->save();
             }
+
         } else {
             foreach($executionQuestions as $executionQuestion) {
                 foreach($questions as $question) {

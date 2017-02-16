@@ -838,7 +838,7 @@ _before_init_functions.push(function() {
   <td width="40%">
       <%= model.name %>
       <%
-        var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
+        var hasDropdown = !_.isNull(model.professor_id) && _.size(model.professor) > 0;
         /* hasDropdown = hasDropdown && <another-condition> */
       %>
       <% if (hasDropdown) { %>
@@ -848,14 +848,14 @@ _before_init_functions.push(function() {
           </a>
 
           <ul class="dropdown-menu">
-            <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+            <% if (!_.isNull(model.professor_id) && _.size(model.professor) > 0) { %>
             <li>
               <a href="javascript:void(0);">
                 {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
               </a>
             </li>
             <li class="subchild">
-              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
+              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.professor_id %>" data-mode="user">
                 <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
               </a>
             </li>
@@ -894,7 +894,7 @@ _before_init_functions.push(function() {
   </td>
   <!--
   <td width="20%">
-    <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+    <% if (!_.isNull(model.professor_id) && _.size(model.professor) > 0) { %>
       <%= model.professor.name %> <%= model.professor.surname %>
     <% } %>
   </td>
@@ -1036,7 +1036,16 @@ _before_init_functions.push(function() {
           file_type = "pdf";
       }
   %>
-  <a target="_blank" class="select-item" href="<%= model['file'].url %>" class="select-item">
+  <a 
+    <% if (file_type == "pdf") { %>
+      class="select-item open-pdf-viewer" 
+      href="<%= model['file'].url %>" 
+    <% } else { %>
+      target="_blank" 
+      class="select-item" 
+      href="<%= model['file'].url %>" 
+    <% } %>
+  >
     <% if (file_type == "video") { %>
         <i class="fa fa-file-video-o"></i>
     <% } else if (file_type == "image") { %>

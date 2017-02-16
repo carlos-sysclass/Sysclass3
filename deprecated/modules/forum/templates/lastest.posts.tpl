@@ -13,7 +13,7 @@
                <ul role="menu" class="dropdown-menu pull-right">
                   <li><a href="#">{translateToken value="Class"}</a></li>
                   <li><a href="#">{translateToken value="Topic"}</a></li>
-                  <li><a href="#">{translateToken value="Professor"}</a></li>
+                  <li><a href="#">{translateToken value="Instructor"}</a></li>
                   <li class="divider"></li>
                   <li><a href="#">{translateToken value="All"}</a></li>
                </ul>

@@ -96,6 +96,12 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                        {
 	                            url: "/module/calendar/datasource/calendar",
 	                        },
+	                        /*
+	                        {
+	                            googleCalendarId: 'en.usa#holiday@group.v.calendar.google.com',
+	                            className: 'calendar-holidays-item'
+	                        }
+	                        */
 	                        {
 	                            googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',
 	                            className: 'calendar-holidays-item'

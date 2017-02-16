@@ -10,7 +10,9 @@
 
 </head>
 <body>
-      <table class="bg-yellow">
+      <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/certificate/header.jpeg" width="100%" />
+
+<!--       <table class="bg-yellow">
             <tr class="height-100">
                   <td align="left" width="25%" class="left-top-title">
                         Itaipu Envolve
@@ -32,7 +34,7 @@
                   </td>
             </tr>
       </table>
-      <!--
+ -->      <!--
       <div class="container-fluid bg-yellow">
 
             <div class="row height-100">
@@ -59,22 +61,26 @@
       <div class="container-fluid">
             <div class="row" align="center">
                   <div class="col-md-12 inner-text">
-                        A Superintendência de Compras da Itaipu Binacional certifica que<br />
-                        <span>{{ username }}</span><br />
-                        Concluiu Satisfatoriamente o módulo<br />
-                        <span>{{ modulename }}</span>, do Curso <span>{{ coursename }}</span>,<br />
-                        na plataforma de Ensino à Distância do Programa de Desenvolvimento<br /> de Fornecedores - DESFOR.
+                        {{ translate.translate("The Superintendence of Purchases of Itaipu Binacional") }}<br /> {{ translate.translate("certifies that") }}<br />
+                        <span style="color: #1E345D;"><i>{{ username|upper }}</i></span><br />
+                        {{ translate.translate("Participated in the course") }}<br />
+                        <span style="color: #1E345D;"><i>{{ modulename|upper }}</i></span>,
                         <br />
+                        {{ translate.translate("In the Distance Learning mode of the ") }}<br />
+                        {{ translate.translate("Supplier Development Program. ") }}
                         <br />
-                        Curitiba, <span>{{ date }}</span>.
-
+                        Curitiba, {{ datetime.format("d") }} {{ translate.translate("of") }} {{ strftime("%B", datetime.format("U") ) }} {{ translate.translate("of") }} {{ datetime.format("Y") }}.
+                        <br />
                   </div>
             </div>
       </div>
-      <div class="container-fluid">
+
+      <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/certificate/footer.jpeg" width="100%" />
+
+      <!-- <div class="container-fluid">
             <div class="signatures-container"  align="center">
                   <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/signatures.png" />
             </div>
-      </div>
+      </div> -->
 </body>
 </html>

@@ -465,13 +465,13 @@ _before_init_functions.push(function() {
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> {translateToken value="Professor Files"} </a> -
+										<a href="javascript: void(0)"> {translateToken value="Instructor Files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 
 										</small>
 									</h5>
-									<div class="tree tree-professor tree-plus-minus tree-no-line tree-unselectable">
+									<div class="tree tree-instructor tree-plus-minus tree-no-line tree-unselectable">
 										<div class = "tree-folder" style="display:none;">
 											<div class="tree-folder-header">
 												<i class="icon-folder-close"></i>
@@ -496,7 +496,7 @@ _before_init_functions.push(function() {
 
 										</small>
 									</h5>
-									<div class="tree tree-student tree-plus-minus tree-no-line tree-unselectable">
+									<div class="tree tree-user tree-plus-minus tree-no-line tree-unselectable">
 										<div class = "tree-folder" style="display:none;">
 											<div class="tree-folder-header">
 												<i class="icon-folder-close"></i>
@@ -797,13 +797,13 @@ _before_init_functions.push(function() {
 		
 		<%= model.objectives %>
 	<% } %>
-	<% if (!_.isEmpty(model.professor)) { %>
+	<% if (!_.isEmpty(model.instructor)) { %>
 		<hr />
 		<h5>{translateToken value="Coordinator"}</h5>
 		<table class="table table-striped table-bordered table-advance table-hover">
 			<tr>
 				<td>{translateToken value="Name"}</td>
-				<td><%= model.professor.name %> <%= model.professor.surname %></td>
+				<td><%= model.instructor.name %> <%= model.instructor.surname %></td>
 			</tr>
 		</table>
 	<% } %>
@@ -851,13 +851,13 @@ _before_init_functions.push(function() {
 </script>
 
 <script type="text/template" id="tab_courses_instructor-template">
-	<% var professor = model.professor; %>
-	<% if (_.size(professor) > 0) { %>
+	<% var instructor = model.instructor; %>
+	<% if (_.size(instructor) > 0) { %>
 	<table class="table table-striped table-bordered table-advance table-hover">
 		<tbody>
 			<tr>
 				<td>{translateToken value="Name"}</td>
-				<td><%= professor.name %> <%= professor.surname %></td>
+				<td><%= instructor.name %> <%= instructor.surname %></td>
 			</tr>
 		</tbody>
 	</table>

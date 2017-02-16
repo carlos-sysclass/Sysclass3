@@ -1,4 +1,8 @@
 <?php
+/**
+ * @deprecated 3.4 Use \Sysclass\Models\Content\UnitTest instead.
+ */
+
 namespace Sysclass\Models\Courses\Tests;
 
 use Plico\Mvc\Model;

@@ -41,7 +41,7 @@ dashboard:
         3: ["content.overview"]
         4: ["messages.inbox"]
         6: ["advisor.chat"]
-        7: ["calendar"]
+        7: ["calendar"] 
         #1: []
         #2: []
         #3: []

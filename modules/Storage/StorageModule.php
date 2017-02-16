@@ -17,6 +17,14 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
 {
     public function registerBlocks() {
         return array(
+            'storage.pdfviewer.dialog' => function($data, $self) {
+                // CREATE BLOCK CONTEXT
+
+                $self->putComponent("pdfjs");
+                $self->putSectionTemplate("dialogs", "dialogs/pdfviewer");
+
+                return true;
+            },
             'storage.library' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
 
