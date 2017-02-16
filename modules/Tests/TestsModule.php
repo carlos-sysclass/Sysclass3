@@ -655,65 +655,51 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         if ($userData = $this->getCurrentUser()) {
             $data = $this->getHttpData(func_get_args());
 
-            //var_dump($data);
-            //question_points
-            //question_weights
             if ($model == "me") {
-                /*
-                $itemModel = $this->model("tests");
-                $messages = array(
-                    'success' => "Lesson updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-                */
             } elseif ($model == "question") {
-                /*
-                $itemModel = $this->model("tests/question");
-                $messages = array(
-                    'success' => "Question updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
-                );
-                */
             } elseif ($model == "execution") {
-
-
-
-                $execution = TestExecution::findFirstById($identifier);
-
-
-
-                $data['login'] = $this->user->login;
-                $data['user_id'] = $this->user->id;
-
-                if ($execution) {
-
-                    $status = $execution->updateProgress($data);
-
-
-                    //print_r($execution->toArray());
-
-
-                    
-                }
-
-
-                $itemModel = $this->model("tests/execution");
-
-                $advise = false;
-
                 $messages = array(
                     'success' => "Test updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
+                $execution = TestExecution::findFirstById($identifier);
+
+                $data['login'] = $this->user->login;
+                $data['user_id'] = $this->user->id;
+
+                if (!$execution) {
+                    $response = $this->invalidRequestError($this->translate->translate($messages['error']), "error");         
+                } else {
+                    $status = $execution->updateProgress($data);
+
+                    if ($status) {
+                        $advise = !$execution->pending;
+
+
+                       if ($advise) {
+                            return $this->createRedirectResponse(
+                                $this->getBasePath() . "execute/" . $execution->test_id . "/" . $identifier,
+                                $this->translate->translate("Test completed."),
+                                "success"
+                            );
+                        } else {
+                            $response = $this->createNonAdviseResponse($this->translate->translate($messages['success']), "success");
+                        }
+                    } else {
+                        $response = $this->invalidRequestError($this->translate->translate($messages['error']), "error");             
+                    }
+
+                    return array_merge($response, $execution->toArray());
+                }
             } else {
                 return $this->invalidRequestError();
             }
 
-            $data['login'] = $userData['login'];
-            $data['user_id'] = $userData['id'];
+            //$data['login'] = $userData['login'];
+            //$data['user_id'] = $userData['id'];
 
-            if ($itemModel->setItem($data, $identifier) !== false) {
+            //if ($itemModel->setItem($data, $identifier) !== false) {
                 if ($model == "execution" && $data['complete'] == 1) {
 
                     return $this->createRedirectResponse(
@@ -730,10 +716,11 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $data = $itemModel->getItem($identifier);
                 return array_merge($response, $data);
-            } else {
+            //} else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
-            }
+                //return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
+            //}
+
         } else {
             return $this->notAuthenticatedError();
         }
