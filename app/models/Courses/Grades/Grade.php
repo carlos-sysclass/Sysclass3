@@ -15,5 +15,9 @@ class Grade extends Model
     public function beforeSave() {
 
     }
+
+    public function afterFetch() {
+    	//$this->grades = json_decode($this->grades, true);
+    }
 }
 

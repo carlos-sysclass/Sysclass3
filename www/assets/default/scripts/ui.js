@@ -644,7 +644,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
                 $("#dialogs-storage-pdfviewer iframe").attr(
                     "src", 
-                    "http://local.sysclass.com/assets/default/plugins/pdfjs/web/viewer.html?file=" + encodeURIComponent(url)
+                    "/assets/default/plugins/pdfjs/web/viewer.html?file=" + encodeURIComponent(url)
                 );
 
                 $("#dialogs-storage-pdfviewer").modal();

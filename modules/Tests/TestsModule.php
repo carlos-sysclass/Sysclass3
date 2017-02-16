@@ -10,7 +10,7 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Courses\Tests\Lesson as TestLesson,
-    Sysclass\Models\Courses\Tests\Execution as TestExecution;
+    Sysclass\Models\Content\Tests\Execution as TestExecution;
     
 /**
  * @RoutePrefix("/module/tests")
@@ -675,6 +675,28 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 );
                 */
             } elseif ($model == "execution") {
+
+
+
+                $execution = TestExecution::findFirstById($identifier);
+
+
+
+                $data['login'] = $this->user->login;
+                $data['user_id'] = $this->user->id;
+
+                if ($execution) {
+
+                    $status = $execution->updateProgress($data);
+
+
+                    //print_r($execution->toArray());
+
+
+                    
+                }
+
+
                 $itemModel = $this->model("tests/execution");
 
                 $advise = false;
