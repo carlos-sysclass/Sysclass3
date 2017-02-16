@@ -671,18 +671,18 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 if (!$execution) {
                     $response = $this->invalidRequestError($this->translate->translate($messages['error']), "error");         
                 } else {
-
-                
-
                     $status = $execution->updateProgress($data);
 
                     if ($status) {
                         $advise = !$execution->pending;
 
 
-
                        if ($advise) {
-                            $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+                            return $this->createRedirectResponse(
+                                $this->getBasePath() . "execute/" . $execution->test_id . "/" . $identifier,
+                                $this->translate->translate("Test completed."),
+                                "success"
+                            );
                         } else {
                             $response = $this->createNonAdviseResponse($this->translate->translate($messages['success']), "success");
                         }
@@ -695,6 +695,32 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } else {
                 return $this->invalidRequestError();
             }
+
+            //$data['login'] = $userData['login'];
+            //$data['user_id'] = $userData['id'];
+
+            //if ($itemModel->setItem($data, $identifier) !== false) {
+                if ($model == "execution" && $data['complete'] == 1) {
+
+                    return $this->createRedirectResponse(
+                        $this->getBasePath() . "execute/" . $data['test_id'] . "/" . $identifier,
+                        $this->translate->translate("Test completed."),
+                        "success"
+                    );
+                }
+               if ($advise) {
+                    $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
+                } else {
+                    $response = $this->createNonAdviseResponse($this->translate->translate($messages['success']), "success");
+                }
+
+                $data = $itemModel->getItem($identifier);
+                return array_merge($response, $data);
+            //} else {
+                // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
+                //return $this->invalidRequestError($this->translate->translate($messages['error']), "error");
+            //}
+
         } else {
             return $this->notAuthenticatedError();
         }
