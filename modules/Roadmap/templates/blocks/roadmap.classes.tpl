@@ -7,7 +7,7 @@
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow the user to select the the classes order'}">
                         <i class="fa fa-question"></i>
                     </span>
-                {translateToken value="Enable Student Selection?"}
+                {translateToken value="Enable User Selection?"}
 
                 </label>
                 <input type="checkbox" name="has_student_selection" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
@@ -247,10 +247,10 @@
                     <strong class="text-primary pull-right"><%= _.size(data.units) %></strong>
                 <% } %>
             </div>
-            <% if (_.isObject(data.professor)) { %>
+            <% if (_.isObject(data.instructor)) { %>
             <div class="col-md-6 col-sm-6">
-                <span>{translateToken value="Professor"}</span>
-                <strong class="text-primary pull-right"><%= sprintf('%(name)s %(surname)s', data.professor) %></strong>
+                <span>{translateToken value="Instructor"}</span>
+                <strong class="text-primary pull-right"><%= sprintf('%(name)s %(surname)s', data.instructor) %></strong>
             </div>
             <% } else { %>
                 <div class="col-md-6 col-sm-6">

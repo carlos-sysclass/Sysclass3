@@ -101,7 +101,7 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				  }, 
 				  {
 				    id: 'is_supplier',
-				    label: 'Is Supplier',
+				    label: 'Supplier',
 				    type: 'integer',
 				    input: 'radio',
 				    values: {

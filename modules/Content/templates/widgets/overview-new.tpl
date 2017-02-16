@@ -714,7 +714,7 @@ _before_init_functions.push(function() {
           <li role="separator" class="divider"></li>
           <li>
             <a href="javascript:void(0);">
-              {translateToken value="Coordinator"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
+              {translateToken value="Coordinator"}: <strong><%= model.instructor.name %> <%= model.instructor.surname %></strong>
             </a>
           </li>
           <li class="subchild">
@@ -737,7 +737,7 @@ _before_init_functions.push(function() {
     <!--
     <td width="20%">
       <% if (!_.isNull(model.professor_id)) { %>
-        <%= model.professor.name %> <%= model.professor.surname %>
+        <%= model.instructor.name %> <%= model.instructor.surname %>
         <span class="at-difinf">
           <a href="javascript:void(0);"  class="btn btn-info btn-xs">
             <i class="fa fa-info" aria-hidden="true"></i>
@@ -838,7 +838,7 @@ _before_init_functions.push(function() {
   <td width="40%">
       <%= model.name %>
       <%
-        var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
+        var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.instructor) > 0;
         /* hasDropdown = hasDropdown && <another-condition> */
       %>
       <% if (hasDropdown) { %>
@@ -848,10 +848,10 @@ _before_init_functions.push(function() {
           </a>
 
           <ul class="dropdown-menu">
-            <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+            <% if (!_.isNull(model.instructor_id) && _.size(model.instructor) > 0) { %>
             <li>
               <a href="javascript:void(0);">
-                {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
+                {translateToken value="Instructor"}: <strong><%= model.instructor.name %> <%= model.instructor.surname %></strong>
               </a>
             </li>
             <li class="subchild">
@@ -894,8 +894,8 @@ _before_init_functions.push(function() {
   </td>
   <!--
   <td width="20%">
-    <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
-      <%= model.professor.name %> <%= model.professor.surname %>
+    <% if (!_.isNull(model.instructor_id) && _.size(model.instructor) > 0) { %>
+      <%= model.instructor.name %> <%= model.instructor.surname %>
     <% } %>
   </td>
   -->

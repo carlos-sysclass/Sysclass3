@@ -213,7 +213,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         ));
         $this->putItem("classes", $classes->toArray());
 
-        $teacherRole = Role::findFirstByName('Teacher');
+        $teacherRole = Role::findFirstByName('Instructor');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
@@ -237,7 +237,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         ));
         $this->putItem("classes", $classes->toArray());
 
-        $teacherRole = Role::findFirstByName('Teacher');
+        $teacherRole = Role::findFirstByName('Instructor');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
