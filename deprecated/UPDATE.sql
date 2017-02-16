@@ -289,7 +289,7 @@ LEFT JOIN module_xuser det ON (users.id = det.id)
 LEFT OUTER JOIN module_xenrollment enroll ON (users.id = enroll.users_id AND uc.courses_ID = enroll.courses_id)
 LEFT OUTER JOIN module_xenrollment_statuses enroll_stat ON (enroll.status_id = enroll_stat.id)
 WHERE
-    users.user_types_ID IN ( 6, 12, 10, 16 ) AND users.user_type = 'student'
+    users.user_types_ID IN ( 6, 12, 10, 16 ) AND users.user_type = 'user'
 ORDER BY enroll.data_registro DESC;
 
 ALTER TABLE `module_xdocuments_to_courses` ADD `required` TINYINT( 1 ) NOT NULL DEFAULT '1'
@@ -605,7 +605,7 @@ ALTER TABLE `module_xcms_pages` CHANGE `layout` `layout` ENUM( 'onecolumn', 'two
 
 
 -- 2011-09-20
-ALTER TABLE `module_billboard` ADD `user_type` varchar(50) NOT NULL DEFAULT 'student';
+ALTER TABLE `module_billboard` ADD `user_type` varchar(50) NOT NULL DEFAULT 'user';
 
 
 -- 2011-09-22
@@ -660,7 +660,7 @@ ALTER TABLE `module_xpayment_to_send_list_item` DROP PRIMARY KEY;
 ALTER TABLE `module_xpayment_to_send_list_item` ADD PRIMARY KEY ( `send_id` , `payment_id` , `parcela_index` );
 
 
-ALTER TABLE `module_pagamento` ADD `send_to` VARCHAR( 20 ) NOT NULL DEFAULT 'student' AFTER `data_inicio`;
+ALTER TABLE `module_pagamento` ADD `send_to` VARCHAR( 20 ) NOT NULL DEFAULT 'user' AFTER `data_inicio`;
 
 -- 2011-10-04
 ALTER TABLE `module_xuser_responsible` ADD `cep` VARCHAR( 15 ) NULL DEFAULT NULL;
@@ -1032,7 +1032,7 @@ INSERT INTO `module_billboard` (
 `user_type`
 )
 VALUES (
-'-20', '20', '<script type="text/javascript" src="/jwplayer/jwplayer.js"></script> <h2>Aula Inaugural</h2> <div id="video_container">Carregando </div> <script type="text/javascript"> jwplayer("video_container").setup({ flashplayer: "/jwplayer/player.swf", file: "/public_data/pos/bioenergia/aula_magna.avi", height: 400, width: ''100%'' }); </script> ', '2011-10-17 13:46:47', 'student'
+'-20', '20', '<script type="text/javascript" src="/jwplayer/jwplayer.js"></script> <h2>Aula Inaugural</h2> <div id="video_container">Carregando </div> <script type="text/javascript"> jwplayer("video_container").setup({ flashplayer: "/jwplayer/player.swf", file: "/public_data/pos/bioenergia/aula_magna.avi", height: 400, width: ''100%'' }); </script> ', '2011-10-17 13:46:47', 'user'
 );
 
 
@@ -2392,7 +2392,7 @@ CREATE TABLE IF NOT EXISTS `module_xpay_sent_invoices_log` (
 ALTER TABLE  `module_xpay_sent_invoices_log` CHANGE  `id`  `id` BIGINT( 20 ) NOT NULL AUTO_INCREMENT;
 
 /* 2012-05-03 */
-ALTER TABLE `module_xpay_course_negociation` ADD `send_to` ENUM( 'student', 'parent', 'financial' ) NULL DEFAULT NULL AFTER  `negociation_index`;
+ALTER TABLE `module_xpay_course_negociation` ADD `send_to` ENUM( 'user', 'parent', 'financial' ) NULL DEFAULT NULL AFTER  `negociation_index`;
 
 ALTER TABLE `module_xuser_responsible` CHANGE `type` `type` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'parent';
 
@@ -2603,47 +2603,47 @@ ALTER TABLE `module_quick_mails_scope` CHANGE `xentify_id` `xentify_id` VARCHAR(
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (1, 15, '1;12'),
-(1, 15, '1;student');
+(1, 15, '1;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (2, 15, '1;12'),
-(2, 15, '1;student');
+(2, 15, '1;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (3, 15, '1;12'),
-(3, 15, '1;student');
+(3, 15, '1;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (4, 15, '1;12'),
-(4, 15, '1;student');
+(4, 15, '1;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (5, 15, '1;12'),
-(5, 15, '1;student');
+(5, 15, '1;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (11, 15, '2;16'),
-(11, 15, '2;student');
+(11, 15, '2;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (12, 15, '2;16'),
-(12, 15, '2;student');
+(12, 15, '2;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (13, 15, '2;16'),
-(13, 15, '2;student');
+(13, 15, '2;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (14, 15, '2;16'),
-(14, 15, '2;student');
+(14, 15, '2;user');
 
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (15, 15, '2;16'),
-(15, 15, '2;student');
+(15, 15, '2;user');
 /*
 INSERT INTO `module_quick_mails_scope` (`recipient_id`, `xscope_id`, `xentify_id`) VALUES
 (16, 15, '2;16'),
-(16, 15, '2;student');
+(16, 15, '2;user');
 
 
 
@@ -3186,15 +3186,15 @@ CREATE TABLE IF NOT EXISTS `mod_messages_recipients` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
 
 INSERT INTO `mod_messages_recipients` (`id`, `group_id`, `title`, `image`, `xuser_type`, `qm_type`, `qm_group`, `link`) VALUES
-(1, 1, 'Office of President', 'heart/success', 'student,pre_student', 'contact', NULL, NULL),
-(2, 1, 'Dean for Academics', 'briefcase/warning', 'student,pre_student', 'contact', NULL, NULL),
-(3, 1, 'Financial', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
-(4, 2, 'Schedule Tests', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
-(5, 2, 'Missed Tests', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
-(6, 2, 'Transcripts', 'money/danger', 'student,pre_student', 'contact', NULL, NULL),
-(7, 3, 'Report a bug', 'money/danger', 'pre_student,student', 'feedback', NULL, NULL),
-(8, 3, 'Suggest a new funcionality', 'money/danger', 'pre_student,student', 'feedback', NULL, NULL),
-(9, 3, 'Improvements in navigation and layout', 'money/danger', 'pre_student,student', 'feedback', NULL, NULL);
+(1, 1, 'Office of President', 'heart/success', 'user,pre_student', 'contact', NULL, NULL),
+(2, 1, 'Dean for Academics', 'briefcase/warning', 'user,pre_student', 'contact', NULL, NULL),
+(3, 1, 'Financial', 'money/danger', 'user,pre_student', 'contact', NULL, NULL),
+(4, 2, 'Schedule Tests', 'money/danger', 'user,pre_student', 'contact', NULL, NULL),
+(5, 2, 'Missed Tests', 'money/danger', 'user,pre_student', 'contact', NULL, NULL),
+(6, 2, 'Transcripts', 'money/danger', 'user,pre_student', 'contact', NULL, NULL),
+(7, 3, 'Report a bug', 'money/danger', 'pre_student,user', 'feedback', NULL, NULL),
+(8, 3, 'Suggest a new funcionality', 'money/danger', 'pre_student,user', 'feedback', NULL, NULL),
+(9, 3, 'Improvements in navigation and layout', 'money/danger', 'pre_student,user', 'feedback', NULL, NULL);
 
 CREATE TABLE IF NOT EXISTS `mod_messages_recipients_list` (
   `codigo` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -3206,15 +3206,15 @@ CREATE TABLE IF NOT EXISTS `mod_messages_recipients_list` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 INSERT INTO `mod_messages_recipients_list` (`codigo`, `recipient_id`, `user_id`, `xscope_id`, `xentify_id`) VALUES
-(2, 1, 1, 15, '1;student'),
-(4, 2, 1, 15, '1;student'),
-(6, 3, 1, 15, '1;student'),
-(8, 4, 1, 15, '1;student'),
-(9, 5, 1, 15, '1;student'),
-(27, 9, 1, 15, '1;student'),
-(26, 8, 1, 15, '1;student'),
-(25, 7, 1, 15, '1;student'),
-(24, 6, 1, 15, '1;student');
+(2, 1, 1, 15, '1;user'),
+(4, 2, 1, 15, '1;user'),
+(6, 3, 1, 15, '1;user'),
+(8, 4, 1, 15, '1;user'),
+(9, 5, 1, 15, '1;user'),
+(27, 9, 1, 15, '1;user'),
+(26, 8, 1, 15, '1;user'),
+(25, 7, 1, 15, '1;user'),
+(24, 6, 1, 15, '1;user');
 
 /* 2011-11-27 -*/
 ALTER TABLE `mod_tutoria` CHANGE `answer_timestamp` `answer_timestamp` INT( 10 ) UNSIGNED NULL ;
@@ -3339,14 +3339,14 @@ CREATE TABLE IF NOT EXISTS `mod_messages_recipients` (
 --
 
 INSERT INTO `mod_messages_recipients` (`id`, `group_id`, `title`, `image`, `xuser_type`, `qm_type`, `qm_group`, `link`) VALUES
-(1, 1, 'Office of President', 'heart/danger', 'student,pre_student', 'contact', NULL, NULL),
-(2, 1, 'Dean for Academics', 'briefcase/warning', 'student,pre_student', 'contact', NULL, NULL),
-(3, 1, 'Financial Offices', 'money/success', 'student,pre_student', 'contact', NULL, NULL),
-(4, 1, 'Registrar’s Offices', 'laptop/danger', 'student,pre_student', 'contact', NULL, NULL),
+(1, 1, 'Office of President', 'heart/danger', 'user,pre_student', 'contact', NULL, NULL),
+(2, 1, 'Dean for Academics', 'briefcase/warning', 'user,pre_student', 'contact', NULL, NULL),
+(3, 1, 'Financial Offices', 'money/success', 'user,pre_student', 'contact', NULL, NULL),
+(4, 1, 'Registrar’s Offices', 'laptop/danger', 'user,pre_student', 'contact', NULL, NULL),
 (5, 1, 'Other Accademic Issues', 'book/danger', '', 'contact', NULL, NULL),
-(6, 2, 'Report a bug', 'bug/danger', 'pre_student,student', 'feedback', NULL, NULL),
-(7, 2, 'Suggest a new funcionality', 'magic/warning', 'pre_student,student', 'feedback', NULL, NULL),
-(8, 2, 'Improvements in navigation and layout', 'columns/success', 'pre_student,student', 'feedback', NULL, NULL);
+(6, 2, 'Report a bug', 'bug/danger', 'pre_student,user', 'feedback', NULL, NULL),
+(7, 2, 'Suggest a new funcionality', 'magic/warning', 'pre_student,user', 'feedback', NULL, NULL),
+(8, 2, 'Improvements in navigation and layout', 'columns/success', 'pre_student,user', 'feedback', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3369,14 +3369,14 @@ CREATE TABLE IF NOT EXISTS `mod_messages_recipients_list` (
 --
 
 INSERT INTO `mod_messages_recipients_list` (`codigo`, `recipient_id`, `user_id`, `xscope_id`, `xentify_id`) VALUES
-(1, 1, 1, 15, '1;student'),
-(2, 2, 1, 15, '1;student'),
-(3, 3, 1, 15, '1;student'),
-(4, 4, 1, 15, '1;student'),
-(5, 5, 1, 15, '1;student'),
-(8, 8, 1, 15, '1;student'),
-(7, 7, 1, 15, '1;student'),
-(6, 6, 1, 15, '1;student');
+(1, 1, 1, 15, '1;user'),
+(2, 2, 1, 15, '1;user'),
+(3, 3, 1, 15, '1;user'),
+(4, 4, 1, 15, '1;user'),
+(5, 5, 1, 15, '1;user'),
+(8, 8, 1, 15, '1;user'),
+(7, 7, 1, 15, '1;user'),
+(6, 6, 1, 15, '1;user');
 
 /* 2014-04-25 */
 UPDATE `sysclass_layout`.`configuration` SET `value` = 'Online Education' WHERE `configuration`.`name` = 'site_motto';
@@ -3545,7 +3545,7 @@ CREATE TABLE `mod_classes` (
 ) ENGINE=MyISAM AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
 
 ALTER TABLE `users`  ADD COLUMN `can_be_instructor` TINYINT(1) NOT NULL DEFAULT 0 AFTER `last_login`;
-UPDATE users SET can_be_instructor = 1 WHERE user_type = 'professor'
+UPDATE users SET can_be_instructor = 1 WHERE user_type = 'instructor'
 
 CREATE TABLE `mod_roadmap_courses_to_classes` (
   `course_id` mediumint(8) unsigned NOT NULL,

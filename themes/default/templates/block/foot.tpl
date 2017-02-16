@@ -7,7 +7,7 @@
 <ul id="tlyPageGuide">
     <li class="tlypageguide_left hidden-xs" data-tourtarget="#users-panel">
         <div>
-        Here you will find the most relevant information about the student’s status, history, progress, and the roadmap for the completion of the course.
+        Here you will find the most relevant information about the user’s status, history, progress, and the roadmap for the completion of the course.
         </div>
     </li>
     <li class="tlypageguide_left" data-tourtarget="#ads-leftbar-banner">
@@ -28,18 +28,18 @@
     <!--
     <li class="tlypageguide_left" data-tourtarget="#tutoria-widget">
         <div>
-        In this area the students can ask questions to the instructors or advisors. Depending on how the course is setup, only the instructor or advisor can answer questions, or other students can be allowed answer each other.
+        In this area the users can ask questions to the instructors or advisors. Depending on how the course is setup, only the instructor or advisor can answer questions, or other users can be allowed answer each other.
         </div>
     </li>
     -->
     <li class="tlypageguide_right" data-tourtarget="#institution-widget">
         <div>
-        This area is dedicated to the university, school, training center, or private teacher. Here you will find the name of the school, homepage, Facebook page, contact information, and everything you need to know about the institution hosting the course.
+        This area is dedicated to the university, school, training center, or private Instructor. Here you will find the name of the school, homepage, Facebook page, contact information, and everything you need to know about the institution hosting the course.
         </div>
     </li>
     <li class="tlypageguide_right" data-tourtarget="#advisor-chat-widget">
         <div>
-        Here the student will find information about the instructor, advisor or coach. In this area you can also schedule meetings with your instructor or advisor, chat with him or her, and even have calls or videoconferences.
+        Here the user will find information about the instructor, advisor or coach. In this area you can also schedule meetings with your instructor or advisor, chat with him or her, and even have calls or videoconferences.
         </div>
     </li>
     <li class="tlypageguide_right" data-tourtarget="#ads-rightbar-banner">
@@ -49,13 +49,13 @@
     </li>
     <li class="tlypageguide_right" data-tourtarget=".messages-panel">
         <div>
-        Depending on how your course is set up, the school or instructor can determined what type of contact he or she will make available to the students.
+        Depending on how your course is set up, the school or instructor can determined what type of contact he or she will make available to the users.
         </div>
     </li>
 
     <li class="tlypageguide_left" data-tourtarget="#calendar-widget">
         <div>
-        Here students and faculty will be able to see all relevant dates pertaining to the course such as, delivery of papers, holidays, special activities, meetings online with other students, and meetings with instructors or advisors.
+        Here users and faculty will be able to see all relevant dates pertaining to the course such as, delivery of papers, holidays, special activities, meetings online with other users, and meetings with instructors or advisors.
         </div>
     </li>
 

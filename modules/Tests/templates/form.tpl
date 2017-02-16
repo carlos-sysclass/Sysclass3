@@ -51,7 +51,7 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Grade Rule"}
-                        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='You can select a customized rule to show yours students grades in your prefered way. If you do not choose, the grades will be showed in the [0-100] standard'}">
+                        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='You can select a customized rule to show yours users grades in your prefered way. If you do not choose, the grades will be showed in the [0-100] standard'}">
                             <i class="fa fa-question"></i>
                         </span>
                     </label>

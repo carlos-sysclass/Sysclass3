@@ -21,7 +21,7 @@
 			
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 			<li>
-				<a href="#tab_users" data-toggle="tab">{translateToken value="Students"}</a>
+				<a href="#tab_users" data-toggle="tab">{translateToken value="Users"}</a>
 			</li>
 			{/if}
 

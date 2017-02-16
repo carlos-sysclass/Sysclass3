@@ -568,7 +568,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.content/classInstructorTabViewClass::render');
 				this.$(".scroller").empty();
 
-				if (_.size(this.model.get("classe.professor")) === 0) {
+				if (_.size(this.model.get("classe.instructor")) === 0) {
 					this.disable();
 				} else {
 					this.enable();

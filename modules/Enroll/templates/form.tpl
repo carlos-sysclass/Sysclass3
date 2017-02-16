@@ -114,7 +114,7 @@
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
-					            On <strong>Individual</strong> Admittance Type, the user is accepted regardless of others students, and your roadmap is calculated  individually.
+					            On <strong>Individual</strong> Admittance Type, the user is accepted regardless of others users, and your roadmap is calculated  individually.
 					        </p>
 					    </div>
 					</div>
@@ -123,7 +123,7 @@
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
-					            On <strong>Grouping-based</strong> Admittance Type, the users are allocated in groups, based on his admittance dates. Each group are dynamically created based on the criterias below. You can create groups based on days of a month, the total number of students or even both.</p>
+					            On <strong>Grouping-based</strong> Admittance Type, the users are allocated in groups, based on his admittance dates. Each group are dynamically created based on the criterias below. You can create groups based on days of a month, the total number of users or even both.</p>
 					    </div>
 					</div>
 				</div>
@@ -256,17 +256,17 @@
 			</div>
 			<h5 class="form-section margin-bottom-10">
 				<i class="fa fa-cogs"></i>
-				{translateToken value="Student Limit"}
-				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of students allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
+				{translateToken value="User Limit"}
+				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of users allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
                     <i class="fa fa-question"></i>
                 </span>
 			</h5>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label class="control-label">{translateToken value="Maximum students"}
+						<label class="control-label">{translateToken value="Maximum users"}
 						</label>
-						<input name="limit_by_students_count" value="" type="text" placeholder="{translateToken value="Maximum students"}" class="form-control" data-rule-required="true" data-rule-number="true" />
+						<input name="limit_by_students_count" value="" type="text" placeholder="{translateToken value="Maximum users"}" class="form-control" data-rule-required="true" data-rule-number="true" />
 					</div>
                 </div>
 				<div class="col-md-6">

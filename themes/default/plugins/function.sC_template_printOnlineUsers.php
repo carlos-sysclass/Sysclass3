@@ -12,7 +12,7 @@ function smarty_function_sC_template_printOnlineUsers($params, &$smarty)
         <table border = "0" width = "100%">
             <tr><td align = '.$align.'>';
     for ($i = 0; $i < sizeof($params['data']); $i++) {
-        //$params['data'][$i]['type'] == 'professor' ? $style = "font-weight:bold;" : $style = '';
+        //$params['data'][$i]['type'] == 'instructor' ? $style = "font-weight:bold;" : $style = '';
         $i > 0 && $i < sizeof($params['data']) ? $comma = ', ' : $comma = '';
 
         $str .= $comma.'#filter:user_login-'.$params['data'][$i]['login'].'#';
