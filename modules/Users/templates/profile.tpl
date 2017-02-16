@@ -4,7 +4,7 @@
 
 {has_permission resource="Users" action="change-password" assign="canChangePassword"}
 
-{has_role role="Instructor" assign="isTeacher"}
+{has_role role="Teacher" assign="isTeacher"}
 
 
 

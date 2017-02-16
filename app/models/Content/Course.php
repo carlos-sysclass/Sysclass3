@@ -60,7 +60,7 @@ class Course extends Model
             "professor_id",
             "Sysclass\\Models\\Users\\User",
             "id",
-            array('alias' => 'Instructor')
+            array('alias' => 'Professor')
         );
 
         $this->belongsTo(
@@ -131,10 +131,10 @@ class Course extends Model
         }
 
         $result = $this->toArray();
-        if ($instructor =  $this->getProfessor()) {
-            $result['instructor'] = $instructor->toArray();
+        if ($professor =  $this->getProfessor()) {
+            $result['professor'] = $professor->toArray();
         } else {
-            $result['instructor'] = array();
+            $result['professor'] = array();
         }
         $result['units'] = array();
 

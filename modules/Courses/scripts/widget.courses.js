@@ -768,7 +768,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				console.info('portlet.courses/classInstructorTabViewClass::render');
 				this.$(".scroller").empty();
 
-				if (_.size(this.model.get("classe.instructor")) === 0) {
+				if (_.size(this.model.get("classe.professor")) === 0) {
 					this.disable();
 				} else {
 					this.enable();
@@ -1277,12 +1277,12 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//} else {
 
 				//}
-	            this.$('.tree-instructor').tree({
+	            this.$('.tree-professor').tree({
 	                selectable: false,
 	                dataSource: this.fileTree,
 	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',
 	            });
-	            this.$('.tree-user').tree({
+	            this.$('.tree-student').tree({
 	                selectable: false,
 	                dataSource: this.fileTree,
 	                loadingHTML: '<img src="/assets/default/img/input-spinner.gif"/>',

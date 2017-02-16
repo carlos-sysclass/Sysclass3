@@ -117,7 +117,7 @@
 				<div class="clearfix"></div>
 				-->
 
-				{has_role role="Instructor" user_id="" assign="isTeacher"}
+				{has_role role="Teacher" user_id="" assign="isTeacher"}
 
 				<h5 class="form-section margin-bottom-100">
 					<i class="fa fa-camera"></i>

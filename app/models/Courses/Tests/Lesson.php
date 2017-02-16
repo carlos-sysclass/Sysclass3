@@ -70,14 +70,13 @@ class Lesson extends BaseUnit
                     min(intval($questions_size), count($questionsArray))
                 );
             } else {
-                $questions_indexes = $questionsArray;
+                $questions_indexes = array_keys($questionsArray);
             }
 
             if (!is_array($questions_indexes)) {
                 $questions_indexes = array($questions_indexes);
             }
 
-           
             foreach($questions as $i => $question) {
                 if (in_array($i, $questions_indexes)) {
                     $result[] = $question;
@@ -92,7 +91,7 @@ class Lesson extends BaseUnit
                 $object->position = $index+1;
                 $object->save();
             }
-            
+
         } else {
             foreach($executionQuestions as $executionQuestion) {
                 foreach($questions as $question) {

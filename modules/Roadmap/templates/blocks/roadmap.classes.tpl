@@ -247,10 +247,10 @@
                     <strong class="text-primary pull-right"><%= _.size(data.units) %></strong>
                 <% } %>
             </div>
-            <% if (_.isObject(data.instructor)) { %>
+            <% if (_.isObject(data.professor)) { %>
             <div class="col-md-6 col-sm-6">
                 <span>{translateToken value="Instructor"}</span>
-                <strong class="text-primary pull-right"><%= sprintf('%(name)s %(surname)s', data.instructor) %></strong>
+                <strong class="text-primary pull-right"><%= sprintf('%(name)s %(surname)s', data.professor) %></strong>
             </div>
             <% } else { %>
                 <div class="col-md-6 col-sm-6">

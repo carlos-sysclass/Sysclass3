@@ -138,11 +138,11 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 					"icon"	=> "rocket",
 					"color"	=> "danger"
 				),
-				'instructor' => array(
+				'professor' => array(
 					"icon"	=> "plane",
 					"color"	=> "info"
 				),
-				'user' => array(
+				'student' => array(
 					"icon"	=> "road",
 					"color"	=> "success"
 				)

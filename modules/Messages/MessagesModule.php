@@ -60,7 +60,7 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
                 }
                 $self->putItem("message_groups", $messageGroups);
 
-                $teacherRole = Role::findFirstByName('Instructor');
+                $teacherRole = Role::findFirstByName('Teacher');
                 $users = $teacherRole->getAllUsers();
 
                 $this->putItem("USER_RECEIVERS", $users);

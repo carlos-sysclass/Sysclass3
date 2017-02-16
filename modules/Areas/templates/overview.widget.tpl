@@ -310,7 +310,7 @@
 
 										</small>
 									</h5>
-									<div class="tree tree-instructor tree-plus-minus tree-no-line tree-unselectable">
+									<div class="tree tree-professor tree-plus-minus tree-no-line tree-unselectable">
 										<div class = "tree-folder" style="display:none;">
 											<div class="tree-folder-header">
 												<i class="icon-folder-close"></i>
@@ -340,7 +340,7 @@
 
 										</small>
 									</h5>
-									<div class="tree tree-user tree-plus-minus tree-no-line tree-unselectable">
+									<div class="tree tree-student tree-plus-minus tree-no-line tree-unselectable">
 										<div class = "tree-folder" style="display:none;">
 											<div class="tree-folder-header">
 												<i class="icon-folder-close"></i>
