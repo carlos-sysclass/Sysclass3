@@ -737,7 +737,7 @@ _before_init_functions.push(function() {
     <!--
     <td width="20%">
       <% if (!_.isNull(model.professor_id)) { %>
-        <%= model.instructor.name %> <%= model.instructor.surname %>
+        <%= model.professor.name %> <%= model.professor.surname %>
         <span class="at-difinf">
           <a href="javascript:void(0);"  class="btn btn-info btn-xs">
             <i class="fa fa-info" aria-hidden="true"></i>
@@ -855,7 +855,7 @@ _before_init_functions.push(function() {
               </a>
             </li>
             <li class="subchild">
-              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
+              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.professor_id %>" data-mode="user">
                 <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
               </a>
             </li>
@@ -894,8 +894,8 @@ _before_init_functions.push(function() {
   </td>
   <!--
   <td width="20%">
-    <% if (!_.isNull(model.instructor_id) && _.size(model.instructor) > 0) { %>
-      <%= model.instructor.name %> <%= model.instructor.surname %>
+    <% if (!_.isNull(model.professor_id) && _.size(model.professor) > 0) { %>
+      <%= model.professor.name %> <%= model.professor.surname %>
     <% } %>
   </td>
   -->
