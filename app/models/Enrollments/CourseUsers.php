@@ -95,7 +95,7 @@ class CourseUsers extends Model
             ));
             if ($count > 0) {
                 $message = new Message(
-                    $translator->translate("It's already a enrollment registered. Please try again."),
+                    $translator->translate("This user is already registered."),
                     null,
                     "warning"
                 );

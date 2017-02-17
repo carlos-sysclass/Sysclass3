@@ -565,7 +565,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @example
         error: function(response, newValue) {
             if(response.status === 500) {
-                return 'Service unavailable. Please try later.';
+                return 'Service unavailable. Please, try later.';
             } else {
                 return response.responseText;
             }
