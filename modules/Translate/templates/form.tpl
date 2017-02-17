@@ -70,13 +70,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Expiration Date"}</label>
+					<label class="control-label">{translateToken value="Expiration date"}</label>
 					<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Expiration Time"}</label>
+					<label class="control-label">{translateToken value="Expiration time"}</label>
 					<input type="text" class="form-control timepicker-24 input-medium" name="expires[time]" data-update="expires" data-format="time" data-format-from="unix-timestamp">
 				</div>
 			</div>

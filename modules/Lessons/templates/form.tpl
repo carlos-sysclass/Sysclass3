@@ -10,18 +10,18 @@
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
 					<i class="fa fa-dropbox"></i>
-					{translateToken value="Content Editor"}
+					{translateToken value="Content editor"}
 				</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Text Content"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Text content"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Video Content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Video content"}</a>
 			</li>
 			{/if}
 		</ul>
@@ -35,7 +35,7 @@
 					<div class="form-group">
 						<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 						<label class="control-label">{translateToken value="Course"}</label>
-						<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select Course"}">
+						<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select course"}">
 							<option value=""></option>
 							{foreach $T_CLASSES as $classe}
 								<option value="{$classe.id}">{$classe.name}</option>

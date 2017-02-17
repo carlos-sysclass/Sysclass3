@@ -1419,7 +1419,7 @@ _before_init_functions.push(function() {
 			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
 				{translateToken value="Do it again!"}
 			<% } else { %>
-				{translateToken value="Do now"}
+				{translateToken value="Do it now"}
 			<% } %>
 		</a>
 	</td>

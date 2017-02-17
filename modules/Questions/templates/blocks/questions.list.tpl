@@ -74,7 +74,7 @@
     </div>
 </div>
 <script type="text/template" id="question-item">
-    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag item to reposition"} ">
         <i class="fa fa-arrows"></i>
     </a>
 
@@ -117,7 +117,7 @@
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
-            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
+            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
         <% } else { %>
         <span class="label label-sm label-info">
           <i class="fa fa-exclamation"></i>Not saved yet!

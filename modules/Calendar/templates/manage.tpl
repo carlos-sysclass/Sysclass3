@@ -46,7 +46,7 @@
                 <form id="form-calendar-event-creation" role="form" class="form-validate">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title event-title">{translateToken value="Event Creation"}</h4>
+                        <h4 class="modal-title event-title">{translateToken value="Event creation"}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-body">
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success" type="submit">{translateToken value="Create Event"}</button>
+                        <button class="btn btn-success" type="submit">{translateToken value="Create event"}</button>
                         <button type="button" class="btn default" data-dismiss="modal">Close</button>
                     </div>
                 </form>

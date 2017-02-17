@@ -18,11 +18,11 @@
             </ul>
             <a class="btn btn-sm btn-primary btn-link add-lesson-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Lesson"}
+                {translateToken value="Create lesson"}
             </a>
             <a class="btn btn-sm btn-success btn-link add-test-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Test"}
+                {translateToken value="Create test"}
             </a>
             <!--
             <a class="btn btn-sm btn-warning btn-link import-item-action" href="javascript: void(0);">

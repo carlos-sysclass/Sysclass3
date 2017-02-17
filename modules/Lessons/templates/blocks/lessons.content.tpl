@@ -100,7 +100,7 @@ li.list-item {
                             <div class="content-videos-poster">
                                 <h5 class="form-section margin-bottom-10 margin-top-10">
                                     <i class="fa fa-language"></i>
-                                    {translateToken value="Video Poster"}
+                                    {translateToken value="Video poster"}
 
                                     <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="poster">
                                         <i class="fa fa-plus" aria-hidden="true"></i>

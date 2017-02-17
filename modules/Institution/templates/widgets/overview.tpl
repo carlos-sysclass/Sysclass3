@@ -126,7 +126,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a Ticket"}</span>
+			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a ticket"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
@@ -140,7 +140,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs Pending"}</span>
+			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs eending"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">

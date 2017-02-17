@@ -69,7 +69,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label class="control-label">{translateToken value="Course Grouping"}
-                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new Course Grouping"} "><i class="fa fa-plus"></i></a>
+                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new course grouping"} "><i class="fa fa-plus"></i></a>
                 </label>
                 <select class="select2-me form-control" name="roadmap_grouping_id" data-placeholder="{translateToken value='Course Grouping'}">
                     <option value="-1">All Groupings</option>
@@ -82,7 +82,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            {translateToken value="Roadmap for Course Grouping: "}<strong data-update="roadmap_grouping">All</strong>
+            {translateToken value="Roadmap for course grouping: "}<strong data-update="roadmap_grouping">All</strong>
             <div class="panel-buttons panel-buttons-sm">
                 <a class="btn btn-success btn-sm roadmap-add-season" href="#">Add a Season</a>
                 <a class="btn btn-warning btn-sm roadmap-add-class" href="#">Add a Class</a>

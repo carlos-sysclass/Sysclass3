@@ -27,7 +27,7 @@ Course Reading:
         </span>
 
 	</label>
-	<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="objectives" rows="6" placeholder="{translateToken value="Course Objectives"}"></textarea>
+	<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="objectives" rows="6" placeholder="{translateToken value="Course objectives"}"></textarea>
 </div>
 <!-- 
 <div class="form-group">
@@ -43,7 +43,7 @@ Course Reading:
 <div class="form-group">
 	<label class="control-label">{translateToken value="Coordinator"}</label>
 	<select class="select2-me form-control" name="professor_id">
-		<option value="">{translateToken value="Please Select"}</option>
+		<option value="">{translateToken value="Please select"}</option>
 		{foreach $T_INSTRUCTORS as $id => $instructor}
 			<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
 		{/foreach}

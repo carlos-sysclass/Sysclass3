@@ -7,7 +7,7 @@
 			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 		</li>
 		<li class="admittance-type-item admittance-type-grouping hidden">
-			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
+			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping options"}</a>
 		</li>
 
 		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}

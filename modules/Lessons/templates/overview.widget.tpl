@@ -334,7 +334,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
 									-->
 									<h5>
-										<a href="javascript: void(0)">{translateToken value="Your Files"} </a> -
+										<a href="javascript: void(0)">{translateToken value="Your files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 
@@ -450,12 +450,12 @@
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous lesson"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next lesson"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
