@@ -16,7 +16,7 @@ use Phalcon\DI,
 class ApiController extends \AbstractSysclassController
 {
 	const INVALID_DATA = "Your data sent is invalid. Please try again.";
-	const NO_DATA_FOUND = "Sorry, no data found.";
+	const NO_DATA_FOUND = "No data found.";
 	const EXECUTION_OK = "Method executed.";
 	
 

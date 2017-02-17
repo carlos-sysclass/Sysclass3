@@ -640,7 +640,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -669,7 +669,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no courses registered for this course"}
+				{translateToken value="There are no courses registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -811,7 +811,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -1250,7 +1250,7 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_unit_video-nofound-template">
   <div class="alert alert-info">
     <span class="text-info"><i class="icon-warning-sign"></i></span>
-    {translateToken value="Ops! There's no content for this lesson"}
+    {translateToken value="There's no content for this lesson"}
   </div>
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
@@ -1336,7 +1336,7 @@ _before_init_functions.push(function() {
     <td colspan="5">
       <span class="text-info">
         <i class="icon-warning-sign"></i>
-        {translateToken value="Ops! There's no materials registered for this course"}
+        {translateToken value="There are no materials posted in this course"}
       </span>
     </td>
   </tr>
@@ -1398,7 +1398,7 @@ _before_init_functions.push(function() {
 		<td colspan="4"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no exercises registered for this course"}
+				{translateToken value="There are no exercises registered for this course"}
 			</span>
 		</td>
 	</tr>

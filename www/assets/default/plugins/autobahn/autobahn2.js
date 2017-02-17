@@ -3618,7 +3618,7 @@ var Session = function (socket, defer, onchallenge) {
                   function (err) {
                      log.debug("onchallenge() raised:", err);
 
-                     var msg = [MSG_TYPE.ABORT, {message: "sorry, I cannot authenticate (onchallenge handler raised an exception)"}, "wamp.error.cannot_authenticate"];
+                     var msg = [MSG_TYPE.ABORT, {message: "Can not authenticate (onchallenge handler raised an exception)"}, "wamp.error.cannot_authenticate"];
                      self._send_wamp(msg);
                      self._socket.close(1000);
                   }
@@ -3626,7 +3626,7 @@ var Session = function (socket, defer, onchallenge) {
             } else {
                log.debug("received WAMP challenge, but no onchallenge() handler set");
 
-               var msg = [MSG_TYPE.ABORT, {message: "sorry, I cannot authenticate (no onchallenge handler set)"}, "wamp.error.cannot_authenticate"];
+               var msg = [MSG_TYPE.ABORT, {message: "Can not authenticate (no onchallenge handler set)"}, "wamp.error.cannot_authenticate"];
                self._send_wamp(msg);
                self._socket.close(1000);
             }

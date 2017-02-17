@@ -112,7 +112,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's no info registered for this program"}
+										{translateToken value="There's no info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -136,7 +136,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's no info registered for this program"}
+										{translateToken value="There's no info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -145,7 +145,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's no info registered for this program"}
+										{translateToken value="There's no info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -406,7 +406,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Sorry! Any data has been registered for this class yet."}
+										{translateToken value="No data has been registered for this class."}
 									</div>
 								</div>
 							</div>
@@ -548,7 +548,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -632,7 +632,7 @@ _before_init_functions.push(function() {
 		<td colspan="5"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no courses registered for this course"}
+				{translateToken value="There are no courses registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -731,7 +731,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -816,7 +816,7 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_unit_video-nofound-template">
 	<div class="alert alert-info">
 		<span class="text-info"><i class="icon-warning-sign"></i></span>
-		{translateToken value="Ops! There's no content for this lesson"}
+		{translateToken value="There's no content for this lesson"}
 	</div>
 </script>
 
@@ -849,7 +849,7 @@ _before_init_functions.push(function() {
 		<td colspan="5"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no materials registered for this course"}
+				{translateToken value="There are no materials posted in this course"}
 			</span>
 		</td>
 	</tr>
@@ -900,7 +900,7 @@ _before_init_functions.push(function() {
 		<td colspan="4"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no exercises registered for this course"}
+				{translateToken value="There are no exercises registered for this course"}
 			</span>
 		</td>
 	</tr>

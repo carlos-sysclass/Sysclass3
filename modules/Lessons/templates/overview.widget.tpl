@@ -78,7 +78,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this course"}
+										{translateToken value="There's no info registered in this course"}
 									</div>
 								</div>
 							</div>
@@ -389,7 +389,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Sorry! Any data has been registered for this class yet."}
+										{translateToken value="No data has been registered for this class."}
 									</div>
 								</div>
 							</div>
@@ -493,7 +493,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any content for this lesson"}
+										{translateToken value="There are no content in this lesson"}
 									</div>
 								</div>
 							</div>
@@ -512,7 +512,7 @@
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										 {translateToken value="Ops! There's any exercises posted for this lesson"}
+										 {translateToken value="There are no exercises posted in this lesson"}
 								   	</div>
 							   	</div>
 						   	</div>
@@ -576,7 +576,7 @@
 	<td colspan="5"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any classes registered for this course"}
+			{translateToken value="There are no units posted in this course"}
 		</span>
 	</td>
 </script>

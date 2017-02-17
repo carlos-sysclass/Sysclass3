@@ -2068,7 +2068,7 @@ Zone	Asia/Karachi	4:28:12 -	LMT	1907
 # Holiday havoc
 # </a> (Jerusalem Post, 1999-04-22) that
 # the Palestinian National Authority changed to DST on 1999-04-15.
-# I vaguely recall that they switch back in October (sorry, forgot the source).
+# I vaguely recall that they switch back in October.
 # For now, let's assume that the spring switch was at 24:00,
 # and that they switch at 0:00 on the 3rd Fridays of April and October.
 
