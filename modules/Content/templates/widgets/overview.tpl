@@ -697,7 +697,7 @@ _before_init_functions.push(function() {
 	<%= model.description %>
 	<% if (!_.isEmpty(model.objectives)) { %>
 		<hr />
-		<h5>{translateToken value="Objetives"}</h5>
+		<h5>{translateToken value="Objectives"}</h5>
 		
 		<%= model.objectives %>
 	<% } %>
@@ -793,7 +793,7 @@ _before_init_functions.push(function() {
 	<%= model.description %>
 	<% if (!_.isEmpty(model.objectives)) { %>
 		<hr />
-		<h5>{translateToken value="Objetives"}</h5>
+		<h5>{translateToken value="Objectives"}</h5>
 		
 		<%= model.objectives %>
 	<% } %>

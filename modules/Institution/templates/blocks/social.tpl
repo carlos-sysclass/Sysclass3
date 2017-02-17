@@ -66,10 +66,10 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Linked In"}</label>
+			<label class="control-label">{translateToken value="LinkedIn"}</label>
 			<div class="input-group">
 				<span class="input-group-text btn-info">  https://www.linkedin.com/  </span>
-				<input name="linkedin" value="" type="text" placeholder="Linked in" class="form-control" />
+				<input name="linkedin" value="" type="text" placeholder="LinkedIn" class="form-control" />
 			</div>
 		</div>
 	</div>

@@ -56,7 +56,7 @@
 	{/if}
 
 	{if $social.linkedin}
-		{$text=translateToken value="Linked In"}
+		{$text=translateToken value="LinkedIn"}
 
 		{$variables[$index].linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
 	{/if}

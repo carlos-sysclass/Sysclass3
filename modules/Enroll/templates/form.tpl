@@ -114,7 +114,7 @@
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
-					            On <strong>Individual</strong> Admittance Type, the user is accepted regardless of others users, and your roadmap is calculated  individually.
+					            On <strong>Individual</strong> Admittance type, the user is accepted regardless of others users, and your roadmap is calculated  individually.
 					        </p>
 					    </div>
 					</div>
@@ -123,7 +123,7 @@
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
-					            On <strong>Grouping-based</strong> Admittance Type, the users are allocated in groups, based on his admittance dates. Each group are dynamically created based on the criterias below. You can create groups based on days of a month, the total number of users or even both.</p>
+					            On <strong>Grouping-based</strong> Admittance type, the users are allocated in groups, based on his admittance dates. Each group are dynamically created based on the criterias below. You can create groups based on days of a month, the total number of users or even both.</p>
 					    </div>
 					</div>
 				</div>
