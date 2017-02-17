@@ -196,7 +196,7 @@ class LoginController extends \AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
 					// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-		            //$message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
+		            //$message = $this->translate->translate("Your session has expired. Please, re-enter your username and password.");
 		            //$message_type = 'info';
 					break;
 				}
@@ -228,7 +228,7 @@ class LoginController extends \AbstractSysclassController
         	// SHOW ERROR MESSAGE
     		$this->redirect(
     			"/signup", 
-    			$this->translate->translate("A problem ocurred when attempting to register you. Please, try again."),
+    			$this->translate->translate("A problem ocurred when attempting to complete your registration. Please, try again. If the problem persists, contact the system administrator."),
     			"danger"
     		);
         }
@@ -272,30 +272,30 @@ class LoginController extends \AbstractSysclassController
 			$url = null;
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+		            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}
 
 				case AuthenticationException :: MAINTENANCE_MODE : {
 
-		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System under maintenance.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-		            $message = $this->translate->translate("Username and password are incorrect. Please make sure you typed correctly.");
+		            $message = $this->translate->translate("Username and/or password are incorrect. Please, make sure you typed correctly.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$url = "/lock";
-		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Please, check if the login info is correct, and re-enter the username and password.");
 		            $message_type = 'info';
 		            break;
 				}
@@ -391,23 +391,23 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+			            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
-			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message = $this->translate->translate("System under maintenance.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message = $this->translate->translate("The system can't locate this account. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
 					case AuthenticationException :: LOCKED_DOWN : {
-			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
@@ -478,23 +478,23 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+			            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
-			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message = $this->translate->translate("System under maintenance.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message = $this->translate->translate("The system can't locate this account. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
 					case AuthenticationException :: LOCKED_DOWN : {
-			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
@@ -574,23 +574,23 @@ class LoginController extends \AbstractSysclassController
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+			            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
-			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message = $this->translate->translate("System under maintenance.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message = $this->translate->translate("The system can't locate this account. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
 					case AuthenticationException :: LOCKED_DOWN : {
-			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
@@ -641,7 +641,7 @@ class LoginController extends \AbstractSysclassController
 
 	            	if ($valid_until < new \DateTime('today')) {
 	            		$url = "/login/reset";
-	            		throw new AuthenticationException("Your request isn't valid anymore. Please generate a new request.", AuthenticationException::RESET_HASH_ISNT_VALID_ANYMORE);
+	            		throw new AuthenticationException("There is a problem with your request. Please, enter a new request.", AuthenticationException::RESET_HASH_ISNT_VALID_ANYMORE);
 	            	}
 
             		//$di->get("authentication")->login($user, array('disableBackends' => true));
@@ -659,28 +659,28 @@ class LoginController extends \AbstractSysclassController
 
 		            return parent::display('pages/auth/reset.tpl');
 	            } else {
-	            	throw new AuthenticationException("Your request isn't valid anymore. Please generate a new request.", AuthenticationException::RESET_HASH_ISNT_VALID_ANYMORE);
+	            	throw new AuthenticationException("There is a problem with your request. Please, enter a new request.", AuthenticationException::RESET_HASH_ISNT_VALID_ANYMORE);
 	            }
 			} catch (AuthenticationException $e) {
 				switch($e->getCode()) {
 					case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-			            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+			            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: MAINTENANCE_MODE : {
 
-			            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+			            $message = $this->translate->translate("System under maintenance.");
 			            $message_type = 'warning';
 			            break;
 					}
 					case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-			            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+			            $message = $this->translate->translate("The system can't locate this account. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
 					case AuthenticationException :: LOCKED_DOWN : {
-			            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+			            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 			            $message_type = 'warning';
 						break;
 					}
@@ -758,23 +758,23 @@ class LoginController extends \AbstractSysclassController
 
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+		            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: MAINTENANCE_MODE : {
 
-		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System under maintenance.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
-		            $message = $this->translate->translate("The system can't locate this account. Please use the form below.");
+		            $message = $this->translate->translate("The system can't locate this account. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
@@ -805,22 +805,22 @@ class LoginController extends \AbstractSysclassController
 			$url = "/login";
 			switch($e->getCode()) {
 				case AuthenticationException :: NO_BACKEND_DISPONIBLE: {
-		            $message = $this->translate->translate("Incorrect username or password. To reset your password click below on FORGOT YOUR PASSWORD.");
+		            $message = $this->translate->translate("Incorrect username or password. If you need reset your login info, click on FORGOT YOUR PASSWORD.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: MAINTENANCE_MODE : {
-		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System under maintenance.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
-		            $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message = $this->translate->translate("Your session has expired. Please, re-enter your username and password.");
 		            $message_type = 'info';
 		            break;
 				}
@@ -863,7 +863,7 @@ class LoginController extends \AbstractSysclassController
 	public function loginResetRequest()
 	{
 
-		$message = $this->translate->translate("The system doesn't provides this function yet.Please came back in a while.");
+		$message = $this->translate->translate("The system doesn't support this function.");
 		$message_type = 'warning';
 		$this->redirect("/login", $message, $message_type);
 		

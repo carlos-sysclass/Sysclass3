@@ -40,33 +40,33 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
 
             switch($e->getCode()) {
                 case AuthenticationException :: MAINTENANCE_MODE : {
-                    $message = $this->translate->translate("System is under maintenance.");
+                    $message = $this->translate->translate("System under maintenance.");
                     $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: LOCKED_DOWN : {
-                    $message = $this->translate->translate("The system is temporally unavailable");
+                    $message = $this->translate->translate("System unavailable. Please, contact the system administrator.");
                     $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: NO_USER_LOGGED_IN : {
-                    $message = $this->translate->translate("Your session has expired. Please re-enter your username and password.");
+                    $message = $this->translate->translate("Your session has expired. Please, re-enter the username and password.");
                     $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
                     $action = "lockpage";
-                    $message = $this->translate->translate("Please, check if the info provided is correct and re-enter your username and password.");
+                    $message = $this->translate->translate("Please, check if the info provided is correct, and re-enter the username and password.");
                     $message_type = 'info';
                     break;
                 }
                 case AuthenticationException :: USER_ACCOUNT_IS_NOT_APPROVED : {
-                    $message = $this->translate->translate("Your account has not been setup yet.");
+                    $message = $this->translate->translate("Your account has not been setup.");
                     $message_type = 'warning';
                     break;
                 }
                 case AuthenticationException :: API_TOKEN_TIMEOUT : {
-                    $message = $this->translate->translate("Your token has expired. Please, enter a new one");
+                    $message = $this->translate->translate("Your token has expired. Please, re-enter token.");
                     $message_type = 'info';
                     $this->response->setJsonContent(array(
                         'error'         => true,
@@ -77,7 +77,7 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
                     break;
                 }
                 case AuthenticationException :: API_TOKEN_NOT_FOUND : {
-                    $message = $this->translate->translate("Token invalid. Please, enter a new one");
+                    $message = $this->translate->translate("Invalid token. Please, re-enter token.");
                     $message_type = 'danger';
                     $this->response->setJsonContent(array(
                         'error'         => true,

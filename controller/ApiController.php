@@ -45,7 +45,7 @@ class ApiController extends \AbstractSysclassController
 				}
 				case AuthenticationException :: MAINTENANCE_MODE : {
 					$code = 403;
-		            $message = "System is under maintenance mode. Please came back in a while.";
+		            $message = "System under maintenance.";
 		            $message_type = 'warning';
 		            break;
 				}
@@ -57,25 +57,25 @@ class ApiController extends \AbstractSysclassController
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
 					$code = 403;
-		            $message = "The system was locked down by a administrator. Please came back in a while.";
+		            $message = "Access not available. Please, contact the system administrator.";
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$code = 403;
-		            $message = "Your account is locked. Please provide your password to unlock.";
+		            $message = "Please, check if the info provided is correct, and re-enter the username and password.";
 		            $message_type = 'info';
 		            break;
 				}
                 case AuthenticationException :: API_TOKEN_TIMEOUT : {
                 	$code = 403;
-                    $message = "Your token has expired. Please generate a new one";
+                    $message = "Invalid token. Please, re-enter token.";
                     $message_type = 'info';
                     break;
                 }
                 case AuthenticationException :: API_TOKEN_NOT_FOUND : {
                 	$code = 403;
-                    $message = "This token is invalid. Please generate a new one";
+                    $message = "Token invalid. Please, enter a new token.";
                     $message_type = 'info';
                     break;
                 }
@@ -151,7 +151,7 @@ class ApiController extends \AbstractSysclassController
 
 				case AuthenticationException :: MAINTENANCE_MODE : {
 					$code = 403;
-		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System under maintenance.");
 		            $message_type = 'warning';
 		            break;
 				}
@@ -163,13 +163,13 @@ class ApiController extends \AbstractSysclassController
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
 					$code = 403;
-		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$code = 403;
-		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Please, check if the info provided is correct, and re-enter the username and password.");
 		            $message_type = 'info';
 		            break;
 				}
