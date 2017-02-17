@@ -1148,11 +1148,11 @@ _before_init_functions.push(function() {
     <% if (_.has(model, 'testExecution') && !_.isNull(model.testExecution.user_grade)) { %>
       <% if (model.testExecution.pass == "1") { %>  
         <span class="concluido">
-          <strong class="small-box"><%= sprintf("%d%%", model.testExecution.user_points) %></strong>
+          <strong class="small-box"><%= model.testExecution.user_grade %></strong>
         </span>
       <% } else { %>
         <span class="pendente">
-          <strong class="small-box"><%= sprintf("%d%%", model.testExecution.user_points) %></strong>
+          <strong class="small-box"><%= model.testExecution.user_grade %></strong>
         </span>
         <% if (model.test.test_repetition <= 0 || _.size(model.executions) < model.test.test_repetition) { %>
         <a href="javascript: void(0);" class="view-test-action">
