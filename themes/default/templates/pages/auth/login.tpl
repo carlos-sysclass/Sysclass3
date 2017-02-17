@@ -113,7 +113,7 @@
 		<!-- BEGIN FORGOT PASSWORD FORM -->
 		<form class="forget-form" action="/password-reset" method="post">
 			<h3 >{translateToken value="Forgot your password?"}</h3>
-			<p>{translateToken value="Enter your e-mail address to reset your password."}</p>
+			<p>{translateToken value="Enter your email to reset your password."}</p>
 
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 				<div class="alert alert-{$T_MESSAGE.type}">
