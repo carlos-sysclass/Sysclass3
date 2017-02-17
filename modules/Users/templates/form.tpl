@@ -35,7 +35,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Surname"}</label>
+							<label class="control-label">{translateToken value="Last name"}</label>
 							<input name="surname" value="" type="text" placeholder="{translateToken value='Surname'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 						</div>
 					</div>
