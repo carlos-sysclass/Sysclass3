@@ -207,7 +207,7 @@ div.dt-button-info {
   background-color: white;
   border: 2px solid #111;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
+  border-radius: 0px;
   text-align: center;
   z-index: 21;
 }
@@ -545,7 +545,7 @@ div.dtr-modal div.dtr-modal-close {
   border: 1px solid #eaeaea;
   background-color: #f9f9f9;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 0px;
   cursor: pointer;
   z-index: 12;
 }
@@ -676,7 +676,7 @@ table.dataTable td.select-checkbox:before {
   margin-top: -6px;
   margin-left: -6px;
   border: 1px solid black;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 table.dataTable tr.selected td.select-checkbox:after {
   content: '\2714';

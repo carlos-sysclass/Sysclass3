@@ -300,9 +300,9 @@ textarea.uniform {
   border-left: solid 1px #aaaaaa;
   border-bottom: solid 1px #cccccc;
   border-right: solid 1px #cccccc;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px; }
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px; }
   input.uniform-input.hover, input.uniform-input.focus,
   select.uniform-multiselect.hover,
   select.uniform-multiselect.focus,

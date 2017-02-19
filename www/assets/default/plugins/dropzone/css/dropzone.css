@@ -155,8 +155,8 @@
 .dropzone {
   border: 1px solid rgba(0,0,0,0.03);
   min-height: 360px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
   background: rgba(0,0,0,0.03);
   padding: 23px;
 }
@@ -291,8 +291,8 @@
   -o-transition: width 0.3s ease-in-out;
   -ms-transition: width 0.3s ease-in-out;
   transition: width 0.3s ease-in-out;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
   position: absolute;
   top: 0;
   left: 0;
@@ -349,8 +349,8 @@
   background-image: -o-linear-gradient(top, #fafafa 0, #eee 100%);
   background-image: -ms-linear-gradient(top, #fafafa 0, #eee 100%);
   background-image: linear-gradient(top, #fafafa 0, #eee 100%);
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
   border: 1px solid #eee;
   text-decoration: none;
   display: block;
