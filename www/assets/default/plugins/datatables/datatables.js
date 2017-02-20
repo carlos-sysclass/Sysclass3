@@ -97479,7 +97479,7 @@ $.extend( FixedColumns.prototype , {
 	 * Get data index information about a row or cell in the table body.
 	 * This function is functionally identical to fnGetPosition in DataTables,
 	 * taking the same parameter (TH, TD or TR node) and returning exactly the
-	 * the same information (data index information). THe difference between
+	 * the same information (data index information). The difference between
 	 * the two is that this method takes into account the fixed columns in the
 	 * table, so you can pass in nodes from the master table, or the cloned
 	 * tables and get the index position for the data in the main table.
