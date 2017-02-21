@@ -154,6 +154,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         },
         dropbox : {
             item : baseModelClass.extend({
+                response_type : "silent",
                 urlRoot : "/module/dropbox/item/me", // CHANGE ALL TO STORAGE MODULE
                 isVideo : function() {
                     return /^video\/.*$/.test(this.get("type"));
@@ -188,7 +189,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 translate : function(to, callback) {
                     if (!_.isEmpty(this.get("locale_code"))) {
                         $.ajax(
-                            "/module/lessons/translate/" + this.get("id"),
+                            "/module/lessons/translate/" + this.get("id") + "?silent=1",
                             {
                                 data: {
                                     from: this.get("locale_code"),
