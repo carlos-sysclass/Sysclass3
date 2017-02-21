@@ -190,7 +190,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 );
 
                 $self->putComponent("data-tables");
-                $self->putScript("scripts/utils.datatables");
+                //$self->putScript("scripts/utils.datatables");
 
                 $self->putItem("tests_execution_context", $block_context);
 
@@ -902,6 +902,36 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $this->response->setJsonContent(
             $response
         );
+    }
+
+        /**
+     * This function is called ONE-TIME inside getItemsRequest function. 
+     * MUST return a options array, to bve applied to all finded records.
+     * @return [array|null] [description]
+     */
+    protected function getDatatableItemOptions($model = 'me') {
+
+        if ($model == "execution") {
+            $options = array();
+            /*
+            $model_info = $this->model_info[$model];
+
+            $deleteAllowed = $this->isResourceAllowed("delete", $model_info);
+
+            if ($deleteAllowed) {
+                $options['remove']  = array(
+                    'icon'  => 'fa fa-remove',
+                    'class' => 'btn-sm btn-danger tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Remove'
+                    )
+                );
+            }
+            */
+            return $options;
+        } else {
+            return parent::getDatatableItemOptions($model);
+        }
     }
 
 }
