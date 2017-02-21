@@ -62,6 +62,14 @@ class Unit extends Model
         );
     }
 
+    protected function beforeValidation() {
+        if (is_null($this->active) || $this->active) {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
+    }
+
     public function toFullLessonArray() {
         $result = $this->toArray();
 

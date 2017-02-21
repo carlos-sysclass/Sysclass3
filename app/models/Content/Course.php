@@ -81,7 +81,7 @@ class Course extends Model
     }
 
     protected function beforeValidation() {
-        if ($this->active) {
+        if (is_null($this->active) || $this->active) {
             $this->active = 1;
         } else {
             $this->active = 0;

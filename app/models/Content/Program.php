@@ -78,6 +78,14 @@ class Program extends Model
         );
     }
 
+    protected function beforeValidation() {
+        if (is_null($this->active) || $this->active) {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
+    }
+
     public function calculateDuration(\DateTime $start) {
         switch($this->duration_type) {
             case "week" : {
