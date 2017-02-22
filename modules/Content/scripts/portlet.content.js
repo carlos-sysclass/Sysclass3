@@ -26,11 +26,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.pointer = opt.pointer;
 			},
 			render : function() {
-				this.$(".entity-count")
-					.html(this.collection().size());
+				if (this.collection()) {
+					this.$(".entity-count")
+						.html(this.collection().size());
+				}
+				if (this.pointer()) {
 					//cnsole.warn(this.$(".entity-current"), this.pointer);
-				this.$(".entity-current")
-					.html(this.pointer() + 1);
+					this.$(".entity-current")
+						.html(this.pointer() + 1);
+				}
+
 			},
 			prevItem : function(e) {
 				console.info('portlet.content/navigationViewClass::prevItem');
@@ -192,10 +197,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			render : function(e) {
 				console.info('portlet.content/programDescriptionTabViewClass::render');
-				this.$(".program-description-content").empty().append(this.template(this.model.toJSON()));
+				if (this.model) {
+					this.$(".program-description-content").empty().append(this.template(this.model.toJSON()));
 
-				this.navigationView.render();
-				this.renderProgress();
+					this.navigationView.render();
+					this.renderProgress();
+				}
 			},
 			renderProgress : function(collection, data, response) {
 				console.info('portlet.content/programDescriptionTabViewClass::renderProgress');
@@ -354,14 +361,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function(model) {
-				this.tableView.getApi().destroy(false);
+				if (this.collection) {
+					this.tableView.getApi().destroy(false);
 
-				baseChildTabViewClass.prototype.render.apply(this, arguments);
+					baseChildTabViewClass.prototype.render.apply(this, arguments);
 
-				this.navigationView.render();
-				this.renderProgress();
+					this.navigationView.render();
+					this.renderProgress();
 
-				this.onVisible();
+					this.onVisible();
+				}
 			},
 			onVisible : function() {
 				this.tableView.recreate();
@@ -1873,15 +1882,18 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			getTotalCoursesUnits : function(courses) {
-				var total = courses.reduce(function(count, item, i) {
-					var units = item.getUnits();
-					if (units) {
-						return count + units.size();
-					}
-					return count;
-				}, 0);
+				if (courses) {
+					var total = courses.reduce(function(count, item, i) {
+						var units = item.getUnits();
+						if (units) {
+							return count + units.size();
+						}
+						return count;
+					}, 0);
 
-				return total;
+					return total;
+				}
+				return 0;
 				//var progressCourses = this.get("units");				
 			},
 			getTotalCompleteUnits : function(units) {
@@ -2055,8 +2067,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				if (_.isNull(this.courses)) {
 					this.courses = this.getCurrentCourses();
 				}
-				var course = this.courses.findWhere({id : this.current.course_id});
-				return course;
+				if (this.courses) {
+					var course = this.courses.findWhere({id : this.current.course_id});
+					return course;
+				}
+				return null;
 			},
 			getCurrentUnit : function() {
 				if (_.isNull(this.units)) {
@@ -2082,9 +2097,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				);
 			},
 			getCourseIndex : function() {
-				return this.getCurrentCourses().indexOf(
-  					this.getCurrentCourse()
-				);
+				if (this.getCurrentCourses()) {
+					return this.getCurrentCourses().indexOf(
+  						this.getCurrentCourse()
+					);
+				}
+				return -1;
 			},
 			getUnitIndex : function() {
 				return this.getCurrentUnits().indexOf(
@@ -2216,10 +2234,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getCurrentCourses : function() {
 				if (_.isNull(this.courses)) {
 					var program = this.getCurrentProgram();
-					this.courses = new mod.collections.courses(program.get("courses"));
+					if (program) {
+						this.courses = new mod.collections.courses(program.get("courses"));
 
-					this.listenTo(this.courses, "previous", this.toPreviousCourseIndex.bind(this));
-					this.listenTo(this.courses, "next", this.toNextCourseIndex.bind(this));
+						this.listenTo(this.courses, "previous", this.toPreviousCourseIndex.bind(this));
+						this.listenTo(this.courses, "next", this.toNextCourseIndex.bind(this));
+					}
 				}
 				
 				return this.courses;
@@ -2227,7 +2247,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			getCurrentUnits : function() {
 				if (_.isNull(this.units)) {
 					var course = this.getCurrentCourse();
-					if (!_.isUndefined(course)) {
+					if (course) {
 						if (course.get("units") instanceof mod.collections.units) {
 							this.units = course.get("units");
 						} else {

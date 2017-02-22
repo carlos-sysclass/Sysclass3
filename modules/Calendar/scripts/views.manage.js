@@ -137,6 +137,21 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 }
 
+                var eventSources = [
+                    {
+                        url: "/module/calendar/datasource/calendar",
+                    }
+                ];
+
+                this.collection.each(function(item) {
+                    if (item.get("active") == 1 && item.get("type") == "google-calendar") {
+                        eventSources.push({
+                            googleCalendarId : item.get("url"),
+                            className :  item.get("class_name")
+                        });
+                    } 
+                });
+
                 this.calOptions =
                 { //re-initialize the calendar
                     header: h,
@@ -197,34 +212,7 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
                     },
                     //eventSources: this.collection.toJSON(),
                     googleCalendarApiKey: 'AIzaSyAFwmTQ7O_yp6ZsFTWkejI9S7l0RqYQkTo',
-                    eventSources : [
-                        {
-                            url: "/module/calendar/datasource/calendar",
-                        },
-                        /*
-                        {
-                            googleCalendarId: 'en.usa#holiday@group.v.calendar.google.com',
-                            className: 'calendar-holidays-item'
-                        }
-                        */
-                        {
-                            googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',
-                            className: 'calendar-holidays-item'
-                        },
-                        {
-                            googleCalendarId: 'pt.py#holiday@group.v.calendar.google.com',
-                            className: 'calendar-holidays2-item'
-                        }
-                    ],
-                    /*[
-                        {
-                            url : '/module/calendar/data',
-                            color: '#005999',   // a non-ajax option
-                            borderColor: "#aaaaaa",
-                            textColor: 'white', // a non-ajax option
-                        }
-                    ],
-                    */
+                    eventSources : eventSources,
                     eventClick : function(event, jsEvent, view)
                     {
                         if ($(jsEvent.target).hasClass("remove-event")) {
@@ -393,11 +381,15 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
             }
         });
 
+        
+        
+        /*
         this.collections = {
             event_source : Backbone.Collection.extend({
                 url : "/module/calendar/items/event-sources"
             })
         };
+        */
 
         var baseModelClass = $SC.module("models").getBaseModel();
         this.models = {
@@ -407,7 +399,9 @@ $SC.module("views.manage", function(mod, app, Backbone, Marionette, $, _) {
             })
         };
 
-        this.eventSourceCollection = new mod.collections.event_source();
+        var eventSourceCollectionClass = app.module("models").calendar().sources.collection;
+
+        this.eventSourceCollection = new eventSourceCollectionClass;
 
         this.calendarManagerViewClass = new calendarManagerViewClass({
             el : '#calendar-container',

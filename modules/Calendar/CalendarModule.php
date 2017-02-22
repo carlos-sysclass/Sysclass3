@@ -64,7 +64,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             
             $this->putModuleScript("calendar");
 
-            $sources = CalendarSource::find();
+            $sources = CalendarSource::find("active = 1");
 
             $this->putItem("calendar_sources", $sources->toArray());
 

@@ -394,6 +394,13 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                     }
                 })
             }
+        },
+        calendar : {
+            sources : {
+                collection : Backbone.Collection.extend({
+                    url : "/module/calendar/items/event-sources"
+                })
+            }
         }
     };
 
@@ -419,6 +426,10 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
 
     this.organization = function() {
         return models.organization;
+    };
+
+    this.calendar = function() {
+        return models.calendar;
     };
 
 

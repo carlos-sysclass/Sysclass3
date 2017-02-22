@@ -59,10 +59,26 @@ class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, 
                 array(
                     'text'      => $this->translate->translate('New calendar source'),
                     'link'      => $this->getBasePath() . "add",
-                    'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus-circle'
+                ),
+                array(
+                    'separator' => true
+                ),
+                array(
+                    'text'      => $this->translate->translate('View calendar'),
+                    'link'      => $this->loader->module('Calendar')->getBasePath() . "manage",
+                    'icon'      => 'fa fa-list'
                 )
-            )
+            ),
+            'edit/{id}' => array
+            (
+                array(
+                    'text'      => $this->translate->translate('View calendar'),
+                    'link'      => $this->loader->module('Calendar')->getBasePath() . "manage",
+                    'class'     => "btn-primary",
+                    'icon'      => 'fa fa-list'
+                )
+            ),
         );
 
         return $actions[$request];

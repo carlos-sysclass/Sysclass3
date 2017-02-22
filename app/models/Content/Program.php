@@ -255,10 +255,13 @@ class Program extends Model
         } else {
             $programs = $user->getPrograms();
         }
-        
 
         $tree = array();
         foreach($programs as $program) {
+
+
+
+
             $tree[] = $program->getFullTree($user, $only_active);
         }
 
