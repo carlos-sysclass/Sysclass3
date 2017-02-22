@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Questions;
  * @filesource
  */
 
-use Sysclass\Models\Courses\Department,
+use Sysclass\Models\Content\Department,
     Sysclass\Models\Courses\Questions\Question,
     Sysclass\Models\Courses\Questions\Type as QuestionType,
     Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;

@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Areas;
  * @filesource
  */
 use 
-    Sysclass\Models\Courses\Department,
+    Sysclass\Models\Content\Department,
     Sysclass\Models\Users\User;
 /**
  * [NOT PROVIDED YET]
