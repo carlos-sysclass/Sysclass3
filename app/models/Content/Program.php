@@ -275,10 +275,10 @@ class Program extends Model
         } else {
             $result['coordinator'] = array();
         }
-        if ($departament =  $this->getDepartment()) {
-            $result['departament'] = $departament->toArray();
+        if ($department =  $this->getDepartment()) {
+            $result['department'] = $department->toArray();
         } else {
-            $result['departament'] = array();
+            $result['department'] = array();
         }
 
         $result['courses'] = array();

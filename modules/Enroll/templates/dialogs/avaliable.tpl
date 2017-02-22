@@ -35,7 +35,7 @@
                                             <p> {$program.description|truncate:160:"...":false nofilter}</p>
 
                                             {if $program.area_id}
-                                                <p>{translateToken value="Department"}: <strong>{$program.departament.name}</strong></p>
+                                                <p>{translateToken value="Department"}: <strong>{$program.department.name}</strong></p>
                                             {/if}
 
                                             {if $program.courses}
