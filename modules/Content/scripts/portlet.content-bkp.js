@@ -647,7 +647,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
             doTest : function(model) {
-            	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
+            	//app.module("utils.toastr").message("info", "Test execution not available yet!");
             	//alert("Doing Test " + this.model.get("id"));
             	// START TEST EXECUTION this.model
             }
@@ -695,7 +695,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
                 app.module("dialogs.tests.info").open();
             },
             doTest : function(model) {
-            	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
+            	//app.module("utils.toastr").message("info", "Test execution not available yet!");
             	//alert("Doing Test " + this.model.get("id"));
             	// START TEST EXECUTION this.model
             }
