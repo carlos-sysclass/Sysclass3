@@ -573,7 +573,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			*/
             doTest : function(model) {
-            	//app.module("utils.toastr").message("info", "Test execution not available yet!");
+            	//app.module("utils.toastr").message("info", "Test not available yet!");
             	//alert("Doing Test " + this.model.get("id"));
             	// START TEST EXECUTION this.model
             }
