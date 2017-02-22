@@ -32,7 +32,7 @@
         <div class="portlet box dark-blue calendar" data-portlet-id="calendar-widget" data-portlet-type="calendar">
             <div class="portlet-title">
                 <div class="caption">
-                <i class="fa fa-calendar"></i>
+                    <i class="fa fa-calendar"></i>
                 </div>
             </div>
             <div class="portlet-body">

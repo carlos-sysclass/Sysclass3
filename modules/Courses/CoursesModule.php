@@ -266,7 +266,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $teacherRole = Role::findFirstByName('Instructor');
+        $teacherRole = Role::findFirstByName('Teacher');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
