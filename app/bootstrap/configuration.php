@@ -354,7 +354,7 @@ $di->setShared('environment', function() use ($di) {
 	/*
 	$config['models/map'] = array(
 		'areas'	=> array(
-			'class' => "Sysclass\Models\Courses\Department",
+			'class' => "Sysclass\Models\Content\Department",
             'exportMethod'  => array(
                 'toFullArray',
                 array('')
