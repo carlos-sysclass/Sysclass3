@@ -32,7 +32,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	
 	    },
 	    render: function(collection) {
-	    	this.$(".course_name").html(this.collection.getCurrentProgram().get("name"));
+	    	var program = this.collection.getCurrentProgram();
+	    	if (program) {
+	    		this.$(".course_name").html(program.get("name"));
+	    	}
 	    },
 		/*
 	    loadCourseDetails : function(model) {

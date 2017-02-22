@@ -335,7 +335,16 @@ abstract class SysclassModule extends BaseSysclassModule
                     if (!is_null($this->responseInfo)) {
                         $response = array_merge($response, $this->responseInfo);
                     }
-                    $this->response->setJsonContent($response);
+
+                    $itemData = call_user_func(
+                        array($itemModel, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
+                    );
+
+                    $this->response->setJsonContent(array_merge(
+                        $response,
+                        $itemData
+                    ));
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(

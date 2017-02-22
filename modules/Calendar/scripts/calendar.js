@@ -13,14 +13,20 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 
 			var lang = model.get("language");
 
-		  	
+        	var eventSourceCollectionClass = app.module("models").calendar().sources.collection;
+
+        	this.eventSourceCollection = new eventSourceCollectionClass;
+
 		  	var viewClass = parent.widgetViewClass.extend({
 			    //portlet: $('#calendar-widget'),
 			    calendarDialog : $('#calendar-dialog'),
 			    calendarCreateDialog : $('#calendar-create-dialog'),
 			    calOptions : {},
-
-			    initialize: function() {
+                initialize: function() {
+	                this.listenTo(this.collection, "sync", this.createCalendar.bind(this));
+    	            //this.listenTo(this.collection, "sync", this.createSourceCombo.bind(this));
+                },
+			    createCalendar: function() {
 					if (!$.fn.fullCalendar) {
 			        	return;
 					}
@@ -55,6 +61,21 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		                    };
 		                }
 		            }
+
+	                var eventSources = [
+	                    {
+	                        url: "/module/calendar/datasource/calendar",
+	                    }
+	                ];
+
+	                this.collection.each(function(item) {
+	                    if (item.get("active") == 1 && item.get("type") == "google-calendar") {
+	                        eventSources.push({
+	                            googleCalendarId : item.get("url"),
+	                            className :  item.get("class_name")
+	                        });
+	                    } 
+	                });
 
 		            this.calOptions =
 		            { //re-initialize the calendar
@@ -92,25 +113,7 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	                    },
 	                    */
 	                    googleCalendarApiKey: 'AIzaSyAFwmTQ7O_yp6ZsFTWkejI9S7l0RqYQkTo',
-	                    eventSources : [
-	                        {
-	                            url: "/module/calendar/datasource/calendar",
-	                        },
-	                        /*
-	                        {
-	                            googleCalendarId: 'en.usa#holiday@group.v.calendar.google.com',
-	                            className: 'calendar-holidays-item'
-	                        }
-	                        */
-	                        {
-	                            googleCalendarId: 'pt.brazilian#holiday@group.v.calendar.google.com',
-	                            className: 'calendar-holidays-item'
-	                        },
-	                        {
-	                            googleCalendarId: 'es.py#holiday@group.v.calendar.google.com',
-	                            className: 'calendar-holidays2-item'
-	                        }
-	                    ],
+	                    eventSources : eventSources,
 		                /*
 		                dayClick: function(date, jsEvent, view)
 		                {
@@ -146,7 +149,8 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 		  	});
 
 			this.view = new viewClass({
-				el: '#calendar-widget'
+				el: '#calendar-widget',
+				collection: this.eventSourceCollection
 			});
 
 			mod.view.$(".portlet-sidebar .close").on("click", function() {
@@ -161,6 +165,9 @@ $SC.module("portlet.calendar", function(mod, app, Backbone, Marionette, $, _) {
 	        $('.fc-prev-button, .fc-next-button, .fc-today-button').click(function() {
 				mod.view.$(":input[name='event_type']").val();
 			});
+
+
+			this.eventSourceCollection.fetch();
 	        /*
 	        jQuery("#event-to-filter").change
 	        (

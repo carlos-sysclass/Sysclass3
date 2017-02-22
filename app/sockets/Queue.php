@@ -430,7 +430,9 @@ class Queue extends Component implements WampServerInterface
         } else {
             $another = $chat->getRequester();
         }
-        $item['another'] = $another->toArray();
+        if ($another) {
+            $item['another'] = $another->toArray();
+        }
 
         unset($item['websocket_token']);
         //$item['from'] = $requester->toArray();

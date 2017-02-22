@@ -100,10 +100,10 @@ blocks:
           sClass: text-center
           label: "Grade"
 
-        - mData: options
-          sType: table-options
-          sClass: text-center
-          label: Actions
+        #- mData: options
+        #  sType: table-options
+        #  sClass: text-center
+        #  label: Actions
 models:
   me: 
     class: Sysclass\Models\Courses\Tests\Lesson
