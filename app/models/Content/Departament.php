@@ -3,7 +3,7 @@ namespace Sysclass\Models\Content;
 
 use Plico\Mvc\Model;
 
-class Departament extends Model
+class Department extends Model
 {
     public function initialize()
     {

@@ -15,7 +15,7 @@
                 	<form class="form-horizontal" action="#">
     					<div class="form-body">
     						<div class="form-group">
-                                <label class="">{translateToken value="Search for Users"}</label>
+                                <label class="">{translateToken value="Search users"}</label>
                                 {if ($T_LOAD_BY_AJAX)}
                             		<input 
                                         type="hidden" 

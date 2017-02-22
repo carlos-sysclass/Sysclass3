@@ -8,7 +8,7 @@
 		<div class="">
 			<h4 class="block">
 			<input type="checkbox" name="viewed_license" class="icheck-me" data-skin="square" data-color="green" value="1"> 
-			{translateToken value="I confirm that I have read and accept the above terms"}
+			{translateToken value="I confirm that I have read and accept the terms above"}
 			</h4>
 
         </div>

@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Areas;
  * @filesource
  */
 use 
-    Sysclass\Models\Courses\Departament,
+    Sysclass\Models\Courses\Department,
     Sysclass\Models\Users\User;
 /**
  * [NOT PROVIDED YET]
@@ -20,7 +20,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     public function getLinks() {
         //$depinject = Phalcon\DI::getDefault();
         if ($this->acl->isUserAllowed(null, "Areas", "View")) {
-            $count = Departament::count("active = 1");
+            $count = Department::count("active = 1");
 
             return array(
                 'content' => array(

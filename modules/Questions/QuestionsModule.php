@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Questions;
  * @filesource
  */
 
-use Sysclass\Models\Courses\Departament,
+use Sysclass\Models\Courses\Department,
     Sysclass\Models\Courses\Questions\Question,
     Sysclass\Models\Courses\Questions\Type as QuestionType,
     Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;
@@ -171,7 +171,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      */
     public function addPage()
     {
-        $items = Departament::find("active = 1");
+        $items = Department::find("active = 1");
         $this->putitem("knowledge_areas", $items->toArray());
 
         $items = QuestionType::find();
@@ -190,7 +190,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      */
     public function editPage($identifier)
     {
-        $items = Departament::find("active = 1");
+        $items = Department::find("active = 1");
         $this->putitem("knowledge_areas", $items->toArray());
 
         $items = QuestionType::find();
@@ -211,7 +211,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      */
     public function formCreatePage($identifier)
     {
-        $items = Departament::find("active = 1");
+        $items = Department::find("active = 1");
         $this->putitem("knowledge_areas", $items->toArray());
 
         $items = QuestionType::find();

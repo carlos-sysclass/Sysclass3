@@ -3,7 +3,7 @@
     <div class="alert alert-warning alert-dismissable">
         <button data-dismiss="alert" class="close" type="button"></button>
         <i class="fa fa-warning"></i>
-        {translateToken value="You already have done all tests executions possible"}
+        {translateToken value="No more trials avalible for this test."}
     </div>
 {/if}
 
@@ -47,7 +47,7 @@
                     <div class="caption">
                         <i class="fa fa-list-ol"></i>
                         <span class="hidden-480">
-                        {translateToken value="Test Details"} </span>
+                        {translateToken value="Test details"} </span>
                     </div>
                 </div>
                 <div class="portlet-body test-details">
@@ -55,7 +55,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack text-primary "></i>
-                            {translateToken value="Total Questions"}:
+                            {translateToken value="Total questions"}:
                         </span>
                         <strong class="text-primary pull-right">
                         {if ($T_TEST.test.test_max_questions <= 0)}
@@ -106,7 +106,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-graduation-cap text-primary"></i>
-                            {translateToken value="Maximum Score"}:
+                            {translateToken value="Maximum score"}:
                         </span>
                         <strong class="text-primary pull-right">{$T_TEST.score}</strong>
                     </p>
@@ -129,14 +129,14 @@
                     <div class="caption">
                         <i class="fa fa-user"></i>
                         <span class="hidden-480">
-                         {translateToken value="Your last execution"} </span>
+                         {translateToken value="Your last attempt"} </span>
                     </div>
                 </div>
                 <div class="portlet-body test-details">
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
-                            {translateToken value="You Answered"}:
+                            {translateToken value="Answered"}:
                         </span>
                         <strong class="{$text_class} pull-right">{$last_try.answers|json_decode:true|array_filter:'strlen'|count}</strong>
                     </p>
@@ -164,7 +164,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-graduation-cap {$text_class}"></i>
-                            {translateToken value="Your Last Grade / Score"}:
+                            {translateToken value="Last grade / Score"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$last_try.user_points} {translateToken value="points"}

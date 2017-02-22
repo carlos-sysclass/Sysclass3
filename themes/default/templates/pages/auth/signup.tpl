@@ -10,7 +10,7 @@
 			<div class="form-body">
 				<div class="alert alert-danger hidden">
 					<button class="close" data-dismiss="alert"></button>
-					<span>{translateToken value="There's some errors"}</span>
+					<span>{translateToken value="There are some errors"}</span>
 				</div>
 
 				<div class="form-group">
@@ -35,9 +35,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label  visible-ie8 visible-ie9">{translateToken value="Primary Language"}</label>
+					<label class="control-label  visible-ie8 visible-ie9">{translateToken value="Main language"}</label>
 						<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Primary Language'}">
-							<option value="">{translateToken value="Primary Language"}</option>
+							<option value="">{translateToken value="Main Language"}</option>
 							{foreach $T_LANGUAGES as $lang}
 								<option value="{$lang.id}">{$lang.name}</option>
 							{/foreach}
