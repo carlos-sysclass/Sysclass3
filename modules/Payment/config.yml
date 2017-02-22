@@ -48,7 +48,7 @@ crud:
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
-        #page_subtitle: Create a new Departament
+        #page_subtitle: Create a new Department
 
    # 'edit/{id}':
    #   components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch", "icheck"]

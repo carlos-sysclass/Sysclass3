@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Departaments
+      page_title: Departments
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your Departaments
+        page_subtitle: Manage your Departments
       context:
         datatable_fields:
         - mData: id
@@ -36,15 +36,15 @@ crud:
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl
       variables:
-        page_subtitle: Create a new Departament
+        page_subtitle: Create a new Department
     'edit/{id}':
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       #blocks: ["permission.add"]
       #scripts: ["views.courses.edit"]
       template: form.tpl
       variables:
-        page_subtitle: Edit a Departament
+        page_subtitle: Edit a Department
 models:
   me:
-    class: Sysclass\Models\Courses\Departament
+    class: Sysclass\Models\Courses\Department
     exportMethod: ["toFullArray", ["Coordinator"]]
