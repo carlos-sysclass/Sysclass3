@@ -34,7 +34,7 @@
  * {mailto address="me@domain.com"}
  * {mailto address="me@domain.com" encode="javascript"}
  * {mailto address="me@domain.com" encode="hex"}
- * {mailto address="me@domain.com" subject="Hello to you!"}
+ * {mailto address="me@domain.com" subject="Hello"}
  * {mailto address="me@domain.com" cc="you@domain.com,they@domain.com"}
  * {mailto address="me@domain.com" extra='class="mailto"'}
  * </pre>

@@ -4,7 +4,7 @@
         <div class="col-md-12 text-right">
             Test Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
-                <i class="fa fa-question-circle"></i>{translateToken value="How is it calculated!?"}</a>
+                <i class="fa fa-question-circle"></i>{translateToken value="How is it calculated"}</a>
         </div>
         <div class="cleafix"></div>
     </div>

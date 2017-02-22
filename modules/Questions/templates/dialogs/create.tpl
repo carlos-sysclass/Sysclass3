@@ -28,7 +28,7 @@
         <div class="input-group-btn">
             <% if (!model.answer) { %>
             <a class="btn btn-success select-choice-action" type="button">
-                {translateToken value="This is correct!"}
+                {translateToken value="This is correct"}
             </a>
             <% } %>
             <a class="btn btn-danger remove-choice-action">

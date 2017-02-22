@@ -1,6 +1,6 @@
 <div id="permission-block">
 	<h3 class="form-section"><i class="icon-lock"></i> {translateToken value="Permission Rules"}
-		<small>- {translateToken value="Who can see your data?"}</small>
+		<small>- {translateToken value="Who can see your data"}</small>
 		<div class="pull-right">
 			<a class="btn btn-link new-permission-action" id="ajax-demo" data-toggle="modal">
 				<i class="icon-plus"></i>

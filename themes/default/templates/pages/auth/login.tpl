@@ -56,7 +56,7 @@
 					</button>
 					{/if}
 					{if $T_CONFIGURATION.enable_forgot_form}
-					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Forgot your password?"}
+					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Forgot your password"}
 					</button>
 
 					{/if}
@@ -94,7 +94,7 @@
 			{if $T_CONFIGURATION.signup_enable}
 				<div class="create-account">
 					<p>
-						{translateToken value="Don't have an account?"}
+						{translateToken value="Don't have an account"}
 						<a href="https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Create an account"}</a>
 					</p>
 				</div>
@@ -102,7 +102,7 @@
 			{if $T_CONFIGURATION.trouble_login_enable}
 				<div class="create-account">
 					<p>
-						{translateToken value="Trouble logging in?"}
+						{translateToken value="Trouble logging in"}
 						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please click here"}</a>
 					</p>
 				</div>
@@ -112,7 +112,7 @@
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
 		<form class="forget-form" action="/password-reset" method="post">
-			<h3 >{translateToken value="Forgot your password?"}</h3>
+			<h3 >{translateToken value="Forgot your password"}</h3>
 			<p>{translateToken value="Enter your email to reset your password."}</p>
 
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}

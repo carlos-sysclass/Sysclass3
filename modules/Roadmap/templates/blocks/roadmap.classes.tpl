@@ -7,7 +7,7 @@
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow the user to select the the classes order'}">
                         <i class="fa fa-question"></i>
                     </span>
-                {translateToken value="Enable User Selection?"}
+                {translateToken value="Enable user selection"}
 
                 </label>
                 <input type="checkbox" name="has_student_selection" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">

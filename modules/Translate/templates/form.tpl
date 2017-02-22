@@ -32,7 +32,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="RTL (Right-to-Left) ?"}</label>
+					<label class="control-label">{translateToken value="RTL (Right-to-Left) "}</label>
 					<select class="select2-me form-control" name="rtl">
 						<option value="0">{translateToken value="No"}</option>
 						<option value="1">{translateToken value="Yes"}</option>

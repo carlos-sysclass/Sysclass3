@@ -99,7 +99,7 @@
 								<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a course coordinator'}">
 		                        	<i class="fa fa-question"></i>
 		                    	</span>
-		                    	{translateToken value="Can be coordinator?"}
+		                    	{translateToken value="Can be a coordinator?"}
 		                    </label>
 		                    <input type="checkbox" name="can_be_coordinator" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
@@ -109,7 +109,7 @@
 							<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a class/lesson instructor'}">
 		                        	<i class="fa fa-question"></i>
 		                    </span>
-		                    <label class="control-label">{translateToken value="Can be instructor?"}</label>
+		                    <label class="control-label">{translateToken value="Can be a instructor?"}</label>
 		                    <input type="checkbox" name="can_be_instructor" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
 		            </div>

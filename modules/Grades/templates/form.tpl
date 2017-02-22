@@ -38,7 +38,7 @@
 							</a>
             				<a href="javascript:void(0);" class="btn btn-warning btn-sm show-tips pull-right">
                 				<i class="fa fa-question-circle"></i>
-                				{translateToken value="Needs Help!?"}
+                				{translateToken value="Need help?"}
                 			</a>
 							</h5>
 					</div>

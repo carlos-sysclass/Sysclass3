@@ -919,7 +919,7 @@ _before_init_functions.push(function() {
 
 		<a href="javascript:void(0);" class="btn btn-xs btn-primary open-exercise-action">
 			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
-				{translateToken value="Do it again!"}
+				{translateToken value="Do it again"}
 			<% } else { %>
 				{translateToken value="Do now"}
 			<% } %>

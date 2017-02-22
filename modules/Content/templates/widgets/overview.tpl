@@ -937,7 +937,7 @@ _before_init_functions.push(function() {
 	<td class="text-center">
 		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
 			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
-				{translateToken value="Do now!"}
+				{translateToken value="Do now"}
 			</a>
 		<% } %>
 		<% if (total_questions > 0) { %>
@@ -972,9 +972,9 @@ _before_init_functions.push(function() {
 
 		<a href="javascript:void(0);" class="btn btn-xs btn-primary open-exercise-action">
 			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
-				{translateToken value="Do it again!"}
+				{translateToken value="Do it again"}
 			<% } else { %>
-				{translateToken value="Do now!"}
+				{translateToken value="Do now"}
 			<% } %>
 		</a>
 	</td>
