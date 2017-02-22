@@ -5,7 +5,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 					<h4 class="modal-title">
-						{translateToken value="Edit Token"} "<span  data-update="token"></span>"
+						{translateToken value="Edit token"} "<span  data-update="token"></span>"
 						<small>
 							<span  data-update="srclang"></span> <span class="icon-arrow-right"><i></i></span> <span  data-update="dstlang"></span>
 						</small>

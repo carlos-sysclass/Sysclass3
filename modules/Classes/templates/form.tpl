@@ -80,7 +80,7 @@
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 				<div class="form-actions nobg">
-					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+					<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 				</div>
 			</div>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
@@ -90,7 +90,7 @@
 				    {/foreach}
 
 					<div class="form-actions nobg">
-						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+						<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 					</div>
 				</div>
 			{/if}

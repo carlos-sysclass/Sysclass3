@@ -36,10 +36,10 @@ class Program extends Model
 
         $this->belongsTo(
             "area_id",
-            "Sysclass\Models\Content\Departament",
+            "Sysclass\Models\Content\Department",
             "id",
             array(
-                'alias' => 'Departament',
+                'alias' => 'Department',
             )
         );
 
@@ -275,10 +275,10 @@ class Program extends Model
         } else {
             $result['coordinator'] = array();
         }
-        if ($departament =  $this->getDepartament()) {
-            $result['departament'] = $departament->toArray();
+        if ($department =  $this->getDepartment()) {
+            $result['department'] = $department->toArray();
         } else {
-            $result['departament'] = array();
+            $result['department'] = array();
         }
 
         $result['courses'] = array();

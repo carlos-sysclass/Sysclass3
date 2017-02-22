@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Primary Language"}</label>
+					<label class="control-label">{translateToken value="Main language"}</label>
 					<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 					{foreach $T_LANGUAGES as $key => $value}
 						<option value="{$value.id}">{$value.name}</option>
@@ -141,7 +141,7 @@
 					</div>
 				</div>
 				<div class="form-actions nobg">
-					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+					<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 				</div>
 
 			</div>
@@ -152,7 +152,7 @@
 				    {/foreach}
 
 					<div class="form-actions nobg">
-						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+						<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 					</div>
 				</div>
 			{/if}

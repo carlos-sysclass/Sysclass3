@@ -61,7 +61,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 <script type="text/template" id="rule-slider-template">

@@ -9,7 +9,7 @@
 			<input name="name" value="" type="text" placeholder="English Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Local Name"}</label>
+			<label class="control-label">{translateToken value="Native Name"}</label>
 			<input name="local_name" value="" type="text" placeholder="Local Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
@@ -56,13 +56,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Start Date"}</label>
+					<label class="control-label">{translateToken value="Start date"}</label>
 					<input class="form-control input-small date-picker"  size="16" type="text" name="timestamp[date]" data-update="timestamp" data-format="date" data-format-from="unix-timestamp" />
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Start Time"}</label>
+					<label class="control-label">{translateToken value="Start time"}</label>
 					<input type="text" class="form-control timepicker-24 input-medium" name="timestamp[time]" data-update="timestamp" data-format="time" data-format-from="unix-timestamp">
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 		{/if}
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}

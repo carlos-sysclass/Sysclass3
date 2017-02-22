@@ -11,7 +11,7 @@
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
 					<i class="fa fa-cogs"></i>
-					{translateToken value="Test Settings"}
+					{translateToken value="Test settings"}
 				</a>
 			</li>
 
@@ -41,23 +41,23 @@
 				</div>
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-					<label class="control-label">{translateToken value="Class"}</label>
-					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select Class"}">
-						<option value="">{translateToken value="Select Class"}</option>
+					<label class="control-label">{translateToken value="Course"}</label>
+					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select course”}">
+						<option value="">{translateToken value="Select course”}</option>
 						{foreach $T_CLASSES as $classe}
 							<option value="{$classe.id}">{$classe.name}</option>
 						{/foreach}
 					</select>
 				</div>
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Grade Rule"}
+					<label class="control-label">{translateToken value="Grade rules"}
                         <span class="badge badge-warning tooltips" data-original-title="{translateToken value='You can select a customized rule to show yours users grades in your prefered way. If you do not choose, the grades will be showed in the [0-100] standard'}">
                             <i class="fa fa-question"></i>
                         </span>
                     </label>
 
-					<select class="select2-me form-control" name="test.grade_id" data-placeholder="{translateToken value="Select Class"}">
-						<option value="">{translateToken value="Select Grade Rule"}</option>
+					<select class="select2-me form-control" name="test.grade_id" data-placeholder="{translateToken value="Select grade rule"}">
+						<option value="">{translateToken value="Select grade rule"}</option>
 						{foreach $T_GRADES as $grade}
 							<option value="{$grade.id}">{$grade.name}</option>
 						{/foreach}
@@ -103,7 +103,7 @@
 			                            {translateToken value="Time limit in minutes?"}
 			                        </label>
 
-			                        <input name="test.time_limit" value="" type="text" placeholder="{translateToken value="Time Limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
+			                        <input name="test.time_limit" value="" type="text" placeholder="{translateToken value="Time limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
 			                    </div>
 			                </div>
 			                <div class="col-md-4">
@@ -118,9 +118,9 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="How many times the user can have the test? Leave '0' (zero) for unlimited times"}
+			                            {translateToken value="Times the user can take the test. Leave '0' (zero) for unlimited trials."}
 			                        </label>
-			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
+			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
 			                </div>
 			            </div>
@@ -152,7 +152,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the difficulty of the question during the test'}">
 			                                <i class="fa fa-question"></i>
 			                            </span>
-			                            {translateToken value="Show question Difficulty?"}
+			                            {translateToken value="Show question level?"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_question_difficulty" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -190,7 +190,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='It allows the user to navigate through the test\'s questions'}">
 			                                <i class="fa fa-question"></i>
 			                            </span>
-			                            {translateToken value="Can navigate through the test?"}
+			                            {translateToken value="Navigate through the test?"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.can_navigate_through" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -255,10 +255,10 @@
 				                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show only a set of questions? Leave 0 to show all questions'}">
 				                                <i class="fa fa-question"></i>
 				                            </span>
-				                            {translateToken value="How many Questions?"}
+				                            {translateToken value="Number of questions?"}
 				                        </label>
 
-				                        <input name="test.test_max_questions" value="" type="text" placeholder="{translateToken value="Test Repetition Times"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
+				                        <input name="test.test_max_questions" value="" type="text" placeholder="{translateToken value="Number of times a test can be retaken."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 				                    </div>
 				                </div>
 				            </div>
@@ -290,7 +290,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success save-action" type="button">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success save-action" type="button">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 </div>

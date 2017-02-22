@@ -46,7 +46,7 @@
               <li>
                 <a href="javascript: void(0);" class="dialogs-messages-send-action" data-mode="user">
                   <i class="fa fa-envelope" aria-hidden="true"></i>
-                  {translateToken value="Compose"}
+                  {translateToken value="Send e-mail"}
                 </a>              
               </li>
               <li class="divider"></li>

@@ -28,10 +28,10 @@
 
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login or Email"}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login or email"}</label>
 				<div class="input-icon">
 					<i class="ti-user"></i>
-					<input type="text" id="login" name="login" placeholder="{translateToken value="Login or Email"}" autocomplete="off" class="form-control" data-rule-required="true">
+					<input type="text" id="login" name="login" placeholder="{translateToken value="Login or email"}" autocomplete="off" class="form-control" data-rule-required="true">
 				</div>
 			</div>
 			<div class="form-group">
@@ -45,7 +45,7 @@
 				<div class="form-group">
 					<!--
 					<input type="checkbox" name="remeber" value="1"/>
-					<label class="checkbox">{translateToken value="Remember Me"}</label>
+					<label class="checkbox">{translateToken value="Remember me"}</label>
 					-->
 					<button name="submit_login" type="submit" class="btn btn-success pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
 						

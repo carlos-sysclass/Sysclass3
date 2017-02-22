@@ -11,7 +11,7 @@ blocks:
           sClass: text-center
           label: "#"
 
-        - mData: departament.name
+        - mData: department.name
           label: Department
 
         - mData: title
@@ -47,7 +47,7 @@ crud:
           sClass: text-center
           label: "#"
 
-        - mData: departament.name
+        - mData: department.name
           label: Department
 
         - mData: title
@@ -86,7 +86,7 @@ crud:
 models:
   me:
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Departament", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
   'lesson-content':
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Departament", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
