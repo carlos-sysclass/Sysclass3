@@ -46,5 +46,5 @@ crud:
         page_subtitle: Edit a Department
 models:
   me:
-    class: Sysclass\Models\Courses\Department
+    class: Sysclass\Models\Content\Department
     exportMethod: ["toFullArray", ["Coordinator"]]

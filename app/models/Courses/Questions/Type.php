@@ -9,7 +9,7 @@ class Type extends Model
     {
         $this->setSource("mod_questions_types");
 
-        //$this->belongsTo("area_id", "Sysclass\\Models\\Courses\\Department", "id",  array('alias' => 'Department'));
+        //$this->belongsTo("area_id", "Sysclass\\Models\\Content\\Department", "id",  array('alias' => 'Department'));
 
     }
 }
