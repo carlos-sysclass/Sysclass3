@@ -36,7 +36,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Expiration Date"}</label>
+							<label class="control-label">{translateToken value="Completion date"}</label>
 							<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 						</div>
 					</div>
@@ -59,7 +59,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Expiration Date"}</label>
+							<label class="control-label">{translateToken value="Completion date"}</label>
 							<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 						</div>
 					</div>
