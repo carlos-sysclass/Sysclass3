@@ -415,7 +415,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   position: absolute;
   color: white;
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 0 3px #444;
   box-sizing: content-box;
   text-align: center;
@@ -442,7 +442,7 @@ table.dataTable.dtr-inline.collapsed.compact > tbody > tr > th:first-child:befor
   left: 4px;
   height: 14px;
   width: 14px;
-  border-radius: 14px;
+  border-radius: 0px;
   line-height: 14px;
   text-indent: 3px;
 }
@@ -463,7 +463,7 @@ table.dataTable.dtr-column > tbody > tr > th.control:before {
   position: absolute;
   color: white;
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 0 3px #444;
   box-sizing: content-box;
   text-align: center;

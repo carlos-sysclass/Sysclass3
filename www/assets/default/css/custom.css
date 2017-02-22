@@ -2155,7 +2155,7 @@ button.calendar-news-item {
     padding: 12px 10px 9px !important;
 }
 .btn-circle {
-    border-radius: 15px !important;
+    border-radius: 0px !important;
 }
 
 .form-group-inline div.inline-item {

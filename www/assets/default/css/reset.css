@@ -373,7 +373,7 @@ margin:0 4px 0 0;
 }
 .inter-navsuper-tabs .pendente-tag, .inter-navsuper-tabs .concluido-tag, .inter-navsuper-tabs .andamento-tag, .inter-navsuper-tabs .fechado-tag, .inter-navsuper-tabs .avalialbe-tag {
   background: #eeeeee;
-  border-radius: 30px;
+  border-radius: 0px;
   color: #807f7f;
   font-weight: lighter;
   font-size: 12px;
