@@ -369,7 +369,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			render : function() {
 				console.info('portlet.content/courseRoadmapTabViewClass::render');
 				if (this.seasonsSynced && this.classesSynced) {
-					// ORDER LESSONS BY SEMESTER
+					// ORDER UNITS BY SEMESTER
 					//this.$el.empty();
 
 					if (this.collections.seasons.size() > 0) {
@@ -710,7 +710,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		*/
 		
 
-		/* LESSONS / TESTS VIEW CLASSES */
+		/* UNITS / TESTS VIEW CLASSES */
 		/*
 		var unitTabViewClass = blockableTabViewClass.extend({
 			initialize: function() {
@@ -812,7 +812,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				var videos = mod.programsCollection.getCurrentContents('video');
 
 				if (_.size(videos) == 0) {
-					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
+					// THERE'S NO VIDEO UNIT... DISABLE THE VIEW
 					this.disableView();
 				} else {
 					this.enableView();
@@ -990,7 +990,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderCourse : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				//percent = 30;
 				this.$(".course span").html(
 					app.module("views").formatValue(
@@ -1012,7 +1012,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
 			renderClass : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				this.$(".class span").html(
 					app.module("views").formatValue(
 						factor,
@@ -1030,7 +1030,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderUnit : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				this.$(".unit span").html(app.module("views").formatValue(
 						factor,
 						'decimal-custom',

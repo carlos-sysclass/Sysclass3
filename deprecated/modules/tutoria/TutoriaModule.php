@@ -357,7 +357,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         $userUnits = $currentUser->getUnits();
         $unitsIds = array_keys($userUnits);
 
-        // GET LAST MESSAGES FROM USER LESSONS
+        // GET LAST MESSAGES FROM USER UNITS
         $tutorias = $this->_getTableData("mod_tutoria tt
             LEFT OUTER JOIN units l ON (tt.units_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
@@ -430,7 +430,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         $userUnits = $currentUser->getUnits();
         $unitsIds = array_keys($userUnits);
 
-        // GET LAST MESSAGES FROM USER LESSONS
+        // GET LAST MESSAGES FROM USER UNITS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff

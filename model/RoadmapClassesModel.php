@@ -93,7 +93,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
         }
 
         // GET CLASSES
-        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+        //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
         $data['units'] = $this->model("roadmap/units")
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(

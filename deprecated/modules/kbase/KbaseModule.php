@@ -358,7 +358,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         $userUnits = $currentUser->getUnits();
         $unitsIds = array_keys($userUnits);
 
-        // GET LAST MESSAGES FROM USER LESSONS
+        // GET LAST MESSAGES FROM USER UNITS
         $tutorias = $this->_getTableData("mod_tutoria tt
             LEFT OUTER JOIN units l ON (tt.units_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)

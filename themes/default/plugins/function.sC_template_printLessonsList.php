@@ -6,7 +6,7 @@
 function smarty_function_sC_template_printUnitsList($params, &$smarty)
 {
 
-    $units_str     = '<option value = "-1">---- '._LESSONS.' ----</option>';
+    $units_str     = '<option value = "-1">---- '._UNITS.' ----</option>';
 
 	foreach ($params['data'] as $key => $value) {
 		for ($i = 0; $i < sizeof($params['data'][$key]); $i++) {

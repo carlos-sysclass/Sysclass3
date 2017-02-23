@@ -34,7 +34,7 @@ function smarty_function_sC_template_printDoneQuestions($params, &$smarty)
 
     if ($i == 0) {
         $str .= '
-            <tr><td class = "emptyCategory">'._NOQUESTIONSTOCORRECTFORTHISLESSON.'</td></tr>
+            <tr><td class = "emptyCategory">'._NOQUESTIONSTOCORRECTFORTHISUNIT.'</td></tr>
         </table>';
     } elseif ($limit > $list_fold_size) {
         $str .= '

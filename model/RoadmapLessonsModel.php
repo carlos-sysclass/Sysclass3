@@ -54,7 +54,7 @@ class RoadmapUnitsModel extends BaseUnitsModel implements ISyncronizableModel {
         }
 
         // GET CLASSES
-        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+        //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
         $data['contents'] = $this->model("units/content")
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(

@@ -425,7 +425,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             console.info('blocks.roadmap/courseRoadmapTabViewClass::render');
             if (this.seasonsSynced && this.classesSynced) {
                 this.$("#block_roadmap-accordion").empty();
-                // ORDER LESSONS BY SEMESTER
+                // ORDER UNITS BY SEMESTER
                 //this.$el.empty();
                 var self = this;
 

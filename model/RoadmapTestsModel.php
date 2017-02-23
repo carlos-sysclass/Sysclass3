@@ -38,7 +38,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
         }
 
         // GET CLASSES
-        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+        //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
         $data['questions'] = $this->model("tests/question")->addFilter(array(
             'unit_id' => $identifier
         ))->getItems();

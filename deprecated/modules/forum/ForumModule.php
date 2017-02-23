@@ -77,7 +77,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $userUnits = $currentUser->getUnits();
         $unitsIds = array_keys($userUnits);
 
-        // GET LAST MESSAGES FROM USER LESSONS
+        // GET LAST MESSAGES FROM USER UNITS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff
@@ -108,7 +108,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $userUnits = $currentUser->getUnits();
         $unitsIds = array_keys($userUnits);
 
-        // GET LAST MESSAGES FROM USER LESSONS
+        // GET LAST MESSAGES FROM USER UNITS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff

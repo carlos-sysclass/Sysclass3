@@ -548,7 +548,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function() {
 				console.info('portlet.courses/courseRoadmapTabViewClass::render');
 				if (this.seasonsSynced && this.classesSynced) {
-					// ORDER LESSONS BY SEMESTER
+					// ORDER UNITS BY SEMESTER
 					//this.$el.empty();
 
 					if (this.collections.seasons.size() > 0) {
@@ -885,7 +885,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		});
 
-		/* LESSONS / TESTS VIEW CLASSES */
+		/* UNITS / TESTS VIEW CLASSES */
 		var unitTabViewClass = blockableTabViewClass.extend({
 			initialize: function() {
 				console.info('portlet.courses/unitTabViewClass::initialize');
@@ -1002,7 +1002,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var self = this;
 
 				if (_.size(this.model.get("contents")) == 0) {
-					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
+					// THERE'S NO VIDEO UNIT... DISABLE THE VIEW
 					this.disableView();
 				} else {
 					var contentsCollection = new mod.collections.contents(this.model.get("contents"));
@@ -1344,7 +1344,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderCourse : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				//percent = 30;
 				this.$(".course span").html(
 					app.module("views").formatValue(
@@ -1366,7 +1366,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
 			renderClass : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				this.$(".class span").html(
 					app.module("views").formatValue(
 						factor,
@@ -1384,7 +1384,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderUnit : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				this.$(".unit span").html(app.module("views").formatValue(
 						factor,
 						'decimal-custom',

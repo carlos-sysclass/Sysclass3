@@ -543,7 +543,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function() {
 				console.info('portlet.courses/courseRoadmapTabViewClass::render');
 				if (this.seasonsSynced && this.classesSynced) {
-					// ORDER LESSONS BY SEMESTER
+					// ORDER UNITS BY SEMESTER
 					//this.$el.empty();
 
 					if (this.collections.seasons.size() > 0) {
@@ -722,7 +722,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 					var percent = Math.round(unitStatsAll / unitsCollection.size());
 				}
 				*/
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				percent = 30;
 				this.$(".course span").html(percent);
 
@@ -732,7 +732,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			renderSemester : function() {
 				/*
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				percent = 40;
 				this.$(".semester span").html(percent);
 
@@ -758,7 +758,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				*/
 				percent = 20;
 
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				this.$(".class span").html(percent);
 
 				if (jQuery.fn.easyPieChart) {
@@ -766,7 +766,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderUnit : function() {
-				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
+				// INJECT HERE PARTIAL PROGRESS FROM UNITS
 				percent = 80;
 				this.$(".unit span").html(percent);
 
