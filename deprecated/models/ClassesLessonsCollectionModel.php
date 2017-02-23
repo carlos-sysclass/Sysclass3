@@ -6,7 +6,7 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
 
     public function init()
     {
-        $this->table_name = "mod_lessons";
+        $this->table_name = "mod_units";
         $this->id_field = "id";
         $this->mainTablePrefix = "l";
         //$this->fieldsMap = array();
@@ -15,7 +15,7 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
         "SELECT
             l.id, l.class_id, c.name as class, l.name, l.info, l.active,
             l.`has_text_content`, l.`text_content`, l.`text_content_language_id`, l.`has_video_content`
-        FROM mod_lessons l
+        FROM mod_units l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)";
 
         $this->order = array("-l.position DESC");
@@ -42,11 +42,11 @@ class ClassesLessonsCollectionModel extends AbstractSysclassModel implements ISy
 
     public function setContentOrder($class_id, array $order_ids) {
         $this->resetContentOrder($class_id);
-        foreach($order_ids as $index => $lesson_id) {
+        foreach($order_ids as $index => $unit_id) {
             $this->setItem(array(
                 'position' => $index + 1
             ), array(
-                'id' => $lesson_id,
+                'id' => $unit_id,
                 'class_id' => $class_id
             ));
         }

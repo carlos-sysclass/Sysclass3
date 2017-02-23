@@ -75,18 +75,18 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
 
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
-        $lessonsIds = array_keys($userLessons);
+        $unitsIds = array_keys($userLessons);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff
-            LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id",
-            "ft.title, ft.id as topic_id, ft.users_LOGIN, MAX(fm.timestamp) as `timestamp`, COUNT(fm.id) as total_reply, l.name as lessons_name, ff.lessons_id",
-            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID IN (%s) ",
-            implode(",", $lessonsIds)),
+            LEFT OUTER JOIN units l ON ff.units_ID = l.id",
+            "ft.title, ft.id as topic_id, ft.users_LOGIN, MAX(fm.timestamp) as `timestamp`, COUNT(fm.id) as total_reply, l.name as units_name, ff.units_id",
+            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.units_ID IN (%s) ",
+            implode(",", $unitsIds)),
             "MAX(fm.timestamp) DESC",
-            "ft.title, ft.id, ft.users_LOGIN, l.name, lessons_id",
+            "ft.title, ft.id, ft.users_LOGIN, l.name, units_id",
             sprintf("%d, %d", ($page - 1) * $per_page, $per_page)
         );
         return $forum_messages;
@@ -106,16 +106,16 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
 
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
-        $lessonsIds = array_keys($userLessons);
+        $unitsIds = array_keys($userLessons);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff
-            LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id",
-            "ft.title, ft.id as topic_id, ft.users_LOGIN, fm.timestamp, l.name as lessons_name, ff.lessons_id",
-            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID IN (%s) AND fm.f_topics_ID = %d",
-            implode(",", $lessonsIds), $topic),
+            LEFT OUTER JOIN units l ON ff.units_ID = l.id",
+            "ft.title, ft.id as topic_id, ft.users_LOGIN, fm.timestamp, l.name as units_name, ff.units_id",
+            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.units_ID IN (%s) AND fm.f_topics_ID = %d",
+            implode(",", $unitsIds), $topic),
             "fm.timestamp ASC"
         );
         return $forum_messages;

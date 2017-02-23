@@ -16,9 +16,9 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
                         <table width="100%" border="0px">
                         <tr>
                             <td class="headerImage" width="2%" align="right">
-                                <a href="instructor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&lessons_ID='.$_SESSION['s_lessons_ID'].'"><img src="images/16x16/add.png" title='._CREATESURVEY.' border="0px" /></a>
+                                <a href="instructor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&units_ID='.$_SESSION['s_units_ID'].'"><img src="images/16x16/add.png" title='._CREATESURVEY.' border="0px" /></a>
                             </td>
-                            <td class="headerTitle"><a href="instructor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&lessons_ID='.$_SESSION['s_lessons_ID'].'">'._CREATESURVEY.'</a></td>
+                            <td class="headerTitle"><a href="instructor.php?ctg=survey&action=create_survey&survey_action=create&screen=1&units_ID='.$_SESSION['s_units_ID'].'">'._CREATESURVEY.'</a></td>
                         </tr>
                         </table>
                     </td>
@@ -90,7 +90,7 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
 								}
                             } elseif ($key == 'start_date' || $key == 'end_date') {
                                 $str .= '<td align="left">#filter:timestamp-'.$value.'#</td>';
-                            } elseif ($key != 'id' && $key != 'survey_code' && $key != 'lessons_ID' && $key != 'share' && $key != 'status' && $key != 'end_date' && $key != 'start_date') {
+                            } elseif ($key != 'id' && $key != 'survey_code' && $key != 'units_ID' && $key != 'share' && $key != 'status' && $key != 'end_date' && $key != 'start_date') {
                                 $str.='<td align="center">'.$value.'</td>';
                             } else {
                                 continue;
@@ -114,7 +114,7 @@ function smarty_function_sC_template_printSurveysList($params ,  &$smarty)
                                     ';
                             } else {
                                 $str .='
-                                    <td><input class="flatButton" type="button" value="'._PUBLISH.'" onclick="Javascript:self.location=\'instructor.php?ctg=survey&action=publish&lessons_ID='.$params['lessons_ID'].'&surveys_ID='.$params['data'][$i]['id'].'\'" ></td>
+                                    <td><input class="flatButton" type="button" value="'._PUBLISH.'" onclick="Javascript:self.location=\'instructor.php?ctg=survey&action=publish&units_ID='.$params['units_ID'].'&surveys_ID='.$params['data'][$i]['id'].'\'" ></td>
                                     </tr>
                                     ';
                             }

@@ -80,7 +80,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 $this->putBlock("storage.pdfviewer.dialog");
 
                 
-                //$this->putBlock("lessons.dialogs.exercises");
+                //$this->putBlock("units.dialogs.exercises");
                 
                 //$this->putBlock("content.unit.dialog");
 
@@ -347,7 +347,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     } else {
                         $result['units'][] = array(
                             'user_id' => $this->user->id,
-                            'lesson_id' => $unit->id,
+                            'unit_id' => $unit->id,
                             'factor' => 0
                         );
                     }

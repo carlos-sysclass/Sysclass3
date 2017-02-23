@@ -12,8 +12,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				//"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
-				//"click .lesson-prev-action"		: "prevLesson",
-				//"click .lesson-next-action" 	: "nextLesson",
+				//"click .unit-prev-action"		: "prevLesson",
+				//"click .unit-next-action" 	: "nextLesson",
 				"click .nav-prev-action" 		: "prevItem",
 				"click .nav-next-action" 		: "nextItem",
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
@@ -434,14 +434,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			testInfoModule : app.module("dialogs.tests.info"),
 			dialogContentUnit : app.module("dialogs.content.unit"),
-			lessonTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
+			unitTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
             testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
             materialDropdownView : null,
             initialize : function() {
 				baseChildTabViewItemClass.prototype.initialize.apply(this, arguments);
 
 				this.listenTo(app, "progress.units-changed", function(info) {
-					if (info.lesson_id == this.model.get("id")) {
+					if (info.unit_id == this.model.get("id")) {
 						this.model.set("progress", info);
 						this.render();
 					}
@@ -512,9 +512,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			render : function(e) {
 				console.info('portlet.content/courseUnitsTabViewItemClass::render');
 
-				if (this.model.get("type") == "lesson") {
+				if (this.model.get("type") == "unit") {
 					this.$el.html(
-						this.lessonTemplate(this.getMappedModel())
+						this.unitTemplate(this.getMappedModel())
 					);
 				} else {
 					this.$el.html(
@@ -565,7 +565,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
             },
             /*
 			checkProgress : function(model) {
-				var progress = _.findWhere(model.get("units"), {lesson_id : this.model.get("id")});
+				var progress = _.findWhere(model.get("units"), {unit_id : this.model.get("id")});
 				if (!_.isUndefined(progress)) {
 					this.model.set("progress", progress);
 					this.render();
@@ -1612,8 +1612,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		this.onFilter = function(e, portlet) {
 			// INJECT
 			//this.contentView.$el.hide();
-			if ($(e.currentTarget).attr("id") == "lessons-title") {
-				this.courseWidgetView.filterActionView.toggle("lesson");
+			if ($(e.currentTarget).attr("id") == "units-title") {
+				this.courseWidgetView.filterActionView.toggle("unit");
 			} else {
 				this.courseWidgetView.filterActionView.toggle();
 			}
@@ -1824,7 +1824,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}.bind(this));
 			},
 			getUnitProgress : function(id) {
-				return _.findWhere(this.get("units"), {"lesson_id" : id});
+				return _.findWhere(this.get("units"), {"unit_id" : id});
 			},
 			getContentProgress : function(id) {
 				return _.findWhere(this.get("contents"), {"content_id" : id});
@@ -1911,7 +1911,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					return total;
 				} else {
 					var total = units.reduce(function(count, unit) {
-					  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+					  var progress = _.findWhere(progressUnits, {unit_id : unit.get("id")});
 					  
 					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 					    return count + 1;
@@ -1937,7 +1937,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					return total;
 				} else {
 					var total = units.reduce(function(count, unit) {
-					  var progress = _.findWhere(progressUnits, {lesson_id : unit.get("id")});
+					  var progress = _.findWhere(progressUnits, {unit_id : unit.get("id")});
 					  
 					  if (!_.isUndefined(progress) && parseFloat(progress.factor) == 1) {
 					    return count;
@@ -2327,11 +2327,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		var coursesModule 		= app.module("models.courses");
 		var courseModelClass 	= coursesModule.courseModelClass;
 		var classModelClass		= coursesModule.classModelClass;
-		var lessonModelClass	= coursesModule.lessonModelClass;
+		var unitModelClass	= coursesModule.unitModelClass;
 
 		this.courseModel = new courseModelClass;
 		this.classModel = new classModelClass({courses : this.courseModel});
-		this.lessonModel = new lessonModelClass({classes : this.classModel});
+		this.unitModel = new unitModelClass({classes : this.classModel});
 		//this.contentModel = new contentModelClass();
 
 		this.courseWidgetView = new this.courseWidgetViewClass({
@@ -2339,7 +2339,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			collections : {
 				'course' 	: this.courseModel,
 				'class'		: this.classModel,
-				'lesson'	: this.lessonModel
+				'unit'	: this.unitModel
 			}
 		});
 	});
@@ -2353,7 +2353,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		urlRoot : "/module/roadmap/item/course-classes"
 	});
 	var fullLessonModelClass = Backbone.DeepModel.extend({
-		urlRoot : "/module/roadmap/item/lessons"
+		urlRoot : "/module/roadmap/item/units"
 	});
 	var contentModelClass = Backbone.DeepModel.extend({
 		isVideo : function() {

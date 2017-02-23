@@ -19,7 +19,7 @@ function smarty_function_sC_template_printBlock2($params, &$smarty)
 	 * @todo: Make it better, to comply with new blocks (this one's copied from old innerTable functions
 	 */
     $innerTableIdentifier = $GLOBALS['innerTableIdentifier'];
-    $cookieString = md5($_SESSION['s_login'].$_SESSION['s_lessons_ID'].$GLOBALS['innerTableIdentifier'].urlencode($params['title']));
+    $cookieString = md5($_SESSION['s_login'].$_SESSION['s_units_ID'].$GLOBALS['innerTableIdentifier'].urlencode($params['title']));
     $cookieValue  = $_COOKIE['innerTables'][$cookieString];
 
     /**

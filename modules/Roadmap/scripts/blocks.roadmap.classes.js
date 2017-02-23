@@ -145,7 +145,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                         app.module("ui").refresh(this.$el);
                     }
 
-                    mod.trigger("lesson:updated", this.model);
+                    mod.trigger("unit:updated", this.model);
 
                     this.$el.data("view", this);
                     /*                    
@@ -202,7 +202,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
             },
             delete: function() {
                 this.model.destroy();
-                this.trigger("lesson:removed", this.model);
+                this.trigger("unit:removed", this.model);
                 this.remove();
             }
         });
@@ -267,7 +267,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                     opened : true
                 });
 
-                this.listenTo(mod, "lesson:updated", function(model) {
+                this.listenTo(mod, "unit:updated", function(model) {
                     self.refreshCounters();
                 });
 
@@ -287,7 +287,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
                 $(roadmapBlockClassItemView.render().el).appendTo(this.$("ul.list-group"));
                 roadmapBlockClassItemView.start();
 
-                this.listenTo(mod, "lesson:updated", function(model) {
+                this.listenTo(mod, "unit:updated", function(model) {
                     self.refreshCounters();
                 });
 
@@ -320,7 +320,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
             },
             remove : function(e) {
                 var fileId = $(e.currentTarget).data("fileId");
-                var fileObject = new mod.lessonFileModelClass();
+                var fileObject = new mod.unitFileModelClass();
                 fileObject.set("id", fileId);
                 fileObject.destroy();
                 $(e.currentTarget).parents("li").remove();
@@ -549,7 +549,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
             },
             remove : function(e) {
                 var fileId = $(e.currentTarget).data("fileId");
-                var fileObject = new mod.lessonFileModelClass();
+                var fileObject = new mod.unitFileModelClass();
                 fileObject.set("id", fileId);
                 fileObject.destroy();
                 $(e.currentTarget).parents("li").remove();

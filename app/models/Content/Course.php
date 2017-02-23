@@ -29,7 +29,7 @@ class Course extends Model
         	array(
                 'alias' => 'Units',
                 'params' => array(
-                    'conditions' => "type = 'lesson'",
+                    'conditions' => "type = 'unit'",
                     'order' => '[Sysclass\Models\Content\Unit].position ASC, [Sysclass\Models\Content\Unit].id ASC'
                 )
                 
@@ -106,7 +106,7 @@ class Course extends Model
         $status = self::resetOrder();
         $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
-        foreach($order_ids as $index => $lesson_id) {
+        foreach($order_ids as $index => $unit_id) {
 			$phql = "UPDATE Sysclass\\Models\\Content\\Unit
 				SET position = :position: 
 				WHERE id = :id: AND class_id = :class_id:";
@@ -115,7 +115,7 @@ class Course extends Model
 			    $phql,
 				array(
 					'position' => $index + 1,
-					'id' => $lesson_id,
+					'id' => $unit_id,
 			        'class_id' => $this->id
 			    )
 			);

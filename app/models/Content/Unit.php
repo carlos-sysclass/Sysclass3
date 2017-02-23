@@ -11,7 +11,7 @@ class Unit extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_lessons");
+        $this->setSource("mod_units");
 
 		$this->belongsTo(
 			"class_id", 
@@ -23,21 +23,21 @@ class Unit extends Model
         $this->hasOne(
             "id",
             "Sysclass\\Models\\Reports\\Report\\Unit",
-            "lesson_id",
+            "unit_id",
             array('alias' => 'Progress')
         );
 
 		$this->hasOne(
             "id",
             "Sysclass\\Models\\Content\\Progress\\Unit",
-            "lesson_id",
+            "unit_id",
             array('alias' => 'Progress')
         );
 
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Content\\UnitContent",
-            "lesson_id",
+            "unit_id",
             array(
                 'alias' => 'Contents',
                 'params' => array(
@@ -101,7 +101,7 @@ class Unit extends Model
         $result = [];
  
         foreach($items as $itemObj) {
-            if ($itemObj->type == 'lesson') {
+            if ($itemObj->type == 'unit') {
                 $item = $itemObj->toArray(); 
                 $course = $itemObj->getCourse();
                 if ($course) {

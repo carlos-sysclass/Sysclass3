@@ -3,7 +3,7 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
 
     public function init()
     {
-        $this->lesson_type =  "lesson";
+        $this->unit_type =  "unit";
 
         parent::init();
     }
@@ -34,10 +34,10 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
             $data[$key] = $this->parseItem($item);
 
             if ($this->getUserFilter()) {
-                $progress = $this->model("lessons/progress")->clear()
+                $progress = $this->model("units/progress")->clear()
                     ->setUserFilter($this->getUserFilter())
                     ->addFilter(array(
-                        'lesson_id'     => $item['id']
+                        'unit_id'     => $item['id']
                     ))->getItems();
                 $data[$key]['progress'] = reset($progress);
             }
@@ -55,22 +55,22 @@ class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableMode
 
         // GET CLASSES
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
-        $data['contents'] = $this->model("lessons/content")
+        $data['contents'] = $this->model("units/content")
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(
-                'lesson_id' => $identifier
+                'unit_id' => $identifier
             ))->getItems();
 
         if ($this->getUserFilter()) {
             /*
-            $this->model("lessons/progress")
+            $this->model("units/progress")
                 ->setUserFilter($this->getUserFilter())
                 ->recalculateProgress($identifier);
             */
-            $progress = $this->model("lessons/progress")->clear()
+            $progress = $this->model("units/progress")->clear()
                 ->setUserFilter($this->getUserFilter())
                 ->addFilter(array(
-                    'lesson_id'     => $identifier
+                    'unit_id'     => $identifier
                 ))->getItems();
 
             $data['progress'] = reset($progress);

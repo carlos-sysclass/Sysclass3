@@ -1,17 +1,17 @@
-$SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _) {
     // MODELS
     this.startWithParent = false;
     mod.addInitializer(function() {
         this.config = $SC.module("crud.config").getConfig();
         mod.entity_id = mod.config.entity_id;
 
-        var lessonModel = app.module("crud.views.edit").itemModel;
+        var unitModel = app.module("crud.views.edit").itemModel;
 
         var baseLessonContentModelClass = Backbone.Model.extend({
             defaults : function() {
                 return {
                     id              : null,
-                    lesson_id       : null,
+                    unit_id       : null,
                     content_type    : null,
                     title           : '',
                     info            : '',
@@ -22,10 +22,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     childs          : []
                 };
             },
-            urlRoot: "/module/lessons/item/lesson_content"
+            urlRoot: "/module/units/item/unit_content"
         });
 
-        var lessonUrlContentModelClass = baseLessonContentModelClass.extend({
+        var unitUrlContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'url';
@@ -33,7 +33,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonFileContentModelClass = baseLessonContentModelClass.extend({
+        var unitFileContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'file';
@@ -46,13 +46,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonFileSubtitleContentModelClass = lessonFileContentModelClass.extend({
+        var unitFileSubtitleContentModelClass = unitFileContentModelClass.extend({
             defaults : function() {
-                var defaults = lessonFileContentModelClass.prototype.defaults.apply(this);
+                var defaults = unitFileContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'subtitle';
                 return defaults;
             },
-            //urlRoot: "/module/lessons/datasource/lesson_content/",
+            //urlRoot: "/module/units/datasource/unit_content/",
             translate : function(from, to) {
                 $.ajax(
                     this.url() + "/translate",
@@ -63,7 +63,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                         },
                         method : "PUT",
                         success : function(data, textStatus, jqXHR ) {
-                            mod.lessonContentCollection.add(data);
+                            mod.unitContentCollection.add(data);
                         }
                     }
                 );
@@ -72,16 +72,16 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonFilePosterContentModelClass = lessonFileContentModelClass.extend({
+        var unitFilePosterContentModelClass = unitFileContentModelClass.extend({
             defaults : function() {
-                var defaults = lessonFileContentModelClass.prototype.defaults.apply(this);
+                var defaults = unitFileContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'poster';
                 return defaults;
             },
-            //urlRoot: "/module/lessons/item/lesson_content/"
+            //urlRoot: "/module/units/item/unit_content/"
         });
 
-        var lessonTextContentModelClass = baseLessonContentModelClass.extend({
+        var unitTextContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'text';
@@ -89,13 +89,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonExerciseContentQuestionCollectionClass = Backbone.Collection.extend({
+        var unitExerciseContentQuestionCollectionClass = Backbone.Collection.extend({
             initialize: function(data, opt) {
                 this.content_id = opt.content_id;
             },
             /*
             url: function() {
-                return "/module/lessons/items/lesson-content/default/" + this.lesson_id;
+                return "/module/units/items/unit-content/default/" + this.unit_id;
             },
             */
             initialize: function(data, opt) {
@@ -120,15 +120,15 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
+        var unitExerciseContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
                 var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'exercise';
                 return defaults;
             },
             initialize: function(data, opt) {
-                var exerciseCollection = new lessonExerciseContentQuestionCollectionClass(
-                    this.get("exercise"), {lesson_id : this.get("lesson_id")}
+                var exerciseCollection = new unitExerciseContentQuestionCollectionClass(
+                    this.get("exercise"), {unit_id : this.get("unit_id")}
                 );
 
                 this.set("exercise", exerciseCollection);
@@ -147,7 +147,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }/*,
             addQuestion : function(questionModel) {
                 $.ajax(
-                    "/module/lessons/item/question-content",
+                    "/module/units/item/question-content",
                     {
                         data: {
                             content_id : this.get("id"),
@@ -160,11 +160,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             */
         });
 
-        var lessonContentCollectionClass = Backbone.Collection.extend({
+        var unitContentCollectionClass = Backbone.Collection.extend({
             initialize: function(data, opt) {
-                this.lesson_id = opt.lesson_id;
+                this.unit_id = opt.unit_id;
                 this.listenTo(this, "add", function(model, collection, opt) {
-                    model.set("lesson_id", this.lesson_id);
+                    model.set("unit_id", this.unit_id);
                     // SET POSITION
 
                 });
@@ -183,32 +183,32 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 });
             },
             url: function() {
-                return "/module/lessons/items/lesson-content/default/" + JSON.stringify({
-                    'lesson_id' : this.lesson_id
+                return "/module/units/items/unit-content/default/" + JSON.stringify({
+                    'unit_id' : this.unit_id
                 });
             },
             model: function(attrs, options) {
                 if (options.add) {
                     attrs.file = _.first(attrs.files);
                     if (attrs.content_type == "file") {
-                        return new lessonFileContentModelClass(attrs, _.extend(options, {
+                        return new unitFileContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else if (attrs.content_type == "subtitle") {
 
-                        return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
+                        return new unitFileSubtitleContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else if (attrs.content_type == "text") {
-                        return new lessonTextContentModelClass(attrs, _.extend(options, {
+                        return new unitTextContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else if (attrs.content_type == "exercise") {
-                        return new lessonExerciseContentModelClass(attrs, _.extend(options, {
+                        return new unitExerciseContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else if (attrs.content_type == "poster") {
-                        return new lessonFilePosterContentModelClass(attrs, _.extend(options, {
+                        return new unitFilePosterContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     } else {
@@ -220,7 +220,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             setContentOrder : function(order) {
                 $.ajax(
-                    "/module/lessons/items/lesson-content/set-order/" + this.lesson_id,
+                    "/module/units/items/unit-content/set-order/" + this.unit_id,
                     {
                         data: {
                             position: order
@@ -248,11 +248,11 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 return this;
             },
             delete : function() {
-                mod.lessonContentCollection.remove(this.model.get("id"));
+                mod.unitContentCollection.remove(this.model.get("id"));
             }
         });
 
-        var lessonUrlContentTimelineViewClass = Backbone.View.extend({
+        var unitUrlContentTimelineViewClass = Backbone.View.extend({
             template : _.template($("#url-timeline-item").html(), null, {variable : 'model'}),
             className : "timeline-item",
             tagName : "div",
@@ -264,7 +264,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
 
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonUrlContentTimelineViewClass::initialize');
+                console.info('blocks.units.content/unitUrlContentTimelineViewClass::initialize');
                 if(!_.isUndefined(opt.editMode)) {
                     this.editMode = opt.editMode;
                 }
@@ -304,7 +304,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonFileContentTimelineViewClass = Backbone.View.extend({
+        var unitFileContentTimelineViewClass = Backbone.View.extend({
             uploadTemplate : _.template($("#fileupload-upload-timeline-item").html()),
             downloadTemplate : _.template($("#fileupload-download-timeline-item").html()),
             className : "timeline-item fileupload-item",
@@ -319,17 +319,17 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 "confirmed.bs.confirmation .delete-file-content"    : "delete"
             },
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::initialize');
+                console.info('blocks.units.content/unitFileContentTimelineViewClass::initialize');
                 this.setOptions(opt);
 
                 this.listenTo(this.model, "sync", function(a,b,c) {
                     this.$el.attr("data-content-id", this.model.get("id"));
                     this.render();
                 });
-                this.listenTo(mod.lessonContentCollection, "add", this.renderOne.bind(this));
+                this.listenTo(mod.unitContentCollection, "add", this.renderOne.bind(this));
             },
             setOptions : function(opt) {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::setOptions');
+                console.info('blocks.units.content/unitFileContentTimelineViewClass::setOptions');
                 if(!_.isUndefined(opt.upload)) {
                     this.upload = opt.upload;
                 }
@@ -342,7 +342,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 return this;
             },
             render : function() {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::render');
+                console.info('blocks.units.content/unitFileContentTimelineViewClass::render');
                 var self = this;
                 if (this.upload) {
 
@@ -384,12 +384,12 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                     // RENDER SUBFILES VIEW
                     /*
-                    var subfiles = mod.lessonContentCollection.where({parent_id : this.model.get("id")});
+                    var subfiles = mod.unitContentCollection.where({parent_id : this.model.get("id")});
 
 
 
-                    var collection = new lessonContentCollectionClass(subfiles, {
-                        lesson_id : mod.entity_id
+                    var collection = new unitContentCollectionClass(subfiles, {
+                        unit_id : mod.entity_id
                     });
 
                     collection.each(function(model, i) {
@@ -623,25 +623,25 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 var model = null;
 
                 if (options.type == 'poster') {
-                    var model = new lessonFilePosterContentModelClass({
+                    var model = new unitFilePosterContentModelClass({
                         parent_id : this.model.get("id"),
-                        lesson_id : this.model.get("lesson_id")
+                        unit_id : this.model.get("unit_id")
                     });
                 } else {
-                    var model = new lessonFileSubtitleContentModelClass({
+                    var model = new unitFileSubtitleContentModelClass({
                         parent_id : this.model.get("id"),
-                        lesson_id : this.model.get("lesson_id")
+                        unit_id : this.model.get("unit_id")
                     });
                 }
 
                 model.mergeWithinFileObject(options.file);
 
-                mod.lessonContentCollection.add(model);
+                mod.unitContentCollection.add(model);
 
                 return this.renderRelatedFileContent(model, options);
             },
             renderRelatedFileContent : function(model, options) {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::renderRelatedFileContent');
+                console.info('blocks.units.content/unitFileContentTimelineViewClass::renderRelatedFileContent');
                 var self = this;
 
                 if (!_.isObject(options)) {
@@ -650,9 +650,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                 var viewClass = null;
                 if (model.get("content_type") == "poster") {
-                    viewClass = lessonFileRelatedPosterContentTimelineViewClass;
+                    viewClass = unitFileRelatedPosterContentTimelineViewClass;
                 } else {
-                    viewClass = lessonFileRelatedContentTimelineViewClass;
+                    viewClass = unitFileRelatedContentTimelineViewClass;
                 }
                 
                 var fileContentTimelineView = new viewClass(_.extend(options, {
@@ -677,7 +677,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     if (!_.isNull(self.jqXHR)) {
                         self.jqXHR.abort();
                     }
-                    mod.lessonContentCollection.remove(model.get("id"));
+                    mod.unitContentCollection.remove(model.get("id"));
                     //model.destroy();
                     //self.collection.remove(model, options);
                     fileContentTimelineView.remove();
@@ -703,7 +703,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 this.trigger("timeline-file-content:save", this.model);
             },
             delete : function() {
-                console.info('blocks.lessons.content/lessonFileContentTimelineViewClass::delete');
+                console.info('blocks.units.content/unitFileContentTimelineViewClass::delete');
                 if (!_.isNull(this.jqXHR)) {
                     this.jqXHR.abort();
                 }
@@ -714,7 +714,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonFileRelatedContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
+        var unitFileRelatedContentTimelineViewClass = unitFileContentTimelineViewClass.extend({
             uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
             downloadTemplate : _.template($("#fileupload-download-related-item").html()),
             translationTemplate : _.template($("#fileupload-translation-related-item").html()),
@@ -749,7 +749,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             delete_translation : function(e) {
                 var item = $(e.currentTarget);
                 var modelId = item.data("contentId");
-                mod.lessonContentCollection.remove(modelId);
+                mod.unitContentCollection.remove(modelId);
                 item.parents("li.translation-item").remove();
             },
             save_contents : function() {
@@ -767,7 +767,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonFileRelatedPosterContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
+        var unitFileRelatedPosterContentTimelineViewClass = unitFileContentTimelineViewClass.extend({
             uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
             downloadTemplate : _.template($("#fileupload-download-related-poster-item").html()),
             //translationTemplate : _.template($("#fileupload-translation-related-item").html()),
@@ -803,7 +803,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             delete_translation : function(e) {
                 var item = $(e.currentTarget);
                 var modelId = item.data("contentId");
-                mod.lessonContentCollection.remove(modelId);
+                mod.unitContentCollection.remove(modelId);
                 item.parents("li.translation-item").remove();
             },
             save_contents : function() {
@@ -823,7 +823,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             */
         });
 
-        var lessonTextContentTimelineViewClass = Backbone.View.extend({
+        var unitTextContentTimelineViewClass = Backbone.View.extend({
             template : _.template($("#text-timeline-item").html()),
             className : "timeline-item",
             tagName : "div",
@@ -836,7 +836,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
 
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonTextContentTimelineViewClass::initialize');
+                console.info('blocks.units.content/unitTextContentTimelineViewClass::initialize');
                 if(!_.isUndefined(opt.editMode)) {
                     this.editMode = opt.editMode;
                 }
@@ -922,7 +922,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonExercisesContentSubviewTimelineViewClass = Backbone.View.extend({
+        var unitExercisesContentSubviewTimelineViewClass = Backbone.View.extend({
             template : _.template($("#exercise-question-timeline-item").html(), null, {variable : "model"}),
             events : {
                 "confirmed.bs.confirmation .delete-question-item" : "onRemove"
@@ -958,7 +958,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-        var lessonExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
+        var unitExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
             questionSelectDialog : app.module("dialogs.questions.select"),
             template : _.template($("#exercise-timeline-item").html()),
             className : "timeline-item",
@@ -987,7 +987,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             render : function() {
                 baseLessonChildContentTimelineViewClass.prototype.render.apply(this);
 
-                this.questionView = new lessonExercisesContentSubviewTimelineViewClass({
+                this.questionView = new unitExercisesContentSubviewTimelineViewClass({
                     collection : this.model.get("exercise"),
                     el: this.$(".questions-container")
                 });
@@ -1052,7 +1052,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             jqXHR : null,
             subviews : {},
             initialize: function(opt) {
-                console.info('blocks.lessons.content/contentTimelineViewClass::initialize');
+                console.info('blocks.units.content/contentTimelineViewClass::initialize');
 
                 this.collectionFilter = opt.collectionFilter ? opt.collectionFilter : null;
 
@@ -1190,8 +1190,8 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     var data = this.collection.toJSON();
                 }
 
-                var collection = new lessonContentCollectionClass(data, {
-                    lesson_id : this.collection.lesson_id
+                var collection = new unitContentCollectionClass(data, {
+                    unit_id : this.collection.unit_id
                 });
 
                 collection.each(function(model, i) {
@@ -1225,10 +1225,10 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
                     for(var i in files) {
                         var model = files[i];
-                        model.set("upload_type", "lesson");
+                        model.set("upload_type", "unit");
                         model.save(null, {
                             success : function(model, data, options) {
-                                var model = new lessonFileContentModelClass(null, {
+                                var model = new unitFileContentModelClass(null, {
                                     collection: this.collection,
                                 });
                                 model.mergeWithinFileObject(data);
@@ -1246,7 +1246,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                                 */
 
                                 /*
-                                var contentModel = new lessonFileContentModelClass(null, {
+                                var contentModel = new unitFileContentModelClass(null, {
                                     collection: this.collection,
                                 });
 
@@ -1267,7 +1267,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             addUrlContent : function(options) {
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL
-                var model = new lessonUrlContentModelClass(null, {
+                var model = new unitUrlContentModelClass(null, {
                     collection: this.collection,
                 });
 
@@ -1282,7 +1282,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     options = {};
                 }
 
-                var urlContentTimelineView = new lessonUrlContentTimelineViewClass(_.extend(options, {
+                var urlContentTimelineView = new unitUrlContentTimelineViewClass(_.extend(options, {
                     model : model
                 }));
 
@@ -1303,7 +1303,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             addFileContent : function(options) {
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL
-                var model = new lessonFileContentModelClass(null, {
+                var model = new unitFileContentModelClass(null, {
                     collection: this.collection,
                 });
 
@@ -1320,7 +1320,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     options = {};
                 }
 
-                var fileContentTimelineView = new lessonFileContentTimelineViewClass(_.extend(options, {
+                var fileContentTimelineView = new unitFileContentTimelineViewClass(_.extend(options, {
                     model : model
                 }));
 
@@ -1351,7 +1351,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             addTextContent : function(e) {
                 var self = this;
-                var model = new lessonTextContentModelClass(null, {
+                var model = new unitTextContentModelClass(null, {
                     collection: this.collection,
                 });
 
@@ -1369,7 +1369,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     options = {};
                 }
 
-                var textContentTimelineView = new lessonTextContentTimelineViewClass(_.extend(options, {
+                var textContentTimelineView = new unitTextContentTimelineViewClass(_.extend(options, {
                     model : model
                 }));
 
@@ -1391,7 +1391,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             addExercisesContent : function(e) {
                 var self = this;
-                var model = new lessonExerciseContentModelClass(null, {
+                var model = new unitExerciseContentModelClass(null, {
                     collection: this.collection,
                 });
 
@@ -1410,7 +1410,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     options = {};
                 }
 
-                var exerciseContentTimelineView = new lessonExercisesContentTimelineViewClass(_.extend(options, {
+                var exerciseContentTimelineView = new unitExercisesContentTimelineViewClass(_.extend(options, {
                     model : model
                 }));
 
@@ -1449,17 +1449,17 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
         });
 
-        mod.lessonContentCollection = new lessonContentCollectionClass([], {
-            lesson_id :  mod.entity_id
+        mod.unitContentCollection = new unitContentCollectionClass([], {
+            unit_id :  mod.entity_id
         });
 
-        this.listenToOnce(lessonModel, "sync", function() {
-            mod.lessonContentCollection.fetch();
+        this.listenToOnce(unitModel, "sync", function() {
+            mod.unitContentCollection.fetch();
         });
 
         mod.contentTimelineView = new contentTimelineViewClass({
             el : "#content-timeline",
-            collection : mod.lessonContentCollection,
+            collection : mod.unitContentCollection,
             collectionFilter : {parent_id: null}
         });
     });

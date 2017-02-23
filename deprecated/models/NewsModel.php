@@ -14,7 +14,7 @@ class NewsModel extends AbstractSysclassModel implements ISyncronizableModel {
 		);
 
 		$this->selectSql = "SELECT `id`, `title`, `data`, `timestamp`, user_id, `expire` FROM `mod_news`";
-		//`lessons_ID`, `classe_id`,
+		//`units_ID`, `classe_id`,
 
 		parent::init();
 

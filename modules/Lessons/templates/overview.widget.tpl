@@ -23,8 +23,8 @@
 					</a>
 				</li>
 
-				<li class="the-lesson-tab active">
-					<a data-toggle="tab" href="#lesson-tab">
+				<li class="the-unit-tab active">
+					<a data-toggle="tab" href="#unit-tab">
 						<div class="nav-title">
 							<span class="tab-title">{translateToken value="Units"}</span>
 						</div>
@@ -430,7 +430,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="lesson-tab" class="tab-pane active">
+				<div id="unit-tab" class="tab-pane active">
 					<div class="navbar navbar-default" role="navigation">
 						<div class="navbar-header">
 							<a href="#" class="navbar-brand disabled">
@@ -440,7 +440,7 @@
 								{translateToken value="Class"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
-							<a href="javascript: void(0);" class="navbar-brand lesson-title">
+							<a href="javascript: void(0);" class="navbar-brand unit-title">
 								{translateToken value="Units"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand">
@@ -474,30 +474,30 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video lesson"}</span></a>
+								<a data-toggle="tab" href="#tab_unit_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video unit"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
+								<a data-toggle="tab" href="#tab_unit_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
+								<a data-toggle="tab" href="#tab_unit_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>
 							</li>
 							<!--
 							<li class="">
-								<a data-toggle="tab" href="#tab_lesson_search"><i class="icon-search"></i> Search</a>
+								<a data-toggle="tab" href="#tab_unit_search"><i class="icon-search"></i> Search</a>
 							</li>
 							-->
 						</ul>
 						<div class="tab-content">
-							<div id="tab_lesson_content" class="tab-pane active">
+							<div id="tab_unit_content" class="tab-pane active">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="There are no content in this lesson"}
+										{translateToken value="There are no content in this unit"}
 									</div>
 								</div>
 							</div>
-							<div id="tab_lesson_materials" class="tab-pane">
+							<div id="tab_unit_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
 										<a href="javascript: void(0)"> {translateToken value="Unit Files"} </a> -
@@ -505,19 +505,19 @@
 											<span class="size-counter">2</span> {translateToken value="files"}
 										</small>
 									</h5>
-									<div id="tab_lesson_materials_container"></div>
+									<div id="tab_unit_materials_container"></div>
 								</div>
 							</div>
-						    <div id="tab_lesson_exercises" class="tab-pane">
+						    <div id="tab_unit_exercises" class="tab-pane">
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										 {translateToken value="There are no exercises posted in this lesson"}
+										 {translateToken value="There are no exercises posted in this unit"}
 								   	</div>
 							   	</div>
 						   	</div>
 						   	<!--
-						   	<div id="tab_lesson_search" class="tab-pane">
+						   	<div id="tab_unit_search" class="tab-pane">
 						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -536,7 +536,7 @@
 	<div class="row" id="progress-content">
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
-				<div class="number lesson" data-percent="0"><span>0</span>%</div>
+				<div class="number unit" data-percent="0"><span>0</span>%</div>
 				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Unit"}</a>
 			</div>
 		</div>
@@ -627,12 +627,12 @@
 	<% } %>
 	<%= name %>
 	<!--
-	<% if (typeof lessons != 'undefined') { %>
-		<span class="badge badge-info"><%= lessons.length %></span>
+	<% if (typeof units != 'undefined') { %>
+		<span class="badge badge-info"><%= units.length %></span>
 	<% } %>
 	-->
-	<% if (typeof stats.completed_lessons != 'undefined' && stats.total_lessons != undefined) { %>
-		<span class="badge badge-info"><%= stats.completed_lessons %> / <%= stats.total_lessons %></span>
+	<% if (typeof stats.completed_units != 'undefined' && stats.total_units != undefined) { %>
+		<span class="badge badge-info"><%= stats.completed_units %> / <%= stats.total_units %></span>
 	<% } %>
 	<% if (typeof stats.overall_progress != 'undefined') { %>
 		<%

@@ -6,15 +6,15 @@
 function smarty_function_sC_template_printLessonsList($params, &$smarty)
 {
 
-    $lessons_str     = '<option value = "-1">---- '._LESSONS.' ----</option>';
+    $units_str     = '<option value = "-1">---- '._LESSONS.' ----</option>';
 
 	foreach ($params['data'] as $key => $value) {
 		for ($i = 0; $i < sizeof($params['data'][$key]); $i++) {
 			$params['selected'] == $params['data'][$key][$i]['id'] ? $selected = 'selected' : $selected = '';
-	        $lessons_str .=
+	        $units_str .=
     	    	'<option value = "'.$params['data'][$key][$i]['id'].'" '.$selected.'>'.$params['data'][$key][$i]['name'].' ('.$key.')</option>';
         }
 	}
 
-    return $lessons_str;
+    return $units_str;
 }

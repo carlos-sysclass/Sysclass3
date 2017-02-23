@@ -31,7 +31,7 @@ $SC.module("dialogs.auto_translate", function(mod, app, Backbone, Marionette, $,
 
             if (_.isNull(this.dialogView)) {
                 this.dialogView = new selectCountryDialogViewClass({
-                    el : "#lessons-dialog-auto_translate",
+                    el : "#units-dialog-auto_translate",
                     model : new mod.modelClass()
                 });
 

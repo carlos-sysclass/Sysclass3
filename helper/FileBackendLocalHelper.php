@@ -124,11 +124,11 @@ class FileBackendLocalHelper extends AbstractFileBackend /* implements IFileBack
         return $path;
     }
 
-    public function getLessonPath($lesson_id, $type = null)
+    public function getLessonPath($unit_id, $type = null)
     {
         $plicolib = PlicoLib::instance();
 
-        $path = $plicolib->get("path/files/public") . "/lessons/" . $lesson_id;
+        $path = $plicolib->get("path/files/public") . "/units/" . $unit_id;
 
         if (!is_null($type)) {
             $path .= "/" . $type;
@@ -139,11 +139,11 @@ class FileBackendLocalHelper extends AbstractFileBackend /* implements IFileBack
         }
         return $path;
     }
-    public function getLessonUrl($lesson_id, $type = null)
+    public function getLessonUrl($unit_id, $type = null)
     {
         $plicolib = PlicoLib::instance();
 
-        $path = $plicolib->get("http/fqdn") . "/files/lessons/" . $lesson_id;
+        $path = $plicolib->get("http/fqdn") . "/files/units/" . $unit_id;
 
         if (!is_null($type)) {
             $path .= "/" . $type;

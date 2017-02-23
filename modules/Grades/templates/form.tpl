@@ -47,7 +47,7 @@
 				        <p>
 				            <strong>TIP!</strong>
 				            You can create a unlimited number of of relative ranges, so you can assign a grade, like (A,B,C) based on user score.<br />
-				            These rules can be applied on tests and lessons, providing a way to translate the user percentual score (0 - 100%) to your organization rules.
+				            These rules can be applied on tests and units, providing a way to translate the user percentual score (0 - 100%) to your organization rules.
 				        </p>
 				    </div>
 					<ul class="list-group ranges-rules-container">

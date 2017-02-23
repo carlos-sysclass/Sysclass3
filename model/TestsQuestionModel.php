@@ -10,7 +10,7 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
 		$this->selectSql = "
             SELECT
                 t2q.`id`,
-                t2q.`lesson_id`,
+                t2q.`unit_id`,
                 t2q.`question_id`,
                 t2q.`position`,
                 t2q.`points`,
@@ -33,7 +33,7 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
                 q.`settings` as 'question#settings',
                 q.`active` as 'question#active'
             FROM mod_tests_to_questions t2q
-            LEFT JOIN mod_lessons l ON (t2q.lesson_id = l.id)
+            LEFT JOIN mod_units l ON (t2q.unit_id = l.id)
             LEFT JOIN `mod_questions` q ON (t2q.question_id = q.id)
             LEFT JOIN `mod_areas` a ON (q.area_id = a.id)
             LEFT JOIN `mod_questions_difficulties` qd ON (q.difficulty_id = qd.id)
@@ -92,22 +92,22 @@ class TestsQuestionModel extends AbstractSysclassModel implements ISyncronizable
         return $data;
     }
 
-    protected function resetOrder($lesson_id) {
+    protected function resetOrder($unit_id) {
         $this->setItem(array(
             'position' => -1
         ), array(
-            'lesson_id' => $lesson_id
+            'unit_id' => $unit_id
         ));
     }
 
-    public function setOrder($lesson_id, array $order_ids) {
-        $this->resetOrder($lesson_id);
+    public function setOrder($unit_id, array $order_ids) {
+        $this->resetOrder($unit_id);
         foreach($order_ids as $index => $item_id) {
             $this->setItem(array(
                 'position' => $index + 1
             ), array(
                 'id' => $item_id,
-                'lesson_id' => $lesson_id
+                'unit_id' => $unit_id
             ));
         }
 

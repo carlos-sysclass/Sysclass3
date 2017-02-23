@@ -236,7 +236,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
 
 
     public function getDatatableItemOptions($model = "me") {
-        if ($this->_args['model'] == 'lesson-content') {
+        if ($this->_args['model'] == 'unit-content') {
             $options['select'] = array(
                 'icon'  => 'icon-check',
                 'class' => 'btn-sm btn-primary'

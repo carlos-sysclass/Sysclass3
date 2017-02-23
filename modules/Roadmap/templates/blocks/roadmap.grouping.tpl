@@ -81,7 +81,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div id="block_roadmap-all_lessons-accordion">
+                    <div id="block_roadmap-all_units-accordion">
                     </div>
                 </div>
             </div>
@@ -171,10 +171,10 @@
             <div class="col-md-6 col-sm-6">
                 <p>
                     <span>{translateToken value="Total Units"}</span>
-                    <% if (data.class.total_lessons == 0) { %>
-                        <strong class="text-danger pull-right"><%= data.class.total_lessons %></strong>
+                    <% if (data.class.total_units == 0) { %>
+                        <strong class="text-danger pull-right"><%= data.class.total_units %></strong>
                     <% } else { %>
-                        <strong class="text-primary pull-right"><%= data.class.total_lessons %></strong>
+                        <strong class="text-primary pull-right"><%= data.class.total_units %></strong>
                     <% } %>
 
                 </p>

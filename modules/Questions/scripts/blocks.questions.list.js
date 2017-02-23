@@ -75,7 +75,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                     this.stopListening(this.model, 'sync');
                     this.listenTo(this.model, 'sync', this.render.bind(this));
                 }
-                //this.$el.data("lessonId", this.model.get("id"));
+                //this.$el.data("unitId", this.model.get("id"));
                 this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
 
                 if (this.$el.length) {
@@ -275,7 +275,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
                 var exists = this.collection.where({
                     question_id : model.get("id"),
-                    lesson_id : this.collection.lesson_id
+                    unit_id : this.collection.unit_id
                 });
 
                 if (_.size(exists) === 0) {
@@ -298,7 +298,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
                     var exists = this.collection.where({
                         question_id : questionData.id,
-                        lesson_id : this.collection.lesson_id
+                        unit_id : this.collection.unit_id
                     });
 
                     if (_.size(exists) === 0) {
@@ -362,7 +362,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
             },
             remove : function(e) {
                 var fileId = $(e.currentTarget).data("fileId");
-                var fileObject = new mod.lessonFileModelClass();
+                var fileObject = new mod.unitFileModelClass();
                 fileObject.set("id", fileId);
                 fileObject.destroy();
                 $(e.currentTarget).parents("li").remove();
@@ -395,7 +395,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
 
     mod.createBlock = function(el, data) {
         var questionCollection = new mod.collections.questions({
-            lesson_id : data.test_id
+            unit_id : data.test_id
         });
 
         var blockView = new mod.blockViewClass({
@@ -428,20 +428,20 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
     this.collections = {
         questions : Backbone.Collection.extend({
             initialize: function(opt) {
-                this.lesson_id = opt.lesson_id;
+                this.unit_id = opt.unit_id;
                 this.listenTo(this, "add", function(model, collection, opt) {
-                    model.set("lesson_id", this.lesson_id);
+                    model.set("unit_id", this.unit_id);
                 });
                 this.listenTo(this, "remove", function(model, collection, opt) {
                 });
             },
             model : mod.models.question,
             url: function() {
-                return "/module/" + module_id + "/items/" + model_id + "/default/" + JSON.stringify({ lesson_id : this.lesson_id });
+                return "/module/" + module_id + "/items/" + model_id + "/default/" + JSON.stringify({ unit_id : this.unit_id });
             },
             setOrder : function(order) {
                 $.ajax(
-                    "/module/" + module_id + "/items/" + model_id + "/set-order/" + this.lesson_id,
+                    "/module/" + module_id + "/items/" + model_id + "/set-order/" + this.unit_id,
                     {
                         data: {
                             position: order

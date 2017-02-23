@@ -328,7 +328,7 @@ class Translator extends Component
         $this->id_field = "id";
 
         $this->selectSql = "SELECT `id`, `code`, `country_code`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
-        //`lessons_ID`, `classe_id`,
+        //`units_ID`, `classe_id`,
 
         parent::init();
     }

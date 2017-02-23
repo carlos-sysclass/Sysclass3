@@ -7,7 +7,7 @@ class Answer extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_lessons_content_questions_answers");
+        $this->setSource("mod_units_content_questions_answers");
     }
 }
 

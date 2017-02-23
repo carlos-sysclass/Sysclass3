@@ -319,7 +319,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
                             'class' => 'btn-sm btn-danger'
                         )
                     );
-                } elseif ($model == "lesson-content") {
+                } elseif ($model == "unit-content") {
                     $items[$key]['options'] = array(
                         'select'  => array(
                             'icon'  => 'icon-check',
@@ -355,14 +355,14 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
 
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
-        $lessonsIds = array_keys($userLessons);
+        $unitsIds = array_keys($userLessons);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $tutorias = $this->_getTableData("mod_tutoria tt
-            LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)
+            LEFT OUTER JOIN units l ON (tt.units_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
             LEFT OUTER JOIN users u2 ON (tt.answer_user_id = u2.id)",
-            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title,
+            "tt.id, tt.units_ID, tt.unit_ID, tt.title,
             tt.question_timestamp,
             tt.question_user_id,
             u1.name as question_user_name,
@@ -376,7 +376,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
             u2.avatar as answer_avatar_id,
             tt.answer,
             tt.approved",
-            sprintf("tt.lessons_ID IN (0, %s) AND (tt.approved = 1 OR tt.question_user_id = %d)", implode(",", $lessonsIds), $currentUser->user['id']),
+            sprintf("tt.units_ID IN (0, %s) AND (tt.approved = 1 OR tt.question_user_id = %d)", implode(",", $unitsIds), $currentUser->user['id']),
             "tt.question_timestamp DESC",
             "",
             sprintf("%d, %d", ($page - 1) * $per_page, $per_page)
@@ -428,16 +428,16 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
 
         //$xuserModule = $this->loadModule("xuser");
         $userLessons = $currentUser->getLessons();
-        $lessonsIds = array_keys($userLessons);
+        $unitsIds = array_keys($userLessons);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff
-            LEFT OUTER JOIN lessons l ON ff.lessons_ID = l.id",
-            "ft.title, ft.id as topic_id, ft.users_LOGIN, fm.timestamp, l.name as lessons_name, ff.lessons_id",
-            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.lessons_ID IN (%s) AND fm.f_topics_ID = %d",
-            implode(",", $lessonsIds), $topic),
+            LEFT OUTER JOIN units l ON ff.units_ID = l.id",
+            "ft.title, ft.id as topic_id, ft.users_LOGIN, fm.timestamp, l.name as units_name, ff.units_id",
+            sprintf("ft.f_forums_ID=ff.id AND fm.f_topics_ID=ft.id AND ff.units_ID IN (%s) AND fm.f_topics_ID = %d",
+            implode(",", $unitsIds), $topic),
             "fm.timestamp ASC"
         );
         return $forum_messages;
@@ -455,7 +455,7 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         if ($currentUser    = $this->getCurrentUser()) {
             $defaults = array(
                 'question_timestamp'    => time(),
-                'lessons_ID'            => 0,
+                'units_ID'            => 0,
                 'unit_ID'               => 0,
                 'title'                 => '',
                 'question_user_id'      => $currentUser['id'],
@@ -469,8 +469,8 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
             } else {
                 $values['question'] = $_POST['question'];
             }
-            if (array_key_exists('lessons_ID', $_POST) && is_numeric($_POST['lessons_ID'])) {
-                $values['lessons_ID'] = $_POST['lessons_ID'];
+            if (array_key_exists('units_ID', $_POST) && is_numeric($_POST['units_ID'])) {
+                $values['units_ID'] = $_POST['units_ID'];
             }
             if (array_key_exists('unit_ID', $_POST) && is_numeric($_POST['unit_ID'])) {
                 $values['unit_ID'] = $_POST['unit_ID'];

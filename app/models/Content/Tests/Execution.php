@@ -32,7 +32,7 @@ class Execution extends Model
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\ExecutionQuestions",
-            "lesson_id", 
+            "unit_id", 
             array('alias' => 'ExecutionQuestions')
         );
     }
@@ -131,7 +131,7 @@ class Execution extends Model
 
             /*
             $questionsData = $questionModel->addFilter(array(
-                'lesson_id' => $executionData['test_id']
+                'unit_id' => $executionData['test_id']
             ))->getItems();
 
             */
@@ -230,7 +230,7 @@ class Execution extends Model
 
 
         $UnitProgress = UnitProgress::findFirst(array(
-            'conditions' => 'user_id = ?0 and lesson_id = ?1',
+            'conditions' => 'user_id = ?0 and unit_id = ?1',
             'bind' => array($this->user_id, $this->test_id)
         ));
 
@@ -238,7 +238,7 @@ class Execution extends Model
             $UnitProgress = new UnitProgress();
             $UnitProgress->factor = 0;
             $UnitProgress->user_id = $this->user_id;
-            $UnitProgress->lesson_id = $this->test_id;
+            $UnitProgress->unit_id = $this->test_id;
         }
 
         if ($pass) {

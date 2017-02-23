@@ -11,7 +11,7 @@
             <span>{translateToken value="Add Url"}</span>
         </span>
  -->        
-        <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/lesson">
+        <span class="btn btn-sm btn-link fileinput-button fileupload" data-fileupload-url="/module/dropbox/upload/unit">
             <i class="fa fa-plus"></i>
             <span>{translateToken value="Add File"}</span>
             <input type="file" name="files[]">

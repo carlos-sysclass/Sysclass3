@@ -112,7 +112,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	this.baseChildTabViewItemClass = Backbone.View.extend({
 		tagName : "tr",
 		parentView : null,
-		//template : _.template($("#tab_class_lessons-item-template").html(), null, {variable: "model"}),
+		//template : _.template($("#tab_class_units-item-template").html(), null, {variable: "model"}),
 		initialize : function(opt) {
 			if (_.has(opt, 'parent')) {
 				this.parentView = opt.parent;
@@ -874,7 +874,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
         }/*,
         remove : function(e) {
             var fileId = $(e.currentTarget).data("fileId");
-            var fileObject = new mod.lessonFileModelClass();
+            var fileObject = new mod.unitFileModelClass();
             fileObject.set("id", fileId);
             fileObject.destroy();
             $(e.currentTarget).parents("li").remove();

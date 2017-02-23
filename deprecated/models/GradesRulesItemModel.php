@@ -11,7 +11,7 @@ class GradesRulesItemModel extends AbstractSysclassModel implements ISyncronizab
         $this->mainTablePrefix = "gr";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "SELECT id, lesson_id, class_id, name, description, active FROM mod_grades_rules gr";
+        $this->selectSql = "SELECT id, unit_id, class_id, name, description, active FROM mod_grades_rules gr";
 
         parent::init();
     }

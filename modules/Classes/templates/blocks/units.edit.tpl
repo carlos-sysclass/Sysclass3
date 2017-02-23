@@ -1,4 +1,4 @@
-<div id="block_lessons_edit" data-widget-id="lessons-edit-widget">
+<div id="block_units_edit" data-widget-id="units-edit-widget">
     <!--
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -16,7 +16,7 @@
             <ul class="list-group ui-sortable margin-bottom-10">
 
             </ul>
-            <a class="btn btn-sm btn-primary btn-link add-lesson-action" href="javascript: void(0);">
+            <a class="btn btn-sm btn-primary btn-link add-unit-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create unit"}
             </a>
@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<script type="text/template" id="class-lesson-item-template">
+<script type="text/template" id="class-unit-item-template">
     <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
         <i class="fa fa-arrows"></i>
     </a>
@@ -56,7 +56,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit unit info">
+          <a class="btn btn-sm btn-primary tooltips" href="/module/units/edit/<%= model.id %>" data-original-title="Edit unit info">
                 <i class="fa fa-edit"></i>
             </a>
             <!--
@@ -161,14 +161,14 @@
 </script>
 
 
-<script type="text/template" id="lessons-edit-add-item">
+<script type="text/template" id="units-edit-add-item">
     <div class="input-group">
         <span class="input-group-btn" style="vertical-align: top;">
             <button type="button" class="btn btn-primary">
                 <i class="fa fa-check"></i>
             </button>
         </span>
-        <input name="new-lesson-input" value="" type="text" placeholder="Type the unit name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+        <input name="new-unit-input" value="" type="text" placeholder="Type the unit name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
     </div>
 </script>
 
@@ -184,8 +184,8 @@ _lazy_init_functions.push(function() {
 {/if}
 
 
-{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
-    {foreach $T_SECTION_TPL['lessons_content'] as $template}
+{if (isset($T_SECTION_TPL['units_content']) &&  ($T_SECTION_TPL['units_content']|@count > 0))}
+    {foreach $T_SECTION_TPL['units_content'] as $template}
         {*include file=$template*}
     {/foreach}
 {/if}

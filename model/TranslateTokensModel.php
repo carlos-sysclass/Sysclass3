@@ -15,7 +15,7 @@ class TranslateTokensModel extends ModelManager {
 		);
 		*/
 		//$this->selectSql = "SELECT `id`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate_tokens`";
-		//`lessons_ID`, `classe_id`,
+		//`units_ID`, `classe_id`,
 
 		parent::init();
 

@@ -16,7 +16,7 @@ use Sysclass\Services\Storage\Adapter as StorageAdapter,
  * @package Sysclass\Modules
  */
 /**
- * @RoutePrefix("/module/lessons")
+ * @RoutePrefix("/module/units")
  */
 class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
@@ -26,7 +26,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function getLinks()
     {
         if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-            $itemsData = $this->model("lessons")->addFilter(array(
+            $itemsData = $this->model("units")->addFilter(array(
                 'active'    => true
             ))->getItems();
             $items = $itemsData;
@@ -105,14 +105,14 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function registerBlocks()
     {
         return array(
-            'lessons.content' => function ($data, $self) {
+            'units.content' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
 
                 $self->putComponent("bootstrap-confirmation");
 
                 $self->putModuleScript("translate", "models.translate");
 
-                $self->putModuleScript("blocks.lessons.content");
+                $self->putModuleScript("blocks.units.content");
 
                 $languages = Language::find([
                     'conditions' => 'active = 1'
@@ -130,17 +130,17 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
                 $self->putItem("languages", $languages);
 
-                $self->putSectionTemplate("lessons_content", "blocks/lessons.content");
+                $self->putSectionTemplate("units_content", "blocks/units.content");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
                 $self->putBlock("storage.library");
 
-                $self->putBlock("lessons.dialogs.auto_translate");
+                $self->putBlock("units.dialogs.auto_translate");
 
                 return true;
             },
-            'lessons.dialogs.auto_translate' => function($data, $self) {
+            'units.dialogs.auto_translate' => function($data, $self) {
                 $languages = Language::find([
                     'conditions' => 'active = 1'
                 ])->toArray();
@@ -160,41 +160,41 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $self->putModuleScript("dialogs.auto_translate");
                 $self->putSectionTemplate("dialogs", "dialogs/auto_translate");
             },
-            'lessons.dialogs.exercises' => function($data, $self) {
+            'units.dialogs.exercises' => function($data, $self) {
                 $self->putModuleScript("dialogs.exercises");
                 $self->putSectionTemplate("dialogs", "dialogs/exercises");
             }
 
             /*,
-            'lessons.content.text' => function($data, $self) {
+            'units.content.text' => function($data, $self) {
                 $items = $$this->translate->getItems();
 
                 $userLanguageCode =  $$this->translate->getUserLanguageCode();
 
-                $self->putItem("lessons_content_text_user_language", $userLanguageCode);
-                $self->putItem("lessons_content_text_languages", $items);
+                $self->putItem("units_content_text_user_language", $userLanguageCode);
+                $self->putItem("units_content_text_languages", $items);
                 // CREATE BLOCK CONTEXT
                 //$self->putComponent("jquery-file-upload");
                 //$self->putModuleScript("blocks.roadmap");
 
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
-                //$self->putItem("classes_lessons_block_context", $block_context);
+                //$self->putItem("classes_units_block_context", $block_context);
 
-                $self->putSectionTemplate("lessons_content_text", "blocks/lessons.content.text");
+                $self->putSectionTemplate("units_content_text", "blocks/units.content.text");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
                 return true;
             },
-            'lessons.content.video' => function($data, $self) {
+            'units.content.video' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
                 $self->putComponent("jquery-file-upload");
                 //$self->putModuleScript("blocks.roadmap");
 
                 //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
-                //$self->putItem("classes_lessons_block_context", $block_context);
+                //$self->putItem("classes_units_block_context", $block_context);
 
-                $self->putSectionTemplate("lessons_content_video", "blocks/lessons.content.video");
+                $self->putSectionTemplate("units_content_video", "blocks/units.content.video");
                 //$self->putSectionTemplate("foot", "dialogs/season.add");
                 //$self->putSectionTemplate("foot", "dialogs/class.add");
 
@@ -307,13 +307,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $data = $this->getHttpData(func_get_args());
 
             if ($model == "me") {
-                $itemModel = $this->model("lessons");
+                $itemModel = $this->model("units");
                 $messages = array(
                     'success' => "Unit created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
-            } elseif ($model == "lesson_content") {
-                $itemModel = $this->model("lessons/content");
+            } elseif ($model == "unit_content") {
+                $itemModel = $this->model("units/content");
                 $messages = array(
                     'success' => "Unit content created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
@@ -323,7 +323,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                 $_GET['redirect'] = "0";
             } elseif ($model == "question-content") {
-                $itemModel = $this->model("lessons/content/question");
+                $itemModel = $this->model("units/content/question");
                 $messages = array(
                     'success' => "Question included.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
@@ -373,7 +373,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             return call_user_func_array([parent, 'getItemsRequest'], func_get_args());
             /*
-            $modelRoute = "lessons";
+            $modelRoute = "units";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
@@ -387,8 +387,8 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemsData = $itemsCollection->getItems();
             */
 
-        } elseif ($model == "lesson-and-test") {
-            $modelRoute = "base/lessons";
+        } elseif ($model == "unit-and-test") {
+            $modelRoute = "base/units";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
@@ -401,11 +401,11 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             }
             $itemsData = $itemsCollection->getItems();
 
-        } elseif ($model == "lesson-content") {
+        } elseif ($model == "unit-content") {
             // MAKE THE SYSTEM CALL THE PARENT (NEW) ROUTE
             return call_user_func_array([parent, 'getItemsRequest'], func_get_args());
 
-            $modelRoute = "lessons/content";
+            $modelRoute = "units/content";
             $optionsRoute = "edit";
 
 
@@ -417,7 +417,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             }
             $itemsData = $itemsCollection->addFilter(array(
                 'active'    => 1,
-                'lesson_id' => $filter/*,
+                'unit_id' => $filter/*,
                 "parent_id" => null*/
             ))->getItems();
 
@@ -471,21 +471,21 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @Put("/items/lesson-content/set-order/{lesson_id}")
+     * @Put("/items/unit-content/set-order/{unit_id}")
      */
-    public function setContentOrderAction($lesson_id)
+    public function setContentOrderAction($unit_id)
     {
-        $modelRoute = "lessons/content";
+        $modelRoute = "units/content";
         $optionsRoute = "edit";
 
         $itemsCollection = $this->model($modelRoute);
         // APPLY FILTER
-        if (is_null($lesson_id) || !is_numeric($lesson_id)) {
+        if (is_null($unit_id) || !is_numeric($unit_id)) {
             return $this->invalidRequestError();
         }
         $itemsData = $itemsCollection->addFilter(array(
             'active'    => 1,
-            'lesson_id' => $lesson_id
+            'unit_id' => $unit_id
         ))->getItems();
 
         $messages = array(
@@ -495,7 +495,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $data = $this->getHttpData(func_get_args());
 
-        if ($itemsCollection->setContentOrder($lesson_id, $data['position'])) {
+        if ($itemsCollection->setContentOrder($unit_id, $data['position'])) {
             return $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
         } else {
             return $this->invalidRequestError($this->translate->translate($messages['success']), "success");
@@ -541,9 +541,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             /*
             $filedata = (array) reset($result[$param_name]);
 
-            $filedata['lesson_id'] = $id;
+            $filedata['unit_id'] = $id;
             $filedata['upload_type'] = $type;
-            $this->model("lessons/files")->setVideo($filedata);
+            $this->model("units/files")->setVideo($filedata);
             */
 
         //} elseif ($type == "material") {
@@ -552,9 +552,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         );
         foreach ($result[$param_name] as $fileObject) {
             $filedata = (array) $fileObject;
-            $filedata['lesson_id'] = $id;
+            $filedata['unit_id'] = $id;
             $filedata['upload_type'] = $type;
-            $filedata['id'] = $this->model("lessons/files")->addItem($filedata);
+            $filedata['id'] = $this->model("units/files")->addItem($filedata);
 
             $file_result[$param_name][] = $filedata;
         }
@@ -563,13 +563,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     }
 
     /*
-    public function removeFilesAction($lesson_id, $file_id)
+    public function removeFilesAction($unit_id, $file_id)
     {
         if ($userData = $this->getCurrentUser()) {
-            $itemModel = $this->model("lessons/files");
+            $itemModel = $this->model("units/files");
 
             $files = $itemModel->clear()->addFilter(array(
-                'lesson_id' => $lesson_id,
+                'unit_id' => $unit_id,
                 'id'        => $file_id
             ))->getItems();
 
@@ -593,19 +593,19 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function getItemAction($model = "me", $identifier = null)
     {
-        $editItem = $this->model("lessons")->getItem($identifier);
+        $editItem = $this->model("units")->getItem($identifier);
         /*
         //if ($model == "content") {
-            //$editItem['files'] = $this->model("classes/lessons/collection")->loadContentFiles($id);
-            $lessonFiles = $this->model("lessons/files");
-        $videos = $lessonFiles->clear()->addFilter(array(
-                'lesson_id'     => $identifier,
+            //$editItem['files'] = $this->model("classes/units/collection")->loadContentFiles($id);
+            $unitFiles = $this->model("units/files");
+        $videos = $unitFiles->clear()->addFilter(array(
+                'unit_id'     => $identifier,
                 'upload_type'   => 'video',
                 'active'        => 1
             ))->getItems();
 
-        $materials = $lessonFiles->clear()->addFilter(array(
-                'lesson_id'     => $identifier,
+        $materials = $unitFiles->clear()->addFilter(array(
+                'unit_id'     => $identifier,
                 'upload_type'   => 'material',
                 'active'        => 1
             ))->getItems();
@@ -670,13 +670,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $data = $this->getHttpData(func_get_args());
 
             if ($model == "me") {
-                $itemModel = $this->model("lessons");
+                $itemModel = $this->model("units");
                 $messages = array(
                     'success' => "Unit updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
-            } elseif ($model == "lesson_content") {
-                $itemModel = $this->model("lessons/content");
+            } elseif ($model == "unit_content") {
+                $itemModel = $this->model("units/content");
                 $messages = array(
                     'success' => "Unit content updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
@@ -717,13 +717,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
-                $itemModel = $this->model("lessons");
+                $itemModel = $this->model("units");
                 $messages = array(
                     'success' => "Unit removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
-            } elseif ($model == "lesson_content") {
-                $itemModel = $this->model("lessons/content");
+            } elseif ($model == "unit_content") {
+                $itemModel = $this->model("units/content");
                 $messages = array(
                     'success' => "Unit content removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
@@ -751,7 +751,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      */
     public function translateContent($id)
     {
-        $modelRoute = "lessons/content";
+        $modelRoute = "units/content";
 
         $itemModel = $this->model($modelRoute);
 

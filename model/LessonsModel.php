@@ -3,7 +3,7 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->lesson_type =  "lesson";
+        $this->unit_type =  "unit";
 
         parent::init();
     }
@@ -13,9 +13,9 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
         $item['info'] = json_decode($item['info'], true);
 
         if ($this->getUserFilter()) {
-            $progress = $this->model("lessons/progress")->clear()->addFilter(array(
+            $progress = $this->model("units/progress")->clear()->addFilter(array(
                 'user_id'       => $this->getUserFilter(),
-                'lesson_id'    => $item['id']
+                'unit_id'    => $item['id']
             ))->getItems();
 
             $item['progress'] = reset($progress);
@@ -60,11 +60,11 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function setContentOrder($class_id, array $order_ids) {
         $this->resetContentOrder($class_id);
-        foreach($order_ids as $index => $lesson_id) {
+        foreach($order_ids as $index => $unit_id) {
             $this->setItem(array(
                 'position' => $index + 1
             ), array(
-                'id' => $lesson_id,
+                'id' => $unit_id,
                 'class_id' => $class_id
             ));
         }
@@ -73,18 +73,18 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     }
     /*
-    public function recalculateProgress($lesson_id) {
+    public function recalculateProgress($unit_id) {
         $progressAwareTypes = array('file');
 
-        $contents = $this->model("lessons/content")->debug()->addFilter(array(
-            'lesson_id' => $lesson_id,
+        $contents = $this->model("units/content")->debug()->addFilter(array(
+            'unit_id' => $unit_id,
             'content_type' => $progressAwareTypes
         ))->getItems();
 
         $progressItens = \array_column($contents, 'progress');
 
         if (array_sum($progressItens) == count($progressItens)) {
-            $this->setItem(array('progress' => 1), $lesson_id);
+            $this->setItem(array('progress' => 1), $unit_id);
             return true;
         }
 

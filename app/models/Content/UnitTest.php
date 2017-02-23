@@ -19,7 +19,7 @@ class UnitTest extends Model
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
-            "lesson_id", "question_id",
+            "unit_id", "question_id",
             "Sysclass\\Models\\Courses\\Questions\Question",
             "id",
             array('alias' => 'Questions')

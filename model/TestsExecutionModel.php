@@ -76,32 +76,32 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
 
-        $lessonProgress = LessonProgress::findFirst(array(
-            'conditions' => 'user_id = ?0 and lesson_id = ?1',
+        $unitProgress = LessonProgress::findFirst(array(
+            'conditions' => 'user_id = ?0 and unit_id = ?1',
             'bind' => array($test_try['user_id'], $test_try['test_id'])
         ));
 
-        if (!$lessonProgress) {
-            $lessonProgress = new LessonProgress();
-            $lessonProgress->factor = 0;
-            $lessonProgress->user_id = $test_try['user_id'];
-            $lessonProgress->lesson_id = $test_try['test_id'];
+        if (!$unitProgress) {
+            $unitProgress = new LessonProgress();
+            $unitProgress->factor = 0;
+            $unitProgress->user_id = $test_try['user_id'];
+            $unitProgress->unit_id = $test_try['test_id'];
         }
 
         if ($pass) {
             // COMPLETE UNIT
-            $lessonProgress->factor = 1;
+            $unitProgress->factor = 1;
         } else {
-            if ($lessonProgress->factor != 1) {
-                $lessonProgress->factor = 0;
+            if ($unitProgress->factor != 1) {
+                $unitProgress->factor = 0;
             }
         }
-        $lessonProgress->save();
-        $unit = $lessonProgress->getUnit();
+        $unitProgress->save();
+        $unit = $unitProgress->getUnit();
 
         $classProgress = ClasseProgress::findFirst(array(
             'conditions' => 'user_id = ?0 AND class_id = ?1',
-            'bind' => array($lessonProgress->user_id, $unit->class_id)
+            'bind' => array($unitProgress->user_id, $unit->class_id)
         ));
 
         if (!$classProgress) {
@@ -147,7 +147,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
 
             $questionsData = $questionModel->addFilter(array(
-                'lesson_id' => $executionData['test_id']
+                'unit_id' => $executionData['test_id']
             ))->getItems();
 
             $testPoints = 0;

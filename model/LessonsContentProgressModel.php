@@ -4,7 +4,7 @@ class LessonsContentProgressModel extends AbstractSysclassModel implements ISync
     public function init()
     {
 
-        $this->table_name = "mod_lessons_content_progress";
+        $this->table_name = "mod_units_content_progress";
         $this->id_field = "id";
         $this->mainTablePrefix = "lcp";
         //$this->fieldsMap = array();
@@ -14,9 +14,9 @@ class LessonsContentProgressModel extends AbstractSysclassModel implements ISync
             lcp.user_id,
             lcp.content_id,
             lcp.factor,
-            lc.lesson_id as 'content#lesson_id'
-        FROM `mod_lessons_content_progress` lcp
-        LEFT JOIN mod_lessons_content lc ON (lcp.content_id = lc.id)";
+            lc.unit_id as 'content#unit_id'
+        FROM `mod_units_content_progress` lcp
+        LEFT JOIN mod_units_content lc ON (lcp.content_id = lc.id)";
 
 //        $this->order = array("-lc.`position` DESC");
 
@@ -31,7 +31,7 @@ class LessonsContentProgressModel extends AbstractSysclassModel implements ISync
 
         if ($item['content_type'] == 'exercise') {
             // LOAD QUESTIONS
-            $innerModel = $this->model("lessons/content/exercise");
+            $innerModel = $this->model("units/content/exercise");
             $item['exercise'] = $innerModel->clear()->addFilter(array(
                 'content_id' => $item['id']
             ))->getItems();
@@ -82,9 +82,9 @@ class LessonsContentProgressModel extends AbstractSysclassModel implements ISync
         $progress = $this->clear()->getItem($progress_id);
 
         if (floatval($data['factor']) >= 1) {
-            $this->model("lessons/progress")
+            $this->model("units/progress")
                 ->setUserFilter($this->getUserFilter())
-                ->recalculateProgress($progress['content']['lesson_id']);
+                ->recalculateProgress($progress['content']['unit_id']);
         }
         return $progress;
     }

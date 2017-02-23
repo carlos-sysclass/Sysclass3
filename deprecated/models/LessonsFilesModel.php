@@ -6,7 +6,7 @@ class LessonsFilesModel extends AbstractSysclassModel implements ISyncronizableM
 
     public function init()
     {
-        $this->table_name = "mod_lessons_files";
+        $this->table_name = "mod_units_files";
         $this->id_field = "id";
         $this->mainTablePrefix = "lf";
         //$this->fieldsMap = array();
@@ -14,14 +14,14 @@ class LessonsFilesModel extends AbstractSysclassModel implements ISyncronizableM
         $this->selectSql = "
 			SELECT
                 `id`,
-                `lesson_id`,
+                `unit_id`,
                 `upload_type`,
                 `name`,
                 `type`,
                 `size`,
                 `url`,
                 `active`
-            FROM `mod_lessons_files` lf
+            FROM `mod_units_files` lf
 		";
 
         parent::init();
@@ -29,12 +29,12 @@ class LessonsFilesModel extends AbstractSysclassModel implements ISyncronizableM
     }
     public function setVideo($item) {
         $result = $this->addFilter(array(
-            'lesson_id' => $item['lesson_id'],
+            'unit_id' => $item['unit_id'],
             'upload_type' => 'video'
         ))->getItems();
 
         if (count($result) > 0) {
-            $sql = "UPDATE {$this->table_name} SET active = 0 WHERE lesson_id = {$item['lesson_id']} AND upload_type = 'video'";
+            $sql = "UPDATE {$this->table_name} SET active = 0 WHERE unit_id = {$item['unit_id']} AND upload_type = 'video'";
             $this->db->Execute($sql);
 
         }

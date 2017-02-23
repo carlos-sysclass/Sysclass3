@@ -174,7 +174,7 @@ REVIEW
 					
 [ ini ]		- Criar lista de cursos para matrícula, agrupado por IES
 				
-		- module_xcourse (module_lessons).
+		- module_xcourse (module_units).
 			- Mesclar cursos, lições, numa única entidade, colocando todas as operações ali.
 			- Incluir dentro disso, a árvore de conteúdo, com separação por grupos (turmas).
 			- Incluir filtros de turmas na lista de usuários.

@@ -24,12 +24,12 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 return this;
             },
             delete : function() {
-                mod.lessonContentCollection.remove(this.model.get("id"));
+                mod.unitContentCollection.remove(this.model.get("id"));
             }
         });
         */
         /*
-        var lessonFileRelatedContentTimelineViewClass = lessonFileContentTimelineViewClass.extend({
+        var unitFileRelatedContentTimelineViewClass = unitFileContentTimelineViewClass.extend({
             uploadTemplate : _.template($("#fileupload-upload-related-item").html()),
             downloadTemplate : _.template($("#fileupload-download-related-item").html()),
             translationTemplate : _.template($("#fileupload-translation-related-item").html()),
@@ -64,7 +64,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             delete_translation : function(e) {
                 var item = $(e.currentTarget);
                 var modelId = item.data("contentId");
-                mod.lessonContentCollection.remove(modelId);
+                mod.unitContentCollection.remove(modelId);
                 item.parents("li.translation-item").remove();
             },
             save_contents : function() {
@@ -106,7 +106,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     this.$el.attr("data-content-id", this.model.get("id"));
                     this.render();
                 });
-                //this.listenTo(mod.lessonContentCollection, "add", this.renderOne.bind(this));
+                //this.listenTo(mod.unitContentCollection, "add", this.renderOne.bind(this));
             },
             setOptions : function(opt) {
                 console.info('blocks.advertising.banners/bannerAdvertisingContentViewClass::setOptions');
@@ -161,11 +161,11 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                     // RENDER SUBFILES VIEW
 
-                    var subfiles = mod.lessonContentCollection.where({parent_id : this.model.get("id")});
+                    var subfiles = mod.unitContentCollection.where({parent_id : this.model.get("id")});
 
 
-                    var collection = new lessonContentCollectionClass(subfiles, {
-                        lesson_id : mod.entity_id
+                    var collection = new unitContentCollectionClass(subfiles, {
+                        unit_id : mod.entity_id
                     });
                     */
                     /*
@@ -281,14 +281,14 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
             addRelatedFileContent : function(options) {
                 var self = this;
                 // TODO: INJECT FILES DATA ON MODEL
-                var model = new lessonFileSubtitleContentModelClass({
+                var model = new unitFileSubtitleContentModelClass({
                     parent_id : this.model.get("id"),
-                    lesson_id : this.model.get("lesson_id")
+                    unit_id : this.model.get("unit_id")
                 });
 
                 model.mergeWithinFileObject(options.file);
 
-                mod.lessonContentCollection.add(model);
+                mod.unitContentCollection.add(model);
 
                 return this.renderRelatedFileContent(model, options);
             },
@@ -301,7 +301,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 // DISABLE FILE UPLOAD
                 this.$(".fileupload-subtitle").addClass("disabled").fileupload("disable");
 
-                var fileContentTimelineView = new lessonFileRelatedContentTimelineViewClass(_.extend(options, {
+                var fileContentTimelineView = new unitFileRelatedContentTimelineViewClass(_.extend(options, {
                     model : model
                 }));
 
@@ -324,7 +324,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     if (!_.isNull(self.jqXHR) && !_.isNull(self.jqXHR)) {
                         self.jqXHR.abort();
                     }
-                    mod.lessonContentCollection.remove(model.get("id"));
+                    mod.unitContentCollection.remove(model.get("id"));
                     //model.destroy();
                     //self.collection.remove(model, options);
                     fileContentTimelineView.remove();
@@ -639,8 +639,8 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     var data = this.collection.toJSON();
                 }
 
-                var collection = new lessonContentCollectionClass(data, {
-                    lesson_id : this.collection.lesson_id
+                var collection = new unitContentCollectionClass(data, {
+                    unit_id : this.collection.unit_id
                 });
                 */
                 this.collection.each(function(model, i) {
@@ -859,7 +859,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 /*
                 } else if (attrs.content_type == "subtitle") {
 
-                    return new lessonFileSubtitleContentModelClass(attrs, _.extend(options, {
+                    return new unitFileSubtitleContentModelClass(attrs, _.extend(options, {
                         collection: this,
                     }));
                 */
@@ -869,7 +869,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     }));
                 /*
                 } else if (attrs.content_type == "exercise") {
-                    return new lessonExerciseContentModelClass(attrs, _.extend(options, {
+                    return new unitExerciseContentModelClass(attrs, _.extend(options, {
                         collection: this,
                     }));
                 */

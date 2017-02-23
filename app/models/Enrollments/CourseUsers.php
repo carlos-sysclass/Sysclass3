@@ -158,7 +158,7 @@ class CourseUsers extends Model
                 'started' => 0,
                 'expected' => 0 // TODO: CALCULATE THIS VALUE
             );
-            $info['lessons'] = array(
+            $info['units'] = array(
                 'total' => 0,
                 'completed' => 0,
                 'started' => 0,
@@ -173,7 +173,7 @@ class CourseUsers extends Model
 
             $class_start_interval = 0;
 
-            $info['lessons']['total'] = 0;
+            $info['units']['total'] = 0;
             foreach($classes as $classe) {
                 
                 $progress = $classe->getProgress(array(
@@ -186,31 +186,31 @@ class CourseUsers extends Model
                     $info['classes']['started'] += (floatval($progress->factor) > 0) ? 1 : 0;
                 }
 
-                $lessons = $classe->getLessons();
-                $info['lessons']['total'] += $lessons->count();
+                $units = $classe->getLessons();
+                $info['units']['total'] += $units->count();
 
                 $startOffset = $current_days - $class_start_interval;
 
                 if ($class_start_interval > $current_days) {
-                    $info['lessons']['expected'] += 0;
+                    $info['units']['expected'] += 0;
                 } elseif ($startOffset > 0 && $startOffset < $class_expected_days) {
-                    $lesson_expected_days = $class_expected_days / $lessons->count();
+                    $unit_expected_days = $class_expected_days / $units->count();
 
-                    $info['lessons']['expected'] += floor(($current_days - $class_start_interval) / $lesson_expected_days);
+                    $info['units']['expected'] += floor(($current_days - $class_start_interval) / $unit_expected_days);
                 } else {
-                    $info['lessons']['expected'] += $lessons->count();
+                    $info['units']['expected'] += $units->count();
                 }
                 $class_start_interval +=  $class_expected_days;
 
-                foreach($lessons as $lesson) {
-                    $progress = $lesson->getProgress(array(
+                foreach($units as $unit) {
+                    $progress = $unit->getProgress(array(
                         'conditions' => 'user_id = ?0',
                         'bind' => array($this->user_id)
                     ));
 
                     if ($progress) {
-                        $info['lessons']['completed'] += (floatval($progress->factor) == 1) ? 1 : 0;
-                        $info['lessons']['started'] += (floatval($progress->factor) > 0) ? 1 : 0;
+                        $info['units']['completed'] += (floatval($progress->factor) == 1) ? 1 : 0;
+                        $info['units']['started'] += (floatval($progress->factor) > 0) ? 1 : 0;
                     }
                 }
             }

@@ -27,8 +27,8 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
     this.setFilter = function(filter) {
         // FILTER DATATABLE
         this.filter = filter;
-        //var url = "/module/questions/items/lesson-content/datatable/" + JSON.stringify(this.filter);
-        var url = "/module/questions/items/lesson-content/datatable";
+        //var url = "/module/questions/items/unit-content/datatable/" + JSON.stringify(this.filter);
+        var url = "/module/questions/items/unit-content/datatable";
         this.tableView.setUrl(url);
 
         return this;
@@ -271,7 +271,7 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
 
         // CREATE TABLE SUB-VIEW
         //var baseDatatableViewClass = app.module("views").baseDatatableViewClass;
-        //var sAjaxSource = "/module/questions/items/lesson-content/datatable/";
+        //var sAjaxSource = "/module/questions/items/unit-content/datatable/";
 
         //var config = app.getResource("questions-select_context");
         /*

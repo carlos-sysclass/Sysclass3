@@ -1,20 +1,20 @@
 <?php
 /**
-  * This must be used as a "proxy design pattern" to libraries/lesson.class and some parts of libraries/user.class and libraries/course.class
+  * This must be used as a "proxy design pattern" to libraries/unit.class and some parts of libraries/user.class and libraries/course.class
   * @deprecated 3.0.0.18
  */
 class CourseClassesModel extends AbstractSysclassModel implements ISyncronizableModel {
 
 	public function init()
 	{
-		$this->table_name = "lessons";
+		$this->table_name = "units";
 		$this->id_field = "id";
 		$this->mainTablePrefix = "l";
 
 		$this->selectSql = sprintf('
-			SELECT %1$s.id, lc.courses_ID, %1$s.name, %1$s.created, %1$s.archive, %1$s.active, previous_lessons_ID
-			FROM lessons %1$s
-			LEFT OUTER JOIN lessons_to_courses lc ON (%1$s.id = lc.lessons_ID)
+			SELECT %1$s.id, lc.courses_ID, %1$s.name, %1$s.created, %1$s.archive, %1$s.active, previous_units_ID
+			FROM units %1$s
+			LEFT OUTER JOIN units_to_courses lc ON (%1$s.id = lc.units_ID)
 			LEFT OUTER JOIN courses c ON (lc.courses_ID = c.id)
 		', $this->mainTablePrefix);
 
@@ -43,7 +43,7 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 		*/
 		$this->fieldsMap = array(
 			'course_id'			=> 'lc.courses_ID',
-			'prev_lesson_id'	=> 'lc.previous_lessons_ID'
+			'prev_unit_id'	=> 'lc.previous_units_ID'
 		);
 
 		$this->order = array();
@@ -53,19 +53,19 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 	public function getItems() {
 		$items = parent::getItems();
 		// PUT
-		// APPLY SORT BASED ON prev_lesson_id
+		// APPLY SORT BASED ON prev_unit_id
 		// var_dump($items);
-    	$previous = 0; //Previous is only used when no previous_lessons_ID is set
+    	$previous = 0; //Previous is only used when no previous_units_ID is set
     	$courseLessons = $previousValues = array();
     	foreach ($items as $value) {
     		$courseLessons[$value['id']] = $value;
-    		$previousValues[$value['id']] = $value['prev_lesson_id'];
-    		$value['prev_lesson_id'] !== false ? $previousLessons[$value['prev_lesson_id']] = $value : $previousLessons[$previous] = $value;
+    		$previousValues[$value['id']] = $value['prev_unit_id'];
+    		$value['prev_unit_id'] !== false ? $previousLessons[$value['prev_unit_id']] = $value : $previousLessons[$previous] = $value;
     		$previous = $value['id'];
     	}
 
     	if (array_sum($previousValues)) { //The special case where all previous values are 0, which is checked by array_sum, means that there is no specific ordering
-    		//Sorting algorithm, based on previous_lessons_ID. The algorithm is copied from MagesterContentTree :: reset() and is the same with the one applied for content. It is also used in questions order
+    		//Sorting algorithm, based on previous_units_ID. The algorithm is copied from MagesterContentTree :: reset() and is the same with the one applied for content. It is also used in questions order
     		$node = $count = 0;
     		$nodes = array(); //$count is used to prevent infinite loops
     		while (sizeof($previousLessons) > 0 && isset($previousLessons[$node]) && $count++ < 1000) {

@@ -137,7 +137,7 @@ _before_init_functions.push(function() {
 	<div class="margin-bottom-10 visible-sm"></div>
 	<div class="col-md-4 col-sm-4 col-xs-4">
 		<div class="easy-pie-chart">
-			<div class="number lesson" data-percent="0"><span>0</span></div>
+			<div class="number unit" data-percent="0"><span>0</span></div>
 			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units"}</a>
 		</div>
 	</div>

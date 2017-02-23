@@ -156,7 +156,7 @@
                     </div>
 
                     {if $type == "combine"}
-                        <script type="text/template" id="tab_lesson_exercises-question-combine-template">
+                        <script type="text/template" id="tab_unit_exercises-question-combine-template">
                             <div class="answer-container">
                                 <div class="alert alert-warning" role="alert">
                                     Not implemented yet!

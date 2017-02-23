@@ -339,16 +339,16 @@ INSERT INTO `module_xies_to_users` (`ies_id` ,`user_id`) VALUES ('3', '726');
 INSERT INTO `module_xies_to_users` (`ies_id` ,`user_id`) VALUES ('3', '680');
 
 --2011-08-07
-CREATE TABLE IF NOT EXISTS `module_xcourse_lesson_class_series`(
+CREATE TABLE IF NOT EXISTS `module_xcourse_unit_class_series`(
   `id` mediumint(8) NOT NULL,
   `name` mediumint(8) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-ALTER TABLE `module_xcourse_lesson_class_series` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `module_xcourse_lesson_class_series` ADD `default_interval` INT NOT NULL;
-ALTER TABLE `module_xcourse_lesson_class_series` CHANGE `name` `name` VARCHAR( 150 ) NOT NULL ;
+ALTER TABLE `module_xcourse_unit_class_series` CHANGE `id` `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `module_xcourse_unit_class_series` ADD `default_interval` INT NOT NULL;
+ALTER TABLE `module_xcourse_unit_class_series` CHANGE `name` `name` VARCHAR( 150 ) NOT NULL ;
 
-INSERT INTO `module_xcourse_lesson_class_series` (`id`, `name`, `default_interval`) VALUES
+INSERT INTO `module_xcourse_unit_class_series` (`id`, `name`, `default_interval`) VALUES
 (1, 'Período de Estudo', 30),
 (2, 'Prova Online', 5),
 (3, 'Período de Web Tutoria', 20),
@@ -356,23 +356,23 @@ INSERT INTO `module_xcourse_lesson_class_series` (`id`, `name`, `default_interva
 (5, 'Prova Presencial', 1),
 (6, 'Prova Substitutiva', 1);
 
-CREATE TABLE IF NOT EXISTS `module_xcourse_lesson_class_calendar`(
+CREATE TABLE IF NOT EXISTS `module_xcourse_unit_class_calendar`(
   `course_id` mediumint(8) NOT NULL,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `classe_id` mediumint(8) NOT NULL,
   `start_date` timestamp NULL DEFAULT NULL,
   `end_date` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`course_id`,`lesson_id`,`classe_id`)
+  PRIMARY KEY (`course_id`,`unit_id`,`classe_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `module_xcourse_lesson_class_calendar_series`(
+CREATE TABLE IF NOT EXISTS `module_xcourse_unit_class_calendar_series`(
   `course_id` mediumint(8) NOT NULL,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `classe_id` mediumint(8) NOT NULL,
   `serie_id` mediumint(8) NOT NULL,
   `start_date` timestamp NULL DEFAULT NULL,
   `end_date` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`course_id`,`lesson_id`,`classe_id`,`serie_id`)
+  PRIMARY KEY (`course_id`,`unit_id`,`classe_id`,`serie_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --2011-08-15
@@ -449,7 +449,7 @@ title
 data
 deadline
 creator_LOGIN
-lessons_ID
+units_ID
 auto_assign
 metadata
 */
@@ -599,7 +599,7 @@ INSERT INTO `module_xcms_pages_to_blocks` (`page_id`, `block_id`, `tag`) VALUES 
 
 ALTER TABLE `module_billboard` ADD `data_registro` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL;
 
-UPDATE `maguser_root`.`module_billboard` SET `data_registro` = TIMESTAMP( '2011-09-15 23:41:05' ) WHERE `module_billboard`.`lessons_ID` = -1;
+UPDATE `maguser_root`.`module_billboard` SET `data_registro` = TIMESTAMP( '2011-09-15 23:41:05' ) WHERE `module_billboard`.`units_ID` = -1;
 ALTER TABLE `module_xcms_pages` CHANGE `layout` `layout` ENUM( 'onecolumn', 'twocolumn-50-50', 'twocolumn-75-25', 'twocolumn-25-75', 'twocolumn-66-33', 'twocolumn-33-66', 'threecolumn-33-34-33' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'onecolumn';
 
 
@@ -988,7 +988,7 @@ INSERT INTO `module_xcms_pages_to_blocks` (`page_id`, `block_id`, `tag`) VALUES 
 
 
 
-ALTER TABLE `f_forums` ADD `group_topic_id` INT NOT NULL AFTER `lessons_ID` ;
+ALTER TABLE `f_forums` ADD `group_topic_id` INT NOT NULL AFTER `units_ID` ;
 ALTER TABLE `f_forums` CHANGE `group_topic_id` `group_topic_id` INT( 11 ) NOT NULL DEFAULT '0';
 
 
@@ -1022,10 +1022,10 @@ UPDATE `module_xcms_blocks` SET `module` = 'xcourse' WHERE `module_xcms_blocks`.
 
 
 
-UPDATE `module_billboard` SET `data` = '<script type="text/javascript" src="/jwplayer/jwplayer.js"></script> <h2>Aula Inaugural</h2> <div id="video_container">Carregando </div> <script type="text/javascript"> jwplayer("video_container").setup({ flashplayer: "/jwplayer/player.swf", file: "/public_data/pos/engenharia/aula_magna.f4v", height: 400, width: ''100%'' }); </script> ' WHERE `module_billboard`.`lessons_ID` = -10;
+UPDATE `module_billboard` SET `data` = '<script type="text/javascript" src="/jwplayer/jwplayer.js"></script> <h2>Aula Inaugural</h2> <div id="video_container">Carregando </div> <script type="text/javascript"> jwplayer("video_container").setup({ flashplayer: "/jwplayer/player.swf", file: "/public_data/pos/engenharia/aula_magna.f4v", height: 400, width: ''100%'' }); </script> ' WHERE `module_billboard`.`units_ID` = -10;
 
 INSERT INTO `module_billboard` (
-`lessons_ID` ,
+`units_ID` ,
 `course_id` ,
 `data` ,
 `data_registro` ,
@@ -1149,12 +1149,12 @@ CREATE TABLE module_xskill_course2skills (
 	PRIMARY KEY (course_id, skill_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE module_xskill_lessons2skills (
-	lesson_id mediumint(8) NOT NULL,
+CREATE TABLE module_xskill_units2skills (
+	unit_id mediumint(8) NOT NULL,
 	skill_id mediumint(8) NOT NULL,
 	`require` tinyint(1) NOT NULL DEFAULT 1,
 	`provide` tinyint(1) NOT NULL DEFAULT 0,
-	PRIMARY KEY (lesson_id, skill_id)
+	PRIMARY KEY (unit_id, skill_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE module_xskill_users (
@@ -2095,7 +2095,7 @@ ALTER TABLE `module_xcontent_schedule_contents` DROP PRIMARY KEY ;
 ALTER TABLE `module_xcontent_schedule_contents` ADD PRIMARY KEY ( `schedule_id` , `course_id` , `content_id` ) ;
 
 UPDATE `module_xcontent_schedule_contents`
-SET course_id = (SELECT courses_ID FROM lessons_to_courses WHERE lessons_ID = (SELECT lessons_ID FROM content WHERE id = `module_xcontent_schedule_contents`.content_id));
+SET course_id = (SELECT courses_ID FROM units_to_courses WHERE units_ID = (SELECT units_ID FROM content WHERE id = `module_xcontent_schedule_contents`.content_id));
 
 -- 2012-03-06
 UPDATE module_xcontent_schedule SET active = 0 WHERE id <= 170;
@@ -2130,8 +2130,8 @@ INSERT INTO module_xcontent_schedule_contents(schedule_id, content_id) VALUES
 INSERT INTO module_xcontent_schedule_contents(schedule_id, content_id) VALUES
 (184, 2061), (184, 2611), (184, 2075), (184, 2614), (184, 2153), (184, 2167), (184, 2076), (184, 2626), (184, 2077), (184, 2612), (184, 2395), (184, 2058), (184, 2619), (184, 2066), (184, 2620), (184, 2067), (184, 2621), (184, 2068);
 
-ALTER TABLE `lessons` ADD `link` VARCHAR( 500 ) NULL DEFAULT NULL AFTER `originating_course`;
-ALTER TABLE `lessons` CHANGE `link` `firstlink` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `units` ADD `link` VARCHAR( 500 ) NULL DEFAULT NULL AFTER `originating_course`;
+ALTER TABLE `units` CHANGE `link` `firstlink` VARCHAR( 500 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
 
 INSERT INTO module_xcontent_schedule_contents(schedule_id, course_id, content_id)
@@ -2279,8 +2279,8 @@ CREATE TABLE IF NOT EXISTS `module_xpay_negociation_params` (
 
 -- 2012-04-19
 /*
-ALTER TABLE `f_forums` ADD `classe_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `lessons_ID`;
-ALTER TABLE `news` ADD `classe_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `lessons_ID`;
+ALTER TABLE `f_forums` ADD `classe_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `units_ID`;
+ALTER TABLE `news` ADD `classe_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `units_ID`;
 */
 ALTER TABLE `module_xpay_course_negociation` ADD `active` TINYINT NOT NULL DEFAULT '0';
 ALTER TABLE `module_xpay_course_negociation` ADD `timestamp` int(10) NOT NULL DEFAULT '0' AFTER `id`;
@@ -2419,7 +2419,7 @@ CREATE ALGORITHM=UNDEFINED VIEW `module_xpay_zzz_paid_items` AS select `cneg`.`i
 /* 2012-05-06 */
 CREATE TABLE `sysclass_root`.`user_last_access` (
 `id` INT NOT NULL AUTO_INCREMENT ,
-`lesson_ID` INT NOT NULL ,
+`unit_ID` INT NOT NULL ,
 `course_ID` INT NOT NULL ,
 `user_ID` INT NOT NULL ,
 PRIMARY KEY ( `id` )
@@ -2458,18 +2458,18 @@ CALL teste;
 DROP PROCEDURE teste;
 
 /* 2012-06-29 */
-ALTER TABLE `users_to_lessons` ADD `modality_id` MEDIUMINT( 8 ) NOT NULL AFTER `user_type`;
+ALTER TABLE `users_to_units` ADD `modality_id` MEDIUMINT( 8 ) NOT NULL AFTER `user_type`;
 
 /* 2012-07-06 */
 ALTER TABLE `module_xpay_course_negociation` CHANGE `is_simulation` `is_simulation` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '1 = For imcomplete simulation (can be used again), 2=> for closed simulation (disonible for use)'
 
 /* 2012-07-11 */
-ALTER TABLE `module_xpay_course_negociation` ADD `lesson_id` INT NOT NULL DEFAULT '0' AFTER `course_id`;
-ALTER TABLE `module_xpay_course_modality_prices` ADD `lesson_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `course_id`;
+ALTER TABLE `module_xpay_course_negociation` ADD `unit_id` INT NOT NULL DEFAULT '0' AFTER `course_id`;
+ALTER TABLE `module_xpay_course_modality_prices` ADD `unit_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `course_id`;
 
 INSERT INTO `module_xpay_course_modality` (`id`, `name`) VALUES ('0', 'Indefinido');
 ALTER TABLE `module_xpay_course_modality_prices` DROP PRIMARY KEY;
-ALTER TABLE `module_xpay_course_modality_prices` ADD PRIMARY KEY ( `modality_id` , `course_id` , `lesson_id` , `from_timestamp` ) ;
+ALTER TABLE `module_xpay_course_modality_prices` ADD PRIMARY KEY ( `modality_id` , `course_id` , `unit_id` , `from_timestamp` ) ;
 
 /* 2012-07-25 */
 -- phpMyAdmin SQL Dump
@@ -2562,7 +2562,7 @@ VALUES (
 ALTER TABLE `news` ADD `xscope_id` SMALLINT( 4 ) NOT NULL DEFAULT '0' AFTER `id` ;
 ALTER TABLE `news` ADD `xentify_id` TEXT NULL AFTER `xscope_id`;
 UPDATE `sysclass_root`.`module_xentify_scopes` SET `active` = '1' WHERE `module_xentify_scopes`.`id` =1;
-ALTER TABLE `lessons` ADD `ies_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `id`;
+ALTER TABLE `units` ADD `ies_id` MEDIUMINT( 8 ) NOT NULL DEFAULT '0' AFTER `id`;
 
 /* 2012-08-10 */
 // ESCOPO POR TIPO DE USUÁRIO
@@ -2769,13 +2769,13 @@ UPDATE `module_gradebook_objects` SET group_id = 1;
 
 CREATE TABLE IF NOT EXISTS `module_gradebook_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `classe_id` mediumint(8) NOT NULL DEFAULT 0,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `sysclass_root`.`module_gradebook_groups` (`id`, `lesson_id`, `classe_id`, `name`) VALUES (NULL, '0', '0', 'Nota Geral');
+INSERT INTO `sysclass_root`.`module_gradebook_groups` (`id`, `unit_id`, `classe_id`, `name`) VALUES (NULL, '0', '0', 'Nota Geral');
 
 /* 2012-09-27 */
 ALTER TABLE `module_gradebook_groups`
@@ -2791,10 +2791,10 @@ ALTER TABLE `module_gradebook_groups` ADD `order_index` SMALLINT( 4 ) NOT NULL D
 
 CREATE TABLE IF NOT EXISTS `module_gradebook_groups_order` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `classe_id` mediumint(8) NOT NULL DEFAULT 0,
   `order_index` varchar(100) NOT NULL,
-  PRIMARY KEY (`group_id`, `lesson_id`, `classe_id`)
+  PRIMARY KEY (`group_id`, `unit_id`, `classe_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 /* 2012-10-01 */
@@ -2975,19 +2975,19 @@ ALTER TABLE `module_xpay_cielo_transactions_to_invoices` CHANGE `parcela_index` 
 
 CREATE TABLE IF NOT EXISTS `module_xpay_negociation_modules` (
   `negociation_id` mediumint(8) NOT NULL,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `course_id` mediumint(8) NOT NULL,
-  `module_type` enum('lesson','course') NOT NULL DEFAULT 'lesson',
-  PRIMARY KEY (`negociation_id`,`lesson_id`,`course_id`,`module_type`)
+  `module_type` enum('unit','course') NOT NULL DEFAULT 'unit',
+  PRIMARY KEY (`negociation_id`,`unit_id`,`course_id`,`module_type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '181','lesson');
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '182','lesson');
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '183','lesson');
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '184','lesson');
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '210','lesson');
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '211','lesson');
-INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`lesson_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '212','lesson');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '181','unit');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '182','unit');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '183','unit');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '184','unit');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '210','unit');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '211','unit');
+INSERT INTO `module_xpay_negociation_modules` (`negociation_id` ,`unit_id` ,`course_id` ,`module_type`) VALUES ('863', '46', '212','unit');
 
 
 UPDATE `sysclass_root`.`module_xpay_invoices`
@@ -3058,7 +3058,7 @@ left join `module_xpay_manual_transactions` `manu` on(((`paid`.`transaction_id` 
 /* 2012-11-07 */
 ALTER TABLE `module_gradebook_users` ADD UNIQUE (
 	`users_LOGIN`,
-	`lessons_ID`
+	`units_ID`
 );
 ALTER TABLE `module_gradebook_groups` ADD `pass_value` MEDIUMINT( 8 ) NOT NULL DEFAULT '70' AFTER `min_value`;
 
@@ -3137,7 +3137,7 @@ CREATE TABLE IF NOT EXISTS `mod_tutoria` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_timestamp` int(10) unsigned NOT NULL,
   `answer_timestamp` int(10) unsigned NOT NULL,
-  `lessons_ID` int(11) NOT NULL,
+  `units_ID` int(11) NOT NULL,
   `unit_ID` int(11) DEFAULT NULL,
   `title` varchar(300) NOT NULL,
   `question_user_id` int(11) NOT NULL,
@@ -3153,7 +3153,7 @@ CREATE TABLE IF NOT EXISTS `mod_tutoria` (
 -- Fazendo dump de dados para tabela `mod_tutoria`
 --
 /*
-INSERT INTO `mod_tutoria` (`id`, `question_timestamp`, `answer_timestamp`, `lessons_ID`, `unit_ID`, `title`, `question_user_id`, `question`, `answer_user_id`, `answer`) VALUES
+INSERT INTO `mod_tutoria` (`id`, `question_timestamp`, `answer_timestamp`, `units_ID`, `unit_ID`, `title`, `question_user_id`, `question`, `answer_user_id`, `answer`) VALUES
 (1, 1374587851, 1374587851, 90, NULL, 'Qual o segredo da vida, do Universo e de tudo o mais?', 48, 'Alguém pode em ajudar?', 0, 'Provavelmente é 42.');
 */
 /* 2012-11-21 */
@@ -3255,7 +3255,7 @@ PRIMARY KEY ( `id` )
 ALTER TABLE `news` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;
 
 /* 2014-01-30 */
-UPDATE `sysclass_layout`.`lessons` SET `name` = 'M1 - z/OS, TSO/ISPF e JCL' WHERE `lessons`.`id` =188;
+UPDATE `sysclass_layout`.`units` SET `name` = 'M1 - z/OS, TSO/ISPF e JCL' WHERE `units`.`id` =188;
 
 /* 2014-03-14 */
 CREATE TABLE IF NOT EXISTS `mod_institution` (
@@ -3290,7 +3290,7 @@ INSERT INTO `mod_institution` (`id`, `permission_access_mode`, `name`, `formal_n
 
 
 /* 2014-04-02 */
-ALTER TABLE `lessons` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;
+ALTER TABLE `units` ADD `permission_access_mode` ENUM( '1', '2', '3', '4' ) NOT NULL DEFAULT '4' AFTER `id` ;
 
 /* 2014-04-10 */
 -- --------------------------------------------------------
@@ -3511,7 +3511,7 @@ CREATE TABLE IF NOT EXISTS `module_events`
 /* 2015-03-08 */
 CREATE TABLE `mod_grades_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `classe_id` mediumint(8) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL,
@@ -3523,7 +3523,7 @@ ALTER TABLE `sysclass_demo`.`mod_grades_groups` CHANGE COLUMN `classe_id` `class
 
 CREATE TABLE `mod_grades_rules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lesson_id` mediumint(8) NOT NULL,
+  `unit_id` mediumint(8) NOT NULL,
   `class_id` mediumint(8) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL,
@@ -3549,14 +3549,14 @@ UPDATE users SET can_be_instructor = 1 WHERE user_type = 'instructor'
 
 CREATE TABLE `mod_roadmap_courses_to_classes` (
   `course_id` mediumint(8) unsigned NOT NULL,
-  `lesson_id` mediumint(8) unsigned NOT NULL,
-  /* `previous_lessons_ID` mediumint(8) unsigned DEFAULT '0', */
+  `unit_id` mediumint(8) unsigned NOT NULL,
+  /* `previous_units_ID` mediumint(8) unsigned DEFAULT '0', */
   `start_date` int(10) unsigned DEFAULT NULL,
   `end_date` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`course_id`,`lesson_id`)
+  PRIMARY KEY (`course_id`,`unit_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE `mod_roadmap_courses_to_classes` CHANGE COLUMN `lesson_id` `class_id` INT(11) UNSIGNED NOT NULL ;
+ALTER TABLE `mod_roadmap_courses_to_classes` CHANGE COLUMN `unit_id` `class_id` INT(11) UNSIGNED NOT NULL ;
 
 CREATE TABLE `mod_roadmap_courses_seasons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3569,7 +3569,7 @@ CREATE TABLE `mod_roadmap_courses_seasons` (
 ALTER TABLE `mod_roadmap_courses_seasons` ADD COLUMN `max_classes` INT(8) NULL DEFAULT -1 AFTER `name`;
 
 INSERT INTO mod_classes (id, permission_access_mode, ies_id, area_id, name, description, info, active)
-SELECT null, permission_access_mode, ies_id, directions_ID as area_id, name, '' as description, info, active FROM sysclass_demo.lessons;
+SELECT null, permission_access_mode, ies_id, directions_ID as area_id, name, '' as description, info, active FROM sysclass_demo.units;
 
 CREATE TABLE `mod_areas` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -3584,7 +3584,7 @@ CREATE TABLE `mod_areas` (
 
 ALTER TABLE `sysclass_demo`.`mod_courses` ADD COLUMN `area_id` MEDIUMINT(8) NULL DEFAULT 0 AFTER `permission_access_mode`;
 
-CREATE TABLE `mod_lessons` (
+CREATE TABLE `mod_units` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `permission_access_mode` enum('1','2','3','4') NOT NULL DEFAULT '4',
   `class_id` mediumint(8) NOT NULL DEFAULT '0',
@@ -3598,9 +3598,9 @@ CREATE TABLE `mod_lessons` (
 ALTER TABLE `mod_classes` ADD COLUMN `course_id` INT NOT NULL AFTER `active`;
 
 /* 2015-04-20 */
-CREATE TABLE `mod_lessons_files` (
+CREATE TABLE `mod_units_files` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `lesson_id` mediumint(8) unsigned NOT NULL,
+  `unit_id` mediumint(8) unsigned NOT NULL,
   `upload_type` varchar(20) NOT NULL,
   `name` varchar(150) NOT NULL,
   `type` varchar(20) NOT NULL,

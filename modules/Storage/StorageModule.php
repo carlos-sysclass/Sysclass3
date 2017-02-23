@@ -256,9 +256,9 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
             /*
             $filedata = (array) reset($result[$param_name]);
 
-            $filedata['lesson_id'] = $id;
+            $filedata['unit_id'] = $id;
             $filedata['upload_type'] = $type;
-            $this->model("lessons/files")->setVideo($filedata);
+            $this->model("units/files")->setVideo($filedata);
             */
         $file_result = array(
             $param_name => array()
@@ -270,7 +270,7 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
         if ($result[$param_name][0]->error) {
             foreach($result[$param_name] as $fileObject) {
                 $filedata = (array) $fileObject;
-                //$filedata['lesson_id'] = $id;
+                //$filedata['unit_id'] = $id;
                 $filedata['upload_type'] = $type;
 
                 $file_result[$param_name][] = $filedata;
@@ -285,7 +285,7 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
                 $fileinfo = (array) $fileObject;
                 //var_dump($filedata);
                 //exit;
-                //$filedata['lesson_id'] = $id;
+                //$filedata['unit_id'] = $id;
                 //$filedata['upload_type'] = $type;
                 $filedata = [];
                 $filedata['filename'] = $fileinfo['name'];
@@ -321,7 +321,7 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
                 /*
                 switch($type) {
                     case 'subtitle' :{
-                        $result = $this->module("lessons")->normatizeSubtitleFile($filedata);
+                        $result = $this->module("units")->normatizeSubtitleFile($filedata);
 
                         if (!$result) {
                             $this->model("dropbox")->deleteItem($filedata['id']);

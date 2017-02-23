@@ -11,10 +11,10 @@ class UnitContent extends Model
 
     public function initialize()
     {
-        $this->setSource("mod_lessons_content");
+        $this->setSource("mod_units_content");
 
         $this->belongsTo(
-            "lesson_id",
+            "unit_id",
             "Sysclass\Models\Content\Unit",
             "id",
             array("alias" => 'Unit')

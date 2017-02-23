@@ -6,7 +6,7 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->lesson_type =  "test";
+        $this->unit_type =  "test";
 
         parent::init();
 
@@ -38,27 +38,27 @@ class TestsModel extends BaseLessonsModel implements ISyncronizableModel {
             IFNULL(t.`show_correct_answers`, 0) as show_correct_answers,
             IFNULL(t.`randomize_questions`, 0) as randomize_questions,
             IFNULL(t.`randomize_answers`, 0) as randomize_answers
-        FROM mod_lessons l
+        FROM mod_units l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)
         LEFT JOIN mod_tests t ON (l.id = t.id)
-        LEFT JOIN mod_tests_to_questions tq ON (l.id = tq.lesson_id)";
+        LEFT JOIN mod_tests_to_questions tq ON (l.id = tq.unit_id)";
 
         $this->group_by = array("l.`id`");
     }
 
     public function addItem($data)
     {
-        $lesson_id = parent::addItem($data);
+        $unit_id = parent::addItem($data);
 
         $old_table_name = $this->table_name;
         $this->table_name = "mod_tests";
 
-        $data['id'] = $lesson_id;
+        $data['id'] = $unit_id;
         $test_settings = parent::addItem($data);
 
         $this->table_name = $old_table_name;
 
-        return $lesson_id;
+        return $unit_id;
     }
 
     public function setItem($data, $identifier)

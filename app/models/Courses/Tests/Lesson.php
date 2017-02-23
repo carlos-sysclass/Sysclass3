@@ -12,7 +12,7 @@ class Unit extends BaseUnit
     {
         parent::initialize();
 
-        $this->setSource("mod_lessons");
+        $this->setSource("mod_units");
 
         $this->hasOne(
             "id",
@@ -24,21 +24,21 @@ class Unit extends BaseUnit
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
-            "lesson_id", 
+            "unit_id", 
             array('alias' => 'TestQuestions')
         );
 
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\ExecutionQuestions",
-            "lesson_id", 
+            "unit_id", 
             array('alias' => 'ExecutionQuestions')
         );
 
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
-            "lesson_id", "question_id",
+            "unit_id", "question_id",
             "Sysclass\\Models\\Courses\\Questions\Question",
             "id",
             array('alias' => 'Questions')
@@ -86,7 +86,7 @@ class Unit extends BaseUnit
             foreach($result as $index => $question) {
                 $object = new ExecutionQuestions();
                 $object->execution_id = $executionId;
-                $object->lesson_id = $this->id;
+                $object->unit_id = $this->id;
                 $object->question_id = $question->question_id;
                 $object->position = $index+1;
                 $object->save();
@@ -124,16 +124,16 @@ class Unit extends BaseUnit
         }
     }
 
-    protected function resetOrder($lesson_id) {
+    protected function resetOrder($unit_id) {
         $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 
         $phql = "UPDATE Sysclass\\Models\\Courses\\Tests\TestQuestions 
-            SET position = -1 WHERE lesson_id = :lesson_id:";
+            SET position = -1 WHERE unit_id = :unit_id:";
 
         return $manager->executeQuery(
             $phql,
             array(
-                'lesson_id' => $this->id
+                'unit_id' => $this->id
             )
         );
     }
@@ -145,14 +145,14 @@ class Unit extends BaseUnit
         foreach($order_ids as $index => $question_id) {
             $phql = "UPDATE Sysclass\\Models\\Courses\\Tests\TestQuestions
                 SET position = :position: 
-                WHERE id = :id: AND lesson_id = :lesson_id:";
+                WHERE id = :id: AND unit_id = :unit_id:";
 
             $status->success() && $status = $manager->executeQuery(
                 $phql,
                 array(
                     'position' => $index + 1,
                     'id' => $question_id,
-                    'lesson_id' => $this->id
+                    'unit_id' => $this->id
                 )
             );
 

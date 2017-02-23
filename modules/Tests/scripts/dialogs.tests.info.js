@@ -65,7 +65,7 @@ $SC.module("dialogs.tests.info", function(mod, app, Backbone, Marionette, $, _) 
             this.dialogView.setModel(info.model);
 
 
-            //var url = "/module/questions/items/lesson-content/datatable/" + JSON.stringify(this.filter);
+            //var url = "/module/questions/items/unit-content/datatable/" + JSON.stringify(this.filter);
 
             //this.dialogView
         };

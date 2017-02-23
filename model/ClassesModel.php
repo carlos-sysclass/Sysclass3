@@ -20,7 +20,7 @@ class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel 
             cl.`name`,
             cl.`description`,
             cl.`instructor_id`,
-            COUNT(l.id) as 'total_lessons',
+            COUNT(l.id) as 'total_units',
             cl.`active`,
             c.`id` as 'course#id',
             c.`name` as 'course#name',
@@ -32,7 +32,7 @@ class ClassesModel extends AbstractSysclassModel implements ISyncronizableModel 
         FROM mod_roadmap_courses_to_classes c2c
         LEFT JOIN mod_courses c ON(c2c.course_id = c.id)
         LEFT JOIN mod_classes cl ON(c2c.class_id = cl.id)
-        LEFT JOIN mod_lessons l ON(cl.id = l.class_id)
+        LEFT JOIN mod_units l ON(cl.id = l.class_id)
         LEFT JOIN mod_roadmap_classes_to_periods clp ON(c2c.class_id = clp.class_id)
         LEFT JOIN mod_roadmap_courses_periods cp ON(clp.period_id = cp.id AND cp.course_id = c.id)";
 

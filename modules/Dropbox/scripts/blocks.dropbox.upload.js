@@ -111,7 +111,7 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                 "confirmed.bs.confirmation .delete-file-content"    : "delete"
             },
             initialize: function(opt) {
-                console.info('blocks.lessons.content/lessonTextContentTimelineViewClass::initialize');
+                console.info('blocks.units.content/unitTextContentTimelineViewClass::initialize');
                 this.setOptions(opt);
 
                 this.listenTo(this.model, "sync", function(a,b,c) {

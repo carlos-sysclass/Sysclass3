@@ -380,7 +380,7 @@ Dashboard resets
 #institution-widget .row div:last-child a {
 /*   margin-bottom: 0 !important; */
 }
-.navbar-lesson {
+.navbar-unit {
     position: relative;
     min-height: 50px;
     margin-bottom: 20px;

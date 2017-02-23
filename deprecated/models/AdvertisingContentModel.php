@@ -50,7 +50,7 @@ class AdvertisingContentModel extends AbstractSysclassModel implements ISyncroni
         /*
         if ($item['content_type'] == 'exercise') {
             // LOAD QUESTIONS
-            $innerModel = $this->model("lessons/content/exercise");
+            $innerModel = $this->model("units/content/exercise");
             $item['exercise'] = $innerModel->clear()->addFilter(array(
                 'content_id' => $item['id']
             ))->getItems();
@@ -83,7 +83,7 @@ class AdvertisingContentModel extends AbstractSysclassModel implements ISyncroni
 
         if ($item['content_type'] == 'exercise') {
             // LOAD QUESTIONS
-            $innerModel = $this->model("lessons/content/exercise");
+            $innerModel = $this->model("units/content/exercise");
             $item['exercise'] = $innerModel->clear()->addFilter(array(
                 'content_id' => $item['id']
             ))->getItems();
@@ -97,7 +97,7 @@ class AdvertisingContentModel extends AbstractSysclassModel implements ISyncroni
         foreach($data as $key => $item) {
             if ($item['content_type'] == 'exercise') {
                 // LOAD QUESTIONS
-                $innerModel = $this->model("lessons/content/exercise");
+                $innerModel = $this->model("units/content/exercise");
                 $data[$key]['exercise'] = $innerModel->addFilter(array(
                     'content_id' => $item['id']
                 ))->getItems();

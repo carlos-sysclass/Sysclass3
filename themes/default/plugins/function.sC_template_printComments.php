@@ -31,16 +31,16 @@ function smarty_function_sC_template_printComments($params, &$smarty)
    // Users and professors are redirected to the same page - one type just views the other may also edit content
          $str .= '<a title = "'.htmlspecialchars($params['data'][$i]['data']).'" href = "'.$_SESSION['s_type'].'.php?ctg=content&view_unit='.$params['data'][$i]['content_ID'];
 
-         // Users and professors may have to change unit session - using the new_lessons_ID parameter for this purpose
-   if (isset($params['data'][$i]['show_lessons_id']) && $params['data'][$i]['show_lessons_id'] != 0 && isset($params['data'][$i]['show_lessons_name'])) {
-    $str .= '&new_lessons_ID='.$params['data'][$i]['show_lessons_id'].'&sbctg=content"><b>'. $params['data'][$i]['show_lessons_name'] . '</b>: ' . $params['data'][$i]['content_name'].'</a></td>';
+         // Users and professors may have to change unit session - using the new_units_ID parameter for this purpose
+   if (isset($params['data'][$i]['show_units_id']) && $params['data'][$i]['show_units_id'] != 0 && isset($params['data'][$i]['show_units_name'])) {
+    $str .= '&new_units_ID='.$params['data'][$i]['show_units_id'].'&sbctg=content"><b>'. $params['data'][$i]['show_units_name'] . '</b>: ' . $params['data'][$i]['content_name'].'</a></td>';
    } else {
           $str .= '">'.$params['data'][$i]['content_name'].'</a></td>';
       }
         } else {
          // Administrators have no links to projects
-         if (isset($params['data'][$i]['show_lessons_id']) && $params['data'][$i]['show_lessons_id'] != 0 && isset($params['data'][$i]['show_lessons_name'])) {
-    $str .= '<a title="'.$title_message.'" href = "administrator.php?ctg=lessons&edit_lesson='.$params['data'][$i]['show_lessons_id'] . '"><b>'. $params['data'][$i]['show_lessons_name']. "</b></a>: " . $params['data'][$i]['content_name'].'</td>';
+         if (isset($params['data'][$i]['show_units_id']) && $params['data'][$i]['show_units_id'] != 0 && isset($params['data'][$i]['show_units_name'])) {
+    $str .= '<a title="'.$title_message.'" href = "administrator.php?ctg=units&edit_unit='.$params['data'][$i]['show_units_id'] . '"><b>'. $params['data'][$i]['show_units_name']. "</b></a>: " . $params['data'][$i]['content_name'].'</td>';
          } else {
     $str .= $params['data'][$i]['content_name'].'</td>';
          }

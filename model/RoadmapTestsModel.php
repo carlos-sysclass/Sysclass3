@@ -3,7 +3,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
 
     public function init()
     {
-        //$this->lesson_type =  "test";
+        //$this->unit_type =  "test";
 
         parent::init();
     }
@@ -40,7 +40,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
         // GET CLASSES
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
         $data['questions'] = $this->model("tests/question")->addFilter(array(
-            'lesson_id' => $identifier
+            'unit_id' => $identifier
         ))->getItems();
 
 
@@ -51,7 +51,7 @@ class RoadmapTestsModel extends TestsModel implements ISyncronizableModel {
     public function calculateTestScore($testData) {
         if (!array_key_exists('questions', $testData)) {
             $testData['questions'] = $this->model("tests/question")->addFilter(array(
-                'lesson_id' => $testData['id']
+                'unit_id' => $testData['id']
             ))->getItems();
         }
         $testScore = 0;
