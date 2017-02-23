@@ -26,7 +26,7 @@
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Lessons"}</span>
+							<span class="tab-title">{translateToken value="Units"}</span>
 						</div>
 					</a>
 				</li>
@@ -441,7 +441,7 @@
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="javascript: void(0);" class="navbar-brand lesson-title">
-								{translateToken value="Lessons"}
+								{translateToken value="Units"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand">
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
@@ -462,7 +462,7 @@
 
 								<!--
 								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Lessons"}" data-placement="top" data-search>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Units"}" data-placement="top" data-search>
 										<i class="icon-search"></i>
 									</a>
 								</li>
@@ -474,7 +474,7 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video Unit"}</span></a>
+								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video lesson"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>

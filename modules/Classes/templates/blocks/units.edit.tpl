@@ -18,7 +18,7 @@
             </ul>
             <a class="btn btn-sm btn-primary btn-link add-lesson-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create lesson"}
+                {translateToken value="Create unit"}
             </a>
             <a class="btn btn-sm btn-success btn-link add-test-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
@@ -56,7 +56,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit lesson info">
+          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit unit info">
                 <i class="fa fa-edit"></i>
             </a>
             <!--
@@ -168,7 +168,7 @@
                 <i class="fa fa-check"></i>
             </button>
         </span>
-        <input name="new-lesson-input" value="" type="text" placeholder="Type the lesson name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+        <input name="new-lesson-input" value="" type="text" placeholder="Type the unit name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
     </div>
 </script>
 
