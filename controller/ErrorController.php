@@ -10,7 +10,7 @@ class ErrorController extends AbstractSysclassController
 
 		$this->putItem("error", "401");
 		$this->putItem("error_class", "404");
-		$this->putItem("error_title", $this->translate->translate('You don't have access to this resource.'));
+		$this->putItem("error_title", $this->translate->translate('You don\'t have access to this resource.'));
 		$this->putItem("error_message", $this->translate->translate('You might want to try to...'));
 
 		parent::display('pages/error/main.tpl');
