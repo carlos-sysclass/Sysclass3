@@ -1,5 +1,5 @@
 <?php
-class LessonsContentFileModel extends AbstractSysclassModel implements ISyncronizableModel {
+class UnitsContentFileModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {

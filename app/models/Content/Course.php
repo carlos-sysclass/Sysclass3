@@ -102,7 +102,7 @@ class Course extends Model
 		);
     }
 
-    public function setLessonOrder(array $order_ids) {
+    public function setUnitOrder(array $order_ids) {
         $status = self::resetOrder();
         $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 

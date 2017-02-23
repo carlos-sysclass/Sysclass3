@@ -2,7 +2,7 @@
 /**
   * @deprecated 3.0.4 Use Sysclass\Models\Content\UnitContent instead.
  */ 
-class LessonsContentModel extends AbstractSysclassModel implements ISyncronizableModel {
+class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {

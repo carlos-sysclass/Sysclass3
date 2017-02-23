@@ -145,7 +145,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			this.renderClass(
 				this.model.get('classes.completed'), this.model.get('classes.total')
 			);
-			this.renderLesson(
+			this.renderUnit(
 				this.model.get('units.completed'), this.model.get('units.total')
 			);
 			*/
@@ -203,7 +203,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			}
 		},
-		renderLesson : function(completed, total) {
+		renderUnit : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {

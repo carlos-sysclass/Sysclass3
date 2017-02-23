@@ -1,5 +1,5 @@
 <?php
-class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
+class UnitsModel extends BaseUnitsModel implements ISyncronizableModel {
 
     public function init()
     {
@@ -44,7 +44,7 @@ class LessonsModel extends BaseLessonsModel implements ISyncronizableModel {
 
     public function loadContentFiles($id, $type = null) {
         $filehelper = $this->helper("file/wrapper");
-        $path = $filehelper->getLessonPath($id, $type);
+        $path = $filehelper->getUnitPath($id, $type);
 
         return $filehelper->listFiles($path);
 

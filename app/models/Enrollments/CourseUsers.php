@@ -186,7 +186,7 @@ class CourseUsers extends Model
                     $info['classes']['started'] += (floatval($progress->factor) > 0) ? 1 : 0;
                 }
 
-                $units = $classe->getLessons();
+                $units = $classe->getUnits();
                 $info['units']['total'] += $units->count();
 
                 $startOffset = $current_days - $class_start_interval;

@@ -70,7 +70,7 @@ class Unit extends Model
         }
     }
 
-    public function toFullLessonArray() {
+    public function toFullUnitArray() {
         $result = $this->toArray();
 
         $classe = $this->getClasse();

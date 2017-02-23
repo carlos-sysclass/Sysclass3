@@ -56,11 +56,11 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 		// APPLY SORT BASED ON prev_unit_id
 		// var_dump($items);
     	$previous = 0; //Previous is only used when no previous_units_ID is set
-    	$courseLessons = $previousValues = array();
+    	$courseUnits = $previousValues = array();
     	foreach ($items as $value) {
-    		$courseLessons[$value['id']] = $value;
+    		$courseUnits[$value['id']] = $value;
     		$previousValues[$value['id']] = $value['prev_unit_id'];
-    		$value['prev_unit_id'] !== false ? $previousLessons[$value['prev_unit_id']] = $value : $previousLessons[$previous] = $value;
+    		$value['prev_unit_id'] !== false ? $previousUnits[$value['prev_unit_id']] = $value : $previousUnits[$previous] = $value;
     		$previous = $value['id'];
     	}
 
@@ -68,10 +68,10 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
     		//Sorting algorithm, based on previous_units_ID. The algorithm is copied from MagesterContentTree :: reset() and is the same with the one applied for content. It is also used in questions order
     		$node = $count = 0;
     		$nodes = array(); //$count is used to prevent infinite loops
-    		while (sizeof($previousLessons) > 0 && isset($previousLessons[$node]) && $count++ < 1000) {
-    			$nodes[$previousLessons[$node]['id']] = $previousLessons[$node];
-    			$newNode = $previousLessons[$node]['id'];
-    			unset($previousLessons[$node]);
+    		while (sizeof($previousUnits) > 0 && isset($previousUnits[$node]) && $count++ < 1000) {
+    			$nodes[$previousUnits[$node]['id']] = $previousUnits[$node];
+    			$newNode = $previousUnits[$node]['id'];
+    			unset($previousUnits[$node]);
     			$node = $newNode;
     		}
     	} else {

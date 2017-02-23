@@ -47,7 +47,7 @@ class FileWrapperHelper {
         return $path;
     }
 
-    public function getLessonPath($unit_id, $type = null) {
+    public function getUnitPath($unit_id, $type = null) {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("path/files/public") . "/units/" . $unit_id;
@@ -61,7 +61,7 @@ class FileWrapperHelper {
         }
         return $path;
     }
-    public function getLessonUrl($unit_id, $type = null) {
+    public function getUnitUrl($unit_id, $type = null) {
         $plicolib = PlicoLib::instance();
 
         $path = $plicolib->get("http/fqdn") . "/files/units/" . $unit_id;

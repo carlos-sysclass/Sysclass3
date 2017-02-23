@@ -8,8 +8,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				//"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
-				//"click .unit-prev-action"		: "prevLesson",
-				//"click .unit-next-action" 	: "nextLesson",
+				//"click .unit-prev-action"		: "prevUnit",
+				//"click .unit-next-action" 	: "nextUnit",
 				"click .nav-prev-action" 		: "prevItem",
 				"click .nav-next-action" 		: "nextItem",
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
@@ -591,14 +591,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
-				"click .unit-change-action" : "setLessonId",
+				"click .unit-change-action" : "setUnitId",
 				"click .view-test-action" : "openDialog",
 				"click .open-test-action" : "doTest"
 			},
 			testInfoModule : app.module("dialogs.tests.info"),
 			unitTemplate : _.template($("#tab_courses_units-item-template").html(), null, {variable: "model"}),
             testTemplate : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
-			setLessonId : function(e) {
+			setUnitId : function(e) {
 				//app.userSettings.set("unit_id", this.model.get("id"));
 				//app.userSettings.set("class_id", this.model.get("id"));
 				mod.programsCollection.moveToUnit(this.model.get("id"));
@@ -672,13 +672,13 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 		/*
 		var courseTestsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
-				"click .unit-change-action" : "setLessonId",
+				"click .unit-change-action" : "setUnitId",
 				"click .view-test-action" : "openDialog",
 				"click .open-test-action" : "doTest"
 			},
 			testInfoModule : app.module("dialogs.tests.info"),
 			template : _.template($("#tab_courses_tests-item-template").html(), null, {variable: "model"}),
-			setLessonId : function(e) {
+			setUnitId : function(e) {
 				app.userSettings.set("unit_id", this.model.get("id"));
 			},
             openDialog : function() {
@@ -953,7 +953,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				//this.listenTo(this.model, 'change', this.renderSemester.bind(this));
 				//this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
-				//this.listenTo(this.model, 'change:unit_id', this.renderLesson.bind(this));
+				//this.listenTo(this.model, 'change:unit_id', this.renderUnit.bind(this));
 				//this.listenTo(this.model, 'change:id', this.renderTopic.bind(this));
 				this.render();
 			},
@@ -986,7 +986,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					//this.renderCourse();
 					//this.renderSemester();
 					//this.renderClass();
-					//this.renderLesson();
+					//this.renderUnit();
 				}
 			},
 			renderCourse : function(factor) {
@@ -1029,7 +1029,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				}
 			},
-			renderLesson : function(factor) {
+			renderUnit : function(factor) {
 				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				this.$(".unit span").html(app.module("views").formatValue(
 						factor,
@@ -1735,7 +1735,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	var fullClassModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/course-classes"
 	});
-	var fullLessonModelClass = Backbone.DeepModel.extend({
+	var fullUnitModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/units"
 	});
 	var contentModelClass = Backbone.DeepModel.extend({

@@ -74,8 +74,8 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $currentUser    = self::$current_user;
 
         //$xuserModule = $this->loadModule("xuser");
-        $userLessons = $currentUser->getLessons();
-        $unitsIds = array_keys($userLessons);
+        $userUnits = $currentUser->getUnits();
+        $unitsIds = array_keys($userUnits);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm
@@ -105,8 +105,8 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $currentUser    = self::$current_user;
 
         //$xuserModule = $this->loadModule("xuser");
-        $userLessons = $currentUser->getLessons();
-        $unitsIds = array_keys($userLessons);
+        $userUnits = $currentUser->getUnits();
+        $unitsIds = array_keys($userUnits);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm

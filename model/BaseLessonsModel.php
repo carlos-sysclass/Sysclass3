@@ -1,5 +1,5 @@
 <?php
-class BaseLessonsModel extends AbstractSysclassModel implements ISyncronizableModel {
+class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     protected $unit_type = FALSE;
 

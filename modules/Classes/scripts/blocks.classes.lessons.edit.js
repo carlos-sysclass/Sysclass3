@@ -103,7 +103,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			}
 	    });
 
-		var classLessonItemViewClass = baseClassItemViewClass.extend({
+		var classUnitItemViewClass = baseClassItemViewClass.extend({
 	    	template : _.template($("#class-unit-item-template").html(), null, {variable: 'model'})
 		});
 		var classTestItemViewClass = baseClassItemViewClass.extend({
@@ -113,13 +113,13 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 
 
 
-		mod.classLessonsViewClass = Backbone.View.extend({
+		mod.classUnitsViewClass = Backbone.View.extend({
 			events : {
-				"click .add-unit-action" : "addLessonItem",
+				"click .add-unit-action" : "addUnitItem",
 				"click .add-test-action" : "addTestItem"
 			},
 			initialize: function(opt) {
-				console.info('blocks.classes.units.edit/classLessonsView::initialize');
+				console.info('blocks.classes.units.edit/classUnitsView::initialize');
 
 				//this.param = opt.param;
 				//
@@ -213,7 +213,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
                 });
             },
             refreshCounters : function() {
-                console.info('blocks.classes.units.edit/classLessonsViewClass::refreshCounters');
+                console.info('blocks.classes.units.edit/classUnitsViewClass::refreshCounters');
                 var total = this.collection.size();
                 //alert(total);
                 this.$("ul > li.list-file-item .total").html(total);
@@ -227,7 +227,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
                     }
                 });
             },
-			addLessonItem : function(e) {
+			addUnitItem : function(e) {
 				var self = this;
 
 				var itemModel = new mod.models.unit({
@@ -236,24 +236,24 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 
 				self.collection.add(itemModel);
 
-				var classLessonsNewItemView = new classLessonItemViewClass({
+				var classUnitsNewItemView = new classUnitItemViewClass({
 					model : itemModel,
 					opened : true
 				});
 
-				$(classLessonsNewItemView.render().el).appendTo( this.$("ul") );
+				$(classUnitsNewItemView.render().el).appendTo( this.$("ul") );
 				/*
-				this.listenTo(classLessonsNewItemView, "unit:added", function(model) {
+				this.listenTo(classUnitsNewItemView, "unit:added", function(model) {
 					self.collection.add(model);
 					model.save();
 				});
-				this.listenTo(classLessonsNewItemView, "unit:removed", function(model) {
+				this.listenTo(classUnitsNewItemView, "unit:removed", function(model) {
 					self.collection.remove(model);
 				});
 				*/
-				classLessonsNewItemView.start();
+				classUnitsNewItemView.start();
 
-				this.listenTo(classLessonsNewItemView, "view:rendered", this.refreshCounters.bind(this));
+				this.listenTo(classUnitsNewItemView, "view:rendered", this.refreshCounters.bind(this));
  			},
 			addTestItem : function(e) {
 				var self = this;
@@ -264,26 +264,26 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 
 				self.collection.add(itemModel);
 
-				var classLessonsNewItemView = new classTestItemViewClass({
+				var classUnitsNewItemView = new classTestItemViewClass({
 					model : itemModel,
 					opened : true
 				});
 
-				$(classLessonsNewItemView.render().el).appendTo( this.$("ul") );
+				$(classUnitsNewItemView.render().el).appendTo( this.$("ul") );
 
-				classLessonsNewItemView.start();
+				classUnitsNewItemView.start();
 
-				this.listenTo(classLessonsNewItemView, "view:rendered", this.refreshCounters.bind(this));
+				this.listenTo(classUnitsNewItemView, "view:rendered", this.refreshCounters.bind(this));
  			},
 
 			addOne : function(model) {
-				console.info('blocks.classes.units.edit/classLessonsView::addOne');
+				console.info('blocks.classes.units.edit/classUnitsView::addOne');
 
 				var self = this;
 				var classItemView = null;
 
 				if (model.get("type") == "unit") {
-					classItemView = new classLessonItemViewClass({
+					classItemView = new classUnitItemViewClass({
 						model : model
 					});
 				} else if (model.get("type") == "test") {
@@ -303,7 +303,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 				}
 			},
 			render: function() {
-				console.info('blocks.classes.units.edit/classLessonsView::render');
+				console.info('blocks.classes.units.edit/classUnitsView::render');
 
 				var self = this;
 
@@ -351,7 +351,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			class_id : data.class_id
 		});
 
-		var classLessonsView = new mod.classLessonsViewClass({
+		var classUnitsView = new mod.classUnitsViewClass({
 			collection : unitsCollection,
 			el : el,
             model : data.entityModel

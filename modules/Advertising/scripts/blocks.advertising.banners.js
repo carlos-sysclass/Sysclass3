@@ -12,7 +12,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
          * @todo  MOVE TO A MORE GENERIC MODULE
          */
         /*
-        var baseLessonChildContentTimelineViewClass = Backbone.View.extend({
+        var baseUnitChildContentTimelineViewClass = Backbone.View.extend({
             events : function() {
                 return {
                     "confirmed.bs.confirmation .delete-content"    : "delete"

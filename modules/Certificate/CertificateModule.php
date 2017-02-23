@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Certificate;
 use Sysclass\Models\Users\User,
     Sysclass\Models\Certificates\Certificate,
     Sysclass\Models\Content\Course,
-    Sysclass\Models\Courses\Tests\Unit as LessonTest,
+    Sysclass\Models\Courses\Tests\Unit as UnitTest,
     Dompdf\Dompdf,
     Dompdf\Canvas,
     Sysclass\Models\Organizations\Organization,
@@ -147,7 +147,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
     public function createTestCertificate($user_id, $test_id) {
         // GET CLASS AND COURSE NAME
-        $unitTest = LessonTest::findFirstById($test_id);
+        $unitTest = UnitTest::findFirstById($test_id);
         $user = User::findFirstById($user_id);
         if ($unitTest && $user) {
             $module = $unitTest->getCourse();

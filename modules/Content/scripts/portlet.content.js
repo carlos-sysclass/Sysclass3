@@ -12,8 +12,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				//"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
-				//"click .unit-prev-action"		: "prevLesson",
-				//"click .unit-next-action" 	: "nextLesson",
+				//"click .unit-prev-action"		: "prevUnit",
+				//"click .unit-next-action" 	: "nextUnit",
 				"click .nav-prev-action" 		: "prevItem",
 				"click .nav-next-action" 		: "nextItem",
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
@@ -2352,7 +2352,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	var fullClassModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/course-classes"
 	});
-	var fullLessonModelClass = Backbone.DeepModel.extend({
+	var fullUnitModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/units"
 	});
 	var contentModelClass = Backbone.DeepModel.extend({

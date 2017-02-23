@@ -7,11 +7,11 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
 
         var unitModel = app.module("crud.views.edit").itemModel;
         
-        //var baseLessonContentModelClass = app.module("models").content().item.base;
+        //var baseUnitContentModelClass = app.module("models").content().item.base;
         /*
-        var unitUrlContentModelClass = baseLessonContentModelClass.extend({
+        var unitUrlContentModelClass = baseUnitContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'url';
                 return defaults;
             }
@@ -55,9 +55,9 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
             //urlRoot: "/module/units/item/unit_content/"
         });
 
-        var unitTextContentModelClass = baseLessonContentModelClass.extend({
+        var unitTextContentModelClass = baseUnitContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'text';
                 return defaults;
             }
@@ -78,9 +78,9 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
             }
         });
 
-        var unitExerciseContentModelClass = baseLessonContentModelClass.extend({
+        var unitExerciseContentModelClass = baseUnitContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'exercise';
                 return defaults;
             },
@@ -111,7 +111,7 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
          * @todo  MOVE TO A MORE GENERIC MODULE
          */
          /*
-        var baseLessonChildContentTimelineViewClass = Backbone.View.extend({
+        var baseUnitChildContentTimelineViewClass = Backbone.View.extend({
             events : function() {
                 return {
                     "confirmed.bs.confirmation .delete-content"    : "delete"
@@ -766,7 +766,7 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
             }
         });
 
-        var unitExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
+        var unitExercisesContentTimelineViewClass = baseUnitChildContentTimelineViewClass.extend({
             questionSelectDialog : app.module("dialogs.questions.select"),
             template : _.template($("#exercise-timeline-item").html()),
             className : "timeline-item",
@@ -787,13 +787,13 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
                 }
             },
             events : function() {
-                var events = baseLessonChildContentTimelineViewClass.prototype.events.apply(this);
+                var events = baseUnitChildContentTimelineViewClass.prototype.events.apply(this);
                 events["click .select-question"] = "openSelectDialog";
                 events["click .create-question"] = "openCreateDialog";
                 return events;
             },
             render : function() {
-                baseLessonChildContentTimelineViewClass.prototype.render.apply(this);
+                baseUnitChildContentTimelineViewClass.prototype.render.apply(this);
 
                 this.questionView = new unitExercisesContentSubviewTimelineViewClass({
                     collection : this.model.get("exercise"),
@@ -829,7 +829,7 @@ $SC.module("blocks.units.content", function(mod, app, Backbone, Marionette, $, _
                 }.bind(this));
             },
             delete : function() {
-                baseLessonChildContentTimelineViewClass.prototype.delete.apply(this);
+                baseUnitChildContentTimelineViewClass.prototype.delete.apply(this);
 
                 this.remove();
             }

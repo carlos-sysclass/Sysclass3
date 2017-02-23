@@ -97,7 +97,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
             tagName : "li",
             className : "list-file-item draggable blue-stripe",
             initialize: function(opt) {
-                console.info('blocks.roadmap.grouping/classLessonsView::initialize');
+                console.info('blocks.roadmap.grouping/classUnitsView::initialize');
 
                 this.opened = opt.opened ? opt.opened : false;
 

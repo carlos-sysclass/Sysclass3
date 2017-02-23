@@ -354,8 +354,8 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         $currentUser    = $this->getCurrentUser(true);
 
         //$xuserModule = $this->loadModule("xuser");
-        $userLessons = $currentUser->getLessons();
-        $unitsIds = array_keys($userLessons);
+        $userUnits = $currentUser->getUnits();
+        $unitsIds = array_keys($userUnits);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $tutorias = $this->_getTableData("mod_tutoria tt
@@ -427,8 +427,8 @@ class TutoriaModule extends SysclassModule implements IWidgetContainer, IBreadcr
         $currentUser    = self::$current_user;
 
         //$xuserModule = $this->loadModule("xuser");
-        $userLessons = $currentUser->getLessons();
-        $unitsIds = array_keys($userLessons);
+        $userUnits = $currentUser->getUnits();
+        $unitsIds = array_keys($userUnits);
 
         // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm

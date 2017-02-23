@@ -9,7 +9,7 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
-    Sysclass\Models\Courses\Tests\Unit as TestLesson,
+    Sysclass\Models\Courses\Tests\Unit as TestUnit,
     Sysclass\Models\Content\Tests\Execution as TestExecution;
     
 /**
@@ -22,7 +22,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /* ISummarizable */
     public function getSummary() {
         // GET THE USER NOT DONE YET TESTS
-        $pendingTests = TestLesson::getUserPendingTests($this->user->id);
+        $pendingTests = TestUnit::getUserPendingTests($this->user->id);
 
         $summary = array(
             'type'  => 'danger',
@@ -47,7 +47,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Tests", "View")) {
 
-            $total = TestLesson::count("type='test' AND active = 1");
+            $total = TestUnit::count("type='test' AND active = 1");
 
             return array(
                 'content' => array(
@@ -257,7 +257,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     public function openPage($identifier)
     {
         //if ($userData = $this->getCurrentUser()) {
-            $testModel = TestLesson::findFirstById($identifier);
+            $testModel = TestUnit::findFirstById($identifier);
 
             $testData = $testModel->toArray();
 
@@ -343,7 +343,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'user_id' => $this->user->id
             ));
 
-            $testModel = TestLesson::findFirstById($identifier);
+            $testModel = TestUnit::findFirstById($identifier);
 
             $testData = $testModel->toArray();
 
@@ -507,7 +507,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $executionId = $execution->id;
                 $executionData = $execution->toArray();
 
-                $testObject = TestLesson::findFirstById($identifier);
+                $testObject = TestUnit::findFirstById($identifier);
 
                 $testData = $testObject->toArray();
 
@@ -878,7 +878,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      *
      * @Put("/items/units/set-order/{class_id}")
      */
-    public function setLessonOrderRequest($class_id)
+    public function setUnitOrderRequest($class_id)
     {
         if ($this->isUserAllowed("edit")) {
             

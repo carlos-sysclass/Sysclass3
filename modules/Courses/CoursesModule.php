@@ -567,7 +567,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             */
 			case 'units':
 			default : {
-				$units = MagesterLesson::getLessons();
+				$units = MagesterUnit::getUnits();
 				if (!empty($q)) {
 					$units = sC_filterData($units, $q);
 				}
@@ -713,16 +713,16 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		}
 
 		$login = $currentUser->user['login'];
-		$userLessons    =   $currentUser -> getUserLessons($constraints);
-		$userLessonsIDs = array_keys($userLessons);
+		$userUnits    =   $currentUser -> getUserUnits($constraints);
+		$userUnitsIDs = array_keys($userUnits);
 
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
-			'condition' => sprintf("(l.id IN (%s))", implode(",", $userLessonsIDs))
+			'condition' => sprintf("(l.id IN (%s))", implode(",", $userUnitsIDs))
 		);
 
-		$userEntities = $course->getCourseLessons($constraints);
+		$userEntities = $course->getCourseUnits($constraints);
 		$userEntityIDs = array_keys($userEntities);
 		// TODO CHECK PERMISSION RULES HERE
 
@@ -761,7 +761,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	 * @url GET /item/units/:course_id/:class_id/:id
      * @deprecated 3.0.0.19
 	 */
-	public function getLessonAction($course_id, $class_id, $id) {
+	public function getUnitAction($course_id, $class_id, $id) {
 		// TODO USE New Model classes to get this info
 		$currentUser    = $this->getCurrentUser(true);
 		$result = array();
@@ -782,21 +782,21 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			$class_id = $this->module("settings")->get("class_id");
 		}
 		// TODO GET USERS CLASS IDS AND CHECK IF THIS ID MATCH
-		$userClasses    =   $currentUser -> getUserLessons($constraints);
+		$userClasses    =   $currentUser -> getUserUnits($constraints);
 		$userClassesIDs = array_keys($userClasses);
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
 			'condition' => sprintf("(l.id IN (%s))", implode(",", $userClassesIDs))
 		);
-		$userClasses = $course->getCourseLessons($constraints);
+		$userClasses = $course->getCourseUnits($constraints);
 		$userClassesIDs = array_keys($userClasses);
 
 
 		if (!in_array($class_id, $userClassesIDs)) {
 			$class_id = reset($userClassesIDs);
 		}
-		$currentClass = new MagesterLesson($class_id);
+		$currentClass = new MagesterUnit($class_id);
 
 		if (is_null($id)) {
 			$id = $this->module("settings")->get("unit_id");
@@ -930,12 +930,12 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		//var_dump($currentUser->user['login']);
 		$courseStats = MagesterStats::getUsersCourseStatus($userCourses, $login);
 
-		$userLessons = $currentUser->getLessons();
-		$unitsIds = array_keys($userLessons);
+		$userUnits = $currentUser->getUnits();
+		$unitsIds = array_keys($userUnits);
 
 		foreach($userCourses as $course) {
 			$course->course['units'] = array();
-			$units = $course->getCourseLessons(array('return_objects' => false));
+			$units = $course->getCourseUnits(array('return_objects' => false));
 
 			foreach($units as $unit) {
 				if (in_array($unit['id'], $unitsIds)) {
@@ -971,7 +971,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	 * @url GET /content/:course/:unit
      * @deprecated
 	 */
-	public function getContentByCourseAndLessonAction($course, $unit)
+	public function getContentByCourseAndUnitAction($course, $unit)
 	{
 		// RETURN JUST THE content ID
 		// SAVE COURSE AND LESSON, ON USERS SETTINGS
@@ -1015,18 +1015,18 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			} else {
 				$firstCourse = new MagesterCourse($course);
 			}
-			$userLessons = $firstCourse->getCourseLessons(array('return_objects' => false));
-			reset($userLessons);
-			$unit = key($userLessons);
+			$userUnits = $firstCourse->getCourseUnits(array('return_objects' => false));
+			reset($userUnits);
+			$unit = key($userUnits);
 
 			$this->module("settings")->put("course_id", $course);
 			$this->module("settings")->put("unit_id", $unit);
 
 		}
 
-		$currentLesson = new MagesterLesson($unit);
+		$currentUnit = new MagesterUnit($unit);
 
-		$currentContent = new MagesterContentTree($currentLesson);
+		$currentContent = new MagesterContentTree($currentUnit);
 		$currentContent -> markSeenNodes($currentUser);
 
 		//Legal values are the array of entities that the current user may actually edit or change.

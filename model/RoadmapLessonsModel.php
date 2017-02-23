@@ -1,5 +1,5 @@
 <?php
-class RoadmapLessonsModel extends BaseLessonsModel implements ISyncronizableModel {
+class RoadmapUnitsModel extends BaseUnitsModel implements ISyncronizableModel {
 
     public function init()
     {

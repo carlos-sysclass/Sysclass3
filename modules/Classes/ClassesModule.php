@@ -300,7 +300,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Put("/items/units/set-order/{class_id}")
      */
-    public function setLessonOrderRequest($class_id)
+    public function setUnitOrderRequest($class_id)
     {
         if ($this->isUserAllowed("edit")) {
             $data = $this->request->getPut();
@@ -312,7 +312,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
             );
 
-            if ($itemModel->setLessonOrder($data['position'])) {
+            if ($itemModel->setUnitOrder($data['position'])) {
                 $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
             } else {
                 $response = $this->invalidRequestError($this->translate->translate($messages['success']), "success");

@@ -18,7 +18,7 @@ use Sysclass\Services\Storage\Adapter as StorageAdapter,
 /**
  * @RoutePrefix("/module/units")
  */
-class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
+class UnitsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
     private static $suitable_translate_contents = array("subtitle");
 
@@ -519,8 +519,8 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $helper = $this->helper("file/upload");
         $filewrapper = $this->helper("file/wrapper");
-        $upload_dir = $filewrapper->getLessonPath($id, $type);
-        $upload_url = $filewrapper->getLessonUrl($id, $type);
+        $upload_dir = $filewrapper->getUnitPath($id, $type);
+        $upload_url = $filewrapper->getUnitUrl($id, $type);
 
         $helper->setOption('upload_dir', $upload_dir . "/");
         $helper->setOption('upload_url', $upload_url . "/");
