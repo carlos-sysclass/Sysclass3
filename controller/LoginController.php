@@ -940,7 +940,7 @@ class LoginController extends \AbstractSysclassController
 			} else {
 				$this->redirect(
 					"login/reset",
-					$this->translate->translate('We can't locate the email provided in our records. Please, verity your email.'),
+					$this->translate->translate('We can\'t locate the email provided in our records. Please, verity your email.'),
 					'warning'
 				);
 			}
