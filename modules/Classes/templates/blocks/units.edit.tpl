@@ -120,7 +120,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-            <a class="btn btn-sm btn-primary tooltips" href="/module/tests/edit/<%= model.id %>" data-original-title="Edit Test info">
+            <a class="btn btn-sm btn-primary tooltips" href="/module/tests/edit/<%= model.id %>" data-original-title="Edit test info">
                 <i class="fa fa-edit"></i>
             </a>
             <!--
