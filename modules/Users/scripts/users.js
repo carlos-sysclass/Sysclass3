@@ -160,7 +160,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		/*
 		renderCourse : function(completed, total) {
-			// INJECT HERE PARTIAL PROGRESS FROM UNITS
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {
 				factor = completed / total;
@@ -184,7 +184,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		},
 		renderClass : function(completed, total) {
-			// INJECT HERE PARTIAL PROGRESS FROM UNITS
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {
 				factor = completed / total;
@@ -209,7 +209,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			}
 		},
 		renderUnit : function(completed, total) {
-			// INJECT HERE PARTIAL PROGRESS FROM UNITS
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {
 				factor = completed / total;
@@ -235,7 +235,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 		},
 		*/
 		renderUnit : function(completed, total) {
-			// INJECT HERE PARTIAL PROGRESS FROM UNITS
+			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {
 				factor = completed / total;

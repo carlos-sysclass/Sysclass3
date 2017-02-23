@@ -55,7 +55,11 @@ class RoadmapUnitsModel extends BaseUnitsModel implements ISyncronizableModel {
 
         // GET CLASSES
 <<<<<<< HEAD
+<<<<<<< HEAD
         //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
+=======
+        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+>>>>>>> parent of 7db341d... LESSON - UNIT
         $data['contents'] = $this->model("units/content")
 =======
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS

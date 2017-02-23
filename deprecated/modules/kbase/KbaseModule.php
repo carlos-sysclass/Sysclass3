@@ -363,7 +363,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         $lessonsIds = array_keys($userLessons);
 >>>>>>> parent of 7cdd908... lesson complete
 
-        // GET LAST MESSAGES FROM USER UNITS
+        // GET LAST MESSAGES FROM USER LESSONS
         $tutorias = $this->_getTableData("mod_tutoria tt
             LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)

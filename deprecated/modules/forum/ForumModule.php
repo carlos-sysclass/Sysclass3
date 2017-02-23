@@ -82,7 +82,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $lessonsIds = array_keys($userLessons);
 >>>>>>> parent of 7cdd908... lesson complete
 
-        // GET LAST MESSAGES FROM USER UNITS
+        // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff
@@ -118,7 +118,7 @@ class ForumModule extends SysclassModule implements /* ISectionMenu, */ IWidgetC
         $lessonsIds = array_keys($userLessons);
 >>>>>>> parent of 7cdd908... lesson complete
 
-        // GET LAST MESSAGES FROM USER UNITS
+        // GET LAST MESSAGES FROM USER LESSONS
         $forum_messages = $this->_getTableData("f_messages fm
             JOIN f_topics ft
             JOIN f_forums ff

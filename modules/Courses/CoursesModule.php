@@ -972,7 +972,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	public function getContentBySettingsAction()
 	{
 		// RETURN JUST THE content ID
-		// SAVE COURSE AND UNIT, ON USERS SETTINGS
+		// SAVE COURSE AND LESSON, ON USERS SETTINGS
 		$settings = $this->module("settings")->getSettings(true);
 		//var_dump($settings);
 		return $this->getContent($settings['course_id'], $settings['lesson_id'], $settings['content_id']);
@@ -991,7 +991,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 >>>>>>> parent of 7cdd908... lesson complete
 	{
 		// RETURN JUST THE content ID
-		// SAVE COURSE AND UNIT, ON USERS SETTINGS
+		// SAVE COURSE AND LESSON, ON USERS SETTINGS
 		$this->module("settings")->put("course_id", $course);
 		$this->module("settings")->put("lesson_id", $lesson);
 		return $this->getContent($course, $lesson, null);
@@ -1021,11 +1021,15 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		$currentUser    = $this->getCurrentUser(true);
 <<<<<<< HEAD
 		if (empty($unit)) {
+<<<<<<< HEAD
 			// GET UNIT ID FROM COURSE
 =======
 		if (empty($lesson)) {
 			// GET LESSON ID FROM COURSE
 >>>>>>> parent of 7cdd908... lesson complete
+=======
+			// GET LESSON ID FROM COURSE
+>>>>>>> parent of 7db341d... LESSON - UNIT
 			if (empty($course)) {
 				// GET FIRST COURSE FROM USER
 				$userCourses = $currentUser->getUserCourses(array('return_objects' => true));

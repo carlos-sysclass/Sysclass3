@@ -32,7 +32,7 @@ class Exception extends \Phalcon\Exception
     const INVALID_TYPE = 407;
     const ALREADY_IN = 408;
     const INVALID_PASSWORD = 409;
-    const USER_NOT_HAVE_UNIT = 410;
+    const USER_NOT_HAVE_LESSON = 410;
     const WRONG_INPUT_TYPE = 411;
     const USER_PENDING = 412;
     const TYPE_NOT_EXISTS = 414;

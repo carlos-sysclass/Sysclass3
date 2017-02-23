@@ -94,7 +94,11 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
 
         // GET CLASSES
 <<<<<<< HEAD
+<<<<<<< HEAD
         //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
+=======
+        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+>>>>>>> parent of 7db341d... LESSON - UNIT
         $data['units'] = $this->model("roadmap/units")
 =======
         //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS

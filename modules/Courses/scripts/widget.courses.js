@@ -602,7 +602,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			render : function() {
 				console.info('portlet.courses/courseRoadmapTabViewClass::render');
 				if (this.seasonsSynced && this.classesSynced) {
-					// ORDER UNITS BY SEMESTER
+					// ORDER LESSONS BY SEMESTER
 					//this.$el.empty();
 
 					if (this.collections.seasons.size() > 0) {
@@ -962,7 +962,11 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 		});
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		/* UNITS / TESTS VIEW CLASSES */
+=======
+		/* LESSONS / TESTS VIEW CLASSES */
+>>>>>>> parent of 7db341d... LESSON - UNIT
 		var unitTabViewClass = blockableTabViewClass.extend({
 =======
 		/* LESSONS / TESTS VIEW CLASSES */
@@ -1083,7 +1087,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var self = this;
 
 				if (_.size(this.model.get("contents")) == 0) {
-					// THERE'S NO VIDEO UNIT... DISABLE THE VIEW
+					// THERE'S NO VIDEO LESSON... DISABLE THE VIEW
 					this.disableView();
 				} else {
 					var contentsCollection = new mod.collections.contents(this.model.get("contents"));
@@ -1429,7 +1433,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			renderCourse : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM UNITS
+				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				//percent = 30;
 				this.$(".course span").html(
 					app.module("views").formatValue(
@@ -1451,7 +1455,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 
 			renderClass : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM UNITS
+				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				this.$(".class span").html(
 					app.module("views").formatValue(
 						factor,
@@ -1470,7 +1474,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 <<<<<<< HEAD
 			renderUnit : function(factor) {
-				// INJECT HERE PARTIAL PROGRESS FROM UNITS
+				// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 				this.$(".unit span").html(app.module("views").formatValue(
 =======
 			renderLesson : function(factor) {

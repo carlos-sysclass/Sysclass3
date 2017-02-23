@@ -305,13 +305,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             if ($model == "me") {
                 $itemModel = $this->model($this->_modelRoute);
                 $messages = array(
-                    'success' => "Unit created successfully",
+                    'success' => "Unit created with success",
                     'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
                 );
             } elseif ($model == "content") {
                 $itemModel = $this->model("advertising/content");
                 $messages = array(
-                    'success' => "Advertising content created successfully",
+                    'success' => "Advertising content created with success",
                     'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
                 );
 
@@ -394,15 +394,15 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
     {
         if ($userData = $this->getCurrentUser()) {
             if ($model == "me") {
-                $itemModel = $this->model("units");
+                $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Unit removed successfully",
+                    'success' => "Unit removed with success",
                     'error' => "A problem ocurred when trying to remove your data. Please check your data and try again"
                 );
             } elseif ($model == "content") {
                 $itemModel = $this->model("advertising/content");
                 $messages = array(
-                    'success' => "Advertising content removed successfully",
+                    'success' => "Advertising content removed with success",
                     'error' => "A problem ocurred when trying to remove your data. Please check your data and try again"
                 );
             }

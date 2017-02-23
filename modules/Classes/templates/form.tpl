@@ -86,7 +86,7 @@
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
 				    {foreach $T_SECTION_TPL['moreinfo'] as $template}
-				        {include file=$template T_MODULE_CONTEXT=$T_UNITS_BLOCK_CONTEXT T_MODULE_ID=$T_UNITS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 
 					<div class="form-actions nobg">
@@ -97,7 +97,7 @@
 			{if (isset($T_SECTION_TPL['units']) &&  ($T_SECTION_TPL['units']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
 				    {foreach $T_SECTION_TPL['units'] as $template}
-				        {include file=$template T_MODULE_CONTEXT=$T_UNITS_BLOCK_CONTEXT T_MODULE_ID=$T_UNITS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
 				    {/foreach}
 				</div>
 			{/if}

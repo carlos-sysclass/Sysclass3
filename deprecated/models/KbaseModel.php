@@ -12,7 +12,7 @@ class KbaseModel extends AbstractSysclassModel implements ISyncronizableModel {
         //$this->fieldsMap = array();
         //
 
-       // GET LAST MESSAGES FROM USER UNITS
+       // GET LAST MESSAGES FROM USER LESSONS
        /*
         $tutorias = $this->_getTableData("mod_tutoria tt
             LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)

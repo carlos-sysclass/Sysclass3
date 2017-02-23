@@ -66,7 +66,7 @@ $SC.module("dialogs.content.unit", function(mod, app, Backbone, Marionette, $, _
             var self = this;
 
             if (!this.model.get("video")) {
-                // THERE'S NO VIDEO UNIT... DISABLE THE VIEW
+                // THERE'S NO VIDEO LESSON... DISABLE THE VIEW
                 this.disableView();
             } else {
                 this.enableView();

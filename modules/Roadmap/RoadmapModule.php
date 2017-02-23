@@ -254,7 +254,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
             //} elseif ($model ==  "periods") {
                 // GET USER CURRENT SETTINGS
-                // (CURRENT COURSE, CLASS, UNIT, CONTENT)
+                // (CURRENT COURSE, CLASS, LESSON, CONTENT)
             } else {
                 return $this->invalidRequestError();
             }
@@ -300,7 +300,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 );
             } elseif ($model ==  "periods") {
                 // GET USER CURRENT SETTINGS
-                // (CURRENT COURSE, CLASS, UNIT, CONTENT)
+                // (CURRENT COURSE, CLASS, LESSON, CONTENT)
             } elseif ($model ==  "content-progress") {
                 $modelRoute = "lessons/content/progress";
 
