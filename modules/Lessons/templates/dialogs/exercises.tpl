@@ -1,4 +1,4 @@
-<div id="lesson-exercises-dialog" class="modal fade" role="dialog" aria-labelledby="{translateToken value='Lesson Exercises'}" aria-hidden="true">
+<div id="lesson-exercises-dialog" class="modal fade" role="dialog" aria-labelledby="{translateToken value='Unit Exercises'}" aria-hidden="true">
     <div class="modal-dialog modal-wide">
         <div class="modal-content">
 			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">

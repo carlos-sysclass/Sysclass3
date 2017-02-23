@@ -3,7 +3,7 @@ namespace Sysclass\Models\Content\Tests;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\Tests\Unit as TestLesson,
     Sysclass\Models\Courses\Tests\TestQuestions,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Content\Progress\Unit as UnitProgress,

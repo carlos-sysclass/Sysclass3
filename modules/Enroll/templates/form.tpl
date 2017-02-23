@@ -388,7 +388,7 @@
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 <p>
-                    <span>{translateToken value="Total Lessons"}</span>
+                    <span>{translateToken value="Total Units"}</span>
                     <% if (data.class.total_lessons == 0) { %>
                         <strong class="text-danger pull-right"><%= data.class.total_lessons %></strong>
                     <% } else { %>

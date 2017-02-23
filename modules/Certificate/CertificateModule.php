@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Certificate;
 use Sysclass\Models\Users\User,
     Sysclass\Models\Certificates\Certificate,
     Sysclass\Models\Content\Course,
-    Sysclass\Models\Courses\Tests\Lesson as LessonTest,
+    Sysclass\Models\Courses\Tests\Unit as LessonTest,
     Dompdf\Dompdf,
     Dompdf\Canvas,
     Sysclass\Models\Organizations\Organization,

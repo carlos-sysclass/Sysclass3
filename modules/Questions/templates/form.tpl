@@ -9,7 +9,7 @@
 
 			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Lessons"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Units"}</a>
 			</li>
 			{/if}
 			{if ((isset($T_SECTION_TPL['tests']) &&  ($T_SECTION_TPL['tests']|@count > 0)) || (isset($T_SECTION_TPL['grades']) &&  ($T_SECTION_TPL['grades']|@count > 0)))}

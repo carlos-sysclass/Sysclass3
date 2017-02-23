@@ -1,5 +1,5 @@
 <?php
-use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+use Sysclass\Models\Courses\Tests\Unit as TestLesson,
     Sysclass\Models\Content\Progress\Course as ClasseProgress,
     Sysclass\Models\Content\Progress\Unit as LessonProgress;
 

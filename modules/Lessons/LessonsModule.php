@@ -1,5 +1,5 @@
 <?php
-namespace Sysclass\Modules\Lessons;
+namespace Sysclass\Modules\Units;
 /**
  * Module Class File
  * @filesource
@@ -309,13 +309,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Lesson created.",
+                    'success' => "Unit created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
-                    'success' => "Lesson content created.",
+                    'success' => "Unit content created.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
@@ -489,7 +489,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         ))->getItems();
 
         $messages = array(
-            'success' => "Lesson content order updated.",
+            'success' => "Unit content order updated.",
             'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
         );
 
@@ -672,13 +672,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Lesson updated.",
+                    'success' => "Unit updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
-                    'success' => "Lesson content updated.",
+                    'success' => "Unit content updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             }
@@ -719,13 +719,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Lesson removed.",
+                    'success' => "Unit removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
-                    'success' => "Lesson content removed.",
+                    'success' => "Unit content removed.",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
                 );
             }

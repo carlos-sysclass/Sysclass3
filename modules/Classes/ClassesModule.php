@@ -7,7 +7,7 @@ namespace Sysclass\Modules\Classes;
 use 
     Sysclass\Models\Content\Program,
     Sysclass\Models\Content\Course as Classe,
-    Sysclass\Models\Content\Unit as Lesson,
+    Sysclass\Models\Content\Unit as Unit,
     Sysclass\Models\Acl\Role;
 /**
  * [NOT PROVIDED YET]
@@ -308,7 +308,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             $itemModel = $this->getModelData("me", $class_id);
 
             $messages = array(
-                'success' => "Lesson order updated.",
+                'success' => "Unit order updated.",
                 'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
             );
 

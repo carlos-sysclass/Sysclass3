@@ -595,7 +595,7 @@ _before_init_functions.push(function() {
 
 								<!--
 								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Lessons"}" data-placement="top" data-search>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Units"}" data-placement="top" data-search>
 										<i class="icon-search"></i>
 									</a>
 								</li>
