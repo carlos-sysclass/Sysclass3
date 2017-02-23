@@ -71,7 +71,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 /**
                  * @todo  Recalculate all progress based on following variables
                  * user_id
-                 * content_id OR unit_id OR class_id OR course_id
+                 * content_id OR lesson_id OR class_id OR course_id
                  */
                 if (array_key_exists('user_id', $data)) {
                     if (array_key_exists('content_id', $data)) {
@@ -79,7 +79,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                             'conditions' => 'user_id = ?0 AND content_id =?1',
                             'bind' => array($data['user_id'], $data['content_id'])
                         ));
-                    } elseif (array_key_exists('unit_id', $data)) {
+                    } elseif (array_key_exists('lesson_id', $data)) {
                         return false;
                     } else {
                         return false;
@@ -245,8 +245,8 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $modelRoute = "roadmap/courses";
             } elseif ($model ==  "classes") {
                 $modelRoute = "roadmap/classes";
-            } elseif ($model ==  "units") {
-                $modelRoute = "roadmap/units";
+            } elseif ($model ==  "lessons") {
+                $modelRoute = "roadmap/lessons";
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
             } elseif ($model ==  "periods") {
@@ -302,7 +302,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 // GET USER CURRENT SETTINGS
                 // (CURRENT COURSE, CLASS, UNIT, CONTENT)
             } elseif ($model ==  "content-progress") {
-                $modelRoute = "units/content/progress";
+                $modelRoute = "lessons/content/progress";
 
                 $itemModel = $this->model($modelRoute);
 
@@ -377,7 +377,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
             } elseif ($model ==  "content-progress") {
-                $modelRoute = "units/content/progress";
+                $modelRoute = "lessons/content/progress";
 
                 $itemModel = $this->model($modelRoute);
 
@@ -515,7 +515,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
         $status = $userCourseModel->switchClassInCourse(
             $data['course_id'],
-            $data['unit_id']
+            $data['lesson_id']
         );
 
         if ($status == 1) {
@@ -585,7 +585,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 return $this->invalidRequestError();
             }
 
-            //$modelRoute = "classes/units/collection";
+            //$modelRoute = "classes/lessons/collection";
 
             // $itemsCollection = $this->model($modelRoute);
             // APPLY FILTER

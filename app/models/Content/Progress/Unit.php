@@ -9,9 +9,9 @@ class Unit extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_units_progress");
+        $this->setSource("mod_lessons_progress");
 
-        $this->belongsTo("unit_id", "Sysclass\\Models\\Content\\Unit", "id",  array('alias' => 'Unit'));
+        $this->belongsTo("lesson_id", "Sysclass\\Models\\Content\\Unit", "id",  array('alias' => 'Unit'));
     }
 
     public function updateProgress() {
@@ -24,11 +24,11 @@ class Unit extends Model
             FROM Sysclass\\Models\\Courses\\Contents\\Content as c
         	LEFT JOIN Sysclass\\Models\\Content\\Progress\\Content as cp
                 ON (c.id = cp.content_id AND (user_id = ?1 OR user_id IS NULL))
-            WHERE c.unit_id = ?0 
+            WHERE c.lesson_id = ?0 
                 AND c.content_type NOT IN ('subtitle', 'poster', 'subtitle-translation')
         ";
 
-        $data = $manager->executeQuery($phql, array($this->unit_id, $this->user_id));
+        $data = $manager->executeQuery($phql, array($this->lesson_id, $this->user_id));
 
         if ($data->count() > 0) {
             $this->factor = $data[0]->factor;
@@ -39,7 +39,7 @@ class Unit extends Model
         if ($this->save()) {
 	        $log[] = array(
 	        	'type' => 'success',
-	        	'message' => sprintf('Progress for unit #%s for user #%s updated.', $this->unit_id, $this->user_id),
+	        	'message' => sprintf('Progress for unit #%s for user #%s updated.', $this->lesson_id, $this->user_id),
 	        	'status' => true,
                 'entity' => 'unit',
                 'data' => $this->toArray()
@@ -47,7 +47,7 @@ class Unit extends Model
         } else {
 	        $log[] = array(
 	        	'type' => 'error',
-	        	'message' => sprintf('Error when trying to update progress for unit #%sd for user #%s updated.', $this->unit_id, $this->user_id),
+	        	'message' => sprintf('Error when trying to update progress for unit #%sd for user #%s updated.', $this->lesson_id, $this->user_id),
 	        	'status' => false
 	        );
 

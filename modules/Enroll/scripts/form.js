@@ -116,7 +116,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                         this.$el.addClass("green-stripe");
                     }
                 }
-                //this.$el.data("unitId", this.model.get("id"));
+                //this.$el.data("lessonId", this.model.get("id"));
                 this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
 
                 if (this.$el.length) {
@@ -335,7 +335,7 @@ $SC.module("views.enroll.form", function(mod, app, Backbone, Marionette, $, _) {
                         this.$el.addClass("green-stripe");
                     }
                 }
-                //this.$el.data("unitId", this.model.get("id"));
+                //this.$el.data("lessonId", this.model.get("id"));
                 this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
 
                 if (this.$el.length) {

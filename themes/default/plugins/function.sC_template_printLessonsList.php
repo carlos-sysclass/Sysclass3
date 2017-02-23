@@ -6,15 +6,19 @@
 function smarty_function_sC_template_printUnitsList($params, &$smarty)
 {
 
+<<<<<<< HEAD
     $units_str     = '<option value = "-1">---- '._UNITS.' ----</option>';
+=======
+    $lessons_str     = '<option value = "-1">---- '._LESSONS.' ----</option>';
+>>>>>>> parent of 7cdd908... lesson complete
 
 	foreach ($params['data'] as $key => $value) {
 		for ($i = 0; $i < sizeof($params['data'][$key]); $i++) {
 			$params['selected'] == $params['data'][$key][$i]['id'] ? $selected = 'selected' : $selected = '';
-	        $units_str .=
+	        $lessons_str .=
     	    	'<option value = "'.$params['data'][$key][$i]['id'].'" '.$selected.'>'.$params['data'][$key][$i]['name'].' ('.$key.')</option>';
         }
 	}
 
-    return $units_str;
+    return $lessons_str;
 }

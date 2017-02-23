@@ -15,10 +15,10 @@ class KbaseModel extends AbstractSysclassModel implements ISyncronizableModel {
        // GET LAST MESSAGES FROM USER UNITS
        /*
         $tutorias = $this->_getTableData("mod_tutoria tt
-            LEFT OUTER JOIN units l ON (tt.units_ID = l.id)
+            LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
             LEFT OUTER JOIN users u2 ON (tt.answer_user_id = u2.id)",
-            "tt.id, tt.units_ID, tt.unit_ID, tt.title,
+            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title,
             tt.question_timestamp,
             tt.question_user_id,
             u1.name as question_user_name,
@@ -33,7 +33,7 @@ class KbaseModel extends AbstractSysclassModel implements ISyncronizableModel {
             tt.answer,
             tt.approved",
 
-            sprintf("tt.units_ID IN (0, %s) AND (tt.approved = 1 OR tt.question_user_id = %d)", implode(",", $unitsIds), $currentUser->user['id']),
+            sprintf("tt.lessons_ID IN (0, %s) AND (tt.approved = 1 OR tt.question_user_id = %d)", implode(",", $lessonsIds), $currentUser->user['id']),
             "tt.question_timestamp DESC",
             "",
             sprintf("%d, %d", ($page - 1) * $per_page, $per_page)
@@ -42,10 +42,10 @@ class KbaseModel extends AbstractSysclassModel implements ISyncronizableModel {
         $this->selectSql =
             "SELECT
                 tt.id,
-                tt.units_ID,
+                tt.lessons_ID,
                 tt.unit_ID,
                 tt.title,
-                l.id as unit_id,
+                l.id as lesson_id,
                 tt.question_user_id as 'question#user_id',
                 tt.question_timestamp as 'question#timestamp',
                 u1.name as 'question#user_name',
@@ -60,7 +60,7 @@ class KbaseModel extends AbstractSysclassModel implements ISyncronizableModel {
                 tt.answer as 'answer#answer',
                 tt.approved
             FROM mod_tutoria tt
-                LEFT OUTER JOIN mod_units l ON (tt.units_ID = l.id)
+                LEFT OUTER JOIN mod_lessons l ON (tt.lessons_ID = l.id)
                 LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
                 LEFT OUTER JOIN users u2 ON (tt.answer_user_id = u2.id)";
 

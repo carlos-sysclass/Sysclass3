@@ -97,7 +97,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div id="block_roadmap-all_units-accordion">
+                    <div id="block_roadmap-all_lessons-accordion">
                     </div>
                 </div>
             </div>

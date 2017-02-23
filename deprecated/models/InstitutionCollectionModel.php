@@ -11,7 +11,7 @@ class InstitutionCollectionModel extends AbstractSysclassModel implements ISyncr
 		//$this->fieldsMap = array();
 
 		$this->selectSql = "SELECT `id`, `name`, `formal_name`, `contact`, `observations`, `zip`, `address`, `number`, `address2`, `city`, `state`, `country_code`, `phone`, `active`, `website`, `facebook` FROM `mod_institution`";
-		//`units_ID`, `classe_id`,
+		//`lessons_ID`, `classe_id`,
  		parent::init();
 
 	}

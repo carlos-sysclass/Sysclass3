@@ -24,7 +24,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
             cl.`area_id` as 'classe#area_id',
             cl.`name` as 'classe#name',
             cl.`description` as 'classe#description',
-            COUNT(l.id) as 'classe#total_units',
+            COUNT(l.id) as 'classe#total_lessons',
             cl.`active` as 'classe#active',
             c.`id` as 'course#id',
             c.`name` as 'course#name',
@@ -36,7 +36,7 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
         FROM mod_roadmap_courses_to_classes c2c
         LEFT JOIN mod_courses c ON(c2c.course_id = c.id)
         LEFT JOIN mod_classes cl ON(c2c.class_id = cl.id)
-        LEFT JOIN mod_units l ON(cl.id = l.class_id)
+        LEFT JOIN mod_lessons l ON(cl.id = l.class_id)
         LEFT JOIN mod_roadmap_classes_to_periods clp ON(c2c.class_id = clp.class_id)
         LEFT JOIN mod_roadmap_courses_periods cp ON(clp.period_id = cp.id AND cp.course_id = c.id)";
 
@@ -93,8 +93,13 @@ class RoadmapClassesModel extends AbstractSysclassModel implements ISyncronizabl
         }
 
         // GET CLASSES
+<<<<<<< HEAD
         //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
         $data['units'] = $this->model("roadmap/units")
+=======
+        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+        $data['lessons'] = $this->model("roadmap/lessons")
+>>>>>>> parent of 7cdd908... lesson complete
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(
                 'class_id' => $data['class_id']

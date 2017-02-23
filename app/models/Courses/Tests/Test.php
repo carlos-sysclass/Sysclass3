@@ -23,7 +23,7 @@ class Test extends Model
         $this->hasManyToMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\TestQuestions",
-            "unit_id", "question_id",
+            "lesson_id", "question_id",
             "Sysclass\\Models\\Courses\\Questions\Question",
             "id",
             array('alias' => 'Questions')

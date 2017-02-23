@@ -1,4 +1,4 @@
-<div id="unit-exercises-dialog" class="modal fade" role="dialog" aria-labelledby="{translateToken value='Unit Exercises'}" aria-hidden="true">
+<div id="lesson-exercises-dialog" class="modal fade" role="dialog" aria-labelledby="{translateToken value='Unit Exercises'}" aria-hidden="true">
     <div class="modal-dialog modal-wide">
         <div class="modal-content">
 			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
@@ -23,10 +23,10 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<script type="text/template" id="tab_unit_exercises-details-template">
+<script type="text/template" id="tab_lesson_exercises-details-template">
 	
 </script>
-<script type="text/template" id="tab_unit_exercises-question-combine-template">
+<script type="text/template" id="tab_lesson_exercises-question-combine-template">
 	<h5 class="section-title">
 		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
 		<i><%= model.question %></i>
@@ -37,7 +37,7 @@
         </div>
 	</div>
 </script>
-<script type="text/template" id="tab_unit_exercises-question-true_or_false-template">
+<script type="text/template" id="tab_lesson_exercises-question-true_or_false-template">
 	<h5 class="section-title">
 		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
 		<i><%= model.question %></i>
@@ -60,7 +60,7 @@
         </div>
 	</div>
 </script>
-<script type="text/template" id="tab_unit_exercises-question-simple_choice-template">
+<script type="text/template" id="tab_lesson_exercises-question-simple_choice-template">
 	<h5 class="section-title">
 		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
 		<i><%= model.question %></i>
@@ -77,7 +77,7 @@
 		</ul>
 	</div>
 </script>
-<script type="text/template" id="tab_unit_exercises-question-multiple_choice-template">
+<script type="text/template" id="tab_lesson_exercises-question-multiple_choice-template">
 	<h5 class="section-title">
 		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
 		<i><%= model.question %></i>
@@ -94,7 +94,7 @@
 		</ul>
 	</div>
 </script>
-<script type="text/template" id="tab_unit_exercises-question-fill_blanks-template">
+<script type="text/template" id="tab_lesson_exercises-question-fill_blanks-template">
 	<h5 class="section-title">
 		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
 		<i><%= model.question %></i>
@@ -105,7 +105,7 @@
         </div>
 	</div>
 </script>
-<script type="text/template" id="tab_unit_exercises-question-free_text-template">
+<script type="text/template" id="tab_lesson_exercises-question-free_text-template">
 	<h5 class="section-title">
 		<span class="label label-primary">{translateToken value="Question"} #<%= model.model_index+1 %></span>
 		<i><%= model.question %></i>

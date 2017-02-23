@@ -4,7 +4,7 @@ class UnitsProgressmodel extends AbstractSysclassModel implements ISyncronizable
     public function init()
     {
 
-        $this->table_name = "mod_units_progress";
+        $this->table_name = "mod_lessons_progress";
         $this->id_field = "id";
         $this->mainTablePrefix = "lp";
         //$this->fieldsMap = array();
@@ -12,24 +12,24 @@ class UnitsProgressmodel extends AbstractSysclassModel implements ISyncronizable
         $this->selectSql = "SELECT
             lp.id,
             lp.user_id,
-            lp.unit_id,
+            lp.lesson_id,
             lp.factor,
             l.class_id as 'class#class_id'
-        FROM `mod_units_progress` lp
-        LEFT JOIN mod_units l ON (lp.unit_id = l.id)";
+        FROM `mod_lessons_progress` lp
+        LEFT JOIN mod_lessons l ON (lp.lesson_id = l.id)";
 
 //        $this->order = array("-lc.`position` DESC");
         parent::init();
     }
 
 
-    public function recalculateProgress($unit_id) {
+    public function recalculateProgress($lesson_id) {
         $progressAwareTypes = array('file');
 
-        $contents = $this->model("units/content")
+        $contents = $this->model("lessons/content")
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(
-                'unit_id'  => $unit_id,
+                'lesson_id'  => $lesson_id,
                 'content_type'  => $progressAwareTypes
             ))->getItems();
 
@@ -47,10 +47,10 @@ class UnitsProgressmodel extends AbstractSysclassModel implements ISyncronizable
         //if (array_sum($progressItens) == count($progressItens)) {
             $this->addOrSetItem(array(
                 'factor'        => $factor,
-                'unit_id'     => $unit_id,
+                'lesson_id'     => $lesson_id,
                 'user_id'       => $this->getUserFilter()
             ), array(
-                'unit_id'     => $unit_id,
+                'lesson_id'     => $lesson_id,
                 'user_id'       => $this->getUserFilter()
             ));
 
@@ -67,13 +67,13 @@ class UnitsProgressmodel extends AbstractSysclassModel implements ISyncronizable
 
         $items = $this->clear()->addFilter(array(
             'user_id'       => $data['user_id'],
-            'unit_id'    => $data['unit_id']
+            'lesson_id'    => $data['lesson_id']
         ))->getItems();
 
         if (count($items) > 0) {
             $result = parent::setItem($data, array(
                 'user_id'       => $data['user_id'],
-                'unit_id'    => $data['unit_id']
+                'lesson_id'    => $data['lesson_id']
             ));
 
             $progress_id = $items[0]['id'];

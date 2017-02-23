@@ -106,7 +106,7 @@
 		            </div>
 					<div class="col-md-6 col-sm-6">
 						<div class="form-group">
-							<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a class/unit instructor'}">
+							<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a class/lesson instructor'}">
 		                        	<i class="fa fa-question"></i>
 		                    </span>
 		                    <label class="control-label">{translateToken value="Can be a instructor?"}</label>

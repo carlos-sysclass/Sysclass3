@@ -1,4 +1,4 @@
-<div id="units-dialog-auto_translate" class="modal fade" role="dialog" aria-labelledby="{translateToken value='Unit Exercises'}" aria-hidden="true">
+<div id="lessons-dialog-auto_translate" class="modal fade" role="dialog" aria-labelledby="{translateToken value='Unit Exercises'}" aria-hidden="true">
     <div class="modal-dialog modal-wide">
         <div class="modal-content">
 			<form role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
@@ -30,7 +30,7 @@
 </div><!-- /.modal -->
 
 <!--
-<script type="text/template" id="tab_unit_exercises-details-template">
+<script type="text/template" id="tab_lesson_exercises-details-template">
 	
 </script>
 -->Ç

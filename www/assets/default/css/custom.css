@@ -780,7 +780,7 @@ h4.border-bottom {
     margin-top: 6px;
 }
 
-h3.course-title, h3.class-title, h3.unit-title {
+h3.course-title, h3.class-title, h3.lesson-title {
 	margin-top: 10px;
 	margin-bottom: 20px;
 }
@@ -1500,7 +1500,7 @@ ul.test-sidebar-info > li span.pull-left {
     margin-top: -1px;
 }
 
-.navbar-unit .navbar-brand {
+.navbar-lesson .navbar-brand {
     height: auto;
 }
 
@@ -1725,7 +1725,7 @@ button.calendar-news-item {
     letter-spacing: 0;
 }
 
-#unit-exercises-dialog .modal-body {
+#lesson-exercises-dialog .modal-body {
     max-height: 400px;
     overflow-y: scroll;
 }
@@ -2304,11 +2304,11 @@ a.list-group-item,
   }
 }
 
-.navbar-unit .navbar-header, .navbar-unit .navbar-nav > li {
+.navbar-lesson .navbar-header, .navbar-lesson .navbar-nav > li {
 	float: left;
 }
 
-.navbar-unit .navbar-nav.navbar-right {
+.navbar-lesson .navbar-nav.navbar-right {
     float: right !important;
     margin: 0 -15px 0 0;
 }

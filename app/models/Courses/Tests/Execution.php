@@ -27,7 +27,7 @@ class Execution extends Model
         $this->hasMany(
             "id",
             "Sysclass\\Models\\Courses\\Tests\ExecutionQuestions",
-            "unit_id", 
+            "lesson_id", 
             array('alias' => 'ExecutionQuestions')
         );
     }

@@ -92,7 +92,7 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			}
 		});
-		this.unitModelClass = Backbone.Model.extend({
+		this.lessonModelClass = Backbone.Model.extend({
 			initialize : function(opt) {
 				//this.classes = opt.classes;
 
@@ -104,9 +104,9 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			urlRoot : function() {
 				if (this.get("class_id") == 0) {
-					return "/module/courses/item/units";
+					return "/module/courses/item/lessons";
 				} else {
-					return "/module/courses/item/units/" + this.get("course_id") + "/" + this.get("class_id")
+					return "/module/courses/item/lessons/" + this.get("course_id") + "/" + this.get("class_id")
 				}
 			},
 			prev : function() {
@@ -133,13 +133,13 @@ $SC.module("models.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			defaults : {
 				course_id 	: 0,
-				unit_id 	: 0
+				lesson_id 	: 0
 			},
 			urlRoot : function() {
-				if (this.get("course_id") == 0 && this.get("unit_id") == 0) {
+				if (this.get("course_id") == 0 && this.get("lesson_id") == 0) {
 					return "/module/courses/content";
 				} else {
-					return "/module/courses/content/" + this.get("course_id") + "/" + this.get("unit_id");
+					return "/module/courses/content/" + this.get("course_id") + "/" + this.get("lesson_id");
 				}
 			}
 			// 31/106

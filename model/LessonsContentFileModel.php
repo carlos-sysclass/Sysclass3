@@ -4,7 +4,7 @@ class UnitsContentFileModel extends AbstractSysclassModel implements ISyncroniza
     public function init()
     {
 
-        $this->table_name = "mod_units_content_files";
+        $this->table_name = "mod_lessons_content_files";
         $this->id_field = null;
         $this->mainTablePrefix = "lcf";
         //$this->fieldsMap = array();
@@ -13,7 +13,7 @@ class UnitsContentFileModel extends AbstractSysclassModel implements ISyncroniza
 			SELECT
                 `content_id`,
                 `file_id`
-            FROM `mod_units_content_files` lcf
+            FROM `mod_lessons_content_files` lcf
 		";
 
         parent::init();

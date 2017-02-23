@@ -7,10 +7,10 @@ class Content extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_units_content");
+        $this->setSource("mod_lessons_content");
 
         $this->belongsTo(
-            "unit_id",
+            "lesson_id",
             "Sysclass\Models\Content\Unit",
             "id",
             array("alias" => 'Unit')

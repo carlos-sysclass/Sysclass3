@@ -11,7 +11,7 @@ function smarty_function_sC_template_printIconTable($params, &$smarty)
 	return smarty_function_sC_template_printBlock($params, $smarty);
 	/*
     $innerTableIdentifier = $GLOBALS['innerTableIdentifier'];
-    $cookieString = md5($_SESSION['s_login'].$_SESSION['s_units_ID'].$GLOBALS['innerTableIdentifier'].urlencode($params['title']));
+    $cookieString = md5($_SESSION['s_login'].$_SESSION['s_lessons_ID'].$GLOBALS['innerTableIdentifier'].urlencode($params['title']));
     $cookieValue  = $_COOKIE['innerTables'][$cookieString];
 
 	$str = '<table class = "innerTable">

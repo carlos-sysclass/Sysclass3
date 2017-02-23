@@ -777,7 +777,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		//$userPolo = $currentUser->getUserPolo();
 
 		$constraints = array('active' => true, 'return_objects' => false);
-		$constraints['required_fields'] = array('location', 'active_in_course', 'user_type', 'completed', 'score', 'has_course', 'num_units');
+		$constraints['required_fields'] = array('location', 'active_in_course', 'user_type', 'completed', 'score', 'has_course', 'num_lessons');
 		//$userCourses = $currentUser->getUserCoursesAggregatingResults($constraints);
 
 		$this->putData(array(

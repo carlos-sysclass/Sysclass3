@@ -1,11 +1,11 @@
-$SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("views.lessons.edit", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.config = $SC.module("crud.config").getConfig();
 	var entity_id = mod.config.entity_id;
 	mod.addInitializer(function() {
 
-		mod.unitFileModelClass = Backbone.Model.extend({
-			urlRoot : "/module/units/upload/" + mod.config.entity_id
+		mod.lessonFileModelClass = Backbone.Model.extend({
+			urlRoot : "/module/lessons/upload/" + mod.config.entity_id
 		});
 
 		var fileUploadWidgetViewClass = Backbone.View.extend({
@@ -14,7 +14,7 @@ $SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
 				"click .remove-file-action" : "remove"
 			},
 			initialize: function(opt) {
-				console.info('views.units.edit/fileUploadWidgetViewClass::initialize');
+				console.info('views.lessons.edit/fileUploadWidgetViewClass::initialize');
 
 				this.type = opt.type;
 				this.listenToOnce(this.model, 'change:files', this.render.bind(this));
@@ -94,7 +94,7 @@ $SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
 				});
 			},
 			addOne : function(data) {
-				console.info('views.units.edit/fileListView::addOne');
+				console.info('views.lessons.edit/fileListView::addOne');
 
 				var html = this.template(data);
 
@@ -102,7 +102,7 @@ $SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
 
 			},
 			render: function() {
-				console.info('views.units.edit/fileListView::render');
+				console.info('views.lessons.edit/fileListView::render');
 
 				var files = this.model.get("files");
 				var data = files[this.type];
@@ -113,7 +113,7 @@ $SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			remove : function(e) {
 				var fileId = $(e.currentTarget).data("fileId");
-				var fileObject = new mod.unitFileModelClass();
+				var fileObject = new mod.lessonFileModelClass();
 				fileObject.set("id", fileId);
 				fileObject.destroy();
 				$(e.currentTarget).parents("li").remove();
@@ -125,7 +125,7 @@ $SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
 
 	        mod.materialFileUploadWidgetView = new fileUploadWidgetViewClass({
 				el : "#video-file-upload-widget",
-				url : "/module/units/upload/" + mod.config.entity_id + "/video?name=files_videos",
+				url : "/module/lessons/upload/" + mod.config.entity_id + "/video?name=files_videos",
 				param_name : "files_videos",
 				singleUpload : false,
 				type: "video",
@@ -135,7 +135,7 @@ $SC.module("views.units.edit", function(mod, app, Backbone, Marionette, $, _) {
 	        /*
 	        mod.materialFileUploadWidgetView = new fileUploadWidgetViewClass({
 				el : "#material-file-upload-widget",
-				url : "/module/units/upload/" + mod.config.entity_id + "/material?name=files_materials",
+				url : "/module/lessons/upload/" + mod.config.entity_id + "/material?name=files_materials",
 				param_name : "files_materials",
 				singleUpload : false,
 				type: "material",

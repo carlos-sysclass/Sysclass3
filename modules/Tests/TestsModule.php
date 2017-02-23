@@ -837,9 +837,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /**
      * [ add a description ]
      *
-     * @Put("/items/{model}/set-order/{unit_id}")
+     * @Put("/items/{model}/set-order/{lesson_id}")
      */
-    public function setOrderRequest($model, $unit_id)
+    public function setOrderRequest($model, $lesson_id)
     {
         if ($this->isUserAllowed("edit")) {
             $data = $this->request->getPut();
@@ -852,7 +852,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
                 );
 
-                $itemModel = $this->getModelData("me", $unit_id);
+                $itemModel = $this->getModelData("me", $lesson_id);
 
                 if ($itemModel->setQuestionOrder($data['position'])) {
                     $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
@@ -876,7 +876,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /**
      * [ add a description ]
      *
-     * @Put("/items/units/set-order/{class_id}")
+     * @Put("/items/lessons/set-order/{class_id}")
      */
     public function setUnitOrderRequest($class_id)
     {

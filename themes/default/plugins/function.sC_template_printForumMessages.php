@@ -32,8 +32,8 @@ function smarty_function_sC_template_printForumMessages($params, &$smarty)
             <a title="'.$params['data'][$i]['title'].'"
 				href = '.basename($_SERVER['PHP_SELF']).'?ctg=forum&topic='.$params['data'][$i]['topic_id'].'&view_message='.$params['data'][$i]['id'].'>';
 
-        if (isset($params['data'][$i]['show_units_name'])) {
-        	$str .= "<b>".$params['data'][$i]['show_units_name'] . "</b>: ";
+        if (isset($params['data'][$i]['show_lessons_name'])) {
+        	$str .= "<b>".$params['data'][$i]['show_lessons_name'] . "</b>: ";
         }
         $str .= $title_message. '</a>
                 </td><td align = "right">#filter:user_login-'.$params['data'][$i]['users_LOGIN'].'#, ';

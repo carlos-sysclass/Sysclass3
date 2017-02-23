@@ -7,7 +7,7 @@
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
 
-			{if (isset($T_SECTION_TPL['units']) &&  ($T_SECTION_TPL['units']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Units"}</a>
 			</li>
@@ -156,10 +156,15 @@
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 			</div>
-			{if (isset($T_SECTION_TPL['units']) &&  ($T_SECTION_TPL['units']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
+<<<<<<< HEAD
 				    {foreach $T_SECTION_TPL['units'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_UNITS_BLOCK_CONTEXT T_MODULE_ID=$T_UNITS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+=======
+				    {foreach $T_SECTION_TPL['lessons'] as $template}
+				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
+>>>>>>> parent of 7cdd908... lesson complete
 				    {/foreach}
 				</div>
 			{/if}

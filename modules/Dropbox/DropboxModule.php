@@ -176,7 +176,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
             $param_name = reset(array_keys($_FILES));
         }
 
-        if (!in_array($type, array("video", "unit", "subtitle", "image", "material", "default"))) {
+        if (!in_array($type, array("video", "lesson", "subtitle", "image", "material", "default"))) {
             $type = "default";
         }
 
@@ -219,9 +219,9 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
             /*
             $filedata = (array) reset($result[$param_name]);
 
-            $filedata['unit_id'] = $id;
+            $filedata['lesson_id'] = $id;
             $filedata['upload_type'] = $type;
-            $this->model("units/files")->setVideo($filedata);
+            $this->model("lessons/files")->setVideo($filedata);
             */
         $file_result = array(
             $param_name => array()
@@ -233,7 +233,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
         if ($result[$param_name][0]->error) {
             foreach($result[$param_name] as $fileObject) {
                 $filedata = (array) $fileObject;
-                //$filedata['unit_id'] = $id;
+                //$filedata['lesson_id'] = $id;
                 $filedata['upload_type'] = $type;
 
                 $file_result[$param_name][] = $filedata;
@@ -246,7 +246,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
 
             foreach($result[$param_name] as $fileObject) {
                 $filedata = (array) $fileObject;
-                //$filedata['unit_id'] = $id;
+                //$filedata['lesson_id'] = $id;
                 $filedata['upload_type'] = $type;
                 $filedata['filename'] = $filedata['name'];
                 $filedata['owner_id'] = $this->user->id;
@@ -275,7 +275,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
 
                 switch($type) {
                     case 'subtitle' :{
-                        $result = $this->module("units")->normatizeSubtitleFile($filedata);
+                        $result = $this->module("lessons")->normatizeSubtitleFile($filedata);
 
                         if (!$result) {
                             $this->model("dropbox")->deleteItem($filedata['id']);
@@ -301,16 +301,16 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
     /**
      * [add a description]
      *
-     * @Delete("/upload/{unit_id}/{file_id}")
+     * @Delete("/upload/{lesson_id}/{file_id}")
      * @deprecated
      */
-    public function removeFilesRequest($unit_id, $file_id)
+    public function removeFilesRequest($lesson_id, $file_id)
     {
         if ($userData = $this->getCurrentUser()) {
-            $itemModel = $this->model("units/files");
+            $itemModel = $this->model("lessons/files");
 
             $files = $itemModel->clear()->addFilter(array(
-                'unit_id' => $unit_id,
+                'lesson_id' => $lesson_id,
                 'id'        => $file_id
             ))->getItems();
 

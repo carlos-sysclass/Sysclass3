@@ -147,10 +147,14 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
     public function createTestCertificate($user_id, $test_id) {
         // GET CLASS AND COURSE NAME
+<<<<<<< HEAD
         $unitTest = UnitTest::findFirstById($test_id);
+=======
+        $lessonTest = LessonTest::findFirstById($test_id);
+>>>>>>> parent of 7cdd908... lesson complete
         $user = User::findFirstById($user_id);
-        if ($unitTest && $user) {
-            $module = $unitTest->getCourse();
+        if ($lessonTest && $user) {
+            $module = $lessonTest->getCourse();
             if ($module) {
                 $course = $module->getProgram();
                 if ($course) {

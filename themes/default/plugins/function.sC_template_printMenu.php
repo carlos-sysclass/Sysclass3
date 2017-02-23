@@ -4,8 +4,8 @@
 */
 function smarty_function_sC_template_printMenu($params, &$smarty)
 {
-    //if (mb_strlen($params['unit_name']) > 23) {
-    //    $params['unit_name'] = mb_substr($params['unit_name'], 0, 20).'...';
+    //if (mb_strlen($params['lesson_name']) > 23) {
+    //    $params['lesson_name'] = mb_substr($params['lesson_name'], 0, 20).'...';
     //}
 echo "!!!!!!!!!!!!!!!!!!!!!!!";
     $str = '
@@ -25,7 +25,7 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
         function changeTDcolor(id)
         {
         alert(\'asdf\');
-            var body_tag = document.getElementsByTagName(\'body\');                 //The body tag controls the current ctg colors. i.e. body_units sets the color to ctg="units" colors
+            var body_tag = document.getElementsByTagName(\'body\');                 //The body tag controls the current ctg colors. i.e. body_lessons sets the color to ctg="lessons" colors
             body_tag[0].id = "body_"+id;
             alert(active_id + " "+ id);
                 if (active_id != id) {
@@ -61,7 +61,7 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
                 ";
         }
 
-        if ($params['ctg']=='units') {
+        if ($params['ctg']=='lessons') {
             $str .= '
                 changeTDcolor(temp_id);
                 ';
@@ -79,11 +79,11 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!";
 
     foreach ($params['menu'] as $category => $submenu) {
         switch ($category) {
-            case 'unit' : $title = $params['unit_name'];  break;
+            case 'lesson' : $title = $params['lesson_name'];  break;
             case 'general': $title = _MYOPTIONS; break;
             default: break;
         }
-        $idstr = $category == 'unit' ? 'id = "unitid" ' : '';
+        $idstr = $category == 'lesson' ? 'id = "lessonid" ' : '';
 
             $str .= '
             <tr><td '.$idstr.'align = "right" nowrap class = "horizontalSeparator">';

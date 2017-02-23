@@ -22,9 +22,9 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         $progress = CourseUsers::getUserProgress(true);
 
         foreach($progress as $progCourse) {
-            $completed += $progCourse['units']['completed'];
-            $expected += $progCourse['units']['expected'];
-            $total += $progCourse['units']['total'];
+            $completed += $progCourse['lessons']['completed'];
+            $expected += $progCourse['lessons']['expected'];
+            $total += $progCourse['lessons']['total'];
         }
 
         if ($completed > $expected) {
@@ -175,7 +175,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
             $this->putBlock("tests.info.dialog");
 
-            $this->putBlock("units.dialogs.exercises");
+            $this->putBlock("lessons.dialogs.exercises");
 
 
             $settings = $this->module("settings")->getSettings(true);
@@ -565,18 +565,22 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 				return $result;
 			}
             */
-			case 'units':
+			case 'lessons':
 			default : {
+<<<<<<< HEAD
 				$units = MagesterUnit::getUnits();
+=======
+				$lessons = MagesterLesson::getLessons();
+>>>>>>> parent of 7cdd908... lesson complete
 				if (!empty($q)) {
-					$units = sC_filterData($units, $q);
+					$lessons = sC_filterData($lessons, $q);
 				}
 				$result = array();
-				foreach($units as $unit_id => $unit) {
+				foreach($lessons as $lesson_id => $lesson) {
 					// @todo Group by course
 					$result[] = array(
-						'id'    => $unit_id,
-						'name'  => $unit['name']
+						'id'    => $lesson_id,
+						'name'  => $lesson['name']
 					);
 				}
 				return $result;
@@ -735,7 +739,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
 		$result['id']   = $id;
 		$result['course_id']   = $course_id;
-		$result['data'] = $userEntities[$id]->unit;
+		$result['data'] = $userEntities[$id]->lesson;
 		$entityIndex = array_search($id, $userEntityIDs);
 		// GETTING THE PREVIOUS COURSE
 		if ($entityIndex == 0) {
@@ -755,10 +759,10 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	/**
 	 * Get all classes from selected course
 	 *
-	 * @url GET /item/units
-	 * @url GET /item/units/:course_id
-	 * @url GET /item/units/:course_id/:class_id
-	 * @url GET /item/units/:course_id/:class_id/:id
+	 * @url GET /item/lessons
+	 * @url GET /item/lessons/:course_id
+	 * @url GET /item/lessons/:course_id/:class_id
+	 * @url GET /item/lessons/:course_id/:class_id/:id
      * @deprecated 3.0.0.19
 	 */
 	public function getUnitAction($course_id, $class_id, $id) {
@@ -799,7 +803,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		$currentClass = new MagesterUnit($class_id);
 
 		if (is_null($id)) {
-			$id = $this->module("settings")->get("unit_id");
+			$id = $this->module("settings")->get("lesson_id");
 		}
 
 		$currentContent = new MagesterContentTree($currentClass);
@@ -930,20 +934,29 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		//var_dump($currentUser->user['login']);
 		$courseStats = MagesterStats::getUsersCourseStatus($userCourses, $login);
 
+<<<<<<< HEAD
 		$userUnits = $currentUser->getUnits();
 		$unitsIds = array_keys($userUnits);
 
 		foreach($userCourses as $course) {
 			$course->course['units'] = array();
 			$units = $course->getCourseUnits(array('return_objects' => false));
+=======
+		$userLessons = $currentUser->getLessons();
+		$lessonsIds = array_keys($userLessons);
 
-			foreach($units as $unit) {
-				if (in_array($unit['id'], $unitsIds)) {
-					$unit['stats'] = $courseStats[$course->course['id']][$login]['unit_status'][$unit['id']];
-					$course->course['units'][] = $unit;
+		foreach($userCourses as $course) {
+			$course->course['lessons'] = array();
+			$lessons = $course->getCourseLessons(array('return_objects' => false));
+>>>>>>> parent of 7cdd908... lesson complete
+
+			foreach($lessons as $lesson) {
+				if (in_array($lesson['id'], $lessonsIds)) {
+					$lesson['stats'] = $courseStats[$course->course['id']][$login]['lesson_status'][$lesson['id']];
+					$course->course['lessons'][] = $lesson;
 				}
 			}
-			unset($courseStats[$course->course['id']][$login]['unit_status']);
+			unset($courseStats[$course->course['id']][$login]['lesson_status']);
 			$course->course['stats'] = $courseStats[$course->course['id']][$login];
 			$courses[] = $course->course;
 		}
@@ -962,37 +975,41 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		// SAVE COURSE AND UNIT, ON USERS SETTINGS
 		$settings = $this->module("settings")->getSettings(true);
 		//var_dump($settings);
-		return $this->getContent($settings['course_id'], $settings['unit_id'], $settings['content_id']);
+		return $this->getContent($settings['course_id'], $settings['lesson_id'], $settings['content_id']);
 	}
 
 	/**
 	 * [ add a description ]
 	 *
-	 * @url GET /content/:course/:unit
+	 * @url GET /content/:course/:lesson
      * @deprecated
 	 */
+<<<<<<< HEAD
 	public function getContentByCourseAndUnitAction($course, $unit)
+=======
+	public function getContentByCourseAndLessonAction($course, $lesson)
+>>>>>>> parent of 7cdd908... lesson complete
 	{
 		// RETURN JUST THE content ID
 		// SAVE COURSE AND UNIT, ON USERS SETTINGS
 		$this->module("settings")->put("course_id", $course);
-		$this->module("settings")->put("unit_id", $unit);
-		return $this->getContent($course, $unit, null);
+		$this->module("settings")->put("lesson_id", $lesson);
+		return $this->getContent($course, $lesson, null);
 	}
 
 	/**
 	 * [ add a description ]
 	 *
-	 * @url GET /content/:course/:unit/:content
+	 * @url GET /content/:course/:lesson/:content
      * @deprecated
 	 */
-	public function getContentAction($course, $unit, $content)
+	public function getContentAction($course, $lesson, $content)
 	{
 		$this->module("settings")->put("course_id", $course);
-		$this->module("settings")->put("unit_id", $unit);
+		$this->module("settings")->put("lesson_id", $lesson);
 		$this->module("settings")->put("content_id", $content);
 
-		return $this->getContent($course, $unit, $content);
+		return $this->getContent($course, $lesson, $content);
 	}
 
     /**
@@ -1000,10 +1017,15 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
      *
      * @deprecated
      */
-	protected function getContent($course = null, $unit = null, $content = null) {
+	protected function getContent($course = null, $lesson = null, $content = null) {
 		$currentUser    = $this->getCurrentUser(true);
+<<<<<<< HEAD
 		if (empty($unit)) {
 			// GET UNIT ID FROM COURSE
+=======
+		if (empty($lesson)) {
+			// GET LESSON ID FROM COURSE
+>>>>>>> parent of 7cdd908... lesson complete
 			if (empty($course)) {
 				// GET FIRST COURSE FROM USER
 				$userCourses = $currentUser->getUserCourses(array('return_objects' => true));
@@ -1015,16 +1037,26 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			} else {
 				$firstCourse = new MagesterCourse($course);
 			}
+<<<<<<< HEAD
 			$userUnits = $firstCourse->getCourseUnits(array('return_objects' => false));
 			reset($userUnits);
 			$unit = key($userUnits);
+=======
+			$userLessons = $firstCourse->getCourseLessons(array('return_objects' => false));
+			reset($userLessons);
+			$lesson = key($userLessons);
+>>>>>>> parent of 7cdd908... lesson complete
 
 			$this->module("settings")->put("course_id", $course);
-			$this->module("settings")->put("unit_id", $unit);
+			$this->module("settings")->put("lesson_id", $lesson);
 
 		}
 
+<<<<<<< HEAD
 		$currentUnit = new MagesterUnit($unit);
+=======
+		$currentLesson = new MagesterLesson($lesson);
+>>>>>>> parent of 7cdd908... lesson complete
 
 		$currentContent = new MagesterContentTree($currentUnit);
 		$currentContent -> markSeenNodes($currentUser);
@@ -1090,10 +1122,10 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		$unitArray['next'] = $nextNode;
 
 		$unitArray['course_id'] = $course;
-		$unitArray['unit_id'] = $unit;
+		$unitArray['lesson_id'] = $lesson;
 
 		$unitArray['sources'] = array(
-			'materials' => $this->getMaterialsSource($course, $unit, $content),
+			'materials' => $this->getMaterialsSource($course, $lesson, $content),
 		);
 
 
@@ -1108,7 +1140,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 				$unitArray['data'] = array_merge($this->getVideoDefaults(), $unitArray['data']);
 			}
 
-			$unitArray['data']['video'] = $this->getVideoSource($unit, $content);
+			$unitArray['data']['video'] = $this->getVideoSource($lesson, $content);
 		} else if ($unitArray['ctg_type'] == "tests") {
 
 			$currentTest = new MagesterTest($unitArray['id'], true);
@@ -1135,14 +1167,14 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	/**
 	 * [ add a description ]
 	 *
-	 * @url GET /materials/list/:course/:unit/:content
+	 * @url GET /materials/list/:course/:lesson/:content
      * @deprecated
 	 */
-	public function getMaterialsAction($course, $unit, $content)
+	public function getMaterialsAction($course, $lesson, $content)
 	{
 		$plico = PlicoLib::instance();
 		$basepath = realpath($plico->get("path/app") . "files");
-		$basedirpath = $basepath . sprintf("/%s/%s/materials", $unit, $content);
+		$basedirpath = $basepath . sprintf("/%s/%s/materials", $lesson, $content);
 		//$basedirpath = realpath($dirpath);
 		$folder = "";
 		if (array_key_exists('type', $_GET) && $_GET['type'] == 'folder' && array_key_exists('filename', $_GET)) {
@@ -1195,7 +1227,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			return $this->invalidRequestError();
 		}
 		exit;
-		//return $this->getContent($course, $unit, $content);
+		//return $this->getContent($course, $lesson, $content);
 	}
 
     /**
@@ -1203,10 +1235,10 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
      *
      * @deprecated
      */
-	public function getVideoSource($unit, $content)
+	public function getVideoSource($lesson, $content)
 	{
-		$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $unit, $content);
-		$urlRoot = sprintf("/files/%s/%s/video/", $unit, $content);
+		$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $lesson, $content);
+		$urlRoot = sprintf("/files/%s/%s/video/", $lesson, $content);
 		// TODO CREATE A WAY TO QUERY FROM THE SELECTED BACKEND (file, dropdbox, etc.)
 		$plico = PlicoLib::instance();
 
@@ -1250,10 +1282,10 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
      *
      * @deprecated
      */
-	public function getMaterialsSource($course, $unit, $content)
+	public function getMaterialsSource($course, $lesson, $content)
 	{
-		//$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $unit, $content);
-		$urlRoot = sprintf("/module/courses/materials/list/%s/%s/%s", $course, $unit, $content);
+		//$urlRoot = sprintf("http://aulas.sysclass.com/layout/%s/%s/", $lesson, $content);
+		$urlRoot = sprintf("/module/courses/materials/list/%s/%s/%s", $course, $lesson, $content);
 		return $urlRoot;
 	}
 

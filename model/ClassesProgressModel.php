@@ -25,7 +25,7 @@ class ClassesProgressmodel extends AbstractSysclassModel implements ISyncronizab
     public function recalculateProgress($class_id) {
         //$progressAwareTypes = array('file');
 
-        $contents = $this->model("units")
+        $contents = $this->model("lessons")
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(
                 'class_id'  => $class_id

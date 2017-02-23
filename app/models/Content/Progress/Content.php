@@ -9,7 +9,7 @@ class Content extends Model
     public $updateLog = "";
     public function initialize()
     {
-        $this->setSource("mod_units_content_progress");
+        $this->setSource("mod_lessons_content_progress");
 
 
         $this->belongsTo("content_id", "Sysclass\\Models\\Courses\\Contents\\Content", "id",  array('alias' => 'Content'));
@@ -75,19 +75,19 @@ class Content extends Model
         // 
         $content = $this->getContent();
 
-        $unitProgress = UnitProgress::findFirst(array(
-            'conditions' => 'user_id = ?0 AND unit_id = ?1',
-            'bind' => array($this->user_id, $content->unit_id)
+        $lessonProgress = UnitProgress::findFirst(array(
+            'conditions' => 'user_id = ?0 AND lesson_id = ?1',
+            'bind' => array($this->user_id, $content->lesson_id)
         ));
 
-        if (!$unitProgress) {
-            $unitProgress = new UnitProgress();
-            $unitProgress->user_id = $this->user_id;
-            $unitProgress->unit_id = $content->unit_id;
-            $unitProgress->save();
+        if (!$lessonProgress) {
+            $lessonProgress = new UnitProgress();
+            $lessonProgress->user_id = $this->user_id;
+            $lessonProgress->lesson_id = $content->lesson_id;
+            $lessonProgress->save();
         }
 
-        $messages = $unitProgress->updateProgress();
+        $messages = $lessonProgress->updateProgress();
 
 
         $messages[] = array(

@@ -76,7 +76,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         defaults : function() {
             return {
                 id              : null,
-                unit_id       : null,
+                lesson_id       : null,
                 content_type    : null,
                 title           : '',
                 info            : '',
@@ -189,7 +189,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 translate : function(to, callback) {
                     if (!_.isEmpty(this.get("locale_code"))) {
                         $.ajax(
-                            "/module/units/translate/" + this.get("id") + "?silent=1",
+                            "/module/lessons/translate/" + this.get("id") + "?silent=1",
                             {
                                 data: {
                                     from: this.get("locale_code"),
@@ -262,11 +262,11 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
             },
             collection : baseNavigableCollection.extend({
                 initialize: function(data, opt) {
-                    if (_.has(opt, 'unit_id')) {
-                        this.unit_id = opt.unit_id;
+                    if (_.has(opt, 'lesson_id')) {
+                        this.lesson_id = opt.lesson_id;
                     }
                     this.listenTo(this, "add", function(model, collection, opt) {
-                        model.set("unit_id", this.unit_id);
+                        model.set("lesson_id", this.lesson_id);
                         // SET POSITION
                     });
                     this.listenTo(this, "remove", function(model, collection, opt) {
@@ -284,8 +284,8 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                     });
                 },
                 url: function() {
-                    return "/module/units/items/unit-content/default/" + JSON.stringify({
-                        'unit_id' : this.unit_id
+                    return "/module/lessons/items/lesson-content/default/" + JSON.stringify({
+                        'lesson_id' : this.lesson_id
                     });
                 },
                 model: function(attrs, options) {
@@ -303,11 +303,11 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                             }));
 
                         } else if (attrs.content_type == "text") {
-                            return new unitTextContentModelClass(attrs, _.extend(options, {
+                            return new lessonTextContentModelClass(attrs, _.extend(options, {
                                 collection: this,
                             }));
                         } else if (attrs.content_type == "exercise") {
-                            return new unitExerciseContentModelClass(attrs, _.extend(options, {
+                            return new lessonExerciseContentModelClass(attrs, _.extend(options, {
                                 collection: this,
                             }));
                         } else if (attrs.content_type == "poster") {
@@ -323,7 +323,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 },
                 setContentOrder : function(order) {
                     $.ajax(
-                        "/module/units/items/unit-content/set-order/" + this.unit_id,
+                        "/module/lessons/items/lesson-content/set-order/" + this.lesson_id,
                         {
                             data: {
                                 position: order
@@ -334,7 +334,7 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 },
                 addVideoContent(attrs, callback) {
                     var model = new models.content.item.video(_.extend(attrs, {
-                        unit_id : this.unit_id
+                        lesson_id : this.lesson_id
                     }));
                     model.save(null, {
                         success : function(model) {

@@ -27,7 +27,7 @@
 		</div>
 		<div class="portfolio-info">
 			Total Units
-			<span>{$course.num_units}</span>
+			<span>{$course.num_lessons}</span>
 		</div>
 		<div class="portfolio-info">
 			Score

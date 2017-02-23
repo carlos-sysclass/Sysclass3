@@ -171,7 +171,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
             model.set("course_id", mod.course_id);
             model.set("name", data['name']);
-            model.set("unit_id", data['id']);
+            model.set("lesson_id", data['id']);
 
             var self = this;
 
@@ -419,7 +419,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             self.$("#block_roadmap-accordion").append(courseRoadmapTabSeasonView.render().el);
         },
         addClass : function(classModel) {
-            //self.$("#block_roadmap-all_units-accordion").empty().append(this.courseRoadmapTabNoSeasonView.render().el);
+            //self.$("#block_roadmap-all_lessons-accordion").empty().append(this.courseRoadmapTabNoSeasonView.render().el);
         },
         render : function() {
             console.info('blocks.roadmap/courseRoadmapTabViewClass::render');
@@ -455,7 +455,7 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
 
                 this.noSeasonModel.set("classes", noSeasonClasses);
 
-                self.$("#block_roadmap-all_units-accordion").empty().append(this.courseRoadmapTabNoSeasonView.render().el);
+                self.$("#block_roadmap-all_lessons-accordion").empty().append(this.courseRoadmapTabNoSeasonView.render().el);
 
             }
         }

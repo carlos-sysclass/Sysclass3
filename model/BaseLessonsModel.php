@@ -1,11 +1,11 @@
 <?php
 class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableModel {
 
-    protected $unit_type = FALSE;
+    protected $lesson_type = FALSE;
 
     public function init()
     {
-        $this->table_name = "mod_units";
+        $this->table_name = "mod_lessons";
         $this->id_field = "id";
         $this->mainTablePrefix = "l";
         //$this->fieldsMap = array();
@@ -15,7 +15,7 @@ class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableMode
             l.id, l.class_id, c.name as class, l.name, l.info, l.active, l.`type`,
             l.`has_text_content`, l.`text_content`, l.`text_content_language_id`, l.`has_video_content`,
             l.instructor_id as instructor_id
-        FROM mod_units l
+        FROM mod_lessons l
         LEFT JOIN mod_classes c ON (c.id = l.class_id)";
 
         $this->order = array("-l.position DESC");
@@ -43,8 +43,8 @@ class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableMode
 
     public function getItems()
     {
-        if ($this->unit_type !== FALSE) {
-            $this->where[] = "l.type = '{$this->unit_type}'";
+        if ($this->lesson_type !== FALSE) {
+            $this->where[] = "l.type = '{$this->lesson_type}'";
         }
 
         $data = parent::getItems();
@@ -58,8 +58,8 @@ class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableMode
 
     public function getItem($identifier)
     {
-        if ($this->unit_type !== FALSE) {
-            $this->where[] = "l.type = '{$this->unit_type}'";
+        if ($this->lesson_type !== FALSE) {
+            $this->where[] = "l.type = '{$this->lesson_type}'";
         }
 
         $item = parent::getItem($identifier);
@@ -69,8 +69,8 @@ class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableMode
 
     public function addItem($data)
     {
-        if ($this->unit_type !== FALSE) {
-            $data['type'] = $this->unit_type;
+        if ($this->lesson_type !== FALSE) {
+            $data['type'] = $this->lesson_type;
         }
         //$data['instructor_id'] = json_encode($data['instructor_id']);
         return parent::addItem($data, $identifier);
@@ -78,8 +78,8 @@ class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableMode
 
     public function setItem($data, $identifier)
     {
-        if ($this->unit_type !== FALSE) {
-            $data['type'] = $this->unit_type;
+        if ($this->lesson_type !== FALSE) {
+            $data['type'] = $this->lesson_type;
         }
         //if (array_key_exists('instructor_id', $data)) {
         //    $data['instructor_id'] = json_encode($data['instructor_id']);
@@ -97,11 +97,11 @@ class BaseUnitsModel extends AbstractSysclassModel implements ISyncronizableMode
 
     public function setOrder($class_id, array $order_ids) {
         $this->resetOrder($class_id);
-        foreach($order_ids as $index => $unit_id) {
+        foreach($order_ids as $index => $lesson_id) {
             $this->setItem(array(
                 'position' => $index + 1
             ), array(
-                'id' => $unit_id,
+                'id' => $lesson_id,
                 'class_id' => $class_id
             ));
         }

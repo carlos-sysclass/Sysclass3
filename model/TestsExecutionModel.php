@@ -76,6 +76,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
 
+<<<<<<< HEAD
         $unitProgress = UnitProgress::findFirst(array(
             'conditions' => 'user_id = ?0 and unit_id = ?1',
             'bind' => array($test_try['user_id'], $test_try['test_id'])
@@ -86,22 +87,34 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             $unitProgress->factor = 0;
             $unitProgress->user_id = $test_try['user_id'];
             $unitProgress->unit_id = $test_try['test_id'];
+=======
+        $lessonProgress = LessonProgress::findFirst(array(
+            'conditions' => 'user_id = ?0 and lesson_id = ?1',
+            'bind' => array($test_try['user_id'], $test_try['test_id'])
+        ));
+
+        if (!$lessonProgress) {
+            $lessonProgress = new LessonProgress();
+            $lessonProgress->factor = 0;
+            $lessonProgress->user_id = $test_try['user_id'];
+            $lessonProgress->lesson_id = $test_try['test_id'];
+>>>>>>> parent of 7cdd908... lesson complete
         }
 
         if ($pass) {
             // COMPLETE UNIT
-            $unitProgress->factor = 1;
+            $lessonProgress->factor = 1;
         } else {
-            if ($unitProgress->factor != 1) {
-                $unitProgress->factor = 0;
+            if ($lessonProgress->factor != 1) {
+                $lessonProgress->factor = 0;
             }
         }
-        $unitProgress->save();
-        $unit = $unitProgress->getUnit();
+        $lessonProgress->save();
+        $unit = $lessonProgress->getUnit();
 
         $classProgress = ClasseProgress::findFirst(array(
             'conditions' => 'user_id = ?0 AND class_id = ?1',
-            'bind' => array($unitProgress->user_id, $unit->class_id)
+            'bind' => array($lessonProgress->user_id, $unit->class_id)
         ));
 
         if (!$classProgress) {
@@ -147,7 +160,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
 
             $questionsData = $questionModel->addFilter(array(
-                'unit_id' => $executionData['test_id']
+                'lesson_id' => $executionData['test_id']
             ))->getItems();
 
             $testPoints = 0;

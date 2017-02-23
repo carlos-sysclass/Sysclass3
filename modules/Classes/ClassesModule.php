@@ -110,7 +110,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
-                $self->putModuleScript("blocks.classes.units.edit");
+                $self->putModuleScript("blocks.classes.lessons.edit");
 
                 $self->putSectionTemplate("units", "blocks/units.edit");
 
@@ -298,7 +298,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @Put("/items/units/set-order/{class_id}")
+     * @Put("/items/lessons/set-order/{class_id}")
      */
     public function setUnitOrderRequest($class_id)
     {

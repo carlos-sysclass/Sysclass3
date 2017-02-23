@@ -1008,7 +1008,7 @@ _before_init_functions.push(function() {
   <!-- Opções -->
   <!-- <td><button type="button" class="btn btn-primary">FAZER</button></td> -->
 	<!--
-	<td><a href="javascript:void(0)" class="unit-change-action"><%= model.name %></a></td>
+	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
@@ -1250,7 +1250,7 @@ _before_init_functions.push(function() {
 <script type="text/template" id="tab_unit_video-nofound-template">
   <div class="alert alert-info">
     <span class="text-info"><i class="icon-warning-sign"></i></span>
-    {translateToken value="There's no content for this unit"}
+    {translateToken value="There's no content for this lesson"}
   </div>
 </script>
 <script type="text/template" id="tab_unit_video-item-template">

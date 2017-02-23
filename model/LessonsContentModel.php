@@ -7,7 +7,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
     public function init()
     {
 
-        $this->table_name = "mod_units_content";
+        $this->table_name = "mod_lessons_content";
         $this->id_field = "id";
         $this->mainTablePrefix = "lc";
         //$this->fieldsMap = array();
@@ -15,7 +15,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
         $this->selectSql = "
             SELECT
                 lc.`id`,
-                lc.`unit_id`,
+                lc.`lesson_id`,
                 lc.`parent_id`,
                 lc.`content_type`,
                 lc.`title`,
@@ -32,8 +32,8 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
                 lf.size as 'file#size',
                 lf.url as 'file#url',
                 lf.active as 'file#active'
-            FROM `mod_units_content` lc
-            LEFT JOIN `mod_units_content_files` lcf ON (lc.id = lcf.content_id)
+            FROM `mod_lessons_content` lc
+            LEFT JOIN `mod_lessons_content_files` lcf ON (lc.id = lcf.content_id)
             LEFT JOIN `mod_dropbox` lf ON (lf.id = lcf.file_id)
 		";
 
@@ -50,14 +50,14 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
 
         if ($item['content_type'] == 'exercise') {
             // LOAD QUESTIONS
-            $innerModel = $this->model("units/content/exercise");
+            $innerModel = $this->model("lessons/content/exercise");
             $item['exercise'] = $innerModel->clear()->addFilter(array(
                 'content_id' => $item['id']
             ))->getItems();
         }
 
         if ($this->getUserFilter()) {
-            $progress = $this->model("units/content/progress")->clear()->addFilter(array(
+            $progress = $this->model("lessons/content/progress")->clear()->addFilter(array(
                 'user_id'       => $this->getUserFilter(),
                 'content_id'    => $item['id']
             ))->getItems();
@@ -92,7 +92,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
 
         if ($item['content_type'] == 'exercise') {
             // LOAD QUESTIONS
-            $innerModel = $this->model("units/content/exercise");
+            $innerModel = $this->model("lessons/content/exercise");
             $item['exercise'] = $innerModel->clear()->addFilter(array(
                 'content_id' => $item['id']
             ))->getItems();
@@ -106,7 +106,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
         foreach($data as $key => $item) {
             if ($item['content_type'] == 'exercise') {
                 // LOAD QUESTIONS
-                $innerModel = $this->model("units/content/exercise");
+                $innerModel = $this->model("lessons/content/exercise");
                 $data[$key]['exercise'] = $innerModel->addFilter(array(
                     'content_id' => $item['id']
                 ))->getItems();
@@ -123,7 +123,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
             $type = "file";
         }
         if (in_array($type, array('file', 'text', 'exercise')) && array_key_exists($type, $data)) {
-            $innerModel = $this->model("units/content/" . $type);
+            $innerModel = $this->model("lessons/content/" . $type);
 
             if ($type == "file") {
                 $innerData = array(
@@ -154,7 +154,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
         //
         /*
         if (floatval($data['progress']) >= 1) {
-            $this->model("units")->recalculateProgress($data['unit_id']);
+            $this->model("lessons")->recalculateProgress($data['lesson_id']);
         }
         */
 
@@ -163,7 +163,7 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
             $type = "file";
         }
         if (in_array($type, array('file', 'text', 'exercise')) && array_key_exists($type, $data)) {
-            $innerModel = $this->model("units/content/" . $type);
+            $innerModel = $this->model("lessons/content/" . $type);
 
             if ($type == "file") {
                 /*
@@ -194,23 +194,23 @@ class UnitsContentModel extends AbstractSysclassModel implements ISyncronizableM
         return $identifier;
     }
 
-    protected function resetContentOrder($unit_id) {
+    protected function resetContentOrder($lesson_id) {
         $this->setItem(array(
             'position' => -1
         ), array(
-            'unit_id' => $unit_id
+            'lesson_id' => $lesson_id
         ));
     }
 
-    public function setContentOrder($unit_id, array $order_ids) {
-        $this->resetContentOrder($unit_id);
+    public function setContentOrder($lesson_id, array $order_ids) {
+        $this->resetContentOrder($lesson_id);
 
         foreach($order_ids as $index => $content_id) {
             $this->setItem(array(
                 'position' => $index + 1
             ), array(
                 'id' => $content_id,
-                'unit_id' => $unit_id
+                'lesson_id' => $lesson_id
             ));
         }
 

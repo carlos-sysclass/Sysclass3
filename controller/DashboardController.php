@@ -20,9 +20,9 @@ class DashboardController extends \AbstractSysclassController
 
         //Create shorthands for user type, to avoid long variable names
         $_student_ = $_professor_ = $_admin_ = 0;
-        if ((isset($_SESSION['s_unit_user_type']) && $_SESSION['s_unit_user_type'] == 'user') || (!isset($_SESSION['s_unit_user_type']) && $_SESSION['s_type'] == 'user')) {
+        if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'user') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'user')) {
             $_student_ = 1;
-        } elseif ((isset($_SESSION['s_unit_user_type']) && $_SESSION['s_unit_user_type'] == 'instructor') || (!isset($_SESSION['s_unit_user_type']) && $_SESSION['s_type'] == 'instructor')) {
+        } elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'instructor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'instructor')) {
             $_professor_ = 1;
         } else {
             $_admin_ = 1;

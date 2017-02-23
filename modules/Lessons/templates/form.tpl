@@ -6,7 +6,7 @@
 			<li class="active">
 				<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
 			</li>
-			{if (isset($T_SECTION_TPL['units_content']) &&  ($T_SECTION_TPL['units_content']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
 					<i class="fa fa-dropbox"></i>
@@ -14,12 +14,12 @@
 				</a>
 			</li>
 			{/if}
-			{if (isset($T_SECTION_TPL['units_content_text']) &&  ($T_SECTION_TPL['units_content_text']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
 			<li>
 				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Text content"}</a>
 			</li>
 			{/if}
-			{if (isset($T_SECTION_TPL['units_content_video']) &&  ($T_SECTION_TPL['units_content_video']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
 			<li>
 				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Video content"}</a>
 			</li>
@@ -64,23 +64,23 @@
 				</form>
 			</div>
 
-			{if (isset($T_SECTION_TPL['units_content']) &&  ($T_SECTION_TPL['units_content']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-				    {foreach $T_SECTION_TPL['units_content'] as $template}
+				    {foreach $T_SECTION_TPL['lessons_content'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>
 			{/if}
-			{if (isset($T_SECTION_TPL['units_content_text']) &&  ($T_SECTION_TPL['units_content_text']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content_text']) &&  ($T_SECTION_TPL['lessons_content_text']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_3">
-				    {foreach $T_SECTION_TPL['units_content_text'] as $template}
+				    {foreach $T_SECTION_TPL['lessons_content_text'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>
 			{/if}
-			{if (isset($T_SECTION_TPL['units_content_video']) &&  ($T_SECTION_TPL['units_content_video']|@count > 0))}
+			{if (isset($T_SECTION_TPL['lessons_content_video']) &&  ($T_SECTION_TPL['lessons_content_video']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_4">
-				    {foreach $T_SECTION_TPL['units_content_video'] as $template}
+				    {foreach $T_SECTION_TPL['lessons_content_video'] as $template}
 				        {include file=$template}
 				    {/foreach}
 				</div>
@@ -108,7 +108,7 @@
 
 
 <!--
-<a id="teste" href="http://local.beta.sysclass.com/files/units/1/video/login-background%20%2822%29.mp4" class="btn btn-default" data-toggle="modal" data-target="#filemodal">VIDEO</a>
+<a id="teste" href="http://local.beta.sysclass.com/files/lessons/1/video/login-background%20%2822%29.mp4" class="btn btn-default" data-toggle="modal" data-target="#filemodal">VIDEO</a>
 
 <div class="modal fade" id="filemodal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
   <div class="modal-dialog">

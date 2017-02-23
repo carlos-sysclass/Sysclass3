@@ -1,4 +1,4 @@
-$SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _) {
+$SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $, _) {
 	// MODELS
 	this.startWithParent = false;
 
@@ -13,14 +13,14 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 	    	tagName : "li",
 	    	className : "list-file-item blue-stripe",
 			initialize: function(opt) {
-				console.info('blocks.classes.units/baseClassItemViewClass::initialize');
+				console.info('blocks.classes.lessons/baseClassItemViewClass::initialize');
 
 				this.opened = opt.opened ? opt.opened : false;
 
 				this.listenTo(this.model, 'sync', this.render.bind(this));
 			},
 			render : function() {
-				console.info('blocks.classes.units/baseClassItemViewClass::render');
+				console.info('blocks.classes.lessons/baseClassItemViewClass::render');
 				this.$el.html(this.template(this.model.toJSON()));
 				if (this.model.get("id")) {
 					if (this.model.get("active") == 0) {
@@ -33,8 +33,8 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 						this.$el.addClass("green-stripe");
 					}
 				}
-				//this.$el.data("unitId", this.model.get("id"));
-				this.$el.attr("data-unit-id", this.model.get("id"));
+				//this.$el.data("lessonId", this.model.get("id"));
+				this.$el.attr("data-lesson-id", this.model.get("id"));
 
 				if (this.$el.length) {
 					app.module("ui").refresh(this.$el);
@@ -68,7 +68,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			        if (!self.model.get("id")) {
 			        	var response = params.response;
 			        	self.model.set(response);
-			        	self.trigger("unit:added", self.model);
+			        	self.trigger("lesson:added", self.model);
 			        	self.render();
 			        }
 			        */
@@ -98,13 +98,18 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			delete: function() {
 				this.remove();
 				this.model.destroy();
-				this.trigger("unit:removed", this.model);
+				this.trigger("lesson:removed", this.model);
 				this.trigger("view:removed");
 			}
 	    });
 
+<<<<<<< HEAD
 		var classUnitItemViewClass = baseClassItemViewClass.extend({
 	    	template : _.template($("#class-unit-item-template").html(), null, {variable: 'model'})
+=======
+		var classLessonItemViewClass = baseClassItemViewClass.extend({
+	    	template : _.template($("#class-lesson-item-template").html(), null, {variable: 'model'})
+>>>>>>> parent of 7cdd908... lesson complete
 		});
 		var classTestItemViewClass = baseClassItemViewClass.extend({
 	    	template : _.template($("#class-test-item-template").html(), null, {variable: 'model'}),
@@ -115,11 +120,19 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 
 		mod.classUnitsViewClass = Backbone.View.extend({
 			events : {
+<<<<<<< HEAD
 				"click .add-unit-action" : "addUnitItem",
 				"click .add-test-action" : "addTestItem"
 			},
 			initialize: function(opt) {
 				console.info('blocks.classes.units.edit/classUnitsView::initialize');
+=======
+				"click .add-lesson-action" : "addLessonItem",
+				"click .add-test-action" : "addTestItem"
+			},
+			initialize: function(opt) {
+				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
+>>>>>>> parent of 7cdd908... lesson complete
 
 				//this.param = opt.param;
 				//
@@ -146,7 +159,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 	                forcePlaceholderSize: true,
 	                tolerance: "intersect",
                     update : function( event, ui ) {
-                        var contentOrder = $(this).sortable("toArray", {attribute : "data-unit-id"});
+                        var contentOrder = $(this).sortable("toArray", {attribute : "data-lesson-id"});
 
                         self.collection.setContentOrder(contentOrder);
 
@@ -213,7 +226,11 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
                 });
             },
             refreshCounters : function() {
+<<<<<<< HEAD
                 console.info('blocks.classes.units.edit/classUnitsViewClass::refreshCounters');
+=======
+                console.info('blocks.classes.lessons.edit/classLessonsViewClass::refreshCounters');
+>>>>>>> parent of 7cdd908... lesson complete
                 var total = this.collection.size();
                 //alert(total);
                 this.$("ul > li.list-file-item .total").html(total);
@@ -230,7 +247,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			addUnitItem : function(e) {
 				var self = this;
 
-				var itemModel = new mod.models.unit({
+				var itemModel = new mod.models.lesson({
 					active : 1
 				});
 
@@ -243,11 +260,19 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 
 				$(classUnitsNewItemView.render().el).appendTo( this.$("ul") );
 				/*
+<<<<<<< HEAD
 				this.listenTo(classUnitsNewItemView, "unit:added", function(model) {
 					self.collection.add(model);
 					model.save();
 				});
 				this.listenTo(classUnitsNewItemView, "unit:removed", function(model) {
+=======
+				this.listenTo(classLessonsNewItemView, "lesson:added", function(model) {
+					self.collection.add(model);
+					model.save();
+				});
+				this.listenTo(classLessonsNewItemView, "lesson:removed", function(model) {
+>>>>>>> parent of 7cdd908... lesson complete
 					self.collection.remove(model);
 				});
 				*/
@@ -277,13 +302,22 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
  			},
 
 			addOne : function(model) {
+<<<<<<< HEAD
 				console.info('blocks.classes.units.edit/classUnitsView::addOne');
+=======
+				console.info('blocks.classes.lessons.edit/classLessonsView::addOne');
+>>>>>>> parent of 7cdd908... lesson complete
 
 				var self = this;
 				var classItemView = null;
 
+<<<<<<< HEAD
 				if (model.get("type") == "unit") {
 					classItemView = new classUnitItemViewClass({
+=======
+				if (model.get("type") == "lesson") {
+					classItemView = new classLessonItemViewClass({
+>>>>>>> parent of 7cdd908... lesson complete
 						model : model
 					});
 				} else if (model.get("type") == "test") {
@@ -292,7 +326,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 					});
 				}
 				if (!_.isNull(classItemView)) {
-					this.listenTo(classItemView, "unit:removed", function(model) {
+					this.listenTo(classItemView, "lesson:removed", function(model) {
 						self.collection.remove(model);
 					});
 					$(classItemView.render().el).appendTo( this.$("ul") );
@@ -303,7 +337,11 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 				}
 			},
 			render: function() {
+<<<<<<< HEAD
 				console.info('blocks.classes.units.edit/classUnitsView::render');
+=======
+				console.info('blocks.classes.lessons.edit/classLessonsView::render');
+>>>>>>> parent of 7cdd908... lesson complete
 
 				var self = this;
 
@@ -319,7 +357,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			}/*,
 			remove : function(e) {
 				var fileId = $(e.currentTarget).data("fileId");
-				var fileObject = new mod.unitFileModelClass();
+				var fileObject = new mod.lessonFileModelClass();
 				fileObject.set("id", fileId);
 				fileObject.destroy();
 				$(e.currentTarget).parents("li").remove();
@@ -327,7 +365,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 			*/
 		});
 
-		$("[data-widget-id='units-edit-widget']").each(function() {
+		$("[data-widget-id='lessons-edit-widget']").each(function() {
             var class_id = null;
             if (_.isEmpty($(this).data("classId"))) {
                 // LOAD COURSE MODEL TO BY-PASS
@@ -347,29 +385,34 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
     });
 
     mod.createBlock = function(el, data) {
-		var unitsCollection = new mod.collections.unit(null, {
+		var lessonsCollection = new mod.collections.lesson(null, {
 			class_id : data.class_id
 		});
 
+<<<<<<< HEAD
 		var classUnitsView = new mod.classUnitsViewClass({
 			collection : unitsCollection,
+=======
+		var classLessonsView = new mod.classLessonsViewClass({
+			collection : lessonsCollection,
+>>>>>>> parent of 7cdd908... lesson complete
 			el : el,
             model : data.entityModel
 		});
 
-		unitsCollection.fetch();
+		lessonsCollection.fetch();
     };
 
     this.models = {
-    	unit : Backbone.Model.extend({
+    	lesson : Backbone.Model.extend({
     		defaults : {
-    			type : "unit"
+    			type : "lesson"
     		},
 			urlRoot : function() {
 				if (this.get("id")) {
-					return "/module/units/item/me";
+					return "/module/lessons/item/me";
 				} else {
-					return "/module/units/item/me?redirect=0";
+					return "/module/lessons/item/me?redirect=0";
 				}
 			}
 		}),
@@ -388,7 +431,7 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
     };
 
     this.collections = {
-    	unit : Backbone.Collection.extend({
+    	lesson : Backbone.Collection.extend({
 	        initialize: function(data, opt) {
 	            this.class_id = opt.class_id;
 	            this.on("add", function(model, collection, opt) {
@@ -400,18 +443,18 @@ $SC.module("blocks.classes.units", function(mod, app, Backbone, Marionette, $, _
 
 	        },
 	        model : function(info) {
-	        	if (info.type == 'unit') {
-	        		return new mod.models.unit(info);
+	        	if (info.type == 'lesson') {
+	        		return new mod.models.lesson(info);
 	        	} else if (info.type == 'test') {
 	        		return new mod.models.test(info);
 	        	}
 	        },
 	        url: function() {
-	            return "/module/units/items/unit-and-test/default/" + JSON.stringify({ class_id : this.class_id, type : ['test','unit'] });
+	            return "/module/lessons/items/lesson-and-test/default/" + JSON.stringify({ class_id : this.class_id, type : ['test','lesson'] });
 	        },
 	        setContentOrder : function(order) {
 	            $.ajax(
-	                "/module/classes/items/units/set-order/" + this.class_id,
+	                "/module/classes/items/lessons/set-order/" + this.class_id,
 	                {
 	                    data: {
 	                        position: order

@@ -7,7 +7,7 @@ class ContentFile extends Model
 {
     public function initialize()
     {
-        $this->setSource("mod_units_content_files");
+        $this->setSource("mod_lessons_content_files");
 
         $this->belongsTo(
             "content_id",

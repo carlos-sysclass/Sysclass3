@@ -424,7 +424,7 @@ $SC.module("dialogs.storage.library", function(mod, app, Backbone, Marionette, $
 
 
                   result.push(new modelClass({
-                    //upload_type : "unit"
+                    //upload_type : "lesson"
                     name : node.original.text,
                     filename : node.original.url,
                     //url : node.original.full_url,

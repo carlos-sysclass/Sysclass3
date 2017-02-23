@@ -11,7 +11,7 @@ class GradesGroupsCollectionModel extends AbstractSysclassModel implements ISync
         $this->mainTablePrefix = "gg";
         //$this->fieldsMap = array();
 
-        $this->selectSql = "SELECT id, unit_id, class_id, name, description, active FROM mod_grades_groups gg";
+        $this->selectSql = "SELECT id, lesson_id, class_id, name, description, active FROM mod_grades_groups gg";
 
         parent::init();
 

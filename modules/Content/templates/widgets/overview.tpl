@@ -100,7 +100,7 @@ _before_init_functions.push(function() {
             </div>
             <div role="tabpanel" class="tab-pane active" id="profile">
               <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="http://itaipu.sysclass.com/files/default/Thumbnail%20%288%29.png" data-setup="{}">
-                <source src="http://itaipu.sysclass.com/files/unit/3.1-Processo%20de%20Aquisicao%20%20Judite.mp4" type='video/mp4'>
+                <source src="http://itaipu.sysclass.com/files/lesson/3.1-Processo%20de%20Aquisicao%20%20Judite.mp4" type='video/mp4'>
                 <source src="MY_VIDEO.webm" type='video/webm'>
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -170,7 +170,7 @@ _before_init_functions.push(function() {
 						</div>
 					</a>
 				</li>
-				<li class="the-unit-tab active">
+				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#unit-tab">
 						<div class="nav-title">
 							<span class="tab-title">
@@ -186,7 +186,7 @@ _before_init_functions.push(function() {
 			<div class="tab-content">
 				<div id="program-tab" class="tab-pane">
 					<div class="clearfix"></div>
-					<div class="navbar navbar-default navbar-unit" role="navigation">
+					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<!--
 							<a href="#" class="navbar-brand disabled">
@@ -302,7 +302,7 @@ _before_init_functions.push(function() {
 				</div>
 				<div id="course-tab" class="tab-pane">
 
-					<div class="navbar navbar-default navbar-unit" role="navigation">
+					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<!--
 							<a href="#" class="navbar-brand disabled">
@@ -555,7 +555,7 @@ _before_init_functions.push(function() {
 					</div>
 				</div>
 				<div id="unit-tab" class="tab-pane active">
-					<div class="navbar navbar-default navbar-unit" role="navigation">
+					<div class="navbar navbar-default navbar-lesson" role="navigation">
 						<div class="navbar-header">
 							<!--
 							<a href="#" class="navbar-brand disabled">
@@ -620,7 +620,7 @@ _before_init_functions.push(function() {
 							</li> -->
 							<!--
 							<li class="">
-								<a data-toggle="tab" href="#tab_unit_search"><i class="icon-search"></i> Search</a>
+								<a data-toggle="tab" href="#tab_lesson_search"><i class="icon-search"></i> Search</a>
 							</li>
 							-->
 						</ul>
@@ -664,7 +664,7 @@ _before_init_functions.push(function() {
 							   	</div>
 						   	</div> -->
 						   	<!--
-						   	<div id="tab_unit_search" class="tab-pane">
+						   	<div id="tab_lesson_search" class="tab-pane">
 						   		<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 							   		<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
@@ -877,7 +877,7 @@ _before_init_functions.push(function() {
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
 	<!-- <td class="text-center"><%= model.id %></td> -->
-	<td><a href="javascript:void(0)" class="unit-change-action"><%= model.name %></a></td>
+	<td><a href="javascript:void(0)" class="lesson-change-action"><%= model.name %></a></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>

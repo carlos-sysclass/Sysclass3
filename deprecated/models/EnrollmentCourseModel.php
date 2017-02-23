@@ -91,7 +91,7 @@ class EnrollmentCourseModel extends AbstractSysclassModel implements ISyncroniza
         // GET CLASSES
         //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
         /*
-        $data['units'] = $this->model("roadmap/units")->addFilter(array(
+        $data['lessons'] = $this->model("roadmap/lessons")->addFilter(array(
             'class_id' => $data['class_id']
         ))->getItems();
 

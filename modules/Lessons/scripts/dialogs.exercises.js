@@ -20,7 +20,7 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
             events : {
                 "click [data-action-trigger]" : "triggerAction"
             },
-            exerciseTemplate : _.template($("#tab_unit_exercises-details-template").html(), null, {variable: "model"}),
+            exerciseTemplate : _.template($("#tab_lesson_exercises-details-template").html(), null, {variable: "model"}),
 
             //template : _.template($("#tests_info_modal-template").html(), null, {variable : "model"}),
             initialize : function() {
@@ -41,7 +41,7 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
                 mod.started = true;
             },
             setModel : function(model) {
-                model.urlRoot = "/module/units/item/exercise";
+                model.urlRoot = "/module/lessons/item/exercise";
                 
                 baseFormClass.prototype.setModel.apply(this, arguments);
                 //baseFormClass.prototype.setModel.apply(this, [model]);
@@ -61,7 +61,7 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
 
                     innermodel.set("answer_index", index);
 
-                    var questionView = new unitExercisesQuestionItemClass({
+                    var questionView = new lessonExercisesQuestionItemClass({
                         model : innermodel,
                         model_index : index
                     });
@@ -95,15 +95,15 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
         });
 
         /* TESTS AND EXERCISES UTILITY VIEWS */
-        var unitExercisesQuestionItemClass = Backbone.View.extend({
+        var lessonExercisesQuestionItemClass = Backbone.View.extend({
             tagName : "li",
             templates : {
-                "combine" : _.template($("#tab_unit_exercises-question-combine-template").html(), null, {variable: "model"}),
-                "true_or_false" : _.template($("#tab_unit_exercises-question-true_or_false-template").html(), null, {variable: "model"}),
-                "simple_choice" : _.template($("#tab_unit_exercises-question-simple_choice-template").html(), null, {variable: "model"}),
-                "multiple_choice" : _.template($("#tab_unit_exercises-question-multiple_choice-template").html(), null, {variable: "model"}),
-                "fill_blanks" : _.template($("#tab_unit_exercises-question-fill_blanks-template").html(), null, {variable: "model"}),
-                "free_text" : _.template($("#tab_unit_exercises-question-free_text-template").html(), null, {variable: "model"})
+                "combine" : _.template($("#tab_lesson_exercises-question-combine-template").html(), null, {variable: "model"}),
+                "true_or_false" : _.template($("#tab_lesson_exercises-question-true_or_false-template").html(), null, {variable: "model"}),
+                "simple_choice" : _.template($("#tab_lesson_exercises-question-simple_choice-template").html(), null, {variable: "model"}),
+                "multiple_choice" : _.template($("#tab_lesson_exercises-question-multiple_choice-template").html(), null, {variable: "model"}),
+                "fill_blanks" : _.template($("#tab_lesson_exercises-question-fill_blanks-template").html(), null, {variable: "model"}),
+                "free_text" : _.template($("#tab_lesson_exercises-question-free_text-template").html(), null, {variable: "model"})
             },
             initialize: function(opt) {
                 this.model_index = opt.model_index;
@@ -130,13 +130,13 @@ $SC.module("dialogs.exercises", function(mod, app, Backbone, Marionette, $, _) {
             //
             this.dialogView.setModel(info.model);
 
-            //var url = "/module/questions/items/unit-content/datatable/" + JSON.stringify(this.filter);
+            //var url = "/module/questions/items/lesson-content/datatable/" + JSON.stringify(this.filter);
 
             //this.dialogView
         };
 
         this.dialogView = new exercisesDialogViewClass({
-            el : "#unit-exercises-dialog"
+            el : "#lesson-exercises-dialog"
         });
 
         mod.getView = function() {

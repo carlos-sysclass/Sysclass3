@@ -218,7 +218,7 @@ class Program extends Model
                     } else {
                         $result['units'][] = array(
                             'user_id' => $user->id,
-                            'unit_id' => $unit->id,
+                            'lesson_id' => $unit->id,
                             'factor' => 0
                         );
                     }

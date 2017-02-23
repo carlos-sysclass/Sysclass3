@@ -79,7 +79,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	//this.$(".enroll_token").html(this.model.get("enroll_token"));
 
 	    	//this.$(".total_classes").html(this.statsModel.get("total_classes"));
-	    	//this.$(".total_units").html(this.statsModel.get("total_units"));
+	    	//this.$(".total_lessons").html(this.statsModel.get("total_lessons"));
 
 	    	//this.$(".user-course-details").unblock();
 	    }
@@ -110,7 +110,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 					scaleColor : false
 				});
 				/*
-				this.$(".unit").easyPieChart({
+				this.$(".lesson").easyPieChart({
 					animate: 1000,
 					size: 75,
 					lineWidth: 9,
@@ -145,8 +145,13 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			this.renderClass(
 				this.model.get('classes.completed'), this.model.get('classes.total')
 			);
+<<<<<<< HEAD
 			this.renderUnit(
 				this.model.get('units.completed'), this.model.get('units.total')
+=======
+			this.renderLesson(
+				this.model.get('lessons.completed'), this.model.get('lessons.total')
+>>>>>>> parent of 7cdd908... lesson complete
 			);
 			*/
 			this.renderUnit(
@@ -210,7 +215,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				factor = completed / total;
 			}
 
-			this.$(".unit span").html(
+			this.$(".lesson span").html(
 				app.module("views").formatValue(
 					factor,
 					'decimal-custom',
@@ -218,13 +223,13 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				)
 			);
 
-			this.$(".unit-counter").html(completed + "/" + total);
+			this.$(".lesson-counter").html(completed + "/" + total);
 
 			if (jQuery.fn.easyPieChart) {
 				var percent = factor * 100;
 
-				if (_.isObject(this.$(".unit").data('easyPieChart'))) {
-					this.$(".unit").data('easyPieChart').update(percent);
+				if (_.isObject(this.$(".lesson").data('easyPieChart'))) {
+					this.$(".lesson").data('easyPieChart').update(percent);
 				}
 			}
 		},

@@ -20,7 +20,7 @@ class Course extends Model
         $phql = "SELECT AVG(IFNULL(factor, 0)) as factor
             FROM Sysclass\\Models\\Content\\Unit as l
         	LEFT OUTER JOIN Sysclass\\Models\\Content\\Progress\\Unit as lp
-                ON (l.id = lp.unit_id AND (lp.user_id = ?1 OR lp.user_id IS NULL))
+                ON (l.id = lp.lesson_id AND (lp.user_id = ?1 OR lp.user_id IS NULL))
             WHERE l.class_id = ?0
         ";
 

@@ -3,7 +3,7 @@ class RoadmapUnitsModel extends BaseUnitsModel implements ISyncronizableModel {
 
     public function init()
     {
-        $this->unit_type =  "unit";
+        $this->lesson_type =  "lesson";
 
         parent::init();
     }
@@ -34,10 +34,10 @@ class RoadmapUnitsModel extends BaseUnitsModel implements ISyncronizableModel {
             $data[$key] = $this->parseItem($item);
 
             if ($this->getUserFilter()) {
-                $progress = $this->model("units/progress")->clear()
+                $progress = $this->model("lessons/progress")->clear()
                     ->setUserFilter($this->getUserFilter())
                     ->addFilter(array(
-                        'unit_id'     => $item['id']
+                        'lesson_id'     => $item['id']
                     ))->getItems();
                 $data[$key]['progress'] = reset($progress);
             }
@@ -54,23 +54,28 @@ class RoadmapUnitsModel extends BaseUnitsModel implements ISyncronizableModel {
         }
 
         // GET CLASSES
+<<<<<<< HEAD
         //  TODO CREATE A ROADMAP/UNIT MODEL, TO GET ALL UNITS FROM THIS CLASS
         $data['contents'] = $this->model("units/content")
+=======
+        //  TODO CREATE A ROADMAP/LESSON MODEL, TO GET ALL LESSONS FROM THIS CLASS
+        $data['contents'] = $this->model("lessons/content")
+>>>>>>> parent of 7cdd908... lesson complete
             ->setUserFilter($this->getUserFilter())
             ->addFilter(array(
-                'unit_id' => $identifier
+                'lesson_id' => $identifier
             ))->getItems();
 
         if ($this->getUserFilter()) {
             /*
-            $this->model("units/progress")
+            $this->model("lessons/progress")
                 ->setUserFilter($this->getUserFilter())
                 ->recalculateProgress($identifier);
             */
-            $progress = $this->model("units/progress")->clear()
+            $progress = $this->model("lessons/progress")->clear()
                 ->setUserFilter($this->getUserFilter())
                 ->addFilter(array(
-                    'unit_id'     => $identifier
+                    'lesson_id'     => $identifier
                 ))->getItems();
 
             $data['progress'] = reset($progress);

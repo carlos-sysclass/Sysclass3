@@ -320,7 +320,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
                             'class' => 'btn-sm btn-danger'
                         )
                     );
-                } elseif ($model == "unit-content") {
+                } elseif ($model == "lesson-content") {
                     $items[$key]['options'] = array(
                         'select'  => array(
                             'icon'  => 'icon-check',
@@ -355,15 +355,20 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         $currentUser    = $this->getCurrentUser(true);
 
         //$xuserModule = $this->loadModule("xuser");
+<<<<<<< HEAD
         $userUnits = $currentUser->getUnits();
         $unitsIds = array_keys($userUnits);
+=======
+        $userLessons = $currentUser->getLessons();
+        $lessonsIds = array_keys($userLessons);
+>>>>>>> parent of 7cdd908... lesson complete
 
         // GET LAST MESSAGES FROM USER UNITS
         $tutorias = $this->_getTableData("mod_tutoria tt
-            LEFT OUTER JOIN units l ON (tt.units_ID = l.id)
+            LEFT OUTER JOIN lessons l ON (tt.lessons_ID = l.id)
             LEFT OUTER JOIN users u1 ON (tt.question_user_id = u1.id)
             LEFT OUTER JOIN users u2 ON (tt.answer_user_id = u2.id)",
-            "tt.id, tt.units_ID, tt.unit_ID, tt.title,
+            "tt.id, tt.lessons_ID, tt.unit_ID, tt.title,
             tt.question_timestamp,
             tt.question_user_id,
             u1.name as question_user_name,
@@ -377,7 +382,7 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
             u2.avatar as answer_avatar_id,
             tt.answer,
             tt.approved",
-            sprintf("tt.units_ID IN (0, %s) AND (tt.approved = 1 OR tt.question_user_id = %d)", implode(",", $unitsIds), $currentUser->user['id']),
+            sprintf("tt.lessons_ID IN (0, %s) AND (tt.approved = 1 OR tt.question_user_id = %d)", implode(",", $lessonsIds), $currentUser->user['id']),
             "tt.question_timestamp DESC",
             "",
             sprintf("%d, %d", ($page - 1) * $per_page, $per_page)
