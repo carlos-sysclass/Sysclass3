@@ -29,7 +29,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
              * @todo Get the data fomr system settings (NOT FROM dashboard setting)
              */
             $modulesOrder = 
-                array("Settings", "Institution", "Translate", "Areas", "Courses", "Classes", "Units", "Tests", "Questions", "Grades", "Users", "Groups", "Roles", "Advertising", "Calendar");
+                array("Settings", "Institution", "Translate", "Areas", "Courses", "Classes", "Lessons", "Tests", "Questions", "Grades", "Users", "Groups", "Roles", "Advertising", "Calendar");
 
             $modulesOrder = array_unique(array_merge($modulesOrder, $modulesKeys));
 
@@ -117,7 +117,7 @@ class DashboardModule extends \SysclassModule implements \ISectionMenu, \IWidget
             );
 
             $modulesOrder = 
-                array("Settings", "Institution", "Translate", "Areas", "Courses", "Classes", "Units", "Tests", "Questions", "Grades", "Users", "Groups", "Roles", "Advertising", "Calendar");
+                array("Settings", "Institution", "Translate", "Areas", "Courses", "Classes", "Lessons", "Tests", "Questions", "Grades", "Users", "Groups", "Roles", "Advertising", "Calendar");
 
             $modulesOrder = array_unique(array_merge($modulesOrder, $modulesKeys));
 

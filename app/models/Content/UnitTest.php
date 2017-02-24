@@ -11,9 +11,9 @@ class UnitTest extends Model
 
 		$this->hasOne(
             "id",
-            "Sysclass\\Models\\Courses\\Tests\\Unit",
+            "Sysclass\\Models\\Courses\\Tests\\Lesson",
             "id",
-            array('alias' => 'Unit')
+            array('alias' => 'Lesson')
         );
 
         $this->hasManyToMany(

@@ -27,7 +27,7 @@ class Course extends Model
         	"Sysclass\\Models\\Content\\Unit",
         	"class_id",
         	array(
-                'alias' => 'Units',
+                'alias' => 'Lessons',
                 'params' => array(
                     'conditions' => "type = 'lesson'",
                     'order' => '[Sysclass\Models\Content\Unit].position ASC, [Sysclass\Models\Content\Unit].id ASC'
@@ -37,13 +37,13 @@ class Course extends Model
         );
         $this->hasMany(
             "id",
-            "Sysclass\\Models\\Courses\\Tests\\Unit",
+            "Sysclass\\Models\\Courses\\Tests\\Lesson",
             "class_id",
             array(
                 'alias' => 'Tests',
                 'params' => array(
                     'conditions' => "type = 'test'",
-                    'order' => '[Sysclass\Models\Courses\Tests\Unit].position ASC, [Sysclass\Models\Courses\Tests\Unit].id ASC'
+                    'order' => '[Sysclass\Models\Courses\Tests\Lesson].position ASC, [Sysclass\Models\Courses\Tests\Lesson].id ASC'
                 )
             )
         );

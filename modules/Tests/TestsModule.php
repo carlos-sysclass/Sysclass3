@@ -9,7 +9,11 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
+<<<<<<< HEAD
     Sysclass\Models\Courses\Tests\Unit as TestUnit,
+=======
+    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+>>>>>>> parent of 4dec1e4... Lesson to Units
     Sysclass\Models\Content\Tests\Execution as TestExecution;
     
 /**
@@ -886,7 +890,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             $itemModel = $this->getModelData("me", $class_id);
 
             $messages = array(
-                'success' => "Unit order updated.",
+                'success' => "Lesson order updated.",
                 'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
             );
 

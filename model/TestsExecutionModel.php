@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD
 use Sysclass\Models\Courses\Tests\Unit as TestUnit,
+=======
+use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+>>>>>>> parent of 4dec1e4... Lesson to Units
     Sysclass\Models\Content\Progress\Course as ClasseProgress,
     Sysclass\Models\Content\Progress\Unit as UnitProgress;
 

@@ -1021,7 +1021,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
                 	portlet : this.$el
 				});
 
-				this.blockUi('No Unit Selected');
+				this.blockUi('No Lesson Selected');
 
 				this.updateCollectionIndex();
 

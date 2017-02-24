@@ -154,7 +154,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Unit'),
+                    'text'      => $this->translate->translate('New Lesson'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -305,7 +305,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             if ($model == "me") {
                 $itemModel = $this->model($this->_modelRoute);
                 $messages = array(
-                    'success' => "Unit created with success",
+                    'success' => "Lesson created with success",
                     'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
                 );
             } elseif ($model == "content") {
@@ -396,7 +396,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
             if ($model == "me") {
                 $itemModel = $this->model("lessons");
                 $messages = array(
-                    'success' => "Unit removed with success",
+                    'success' => "Lesson removed with success",
                     'error' => "A problem ocurred when trying to remove your data. Please check your data and try again"
                 );
             } elseif ($model == "content") {
