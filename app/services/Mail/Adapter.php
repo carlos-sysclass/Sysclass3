@@ -74,11 +74,15 @@ class Adapter extends Component
     }
 
     public function attachInline($path) {
-      $path = REAL_PATH . "/www/assets/sysclass.itaipu/img/logo.png";
+      $full_path = REAL_PATH . "/www/assets/" . $this->environment->view->theme . "/" . $path;
+
+      if (!file_exists($full_path)) {
+        $full_path = REAL_PATH . "/www/assets/default/" . $path;
+      }
 
     	$cid = $this->getMessage()
     		->setContentType("text/html")
-    		->embed(\Swift_EmbeddedFile::fromPath($path));
+    		->embed(\Swift_EmbeddedFile::fromPath($full_path));
 
     	return $cid;
     }

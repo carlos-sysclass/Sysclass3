@@ -28,7 +28,7 @@ class Translator extends Component
 
         if ($this->inTranslationMode()) {
             $this->cache->delete("session_tokens");
-        } elseif ($this->cache-> exists("session_tokens")) {
+        } elseif ($this->cache->exists("session_tokens")) {
             $this->session_tokens = $this->cache->get("session_tokens");
         }
     }

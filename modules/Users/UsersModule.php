@@ -330,10 +330,18 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     $passwordRequest->valid_until = $date->format('Y-m-d H:i:s');
 
                     if ($passwordRequest->save()) {
+
+                        $template = "email/" . $this->sysconfig->deploy->environment . "/password-reset.email";
+
+                        
+                        if (!$this->view->exists($template)) {
+                            $template = "email/password-reset.email";
+                        }
+
                         $status = $this->mail->send(
                             $user->email, 
                             "Solicitação de troca de senha. Email automático, não é necessário responder.",
-                            "email/" . $this->sysconfig->deploy->environment . "/password-reset.email",
+                            $template,
                             true,
                             array(
                                 'user' => $user->toArray(),
