@@ -9,11 +9,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
         
         //var baseUnitContentModelClass = app.module("models").content().item.base;
         /*
-<<<<<<< HEAD
-        var unitUrlContentModelClass = baseUnitContentModelClass.extend({
-=======
         var lessonUrlContentModelClass = baseLessonContentModelClass.extend({
->>>>>>> parent of 7cdd908... lesson complete
             defaults : function() {
                 var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'url';
@@ -59,11 +55,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             //urlRoot: "/module/lessons/item/lesson_content/"
         });
 
-<<<<<<< HEAD
-        var unitTextContentModelClass = baseUnitContentModelClass.extend({
-=======
         var lessonTextContentModelClass = baseLessonContentModelClass.extend({
->>>>>>> parent of 7cdd908... lesson complete
             defaults : function() {
                 var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'text';
@@ -86,11 +78,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-<<<<<<< HEAD
-        var unitExerciseContentModelClass = baseUnitContentModelClass.extend({
-=======
         var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
->>>>>>> parent of 7cdd908... lesson complete
             defaults : function() {
                 var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'exercise';
@@ -778,11 +766,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             }
         });
 
-<<<<<<< HEAD
-        var unitExercisesContentTimelineViewClass = baseUnitChildContentTimelineViewClass.extend({
-=======
         var lessonExercisesContentTimelineViewClass = baseLessonChildContentTimelineViewClass.extend({
->>>>>>> parent of 7cdd908... lesson complete
             questionSelectDialog : app.module("dialogs.questions.select"),
             template : _.template($("#exercise-timeline-item").html()),
             className : "timeline-item",

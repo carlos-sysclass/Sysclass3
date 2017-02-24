@@ -124,11 +124,7 @@ class FileBackendLocalHelper extends AbstractFileBackend /* implements IFileBack
         return $path;
     }
 
-<<<<<<< HEAD
-    public function getUnitPath($unit_id, $type = null)
-=======
     public function getLessonPath($lesson_id, $type = null)
->>>>>>> parent of 7cdd908... lesson complete
     {
         $plicolib = PlicoLib::instance();
 
@@ -143,11 +139,7 @@ class FileBackendLocalHelper extends AbstractFileBackend /* implements IFileBack
         }
         return $path;
     }
-<<<<<<< HEAD
-    public function getUnitUrl($unit_id, $type = null)
-=======
     public function getLessonUrl($lesson_id, $type = null)
->>>>>>> parent of 7cdd908... lesson complete
     {
         $plicolib = PlicoLib::instance();
 

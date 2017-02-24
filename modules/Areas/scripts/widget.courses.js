@@ -44,13 +44,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.viewMode = viewMode;
 				}
-<<<<<<< HEAD
-				if (this.viewMode == 'unit') {
-					this.openUnitViewMode();
-=======
 				if (this.viewMode == 'lesson') {
 					this.openLessonViewMode();
->>>>>>> parent of 7cdd908... lesson complete
 				} else {
 					if (this.collection.size() > 1) {
 						this.render(this.collection);

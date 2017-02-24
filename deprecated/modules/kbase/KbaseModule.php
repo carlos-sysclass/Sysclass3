@@ -355,13 +355,8 @@ class KbaseModule extends SysclassModule implements /* ISummarizable, */IWidgetC
         $currentUser    = $this->getCurrentUser(true);
 
         //$xuserModule = $this->loadModule("xuser");
-<<<<<<< HEAD
-        $userUnits = $currentUser->getUnits();
-        $unitsIds = array_keys($userUnits);
-=======
         $userLessons = $currentUser->getLessons();
         $lessonsIds = array_keys($userLessons);
->>>>>>> parent of 7cdd908... lesson complete
 
         // GET LAST MESSAGES FROM USER LESSONS
         $tutorias = $this->_getTableData("mod_tutoria tt

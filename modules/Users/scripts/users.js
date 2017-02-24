@@ -145,13 +145,8 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 			this.renderClass(
 				this.model.get('classes.completed'), this.model.get('classes.total')
 			);
-<<<<<<< HEAD
-			this.renderUnit(
-				this.model.get('units.completed'), this.model.get('units.total')
-=======
 			this.renderLesson(
 				this.model.get('lessons.completed'), this.model.get('lessons.total')
->>>>>>> parent of 7cdd908... lesson complete
 			);
 			*/
 			this.renderUnit(

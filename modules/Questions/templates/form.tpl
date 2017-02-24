@@ -158,17 +158,8 @@
 			</div>
 			{if (isset($T_SECTION_TPL['lessons']) &&  ($T_SECTION_TPL['lessons']|@count > 0))}
 				<div class="tab-pane fade in" id="tab_1_2">
-<<<<<<< HEAD
-				    {foreach $T_SECTION_TPL['units'] as $template}
-<<<<<<< HEAD
-				        {include file=$template T_MODULE_CONTEXT=$T_UNITS_BLOCK_CONTEXT T_MODULE_ID=$T_UNITS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
-=======
 				    {foreach $T_SECTION_TPL['lessons'] as $template}
 				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
->>>>>>> parent of 7cdd908... lesson complete
-=======
-				        {include file=$template T_MODULE_CONTEXT=$T_LESSONS_BLOCK_CONTEXT T_MODULE_ID=$T_LESSONS_BLOCK_CONTEXT.block_id FORCE_INIT=1}
->>>>>>> parent of 7db341d... LESSON - UNIT
 				    {/foreach}
 				</div>
 			{/if}

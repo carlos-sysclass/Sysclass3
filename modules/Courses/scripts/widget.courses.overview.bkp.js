@@ -44,13 +44,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				} else {
 					this.viewMode = viewMode;
 				}
-<<<<<<< HEAD
-				if (this.viewMode == 'unit') {
-					this.openUnitViewMode();
-=======
 				if (this.viewMode == 'lesson') {
 					this.openLessonViewMode();
->>>>>>> parent of 7cdd908... lesson complete
 				} else {
 					if (this.collection.size() > 1) {
 						this.render(this.collection);
@@ -83,13 +78,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 					//mod.contentModel.set("course_id", );
 					this.courseID = $(e.currentTarget).data("entity-id");
-<<<<<<< HEAD
-					this.openUnitViewMode();
-				} else if (this.viewMode == 'unit') {
-=======
 					this.openLessonViewMode();
 				} else if (this.viewMode == 'lesson') {
->>>>>>> parent of 7cdd908... lesson complete
 					var model = this.collection.get(this.courseID);
 					var lessonCollection = model.get("lessons");
 
@@ -122,13 +112,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
-<<<<<<< HEAD
-				//"click .unit-prev-action"		: "prevUnit",
-				//"click .unit-next-action" 	: "nextUnit",
-=======
-				//"click .lesson-prev-action"		: "prevLesson",
-				//"click .lesson-next-action" 	: "nextLesson",
->>>>>>> parent of 7cdd908... lesson complete
 				"click .nav-prev-action" 		: "prevItem",
 				"click .nav-next-action" 		: "nextItem",
 				"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
@@ -144,11 +127,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.listenTo(this.course, "sync", this.renderCourse.bind(this));
 				this.listenTo(this.classe, "sync", this.renderClass.bind(this));
-<<<<<<< HEAD
-				this.listenTo(this.unit, "sync", this.renderUnit.bind(this));
-=======
 				this.listenTo(this.lesson, "sync", this.renderLesson.bind(this));
->>>>>>> parent of 7cdd908... lesson complete
 
 				this.refreshScroll({
 					currentTarget : this.$("> .nav-tabs li.active [data-toggle='tab']")
@@ -170,15 +149,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				var entityData = this.classe.get("data");
 				this.$(".class-title").html(entityData['name']);
 			},
-<<<<<<< HEAD
-			renderUnit : function() {
-				console.info('portlet.courses/contentNavigationViewClass::renderUnit');
-				var entityData = this.unit.get("data");
-				this.$(".unit-title").html(entityData['name']);
-			},
-			goToPrevUnit : function() {
-				this.unit.prev();
-=======
 			renderLesson : function() {
 				console.info('portlet.courses/contentNavigationViewClass::renderLesson');
 				var entityData = this.lesson.get("data");
@@ -186,7 +156,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			goToPrevLesson : function() {
 				this.lesson.prev();
->>>>>>> parent of 7cdd908... lesson complete
 			},
 			goToPrevClass : function() {
 				this.classe.prev();
@@ -194,13 +163,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			goToPrevCourse : function() {
 				this.course.prev();
 			},
-<<<<<<< HEAD
-			goToNextUnit : function() {
-				this.unit.next();
-=======
 			goToNextLesson : function() {
 				this.lesson.next();
->>>>>>> parent of 7cdd908... lesson complete
 			},
 			goToNextClass : function() {
 				this.classe.next();
@@ -211,13 +175,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			prevItem : function(e) {
 				e.preventDefault();
 				var activeTab = this.$(".nav-tabs li.active");
-<<<<<<< HEAD
-				if (activeTab.is(".the-unit-tab")) {
-					this.goToPrevUnit();
-=======
 				if (activeTab.is(".the-lesson-tab")) {
 					this.goToPrevLesson();
->>>>>>> parent of 7cdd908... lesson complete
 				} else if (activeTab.is(".the-class-tab")) {
 					this.goToPrevClass();
 				} else if (activeTab.is(".the-course-tab")) {
@@ -227,13 +186,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			nextItem : function(e) {
 				e.preventDefault();
 				var activeTab = this.$(".nav-tabs li.active");
-<<<<<<< HEAD
-				if (activeTab.is(".the-unit-tab")) {
-					this.goToNextUnit();
-=======
 				if (activeTab.is(".the-lesson-tab")) {
 					this.goToNextLesson();
->>>>>>> parent of 7cdd908... lesson complete
 				} else if (activeTab.is(".the-class-tab")) {
 					this.goToNextClass();
 				} else if (activeTab.is(".the-course-tab")) {
@@ -256,13 +210,8 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 
 
 				var activeTab = this.$(".nav-tabs li.active");
-<<<<<<< HEAD
-				if (activeTab.is(".the-unit-tab")) {
-					this.goToNextUnit();
-=======
 				if (activeTab.is(".the-lesson-tab")) {
 					this.goToNextLesson();
->>>>>>> parent of 7cdd908... lesson complete
 				} else if (activeTab.is(".the-class-tab")) {
 					this.goToNextClass();
 				} else if (activeTab.is(".the-course-tab")) {
@@ -714,11 +663,6 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 			initialize: function() {
 				//this.listenTo(this.model, 'change', this.renderSemester.bind(this));
 				//this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
-<<<<<<< HEAD
-				//this.listenTo(this.model, 'change:unit_id', this.renderUnit.bind(this));
-=======
-				//this.listenTo(this.model, 'change:lesson_id', this.renderLesson.bind(this));
->>>>>>> parent of 7cdd908... lesson complete
 				//this.listenTo(this.model, 'change:id', this.renderTopic.bind(this));
 				this.render();
 			},
@@ -962,11 +906,7 @@ $SC.module("portlet.courses", function(mod, app, Backbone, Marionette, $, _) {
 				//this.filterActionView = new filterActionViewClass({collection : this.collection, model : this.model});
 
 				//this.listenTo(this.model, 'change:course_id', this.renderCourse.bind(this));
-<<<<<<< HEAD
-				//*this.listenTo(this.model, 'change:unit_id', this.renderUnit.bind(this));
-=======
 				//*this.listenTo(this.model, 'change:lesson_id', this.renderLesson.bind(this));
->>>>>>> parent of 7cdd908... lesson complete
 				/*
 				var self = this;
 				this.listenTo(this.model, 'sync', function() {

@@ -55,21 +55,12 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
 		// PUT
 		// APPLY SORT BASED ON prev_lesson_id
 		// var_dump($items);
-<<<<<<< HEAD
-    	$previous = 0; //Previous is only used when no previous_units_ID is set
-    	$courseUnits = $previousValues = array();
-    	foreach ($items as $value) {
-    		$courseUnits[$value['id']] = $value;
-    		$previousValues[$value['id']] = $value['prev_unit_id'];
-    		$value['prev_unit_id'] !== false ? $previousUnits[$value['prev_unit_id']] = $value : $previousUnits[$previous] = $value;
-=======
     	$previous = 0; //Previous is only used when no previous_lessons_ID is set
     	$courseLessons = $previousValues = array();
     	foreach ($items as $value) {
     		$courseLessons[$value['id']] = $value;
     		$previousValues[$value['id']] = $value['prev_lesson_id'];
     		$value['prev_lesson_id'] !== false ? $previousLessons[$value['prev_lesson_id']] = $value : $previousLessons[$previous] = $value;
->>>>>>> parent of 7cdd908... lesson complete
     		$previous = $value['id'];
     	}
 
