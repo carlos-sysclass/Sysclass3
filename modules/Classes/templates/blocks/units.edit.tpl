@@ -27,7 +27,7 @@
             <!--
             <a class="btn btn-sm btn-warning btn-link import-item-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Import Unit"}
+                {translateToken value="Import Lesson"}
             </a>
             -->
         </div>
@@ -40,14 +40,14 @@
     </a>
     <span class="btn btn-sm btn-circle btn-default disabled">
         <i class="fa fa-file"></i>
-        Unit
+        Lesson
     </span>
 
     <a href="#" class="editable-me <% if (model.active == "0") { %>text-danger<% } %>"
         data-type="text"
         data-name="name"
         data-send="never"
-        data-original-title="Unit Name"
+        data-original-title="Lesson Name"
         data-inputclass="form-control"
     >
         <%= model.name %>
@@ -108,7 +108,7 @@
         data-type="text"
         data-name="name"
         data-send="never"
-        data-original-title="Unit Name"
+        data-original-title="Lesson Name"
         data-inputclass="form-control"
         <% if (typeof model.id !== 'undefined') { %>
         <% } else { %>

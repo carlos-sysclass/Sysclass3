@@ -4,7 +4,11 @@ namespace Sysclass\Modules\Certificate;
 use Sysclass\Models\Users\User,
     Sysclass\Models\Certificates\Certificate,
     Sysclass\Models\Content\Course,
+<<<<<<< HEAD
     Sysclass\Models\Courses\Tests\Unit as UnitTest,
+=======
+    Sysclass\Models\Courses\Tests\Lesson as LessonTest,
+>>>>>>> parent of 4dec1e4... Lesson to Units
     Dompdf\Dompdf,
     Dompdf\Canvas,
     Sysclass\Models\Organizations\Organization,

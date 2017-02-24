@@ -474,7 +474,11 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
+<<<<<<< HEAD
 								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video lesson"}</span></a>
+=======
+								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video Lesson"}</span></a>
+>>>>>>> parent of 4dec1e4... Lesson to Units
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
@@ -500,7 +504,7 @@
 							<div id="tab_lesson_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> {translateToken value="Unit Files"} </a> -
+										<a href="javascript: void(0)"> {translateToken value="Lesson Files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 										</small>
@@ -537,7 +541,7 @@
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div class="easy-pie-chart">
 				<div class="number lesson" data-percent="0"><span>0</span>%</div>
-				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Unit"}</a>
+				<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Lesson"}</a>
 			</div>
 		</div>
 		<div class="margin-bottom-10 visible-sm"></div>

@@ -240,7 +240,7 @@
         <% } %>
         <div class="row">
             <div class="col-md-6 col-sm-6">
-                <span>{translateToken value="Total Units"}</span>
+                <span>{translateToken value="Total Lessons"}</span>
                 <% if (_.size(data.units) == 0) { %>
                     <strong class="text-danger pull-right">0</strong>
                 <% } else { %>

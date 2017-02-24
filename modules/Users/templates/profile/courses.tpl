@@ -26,7 +26,7 @@
 			<span>{formatTimestamp value=$course.active_in_course fmt=$T_SETTINGS_.php_date_fmt}</span>
 		</div>
 		<div class="portfolio-info">
-			Total Units
+			Total Lessons
 			<span>{$course.num_lessons}</span>
 		</div>
 		<div class="portfolio-info">
