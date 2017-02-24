@@ -249,7 +249,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
                             'info',
                             array(
-                                'text' => "Visualizar",
+                                'text' => "View",
                                 'link' => $this->getBasePath() . "print/" . $certificate->id
                             ),
                             false,
