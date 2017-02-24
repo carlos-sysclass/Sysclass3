@@ -3,11 +3,7 @@ namespace Sysclass\Models\Content\Tests;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Users\User,
-<<<<<<< HEAD
     Sysclass\Models\Courses\Tests\Unit as TestUnit,
-=======
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
->>>>>>> parent of 4dec1e4... Lesson to Units
     Sysclass\Models\Courses\Tests\TestQuestions,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Content\Progress\Unit as UnitProgress,

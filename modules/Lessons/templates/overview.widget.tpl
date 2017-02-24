@@ -474,11 +474,7 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-<<<<<<< HEAD
 								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video lesson"}</span></a>
-=======
-								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video Lesson"}</span></a>
->>>>>>> parent of 4dec1e4... Lesson to Units
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>

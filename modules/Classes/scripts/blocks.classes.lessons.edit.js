@@ -103,13 +103,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 			}
 	    });
 
-<<<<<<< HEAD
 		var classUnitItemViewClass = baseClassItemViewClass.extend({
-	    	template : _.template($("#class-unit-item-template").html(), null, {variable: 'model'})
-=======
-		var classLessonItemViewClass = baseClassItemViewClass.extend({
 	    	template : _.template($("#class-lesson-item-template").html(), null, {variable: 'model'})
->>>>>>> parent of 7cdd908... lesson complete
 		});
 		var classTestItemViewClass = baseClassItemViewClass.extend({
 	    	template : _.template($("#class-test-item-template").html(), null, {variable: 'model'}),
@@ -120,19 +115,11 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 
 		mod.classUnitsViewClass = Backbone.View.extend({
 			events : {
-<<<<<<< HEAD
-				"click .add-unit-action" : "addUnitItem",
-				"click .add-test-action" : "addTestItem"
-			},
-			initialize: function(opt) {
-				console.info('blocks.classes.units.edit/classUnitsView::initialize');
-=======
 				"click .add-lesson-action" : "addLessonItem",
 				"click .add-test-action" : "addTestItem"
 			},
 			initialize: function(opt) {
-				console.info('blocks.classes.lessons.edit/classLessonsView::initialize');
->>>>>>> parent of 7cdd908... lesson complete
+				console.info('blocks.classes.units.edit/classUnitsView::initialize');
 
 				//this.param = opt.param;
 				//
@@ -226,11 +213,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
                 });
             },
             refreshCounters : function() {
-<<<<<<< HEAD
                 console.info('blocks.classes.units.edit/classUnitsViewClass::refreshCounters');
-=======
-                console.info('blocks.classes.lessons.edit/classLessonsViewClass::refreshCounters');
->>>>>>> parent of 7cdd908... lesson complete
                 var total = this.collection.size();
                 //alert(total);
                 this.$("ul > li.list-file-item .total").html(total);
@@ -260,19 +243,11 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 
 				$(classUnitsNewItemView.render().el).appendTo( this.$("ul") );
 				/*
-<<<<<<< HEAD
 				this.listenTo(classUnitsNewItemView, "unit:added", function(model) {
 					self.collection.add(model);
 					model.save();
 				});
 				this.listenTo(classUnitsNewItemView, "unit:removed", function(model) {
-=======
-				this.listenTo(classLessonsNewItemView, "lesson:added", function(model) {
-					self.collection.add(model);
-					model.save();
-				});
-				this.listenTo(classLessonsNewItemView, "lesson:removed", function(model) {
->>>>>>> parent of 7cdd908... lesson complete
 					self.collection.remove(model);
 				});
 				*/
@@ -302,22 +277,13 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
  			},
 
 			addOne : function(model) {
-<<<<<<< HEAD
 				console.info('blocks.classes.units.edit/classUnitsView::addOne');
-=======
-				console.info('blocks.classes.lessons.edit/classLessonsView::addOne');
->>>>>>> parent of 7cdd908... lesson complete
 
 				var self = this;
 				var classItemView = null;
 
-<<<<<<< HEAD
-				if (model.get("type") == "unit") {
-					classItemView = new classUnitItemViewClass({
-=======
 				if (model.get("type") == "lesson") {
-					classItemView = new classLessonItemViewClass({
->>>>>>> parent of 7cdd908... lesson complete
+					classItemView = new classUnitItemViewClass({
 						model : model
 					});
 				} else if (model.get("type") == "test") {
@@ -337,11 +303,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 				}
 			},
 			render: function() {
-<<<<<<< HEAD
 				console.info('blocks.classes.units.edit/classUnitsView::render');
-=======
-				console.info('blocks.classes.lessons.edit/classLessonsView::render');
->>>>>>> parent of 7cdd908... lesson complete
 
 				var self = this;
 
@@ -389,13 +351,8 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
 			class_id : data.class_id
 		});
 
-<<<<<<< HEAD
 		var classUnitsView = new mod.classUnitsViewClass({
 			collection : unitsCollection,
-=======
-		var classLessonsView = new mod.classLessonsViewClass({
-			collection : lessonsCollection,
->>>>>>> parent of 7cdd908... lesson complete
 			el : el,
             model : data.entityModel
 		});

@@ -1,5 +1,5 @@
 <?php
-class UnitsModel extends BaseUnitsModel implements ISyncronizableModel {
+class LessonsModel extends BaseUnitsModel implements ISyncronizableModel {
 
     public function init()
     {

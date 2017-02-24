@@ -171,7 +171,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			//$this->putModuleScript("models.courses");
-			$this->putModuleScript("widget.courses");
+			//$this->putModuleScript("widget.courses");
 
             $this->putBlock("tests.info.dialog");
 
@@ -567,11 +567,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             */
 			case 'lessons':
 			default : {
-<<<<<<< HEAD
 				$units = MagesterUnit::getUnits();
-=======
-				$lessons = MagesterLesson::getLessons();
->>>>>>> parent of 7cdd908... lesson complete
 				if (!empty($q)) {
 					$lessons = sC_filterData($lessons, $q);
 				}
@@ -934,21 +930,12 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		//var_dump($currentUser->user['login']);
 		$courseStats = MagesterStats::getUsersCourseStatus($userCourses, $login);
 
-<<<<<<< HEAD
 		$userUnits = $currentUser->getUnits();
 		$unitsIds = array_keys($userUnits);
 
 		foreach($userCourses as $course) {
 			$course->course['units'] = array();
 			$units = $course->getCourseUnits(array('return_objects' => false));
-=======
-		$userLessons = $currentUser->getLessons();
-		$lessonsIds = array_keys($userLessons);
-
-		foreach($userCourses as $course) {
-			$course->course['lessons'] = array();
-			$lessons = $course->getCourseLessons(array('return_objects' => false));
->>>>>>> parent of 7cdd908... lesson complete
 
 			foreach($lessons as $lesson) {
 				if (in_array($lesson['id'], $lessonsIds)) {
@@ -984,11 +971,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	 * @url GET /content/:course/:lesson
      * @deprecated
 	 */
-<<<<<<< HEAD
 	public function getContentByCourseAndUnitAction($course, $unit)
-=======
-	public function getContentByCourseAndLessonAction($course, $lesson)
->>>>>>> parent of 7cdd908... lesson complete
 	{
 		// RETURN JUST THE content ID
 		// SAVE COURSE AND LESSON, ON USERS SETTINGS
@@ -1019,17 +1002,8 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
      */
 	protected function getContent($course = null, $lesson = null, $content = null) {
 		$currentUser    = $this->getCurrentUser(true);
-<<<<<<< HEAD
 		if (empty($unit)) {
-<<<<<<< HEAD
-			// GET UNIT ID FROM COURSE
-=======
-		if (empty($lesson)) {
-			// GET LESSON ID FROM COURSE
->>>>>>> parent of 7cdd908... lesson complete
-=======
-			// GET LESSON ID FROM COURSE
->>>>>>> parent of 7db341d... LESSON - UNIT
+    		// GET UNIT ID FROM COURSE
 			if (empty($course)) {
 				// GET FIRST COURSE FROM USER
 				$userCourses = $currentUser->getUserCourses(array('return_objects' => true));
@@ -1041,26 +1015,16 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			} else {
 				$firstCourse = new MagesterCourse($course);
 			}
-<<<<<<< HEAD
 			$userUnits = $firstCourse->getCourseUnits(array('return_objects' => false));
 			reset($userUnits);
 			$unit = key($userUnits);
-=======
-			$userLessons = $firstCourse->getCourseLessons(array('return_objects' => false));
-			reset($userLessons);
-			$lesson = key($userLessons);
->>>>>>> parent of 7cdd908... lesson complete
 
 			$this->module("settings")->put("course_id", $course);
 			$this->module("settings")->put("lesson_id", $lesson);
 
 		}
 
-<<<<<<< HEAD
 		$currentUnit = new MagesterUnit($unit);
-=======
-		$currentLesson = new MagesterLesson($lesson);
->>>>>>> parent of 7cdd908... lesson complete
 
 		$currentContent = new MagesterContentTree($currentUnit);
 		$currentContent -> markSeenNodes($currentUser);

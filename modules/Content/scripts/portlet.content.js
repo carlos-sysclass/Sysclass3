@@ -12,13 +12,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				//"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
-<<<<<<< HEAD
-				//"click .unit-prev-action"		: "prevUnit",
-				//"click .unit-next-action" 	: "nextUnit",
-=======
-				//"click .lesson-prev-action"		: "prevLesson",
-				//"click .lesson-next-action" 	: "nextLesson",
->>>>>>> parent of 7cdd908... lesson complete
 				"click .nav-prev-action" 		: "prevItem",
 				"click .nav-next-action" 		: "nextItem",
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
@@ -2357,13 +2350,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	var fullClassModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/course-classes"
 	});
-<<<<<<< HEAD
 	var fullUnitModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/units"
-=======
-	var fullLessonModelClass = Backbone.DeepModel.extend({
-		urlRoot : "/module/roadmap/item/lessons"
->>>>>>> parent of 7cdd908... lesson complete
 	});
 	var contentModelClass = Backbone.DeepModel.extend({
 		isVideo : function() {

@@ -9,11 +9,7 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
-<<<<<<< HEAD
-    Sysclass\Models\Courses\Tests\Unit as TestUnit,
-=======
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
->>>>>>> parent of 4dec1e4... Lesson to Units
+    Sysclass\Models\Courses\Tests\Lesson as TestUnit,
     Sysclass\Models\Content\Tests\Execution as TestExecution;
     
 /**

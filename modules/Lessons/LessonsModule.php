@@ -18,7 +18,7 @@ use Sysclass\Services\Storage\Adapter as StorageAdapter,
 /**
  * @RoutePrefix("/module/lessons")
  */
-class UnitsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
+class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
     private static $suitable_translate_contents = array("subtitle");
 
