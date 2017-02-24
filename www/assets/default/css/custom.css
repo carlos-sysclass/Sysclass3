@@ -2620,7 +2620,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 #institution-widget .panel-body {
   max-height: 270px;  
-  min-height: 270px;
+  min-height: 260px;
 }
 .btn-compressed {
   padding-left: 3px;
