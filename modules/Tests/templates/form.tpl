@@ -42,8 +42,8 @@
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Course"}</label>
-					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select course”}">
-						<option value="">{translateToken value="Select course”}</option>
+					<select class="select2-me form-control" name="class_id" data-rule-min="1" data-placeholder="{translateToken value="Select course"}">
+						<option value="">{translateToken value="Select course"}</option>
 						{foreach $T_CLASSES as $classe}
 							<option value="{$classe.id}">{$classe.name}</option>
 						{/foreach}

@@ -361,7 +361,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.render();
 			},
 			render : function(model) {
-				if (this.collection) {
+				//if (this.collection) {
 					this.tableView.getApi().destroy(false);
 
 					baseChildTabViewClass.prototype.render.apply(this, arguments);
@@ -370,7 +370,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.renderProgress();
 
 					this.onVisible();
-				}
+				//}
 			},
 			onVisible : function() {
 				this.tableView.recreate();
