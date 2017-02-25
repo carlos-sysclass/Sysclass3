@@ -14,7 +14,7 @@
 				</div>
 			</div>
 			<div class="col-md-2 icon-form-container">
-				<a href="#" class="btn btn-sm btn-warning translate-automatic"><i class="icon-exchange"></i> Auto translation</a>
+				<a href="#" class="btn btn-sm btn-warning translate-automatic"><i class="icon-exchange"></i>Translate</a>
 			</div>
 			<div class="col-md-5 pull-right">
 				<div class="form-group">
@@ -35,7 +35,7 @@
 					<thead>
 						<tr>
 							<th>{translateToken value="Source"}</th>
-							<th>{translateToken value="Destination"}</th>
+							<th>{translateToken value="Target"}</th>
 							<th class="text-center table-options">{translateToken value="Actions"}</th>
 						</tr>
 					</thead>
