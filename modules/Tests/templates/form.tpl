@@ -118,7 +118,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="Times the user can take the test. Leave '0' (zero) for unlimited trials."}
+			                            {translateToken value="Times the user is allowed to re-take the test. Put '0' (zero) for unlimited attempts."}
 			                        </label>
 			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
