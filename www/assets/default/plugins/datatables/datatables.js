@@ -25688,7 +25688,7 @@ module.exports = ZStream;
 
 	    PDFDocument.prototype.write = function(filename, fn) {
 	      var err;
-	      err = new Error('PDFDocument#write is deprecated, and will be removed in a future version of PDFKit. Please pipe the document into a Node stream.');
+	      err = new Error('PDFDocument#write is deprecated, and will be removed in a future version of PDFKit. Please, pipe the document into a Node stream.');
 	      console.warn(err.stack);
 	      this.pipe(fs.createWriteStream(filename));
 	      this.end();
@@ -25696,7 +25696,7 @@ module.exports = ZStream;
 	    };
 
 	    PDFDocument.prototype.output = function(fn) {
-	      throw new Error('PDFDocument#output is deprecated, and has been removed from PDFKit. Please pipe the document into a Node stream.');
+	      throw new Error('PDFDocument#output is deprecated, and has been removed from PDFKit. Please, pipe the document into a Node stream.');
 	    };
 
 	    PDFDocument.prototype.end = function() {
@@ -75748,7 +75748,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		
 		
 		/**
-		 * Add a single new row or multiple rows of data to the table. Please note
+		 * Add a single new row or multiple rows of data to the table. Please, note
 		 * that this is suitable for client-side processing only - if you are using
 		 * server-side processing (i.e. "bServerSide": true), then to add data, you
 		 * must add it to the data source, i.e. the server-side, through an Ajax call.
@@ -85477,7 +85477,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 * As an object, the parameters in the object are passed to
 		 * [jQuery.ajax](http://api.jquery.com/jQuery.ajax/) allowing fine control
 		 * of the Ajax request. DataTables has a number of default parameters which
-		 * you can override using this option. Please refer to the jQuery
+		 * you can override using this option. Please, refer to the jQuery
 		 * documentation for a full description of the options available, although
 		 * the following parameters provide additional options in DataTables or
 		 * require special consideration:
@@ -86376,7 +86376,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverData
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"fnServerData": null,
 	
@@ -86403,7 +86403,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverParams
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"fnServerParams": null,
 	
@@ -87115,7 +87115,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "loadingRecords": "Please wait - loading..."
+			 *          "loadingRecords": "Please, wait - loading..."
 			 *        }
 			 *      } );
 			 *    } );
@@ -87195,7 +87195,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 			 * server-side, which DataTables will look up if this parameter is passed.
 			 * It must store the URL of the language file, which is in a JSON format,
 			 * and the object has the same properties as the oLanguage object in the
-			 * initialiser object (i.e. the above parameters). Please refer to one of
+			 * initialiser object (i.e. the above parameters). Please, refer to one of
 			 * the example language files to see how this works in action.
 			 *  @type string
 			 *  @default <i>Empty string - i.e. disabled</i>
@@ -87278,7 +87278,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.ajaxDataProp
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sAjaxDataProp": "data",
 	
@@ -87297,7 +87297,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.ajaxSource
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sAjaxSource": null,
 	
@@ -87489,7 +87489,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverMethod
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sServerMethod": "GET",
 	
@@ -89511,7 +89511,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		/**
 		 * Internal functions, exposed for used in plug-ins.
 		 * 
-		 * Please note that you should not need to use the internal methods for
+		 * Please, note that you should not need to use the internal methods for
 		 * anything other than a plug-in (and even then, try to avoid if possible).
 		 * The internal function may change between releases.
 		 *
@@ -97542,7 +97542,7 @@ $.extend( FixedColumns.prototype , {
 		     this.s.dt.oInstance.fnVersionCheck( '1.8.0' ) !== true )
 		{
 			alert( "FixedColumns "+FixedColumns.VERSION+" required DataTables 1.8.0 or later. "+
-				"Please upgrade your DataTables installation" );
+				"Please, upgrade your DataTables installation" );
 			return;
 		}
 
@@ -101782,7 +101782,7 @@ $.extend( Scroller.prototype, {
 	 * Calculate the row number that will be found at the given pixel position
 	 * (y-scroll).
 	 *
-	 * Please note that when the height of the full table exceeds 1 million
+	 * Please, note that when the height of the full table exceeds 1 million
 	 * pixels, Scroller switches into a non-linear mode for the scrollbar to fit
 	 * all of the records into a finite area, but this function returns a linear
 	 * value (relative to the last non-linear positioning).

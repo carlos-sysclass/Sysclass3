@@ -334,7 +334,7 @@
 		 *	$('#tree').jstree({
 		 *		'core' : {
 		 *			'strings' : {
-		 *				'Loading ...' : 'Please wait ...'
+		 *				'Loading ...' : 'Please, wait ...'
 		 *			}
 		 *		}
 		 *	});

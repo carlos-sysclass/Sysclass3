@@ -32,7 +32,7 @@
  * 		<input type="checkbox" id="spam_mail" value="mail" name="spam" />
  * 		Spam via Mail
  * 	</label>
- * 	<label for="spam" class="error">Please select at least two types of spam.</label>
+ * 	<label for="spam" class="error">Please, select at least two types of spam.</label>
  * </fieldset>
  * @desc Specifies a group of checkboxes. To validate, at least two checkboxes must be selected.
  *

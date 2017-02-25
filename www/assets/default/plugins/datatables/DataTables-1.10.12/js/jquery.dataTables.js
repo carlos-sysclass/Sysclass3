@@ -209,7 +209,7 @@
 		
 		
 		/**
-		 * Add a single new row or multiple rows of data to the table. Please note
+		 * Add a single new row or multiple rows of data to the table. Please, note
 		 * that this is suitable for client-side processing only - if you are using
 		 * server-side processing (i.e. "bServerSide": true), then to add data, you
 		 * must add it to the data source, i.e. the server-side, through an Ajax call.
@@ -9938,7 +9938,7 @@
 		 * As an object, the parameters in the object are passed to
 		 * [jQuery.ajax](http://api.jquery.com/jQuery.ajax/) allowing fine control
 		 * of the Ajax request. DataTables has a number of default parameters which
-		 * you can override using this option. Please refer to the jQuery
+		 * you can override using this option. Please, refer to the jQuery
 		 * documentation for a full description of the options available, although
 		 * the following parameters provide additional options in DataTables or
 		 * require special consideration:
@@ -10837,7 +10837,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverData
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"fnServerData": null,
 	
@@ -10864,7 +10864,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverParams
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"fnServerParams": null,
 	
@@ -11576,7 +11576,7 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "loadingRecords": "Please wait - loading..."
+			 *          "loadingRecords": "Please, wait - loading..."
 			 *        }
 			 *      } );
 			 *    } );
@@ -11656,7 +11656,7 @@
 			 * server-side, which DataTables will look up if this parameter is passed.
 			 * It must store the URL of the language file, which is in a JSON format,
 			 * and the object has the same properties as the oLanguage object in the
-			 * initialiser object (i.e. the above parameters). Please refer to one of
+			 * initialiser object (i.e. the above parameters). Please, refer to one of
 			 * the example language files to see how this works in action.
 			 *  @type string
 			 *  @default <i>Empty string - i.e. disabled</i>
@@ -11739,7 +11739,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.ajaxDataProp
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sAjaxDataProp": "data",
 	
@@ -11758,7 +11758,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.ajaxSource
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sAjaxSource": null,
 	
@@ -11950,7 +11950,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverMethod
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sServerMethod": "GET",
 	
@@ -13972,7 +13972,7 @@
 		/**
 		 * Internal functions, exposed for used in plug-ins.
 		 * 
-		 * Please note that you should not need to use the internal methods for
+		 * Please, note that you should not need to use the internal methods for
 		 * anything other than a plug-in (and even then, try to avoid if possible).
 		 * The internal function may change between releases.
 		 *

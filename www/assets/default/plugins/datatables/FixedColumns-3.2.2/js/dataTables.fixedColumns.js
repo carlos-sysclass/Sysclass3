@@ -471,7 +471,7 @@ $.extend( FixedColumns.prototype , {
 		     this.s.dt.oInstance.fnVersionCheck( '1.8.0' ) !== true )
 		{
 			alert( "FixedColumns "+FixedColumns.VERSION+" required DataTables 1.8.0 or later. "+
-				"Please upgrade your DataTables installation" );
+				"Please, upgrade your DataTables installation" );
 			return;
 		}
 

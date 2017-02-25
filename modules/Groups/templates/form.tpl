@@ -91,7 +91,7 @@
 					    </div>
 				        <div class="form-group">
 				            <label class="">{translateToken value="Search for a User"}</label>
-				            <input type="hidden" class="select2-me form-control col-md-12 user-search" name="user" data-placeholder="{translateToken value='Please Select'}" data-url="/module/groups/items/non-users/combo/"
+				            <input type="hidden" class="select2-me form-control col-md-12 user-search" name="user" data-placeholder="{translateToken value='Please, Select'}" data-url="/module/groups/items/non-users/combo/"
 				            data-format-as="default"
 				            data-format-as-template="%(name)s %(surname)s <%(email)s>"
 				             />

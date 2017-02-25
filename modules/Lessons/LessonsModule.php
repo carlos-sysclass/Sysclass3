@@ -310,13 +310,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $data['language_code'] = $this->translate->getSource();
@@ -326,7 +326,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons/content/question");
                 $messages = array(
                     'success' => "Question included.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $_GET['redirect'] = "0";
@@ -490,7 +490,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $messages = array(
             'success' => "Lesson content order updated.",
-            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+            'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
         );
 
         $data = $this->getHttpData(func_get_args());
@@ -578,7 +578,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -632,7 +632,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         if ($user = $this->getCurrentUser(true)) {
             $messages = array(
                 'success' => "Answers saved.",
-                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
             );
 
             $data = $this->getHttpData(func_get_args());
@@ -673,13 +673,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             }
 
@@ -720,13 +720,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             }
 
@@ -856,9 +856,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 }
                 exit;
             }
-            return $this->invalidRequestError($this->translate->translate("The system can't translate this content. Please try again"), "info");
+            return $this->invalidRequestError($this->translate->translate("The system can't translate this content. Please, try again"), "info");
         } else {
-            return $this->invalidRequestError($this->translate->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
+            return $this->invalidRequestError($this->translate->translate("This content isn't suitable to translation. Please, try again with another file"), "warning");
         }
         */
 

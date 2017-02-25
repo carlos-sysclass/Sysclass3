@@ -820,7 +820,7 @@ Zone	Europe/Sofia	1:33:16 -	LMT	1880
 # see Serbia
 
 # Cyprus
-# Please see the `asia' file for Asia/Nicosia.
+# Please, see the `asia' file for Asia/Nicosia.
 
 # Czech Republic
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
@@ -1240,7 +1240,7 @@ Zone	Europe/Berlin	0:53:28 -	LMT	1893 Apr
 			1:00	EU	CE%sT
 
 # Georgia
-# Please see the "asia" file for Asia/Tbilisi.
+# Please, see the "asia" file for Asia/Tbilisi.
 # Herodotus (Histories, IV.45) says Georgia north of the Phasis (now Rioni)
 # is in Europe.  Our reference location Tbilisi is in the Asian part.
 

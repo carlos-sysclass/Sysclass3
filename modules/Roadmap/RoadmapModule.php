@@ -282,21 +282,21 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Class created successfully",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Grouping created successfully",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Period created successfully",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 // GET USER CURRENT SETTINGS
@@ -310,7 +310,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
                 $messages = array(
                     'success' => false,
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -360,21 +360,21 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Class updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Grouping updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Period created successfully",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "content-progress") {
                 $modelRoute = "lessons/content/progress";
@@ -385,7 +385,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
                 $messages = array(
                     'success' => false,
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -437,21 +437,21 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Class removed successfully",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Grouping removed successfully",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Periods created successfully",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -549,7 +549,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 //$itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course order updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
 
@@ -572,14 +572,14 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Grouping order updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course Periods updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();

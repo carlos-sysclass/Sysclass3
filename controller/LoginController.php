@@ -540,7 +540,7 @@ class LoginController extends \AbstractSysclassController
 			                'bind' => array($postData['login'], $user->id)
 			            ));
 			            if ($exists > 0) {
-							throw new AuthenticationException("This username is not avaliable. Please select another one.");
+							throw new AuthenticationException("This username is not avaliable. Please, select another one.");
 			            }
 			            $user->login = $postData['login'];
 					}
@@ -733,7 +733,7 @@ class LoginController extends \AbstractSysclassController
 				$passwordRequest->active = 0;
 
 				if ($user->save() && $passwordRequest->save()) {
-					$message = $this->translate->translate("Password updated. Please enter you login details below.");
+					$message = $this->translate->translate("Password updated. Please, enter you login details below.");
 	            	$message_type = 'success';
 
 	            	$this->redirect("/login", $message, $message_type);
@@ -876,7 +876,7 @@ class LoginController extends \AbstractSysclassController
 		            if ($this->_checkParameter($input, 'email')) { //The user entered an email address
 		                $result = sC_getTableData("users", "login", "email='".$input."'"); //Get the user stored login
 		                if (sizeof($result) > 1) {
-		                    $message = $this->translate->translate("There is more than one user with the same data given. Please try to use email or login.");
+		                    $message = $this->translate->translate("There is more than one user with the same data given. Please, try to use email or login.");
 		                    $message_type = 'warning';
 		                    //sC_redirect(''.basename($_SERVER['PHP_SELF']).'?ctg=reset_pwd&message='.urlencode($message).'&message_type='.$message_type);
 							$this->redirect("login/reset", $message, $message_type);

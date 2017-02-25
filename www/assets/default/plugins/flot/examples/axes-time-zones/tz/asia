@@ -1340,7 +1340,7 @@ Zone	Asia/Tokyo	9:18:59	-	LMT	1887 Dec 31 15:00u
 #
 # However timeanddate.com, which I usually find reliable, shows Jordan
 # going to daylight saving time on the last Friday in March since 2002.
-# Please see
+# Please, see
 # <a href="http://www.timeanddate.com/worldclock/timezone.html?n=11">
 # http://www.timeanddate.com/worldclock/timezone.html?n=11
 # </a>

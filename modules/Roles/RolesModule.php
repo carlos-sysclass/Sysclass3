@@ -280,7 +280,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     "success"
                 );
             } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                 return array_merge($response, $userModel->toFullArray());
             }
         } else {
@@ -311,7 +311,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
                 return array_merge($response, $itemModel->toArray());
             } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "error");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "error");
                 return array_merge($response, $itemModel->toArray());
             }
         } else {
@@ -336,7 +336,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -515,7 +515,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -540,7 +540,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -566,7 +566,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -590,7 +590,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();

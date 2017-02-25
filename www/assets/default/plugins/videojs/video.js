@@ -10842,7 +10842,7 @@ var Player = (function (_Component) {
     if (safety && safety.IWillNotUseThisInPlugins) {
       return this.tech_;
     }
-    var errorText = '\n      Please make sure that you are not using this inside of a plugin.\n      To disable this alert and error. Please, pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ';
+    var errorText = '\n      Please, make sure that you are not using this inside of a plugin.\n      To disable this alert and error. Please, pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ';
     _globalWindow2['default'].alert(errorText);
     throw new Error(errorText);
   };

@@ -259,7 +259,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 );
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when trying to save your data. Please check your data and try again", "error");
+                return $this->invalidRequestError("A problem ocurred when trying to save your data. Please, check your data and try again", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -282,7 +282,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to save your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -305,7 +305,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

@@ -93,7 +93,7 @@ class PaymentModule extends \SysclassModule /*implements \ISummarizable,  \ILink
             if (!$result) { /// CASO DÊ ERRO
                 $this->response->setJsonContent(
                     $this->createAdviseResponse(
-                        $this->translate->translate("A problem ocurred when tried to save you data. Please try again."), 
+                        $this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), 
                         "warning"
                     )
                 );

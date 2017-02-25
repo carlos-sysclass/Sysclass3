@@ -103,7 +103,7 @@
 				<div class="create-account">
 					<p>
 						{translateToken value="Trouble logging in"}
-						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please click here"}</a>
+						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please, click here"}</a>
 					</p>
 				</div>
 			{/if}

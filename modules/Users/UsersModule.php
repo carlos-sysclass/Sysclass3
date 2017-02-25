@@ -576,7 +576,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         $model->password = $this->authentication->hashPassword($data['new-password'], $model);
                     } else {
                         $message = new Message(
-                            "Please provide your current password",
+                            "Please, provide your current password",
                             "password",
                             "warning"
                         );
@@ -723,7 +723,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         );
                     }
                 } else {
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when trying to save you data. Please try again."), "warning");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when trying to save you data. Please, try again."), "warning");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {

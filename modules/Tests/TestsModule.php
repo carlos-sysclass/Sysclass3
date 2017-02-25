@@ -585,7 +585,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $itemModel = $this->model("tests/question");
                 $messages = array(
                     'success' => "Question created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $data['language_code'] = $this->translate->getSource();
@@ -599,7 +599,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $messages = array(
                     'success' => "Test created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again",
                     'try_limit' => "You can not run this test more often"
                 );
             } else {
@@ -660,7 +660,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "execution") {
                 $messages = array(
                     'success' => "Test updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $execution = TestExecution::findFirstById($identifier);
@@ -735,7 +735,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $itemModel = $this->model("tests/question");
                 $messages = array(
                     'success' => "Question removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -849,7 +849,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "question") {
                 $messages = array(
                     'success' => "Questions order updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $itemModel = $this->getModelData("me", $lesson_id);
@@ -887,7 +887,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             $messages = array(
                 'success' => "Lesson order updated.",
-                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
             );
 
             if ($itemModel->setQuestionOrder($data['position'])) {

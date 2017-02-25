@@ -596,7 +596,7 @@ var FormComponents = function () {
                     'placement': (App.isRTL() ? 'left' : 'right'),
                     'html': true,
                     'container': 'body',
-                    'content': 'Please enter a username to check its availability.',
+                    'content': 'Please, enter a username to check its availability.',
                 });
                 // add error class to the popover
                 pop.data('bs.popover').tip().addClass('error');

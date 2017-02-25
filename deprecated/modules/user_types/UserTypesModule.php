@@ -127,7 +127,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

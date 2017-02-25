@@ -96,8 +96,8 @@ var FormWizard = function () {
 
                 messages: { // custom messages for radio buttons and checkboxes
                     'payment[]': {
-                        required: "Please select at least one option",
-                        minlength: jQuery.format("Please select at least one option")
+                        required: "Please, select at least one option",
+                        minlength: jQuery.format("Please, select at least one option")
                     }
                 },
 

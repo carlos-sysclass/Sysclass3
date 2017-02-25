@@ -3,7 +3,7 @@
  * @version: v1.13.4
  * @author: Igor Escobar
  *
- * Created by Igor Escobar on 2012-03-10. Please report any bug at http://blog.igorescobar.com
+ * Created by Igor Escobar on 2012-03-10. Please, report any bug at http://blog.igorescobar.com
  *
  * Copyright (c) 2012 Igor Escobar http://blog.igorescobar.com
  *

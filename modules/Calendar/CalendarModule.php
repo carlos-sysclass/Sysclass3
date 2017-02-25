@@ -334,7 +334,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(
-                    $this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
+                    $this->translate->translate("A problem ocurred when tried to save you data. Please, try again."),
                     "error"
                 );
             }
@@ -375,7 +375,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(
-                    $this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
+                    $this->translate->translate("A problem ocurred when tried to save you data. Please, try again."),
                     "error"
                 );
             }
@@ -402,7 +402,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
                 return $this->invalidRequestError(
-                    $this->translate->translate("A problem ocurred when tried to save you data. Please try again."),
+                    $this->translate->translate("A problem ocurred when tried to save you data. Please, try again."),
                     "error"
                 );
             }

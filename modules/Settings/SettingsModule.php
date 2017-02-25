@@ -287,7 +287,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $data)
                 );

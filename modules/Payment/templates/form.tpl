@@ -46,7 +46,7 @@
 					<input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
 					-->
 					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Department'}">
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please, Select"}</option>
 						{foreach $T_KNOWLEDGE_AREAS as $knowledge}
 							<option value="{$knowledge.id}">{$knowledge.name}</option>
 						{/foreach}
@@ -57,7 +57,7 @@
 					<label class="control-label">{translateToken value="Coordinators"}</label>
 
 					<select class="select2-me form-control" name="coordinator_id" multiple="multiple">
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please, Select"}</option>
 						{foreach $T_COORDINATORS as $id => $coordinator}
 							<option value="{$coordinator.id}">{$coordinator.name} {$coordinator.surname}</option>
 						{/foreach}

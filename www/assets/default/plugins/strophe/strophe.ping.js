@@ -1,6 +1,6 @@
 /*
  * This plugin is distributed under the terms of the MIT licence.
- * Please see the LICENCE file for details.
+ * Please, see the LICENCE file for details.
  *
  * Copyright (c) Markus Kohlhase, 2010
  * Refactored by Pavel Lang, 2011

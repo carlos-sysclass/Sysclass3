@@ -30,7 +30,7 @@
 						<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 						<label class="control-label">{translateToken value="Type"}</label>
 						<select class="select2-me form-control" name="type_id" data-rule-required="1" data-rule-min="1">
-							<option value="">{translateToken value="Please select"}</option>
+							<option value="">{translateToken value="Please, select"}</option>
 							{foreach $T_EVENT_TYPES as $event_type}
 								<option value="{$event_type.id}">{$event_type.name}</option>
 							{/foreach}

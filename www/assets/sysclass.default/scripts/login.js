@@ -187,7 +187,7 @@ var Login = function () {
 
 	            messages: { // custom messages for radio buttons and checkboxes
 	                tnc: {
-	                    required: "Please accept TNC first."
+	                    required: "Please, accept TNC first."
 	                }
 	            },
 

@@ -381,7 +381,7 @@ test("remote", function() {
 		},
 		messages: {
 			username: {
-				required: "Please",
+				required: "Please,",
 				remote: jQuery.validator.format("{0} in use")
 			}
 		},
@@ -452,7 +452,7 @@ test("remote extensions", function() {
 		},
 		messages: {
 			username: {
-				required: "Please"
+				required: "Please,"
 			}
 		},
 		submitHandler: function() {

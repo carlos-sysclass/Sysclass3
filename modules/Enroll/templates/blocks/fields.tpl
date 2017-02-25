@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3">{translateToken value="Field Name"}</label>
                         <div class="col-md-9">
-                            <select name="field_id" class="select2-me form-control col-md-12" data-placeholder="{translateToken value='Please Select'}" data-rule-required="true">
+                            <select name="field_id" class="select2-me form-control col-md-12" data-placeholder="{translateToken value='Please, Select'}" data-rule-required="true">
                                 {foreach $T_FORM_FIELDS as $field}
                                 <option value="{$field.id}">{$field.name}</option>
                                 {/foreach}
