@@ -1167,7 +1167,7 @@ rangy.createModule("DomUtil", function(api, module) {
             }
 
             // "If either element is null or element's ownerDocument is an HTML document
-            // and element's local name is "html" and element's namespace is the HTML
+            // and element's original name is "html" and element's namespace is the HTML
             // namespace"
             if (el === null || (
                 el.nodeName == "HTML"
@@ -1175,7 +1175,7 @@ rangy.createModule("DomUtil", function(api, module) {
                 && dom.isHtmlNamespace(el)
             )) {
 
-            // "let element be a new Element with "body" as its local name and the HTML
+            // "let element be a new Element with "body" as its original name and the HTML
             // namespace as its namespace.""
                 el = doc.createElement("body");
             } else {

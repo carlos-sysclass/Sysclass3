@@ -10,7 +10,7 @@
 		</div>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Native Name"}</label>
-			<input name="local_name" value="" type="text" placeholder="Local Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+			<input name="local_name" value="" type="text" placeholder="Original name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Country"}</label>
