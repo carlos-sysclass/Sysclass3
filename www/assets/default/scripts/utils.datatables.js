@@ -90,7 +90,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					colReorder : true,
 					language: {
 			            buttons: {
-			                colvis: 'Colunas'
+			                colvis: 'Column'
 			            }
 			        },
 				    buttons: [
