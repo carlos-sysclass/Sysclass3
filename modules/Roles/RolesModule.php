@@ -82,7 +82,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Attribution'),
+                    'text'      => $this->translate->translate('New attribution'),
                     'link'      => "javascript:void(0)",
                     'class'     => "btn-primary dialog-create-role-open-action",
                     'icon'      => 'fa fa-plus'
