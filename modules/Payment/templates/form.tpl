@@ -13,7 +13,7 @@
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Classes"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Units"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}

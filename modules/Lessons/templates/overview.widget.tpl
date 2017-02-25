@@ -18,7 +18,7 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Classes"}</span>
+							<span class="tab-title">{translateToken value="Units"}</span>
 						</div>
 					</a>
 				</li>
@@ -212,7 +212,7 @@
 												<td><strong class="text-default pull-right">80h</strong></td>
 											</tr>
 											<tr>
-												<td>{translateToken value="Number of Classes:"}</td>
+												<td>{translateToken value="Number of units:"}</td>
 												<td><strong class="text-default pull-right">3 of 24</strong></td>
 											</tr>
 											<tr>

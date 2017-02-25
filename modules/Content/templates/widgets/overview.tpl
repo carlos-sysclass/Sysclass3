@@ -727,7 +727,7 @@ _before_init_functions.push(function() {
 			</tr>
 
 			<tr>
-				<td>{translateToken value="Number of Classes:"}</td>
+				<td>{translateToken value="Number of units:"}</td>
 				<td><strong class="text-default pull-right"><%= model.position %> of 24</strong></td>
 			</tr>
 			<tr>
@@ -820,7 +820,7 @@ _before_init_functions.push(function() {
 			</tr>
 
 			<tr>
-				<td>{translateToken value="Number of Classes:"}</td>
+				<td>{translateToken value="Number of units:"}</td>
 				<td><strong class="text-default pull-right"><%= model.position %> of 24</strong></td>
 			</tr>
 			<tr>
