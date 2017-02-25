@@ -30,7 +30,7 @@ class Question extends Model
     	$this->options = json_decode($this->options, true);
         return $this->toFullArray(array(
             'Department',
-            'Type',
+            'Difficulty',
             'Level'
         ), parent::toArray());
     }
