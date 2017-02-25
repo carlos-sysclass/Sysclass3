@@ -58,7 +58,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
                 $items[] = array(
                     'link'  => $this->getBasePath() . "view/token",
-                    'text'  => $this->translate->translate("Review translation")
+                    'text'  => $this->translate->translate("Edit translation")
                 );
 
                 $this->putSectionTemplate("translate-menu", "menu/language.switch");
@@ -152,7 +152,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                     'separator' => true
                 ),
                 array(
-                    'text'  => $this->translate->translate("Review translation"),
+                    'text'  => $this->translate->translate("Edit translation"),
                     'link'  => $this->getBasePath() . "view/token",
                     'icon'  => 'icon-reorder'
                 )
