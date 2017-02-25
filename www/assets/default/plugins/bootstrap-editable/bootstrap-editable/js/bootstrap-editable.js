@@ -3397,7 +3397,7 @@ Email
 
 
 /*
-Url
+URL
 */
 (function ($) {
     "use strict";

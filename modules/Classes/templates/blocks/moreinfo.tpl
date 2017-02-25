@@ -16,7 +16,7 @@ Length:
 Course Reading:
 	ISBN
 	Name
-	Url
+	URL
 	Required?
 -->
 
