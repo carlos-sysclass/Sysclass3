@@ -113,7 +113,7 @@
 					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Individual</strong> admission type, the user will be enrolled in his/her own individual program and the roadmap will be calculated individually.
+					            On <strong>Individual</strong> admission, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
 					        </p>
 					    </div>
 					</div>
@@ -121,7 +121,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Grouping-based</strong> admission type, the user is allocated to a group, based on his/hers admittance date. Each group are dynamically created based on the criteria defined below. You can create groups based on days of a month, years, or the total number of users enrolled in the program.</p>
+					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the criteria defined below. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
