@@ -73,7 +73,7 @@ var Login = function () {
 
 	            messages: {
 	                email: {
-	                    required: "Email is required."
+	                    required: "Please, enter a valid email."
 	                }
 	            },
 
