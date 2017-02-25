@@ -8,7 +8,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['behaviours']) &&  ($T_SECTION_TPL['behaviours']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group Behaviour"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group attributes"}</a>
 			</li>
 			{/if}
 			<li>
