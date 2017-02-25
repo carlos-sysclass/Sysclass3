@@ -11574,7 +11574,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Search: ",
 	
 	
 			/**

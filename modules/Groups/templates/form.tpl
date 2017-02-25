@@ -86,7 +86,7 @@
 					    <div class="alert alert-info">
 					        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            {translateToken value="Here you can select the current users inside this group."}
+					            {translateToken value="Here you can select the current users in this group."}
 					        </p>
 					    </div>
 				        <div class="form-group">

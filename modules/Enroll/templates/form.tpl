@@ -103,7 +103,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-Based'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-based'}
                             </label>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
-					            On <strong>Individual</strong> Admittance type, the user is accepted regardless of others users, and your roadmap is calculated  individually.
+					            On <strong>Individual</strong> Admission type - the user will be enrolled in his/her own individual program. The roadmap will be calculated individually.
 					        </p>
 					    </div>
 					</div>
@@ -123,7 +123,7 @@
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
 					            <strong>TIP!</strong>
-					            On <strong>Grouping-based</strong> Admittance type, the users are allocated in groups, based on his/hers admittance dates. Each group are dynamically created based on the criterias below. You can create groups based on days of a month, the total number of users or even both.</p>
+					            On <strong>Grouping-based</strong> Admission type, the user is allocated to a group, based on his/hers admittance date. Each group are dynamically created based on the criteria defined below. You can create groups based on days of a month, the total number of users, or even.</p>
 					    </div>
 					</div>
 				</div>
@@ -275,7 +275,7 @@
 						</label>
 						<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
 							<option value="-1">{translateToken value="Select a action"}</option>
-							<option value="">{translateToken value="Block Admittance"}</option>
+							<option value="">{translateToken value="Block admission"}</option>
 							<option value="">{translateToken value="Enroll in another group"}</option>
 							<option value="">{translateToken value="Send to the waiting list"}</option>
 						</select>
