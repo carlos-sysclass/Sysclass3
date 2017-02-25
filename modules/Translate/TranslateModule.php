@@ -123,15 +123,15 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("New Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("New language"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("Edit Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("Edit language"));
                 break;
             }
             case "view/token" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("View Translations"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("View translations"));
             }
         }
         return $breadcrumbs;
@@ -144,7 +144,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         $actions = array(
             'view'  => array(
                 array(
-                    'text'  => $this->translate->translate('Add Language'),
+                    'text'  => $this->translate->translate('Add language'),
                     'link'  => $this->getBasePath() . "add",
                     'icon'  => 'icon-plus'
                 ),
@@ -159,7 +159,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             ),
             'view/token'  => array(
                 array(
-                    'text'  => $this->translate->translate('Add Language'),
+                    'text'  => $this->translate->translate('Add language'),
                     'link'  => $this->getBasePath() . "add",
                     'class' => 'btn-primary',
                     'icon'  => 'icon-plus'
