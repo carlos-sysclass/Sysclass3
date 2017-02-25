@@ -54,7 +54,7 @@
 				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
-					{translateToken value="Open Period"}
+					{translateToken value="Open period"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Especiy the start and final date for this rule be avaliable. If you don\'t specify the final date, its duration will be underterminate.'}">
                         <i class="fa fa-question"></i>
                     </span>
