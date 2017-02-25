@@ -747,7 +747,7 @@ class PHPMailer {
    * based; So why not use FILTER_VALIDATE_EMAIL? Because it was broken to
    * not allow a@b type valid addresses :(
    * @link http://squiloople.com/2009/12/20/email-address-validation/
-   * @copyright regex Copyright Michael Rushton 2009-10 | http://squiloople.com/ | Feel free to use and redistribute this code. But please keep this copyright notice.
+   * @copyright regex Copyright Michael Rushton 2009-10 | http://squiloople.com/ | Feel free to use and redistribute this code. But please, keep this copyright notice.
    * @param string $address The email address to check
    * @return boolean
    * @static

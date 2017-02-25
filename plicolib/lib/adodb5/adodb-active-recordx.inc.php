@@ -302,7 +302,7 @@ class ADODB_Active_Record {
 			$table->updateColsCount();
 		}
 # @todo Can I make this guy be lazy?
-		$this->$foreignRef = $table->_hasMany[$foreignRef]; // WATCHME Removed assignment by ref. to please __get()
+		$this->$foreignRef = $table->_hasMany[$foreignRef]; // WATCHME Removed assignment by ref. to please, __get()
 	}
 
 	/**

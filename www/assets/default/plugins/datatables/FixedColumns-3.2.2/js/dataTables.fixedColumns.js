@@ -18,7 +18,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -53,7 +53,7 @@ var _firefoxScroll;
 /**
  * When making use of DataTables' x-axis scrolling feature, you may wish to
  * fix the left most column in place. This plug-in for DataTables provides
- * exactly this option (note for non-scrolling tables, please use the
+ * exactly this option (note for non-scrolling tables. Please, use the
  * FixedHeader plug-in, which can fix headers, footers and columns). Key
  * features include:
  *

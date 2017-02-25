@@ -18,7 +18,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 /*jslint evil: true, undef: true, browser: true */
@@ -63,7 +63,7 @@
 	 * DataTables is a plug-in for the jQuery Javascript library. It is a highly
 	 * flexible tool, based upon the foundations of progressive enhancement,
 	 * which will add advanced interaction controls to any HTML table. For a
-	 * full list of features please refer to
+	 * full list of features please, refer to
 	 * [DataTables.net](href="http://datatables.net).
 	 *
 	 * Note that the `DataTable` object is not a global variable but is aliased
@@ -6408,7 +6408,7 @@
 			(settings ? 'table id='+settings.sTableId+' - ' : '')+msg;
 	
 		if ( tn ) {
-			msg += '. For more information about this error, please see '+
+			msg += '. For more information about this error. Please, see '+
 			'http://datatables.net/tn/'+tn;
 		}
 	
@@ -10101,7 +10101,7 @@
 		/**
 		 * The `columns` option in the initialisation parameter allows you to define
 		 * details about the way individual columns behave. For a full list of
-		 * column options that can be set, please see
+		 * column options that can be set. Please, see
 		 * {@link DataTable.defaults.column}. Note that if you use `columns` to
 		 * define your columns, you must have an entry in the array for every single
 		 * column that you have in your table (these can be null if you don't which
@@ -10259,7 +10259,7 @@
 		 * will match a row containing those words, even if not in the order that was
 		 * specified (this allow matching across multiple columns). Note that if you
 		 * wish to use filtering in DataTables this must remain 'true' - to remove the
-		 * default filtering input box and retain filtering abilities, please use
+		 * default filtering input box and retain filtering abilities. Please, use
 		 * {@link DataTable.defaults.dom}.
 		 *  @type boolean
 		 *  @default true

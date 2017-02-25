@@ -35,19 +35,19 @@
 
 jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
 	return this.optional(element) || /^[a-z\-.,()'"\s]+$/i.test(value);
-}, "Letters or punctuation only please");
+}, "Letters or punctuation only.");
 
 jQuery.validator.addMethod("alphanumeric", function(value, element) {
 	return this.optional(element) || /^\w+$/i.test(value);
-}, "Letters, numbers, and underscores only please");
+}, "Letters, numbers, and underscores only.");
 
 jQuery.validator.addMethod("lettersonly", function(value, element) {
 	return this.optional(element) || /^[a-z]+$/i.test(value);
-}, "Letters only please");
+}, "Letters only.");
 
 jQuery.validator.addMethod("nowhitespace", function(value, element) {
 	return this.optional(element) || /^\S+$/i.test(value);
-}, "No white space please");
+}, "No white space.");
 
 jQuery.validator.addMethod("ziprange", function(value, element) {
 	return this.optional(element) || /^90[2-5]\d\{2\}-\d{4}$/.test(value);
@@ -59,7 +59,7 @@ jQuery.validator.addMethod("zipcodeUS", function(value, element) {
 
 jQuery.validator.addMethod("integer", function(value, element) {
 	return this.optional(element) || /^-?\d+$/.test(value);
-}, "A positive or negative non-decimal number please");
+}, "A positive or negative non-decimal number.");
 
 /**
  * Return true, if the value is a valid vehicle identification number (VIN).

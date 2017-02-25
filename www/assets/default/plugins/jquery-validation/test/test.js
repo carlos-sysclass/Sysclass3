@@ -20,7 +20,7 @@ $.mockjax({
 $.mockjax({
 	url: "users2.php",
 	data: { username: "asdf"},
-	responseText: '"asdf is already taken, please try something else"',
+	responseText: '"asdf is already taken. Please, try something else"',
 	responseStatus: 200,
 	responseTime: 1
 });

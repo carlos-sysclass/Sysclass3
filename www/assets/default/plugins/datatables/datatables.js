@@ -3,7 +3,7 @@
  *   https://datatables.net/download
  *
  * To rebuild or modify this file with the latest versions of the included
- * software please visit:
+ * software please, visit:
  *   https://datatables.net/download/#bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.1/b-colvis-1.2.1/b-flash-1.2.1/b-html5-1.2.1/b-print-1.2.1/cr-1.3.2/fc-3.2.2/fh-3.1.2/kt-2.1.2/r-2.1.0/sc-1.4.2/se-1.2.0
  *
  * Included libraries:
@@ -75557,7 +75557,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 /*jslint evil: true, undef: true, browser: true */
@@ -75602,7 +75602,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 	 * DataTables is a plug-in for the jQuery Javascript library. It is a highly
 	 * flexible tool, based upon the foundations of progressive enhancement,
 	 * which will add advanced interaction controls to any HTML table. For a
-	 * full list of features please refer to
+	 * full list of features please, refer to
 	 * [DataTables.net](href="http://datatables.net).
 	 *
 	 * Note that the `DataTable` object is not a global variable but is aliased
@@ -81947,7 +81947,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 			(settings ? 'table id='+settings.sTableId+' - ' : '')+msg;
 	
 		if ( tn ) {
-			msg += '. For more information about this error, please see '+
+			msg += '. For more information about this error. Please, see '+
 			'http://datatables.net/tn/'+tn;
 		}
 	
@@ -85640,7 +85640,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		/**
 		 * The `columns` option in the initialisation parameter allows you to define
 		 * details about the way individual columns behave. For a full list of
-		 * column options that can be set, please see
+		 * column options that can be set. Please, see
 		 * {@link DataTable.defaults.column}. Note that if you use `columns` to
 		 * define your columns, you must have an entry in the array for every single
 		 * column that you have in your table (these can be null if you don't which
@@ -85798,7 +85798,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 * will match a row containing those words, even if not in the order that was
 		 * specified (this allow matching across multiple columns). Note that if you
 		 * wish to use filtering in DataTables this must remain 'true' - to remove the
-		 * default filtering input box and retain filtering abilities, please use
+		 * default filtering input box and retain filtering abilities. Please, use
 		 * {@link DataTable.defaults.dom}.
 		 *  @type boolean
 		 *  @default true
@@ -92082,7 +92082,7 @@ Buttons.buttonSelector = function ( insts, selector )
 
 
 /**
- * Buttons defaults. For full documentation, please refer to the docs/option
+ * Buttons defaults. For full documentation. Please, refer to the docs/option
  * directory or the DataTables site.
  * @type {Object}
  * @static
@@ -92304,7 +92304,7 @@ $.extend( _dtButtons, {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables API
  *
- * For complete documentation, please refer to the docs/api directory or the
+ * For complete documentation. Please, refer to the docs/api directory or the
  * DataTables site
  */
 
@@ -95752,7 +95752,7 @@ return DataTable.Buttons;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -97089,7 +97089,7 @@ return ColReorder;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -97124,7 +97124,7 @@ var _firefoxScroll;
 /**
  * When making use of DataTables' x-axis scrolling feature, you may wish to
  * fix the left most column in place. This plug-in for DataTables provides
- * exactly this option (note for non-scrolling tables, please use the
+ * exactly this option (note for non-scrolling tables. Please, use the
  * FixedHeader plug-in, which can fix headers, footers and columns). Key
  * features include:
  *
@@ -98715,7 +98715,7 @@ return FixedColumns;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 (function( factory ){
@@ -99388,7 +99388,7 @@ return FixedHeader;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 (function( factory ){
@@ -100273,7 +100273,7 @@ return KeyTable;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -101507,7 +101507,7 @@ return Responsive;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 (function( factory ){
@@ -102859,7 +102859,7 @@ return Scroller;
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net/extensions/select
+ * For details please, refer to: http://www.datatables.net/extensions/select
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -103332,7 +103332,7 @@ function init ( ctx ) {
 	// 
 	// This method of attaching to `aoRowCreatedCallback` is a hack until
 	// DataTables has proper events for row manipulation If you are reviewing
-	// this code to create your own plug-ins, please do not do this!
+	// this code to create your own plug-ins. Please, do not do this!
 	ctx.aoRowCreatedCallback.push( {
 		fn: function ( row, data, index ) {
 			var i, ien;
@@ -103589,7 +103589,7 @@ DataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables API
  *
- * For complete documentation, please refer to the docs/api directory or the
+ * For complete documentation. Please, refer to the docs/api directory or the
  * DataTables site
  */
 

@@ -103,7 +103,7 @@ _before_init_functions.push(function() {
                 <source src="http://itaipu.sysclass.com/files/lesson/3.1-Processo%20de%20Aquisicao%20%20Judite.mp4" type='video/mp4'>
                 <source src="MY_VIDEO.webm" type='video/webm'>
                 <p class="vjs-no-js">
-                  To view this video please enable JavaScript, and consider upgrading to a web browser that
+                  To view this video please, enable JavaScript, and consider upgrading to a web browser that
                   <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                 </p>
               </video>

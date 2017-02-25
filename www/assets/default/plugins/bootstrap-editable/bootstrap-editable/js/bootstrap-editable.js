@@ -3324,7 +3324,7 @@ Following types are supported:
 
 Learn more about html5 inputs:
 http://www.w3.org/wiki/HTML5_form_additions
-To check browser compatibility please see:
+To check browser compatibility please, see:
 https://developer.mozilla.org/en-US/docs/HTML/Element/Input
 
 @class html5types

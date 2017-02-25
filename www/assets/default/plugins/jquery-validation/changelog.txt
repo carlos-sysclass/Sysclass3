@@ -91,7 +91,7 @@
   * grammar error in german localization file
   * Added Estonian localization for messages
   * Improve tooltip handling on themerollered demo
-  * Add type="text" to input fields without type attribute to please qSA
+  * Add type="text" to input fields without type attribute to please, qSA
   * Update themerollered demo to use tooltip to show errors as overlay.
   * Update themerollered demo to use latest jQuery UI (along with newer jQuery version). Move code around to speed up page load.
   * Fixed min error message broken in Japanese.
