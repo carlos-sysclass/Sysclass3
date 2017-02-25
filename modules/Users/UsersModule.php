@@ -160,7 +160,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Users")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New User"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New user"));
                 return $breadcrumbs;
                 break;
             }
@@ -170,7 +170,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Users")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit User"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit user"));
                 return $breadcrumbs;
                 break;
             }
@@ -184,7 +184,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New User'),
+                    'text'      => $this->translate->translate('New user'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
