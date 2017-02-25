@@ -660,7 +660,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Human translation"
+                            'data-original-title'   => "Edit"
                         )
                     ),
                     'translate-windows'  => array(
@@ -669,7 +669,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Eletronic translation"
+                            'data-original-title'   => "Translation"
                         )
                     )
                 );
