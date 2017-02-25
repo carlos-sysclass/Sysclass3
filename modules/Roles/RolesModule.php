@@ -423,7 +423,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-primary datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Edit Role")
+                    'data-original-title' => $this->translate->translate("Edit roles")
                 ]
             ),
             'users'  => array(
