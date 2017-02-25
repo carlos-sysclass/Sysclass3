@@ -214,7 +214,7 @@ li.list-item {
     </a>
 
     <div class="list-file-item-options">
-        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Automatic translate to...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
+        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Translate...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
             >
                 <i class="fa fa-language"></i>
         </a>

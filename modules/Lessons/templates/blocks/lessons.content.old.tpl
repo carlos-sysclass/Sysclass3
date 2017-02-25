@@ -695,7 +695,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label">{translateToken value="Automatic translate to"}</label>
+                        <label class="control-label">{translateToken value="Translate"}</label>
                         <div class="input-group ">
                             <select class="select2-me form-control" name="related[lang_to]" data-placeholder="{translateToken value="Choose language"}">
                                 {foreach $T_LANGUAGES as $lang}
