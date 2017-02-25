@@ -56,7 +56,7 @@
 				<div class="form-body">
 					<h5 class="form-section margin-bottom-10 margin-top-10">
 						<i class="fa fa-cogs"></i>
-						{translateToken value="Group Type"}
+						{translateToken value="Group type"}
 						<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='For static groups, you can manually select the users inside this group. For dynamic groups, you select the criteria used to automaticaly select the users.'}">
 					        <i class="fa fa-question"></i>
 					    </span>
