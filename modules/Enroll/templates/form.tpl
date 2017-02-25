@@ -86,7 +86,7 @@
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-cogs"></i>
-					{translateToken value="Course Format"}
+					{translateToken value="Course format"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criterias for user admitance. This information is used to make course grouping control, and the calculate the course desired roadmap.'}">
                         <i class="fa fa-question"></i>
                     </span>
