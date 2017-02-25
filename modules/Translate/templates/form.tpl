@@ -42,7 +42,7 @@
 		</div>
 		<h3 class="form-section">
 			<i class="icon-reorder"></i>
-			{translateToken value="Eletronic Translation"}
+			{translateToken value="Eletronic translation"}
 		</h3>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Eletronic language to translate"}</label>

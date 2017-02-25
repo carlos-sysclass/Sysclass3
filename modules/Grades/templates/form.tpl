@@ -45,9 +45,8 @@
 				    <div class="alert alert-warning display-hide tips-container">
 				        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 				        <p>
-				            <strong>TIP!</strong>
-				            You can create a unlimited number of of relative ranges, so you can assign a grade, like (A,B,C) based on user score.<br />
-				            These rules can be applied on tests and lessons, providing a way to translate the user percentual score (0 - 100%) to your organization rules.
+				            You can create a unlimited number of of relative ranges, so you can assign a grade, like (A,B,C,D,F) based on user score.<br />
+				            These rules can be applied to tests and lessons, providing a way to translate the user percentual score (0 - 100%).
 				        </p>
 				    </div>
 					<ul class="list-group ranges-rules-container">

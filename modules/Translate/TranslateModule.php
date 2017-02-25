@@ -243,7 +243,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     }
     */
     /**
-     * Add a new Language Translation
+     * Add a new language translation
      *
      * @Get("/add")
      */
@@ -533,7 +533,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 $tokensModel->save();
                 // ADD THIS TOKEN
             }
-            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' done!", array($from, $to)), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' completed.", array($from, $to)), "success");
 
             $response['data'] = $translatedTerms;
 
@@ -567,7 +567,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             ));
             $tokensModel->save();
             
-            return $this->createAdviseResponse($this->translate->translate("Translation saved!"), "success");
+            return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
 
         }
         return $this->invalidRequestError();
@@ -660,7 +660,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Human Translation"
+                            'data-original-title'   => "Human translation"
                         )
                     ),
                     'translate-windows'  => array(
@@ -669,7 +669,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Eletronic Translation"
+                            'data-original-title'   => "Eletronic translation"
                         )
                     )
                 );
