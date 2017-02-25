@@ -27,7 +27,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $summary = array(
             'type'  => 'danger',
             'count' => $pendingTests->count(),
-            'text'  => $this->translate->translate('New Tests')
+            'text'  => $this->translate->translate('New tests')
         );
 
         if ($pendingTests->count() > 0) {
@@ -89,17 +89,17 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     break;
                 }
                 case "add" : {
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("New Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("New test"));
                     break;
                 }
                 case "edit/{identifier}" : {
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit test"));
                     break;
                 }
                 case "execute/{identifier}/{execution_id}" : {
                     // TODO A WAY TO INJECT DATA INTO BREADCRUMB FROM HERE (string substitution FROM variables in the route)
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("View Execution"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("View execution"));
                     break;
                 }
             }
@@ -114,7 +114,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Test'),
+                    'text'      => $this->translate->translate('New test'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus-circle'

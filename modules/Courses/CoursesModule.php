@@ -94,11 +94,11 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Program"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New program"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Program"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit program"));
                 break;
             }
         }
@@ -112,7 +112,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Program'),
+                    'text'      => $this->translate->translate('New program'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'

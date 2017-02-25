@@ -62,11 +62,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Course"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New course"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Course"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit course"));
                 break;
             }
         }
@@ -80,7 +80,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Course'),
+                    'text'      => $this->translate->translate('New course'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'

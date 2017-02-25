@@ -57,11 +57,11 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Department"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New department"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Department"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit department"));
                 break;
             }
         }
@@ -75,7 +75,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Department'),
+                    'text'      => $this->translate->translate('New department'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
