@@ -149,7 +149,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the difficulty of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show user the level of difficulty of the question during the test'}">
 			                                <i class="fa fa-question"></i>
 			                            </span>
 			                            {translateToken value="Show question level"}

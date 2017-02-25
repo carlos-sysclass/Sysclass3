@@ -71,7 +71,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Difficulty"}</label>
+							<label class="control-label">{translateToken value="Level"}</label>
 							<select class="select2-me form-control" name="difficulty_id" data-rule-required="true" data-rule-min="1">
 								<option value="">{translateToken value="Please, Select"}</option>
 								{foreach $T_QUESTIONS_DIFFICULTIES as $id => $difficulty}
