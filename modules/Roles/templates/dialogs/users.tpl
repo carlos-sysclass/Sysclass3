@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-lock"></i>
-                    {translateToken value='Manage attributions Users and Groups'}
+                    {translateToken value='Manage attributions of users and groups.'}
                 </h4>
             </div>
             <div class="modal-body ">
