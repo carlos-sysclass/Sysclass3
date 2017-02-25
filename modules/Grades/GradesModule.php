@@ -63,7 +63,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Grades")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Grade Rule"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New grade rule"));
                 break;
             }
             case "edit/{id}" : {
@@ -72,7 +72,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Grades")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Grade Rule"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit grade rule"));
                 break;
             }
         }
@@ -86,7 +86,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Grade Rule'),
+                    'text'      => $this->translate->translate('New grade rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'icon-plus'
