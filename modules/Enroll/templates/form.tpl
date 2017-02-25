@@ -64,7 +64,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">
-								{translateToken value="Start Date"}
+								{translateToken value="Start date"}
 							</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -75,7 +75,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Finish Date"}</label>
+							<label class="control-label">{translateToken value="Finish date"}</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								<input type="text" name="end_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
