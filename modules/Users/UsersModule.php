@@ -836,7 +836,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         /*
         $items[] = array(
             'link'  => $this->getBasePath() . "view/token",
-            'text'  => $this->translate->translate("Review translation")
+            'text'  => $this->translate->translate("Edit translation")
         );
         */
 

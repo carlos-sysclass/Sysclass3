@@ -239,7 +239,7 @@ abstract class SysclassModule extends BaseSysclassModule
             return true;   
         } else {
             $this->response->setJsonContent(
-                $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to get your data. Please try again."), "warning")
+                $this->createAdviseResponse($this->translate->translate("A problem ocurred when retrirving your data. Please, try again."), "warning")
             );
             return true;
         }
