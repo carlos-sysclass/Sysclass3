@@ -2,7 +2,7 @@
     <div class="alert alert-info">
         <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
         <p>
-            {translateToken value="Here you can select the avaliable courses on this enroll package."}
+            {translateToken value="Here you can select the courses avaliable on this enrollment package."}
         </p>
     </div>
     <div class="form-body">
