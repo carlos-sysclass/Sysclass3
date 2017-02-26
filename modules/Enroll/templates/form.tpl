@@ -54,7 +54,7 @@
 				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
-					{translateToken value="Open period"}
+					{translateToken value="Enrollment period"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
                         <i class="fa fa-question"></i>
                     </span>
