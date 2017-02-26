@@ -4,10 +4,10 @@
 <div class="form-body">
 	<ul class="nav nav-tabs">
 		<li class="active">
-			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
+			<a href="#tab_1_1" data-toggle="tab">{translateToken value="Enrollment form"}</a>
 		</li>
 		<li class="admittance-type-item admittance-type-grouping hidden">
-			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping options"}</a>
+			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group options"}</a>
 		</li>
 
 		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}
@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="URL"}</label>
+							<label class="control-label">{translateToken value="Form URL"}</label>
 							<div class="input-group">
 								<span class="input-group-addon">https://signup-itaipu.sysclass.com/</span>
 								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
