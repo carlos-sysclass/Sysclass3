@@ -63,7 +63,7 @@ li.list-item {
                                 <div class="clearfix"></div>
                             </div>
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                <i class="fa fa-language"></i>
+                                <i class="icon-globe"></i>
                                 {translateToken value="Description"}
                                 <a href="javascript: void(0);" class="btn btn-sm btn-success content-save pull-right">
                                     {translateToken value="Save"}
@@ -85,7 +85,7 @@ li.list-item {
                                 </div>
                             </div>
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                <i class="fa fa-language"></i>
+                                <i class="icon-globe"></i>
                                 {translateToken value="Subtitle"}
 
                                 <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="subtitle">
@@ -99,7 +99,7 @@ li.list-item {
 
                             <div class="content-videos-poster">
                                 <h5 class="form-section margin-bottom-10 margin-top-10">
-                                    <i class="fa fa-language"></i>
+                                    <i class="icon-globe"></i>
                                     {translateToken value="Video poster"}
 
                                     <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="poster">
@@ -216,7 +216,7 @@ li.list-item {
     <div class="list-file-item-options">
         <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Translate...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
             >
-                <i class="fa fa-language"></i>
+                <i class="icon-globe"></i>
         </a>
 
         <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">

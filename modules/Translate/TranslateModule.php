@@ -93,7 +93,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Languages'),
-                        'icon'  => 'fa fa-language',
+                        'icon'  => 'icon-globe',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
