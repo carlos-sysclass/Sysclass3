@@ -49,7 +49,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
 
             $menuItem = array(
                 'id'        => "open-pageguide-action",
-                'icon'      => ' fa fa-question',
+                'icon'      => ' fa fa-question-circle',
                 'text'      => $this->translate->translate('Help'),
                 'type'      => ''
             );

@@ -5,7 +5,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow the user to select the the classes order'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                 {translateToken value="Enable user selection"}
 
@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable Course Periods"}
                     <span class="badge badge-info">BETA</span>
@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable Course Groupings"}
                     <span class="badge badge-info">BETA</span>

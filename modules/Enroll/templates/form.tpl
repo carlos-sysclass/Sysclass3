@@ -56,7 +56,7 @@
 					<i class="fa fa-calendar"></i>
 					{translateToken value="Enrollment period"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
 
@@ -88,7 +88,7 @@
 					<i class="glyphicon glyphicon-inbox"></i>
 					{translateToken value="Course format"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criteria for user admittance. This information is used to manage the course grouping and calculate its roadmap.'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
 
@@ -137,7 +137,7 @@
 				<i class="glyphicon glyphicon-inbox"></i>
 				{translateToken value="Enrollment Dates"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
 			
@@ -186,7 +186,7 @@
 							<div class="form-group">
 								<label class="control-label">{translateToken value="Group name template"}
 									<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
-										<i class="fa fa-question"></i>
+										<i class="fa fa-question-circle"></i>
 									</span>
 								</label>
 								<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
@@ -256,7 +256,7 @@
 				<i class="fa fa-cogs"></i>
 				{translateToken value="User Limit"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of users allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
 			<div class="row">

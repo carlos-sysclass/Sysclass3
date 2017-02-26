@@ -5,7 +5,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable course periods"}
                     <span class="badge badge-info">BETA</span>
@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user admittance'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable course groupings"}
                     <span class="badge badge-info">BETA</span>

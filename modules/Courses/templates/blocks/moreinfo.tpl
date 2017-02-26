@@ -30,7 +30,7 @@
 <div class="form-group">
 	<label class="control-label">{translateToken value="Objectives"}
         <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The objective to be achieved by this program'}">
-            <i class="fa fa-question"></i>
+            <i class="fa fa-question-circle"></i>
         </span>
 
 	</label>
@@ -41,7 +41,7 @@
 	<label class="control-label">
 		{translateToken value="Goals"}
         <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The goals to be achieved by the users'}">
-            <i class="fa fa-question"></i>
+            <i class="fa fa-question-circle"></i>
         </span>
 	</label>
 	<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="goals" rows="6" placeholder="{translateToken value="Users Goals"}"></textarea>

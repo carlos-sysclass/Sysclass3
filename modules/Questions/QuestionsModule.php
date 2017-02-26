@@ -31,7 +31,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Questions'),
-                        'icon'  => 'fa fa-question',
+                        'icon'  => 'fa fa-question-circle',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -48,7 +48,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'fa fa-question',
+                'icon'  => 'fa fa-question-circle',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Questions")
             )

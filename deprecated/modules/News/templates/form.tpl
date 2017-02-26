@@ -10,7 +10,7 @@
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					<i class="fa fa-question"></i>
+					<i class="fa fa-question-circle"></i>
 					{translateToken value="Permission"}
 				</a>
 			</li>

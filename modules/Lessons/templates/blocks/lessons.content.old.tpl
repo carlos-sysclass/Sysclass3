@@ -273,7 +273,7 @@
     </span>
 
     <span class="btn btn-sm btn-circle btn-default disabled">
-        <!-- <i class="fa fa-question"></i> -->
+        <!-- <i class="fa fa-question-circle"></i> -->
         <%= model.type %>
     </span>
     <% if (model.difficulty == "Easy") { %>
