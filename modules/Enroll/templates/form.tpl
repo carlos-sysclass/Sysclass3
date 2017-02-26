@@ -28,7 +28,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Name"}</label>
+							<label class="control-label">{translateToken value="Form name"}</label>
 							<input name="name" value="" type="text" placeholder="{translateToken value="Name"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Subtitle"}</label>
+							<label class="control-label">{translateToken value="Form info"}</label>
 							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Subtitle"}" class="form-control" data-rule-minlength="5" />
 						</div>
 					</div>
@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Url"}</label>
+							<label class="control-label">{translateToken value="URL"}</label>
 							<div class="input-group">
 								<span class="input-group-addon">https://signup-itaipu.sysclass.com/</span>
 								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
