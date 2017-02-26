@@ -55,7 +55,7 @@ li.list-item {
                                 <div class="content-video-item content-video-empty-container col-md-6 col-lg-6 col-sm-6 col-xs-12 ">
                                     <div class="content-video-empty-item">
                                         <a href="javascript:void(0)" class="content-addfile" data-library-path="library" data-library-type="video" >
-                                            <i class="fa fa-plus-circle"></i>
+                                            <i class="fa fa-plus-square"></i>
                                             {translateToken value="Add a new video"}
                                         </a>
                                     </div>

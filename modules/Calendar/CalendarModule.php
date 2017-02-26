@@ -164,7 +164,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
                 array(
                     'text'  => $this->translate->translate('Add calendar source'),
                     'link'  => $this->loader->module('CalendarSource')->getBasePath() . "add",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 ),
             )
         );

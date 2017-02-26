@@ -117,7 +117,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'text'      => $this->translate->translate('New test'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,

@@ -82,7 +82,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                     'text'      => $this->translate->translate('New question'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

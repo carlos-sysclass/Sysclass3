@@ -36,7 +36,7 @@ class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "add" : {
-                $breadcrumbs[] = array('icon' => 'fa fa-plus-circle', 'text'   => $this->translate->translate("New calendar source"));
+                $breadcrumbs[] = array('icon' => 'fa fa-plus-square', 'text'   => $this->translate->translate("New calendar source"));
                 break;
             }
             case "edit/{id}" : {
@@ -59,7 +59,7 @@ class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, 
                 array(
                     'text'      => $this->translate->translate('New calendar source'),
                     'link'      => $this->getBasePath() . "add",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 ),
                 array(
                     'separator' => true
