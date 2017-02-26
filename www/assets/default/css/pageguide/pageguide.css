@@ -10,7 +10,7 @@
   box-sizing: border-box;
   color: #000;
   font-size: 12px;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 #tlyPageGuideWrapper #tlyPageGuideToggles {
   top: 84px;
@@ -261,7 +261,7 @@
             text-align: center;
             padding: 5px 10px;
             cursor: pointer;
-            font-family: Helvetica, Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
         }
         */
 }
