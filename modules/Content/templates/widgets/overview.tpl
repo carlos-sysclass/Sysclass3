@@ -372,7 +372,7 @@ _before_init_functions.push(function() {
 							</li>
 							
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_tests"><i class="fa fa-check-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+								<a data-toggle="tab" href="#tab_class_tests"><i class="glyphicon glyphicon-edit-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
 							</li>
 							-->
 							<li class="visible-xxs visible-md">

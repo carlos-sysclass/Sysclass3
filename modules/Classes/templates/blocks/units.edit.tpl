@@ -165,7 +165,7 @@
     <div class="input-group">
         <span class="input-group-btn" style="vertical-align: top;">
             <button type="button" class="btn btn-primary">
-                <i class="fa fa-check"></i>
+                <i class="glyphicon glyphicon-edit"></i>
             </button>
         </span>
         <input name="new-lesson-input" value="" type="text" placeholder="Type the unit name" class="form-control" data-rule-required="true" data-rule-minlength="3" />

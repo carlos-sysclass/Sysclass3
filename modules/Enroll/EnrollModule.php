@@ -501,7 +501,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     $items[$key]['options'] = array();
                     if ($item['approved'] == 0) {
                         $items[$key]['options']['approve'] = array(
-                            'icon'  => 'fa fa-check',
+                            'icon'  => 'glyphicon glyphicon-edit',
                             //'link'  => $baseLink . "block/" . $item['id'],
                             'class' => 'btn-sm btn-success tooltips',
                             'attrs'         => array(

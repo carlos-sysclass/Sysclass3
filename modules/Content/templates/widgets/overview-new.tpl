@@ -470,7 +470,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -483,7 +483,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -496,7 +496,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -523,7 +523,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -536,7 +536,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -549,7 +549,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -619,7 +619,7 @@ _before_init_functions.push(function() {
     <% if (!_.isUndefined(model.progress)) { %>
       <% if (model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
         </span>
       <% } else if (model.progress.factor > 0) { %>
         <span class="andamento">
@@ -680,7 +680,7 @@ _before_init_functions.push(function() {
     <td class="text-center">
     <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+        <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -759,7 +759,7 @@ _before_init_functions.push(function() {
     <!--
     1/5 Avaliação do Ciclo de Vida
       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -793,7 +793,7 @@ _before_init_functions.push(function() {
           </span>
         <% } else { %>
           <span class="concluido">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            <i class="glyphicon glyphicon-edit-circle" aria-hidden="true"></i>
             {translateToken value="Completed"}
           </span>
         <% } %>
@@ -821,7 +821,7 @@ _before_init_functions.push(function() {
   <td class="text-center" width="10%">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
+        <i class="glyphicon glyphicon-edit-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -979,7 +979,7 @@ _before_init_functions.push(function() {
       <% _.each(model.exercises, function (item, index) { %>
         <% if (item.progress.factor >= 1) { %>
           <span class="concluido">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            <i class="glyphicon glyphicon-edit-circle" aria-hidden="true"></i>
             Viewed
           </span>
         <% } else if (item.progress.factor > 0) { %>
@@ -1001,7 +1001,7 @@ _before_init_functions.push(function() {
   <!-- Exame -->
   <!-- <td>
     <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-    <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    -->
@@ -1078,7 +1078,7 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
+        <i class="glyphicon glyphicon-edit-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -1163,7 +1163,7 @@ _before_init_functions.push(function() {
     <% } else { %>
       <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-square-o" aria-hidden="true"></i>
+          <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
           {translateToken value="Completed"}
         </span>
       <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
@@ -1173,7 +1173,7 @@ _before_init_functions.push(function() {
         </a>
       <% } else { %>
         <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
-            <i class="fa fa-check" aria-hidden="true"></i>
+            <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
             {translateToken value="Avaliable"}
         </a>
       <% } %>
@@ -1182,7 +1182,7 @@ _before_init_functions.push(function() {
   <!-- Exame -->
   <!-- <td>
     <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-    <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    -->
@@ -1376,7 +1376,7 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
-        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+        <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
         {translateToken value="Viewed"}
       </span>
     <% } else { %>
