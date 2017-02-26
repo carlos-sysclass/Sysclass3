@@ -50,7 +50,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-briefcase',
+                    'icon'  => 'fa fa-check',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Grades")
                 );
@@ -59,7 +59,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             }
             case "add" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-briefcase',
+                    'icon'  => 'fa fa-check',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Grades")
                 );
@@ -68,7 +68,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-briefcase',
+                    'icon'  => 'fa fa-check',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Grades")
                 );
