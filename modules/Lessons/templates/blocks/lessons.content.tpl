@@ -63,7 +63,7 @@ li.list-item {
                                 <div class="clearfix"></div>
                             </div>
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                <i class="icon-globe"></i>
+                                <i class="fa fa-list"></i>
                                 {translateToken value="Description"}
                                 <a href="javascript: void(0);" class="btn btn-sm btn-success content-save pull-right">
                                     {translateToken value="Save"}
@@ -99,7 +99,7 @@ li.list-item {
 
                             <div class="content-videos-poster">
                                 <h5 class="form-section margin-bottom-10 margin-top-10">
-                                    <i class="icon-globe"></i>
+                                    <i class="fa fa-file-image-o"></i>
                                     {translateToken value="Video poster"}
 
                                     <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="poster">
