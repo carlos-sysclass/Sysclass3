@@ -63,7 +63,7 @@
 				{if $canChangePassword}
 					<div class="form-body">
 						<h5 class="form-section margin-bottom-10 margin-top-10">
-							<i class="fa fa-hash"></i>
+							<i class="fa fa-lock"></i>
 							{translateToken value="Change password"}
 						</h5>
 						{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
