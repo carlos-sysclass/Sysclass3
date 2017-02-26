@@ -172,7 +172,7 @@ div.nav-global li a,div.nav-global li a span {
 	height: 32px;
 	color: #666666;
 	text-decoration: none;
-	font: bold 16px 'trebuchet ms';
+	font: bold 16px ''Open Sans', sans-serif';
 	margin-right: 15px;
 	display: block;
 	position: relative;
@@ -403,7 +403,7 @@ div.action-bottom a span.shadow {
 	font-size: 2.3em;
 	line-height: 1.2em;
 	color: #333333;
-	font-family: Trebuchet MS;
+	font-family: 'Open Sans', sans-serif;
 	margin: 12px 0px 10px 10px;
 }
 
@@ -422,7 +422,7 @@ div.action-bottom a span.shadow {
 	width: 166px;
 	text-align: center;
 	color: #ffffff;
-	font: 20px 'trebuchet ms';
+	font: 20px ''Open Sans', sans-serif';
 	padding-top: 2px;
 	margin-top: -41px;
 	margin-left: 20px;
@@ -764,7 +764,7 @@ div.main-content div.main-content {
 .main-content h1 {
 	color: #5890D1;
 	font-size: 1.9em;
-	font-family: Trebuchet MS;
+	font-family: 'Open Sans', sans-serif;
 	border-bottom: 1px solid #cccccc;
 	margin: 0px 10px 0px 0px;
 }
@@ -1152,7 +1152,7 @@ div.offerHeader {
 }
 
 div.offerHeader span {
-	font: 20px 'trebuchet ms';
+	font: 20px ''Open Sans', sans-serif';
 	color: #FFFFFF;
 	position: absolute;
 	left: 0px;
@@ -1160,7 +1160,7 @@ div.offerHeader span {
 }
 
 div.offerHeader span.shadow {
-	font: 20px 'trebuchet ms';
+	font: 20px ''Open Sans', sans-serif';
 	color: #333333;
 	position: absolute;
 }
