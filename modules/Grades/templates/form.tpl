@@ -31,14 +31,14 @@
 				<div class="ranges-container" id="ranges-container">
 					<div class="form-group">
 						<h5 class="form-section no-margin">
-							{translateToken value="Grade Ranges"}
+							{translateToken value="Grade range"}
 							<a class="btn btn-link btn-sm add-rule-action">
 								<i class="fa fa-plus-square"></i>
 								{translateToken value="New rule"}
 							</a>
             				<a href="javascript:void(0);" class="btn btn-warning btn-sm show-tips pull-right">
                 				<i class="fa fa-question-circle"></i>
-                				{translateToken value="Need help?"}
+                				 <!-- {translateToken value="Need help?"} -->
                 			</a>
 							</h5>
 					</div>
