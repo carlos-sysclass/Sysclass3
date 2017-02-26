@@ -45,7 +45,7 @@
 				    <div class="alert alert-warning display-hide tips-container">
 				        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 				        <p>
-				            You can create an unlimited number of grade ranges, for instance (A,B,C,D,F). These rules can be applied to tests and lessons base on the percentual score (0% - 100%).
+				            You can create an unlimited number of grade ranges, for instance (A,B,C,D,F). These rules can be applied to tests and lessons base on the percentual score (0% - 100%). Click on new rule, type the name or number of the grade, and click on new rule again. Then, slide the bars to the desierd percentage relative to the grade.
 				        </p>
 				    </div>
 					<ul class="list-group ranges-rules-container">
