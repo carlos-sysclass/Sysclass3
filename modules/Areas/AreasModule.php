@@ -78,7 +78,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                     'text'      => $this->translate->translate('New department'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -87,7 +87,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );

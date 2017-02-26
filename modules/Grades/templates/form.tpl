@@ -33,8 +33,8 @@
 						<h5 class="form-section no-margin">
 							{translateToken value="Grade Ranges"}
 							<a class="btn btn-link btn-sm add-rule-action">
-								<i class="icon-plus"></i>
-								{translateToken value="New Rule"}
+								<i class="fa fa-plus-square"></i>
+								{translateToken value="New rule"}
 							</a>
             				<a href="javascript:void(0);" class="btn btn-warning btn-sm show-tips pull-right">
                 				<i class="fa fa-question-circle"></i>

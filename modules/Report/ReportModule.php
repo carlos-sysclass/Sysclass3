@@ -106,7 +106,7 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     'text'      => $this->translate->translate('New Report'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

@@ -3,7 +3,7 @@
 		<small>- {translateToken value="Who can see your data"}</small>
 		<div class="pull-right">
 			<a class="btn btn-link new-permission-action" id="ajax-demo" data-toggle="modal">
-				<i class="icon-plus"></i>
+				<i class="fa fa-plus-square"></i>
 				{translateToken value="New Permission"}
 			</a>
 		</div>

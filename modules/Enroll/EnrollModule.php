@@ -264,7 +264,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'text'      => $this->translate->translate('New enrollment rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -273,7 +273,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );

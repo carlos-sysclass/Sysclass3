@@ -92,7 +92,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );

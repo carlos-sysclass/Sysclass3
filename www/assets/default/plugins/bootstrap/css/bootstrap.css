@@ -285,7 +285,7 @@ th {
 .glyphicon-asterisk:before {
   content: "\2a";
 }
-.glyphicon-plus:before {
+.glyphfa fa-plus-square:before {
   content: "\2b";
 }
 .glyphicon-euro:before,
@@ -538,7 +538,7 @@ th {
 .glyphicon-chevron-right:before {
   content: "\e080";
 }
-.glyphicon-plus-sign:before {
+.glyphfa fa-plus-square-sign:before {
   content: "\e081";
 }
 .glyphicon-minus-sign:before {

@@ -115,7 +115,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                     'text'      => $this->translate->translate('New program'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -124,7 +124,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );

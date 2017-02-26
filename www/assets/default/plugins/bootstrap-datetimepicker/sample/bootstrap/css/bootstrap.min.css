@@ -458,7 +458,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .icon-eject{background-position:-408px -72px;}
 .icon-chevron-left{background-position:-432px -72px;}
 .icon-chevron-right{background-position:-456px -72px;}
-.icon-plus-sign{background-position:0 -96px;}
+.fa fa-plus-square-sign{background-position:0 -96px;}
 .icon-minus-sign{background-position:-24px -96px;}
 .icon-remove-sign{background-position:-48px -96px;}
 .icon-ok-sign{background-position:-72px -96px;}
@@ -475,7 +475,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .icon-share-alt{background-position:-336px -96px;}
 .icon-resize-full{background-position:-360px -96px;}
 .icon-resize-small{background-position:-384px -96px;}
-.icon-plus{background-position:-408px -96px;}
+.fa fa-plus-square{background-position:-408px -96px;}
 .icon-minus{background-position:-433px -96px;}
 .icon-asterisk{background-position:-456px -96px;}
 .icon-exclamation-sign{background-position:0 -120px;}

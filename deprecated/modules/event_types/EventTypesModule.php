@@ -107,7 +107,7 @@ class EventTypesModule extends SysclassModule implements IBreadcrumbable, IActio
                     'text'      => $this->translate->translate('New Event Type'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

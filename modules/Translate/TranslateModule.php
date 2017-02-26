@@ -146,7 +146,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 array(
                     'text'  => $this->translate->translate('Add language'),
                     'link'  => $this->getBasePath() . "add",
-                    'icon'  => 'icon-plus'
+                    'icon'  => 'fa fa-plus-square'
                 ),
                 array(
                     'separator' => true
@@ -162,7 +162,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                     'text'  => $this->translate->translate('Add language'),
                     'link'  => $this->getBasePath() . "add",
                     'class' => 'btn-primary',
-                    'icon'  => 'icon-plus'
+                    'icon'  => 'fa fa-plus-square'
                 )
             )
         );

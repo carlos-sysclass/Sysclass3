@@ -89,7 +89,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     'text'      => $this->translate->translate('New grade rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

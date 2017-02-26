@@ -187,7 +187,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'text'      => $this->translate->translate('New user'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -196,7 +196,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );

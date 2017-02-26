@@ -110,7 +110,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
                     'text'      => $this->translate->translate('New Event'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

@@ -74,7 +74,7 @@
                                     <h5 class="form-section no-margin">
                                         Choices
                                         <a class="btn btn-link btn-sm add-choice-action" data-toggle="modal">
-                                            <i class="icon-plus"></i>
+                                            <i class="fa fa-plus-square"></i>
                                             {translateToken value="New Choice"}
                                         </a>
                                     </h5>
@@ -90,7 +90,7 @@
                                     <h5 class="form-section no-margin">
                                         Choices
                                         <a class="btn btn-link btn-sm add-choice-action" data-toggle="modal">
-                                            <i class="icon-plus"></i>
+                                            <i class="fa fa-plus-square"></i>
                                             {translateToken value="New Choice"}
                                         </a>
                                     </h5>

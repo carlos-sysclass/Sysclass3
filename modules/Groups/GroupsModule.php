@@ -89,7 +89,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     'text'      => $this->translate->translate('New group'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

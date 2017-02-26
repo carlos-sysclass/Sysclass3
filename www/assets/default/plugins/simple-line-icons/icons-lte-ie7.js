@@ -153,7 +153,7 @@ window.onload = function() {
 			'icon-magnifier-remove' : '&#xe090;',
 			'icon-paper-clip' : '&#xe091;',
 			'icon-paper-plane' : '&#xe092;',
-			'icon-plus' : '&#xe093;',
+			'fa fa-plus-square' : '&#xe093;',
 			'icon-pointer' : '&#xe094;',
 			'icon-power' : '&#xe095;',
 			'icon-refresh' : '&#xe096;',

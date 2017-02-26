@@ -303,7 +303,7 @@
 				<div class="progress-bar progress-bar-success"></div>
 			</div>
 			<span class="btn btn-success fileinput-button" style="display: none">
-				<i class="glyphicon glyphicon-plus"></i>
+				<i class="glyphicon glyphfa fa fa-plus-square"></i>
 				<span>Select files...</span>
 
 			</span>
