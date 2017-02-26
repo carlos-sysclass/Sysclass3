@@ -37,7 +37,7 @@
 								{translateToken value="New rule"}
 							</a>
             				<a href="javascript:void(0);" class="btn btn-warning btn-sm show-tips pull-right">
-                				<i class="fa fa-question-circle"></i>
+                				<i class="fa fa-question-circle-circle"></i>
                 				 <!-- {translateToken value="Need help?"} -->
                 			</a>
 							</h5>

@@ -70,7 +70,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                     array(
                         //'count' => count($items),
                         'text'  => $this->translate->translate('Settings'),
-                        'icon'  => 'fa fa-code-fork',
+                        'icon'  => 'fa fa-cog',
                         'link'  => $this->getBasePath() . 'manage'
                     )
                 )
