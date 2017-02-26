@@ -4,7 +4,7 @@
     </ul>
 
     <span class="btn btn-primary fileinput-button">
-        <i class="fa fa-plus"></i>
+        <i class="fa-cloud-upload"></i>
         <span>{translateToken value="Upload file"}</span>
         <input type="file" name="files[]">
     </span>
