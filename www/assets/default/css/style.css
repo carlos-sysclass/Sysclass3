@@ -3994,6 +3994,7 @@ textarea.placeholder {
 
 .form-actions.nobg {
   background-color: transparent;
+  text-align: center !important;
 }
 
 .form-actions.top {
