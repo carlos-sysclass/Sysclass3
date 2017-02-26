@@ -197,7 +197,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     array(
                         'count' => count($items),
                         'text'  => $this->translate->translate('Enrollment'),
-                        'icon'  => 'fa-handshake-o',
+                        'icon'  => 'glyphicon glyphicon-inbox',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -218,7 +218,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa-handshake-o',
+                    'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
@@ -227,7 +227,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             }
             case "add" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa-handshake-o',
+                    'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
@@ -240,7 +240,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa-handshake-o',
+                    'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
