@@ -45,8 +45,7 @@
 				    <div class="alert alert-warning display-hide tips-container">
 				        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 				        <p>
-				            You can create a unlimited number of of relative ranges, so you can assign a grade, like (A,B,C,D,F) based on user score.<br />
-				            These rules can be applied to tests and lessons, providing a way to translate the user percentual score (0 - 100%).
+				            You can create an unlimited number of grade ranges, for instance (A,B,C,D,F). These rules can be applied to tests and lessons base on the percentual score (0% - 100%).
 				        </p>
 				    </div>
 					<ul class="list-group ranges-rules-container">
