@@ -28,7 +28,7 @@ class GradesModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Grades'),
-                        'icon'  => 'fa fa-cogs',
+                        'icon'  => 'fa fa-check',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
