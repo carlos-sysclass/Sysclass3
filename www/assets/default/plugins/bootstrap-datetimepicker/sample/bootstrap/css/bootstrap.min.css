@@ -398,7 +398,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .icon-signal{background-position:-408px 0;}
 .icon-cog{background-position:-432px 0;}
 .icon-trash{background-position:-456px 0;}
-.icon-home{background-position:0 -24px;}
+.fa fa-home{background-position:0 -24px;}
 .icon-file{background-position:-24px -24px;}
 .icon-time{background-position:-48px -24px;}
 .icon-road{background-position:-72px -24px;}

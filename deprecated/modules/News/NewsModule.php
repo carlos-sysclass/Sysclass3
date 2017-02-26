@@ -131,7 +131,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 	public function getBreadcrumb() {
 		$breadcrumbs = array(
 			array(
-				'icon'	=> 'icon-home',
+				'icon'	=> 'fa fa-home',
 				'link'	=> $this->getSystemUrl('home'),
 				'text'	=> $this->translate->translate("Home")
 			),

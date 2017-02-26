@@ -44,7 +44,7 @@ class EventsModule extends SysclassModule implements /*ILinkable, */IBreadcrumba
         (
             array
             (
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )

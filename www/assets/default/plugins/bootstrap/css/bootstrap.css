@@ -361,7 +361,7 @@ th {
 .glyphicon-trash:before {
   content: "\e020";
 }
-.glyphicon-home:before {
+.glyphfa fa fa-home:before {
   content: "\e021";
 }
 .glyphicon-file:before {

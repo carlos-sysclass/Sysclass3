@@ -40,7 +40,7 @@ class UserTypesModule extends SysclassModule implements /* ILinkable, */ IBreadc
         // TODO  Think abaout ut this configuration into confi.yml
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )

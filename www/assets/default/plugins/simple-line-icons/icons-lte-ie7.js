@@ -104,7 +104,7 @@ window.onload = function() {
 			'icon-equalizer' : '&#xe05f;',
 			'icon-graph' : '&#xe060;',
 			'icon-grid' : '&#xe061;',
-			'icon-home' : '&#xe062;',
+			'fa fa-home' : '&#xe062;',
 			'icon-like' : '&#xe063;',
 			'icon-list' : '&#xe064;',
 			'icon-login' : '&#xe065;',

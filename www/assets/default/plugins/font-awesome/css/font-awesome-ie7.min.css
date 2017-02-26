@@ -26,7 +26,7 @@ a [class^="icon-"],a [class*=" icon-"]{cursor:pointer;}
 .icon-cog{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf013;');}
 .icon-gear{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf013;');}
 .icon-trash{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf014;');}
-.icon-home{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf015;');}
+.fa fa-home{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf015;');}
 .icon-file-alt{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf016;');}
 .icon-time{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf017;');}
 .icon-road{*zoom:expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf018;');}
