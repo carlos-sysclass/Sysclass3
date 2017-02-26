@@ -154,9 +154,11 @@ Buttons & Dropdown Buttons
 
 /*  Green */
 .btn.green {
-  color: white;
-  text-shadow: none;
-  background-color: #35aa47;
+    color: white;
+    text-shadow: none;
+    background-color: #35aa47;
+    font-size: 16px;
+    padding: 12px 22px;
 }
 .btn.green:hover,
 .btn.green:focus,
@@ -167,6 +169,8 @@ Buttons & Dropdown Buttons
   background-color: #1d943b !important;
   color: #fff !important;
   outline: none !important;
+  align-items: center !important;
+  text-align: center !important;
 }
 
 /*  Purple */
