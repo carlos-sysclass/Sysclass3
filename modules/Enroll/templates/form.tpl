@@ -46,7 +46,7 @@
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Form URL"}</label>
 							<div class="input-group">
-								<span class="input-group-addon">https://signup-itaipu.sysclass.com/</span>
+								<span class="input-group-addon">https://lucent.sysclass.com/</span>
 								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
