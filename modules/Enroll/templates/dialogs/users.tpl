@@ -16,7 +16,7 @@
 						<div class="form-group">
 							
                             <label class="">{translateToken value="Search group or user"}</label>
-                    		<input type="hidden" class="select2-me form-control col-md-12" name="user_or_group" data-placeholder="{translateToken value='Please, Select'}" data-url="/module/enroll/datasource/users" />
+                    		<input type="hidden" class="select2-me form-control col-md-12" name="user_or_group" data-placeholder="{translateToken value='Please select'}" data-url="/module/enroll/datasource/users" />
 
 						</div>
 					</div>

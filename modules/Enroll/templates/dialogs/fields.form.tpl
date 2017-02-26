@@ -14,7 +14,7 @@
                                 type="hidden" 
                                 class="select2-me form-control col-md-12" 
                                 name="field_id"
-                                data-placeholder="{translateToken value='Please, Select'}" 
+                                data-placeholder="{translateToken value='Please select'}" 
                                 data-url="/module/forms/items/fields" 
                             />
                         </div>
