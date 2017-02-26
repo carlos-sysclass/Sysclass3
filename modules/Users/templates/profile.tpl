@@ -49,7 +49,8 @@
 					</h5>
 					{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 				</div>
-				{if $isTeacher}
+                
+				<!--  {if $isTeacher}
 					<div class="form-body">
 						<h5 class="form-section margin-bottom-10 margin-top-10">
 							<i class="fa fa-camera"></i>
@@ -57,7 +58,7 @@
 						</h5>
 						{include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
 					</div>
-				{/if}
+				{/if} -->
 
 				{if $canChangePassword}
 					<div class="form-body">
