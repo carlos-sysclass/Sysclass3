@@ -382,7 +382,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'link'  => 'javascript:void(0);',
                     'class' => 'btn-sm btn-primary datatable-actionable tooltips',
                     'attrs' => array(
-                        'data-original-title' => $this->translate->translate('Enrolled users')
+                        'data-original-title' => $this->translate->translate('Users')
                     )
                 ),
                 'settings' => array(
