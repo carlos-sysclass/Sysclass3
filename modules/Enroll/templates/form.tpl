@@ -55,7 +55,7 @@
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
 					{translateToken value="Open period"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Especiy the start and final date for this rule be avaliable. If you don\'t specify the final date, its duration will be underterminate.'}">
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
                         <i class="fa fa-question"></i>
                     </span>
 				</h5>
@@ -87,7 +87,7 @@
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa-handshake-o"></i>
 					{translateToken value="Course format"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criterias for user admitance. This information is used to make course grouping control, and the calculate the course desired roadmap.'}">
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criteria for user admittance. This information is used to manage the course grouping and calculate its roadmap.'}">
                         <i class="fa fa-question"></i>
                     </span>
 				</h5>
