@@ -85,7 +85,7 @@
 				</div>
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
-					<i class="fa-handshake-o"></i>
+					<i class="glyphicon glyphicon-inbox"></i>
 					{translateToken value="Course format"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criteria for user admittance. This information is used to manage the course grouping and calculate its roadmap.'}">
                         <i class="fa fa-question"></i>
@@ -134,7 +134,7 @@
 		<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
 
 			<h5 class="form-section margin-bottom-10 margin-top-10">
-				<i class="fa-handshake-o"></i>
+				<i class="glyphicon glyphicon-inbox"></i>
 				{translateToken value="Enrollment Dates"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
                     <i class="fa fa-question"></i>

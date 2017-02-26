@@ -245,7 +245,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'text'  => $this->translate->translate("Enrollment")
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("Edit enrollment guidelines"),
+                    'text'   => $this->translate->translate("Enrollment guidelines"),
                     'icon' => 'fa fa-pencil'
                 );
                 return $breadcrumbs;
