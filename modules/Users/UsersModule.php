@@ -280,14 +280,14 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 );
             }
 
-            var_dump($this->translate->translate('My Programs'));
+            var_dump($this->translate->translate('Programs'));
             exit;
 
             if (count($courses) > 0) {
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-graduation-cap',
-                    'text'      => $this->translate->translate('My Programs'),
+                    'text'      => $this->translate->translate('Programs'),
                     'type'      => '',
                     'items'     => $items,
                     'extended'  => false,
