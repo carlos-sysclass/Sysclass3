@@ -1046,7 +1046,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            } else {
 	            	this.videoJS[index].muted(true); // mute the volume
 	            }
-
+	            /*
 	            if (screenfull.enabled) {
 					$(document).on(screenfull.raw.fullscreenchange, function() {
 						var popup = this.$('.popupcontent');
@@ -1057,6 +1057,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   						}
   					}.bind(this));
   				}
+  				*/
 
 				//this.videoJS[index].play();
                 // SETTING VOLUME
@@ -1170,7 +1171,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				*/
 				var popup = $('.popupcontent');
 				//popup.addClass("popupcontent-fullscreen");
-				screenfull.request(popup[0]);
+				//screenfull.request(popup[0]);
+
+				if (popup.hasClass("popupcontent-fullscreen")) {
+					popup.removeClass("popupcontent-fullscreen");
+					$('body').removeClass("hide-overflow");
+				} else {
+					popup.addClass("popupcontent-fullscreen");
+					$('body').addClass("hide-overflow");
+				}
+				
     		},
 	        stopAndClose : function() {
                 if (!_.isEmpty(this.videoJS)) {

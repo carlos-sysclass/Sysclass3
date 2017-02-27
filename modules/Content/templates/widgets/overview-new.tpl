@@ -619,7 +619,7 @@ _before_init_functions.push(function() {
     <% if (!_.isUndefined(model.progress)) { %>
       <% if (model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
         </span>
       <% } else if (model.progress.factor > 0) { %>
         <span class="andamento">
@@ -680,7 +680,7 @@ _before_init_functions.push(function() {
     <td class="text-center">
     <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -821,7 +821,7 @@ _before_init_functions.push(function() {
   <td class="text-center" width="10%">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="glyphicon glyphicon-edit-square-o concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -1078,7 +1078,7 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="glyphicon glyphicon-edit-square-o concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -1163,7 +1163,7 @@ _before_init_functions.push(function() {
     <% } else { %>
       <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
           {translateToken value="Completed"}
         </span>
       <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
@@ -1376,7 +1376,7 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
-        <i class="glyphicon glyphicon-edit-square-o" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
         {translateToken value="Viewed"}
       </span>
     <% } else { %>
