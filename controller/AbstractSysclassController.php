@@ -65,23 +65,23 @@ abstract class AbstractSysclassController extends AbstractDatabaseController
 			//exit;
 			switch($e->getCode()) {
 				case AuthenticationException :: MAINTENANCE_MODE : {
-		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System under maintenance.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
-		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: NO_USER_LOGGED_IN : {
-		            $message = $this->translate->translate("Your session appers to be expired. Please provide your credentials.");
+		            $message = $this->translate->translate("Your session has expired. Please, re-enter your username and password.");
 		            $message_type = 'info';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$url = "/lock";
-		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Please, check if the info provided is correct, and re-enter the username and password.");
 		            $message_type = 'info';
 		            break;
 				}

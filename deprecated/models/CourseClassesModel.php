@@ -68,10 +68,10 @@ class CourseClassesModel extends AbstractSysclassModel implements ISyncronizable
     		//Sorting algorithm, based on previous_lessons_ID. The algorithm is copied from MagesterContentTree :: reset() and is the same with the one applied for content. It is also used in questions order
     		$node = $count = 0;
     		$nodes = array(); //$count is used to prevent infinite loops
-    		while (sizeof($previousLessons) > 0 && isset($previousLessons[$node]) && $count++ < 1000) {
-    			$nodes[$previousLessons[$node]['id']] = $previousLessons[$node];
-    			$newNode = $previousLessons[$node]['id'];
-    			unset($previousLessons[$node]);
+    		while (sizeof($previousUnits) > 0 && isset($previousUnits[$node]) && $count++ < 1000) {
+    			$nodes[$previousUnits[$node]['id']] = $previousUnits[$node];
+    			$newNode = $previousUnits[$node]['id'];
+    			unset($previousUnits[$node]);
     			$node = $newNode;
     		}
     	} else {

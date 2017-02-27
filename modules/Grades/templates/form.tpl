@@ -8,7 +8,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['behaviours']) &&  ($T_SECTION_TPL['behaviours']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group Behaviour"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group attributes"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
@@ -31,23 +31,21 @@
 				<div class="ranges-container" id="ranges-container">
 					<div class="form-group">
 						<h5 class="form-section no-margin">
-							{translateToken value="Grade Ranges"}
+							{translateToken value="Grade range"}
 							<a class="btn btn-link btn-sm add-rule-action">
-								<i class="icon-plus"></i>
-								{translateToken value="New Rule"}
+								<i class="fa fa-plus-square"></i>
+								{translateToken value="New rule"}
 							</a>
             				<a href="javascript:void(0);" class="btn btn-warning btn-sm show-tips pull-right">
-                				<i class="fa fa-question-circle"></i>
-                				{translateToken value="Needs Help!?"}
+                				<i class="fa fa-question-circle-circle"></i>
+                				 <!-- {translateToken value="Need help?"} -->
                 			</a>
 							</h5>
 					</div>
 				    <div class="alert alert-warning display-hide tips-container">
 				        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 				        <p>
-				            <strong>TIP!</strong>
-				            You can create a unlimited number of of relative ranges, so you can assign a grade, like (A,B,C) based on user score.<br />
-				            These rules can be applied on tests and lessons, providing a way to translate the user percentual score (0 - 100%) to your organization rules.
+				            You can create an unlimited number of grade ranges, for instance (A,B,C,D,F). These rules can be applied to tests and lessons base on the percentual score (0% - 100%). Click on new rule, type the name or number of the grade, and click on new rule again. Then, slide the bars to the desierd percentage relative to the grade.
 				        </p>
 				    </div>
 					<ul class="list-group ranges-rules-container">

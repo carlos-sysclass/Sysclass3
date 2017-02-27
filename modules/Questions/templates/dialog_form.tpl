@@ -11,7 +11,7 @@
                                     <div class="form-group">
                                         <label class="control-label">{translateToken value="Department"}</label>
                                         <select class="select2-me form-control" name="area_id" data-rule-required="true" data-rule-min="1">
-                                            <option value="" selected="selected">{translateToken value="Please Select"}</option>
+                                            <option value="" selected="selected">{translateToken value="Please, select"}</option>
                                             {foreach $T_KNOWLEDGE_AREAS as $id => $area}
                                                 <option value="{$area.id}">{$area.name}</option>
                                             {/foreach}
@@ -22,9 +22,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">{translateToken value="Question Type"}</label>
+                                        <label class="control-label">{translateToken value="Question type"}</label>
                                         <select class="select2-me form-control" name="type_id" data-rule-required="true">
-                                            <option value="">{translateToken value="Please Select"}</option>
+                                            <option value="">{translateToken value="Please, select"}</option>
                                             {foreach $T_QUESTIONS_TYPES as $id => $type}
                                                 <option value="{$type.id}">{$type.name}</option>
                                             {/foreach}
@@ -33,9 +33,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">{translateToken value="Difficulty"}</label>
+                                        <label class="control-label">{translateToken value="Level"}</label>
                                         <select class="select2-me form-control" name="difficulty_id" data-rule-required="true" data-rule-min="1">
-                                            <option value="">{translateToken value="Please Select"}</option>
+                                            <option value="">{translateToken value="Please, select"}</option>
                                             {foreach $T_QUESTIONS_DIFFICULTIES as $id => $difficulty}
                                                 <option value="{$difficulty.id}">{$difficulty.name}</option>
                                             {/foreach}
@@ -74,7 +74,7 @@
                                     <h5 class="form-section no-margin">
                                         Choices
                                         <a class="btn btn-link btn-sm add-choice-action" data-toggle="modal">
-                                            <i class="icon-plus"></i>
+                                            <i class="fa fa-plus-square"></i>
                                             {translateToken value="New Choice"}
                                         </a>
                                     </h5>
@@ -90,7 +90,7 @@
                                     <h5 class="form-section no-margin">
                                         Choices
                                         <a class="btn btn-link btn-sm add-choice-action" data-toggle="modal">
-                                            <i class="icon-plus"></i>
+                                            <i class="fa fa-plus-square"></i>
                                             {translateToken value="New Choice"}
                                         </a>
                                     </h5>

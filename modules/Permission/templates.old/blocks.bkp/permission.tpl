@@ -1,9 +1,9 @@
 <div id="permission-block">
 	<h3 class="form-section"><i class="icon-lock"></i> {translateToken value="Permission Rules"}
-		<small>- {translateToken value="Who can see your data?"}</small>
+		<small>- {translateToken value="Who can see your data"}</small>
 		<div class="pull-right">
 			<a class="btn btn-link new-permission-action" id="ajax-demo" data-toggle="modal">
-				<i class="icon-plus"></i>
+				<i class="fa fa-plus-square"></i>
 				{translateToken value="New Permission"}
 			</a>
 		</div>
@@ -50,7 +50,7 @@
 	<script type="text/template" id="permission-block-nofound-template">
 		<tr>
 			<td colspan="3">
-				{translateToken value="Ops! There's any permission found for this object"}
+				{translateToken value="There's no permission found in this object"}
 			</td>
 		</tr>
 	</script>

@@ -4,7 +4,7 @@
         <form role="form" class="form-horizontal form-validate" method="post" action="{$T_FORM_ACTION}">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">{translateToken value="Course Periods"}</h4>
+                <h4 class="modal-title">{translateToken value="Course periods"}</h4>
             </div>
             <div class="modal-body">
                 <div class="form-body">

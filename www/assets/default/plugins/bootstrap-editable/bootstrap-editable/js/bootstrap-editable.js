@@ -565,7 +565,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         @example
         error: function(response, newValue) {
             if(response.status === 500) {
-                return 'Service unavailable. Please try later.';
+                return 'Service unavailable. Please, try later.';
             } else {
                 return response.responseText;
             }
@@ -1592,7 +1592,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
                 }
                /**
                Fired when element was initialized by `$().editable()` method.
-               Please note that you should setup `init` handler **before** applying `editable`.
+               Please, note that you should setup `init` handler **before** applying `editable`.
 
                @event init
                @param {Object} event event object
@@ -2245,7 +2245,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         /**
         If selector is provided, editable will be delegated to the specified targets.
         Usefull for dynamically generated DOM elements.
-        **Please note**, that delegated targets can't be initialized with `emptytext` and `autotext` options,
+        **Please, note**, that delegated targets can't be initialized with `emptytext` and `autotext` options,
         as they actually become editable only after first click.
         You should manually set class `editable-click` to these elements.
         Also, if element originally empty you should add class `editable-empty`, set `data-value=""` and write emptytext into element:
@@ -3324,7 +3324,7 @@ Following types are supported:
 
 Learn more about html5 inputs:
 http://www.w3.org/wiki/HTML5_form_additions
-To check browser compatibility please see:
+To check browser compatibility please, see:
 https://developer.mozilla.org/en-US/docs/HTML/Element/Input
 
 @class html5types
@@ -3397,7 +3397,7 @@ Email
 
 
 /*
-Url
+URL
 */
 (function ($) {
     "use strict";
@@ -3531,7 +3531,7 @@ Time
 
 /**
 Select2 input. Based on amazing work of Igor Vaynberg https://github.com/ivaynberg/select2.
-Please see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.
+Please, see [original select2 docs](http://ivaynberg.github.com/select2) for detailed description and options.
 Compatible **select2 version is 3.4.1**!
 You should manually download and include select2 distributive:
 
@@ -3832,7 +3832,7 @@ $(function(){
         placeholder: null,
         /**
         Source data for select. It will be assigned to select2 `data` property and kept here just for convenience.
-        Please note, that format is different from simple `select` input: use 'id' instead of 'value'.
+        Please, note, that format is different from simple `select` input: use 'id' instead of 'value'.
         E.g. `[{id: 1, text: "text1"}, {id: 2, text: "text2"}, ...]`.
 
         @property source
@@ -4319,7 +4319,7 @@ Allows to input:
 * only time
 * both date and time
 
-Please note, that format is taken from momentjs and **not compatible** with bootstrap-datepicker / jquery UI datepicker.
+Please, note, that format is taken from momentjs and **not compatible** with bootstrap-datepicker / jquery UI datepicker.
 Internally value stored as `momentjs` object.
 
 @class combodate
@@ -4511,7 +4511,7 @@ Editableform based on Twitter Bootstrap
     });
 
     //buttons
-    $.fn.editableform.buttons = '<button type="button" class="btn blue editable-submit"><i class="fa fa-check"></i></button>'+
+    $.fn.editableform.buttons = '<button type="button" class="btn blue editable-submit"><i class="glyphicon glyphicon-edit"></i></button>'+
                                 '<button type="button" class="btn default editable-cancel"><i class="fa fa-times"></i></button>';
 
     //error classes

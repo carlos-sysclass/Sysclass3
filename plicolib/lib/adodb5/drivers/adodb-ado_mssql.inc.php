@@ -12,7 +12,7 @@ Set tabs to 4 for best viewing.
   Works only on MS Windows.
 
   Warning: Some versions of PHP (esp PHP4) leak memory when ADO/COM is used.
-  Please check http://bugs.php.net/ for more info.
+  Please, check http://bugs.php.net/ for more info.
 */
 
 // security - hide paths

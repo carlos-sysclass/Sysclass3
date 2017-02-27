@@ -58,7 +58,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
 
                 $items[] = array(
                     'link'  => $this->getBasePath() . "view/token",
-                    'text'  => $this->translate->translate("Review translation")
+                    'text'  => $this->translate->translate("Edit translation")
                 );
 
                 $this->putSectionTemplate("translate-menu", "menu/language.switch");
@@ -93,7 +93,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Languages'),
-                        'icon'  => 'fa fa-language',
+                        'icon'  => 'icon-globe',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -105,7 +105,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             ),
@@ -123,15 +123,15 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("New Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("New language"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("Edit Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("Edit language"));
                 break;
             }
             case "view/token" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("View Translations"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("View translations"));
             }
         }
         return $breadcrumbs;
@@ -144,25 +144,25 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         $actions = array(
             'view'  => array(
                 array(
-                    'text'  => $this->translate->translate('Add Language'),
+                    'text'  => $this->translate->translate('Add language'),
                     'link'  => $this->getBasePath() . "add",
-                    'icon'  => 'icon-plus'
+                    'icon'  => 'fa fa-plus-square'
                 ),
                 array(
                     'separator' => true
                 ),
                 array(
-                    'text'  => $this->translate->translate("Review translation"),
+                    'text'  => $this->translate->translate("Edit translation"),
                     'link'  => $this->getBasePath() . "view/token",
                     'icon'  => 'icon-reorder'
                 )
             ),
             'view/token'  => array(
                 array(
-                    'text'  => $this->translate->translate('Add Language'),
+                    'text'  => $this->translate->translate('Add language'),
                     'link'  => $this->getBasePath() . "add",
                     'class' => 'btn-primary',
-                    'icon'  => 'icon-plus'
+                    'icon'  => 'fa fa-plus-square'
                 )
             )
         );
@@ -243,7 +243,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     }
     */
     /**
-     * Add a new Language Translation
+     * Add a new language translation
      *
      * @Get("/add")
      */
@@ -533,7 +533,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 $tokensModel->save();
                 // ADD THIS TOKEN
             }
-            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' done!", array($from, $to)), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' completed.", array($from, $to)), "success");
 
             $response['data'] = $translatedTerms;
 
@@ -567,7 +567,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
             ));
             $tokensModel->save();
             
-            return $this->createAdviseResponse($this->translate->translate("Translation saved!"), "success");
+            return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
 
         }
         return $this->invalidRequestError();
@@ -660,7 +660,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Human Translation"
+                            'data-original-title'   => "Edit"
                         )
                     ),
                     'translate-windows'  => array(
@@ -669,7 +669,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Eletronic Translation"
+                            'data-original-title'   => "Translation"
                         )
                     )
                 );

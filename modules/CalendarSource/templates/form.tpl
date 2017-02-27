@@ -13,7 +13,7 @@
                     <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                     <label class="control-label">{translateToken value="Color"}</label>
                     <select class="select2-me form-control" name="class_name" data-rule-required="1" data-placeholder="{translateToken value='Color'}" data-format-as="color-list">
-                        <option value="">{translateToken value="Please Select"}</option>
+                        <option value="">{translateToken value="Please select"}</option>
                         {foreach $T_COLORS as $color}
                             <option value="bg-{$color.info}" data-class="bg-{$color.info}">{$color.info}</option>
                         {/foreach}

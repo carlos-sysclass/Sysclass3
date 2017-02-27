@@ -78,7 +78,7 @@
             </button>
         {/if}
         <button type="button" class="btn btn-sm btn-warning hidden tooltips show-hover resolve-action" data-original-title="{translateToken value='Set Resolution'}">
-            <i class="fa fa-check-square-o"></i>
+            <i class="glyphicon glyphicon-edit-square-o"></i>
         </button>
 
         <button type="button"
@@ -145,7 +145,7 @@
         </button>
         {/if}
         <button type="button" class="btn btn-sm btn-warning tooltips resolve-action" data-original-title="{translateToken value='Set Resolution'}">
-            <i class="fa fa-check-square-o"></i>
+            <i class="glyphicon glyphicon-edit-square-o"></i>
         </button>
 
         <div class="margin-top-10 user-details">

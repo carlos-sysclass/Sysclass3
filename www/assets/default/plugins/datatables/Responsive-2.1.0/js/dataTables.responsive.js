@@ -18,7 +18,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -766,7 +766,7 @@ $.extend( Responsive.prototype, {
 	 * Determine the width of each column in the table so the auto column hiding
 	 * has that information to work with. This method is never going to be 100%
 	 * perfect since column widths can change slightly per page, but without
-	 * seriously compromising performance this is quite effective.
+	 * compromising performance this is quite effective.
 	 *
 	 * @private
 	 */

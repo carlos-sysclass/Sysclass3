@@ -3,7 +3,7 @@
 # 2009-05-17 by Arthur David Olson.
 
 # This data is by no means authoritative; if you think you know better,
-# go ahead and edit the file (and please send any changes to
+# go ahead and edit the file (and please, send any changes to
 # tz@iana.org for general use in the future).
 
 # From Paul Eggert (2006-03-22):
@@ -1340,7 +1340,7 @@ Zone	Asia/Tokyo	9:18:59	-	LMT	1887 Dec 31 15:00u
 #
 # However timeanddate.com, which I usually find reliable, shows Jordan
 # going to daylight saving time on the last Friday in March since 2002.
-# Please see
+# Please, see
 # <a href="http://www.timeanddate.com/worldclock/timezone.html?n=11">
 # http://www.timeanddate.com/worldclock/timezone.html?n=11
 # </a>
@@ -2068,7 +2068,7 @@ Zone	Asia/Karachi	4:28:12 -	LMT	1907
 # Holiday havoc
 # </a> (Jerusalem Post, 1999-04-22) that
 # the Palestinian National Authority changed to DST on 1999-04-15.
-# I vaguely recall that they switch back in October (sorry, forgot the source).
+# I vaguely recall that they switch back in October.
 # For now, let's assume that the spring switch was at 24:00,
 # and that they switch at 0:00 on the 3rd Fridays of April and October.
 

@@ -35,8 +35,8 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Surname"}</label>
-							<input name="surname" value="" type="text" placeholder="{translateToken value='Surname'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+							<label class="control-label">{translateToken value="Last name"}</label>
+							<input name="surname" value="" type="text" placeholder="{translateToken value='Last name'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 						</div>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Main language"}</label>
 							<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Language'}">
-								<option value="">{translateToken value="Please select"}</option>
+								<option value="">{translateToken value="Please, select"}</option>
 								{foreach $T_LANGUAGES as $lang}
 									<option value="{$lang.id}">{$lang.name}</option>
 								{/foreach}
@@ -97,9 +97,9 @@
 						<div class="form-group">
 		                    <label class="control-label">
 								<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a course coordinator'}">
-		                        	<i class="fa fa-question"></i>
+		                        	<i class="fa fa-question-circle"></i>
 		                    	</span>
-		                    	{translateToken value="Can be coordinator?"}
+		                    	{translateToken value="Can be a coordinator?"}
 		                    </label>
 		                    <input type="checkbox" name="can_be_coordinator" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
@@ -107,9 +107,9 @@
 					<div class="col-md-6 col-sm-6">
 						<div class="form-group">
 							<span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to be a class/lesson instructor'}">
-		                        	<i class="fa fa-question"></i>
+		                        	<i class="fa fa-question-circle"></i>
 		                    </span>
-		                    <label class="control-label">{translateToken value="Can be instructor?"}</label>
+		                    <label class="control-label">{translateToken value="Can be a instructor?"}</label>
 		                    <input type="checkbox" name="can_be_instructor" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 		                </div>
 		            </div>

@@ -21,10 +21,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Surname"}</label>
+					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Last name"}</label>
 					<div class="input-icon">
 						<i class="fa fa-user"></i>
-						<input name="surname" value="" type="text" placeholder="{translateToken value='Surname'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+						<input name="surname" value="" type="text" placeholder="{translateToken value='Last name'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 					</div>
 				</div>
 				<div class="form-group">

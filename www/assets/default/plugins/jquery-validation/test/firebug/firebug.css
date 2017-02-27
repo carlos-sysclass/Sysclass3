@@ -2,7 +2,7 @@
 html, body {
     margin: 0;
     background: #FFFFFF;
-    font-family: Lucida Grande, Tahoma, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 11px;
     overflow: hidden;
 }
@@ -56,7 +56,7 @@ a:hover {
 }
 
 .logRow-command {
-    font-family: Monaco, monospace;
+    font-family: 'Open Sans', sans-serif;
     color: blue;
 }
 
@@ -68,7 +68,7 @@ a:hover {
 }
 
 .objectBox-string {
-    font-family: Monaco, monospace;
+    font-family: 'Open Sans', sans-serif;
     color: red;
     white-space: pre;
 }
@@ -78,7 +78,7 @@ a:hover {
 }
 
 .objectBox-function {
-    font-family: Monaco, monospace;
+    font-family: 'Open Sans', sans-serif;
     color: DarkGreen;
 }
 
@@ -121,7 +121,7 @@ a:hover {
     right: 4px;
     top: 2px;
     padding-left: 8px;
-    font-family: Lucida Grande, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-weight: bold;
     color: #0000FF;
 }
@@ -148,7 +148,7 @@ a:hover {
 .selectorTag,
 .selectorId,
 .selectorClass {
-    font-family: Monaco, monospace;
+    font-family: 'Open Sans', sans-serif;
     font-weight: normal;
 }
 
@@ -167,7 +167,7 @@ a:hover {
 /************************************************************************************************/
 
 .objectBox-element {
-    font-family: Monaco, monospace;
+    font-family: 'Open Sans', sans-serif;
     color: #000088;
 }
 

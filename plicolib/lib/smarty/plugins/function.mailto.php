@@ -15,7 +15,7 @@
  * Purpose:  automate mailto address link creation, and optionally encode them.<br>
  * Params:
  * <pre>
- * - address    - (required) - e-mail address
+ * - address    - (required) - email address
  * - text       - (optional) - text to display, default is address
  * - encode     - (optional) - can be one of:
  *                             * none : no encoding (default)
@@ -24,7 +24,7 @@
  *                             * hex : encode with hexidecimal (no javascript)
  * - cc         - (optional) - address(es) to carbon copy
  * - bcc        - (optional) - address(es) to blind carbon copy
- * - subject    - (optional) - e-mail subject
+ * - subject    - (optional) - email subject
  * - newsgroups - (optional) - newsgroup(s) to post to
  * - followupto - (optional) - address(es) to follow up to
  * - extra      - (optional) - extra tags for the href link
@@ -34,7 +34,7 @@
  * {mailto address="me@domain.com"}
  * {mailto address="me@domain.com" encode="javascript"}
  * {mailto address="me@domain.com" encode="hex"}
- * {mailto address="me@domain.com" subject="Hello to you!"}
+ * {mailto address="me@domain.com" subject="Hello"}
  * {mailto address="me@domain.com" cc="you@domain.com,they@domain.com"}
  * {mailto address="me@domain.com" extra='class="mailto"'}
  * </pre>

@@ -356,7 +356,7 @@ var MD5 = (function () {
 })();
 /*
     This program is distributed under the terms of the MIT license.
-    Please see the LICENSE file for details.
+    Please, see the LICENSE file for details.
 
     Copyright 2006-2008, OGG, LLC
 */
@@ -1034,7 +1034,7 @@ Strophe = {
      *  >   (user code here)
      *  > };
      *
-     *  Please note that data sent and received over the wire is logged
+     *  Please, note that data sent and received over the wire is logged
      *  via Strophe.Connection.rawInput() and Strophe.Connection.rawOutput().
      *
      *  The different levels and their meanings are
@@ -1929,7 +1929,7 @@ Strophe.Connection.prototype = {
      *  constants.  The error condition will be one of the conditions
      *  defined in RFC 3920 or the condition 'strophe-parsererror'.
      *
-     *  Please see XEP 124 for a more detailed explanation of the optional
+     *  Please, see XEP 124 for a more detailed explanation of the optional
      *  parameters below.
      *
      *  Parameters:

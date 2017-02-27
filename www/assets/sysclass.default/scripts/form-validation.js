@@ -134,11 +134,11 @@ var FormValidation = function () {
 
                 messages: { // custom messages for radio buttons and checkboxes
                     membership: {
-                        required: "Please select a Membership type"
+                        required: "Please, select a Membership type"
                     },
                     service: {
-                        required: "Please select  at least 2 types of Service",
-                        minlength: jQuery.format("Please select  at least {0} types of Service")
+                        required: "Please, select  at least 2 types of Service",
+                        minlength: jQuery.format("Please, select  at least {0} types of Service")
                     }
                 },
 

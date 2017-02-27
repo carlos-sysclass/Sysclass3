@@ -381,7 +381,7 @@ test("remote", function() {
 		},
 		messages: {
 			username: {
-				required: "Please",
+				required: "Please,",
 				remote: jQuery.validator.format("{0} in use")
 			}
 		},
@@ -452,7 +452,7 @@ test("remote extensions", function() {
 		},
 		messages: {
 			username: {
-				required: "Please"
+				required: "Please,"
 			}
 		},
 		submitHandler: function() {
@@ -462,9 +462,9 @@ test("remote extensions", function() {
 	$(document).ajaxStop(function() {
 		$(document).unbind("ajaxStop");
 		equal( 1, v.size(), "There must be one error" );
-		equal( v.errorList[0].message, "asdf is already taken, please try something else" );
+		equal( v.errorList[0].message, "asdf is already taken. Please, try something else" );
 		v.element(e);
-		equal( v.errorList[0].message, "asdf is already taken, please try something else", "message doesn't change on revalidation" );
+		equal( v.errorList[0].message, "asdf is already taken. Please, try something else", "message doesn't change on revalidation" );
 		start();
 	});
 	strictEqual( v.element(e), false, "invalid element, nothing entered yet" );

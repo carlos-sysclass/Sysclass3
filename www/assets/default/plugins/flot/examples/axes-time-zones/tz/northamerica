@@ -5,7 +5,7 @@
 # also includes Central America and the Caribbean
 
 # This data is by no means authoritative; if you think you know better,
-# go ahead and edit the file (and please send any changes to
+# go ahead and edit the file (and please, send any changes to
 # tz@iana.org for general use in the future).
 
 # From Paul Eggert (1999-03-22):
@@ -2724,7 +2724,7 @@ Zone America/Costa_Rica	-5:36:20 -	LMT	1890		# San Jose
 
 # From Jesper Norgaard Welen (2008-03-13):
 # The Cuban time change has just been confirmed on the most authoritative
-# web site, the Granma.  Please check out
+# web site, the Granma.  Please, check out
 # <a href="http://www.granma.cubaweb.cu/2008/03/13/nacional/artic10.html">
 # http://www.granma.cubaweb.cu/2008/03/13/nacional/artic10.html
 # </a>

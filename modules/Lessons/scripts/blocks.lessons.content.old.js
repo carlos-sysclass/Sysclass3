@@ -7,7 +7,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonModel = app.module("crud.views.edit").itemModel;
 
-        var baseLessonContentModelClass = Backbone.Model.extend({
+        var baseUnitContentModelClass = Backbone.Model.extend({
             defaults : function() {
                 return {
                     id              : null,
@@ -27,7 +27,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonUrlContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'url';
                 return defaults;
             }
@@ -35,7 +35,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonFileContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'file';
                 return defaults;
             },
@@ -83,7 +83,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonTextContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'text';
                 return defaults;
             }
@@ -122,7 +122,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
 
         var lessonExerciseContentModelClass = baseLessonContentModelClass.extend({
             defaults : function() {
-                var defaults = baseLessonContentModelClass.prototype.defaults.apply(this);
+                var defaults = baseUnitContentModelClass.prototype.defaults.apply(this);
                 defaults['content_type'] = 'exercise';
                 return defaults;
             },
@@ -212,7 +212,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                             collection: this,
                         }));
                     } else {
-                        return new baseLessonContentModelClass(attrs, _.extend(options, {
+                        return new baseUnitContentModelClass(attrs, _.extend(options, {
                             collection: this,
                         }));
                     }
@@ -236,7 +236,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
          *
          * @todo  MOVE TO A MORE GENERIC MODULE
          */
-        var baseLessonChildContentTimelineViewClass = Backbone.View.extend({
+        var baseUnitChildContentTimelineViewClass = Backbone.View.extend({
             events : function() {
                 return {
                     "confirmed.bs.confirmation .delete-content"    : "delete"
@@ -979,13 +979,13 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 }
             },
             events : function() {
-                var events = baseLessonChildContentTimelineViewClass.prototype.events.apply(this);
+                var events = baseUnitChildContentTimelineViewClass.prototype.events.apply(this);
                 events["click .select-question"] = "openSelectDialog";
                 events["click .create-question"] = "openCreateDialog";
                 return events;
             },
             render : function() {
-                baseLessonChildContentTimelineViewClass.prototype.render.apply(this);
+                baseUnitChildContentTimelineViewClass.prototype.render.apply(this);
 
                 this.questionView = new lessonExercisesContentSubviewTimelineViewClass({
                     collection : this.model.get("exercise"),
@@ -1030,7 +1030,7 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
             },
             */
             delete : function() {
-                baseLessonChildContentTimelineViewClass.prototype.delete.apply(this);
+                baseUnitChildContentTimelineViewClass.prototype.delete.apply(this);
 
                 this.remove();
             }

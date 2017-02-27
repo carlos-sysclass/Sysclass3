@@ -42,7 +42,7 @@
             <span>{translateToken value="Collapse All"}</span>
         </a>
         <!--
-        <a class="btn btn-sm btn-success timeline-collapse tooltips" href="javascript:void(0);" data-original-title="{translateToken value="Copy content from another lesson"}">
+        <a class="btn btn-sm btn-success timeline-collapse tooltips" href="javascript:void(0);" data-original-title="{translateToken value="Copy content from another unit"}">
             <i class="fa fa-copy"></i>
             <span>{translateToken value="Copy"}</span>
         </a>
@@ -273,7 +273,7 @@
     </span>
 
     <span class="btn btn-sm btn-circle btn-default disabled">
-        <!-- <i class="fa fa-question"></i> -->
+        <!-- <i class="fa fa-question-circle"></i> -->
         <%= model.type %>
     </span>
     <% if (model.difficulty == "Easy") { %>
@@ -512,7 +512,7 @@
             <div class="timeline-body-head-actions">
                 <% if (file_type == "video") { %>
                     <span class="btn btn-sm btn-primary fileinput-button fileupload-subtitle" id="fileupload"  data-fileupload-url="/module/dropbox/upload/subtitle">
-                        <i class="fa fa-language"></i>
+                        <i class="icon-globe"></i>
                         <span class="hidden-xs">
                         {translateToken value="Add Subtitles"}
                         </span>
@@ -644,7 +644,7 @@
     <ul class="nav nav-tabs tabs-sm">
         <li class="active">
             <a href="#subtitle-translate-<%= model.id %>" aria-controls="home" role="tab" data-toggle="tab" class="btn btn-sm tooltips">
-                <i class="fa fa-language"></i>
+                <i class="icon-globe"></i>
             </a>
         </li>
         <li class="">
@@ -695,7 +695,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label">{translateToken value="Automatic translate to"}</label>
+                        <label class="control-label">{translateToken value="Translate"}</label>
                         <div class="input-group ">
                             <select class="select2-me form-control" name="related[lang_to]" data-placeholder="{translateToken value="Choose language"}">
                                 {foreach $T_LANGUAGES as $lang}
@@ -704,7 +704,7 @@
                             </select>
                             <div class="input-group-btn">
                                 <button class="btn green translate-file-content" type="button">
-                                    <i class="fa fa-language"></i>
+                                    <i class="icon-globe"></i>
                                     {translateToken value="Translate"}
                                 </button>
                             </div>

@@ -39,7 +39,7 @@ class Unit extends Model
         if ($this->save()) {
 	        $log[] = array(
 	        	'type' => 'success',
-	        	'message' => sprintf('Progress for lesson #%s for user #%s updated.', $this->lesson_id, $this->user_id),
+	        	'message' => sprintf('Progress for unit #%s for user #%s updated.', $this->lesson_id, $this->user_id),
 	        	'status' => true,
                 'entity' => 'unit',
                 'data' => $this->toArray()
@@ -47,7 +47,7 @@ class Unit extends Model
         } else {
 	        $log[] = array(
 	        	'type' => 'error',
-	        	'message' => sprintf('Error when trying to update progress for lesson #%sd for user #%s updated.', $this->lesson_id, $this->user_id),
+	        	'message' => sprintf('Error when trying to update progress for unit #%sd for user #%s updated.', $this->lesson_id, $this->user_id),
 	        	'status' => false
 	        );
 

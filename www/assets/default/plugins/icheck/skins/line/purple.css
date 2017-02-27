@@ -11,9 +11,9 @@
     color: #fff;
     background: #6a5a8c;
     border: none;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
     cursor: pointer;
 }
     .icheckbox_line-purple .icheck_line-icon,

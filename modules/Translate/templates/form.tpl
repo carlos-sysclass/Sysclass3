@@ -5,12 +5,12 @@
 		<h3 class="form-section">{translateToken value="General"}</h3>
 
 		<div class="form-group">
-			<label class="control-label">{translateToken value="English Name"}</label>
-			<input name="name" value="" type="text" placeholder="English Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+			<label class="control-label">{translateToken value="Name in English”}</label>
+			<input name="name" value="" type="text" placeholder="Name in English” class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Native Name"}</label>
-			<input name="local_name" value="" type="text" placeholder="Local Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+			<input name="local_name" value="" type="text" placeholder="Original name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Country"}</label>
@@ -32,7 +32,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="RTL (Right-to-Left) ?"}</label>
+					<label class="control-label">{translateToken value="RTL (Right-to-Left) "}</label>
 					<select class="select2-me form-control" name="rtl">
 						<option value="0">{translateToken value="No"}</option>
 						<option value="1">{translateToken value="Yes"}</option>
@@ -42,7 +42,7 @@
 		</div>
 		<h3 class="form-section">
 			<i class="icon-reorder"></i>
-			{translateToken value="Eletronic Translation"}
+			{translateToken value="Eletronic translation"}
 		</h3>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Eletronic language to translate"}</label>
@@ -70,13 +70,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Expiration Date"}</label>
+					<label class="control-label">{translateToken value="Completion date"}</label>
 					<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Expiration Time"}</label>
+					<label class="control-label">{translateToken value="Expiration time"}</label>
 					<input type="text" class="form-control timepicker-24 input-medium" name="expires[time]" data-update="expires" data-format="time" data-format-from="unix-timestamp">
 				</div>
 			</div>

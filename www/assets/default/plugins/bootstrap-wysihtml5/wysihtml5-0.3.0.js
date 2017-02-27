@@ -1167,7 +1167,7 @@ rangy.createModule("DomUtil", function(api, module) {
             }
 
             // "If either element is null or element's ownerDocument is an HTML document
-            // and element's local name is "html" and element's namespace is the HTML
+            // and element's original name is "html" and element's namespace is the HTML
             // namespace"
             if (el === null || (
                 el.nodeName == "HTML"
@@ -1175,7 +1175,7 @@ rangy.createModule("DomUtil", function(api, module) {
                 && dom.isHtmlNamespace(el)
             )) {
 
-            // "let element be a new Element with "body" as its local name and the HTML
+            // "let element be a new element with "body" as its original name and the HTML
             // namespace as its namespace.""
                 el = doc.createElement("body");
             } else {
@@ -3924,7 +3924,7 @@ wysihtml5.browser = (function() {
  * @param {Element} element Container element in which to search for urls
  *
  * @example
- *    <div id="text-container">Please click here: www.google.com</div>
+ *    <div id="text-container">Please, click here: www.google.com</div>
  *    <script>wysihtml5.dom.autoLink(document.getElementById("text-container"));</script>
  */
 (function(wysihtml5) {
@@ -4239,7 +4239,7 @@ wysihtml5.dom.copyAttributes = function(attributesToCopy) {
   };
 };/**
  * Copy a set of styles from one element to another
- * Please note that this only works properly across browsers when the element from which to copy the styles
+ * Please, note that this only works properly across browsers when the element from which to copy the styles
  * is in the dom
  *
  * Interesting article on how to copy styles
@@ -5298,7 +5298,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
  *  - Secure in MSIE 6+, but only when the user hasn't made changes to his security level "restricted"
  *  - Partially secure in other browsers (Firefox, Opera, Safari, Chrome, ...)
  *
- * Please note that this class can't benefit from the HTML5 sandbox attribute for the following reasons:
+ * Please, note that this class can't benefit from the HTML5 sandbox attribute for the following reasons:
  *    - sandboxing doesn't work correctly with inlined content (src="javascript:'<html>...</html>'")
  *    - sandboxing of physical documents causes that the dom isn't accessible anymore from the outside (iframe.contentWindow, ...)
  *    - setting the "allow-same-origin" flag would fix that, but then still javascript and dom events refuse to fire
@@ -5468,7 +5468,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
 
       if (!wysihtml5.browser.supportsSandboxedIframes()) {
         // Unset a bunch of sensitive variables
-        // Please note: This isn't hack safe!  
+        // Please, note: This isn't hack safe!  
         // It more or less just takes care of basic attacks and prevents accidental theft of sensitive information
         // IE is secure though, which is the most important thing, since IE is the only browser, who
         // takes over scripts & styles into contentEditable elements when copied from external websites

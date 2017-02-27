@@ -113,7 +113,7 @@ _before_init_functions.push(function() {
 		<div class="easy-pie-chart">
 			<div class="number unit" data-percent="0"><span>0</span></div>
 			<!-- 
-			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units Completed"}</a> -->
+			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units completed"}</a> -->
 		</div>
 	</div>
 

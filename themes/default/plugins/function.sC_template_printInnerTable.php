@@ -15,7 +15,7 @@ function smarty_function_sC_template_printBlock2($params, &$smarty)
 	$params['data'] ? $params['content'] = $params['data'] 											  : null;		//'data' is used in printInnertable, and we put this here for compatibility
 
 	/**
-	 * Cookies for remembering the open/close status of blocks, and to display status depending on lesson layout settings if it's the control panel
+	 * Cookies for remembering the open/close status of blocks, and to display status depending on unit layout settings if it's the control panel
 	 * @todo: Make it better, to comply with new blocks (this one's copied from old innerTable functions
 	 */
     $innerTableIdentifier = $GLOBALS['innerTableIdentifier'];

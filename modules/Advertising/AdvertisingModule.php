@@ -306,13 +306,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 $itemModel = $this->model($this->_modelRoute);
                 $messages = array(
                     'success' => "Lesson created with success",
-                    'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
+                    'error' => "A problem ocurred when trying to save your data. Please, check your data and try again"
                 );
             } elseif ($model == "content") {
                 $itemModel = $this->model("advertising/content");
                 $messages = array(
                     'success' => "Advertising content created with success",
-                    'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
+                    'error' => "A problem ocurred when trying to save your data. Please, check your data and try again"
                 );
 
                 $data['language_code'] = $this->translate->getSource();
@@ -359,13 +359,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 $itemModel = $this->model($this->_modelRoute);
                 $messages = array(
                     'success' => "Advertising updated.",
-                    'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
+                    'error' => "A problem ocurred when trying to save your data. Please, check your data and try again"
                 );
             } elseif ($model == "content") {
                 $itemModel = $this->model("advertising/content");
                 $messages = array(
                     'success' => "Advertising content updated.",
-                    'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
+                    'error' => "A problem ocurred when trying to save your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -397,13 +397,13 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson removed with success",
-                    'error' => "A problem ocurred when trying to remove your data. Please check your data and try again"
+                    'error' => "A problem ocurred when trying to remove your data. Please, check your data and try again"
                 );
             } elseif ($model == "content") {
                 $itemModel = $this->model("advertising/content");
                 $messages = array(
                     'success' => "Advertising content removed with success",
-                    'error' => "A problem ocurred when trying to remove your data. Please check your data and try again"
+                    'error' => "A problem ocurred when trying to remove your data. Please, check your data and try again"
                 );
             }
 
@@ -532,7 +532,7 @@ class AdvertisingModule extends \SysclassModule implements \IWidgetContainer, \I
 
         $messages = array(
             'success' => "Advertising content order updated.",
-            'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
+            'error' => "A problem ocurred when trying to save your data. Please, check your data and try again"
         );
 
         $data = $this->getHttpData(func_get_args());

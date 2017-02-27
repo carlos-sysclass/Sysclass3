@@ -50,7 +50,7 @@ var FormEditable = function () {
             status: 400,
             statusText: 'Bad Request',
             response: function (settings) {
-                this.responseText = 'Please input correct value';
+                this.responseText = 'Please, input correct value';
                 log(settings, this);
             }
         });

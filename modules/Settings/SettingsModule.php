@@ -49,7 +49,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
 
             $menuItem = array(
                 'id'        => "open-pageguide-action",
-                'icon'      => ' fa fa-question',
+                'icon'      => ' fa fa-question-circle',
                 'text'      => $this->translate->translate('Help'),
                 'type'      => ''
             );
@@ -70,7 +70,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
                     array(
                         //'count' => count($items),
                         'text'  => $this->translate->translate('Settings'),
-                        'icon'  => 'fa fa-code-fork',
+                        'icon'  => 'fa fa-cog',
                         'link'  => $this->getBasePath() . 'manage'
                     )
                 )
@@ -287,7 +287,7 @@ class SettingsModule extends \SysclassModule implements \ISectionMenu, \ILinkabl
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $data)
                 );

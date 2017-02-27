@@ -203,7 +203,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			}
 		},
-		renderLesson : function(completed, total) {
+		renderUnit : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {

@@ -4,8 +4,8 @@
     </ul>
 
     <span class="btn btn-primary fileinput-button">
-        <i class="fa fa-plus"></i>
-        <span>{translateToken value="Upload file"}</span>
+        <i class="fa fa-cloud-upload"></i>
+        <span>{translateToken value="Upload picture"}</span>
         <input type="file" name="files[]">
     </span>
 </div>

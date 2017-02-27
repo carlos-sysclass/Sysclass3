@@ -11,7 +11,7 @@
             {if $last_try}
                 {translateToken value="Try again"}
             {else}
-                {translateToken value="Start!"}
+                {translateToken value="Start"}
             {/if}
         </button>
         {/if}
@@ -30,9 +30,9 @@
             {if $T_TEST.test_repetition <= 0 || $T_TEST.executions|@count < $T_TEST.test_repetition}
             <button class="btn btn-primary" type="submit">
                     {if $last_try}
-                        {translateToken value="Retry!"}
+                        {translateToken value="Retry"}
                     {else}
-                        {translateToken value="Do it now!"}
+                        {translateToken value="Do it now"}
                     {/if}
             </button>
             {/if}

@@ -50,7 +50,7 @@ form.cmxform label.error { display: none; }
 				<input  type="radio" id="gender_female" value="f" name="gender"/>
 				Female
 			</label>
-			<label for="gender" class="error">Please select your gender</label>
+			<label for="gender" class="error">Please, select your gender</label>
 		</fieldset>
 		<fieldset>
 			<legend>Family</legend>
@@ -66,13 +66,13 @@ form.cmxform label.error { display: none; }
 				<input  type="radio" id="family_other" value="o" name="family" />
 				Other
 			</label>
-			<label for="family" class="error">Please select your family status.</label>
+			<label for="family" class="error">Please, select your family status.</label>
 		</fieldset>
 		<p>
-			<label for="agree">Please agree to our policy</label>
+			<label for="agree">Please, agree to our policy</label>
 			<input type="checkbox" class="checkbox" id="agree" name="agree" validate="required:true" />
 			<br/>
-			<label for="agree" class="error block">Please agree to our policy!</label>
+			<label for="agree" class="error block">Please, agree to our policy!</label>
 		</p>
 		<fieldset>
 			<legend>Spam</legend>
@@ -88,7 +88,7 @@ form.cmxform label.error { display: none; }
 				<input type="checkbox" class="checkbox" id="spam_mail" value="mail" name="spam[]" />
 				Spam via Mail
 			</label>
-			<label for="spam[]" class="error">Please select at least two types of spam.</label>
+			<label for="spam[]" class="error">Please, select at least two types of spam.</label>
 		</fieldset>
 		<p>
 			<input class="submit" type="submit" value="Submit"/>
@@ -99,8 +99,8 @@ form.cmxform label.error { display: none; }
 <form id="selecttest">
 	<h2>Some tests with selects</h2>
 	<p>
-		<label for="jungle">Please select a jungle noun</label><br/>
-		<select id="jungle" name="jungle" title="Please select something!" validate="required:true">
+		<label for="jungle">Please, select a jungle noun</label><br/>
+		<select id="jungle" name="jungle" title="Please, select something!" validate="required:true">
 			<option value=""></option>
 			<option value="1">Buga</option>
 			<option value="2">Baga</option>
@@ -109,8 +109,8 @@ form.cmxform label.error { display: none; }
 	</p>
 	
 	<p>
-		<label for="fruit">Please select at least two fruits</label><br/>
-		<select id="fruit" name="fruit" title="Please select at least two fruits" validate="required:true, minlength:2" multiple="multiple">
+		<label for="fruit">Please, select at least two fruits</label><br/>
+		<select id="fruit" name="fruit" title="Please, select at least two fruits" validate="required:true, minlength:2" multiple="multiple">
 			<option value="b">Banana</option>
 			<option value="a">Apple</option>
 			<option value="p">Peach</option>
@@ -119,8 +119,8 @@ form.cmxform label.error { display: none; }
 	</p>
 	
 	<p>
-		<label for="vegetables">Please select no more than two vergetables</label><br/>
-		<select id="vegetables" name="vegetables" title="Please select no more than two vergetables" validate="required:true, maxlength:2" multiple="multiple">
+		<label for="vegetables">Please, select no more than two vergetables</label><br/>
+		<select id="vegetables" name="vegetables" title="Please, select no more than two vergetables" validate="required:true, maxlength:2" multiple="multiple">
 			<option value="p">Potato</option>
 			<option value="t">Tomato</option>
 			<option value="s">Salad</option>
@@ -128,8 +128,8 @@ form.cmxform label.error { display: none; }
 	</p>
 	
 	<p>
-		<label for="cars">Please select at least two cars, but no more than three</label><br/>
-		<select id="cars" name="cars" title="Please select at least two cars, but no more than three" validate="required:true, rangelength:[2,3]" multiple="multiple">
+		<label for="cars">Please, select at least two cars, but no more than three</label><br/>
+		<select id="cars" name="cars" title="Please, select at least two cars, but no more than three" validate="required:true, rangelength:[2,3]" multiple="multiple">
 			<option value="m_sl">Mercedes SL</option>
 			<option value="o_c">Opel Corsa</option>
 			<option value="vw_p">VW Polo</option>

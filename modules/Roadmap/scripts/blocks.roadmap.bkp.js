@@ -297,10 +297,10 @@ $SC.module("blocks.roadmap", function(mod, app, Backbone, Marionette, $, _) {
             var self = this;
 
             this.$('#block_roadmap-accordion').on('shown.bs.collapse', function (e) {
-                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("icon-plus").addClass("icon-minus");
+                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("fa fa-plus-square").addClass("icon-minus");
             });
             this.$('#block_roadmap-accordion').on('hidden.bs.collapse', function (e) {
-                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("icon-minus").addClass("icon-plus");
+                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("icon-minus").addClass("fa fa-plus-square");
             });
 
             this.listenTo(this.collections.seasons, 'request', (function() {

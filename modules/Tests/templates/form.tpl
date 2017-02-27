@@ -18,7 +18,7 @@
 			{if (isset($T_SECTION_TPL['questions-list']) &&  ($T_SECTION_TPL['questions-list']|@count > 0))}
 			<li>
 				<a href="#tab_1_3" data-toggle="tab">
-					<i class="fa fa-question"></i>
+					<i class="fa fa-question-circle"></i>
 					{translateToken value="Questions"}
 				</a>
 			</li>
@@ -27,7 +27,7 @@
 			{if (isset($T_SECTION_TPL['tests_execution']) &&  ($T_SECTION_TPL['tests_execution']|@count > 0))}
 			<li>
 				<a href="#tab_1_4" data-toggle="tab">
-					<i class="fa fa-question"></i>
+					<i class="fa fa-question-circle"></i>
 					{translateToken value="Executions"}
 				</a>
 			</li>
@@ -52,7 +52,7 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Grade rules"}
                         <span class="badge badge-warning tooltips" data-original-title="{translateToken value='You can select a customized rule to show yours users grades in your prefered way. If you do not choose, the grades will be showed in the [0-100] standard'}">
-                            <i class="fa fa-question"></i>
+                            <i class="fa fa-question-circle"></i>
                         </span>
                     </label>
 
@@ -66,7 +66,7 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
 					<select class="select2-me form-control" name="instructor_id">
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}
 							<option value="{$instructor.id}">#{$instructor.id} - {$instructor.name} {$instructor.surname}</option>
 						{/foreach}
@@ -98,9 +98,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Time limit in minutes?"}
+			                            {translateToken value="Time limit in minutes"}
 			                        </label>
 
 			                        <input name="test.time_limit" value="" type="text" placeholder="{translateToken value="Time limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
@@ -109,7 +109,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="Allow pause the test?"}
+			                            {translateToken value="Allow pause the test"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -118,7 +118,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="Times the user can take the test. Leave '0' (zero) for unlimited trials."}
+			                            {translateToken value="Times the user is allowed to re-take the test. Put '0' (zero) for unlimited attempts."}
 			                        </label>
 			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
@@ -138,9 +138,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the weight of the question during the test'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show question weight?"}
+			                            {translateToken value="Show question weight"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_question_weight" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -149,10 +149,10 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the difficulty of the question during the test'}">
-			                                <i class="fa fa-question"></i>
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show user the level of difficulty of the question during the test'}">
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show question level?"}
+			                            {translateToken value="Show question level"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_question_difficulty" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -162,9 +162,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the type of the question during the test'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show question type?"}
+			                            {translateToken value="Show question type"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_question_type" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -176,9 +176,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Block user input only in the current question'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show questions one by one?"}
+			                            {translateToken value="Show questions one by one"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_one_by_one" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -188,9 +188,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='It allows the user to navigate through the test\'s questions'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Navigate through the test?"}
+			                            {translateToken value="Navigate through the test"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.can_navigate_through" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -200,9 +200,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shows the correct answer after user response. This feature will block the question after the user response.'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show correct answers?"}
+			                            {translateToken value="Show correct answers"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_correct_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -214,9 +214,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the questions in a randomized order'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Randomize the order of questions?"}
+			                            {translateToken value="Randomize the order of questions"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -226,9 +226,9 @@
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions'}">
-			                                <i class="fa fa-question"></i>
+			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Shuffle questions alternatives?"}
+			                            {translateToken value="Shuffle questions alternatives"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -253,9 +253,9 @@
 				                    <div class="form-group">
 				                        <label class="control-label">
 				                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show only a set of questions? Leave 0 to show all questions'}">
-				                                <i class="fa fa-question"></i>
+				                                <i class="fa fa-question-circle"></i>
 				                            </span>
-				                            {translateToken value="Number of questions?"}
+				                            {translateToken value="Number of questions"}
 				                        </label>
 
 				                        <input name="test.test_max_questions" value="" type="text" placeholder="{translateToken value="Number of times a test can be retaken."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
@@ -303,7 +303,7 @@
 				<div class="progress-bar progress-bar-success"></div>
 			</div>
 			<span class="btn btn-success fileinput-button" style="display: none">
-				<i class="glyphicon glyphicon-plus"></i>
+				<i class="glyphicon glyphfa fa fa-plus-square"></i>
 				<span>Select files...</span>
 
 			</span>

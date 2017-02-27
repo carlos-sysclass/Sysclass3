@@ -4,10 +4,10 @@
 <div class="form-body">
 	<ul class="nav nav-tabs">
 		<li class="active">
-			<a href="#tab_1_1" data-toggle="tab">{translateToken value="General"}</a>
+			<a href="#tab_1_1" data-toggle="tab">{translateToken value="Enrollment form"}</a>
 		</li>
 		<li class="admittance-type-item admittance-type-grouping hidden">
-			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Grouping Options"}</a>
+			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group options"}</a>
 		</li>
 
 		{if (isset($T_SECTION_TPL['enroll.courses']) &&  ($T_SECTION_TPL['enroll.courses']|@count > 0))}
@@ -28,7 +28,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Name"}</label>
+							<label class="control-label">{translateToken value="Form name"}</label>
 							<input name="name" value="" type="text" placeholder="{translateToken value="Name"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Subtitle"}</label>
+							<label class="control-label">{translateToken value="Form info"}</label>
 							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Subtitle"}" class="form-control" data-rule-minlength="5" />
 						</div>
 					</div>
@@ -44,9 +44,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Url"}</label>
+							<label class="control-label">{translateToken value="Form URL"}</label>
 							<div class="input-group">
-								<span class="input-group-addon">https://signup-itaipu.sysclass.com/</span>
+								<span class="input-group-addon">https://lucent.sysclass.com/</span>
 								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
@@ -54,9 +54,9 @@
 				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
-					{translateToken value="Open Period"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Especiy the start and final date for this rule be avaliable. If you don\'t specify the final date, its duration will be underterminate.'}">
-                        <i class="fa fa-question"></i>
+					{translateToken value="Enrollment period"}
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
+                        <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
 
@@ -64,7 +64,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">
-								{translateToken value="Start Date"}
+								{translateToken value="Start date"}
 							</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -75,7 +75,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Finish Date"}</label>
+							<label class="control-label">{translateToken value="Completion date"}</label>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								<input type="text" name="end_date" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
@@ -85,10 +85,10 @@
 				</div>
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
-					<i class="fa fa-cogs"></i>
-					{translateToken value="Course Format"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criterias for user admitance. This information is used to make course grouping control, and the calculate the course desired roadmap.'}">
-                        <i class="fa fa-question"></i>
+					<i class="glyphicon glyphicon-inbox"></i>
+					{translateToken value="Course format"}
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criteria for user admittance. This information is used to manage the course grouping and calculate its roadmap.'}">
+                        <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
 
@@ -103,7 +103,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-Based'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-based'}
                             </label>
                         </div>
                     </div>
@@ -113,8 +113,7 @@
 					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            <strong>TIP!</strong>
-					            On <strong>Individual</strong> Admittance Type, the user is accepted regardless of others users, and your roadmap is calculated  individually.
+					            On <strong>Individual</strong> admission, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
 					        </p>
 					    </div>
 					</div>
@@ -122,8 +121,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            <strong>TIP!</strong>
-					            On <strong>Grouping-based</strong> Admittance Type, the users are allocated in groups, based on his admittance dates. Each group are dynamically created based on the criterias below. You can create groups based on days of a month, the total number of users or even both.</p>
+					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the criteria defined below. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
@@ -136,10 +134,10 @@
 		<div class="tab-pane fade in admittance-type-item admittance-type-grouping hidden" id="tab_1_2">
 
 			<h5 class="form-section margin-bottom-10 margin-top-10">
-				<i class="fa fa-cogs"></i>
+				<i class="glyphicon glyphicon-inbox"></i>
 				{translateToken value="Enrollment Dates"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
 			
@@ -188,7 +186,7 @@
 							<div class="form-group">
 								<label class="control-label">{translateToken value="Group name template"}
 									<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='This filed will be used to create '}">
-										<i class="fa fa-question"></i>
+										<i class="fa fa-question-circle"></i>
 									</span>
 								</label>
 								<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
@@ -258,7 +256,7 @@
 				<i class="fa fa-cogs"></i>
 				{translateToken value="User Limit"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of users allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
 			<div class="row">
@@ -275,7 +273,7 @@
 						</label>
 						<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
 							<option value="-1">{translateToken value="Select a action"}</option>
-							<option value="">{translateToken value="Block Admittance"}</option>
+							<option value="">{translateToken value="Block admission"}</option>
 							<option value="">{translateToken value="Enroll in another group"}</option>
 							<option value="">{translateToken value="Send to the waiting list"}</option>
 						</select>

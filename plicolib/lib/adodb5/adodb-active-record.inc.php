@@ -203,7 +203,7 @@ class ADODB_Active_Record {
 		$ar->foreignKey = ($foreignKey) ? $foreignKey : $foreignRef.ADODB_Active_Record::$_foreignSuffix;
 		$table =& $this->TableInfo();
 		$table->_hasMany[$foreignRef] = $ar;
-	#	$this->$foreignRef = $this->_hasMany[$foreignRef]; // WATCHME Removed assignment by ref. to please __get()
+	#	$this->$foreignRef = $this->_hasMany[$foreignRef]; // WATCHME Removed assignment by ref. to please, __get()
 	}
 
 	// use when you don't want ADOdb to auto-pluralize tablename

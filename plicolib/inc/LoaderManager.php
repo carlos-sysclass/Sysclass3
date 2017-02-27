@@ -15,7 +15,7 @@ abstract class LoaderManager {
 	protected function getResourceClassName($type, $resource)
 	{
 		if (!in_array($type, array_keys(self::$resourceCache))) {
-			throw new Exception("Please provide a valid resource type.");
+			throw new Exception("Please, provide a valid resource type.");
 		}
 		$resource = str_replace("_", "/", $resource);
 		$resource_parts = explode("/", $resource);
@@ -35,7 +35,7 @@ abstract class LoaderManager {
 	protected function resourceExists($type, $resource, $noCached=FALSE)
 	{
 		if (!in_array($type, array_keys(self::$resourceCache))) {
-			throw new Exception("Please provide a valid resource type.");
+			throw new Exception("Please, provide a valid resource type.");
 		}
 		if (!$noCached && array_key_exists($resource, self::$resourceCache[$type])) {
 			return true;

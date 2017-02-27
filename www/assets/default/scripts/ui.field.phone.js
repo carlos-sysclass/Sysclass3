@@ -17,7 +17,7 @@ $SC.module("ui.field.phone", function(mod, app, Backbone, Marionette, $, _){
             phone_number = phone_number.replace(/\s+/g, "");
             return this.optional(element) || phone_number.length > 9 &&
                 phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-        }, "Please specify a valid US phone number");
+        }, "Please, specify a valid US phone number");
 
         /**
          * @todo Impĺement this method!
@@ -28,7 +28,7 @@ $SC.module("ui.field.phone", function(mod, app, Backbone, Marionette, $, _){
             phone_number = phone_number.replace(/\s+/g, "");
             return this.optional(element) || phone_number.length > 9 &&
                 phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-        }, "Please specify a valid US phone number");
+        }, "Please, specify a valid US phone number");
 
         $.validator.addMethod("countryphone", function(phone_number, element) {
 
@@ -44,7 +44,7 @@ $SC.module("ui.field.phone", function(mod, app, Backbone, Marionette, $, _){
             }
             return false;
 
-        }, "Please specify a valid phone number");
+        }, "Please, specify a valid phone number");
     };
 
     this._createMasksMethods = function() {

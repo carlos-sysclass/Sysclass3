@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-lock"></i>
-                    {translateToken value='Manage attributions Users and Groups'}
+                    {translateToken value='Manage attributions of users and groups.'}
                 </h4>
             </div>
             <div class="modal-body ">
@@ -16,7 +16,7 @@
 						<div class="form-group">
 							
                             <label class="">{translateToken value="Search for Group or User"}</label>
-                    		<input type="hidden" class="select2-me form-control col-md-12" name="user_or_group" data-placeholder="{translateToken value='Please Select'}" data-url="/module/roles/datasource/users" />
+                    		<input type="hidden" class="select2-me form-control col-md-12" name="user_or_group" data-placeholder="{translateToken value='Please select'}" data-url="/module/roles/datasource/users" />
 
 						</div>
 					</div>

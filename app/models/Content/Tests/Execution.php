@@ -3,7 +3,7 @@ namespace Sysclass\Models\Content\Tests;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\Tests\Unit as TestUnit,
     Sysclass\Models\Courses\Tests\TestQuestions,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Content\Progress\Unit as UnitProgress,
@@ -118,7 +118,7 @@ class Execution extends Model
 
         //$testData = $this->model("tests")->getItem($executionData['test_id']);
 
-        $testModel = TestLesson::findFirstById($executionData['test_id']);
+        $testModel = TestUnit::findFirstById($executionData['test_id']);
 
         if ($testModel) {
 
