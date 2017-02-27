@@ -10,7 +10,7 @@
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
 					<i class="fa fa-dropbox"></i>
-					{translateToken value="Content editor"}
+					{translateToken value="Post and edit content"}
 				</a>
 			</li>
 			{/if}
