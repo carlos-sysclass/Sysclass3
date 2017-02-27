@@ -9,7 +9,7 @@
 			{if (isset($T_SECTION_TPL['lessons_content']) &&  ($T_SECTION_TPL['lessons_content']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					<i class="fa fa-dropbox"></i>
+					<i class="fa fa-upload"></i>
 					{translateToken value="Post / Edit content"}
 				</a>
 			</li>
