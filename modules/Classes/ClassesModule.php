@@ -62,11 +62,11 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Course"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New course"));
                 break;
             }
             case "edit/:id" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Course"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit course"));
                 break;
             }
         }
@@ -80,7 +80,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Course'),
+                    'text'      => $this->translate->translate('New course'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -92,7 +92,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -188,7 +188,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 );
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please check your data and try again", "error");
+                return $this->invalidRequestError("There's ocurred a problen when the system tried to save your data. Please, check your data and try again", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -212,7 +212,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -236,7 +236,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -300,7 +300,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
      *
      * @Put("/items/lessons/set-order/{class_id}")
      */
-    public function setLessonOrderRequest($class_id)
+    public function setUnitOrderRequest($class_id)
     {
         if ($this->isUserAllowed("edit")) {
             $data = $this->request->getPut();
@@ -309,10 +309,10 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
             $messages = array(
                 'success' => "Lesson order updated.",
-                'error' => "A problem ocurred when trying to save your data. Please check your data and try again"
+                'error' => "A problem ocurred when trying to save your data. Please, check your data and try again"
             );
 
-            if ($itemModel->setLessonOrder($data['position'])) {
+            if ($itemModel->setUnitOrder($data['position'])) {
                 $response = $this->createAdviseResponse($this->translate->translate($messages['success']), "success");
             } else {
                 $response = $this->invalidRequestError($this->translate->translate($messages['success']), "success");

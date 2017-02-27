@@ -117,7 +117,7 @@ abstract class PhalconWrapperController extends Controller
 	protected function getResourceClassName($type, $resource)
 	{
 		if (!in_array($type, array_keys(self::$resourceCache))) {
-			throw new Exception("Please provide a valid resource type.");
+			throw new Exception("Please, provide a valid resource type.");
 		}
 		$resource = str_replace("_", "/", $resource);
 		$resource_parts = explode("/", $resource);
@@ -137,7 +137,7 @@ abstract class PhalconWrapperController extends Controller
 	protected function resourceExists($type, $resource, $noCached=FALSE)
 	{
 		if (!in_array($type, array_keys(self::$resourceCache))) {
-			throw new Exception("Please provide a valid resource type.");
+			throw new Exception("Please, provide a valid resource type.");
 		}
 		if (!$noCached && array_key_exists($resource, self::$resourceCache[$type])) {
 			return true;
@@ -360,7 +360,7 @@ abstract class PhalconWrapperController extends Controller
 
 	protected function invalidRequestError($message = "", $type = "warning") {
 		if (empty($message)) {
-			$message = $this->translate->translate("There's a problem with your request. Please try again.");
+			$message = $this->translate->translate("There's a problem with your request. Please, try again.");
 		}
 		return $this->createResponse(200, $message, $type, "advise");
 	}

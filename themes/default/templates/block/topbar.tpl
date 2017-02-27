@@ -265,7 +265,7 @@
 		               <li>
 		                  <a href="#">
 		                  <span class="label label-sm label-icon label-warning"><i class="icon-bolt"></i></span>
-		                  Please schedule your exams!
+		                  Please, schedule your exams!
 		                  </a>
 		               </li>
 		            </ul>

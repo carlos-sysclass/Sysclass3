@@ -1,7 +1,7 @@
 <?php
-use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+use Sysclass\Models\Courses\Tests\Unit as TestUnit,
     Sysclass\Models\Content\Progress\Course as ClasseProgress,
-    Sysclass\Models\Content\Progress\Unit as LessonProgress;
+    Sysclass\Models\Content\Progress\Unit as UnitProgress;
 
 class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
@@ -135,7 +135,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
         //$testData = $this->model("tests")->getItem($executionData['test_id']);
 
-        $testModel = TestLesson::findFirstById($executionData['test_id']);
+        $testModel = TestUnit::findFirstById($executionData['test_id']);
 
         if ($testModel) {
 

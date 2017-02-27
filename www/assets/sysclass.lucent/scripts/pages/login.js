@@ -101,7 +101,7 @@ $SC.module("ui.pages", function(mod, app, Backbone, Marionette, $, _){
 	            },
 	            messages: {
 	                email: {
-	                    required: "Email is required."
+	                    required: "Please, enter a valid email."
 	                }
 	            },
 

@@ -314,7 +314,7 @@ var FormComponents = function () {
                     return {
                         q: term, // search term
                         page_limit: 10,
-                        apikey: "ju6z9mjyajq2djue3gbvv26t" // please do not use so this example keeps working
+                        apikey: "ju6z9mjyajq2djue3gbvv26t" // please, do not use so this example keeps working
                     };
                 },
                 results: function (data, page) { // parse the results into the format expected by Select2.
@@ -429,7 +429,7 @@ var FormComponents = function () {
                     return {
                         q: term, // search term
                         page_limit: 10,
-                        apikey: "ju6z9mjyajq2djue3gbvv26t" // please do not use so this example keeps working
+                        apikey: "ju6z9mjyajq2djue3gbvv26t" // please, do not use so this example keeps working
                     };
                 },
                 results: function (data, page) { // parse the results into the format expected by Select2.
@@ -596,7 +596,7 @@ var FormComponents = function () {
                     'placement': (App.isRTL() ? 'left' : 'right'),
                     'html': true,
                     'container': 'body',
-                    'content': 'Please enter a username to check its availability.',
+                    'content': 'Please, enter a username to check its availability.',
                 });
                 // add error class to the popover
                 pop.data('bs.popover').tip().addClass('error');

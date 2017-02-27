@@ -53,9 +53,9 @@
 
                                             <p>{translateToken value="Automatic Approval"}: 
                                             {if $enrollment.signup_auto_approval}
-                                                <strong class="text-success">{translateToken value="YES"}</strong>
+                                                <strong class="text-success">{translateToken value="Yes"}</strong>
                                             {else}
-                                                <strong class="text-danger">{translateToken value="NO"}</strong>
+                                                <strong class="text-danger">{translateToken value="No"}</strong>
                                             {/if}
                                             </p>
 

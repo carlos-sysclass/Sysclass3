@@ -90,7 +90,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					colReorder : true,
 					language: {
 			            buttons: {
-			                colvis: 'Colunas'
+			                colvis: 'Column'
 			            }
 			        },
 				    buttons: [
@@ -283,7 +283,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	/**
         	 * RETURN THE MODEL BASED ON ROW DATA, CAN BE OVERRIDEN
         	 * @param  {array} data the raw JSON data from selected / clicked row.
-        	 * @return {object}     THe Backbone.Model with data assigned
+        	 * @return {object}     The Backbone.Model with data assigned
         	 */
         	getTableItemModel : function(data) {
         		var itemModelClass = app.module("crud.models").itemModelClass;

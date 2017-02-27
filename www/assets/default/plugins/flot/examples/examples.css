@@ -2,7 +2,7 @@
 
 body {
 	background: url(background.png) repeat-x;
-	font: 18px/1.5em "proxima-nova", Helvetica, Arial, sans-serif;
+	font: 18px/1.5em "proxima-nova", 'Open Sans', sans-serif;
 }
 
 a {	color: #069; }
@@ -10,12 +10,12 @@ a:hover { color: #28b; }
 
 h2 {
 	margin-top: 15px;
-	font: normal 32px "omnes-pro", Helvetica, Arial, sans-serif;
+	font: normal 32px "omnes-pro", 'Open Sans', sans-serif;
 }
 
 h3 {
 	margin-left: 30px;
-	font: normal 26px "omnes-pro", Helvetica, Arial, sans-serif;
+	font: normal 26px "omnes-pro", 'Open Sans', sans-serif;
 	color: #666;
 }
 

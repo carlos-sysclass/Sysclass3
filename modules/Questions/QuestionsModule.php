@@ -31,7 +31,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Questions'),
-                        'icon'  => 'fa fa-question',
+                        'icon'  => 'fa fa-question-circle',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -48,7 +48,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'fa fa-question',
+                'icon'  => 'fa fa-question-circle',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Questions")
             )
@@ -61,11 +61,11 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Question"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New question"));
                 break;
             }
             case "edit/{identifier}" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Question"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit question"));
                 break;
             }
         }
@@ -79,10 +79,10 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Question'),
+                    'text'      => $this->translate->translate('New question'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

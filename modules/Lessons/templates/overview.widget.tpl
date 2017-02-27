@@ -18,7 +18,7 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Classes"}</span>
+							<span class="tab-title">{translateToken value="Units"}</span>
 						</div>
 					</a>
 				</li>
@@ -26,7 +26,7 @@
 				<li class="the-lesson-tab active">
 					<a data-toggle="tab" href="#lesson-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Lessons"}</span>
+							<span class="tab-title">{translateToken value="Units"}</span>
 						</div>
 					</a>
 				</li>
@@ -78,7 +78,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this course"}
+										{translateToken value="There's no info registered in this course"}
 									</div>
 								</div>
 							</div>
@@ -212,7 +212,7 @@
 												<td><strong class="text-default pull-right">80h</strong></td>
 											</tr>
 											<tr>
-												<td>{translateToken value="Number of Classes:"}</td>
+												<td>{translateToken value="Number of units:"}</td>
 												<td><strong class="text-default pull-right">3 of 24</strong></td>
 											</tr>
 											<tr>
@@ -334,7 +334,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="200px">
 									-->
 									<h5>
-										<a href="javascript: void(0)">{translateToken value="Your Files"} </a> -
+										<a href="javascript: void(0)">{translateToken value="Your files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 
@@ -389,7 +389,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Sorry! Any data has been registered for this class yet."}
+										{translateToken value="No data has been registered for this class."}
 									</div>
 								</div>
 							</div>
@@ -441,7 +441,7 @@
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand hidden-xs">&raquo;</a>
 							<a href="javascript: void(0);" class="navbar-brand lesson-title">
-								{translateToken value="Lessons"}
+								{translateToken value="Units"}
 							</a>
 							<a href="javascript: void(0);" class="navbar-brand">
 								<span class="label label-success"><i class="icon-ok-sign"></i>  {translateToken value="Viewed"}</span>
@@ -450,19 +450,19 @@
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous unit"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next unit"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
 
 								<!--
 								<li>
-									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Lessons"}" data-placement="top" data-search>
+									<a href="#" class="nav-search-action tooltips" data-original-title="{translateToken value="Search Units"}" data-placement="top" data-search>
 										<i class="icon-search"></i>
 									</a>
 								</li>
@@ -474,7 +474,7 @@
 					<div class="tabbable-custom ">
 						<ul class="nav nav-tabs ">
 							<li class="active">
-								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video Lesson"}</span></a>
+								<a data-toggle="tab" href="#tab_lesson_content"><i class="icon-magic"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Video lesson"}</span></a>
 							</li>
 							<li class="">
 								<a data-toggle="tab" href="#tab_lesson_materials"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
@@ -493,7 +493,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any content for this lesson"}
+										{translateToken value="There are no content in this lesson"}
 									</div>
 								</div>
 							</div>
@@ -512,7 +512,7 @@
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										 {translateToken value="Ops! There's any exercises posted for this lesson"}
+										 {translateToken value="There are no exercises posted in this lesson"}
 								   	</div>
 							   	</div>
 						   	</div>
@@ -576,7 +576,7 @@
 	<td colspan="5"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any classes registered for this course"}
+			{translateToken value="There are no units posted in this course"}
 		</span>
 	</td>
 </script>

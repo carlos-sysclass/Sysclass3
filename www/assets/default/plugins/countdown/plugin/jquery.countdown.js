@@ -2,7 +2,7 @@
    Countdown for jQuery v1.6.2.
    Written by Keith Wood (kbwood{at}iinet.com.au) January 2008.
    Available under the MIT (https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt) license. 
-   Please attribute the author if you use it. */
+   Please, attribute the author if you use it. */
 
 /* Display a countdown timer.
    Attach it with options like:

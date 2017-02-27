@@ -416,7 +416,7 @@ class Queue extends Component implements WampServerInterface
             }
         }
         //var_dump("CALL", $id, $topic->getId(), $params);
-        $conn->callError($id, $topic, 'Please especify a valid procedure method');
+        $conn->callError($id, $topic, 'Please, especify a valid procedure method');
         return true;
     }
 

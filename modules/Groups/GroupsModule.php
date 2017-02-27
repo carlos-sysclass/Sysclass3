@@ -40,7 +40,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )
@@ -52,7 +52,7 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Users Groups")
+                    'text'  => $this->translate->translate("Users groups")
                 );
                 $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
@@ -61,18 +61,18 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Users Groups")
+                    'text'  => $this->translate->translate("Users groups")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Group"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New group"));
                 break;
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
                     'icon'  => 'icon-group',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Users Groups")
+                    'text'  => $this->translate->translate("Users groups")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Group"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit group"));
                 break;
             }
         }
@@ -86,10 +86,10 @@ class GroupsModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Group'),
+                    'text'      => $this->translate->translate('New group'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );

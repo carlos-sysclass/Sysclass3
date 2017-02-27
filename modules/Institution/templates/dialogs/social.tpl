@@ -32,7 +32,7 @@
 
                         <div class="form-body">
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                {translateToken value="Social Info"}
+                                {translateToken value="Social info"}
                             </h5>
                             {include "`$smarty.current_dir`/../blocks/social.tpl" 
                             T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_DIALOG_CONTEXT

@@ -112,7 +112,7 @@ class ADODB_postgres7 extends ADODB_postgres64 {
 	/*
 		I discovered that the MetaForeignKeys method no longer worked for Postgres 8.3.
 		I went ahead and modified it to work for both 8.2 and 8.3.
-		Please feel free to include this change in your next release of adodb.
+		Please, feel free to include this change in your next release of adodb.
 		 William Kolodny [William.Kolodny#gt-t.net]
 	*/
 	function MetaForeignKeys($table, $owner=false, $upper=false)

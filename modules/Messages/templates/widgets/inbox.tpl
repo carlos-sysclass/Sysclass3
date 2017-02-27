@@ -27,7 +27,7 @@
           </li>
           <li role="presentation">
           	<a href="#tab_messages_faq" aria-controls="tab_course_units" role="tab" data-toggle="tab">
-              <i class="fa fa-question-circle"></i>
+              <i class="fa fa-question-circle-circle"></i>
               <span class="progress-indicator faq-indicator">
                 <span class="counter"></span>
                 <span class="singular">{translateToken value="FAQ"}</span>

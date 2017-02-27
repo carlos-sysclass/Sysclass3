@@ -42,7 +42,7 @@ $upload-width: 190px;
 #{$class-wrapper-element}#{$class-wrapper} select#{$class-multiselect},
 #{$class-wrapper-element}#{$class-wrapper} textarea#{$class-textarea} {
 	font-size: 12px;
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-weight: normal;
 	color: #777;
 	border-top: solid 1px #aaa;
@@ -64,7 +64,7 @@ $upload-width: 190px;
 div#{$class-wrapper}#{$class-button} {
 	span {
 		font-weight: bold;
-		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		font-size: 12px;
 		letter-spacing: 1px;
 		text-transform: uppercase;
@@ -95,7 +95,7 @@ div#{$class-wrapper}#{$class-select} {
 	}
 
 	select {
-		font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		font-size: 12px;
 	}
 

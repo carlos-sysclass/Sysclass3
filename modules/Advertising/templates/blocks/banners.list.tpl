@@ -17,7 +17,7 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label">{translateToken value="Global Link"}</label>
+        <label class="control-label">{translateToken value="URL"}</label>
         <input name="global_link" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
     </div>
 

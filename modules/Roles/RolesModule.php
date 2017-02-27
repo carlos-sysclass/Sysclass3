@@ -42,7 +42,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )
@@ -82,7 +82,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Attribution'),
+                    'text'      => $this->translate->translate('New attribution'),
                     'link'      => "javascript:void(0)",
                     'class'     => "btn-primary dialog-create-role-open-action",
                     'icon'      => 'fa fa-plus'
@@ -94,7 +94,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -280,7 +280,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                     "success"
                 );
             } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                 return array_merge($response, $userModel->toFullArray());
             }
         } else {
@@ -311,7 +311,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
                 return array_merge($response, $itemModel->toArray());
             } else {
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "error");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "error");
                 return array_merge($response, $itemModel->toArray());
             }
         } else {
@@ -336,7 +336,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -423,7 +423,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-primary datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Edit Role")
+                    'data-original-title' => $this->translate->translate("Edit roles")
                 ]
             ),
             'users'  => array(
@@ -515,7 +515,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -540,7 +540,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -566,7 +566,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -590,7 +590,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please try again.", "error");
+                return $this->invalidRequestError("A problem ocurred when tried to save you data. Please, try again.", "error");
             }
         } else {
             return $this->notAuthenticatedError();

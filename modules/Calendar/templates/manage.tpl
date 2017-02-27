@@ -46,14 +46,14 @@
                 <form id="form-calendar-event-creation" role="form" class="form-validate">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title event-title">{translateToken value="Event Creation"}</h4>
+                        <h4 class="modal-title event-title">{translateToken value="Event creation"}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-body">
                             <div class="form-group">
                                 <label class="control-label">{translateToken value="Type"}</label>
                                 <select class="select2-me form-control" name="source_id" data-rule-required="1"  data-format-as="color-list">
-                                    <option value="">{translateToken value="Please Select"}</option>
+                                    <option value="">{translateToken value="Please select"}</option>
                                     {foreach $T_EVENT_SOURCES as $evt}
                                         <option value="{$evt.id}" data-class="{$evt.class_name}">{$evt.name}</option>
                                     {/foreach}
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success" type="submit">{translateToken value="Create Event"}</button>
+                        <button class="btn btn-success" type="submit">{translateToken value="Create event"}</button>
                         <button type="button" class="btn default" data-dismiss="modal">Close</button>
                     </div>
                 </form>

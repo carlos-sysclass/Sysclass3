@@ -12,8 +12,6 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			events : {
 				//"click .class-change-action"		: "goToClass",
 				//"click .class-next-action"		: "nextClass",
-				//"click .lesson-prev-action"		: "prevLesson",
-				//"click .lesson-next-action" 	: "nextLesson",
 				"click .nav-prev-action" 		: "prevItem",
 				"click .nav-next-action" 		: "nextItem",
 				//"shown.bs.tab > .nav-tabs [data-toggle='tab']"		: "refreshScroll",
@@ -573,7 +571,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 			},
 			*/
             doTest : function(model) {
-            	//app.module("utils.toastr").message("info", "Test execution not disponible yet!");
+            	//app.module("utils.toastr").message("info", "Test not available yet!");
             	//alert("Doing Test " + this.model.get("id"));
             	// START TEST EXECUTION this.model
             }
@@ -1048,7 +1046,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	            } else {
 	            	this.videoJS[index].muted(true); // mute the volume
 	            }
-
+	            /*
 	            if (screenfull.enabled) {
 					$(document).on(screenfull.raw.fullscreenchange, function() {
 						var popup = this.$('.popupcontent');
@@ -1059,6 +1057,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
   						}
   					}.bind(this));
   				}
+  				*/
 
 				//this.videoJS[index].play();
                 // SETTING VOLUME
@@ -1172,7 +1171,16 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				*/
 				var popup = $('.popupcontent');
 				//popup.addClass("popupcontent-fullscreen");
-				screenfull.request(popup[0]);
+				//screenfull.request(popup[0]);
+
+				if (popup.hasClass("popupcontent-fullscreen")) {
+					popup.removeClass("popupcontent-fullscreen");
+					$('body').removeClass("hide-overflow");
+				} else {
+					popup.addClass("popupcontent-fullscreen");
+					$('body').addClass("hide-overflow");
+				}
+				
     		},
 	        stopAndClose : function() {
                 if (!_.isEmpty(this.videoJS)) {
@@ -2352,8 +2360,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	var fullClassModelClass = Backbone.DeepModel.extend({
 		urlRoot : "/module/roadmap/item/course-classes"
 	});
-	var fullLessonModelClass = Backbone.DeepModel.extend({
-		urlRoot : "/module/roadmap/item/lessons"
+	var fullUnitModelClass = Backbone.DeepModel.extend({
+		urlRoot : "/module/roadmap/item/units"
 	});
 	var contentModelClass = Backbone.DeepModel.extend({
 		isVideo : function() {

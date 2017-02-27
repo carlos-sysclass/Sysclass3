@@ -73,11 +73,11 @@ $().ready(function() {
 		<legend>Login Form</legend>
 		<p>
 			<label>Username</label>
-			<input name="user" title="Please enter your username (at least 3 characters)" class="{required:true,minlength:3}" />
+			<input name="user" title="Please, enter your username (at least 3 characters)" class="{required:true,minlength:3}" />
 		</p>
 		<p>
 			<label>Password</label>
-			<input type="password" maxlength="12" name="password" title="Please enter your password, between 5 and 12 characters" class="{required:true,minlength:5}" />
+			<input type="password" maxlength="12" name="password" title="Please, enter your password, between 5 and 12 characters" class="{required:true,minlength:5}" />
 		</p>
 		<div class="error">
 		</div>
@@ -89,13 +89,13 @@ $().ready(function() {
 
 <!-- our error container -->
 <div class="container">
-	<h4>There are serious errors in your form submission, please see below for details.</h4>
+	<h4>There are errors in your form submission. Please, see below for details.</h4>
 	<ol>
-		<li><label for="email" class="error">Please enter your email address</label></li>
-		<li><label for="phone" class="error">Please enter your phone <b>number</b> (between 2 and 8 characters)</label></li>
-		<li><label for="address" class="error">Please enter your address (at least 3 characters)</label></li>
-		<li><label for="avatar" class="error">Please select an image (png, jpg, jpeg, gif)</label></li>
-		<li><label for="cv" class="error">Please select a document (doc, docx, txt, pdf)</label></li>
+		<li><label for="email" class="error">Please, enter your email address</label></li>
+		<li><label for="phone" class="error">Please, enter your phone <b>number</b> (between 2 and 8 characters)</label></li>
+		<li><label for="address" class="error">Please, enter your address (at least 3 characters)</label></li>
+		<li><label for="avatar" class="error">Please, select an image (png, jpg, jpeg, gif)</label></li>
+		<li><label for="cv" class="error">Please, select a document (doc, docx, txt, pdf)</label></li>
 	</ol>
 </div>
 
@@ -108,7 +108,7 @@ $().ready(function() {
 		</p>
 		<p>
 			<label for="agree">Favorite Color</label>
-			<select id="color" name="color" title="Please select your favorite color!" class="{validate:{required:true}}">
+			<select id="color" name="color" title="Please, select your favorite color!" class="{validate:{required:true}}">
 				<option></option>
 				<option>Red</option>
 				<option>Blue</option>
@@ -128,8 +128,8 @@ $().ready(function() {
 			<input type="file" id="avatar" name="avatar" class="{validate:{required:true,accept:true}}" />
 		</p>
 		<p>
-			<label for="agree">Please agree to our policy</label>
-			<input type="checkbox" class="checkbox" id="agree" title="Please agree to our policy!" name="agree" class="{validate:{required:true}}" />
+			<label for="agree">Please, agree to our policy</label>
+			<input type="checkbox" class="checkbox" id="agree" title="Please, agree to our policy!" name="agree" class="{validate:{required:true}}" />
 		</p>
 		<p>
 			<label for="cv">CV</label>
@@ -143,7 +143,7 @@ $().ready(function() {
 </form>
 
 <div class="container">
-	<h4>There are serious errors in your form submission, please see details above the form!</h4>
+	<h4>There are errors in your form submission. Please, see details above the form.</h4>
 </div>
 
 <a href="index.html">Back to main page</a>

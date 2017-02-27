@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Coordinator"}</label>
 					<select class="select2-me form-control input-block-level" name="coordinator_id" data-placeholder="{translateToken value='Coordinator'}" data-minimum-results-for-search="4" />
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_COORDINATORS as $coord}
 							<option value="{$coord.id}">{$coord.name} {$coord.surname}</option>
 						{/foreach}

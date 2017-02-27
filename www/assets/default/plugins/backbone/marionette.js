@@ -643,7 +643,7 @@
     if (_.isObject(message)) {
       message = (
         message.prev + ' is going to be removed in the future. ' +
-        'Please use ' + message.next + ' instead.' +
+        'Please, use ' + message.next + ' instead.' +
         (message.url ? ' See: ' + message.url : '')
       );
     }

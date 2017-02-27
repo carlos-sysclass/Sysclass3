@@ -19,7 +19,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net/extensions/select
+ * For details please, refer to: http://www.datatables.net/extensions/select
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -492,7 +492,7 @@ function init ( ctx ) {
 	// 
 	// This method of attaching to `aoRowCreatedCallback` is a hack until
 	// DataTables has proper events for row manipulation If you are reviewing
-	// this code to create your own plug-ins, please do not do this!
+	// this code to create your own plug-ins. Please, do not do this!
 	ctx.aoRowCreatedCallback.push( {
 		fn: function ( row, data, index ) {
 			var i, ien;
@@ -749,7 +749,7 @@ DataTable.ext.selector.cell.push( function ( settings, opts, cells ) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables API
  *
- * For complete documentation, please refer to the docs/api directory or the
+ * For complete documentation. Please, refer to the docs/api directory or the
  * DataTables site
  */
 

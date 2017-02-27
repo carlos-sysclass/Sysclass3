@@ -12,6 +12,6 @@
 <script type="text/template" id="news-nofound-template">
    <div class="alert alert-warning">
    		<span class="text-warning"><i class="icon-warning-sign"></i></span>
-   		{translateToken value="Ops! Sorry, any data found!"}
+   		{translateToken value="No data found."}
    </div>
 </script>

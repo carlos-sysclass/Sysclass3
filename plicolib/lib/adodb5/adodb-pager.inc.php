@@ -16,7 +16,7 @@
 
 	"Pablo Costa" <pablo@cbsp.com.br> implemented Render_PageLinks().
 
-	Please note, this class is entirely unsupported,
+	Please, note, this class is entirely unsupported,
 	and no free support requests except for bug reports
 	will be entertained by the author.
 

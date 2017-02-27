@@ -7,7 +7,7 @@
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
 			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
-				<small class="form-title">{translateToken value="Please type login and password below"}</small>
+				<small class="form-title">{translateToken value="Please, type login and password below"}</small>
 			</h4>
 			
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}

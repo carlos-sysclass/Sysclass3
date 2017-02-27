@@ -4,7 +4,7 @@
         <div class="col-md-12 text-right">
             Test Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
-                <i class="fa fa-question-circle"></i>{translateToken value="How is it calculated!?"}</a>
+                <i class="fa fa-question-circle-circle"></i>{translateToken value="How is it calculated"}</a>
         </div>
         <div class="cleafix"></div>
     </div>
@@ -74,7 +74,7 @@
     </div>
 </div>
 <script type="text/template" id="question-item">
-    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag item to reposition"} ">
         <i class="fa fa-arrows"></i>
     </a>
 
@@ -84,7 +84,7 @@
     </span>
 
     <span class="btn btn-sm btn-circle btn-default disabled">
-        <!-- <i class="fa fa-question"></i> -->
+        <!-- <i class="fa fa-question-circle"></i> -->
         <%= model.question.type.name %>
     </span>
     <% if (model.question.difficulty.name == "Easy") { %>
@@ -117,7 +117,7 @@
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
-            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
+            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
         <% } else { %>
         <span class="label label-sm label-info">
           <i class="fa fa-exclamation"></i>Not saved yet!
@@ -145,7 +145,7 @@
                 <label class="control-label">
                     {translateToken value="Question Points"} :
                 </label>
-                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
+                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please, provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
             </div>
         </div>
         <div class="col-md-6">

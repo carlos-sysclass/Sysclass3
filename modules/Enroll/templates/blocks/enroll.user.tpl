@@ -3,7 +3,7 @@
         <div class="form-group">
             
             <label class="">{translateToken value="Search for new Course"}</label>
-            <input type="hidden" class="select2-me form-control col-md-12" name="course" data-placeholder="{translateToken value='Please Select'}" data-url="/module/courses/items/me/combo/" />
+            <input type="hidden" class="select2-me form-control col-md-12" name="course" data-placeholder="{translateToken value='Please select'}" data-url="/module/courses/items/me/combo/" />
 
         </div>
     </div>

@@ -33,7 +33,7 @@
 			<div class="tab-pane fade in" id="tab-report-definition">
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-					<label class="control-label">{translateToken value="Data Source"}</label>
+					<label class="control-label">{translateToken value="Data source"}</label>
 					<select class="select2-me form-control" name="datasource_id" data-rule-required="true" data-placeholder="{translateToken value="Select data source"}">
 						<option value=""></option>
 						{foreach $T_DATASOURCES as $datasource}

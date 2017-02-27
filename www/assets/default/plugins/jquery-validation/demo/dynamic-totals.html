@@ -20,7 +20,7 @@ $.validator.messages.max = jQuery.validator.format("Your totals mustn't exceed {
 
 $.validator.addMethod("quantity", function(value, element) {
 	return !this.optional(element) && !this.optional($(element).parent().prev().children("select")[0]);
-}, "Please select both the item and its amount.");
+}, "Please, select both the item and its amount.");
 
 $().ready(function() {
 	$("#orderform").validate({
@@ -134,7 +134,7 @@ select.error {
 
 <button id="add">Add another input to the form</button>
 
-<h1 id="warning">Your form contains tons of errors! Please try again.</h1>
+<h1 id="warning">Your form contains tons of errors! Please, try again.</h1>
 
 <p><a href="index.html">Back to main page</a></p>
 

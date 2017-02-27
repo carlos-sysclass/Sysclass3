@@ -35,7 +35,7 @@
 	        	<div class="content">
                		<div class="alert alert-danger display-hide">
                   		<button class="close" data-dismiss="alert"></button>
-                  		{translateToken value="You have some form errors. Please check below."}
+                  		{translateToken value="You have some form errors. Please, check below."}
                		</div>
 					<div class="form-group">
 							<label class="control-label visible-ie8 visible-ie9">{translateToken value=""}</label>

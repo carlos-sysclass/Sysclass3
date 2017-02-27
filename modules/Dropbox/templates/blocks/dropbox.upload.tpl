@@ -190,7 +190,7 @@
             <% if (!index && !opt.options.autoUpload) { %>
                 <!--
                 <a class="btn btn-sm btn-primary" data-file-id="<%= file.id %>" href="javascript: void(0);">
-                    <i class="fa fa-check"></i>
+                    <i class="glyphicon glyphicon-edit"></i>
                 </a>
                 -->
             <% } %>

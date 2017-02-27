@@ -8,7 +8,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['behaviours']) &&  ($T_SECTION_TPL['behaviours']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group Behaviour"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group attributes"}</a>
 			</li>
 			{/if}
 			<li>
@@ -56,9 +56,9 @@
 				<div class="form-body">
 					<h5 class="form-section margin-bottom-10 margin-top-10">
 						<i class="fa fa-cogs"></i>
-						{translateToken value="Group Type"}
+						{translateToken value="Group type"}
 						<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='For static groups, you can manually select the users inside this group. For dynamic groups, you select the criteria used to automaticaly select the users.'}">
-					        <i class="fa fa-question"></i>
+					        <i class="fa fa-question-circle"></i>
 					    </span>
 					</h5>
 					<div class="row">
@@ -86,12 +86,12 @@
 					    <div class="alert alert-info">
 					        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            {translateToken value="Here you can select the current users inside this group."}
+					            {translateToken value="Here you can select the current users in this group."}
 					        </p>
 					    </div>
 				        <div class="form-group">
 				            <label class="">{translateToken value="Search for a User"}</label>
-				            <input type="hidden" class="select2-me form-control col-md-12 user-search" name="user" data-placeholder="{translateToken value='Please Select'}" data-url="/module/groups/items/non-users/combo/"
+				            <input type="hidden" class="select2-me form-control col-md-12 user-search" name="user" data-placeholder="{translateToken value='Please select'}" data-url="/module/groups/items/non-users/combo/"
 				            data-format-as="default"
 				            data-format-as-template="%(name)s %(surname)s <%(email)s>"
 				             />
