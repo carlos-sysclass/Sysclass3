@@ -198,7 +198,7 @@
 				{else}
 				
 				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
-					<a href="javascript:void(0);" 
+					<a href="{if $item.link}{$item.link}{else}javascript:void(0);{/if}" 
 						{if $item.items}
 						class="dropdown-toggle" data-toggle="dropdown" data-close-others="true"
 						{else}

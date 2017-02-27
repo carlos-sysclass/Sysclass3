@@ -900,18 +900,26 @@ margin:0 4px 0 0;
 }
 
 .content-container .popupcontent-fullscreen .fullscreen-action {
-  display: none;
+  /* display: none; */
 }
 
 .content-container .popupcontent-fullscreen .minimize-action {
   display: none; 
 }
+.hide-overflow {
+  overflow-y: hidden;
+}
 
 .content-container .pop-out .popupcontent-fullscreen {
-  width: 100% !important;
+  width: 100vw !important;
+  height: 100vh !important;
   top: 0;
   left:0;
   bottom: 0;
   right: 0;
-  position: absolute;
+  position: fixed;
+}
+
+.content-container .pop-out .popupcontent-fullscreen .video-js .vjs-control-bar {
+  bottom: 4em;
 }

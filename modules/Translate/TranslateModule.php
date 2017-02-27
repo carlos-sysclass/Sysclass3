@@ -10,7 +10,7 @@ use Sysclass\Models\I18n\Language,
 /**
  * @RoutePrefix("/module/translate")
  */
-class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISectionMenu, */\ILinkable, \IBreadcrumbable, \IActionable
+class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISectionMenu, \ILinkable, \IBreadcrumbable, \IActionable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -32,48 +32,16 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     }
 
     /* ISectionMenu */
-    /*
     public function getSectionMenu($section_id) {
-
-        
         if ($section_id == "topbar") {
-            if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-                $this->putModuleScript("models.translate");
-                $this->putModuleScript("menu.translate");
-
-                $currentUser = $this->getCurrentUser();
-
-                $languageRS = Language::find();
-
-
-                $userLanguageCode =  $this->translate->getSource();
-                $items = array();
-
-                foreach($languageRS as $key => $value) {
-                    $items[$key] = $value->toArray();
-                    if ($value->code == $userLanguageCode) {
-                        $items[$key]['selected'] = true;
-                    }
-                }
-
-                $items[] = array(
-                    'link'  => $this->getBasePath() . "view/token",
-                    'text'  => $this->translate->translate("Edit translation")
-                );
-
-                $this->putSectionTemplate("translate-menu", "menu/language.switch");
-
+            if ($this->acl->isUserAllowed($this->user, "translate", "edit")) {
                 $menuItem = array(
-                    'icon'      => 'globe',
-                    'notif'     => count($items),
-                    'link'  => array(
-                        'link'  => $this->getBasePath() . "change",
-                        'text'  => $this->translate->translate('Languages')
-                    ),
-                    'type'      => 'language',
-                    'items'     => $items,
-                    'extended'  => false,
-                    'template'  => "translate-menu"
+                    //'id'        => "enroll-topbar-menu",
+                    'icon'      => ' fa fa-globe',
+                    'text'      => $this->translate->translate('Help Translation'),
+                    'className' => 'btn-info',
+                    'link' => $this->getBasePath() . "view/token",
+                    'type'      => '',
                 );
 
                 return $menuItem;
@@ -81,7 +49,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         }
         return false;
     }
-    */
 
     /* ILinkable */
     public function getLinks() {
@@ -141,35 +108,45 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     public function getActions() {
         $request = $this->getMatchedUrl();
 
-        $actions = array(
-            'view'  => array(
-                array(
-                    'text'  => $this->translate->translate('Add language'),
-                    'link'  => $this->getBasePath() . "add",
-                    'icon'  => 'fa fa-plus-square'
-                ),
-                array(
-                    'separator' => true
-                ),
-                array(
-                    'text'  => $this->translate->translate("Edit translation"),
-                    'link'  => $this->getBasePath() . "view/token",
-                    'icon'  => 'icon-reorder'
-                )
-            ),
-            'view/token'  => array(
-                array(
-                    'text'  => $this->translate->translate('Add language'),
-                    'link'  => $this->getBasePath() . "add",
-                    'class' => 'btn-primary',
-                    'icon'  => 'fa fa-plus-square'
-                )
-            )
+        /**
+          * @todo Create and load the module actions from config.yml (actions put on side bar and datatables)
+         */
+        $actions = [
+            'translate-create' => [
+                'text'  => $this->translate->translate('Add language'),
+                'link'  => $this->getBasePath() . "add",
+                'class' => 'btn-primary',
+                'icon'  => 'fa fa-plus-square'
+            ]/*,
+            'translate-token-edit' => [
+                'text'  => $this->translate->translate("Edit translation"),
+                'link'  => $this->getBasePath() . "view/token",
+                'icon'  => 'icon-reorder'
+            ],
+            'separator' => [
+                'separator' => true
+            ]
+            */
+        ];
+
+        $barActions = array(
+            'view'  => [],
+            'view/token' => []
         );
 
-
-
-        return $actions[$request];
+        if ($this->acl->isUserAllowed($this->user, "translate", "create")) {
+            $barActions['view'][] = $actions['translate-create'];
+            $barActions['view/token'][] = $actions['translate-create'];
+        }
+        /*
+        if ($this->acl->isUserAllowed($this->user, "translate", "edit")) {
+            if (count($barActions['view']) > 0) {
+                $barActions['view'] = $action['separator'];
+            }
+            $barActions['view'][] = $actions['translate-token-edit'];
+        }
+        */
+        return $barActions[$request];
     }
 
 
