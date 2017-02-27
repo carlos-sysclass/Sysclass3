@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <h5 class="form-section margin-bottom-10 margin-top-10">
-                    <i class="icon-globe"></i>
+                    <i class="fa fa-folder"></i>
                     {translateToken value="Files"}
 
                     <a href="javascript: void(0);" class="btn btn-sm btn-danger pull-right deletefile-action" >
