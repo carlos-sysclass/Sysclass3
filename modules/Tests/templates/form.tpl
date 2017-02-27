@@ -11,7 +11,7 @@
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
 					<i class="fa fa-cogs"></i>
-					{translateToken value="Test settings"}
+					{translateToken value="Settings"}
 				</a>
 			</li>
 
@@ -129,7 +129,7 @@
 			    <div class="portlet">
 			        <div class="portlet-title">
 			            <div class="caption">
-			                <i class="fa fa-cog"></i>{translateToken value="Test settings"}
+			                <i class="fa fa-cog"></i>{translateToken value="Options"}
 			            </div>
 			        </div>
 			        <div class="portlet-body">
