@@ -347,8 +347,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
 
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
-            $this->putItem("page_title", $this->translate->translate('Translations'));
-            $this->putItem("page_subtitle", $this->translate->translate('Review translation'));
+            $this->putItem("page_title", $this->translate->translate('Translation'));
+            $this->putItem("page_subtitle", $this->translate->translate('Translation'));
 
             //$this->putComponent("bootbox");
 
