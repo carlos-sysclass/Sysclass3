@@ -5,8 +5,6 @@
     	src="{$context.logo.url}" 
     	style="
         max-width: 90%;
-    	margin-bottom: 10%;
-    	margin-top: 10%;
     	height: auto;
     	vertical-align: middle;
         "/>
