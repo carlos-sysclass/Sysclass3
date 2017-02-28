@@ -60,7 +60,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Languages'),
-                        'icon'  => 'icon-globe',
+                        'icon'  => 'fa fa-globe',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -77,7 +77,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'icon-globe',
+                'icon'  => 'fa fa-globe',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Languages")
             )
