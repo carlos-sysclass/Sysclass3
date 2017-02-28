@@ -5,8 +5,8 @@
 		<h3 class="form-section">{translateToken value="General"}</h3>
 
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Name in English”}</label>
-			<input name="name" value="" type="text" placeholder="Name in English” class="form-control" data-rule-required="true" data-rule-minlength="3" />
+			<label class="control-label">{translateToken value="Name in English"}</label>
+			<input name="name" value="" type="text" placeholder="{translateToken value='Name in English'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Native Name"}</label>
