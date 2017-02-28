@@ -29,9 +29,14 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 		var dynamicHeaderTableViewClass = tableViewClass.extend({
 			headerTemplate : _.template($("#dynamic-table-header-item-template").html(), null, {variable : 'field'}),
 			initialize : function(opt) {
+		        if ($.fn.dataTable.isDataTable(this.$el)) {
+		        	this.getApi().clear(true);
+		        	this.getApi().destroy(false);
+		        }
+
 				this.createHeader(opt.fields);
 
-				opt.datatable.datatable_fields = opt.fields;
+				opt.datatable_fields = opt.fields;
 
 				tableViewClass.prototype.initialize.apply(this, [opt]);
 			},
@@ -79,7 +84,7 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 				// RENDER FILTER
 				this.$(".datasource-title").html(info.title);
 
-				info.datatable.aoColumns = info.fields;
+				
 
 				var definition = this.model.get(this.dynamicField);
 
@@ -88,6 +93,16 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 				var fields = _.filter(info.fields, function(field) {
 					return ($.inArray(field.name, report_fields) != -1);
 				});
+
+				if (_.size(fields) == 0) {
+					for(var i in info.fields) {
+						if (info.fields[i].freeze || info.fields[i].default) {
+							fields.push(info.fields[i]);
+						}
+					}
+				}
+
+				info.datatable.aoColumns = fields;
 
 			
 		        this.tableView = new dynamicHeaderTableViewClass({
@@ -125,7 +140,7 @@ $SC.module("views.report.show", function(mod, app, Backbone, Marionette, $, _) {
 				var fields = this.model.get("report_fields");
 
 				api.columns().every(function () {
-					this.visible($.inArray(this.dataSrc(), fields) != -1);
+					//this.visible($.inArray(this.dataSrc(), fields) != -1);
 				});
 			}
 
