@@ -28,9 +28,3 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<!--
-<script type="text/template" id="tab_lesson_exercises-details-template">
-	
-</script>
--->Ç
