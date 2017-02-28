@@ -39,7 +39,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                     //'id'        => "enroll-topbar-menu",
                     'icon'      => ' fa fa-globe',
                     'text'      => $this->translate->translate('Translation'),
-                    'className' => 'btn-info',
+                    'className' => '',
                     'link' => $this->getBasePath() . "view/token",
                     'type'      => '',
                 );
