@@ -189,7 +189,7 @@ class Lesson extends BaseUnit
                 LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
                     ON (tl.class_id = cl.id)
                 WHERE ecu.user_id = :user_id: AND tl.type = 'test'
-                    AND tl.id NOT IN (SELECT DISTINCT test_id FROM Sysclass\\Models\\Courses\\Tests\\Execution cte WHERE cte.user_id = :user_id:)
+                    AND tl.id NOT IN (SELECT DISTINCT test_id FROM Sysclass\\Models\\Courses\\Tests\\Execution cte WHERE cte.user_id = :user_id: and pass = 1)
         ";
         //echo $phql;
 

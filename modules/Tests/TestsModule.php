@@ -32,12 +32,13 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
         if ($pendingTests->count() > 0) {
             $test_id = $pendingTests[0]->id;
-
+            /*
             $summary['link'] = array(
                 'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . "open/" . $test_id,
                 'link'  => 'javascript: void(0)'
             );
+            */
         }
 
         return $summary;
@@ -53,7 +54,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'content' => array(
                     array(
                         'count' => $total,
-                        'text'  => $this->translate->translate('Tests'),
+                        'text'  => $this->translate->translate('Testsasdqd'),
                         'icon'  => 'fa fa-list-ol ',
                         'link'  => $this->getBasePath() . 'view'
                     )
