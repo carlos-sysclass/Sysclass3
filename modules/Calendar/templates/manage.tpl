@@ -37,6 +37,7 @@
             </div>
             <div class="portlet-body">
                 <div id="calendar"></div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
@@ -55,7 +56,10 @@
                                 <select class="select2-me form-control" name="source_id" data-rule-required="1"  data-format-as="color-list">
                                     <option value="">{translateToken value="Please select"}</option>
                                     {foreach $T_EVENT_SOURCES as $evt}
-                                        <option value="{$evt.id}" data-class="{$evt.class_name}">{$evt.name}</option>
+                                        {if $evt.type == "local"}
+                                            <option value="{$evt.id}" data-class="{$evt.class_name}">{$evt.name}</option>
+                                            }
+                                        {/if}
                                     {/foreach}
                                 </select>
                             </div>
