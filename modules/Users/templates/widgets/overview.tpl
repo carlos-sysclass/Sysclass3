@@ -97,6 +97,8 @@ _before_init_functions.push(function() {
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 							-->
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}" {if isset($notif.link.target)}target="{$notif.link.target}"{/if}>{$notif.count nofilter}</a>
+						{else}
+							<span style="cursor: default;" class="btn btn-xs btn-{$notif.type}">{$notif.count nofilter}</span>
 						{/if}
 						</div>
 					</div>
