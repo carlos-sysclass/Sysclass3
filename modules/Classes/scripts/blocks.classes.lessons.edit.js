@@ -347,7 +347,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
     });
 
     mod.createBlock = function(el, data) {
-		var lessonsCollection = new mod.collections.lesson(null, {
+		var unitsCollection = new mod.collections.lesson(null, {
 			class_id : data.class_id
 		});
 
@@ -357,7 +357,7 @@ $SC.module("blocks.classes.lessons", function(mod, app, Backbone, Marionette, $,
             model : data.entityModel
 		});
 
-		lessonsCollection.fetch();
+		unitsCollection.fetch();
     };
 
     this.models = {

@@ -542,8 +542,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'language_code' => $data['dstlang'],
                 'edited'        => 1
             ));
-            $tokensModel->save();
-            
+
             return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
 
         }
