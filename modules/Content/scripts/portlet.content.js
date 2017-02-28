@@ -24,15 +24,26 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				this.pointer = opt.pointer;
 			},
 			render : function() {
-				if (this.collection()) {
+				if (!_.isEmpty(this.collection())) {
 					this.$(".entity-count")
 						.html(this.collection().size());
 				}
-				if (this.pointer()) {
+				if (_.isNumber(this.pointer())) {
 					//cnsole.warn(this.$(".entity-current"), this.pointer);
 					this.$(".entity-current")
 						.html(this.pointer() + 1);
+
+					if (this.pointer() <= 0) {
+						//this.pointer = 0;
+						this.$(".nav-prev-action").addClass("disabled");
+					}
+
+					if (this.pointer() + 1 >= this.collection().size()) {
+						this.$(".nav-next-action").addClass("disabled");
+					}
 				}
+
+
 
 			},
 			prevItem : function(e) {
@@ -45,7 +56,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				if (this.pointer() <= 0) {
 					//this.pointer = 0;
-					this.$(".nav-prev-action").addClass("btn-disabled");
+					this.$(".nav-prev-action").addClass("disabled");
 				}
 				this.render();
 			},
@@ -57,9 +68,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 				this.collection().next();
 
-				if (this.pointer() >= this.collection().size()) {
+				if (this.pointer() + 1 >= this.collection().size()) {
 					//this.pointer = this.collection.size() - 1;
-					this.$(".nav-next-action").addClass("btn-disabled");
+					this.$(".nav-next-action").addClass("disabled");
 				}
 				this.render();
 			},
