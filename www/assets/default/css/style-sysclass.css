@@ -996,8 +996,8 @@ h7 .label {
   font-weight: 300;
   text-align: center;
   background-color: #e02222;
-  height: 18px;
-  padding: 3px 6px 3px 6px;
+  height: 16px;
+  padding: 3px 4px 3px 4px;
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;

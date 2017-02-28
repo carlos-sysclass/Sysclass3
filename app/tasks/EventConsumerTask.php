@@ -33,10 +33,19 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                 $user->save();
                 //$content = $this->view->render("email/activate.email");
                 //
+
+                $template = "email/" . $this->sysconfig->deploy->environment . "/activate.email";
+
+                
+                if (!$this->view->exists($template)) {
+                    $template = "email/activate.email";
+                }
+
+
                 $status = $this->mail->send(
                     $user->email, 
                     "Confirmação de Matrícula Projeto Itaipu Envolve",
-                    "email/" . $this->sysconfig->deploy->environment . "/activate.email",
+                    $template,
                     true,
                     array(
                         'activation_link' => 

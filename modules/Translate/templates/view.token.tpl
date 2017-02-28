@@ -3,7 +3,7 @@
 <div id="translate-token-view">
 	<div class="row margin-top-20">
 		<form role="form">
-			<div class="col-md-5">
+			<div class="col-md-6">
 				<div class="form-group">
 					<label>Source language</label>
 					<select class="select2-me form-control" name="src_language" data-placeholder="Select an option.">
@@ -13,10 +13,12 @@
 					</select>
 				</div>
 			</div>
+			<!--
 			<div class="col-md-2 icon-form-container">
 				<a href="#" class="btn btn-sm btn-warning translate-automatic"><i class="icon-exchange"></i>Translate</a>
 			</div>
-			<div class="col-md-5 pull-right">
+			-->		
+			<div class="col-md-6 pull-right">
 				<div class="form-group">
 					<label>Target language</label>
 					<select class="select2-me form-control" name="dst_language">
@@ -36,6 +38,7 @@
 						<tr>
 							<th>{translateToken value="Source"}</th>
 							<th>{translateToken value="Target"}</th>
+							<th>{translateToken value="Edited"}</th>
 							<th class="text-center table-options">{translateToken value="Actions"}</th>
 						</tr>
 					</thead>
