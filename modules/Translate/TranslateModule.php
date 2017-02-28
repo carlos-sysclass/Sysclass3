@@ -38,7 +38,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 $menuItem = array(
                     //'id'        => "enroll-topbar-menu",
                     'icon'      => ' fa fa-globe',
-                    'text'      => $this->translate->translate('Help Translation'),
+                    'text'      => $this->translate->translate('Translation'),
                     'className' => 'btn-info',
                     'link' => $this->getBasePath() . "view/token",
                     'type'      => '',
@@ -60,7 +60,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Languages'),
-                        'icon'  => 'icon-globe',
+                        'icon'  => 'fa fa-globe',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -77,7 +77,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'icon-globe',
+                'icon'  => 'fa fa-globe',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Languages")
             )
@@ -348,7 +348,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
             $this->putItem("page_title", $this->translate->translate('Translations'));
-            $this->putItem("page_subtitle", $this->translate->translate('Review translated terms'));
+            $this->putItem("page_subtitle", $this->translate->translate('Review translation'));
 
             //$this->putComponent("bootbox");
 
