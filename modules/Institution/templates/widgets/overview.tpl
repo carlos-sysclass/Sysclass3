@@ -4,9 +4,7 @@
 		<img class="" alt="" 
     	src="{$context.logo.url}" 
     	style="
-        max-width: 90%;
-    	height: auto;
-    	vertical-align: middle;
+			max-width: 69%;margin-bottom: 3%;margin-top: 7%;height: auto;vertical-align: middle;
         "/>
     </div>
 </div>
