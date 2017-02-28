@@ -38,7 +38,6 @@
 						<tr>
 							<th>{translateToken value="Source"}</th>
 							<th>{translateToken value="Target"}</th>
-							<th>{translateToken value="Edited"}</th>
 							<th class="text-center table-options">{translateToken value="Actions"}</th>
 						</tr>
 					</thead>
