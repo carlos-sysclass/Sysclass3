@@ -115,7 +115,8 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 "click .add-choice-action"      : "addChoice",
                 "click .remove-choice-action"   : "removeChoice",
                 "change :input"                 : "update",
-                "click .select-choice-action"   : "setCorrect"
+                "click .select-choice-correct-action"   : "setCorrect",
+                "click .select-choice-incorrect-action"   : "setIncorrect"
             },
             initialize: function() {
                 this.listenTo(this.model, "change", this.render.bind(this));
@@ -125,8 +126,10 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 this.$el.html(this.template(this.model.toJSON()));
                 if (this.model.get("answer")) {
                     this.$el.addClass("has-success");
+                    this.$el.removeClass("has-error");
                 } else {
                     this.$el.removeClass("has-success");
+                    this.$el.addClass("has-error");
                 }
                 this.$el.attr("data-order", this.model.get("index"));
                 return this;
@@ -139,6 +142,9 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             },
             setCorrect : function() {
                 this.model.set("answer", true);
+            },
+            setIncorrect : function() {
+                this.model.set("answer", false);
             },
             removeChoice : function(e) {
                 console.info('views.form.questions/questionChoiceViewClass::removeChoice');
