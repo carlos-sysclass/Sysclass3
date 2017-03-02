@@ -405,7 +405,7 @@ class ApiController extends \AbstractSysclassController
 					'already_has_account' => $this->translate->translate("Already has a account? Click Here."),
 					'choose_program' => $this->translate->translate("Choose your program."),
 					'accept_the' => $this->translate->translate("Accept the"),
-					'use_terms' => $this->translate->translate("Use Terms"),
+					'use_terms' => $this->translate->translate("terms of usage"),
 					/**
 					  * @todo Inject this info inside the enrollment page
 					 */
