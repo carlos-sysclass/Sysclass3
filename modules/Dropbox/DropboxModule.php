@@ -325,7 +325,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
             return $this->notAuthenticatedError();
         }
     }
-
+    /*
     protected function isUserAllowed($action, $module_id = null) {
         $allowed = parent::isUserAllowed($action);
         if ($allowed) {
@@ -343,5 +343,6 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
         }
         return $allowed;
     }
+    */
 
 }
