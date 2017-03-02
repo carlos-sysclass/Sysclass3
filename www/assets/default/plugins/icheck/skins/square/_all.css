@@ -159,11 +159,11 @@
         background-position: -48px 0;
     }
     .iradio_square-green.disabled {
-        background-position: -22px 0;
+        background-position: -72px 0;
         cursor: default;
     }
     .iradio_square-green.checked.disabled {
-        background-position: -26px 0;
+        background-position: -96px 0;
     }
 
 /* HiDPI support */
