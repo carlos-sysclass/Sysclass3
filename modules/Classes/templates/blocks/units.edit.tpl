@@ -56,7 +56,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit unit info">
+          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit">
                 <i class="fa fa-edit"></i>
             </a>
             <!--

@@ -500,7 +500,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             break;
                         }
                     } else {
-                        $message = $this->translate->translate("Sucess");
+                        $message = $this->translate->translate("Success.");
                         $type = "success";
                     }
 
