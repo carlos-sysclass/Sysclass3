@@ -94,6 +94,19 @@ class TranslateTokensModel extends ModelManager {
 			'language_code'	=> $keys
 		))->getItems();
 
+		// GET USERS AS id => name
+		$usersRS = \Sysclass\Models\Users\User::find([
+			'columns' => "id, name, surname",
+			'conditions' => "id IN (SELECT user_id FROM Sysclass\Models\I18n\Tokens)"
+		]);
+
+		$users = [];
+    	foreach($usersRS as $user)
+    	{
+        	$users[$user->id] = $user->toArray();
+    	}
+
+
 		foreach($tokens as $token) {
 			if (!array_key_exists($token['token'], $grouped)) {
 				$grouped[$token['token']] = array_combine(
@@ -102,9 +115,27 @@ class TranslateTokensModel extends ModelManager {
 				);
 				//var_dump($token);
 				$grouped[$token['token']]['token'] = $token['token'];
+
+				if ($token['user_id']) {
+					var_dump($token);
+					exit;
+					$grouped[$token['token']]['activity'] = $transltor->translate(
+							"Edited by %s %s at %s", 
+							[
+								$users[$token['user_id']]['name'],
+								$users[$token['user_id']]['surname'],
+								$token['timestamp']
+							]
+						);
+				}
+
+				$grouped[$token['token']]['user_id'] = $token['user_id'];
+				$grouped[$token['token']]['timestamp'] = $token['timestamp'];
 			}
 			//if (in_array($token['language_code'])
 			$grouped[$token['token']][$token['language_code']] = $token['text'];
+
+
 		}
 		if ($this->cacheable()) {
 			// TODO CACHE RESULTS HERE

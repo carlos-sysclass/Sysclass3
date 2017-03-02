@@ -3,7 +3,7 @@ namespace Sysclass\Models\Content\Tests;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Courses\Tests\Unit as TestUnit,
+    Sysclass\Models\Courses\Tests\Lesson as TestUnit,
     Sysclass\Models\Courses\Tests\TestQuestions,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Content\Progress\Unit as UnitProgress,
@@ -186,7 +186,7 @@ class Execution extends Model
                 array(
                     'user_points' => $totalPoints,
                     'user_score'  => $userScore,
-                    'user_grade'  => !is_null($userGrade) ? $userGrade : $userScore * 100 . "%",
+                    'user_grade'  => !is_null($userGrade) ? $userGrade : sprintf("%.1f", $userScore * 100) . "%",
                     'pass'        => ($pass) ? 1 : 0
                 )
             );

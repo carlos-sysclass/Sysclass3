@@ -388,7 +388,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
             */
 
         } elseif ($model == "lesson-and-test") {
-            $modelRoute = "base/lessons";
+            $modelRoute = "base/units";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);

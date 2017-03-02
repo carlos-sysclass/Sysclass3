@@ -39,7 +39,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                     //'id'        => "enroll-topbar-menu",
                     'icon'      => ' fa fa-globe',
                     'text'      => $this->translate->translate('Translation'),
-                    'className' => 'btn-info',
+                    'className' => '',
                     'link' => $this->getBasePath() . "view/token",
                     'type'      => '',
                 );
@@ -542,8 +542,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'language_code' => $data['dstlang'],
                 'edited'        => 1
             ));
-            $tokensModel->save();
-            
+
             return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
 
         }

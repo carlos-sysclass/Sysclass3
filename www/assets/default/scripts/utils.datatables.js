@@ -120,6 +120,8 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        	 //= opt.datatable_fields;
 		        }
 
+		        console.warn(opt.datatable);
+
 		        this.oTable = this.$el.dataTable(opt.datatable);
 		        this.getApi().on("init", this.startScrollUI.bind(this));
 

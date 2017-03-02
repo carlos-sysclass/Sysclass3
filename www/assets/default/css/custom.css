@@ -2774,3 +2774,7 @@ a.editable-click:hover {
   font-size: 16px !important;
   letter-spacing: 1px;
 }
+
+a.disabled i.fa {
+  color: #ccc;
+}
