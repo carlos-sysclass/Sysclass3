@@ -119,12 +119,14 @@
 
 				{has_role role="Teacher" user_id="" assign="isTeacher"}
 
-				<h5 class="form-section margin-bottom-100">
-					<i class="fa fa-camera"></i>
-					{translateToken value="Instructor Info"}
-				</h5>
-				{include file="./profile/curriculum.tpl"}
-				<div class="clearfix"></div>
+				{if $isTeacher}
+					<h5 class="form-section margin-bottom-100">
+						<i class="fa fa-camera"></i>
+						{translateToken value="Instructor Info"}
+					</h5>
+					{include file="./profile/curriculum.tpl"}
+					<div class="clearfix"></div>
+				{/if}
 
 				{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 				    {foreach $T_SECTION_TPL['permission'] as $template}
