@@ -1,10 +1,11 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
+	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 organization-logo">
 		<img class="" alt="" 
     	src="{$context.logo.url}" 
     	style="
-			max-width: 69%;margin-bottom: 3%;margin-top: 7%;height: auto;vertical-align: middle;
+
+
         "/>
     </div>
 </div>

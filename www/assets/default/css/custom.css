@@ -2778,3 +2778,23 @@ a.editable-click:hover {
 a.disabled i.fa {
   color: #ccc;
 }
+
+.organization-logo {
+  height: 110px;
+  vertical-align: middle;
+  position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.organization-logo img {
+    /* max-width: 90%; */
+    display: block;
+    max-height: 100px;
+    height: auto;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
