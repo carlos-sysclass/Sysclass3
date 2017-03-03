@@ -12,8 +12,8 @@
   float: left;
 }
 
-  .header .navbar-nav> li.dropdown .dropdown-toggle {
-    padding-right: 0;
+  .header .navbar-nav > li.dropdown .dropdown-toggle {
+   /* padding-right: 0; */
   }
 
 @media (max-width: 979px) {
