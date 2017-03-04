@@ -109,7 +109,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='allow pause.'}">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to pause tests.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Allow pause the test"}
@@ -121,7 +121,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='allow attempts.'}">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Times the user is allowed to re-take the test. Leave blank not to allow re-takes. Put 0 (zero) for unlimited attempts.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Re-takes"}
