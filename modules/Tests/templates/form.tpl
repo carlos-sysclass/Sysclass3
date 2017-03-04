@@ -88,7 +88,7 @@
 			    <div class="portlet">
 			        <div class="portlet-title">
 			            <div class="caption">
-			                <i class="fa fa-clock-o"></i>{translateToken value="Duration settings"}
+			                <i class="fa fa-clock-o"></i>{translateToken value="Duration"}
 			            </div>
 			        </div>
 			        <div class="portlet-body">
@@ -106,18 +106,7 @@
 			                        <input name="test.time_limit" value="" type="text" placeholder="{translateToken value="Time limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
 			                    </div>
 			                </div>
-			                <div class="col-md-4">
-			                    <div class="form-group">
-			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to pause tests.'}">
-			                                <i class="fa fa-question-circle"></i>
-			                            </span>
-			                            {translateToken value="Allow pause the test"}
-			                        </label>
-
-			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
-			                    </div>
-			                </div>
+                            
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
@@ -129,7 +118,21 @@
 			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
 			                </div>
-			            </div>
+			           
+                       			                <div class="col-md-4">
+			                    <div class="form-group">
+			                        <label class="control-label">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to pause tests.'}">
+			                                <i class="fa fa-question-circle"></i>
+			                            </span>
+			                            {translateToken value="Allow pause the test"}
+			                        </label>
+
+			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
+			                    </div>
+			                </div>
+
+                        </div>
 			        </div>
 			    </div>
 			    <div class="portlet">
