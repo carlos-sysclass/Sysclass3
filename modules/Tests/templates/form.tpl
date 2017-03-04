@@ -109,7 +109,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='allow pause.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Allow pause the test"}
@@ -121,7 +121,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='allow attempts.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Re-takes"}
