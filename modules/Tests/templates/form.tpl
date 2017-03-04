@@ -118,15 +118,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    
-                                    			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time 
-                                                                            
-                                                                            Number of re-takes. Put '0' for unlimited attempts.
-                                                                            
-                                                                            .'}">
-			                                <i class="fa fa-question-circle"></i>
-                                    
-			                            {translateToken value="Re-take"}
+			                            {translateToken value="Number of attempts. '0' (zero) for unlimited."}
 			                        </label>
 			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
