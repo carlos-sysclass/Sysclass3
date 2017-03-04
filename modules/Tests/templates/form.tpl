@@ -97,7 +97,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited attempts.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Time limit in minutes"}
@@ -109,10 +109,10 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to pause the test.'}">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Pause"}
+			                            {translateToken value="Allow pause the test"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -121,7 +121,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Times the user is allowed to re-take the test. Leave blank not to allow re-takes. Put '0' (zero) for unlimited attempts.'}">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Re-takes"}
