@@ -8129,11 +8129,11 @@ Portlets
     .portlet > .portlet-title:after {
       clear: both; }
     .portlet > .portlet-title > .caption {
-      float: left;
-      display: inline-block;
-      font-size: 16px;
-      line-height: 18px;
-      padding: 10px 0; }
+        float: left;
+        display: inline-block;
+	    font-size: 16px;
+        line-height: 24px;
+        padding: 7px 0px 0px 0px }
       .portlet > .portlet-title > .caption.bold {
         font-weight: 400; }
       .portlet > .portlet-title > .caption > i {

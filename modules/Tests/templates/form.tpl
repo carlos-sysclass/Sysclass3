@@ -125,7 +125,7 @@
                                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to pause tests.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Allow pause the test"}
+			                            {translateToken value="Pause the test"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
