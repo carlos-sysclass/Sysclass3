@@ -2,18 +2,18 @@
 {block name="content"}
 <form id="form-translate" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
-		<h3 class="form-section">{translateToken value="General"}</h3>
+		<h3 class="form-section">{translateToken value="Settings"}</h3>
 
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Name in English"}</label>
 			<input name="name" value="" type="text" placeholder="{translateToken value='Name in English'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Native Name"}</label>
+			<label class="control-label">{translateToken value="Original name"}</label>
 			<input name="local_name" value="" type="text" placeholder="Original name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Country"}</label>
+			<label class="control-label">{translateToken value="Country the language is spoken"}</label>
 			<select class="select2-me form-control" name="country_code" data-format-as="country-list">
 				{foreach $T_COUNTRY_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
@@ -42,10 +42,10 @@
 		</div>
 		<h3 class="form-section">
 			<i class="icon-reorder"></i>
-			{translateToken value="Eletronic translation"}
+			{translateToken value="Translate new language"}
 		</h3>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Eletronic language to translate"}</label>
+			<label class="control-label">{translateToken value="Activate language"}</label>
 			<select class="select2-me form-control" name="code">
 				{foreach $T_LANGUAGE_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
