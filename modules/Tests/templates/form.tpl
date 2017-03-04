@@ -118,7 +118,15 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="Times the user is allowed to re-take the test. Put '0' (zero) for unlimited attempts."}
+                                    
+                                    			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time 
+                                                                            
+                                                                            Number of re-takes. Put '0' for unlimited attempts.
+                                                                            
+                                                                            .'}">
+			                                <i class="fa fa-question-circle"></i>
+                                    
+			                            {translateToken value="Re-take"}
 			                        </label>
 			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
 			                    </div>
@@ -202,7 +210,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shows the correct answer after user response. This feature will block the question after the user response.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show correct answers"}
+			                            {translateToken value="Show correct answer"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_correct_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -216,7 +224,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the questions in a randomized order'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Randomize the order of questions"}
+			                            {translateToken value="Randomize the order"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -228,7 +236,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Shuffle questions alternatives"}
+			                            {translateToken value="Shuffle questions"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">

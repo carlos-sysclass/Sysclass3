@@ -42,10 +42,10 @@
 		</div>
 		<h3 class="form-section">
 			<i class="icon-reorder"></i>
-			{translateToken value="Translate new language"}
+			{translateToken value="New language"}
 		</h3>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Activate language"}</label>
+			<label class="control-label">{translateToken value="Activate translation"}</label>
 			<select class="select2-me form-control" name="code">
 				{foreach $T_LANGUAGE_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
