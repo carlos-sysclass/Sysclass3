@@ -85,7 +85,13 @@
 		            Obrigatoriedade de resposta de todas as perguntas:
 		            Permitir ao aluno repetir somente as perguntas que tenha respondido errado:     Somente, se a repetição do teste for permitida
 		        -->
-
+			    <div class="portlet">
+			        <div class="portlet-title">
+			            <div class="caption">
+			                <i class="fa fa-clock-o"></i>{translateToken value="Duration settings"}
+			            </div>
+			        </div>
+			        <div class="portlet-body">
 			            <div class="row">
 			                <!-- Duração em minutos:      Deixe em branco para não ter prazo limitado -->
 			                <div class="col-md-4">
@@ -126,7 +132,14 @@
 			            </div>
 			        </div>
 			    </div>
-
+			    <div class="portlet">
+			        <div class="portlet-title">
+			            <div class="caption">
+			                <i class="fa fa-cog"></i>{translateToken value="Options"}
+			            </div>
+			        </div>
+			        <div class="portlet-body">
+			            <div class="row">
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
