@@ -2231,7 +2231,7 @@ button.calendar-news-item {
 }
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
-    padding: 11px 12px 11px;
+    padding: 11px 5px 0;
     height: 42px;
     font-size: 11px;
     text-transform: uppercase;
