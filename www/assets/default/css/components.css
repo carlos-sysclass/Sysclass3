@@ -1496,18 +1496,20 @@ Customized Bootstrap Alerts
 Custom Bootstrap Badges
 ***/
 .badge {
-  font-size: 11px !important;
-  font-weight: 300;
-  text-align: center;
-  height: 16px;
-  color: #fff;
-  padding: 3px 4px 3px 4px;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  border-radius: 0px !important;
-  text-shadow: none !important;
-  text-align: center;
-  vertical-align: middle; }
+	font-size: 11px !important;
+    font-weight: 300;
+    text-align: center;
+    height: 18px;
+    line-height: 15px;
+    color: #fff;
+    padding: 0px 4px 0 4px;
+    ebkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    text-shadow: none !important;
+    text-align: center;
+    vertical-align: middle;
+ }
   .badge.badge-roundless {
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
