@@ -146,7 +146,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the weight of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show weight of the question during testing.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question weight"}
@@ -158,7 +158,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show user the level of difficulty of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show difficulty of the question during testing'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question level"}
@@ -170,7 +170,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the type of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show type of the question during testing.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question type"}
@@ -184,7 +184,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Block user input only in the current question'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Block user\'s input only in the current question'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show questions one by one"}
@@ -196,7 +196,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='It allows the user to navigate through the test\'s questions'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to navigate through the test\'s questions'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Navigate through the test"}
@@ -208,7 +208,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shows the correct answer after user response. This feature will block the question after the user response.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the correct answer after user response. This will block the user to change his/her response.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show correct answers"}
@@ -222,7 +222,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the questions in a randomized order'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show questions in a randomized order.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Randomize questions"}
@@ -234,7 +234,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Shuffle questions"}
