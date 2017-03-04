@@ -97,7 +97,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for testing. Put 0 (zero) for unlimited time.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Time limit in minutes"}
@@ -158,7 +158,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show difficulty of the question during testing'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show difficulty of the question during testing.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question level"}
@@ -196,7 +196,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to navigate through the test\'s questions'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to navigate through the test\'s questions.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Navigate through the test"}
