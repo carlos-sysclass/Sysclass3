@@ -139,6 +139,28 @@
             <i class="fa fa-trash"></i>
         </a>
     </div>
+    <% console.warn(model) %>
+    <div class="row form-inline margin-top-10">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label">{translateToken value='Question'}:</label>
+                
+                <div class="read-more">
+                    <span class="read-more-title">
+                        <%= s.truncate(model.question.question, 125, '') %>
+                    </span>
+                    <% if (model.question.question.length > 125) { %>
+                        <a href="javascript:void(0)" class="show-more">{translateToken value='Show more'}</a>
+                        <span class="read-more-full">
+                            <%= model.question.question %>
+                        </span>
+                        <a href="javascript:void(0)" class="show-less">{translateToken value='Show less'}</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row form-inline margin-top-10">
         <div class="col-md-6">
             <div class="form-group">

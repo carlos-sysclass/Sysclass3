@@ -96,6 +96,10 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
 
+                $self->putComponent("underscore-string");
+
+                
+
                 // CREATE BLOCK CONTEXT
                 //$self->putComponent("data-tables");
                 //$self->putComponent("select2");
