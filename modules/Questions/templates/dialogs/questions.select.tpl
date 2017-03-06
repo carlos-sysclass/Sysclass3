@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-database"></i>
-                    {translateToken value='Questions Database'}
+                    {translateToken value='Questions database'}
                 </h4>
             </div>
             <div class="modal-body">

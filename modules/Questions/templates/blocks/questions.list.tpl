@@ -63,7 +63,7 @@
             </a>
             <a class="btn btn-sm btn-link select-question" data-target="#questions-select-modal" data-toogle="modal" >
                 <i class="fa fa-database"></i>
-                {translateToken value="Questions Database"}
+                {translateToken value="Questions database"}
             </a>
         </div>
     </div>
