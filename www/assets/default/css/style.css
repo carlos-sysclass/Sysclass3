@@ -522,7 +522,7 @@ Header and header elements.
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
   font-size: 14px !important;
   padding: 0;
-  margin: 3px 5px 3px 1px;
+  margin: 3px 0px 0px 0px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-menu > li > a > i {
@@ -1099,7 +1099,7 @@ Page breadcrumb
      -moz-border-radius: 0px;
           border-radius: 0px;
   box-shadow: none;
-  padding-right: 30px;
+  padding-right: 18px;
   padding-left: 8px;
   margin-top: 15px;
   margin-bottom: 25px;

@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-image"></i>
-                    {translateToken value='Media Library'}
+                    {translateToken value='Content library'}
                 </h4>
             </div>
             <div class="modal-body">

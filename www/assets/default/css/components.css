@@ -1496,18 +1496,20 @@ Customized Bootstrap Alerts
 Custom Bootstrap Badges
 ***/
 .badge {
-  font-size: 11px !important;
-  font-weight: 300;
-  text-align: center;
-  height: 16px;
-  color: #fff;
-  padding: 3px 4px 3px 4px;
-  -webkit-border-radius: 0px !important;
-  -moz-border-radius: 0px !important;
-  border-radius: 0px !important;
-  text-shadow: none !important;
-  text-align: center;
-  vertical-align: middle; }
+	font-size: 16px !important;
+    font-weight: 300;
+    text-align: center;
+    height: 27px;
+    line-height: 25px;
+    color: #fff;
+    padding: 0px 7px 0 7px;
+    ebkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    text-shadow: none !important;
+    text-align: center;
+    vertical-align: middle;
+ }
   .badge.badge-roundless {
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
@@ -8129,16 +8131,16 @@ Portlets
     .portlet > .portlet-title:after {
       clear: both; }
     .portlet > .portlet-title > .caption {
-      float: left;
-      display: inline-block;
-      font-size: 16px;
-      line-height: 18px;
-      padding: 10px 0; }
+        float: left;
+        display: inline-block;
+	    font-size: 16px;
+        line-height: 24px;
+        padding: 7px 0px 0px 0px }
       .portlet > .portlet-title > .caption.bold {
         font-weight: 400; }
       .portlet > .portlet-title > .caption > i {
         float: left;
-        margin-top: 4px;
+		padding: 6px 0 0 3px !important;
         display: inline-block;
         font-size: 13px;
         margin-right: 5px;
@@ -14650,7 +14652,7 @@ Timeline
   .timeline .timeline-badge {
     float: left;
     position: relative;
-    padding-right: 30px;
+    padding-right: 18px;
     height: 80px;
     width: 80px; }
   .timeline .timeline-badge-userpic {
