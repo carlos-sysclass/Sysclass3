@@ -344,9 +344,11 @@ $di->setShared('environment', function() use ($di) {
 			'name' => 'pdfjs',
 			//'css'	=> ['plugins/pdfjs/web/viewer'],
 			//'js'	=> ['plugins/pdfjs/web/compatibility', 'plugins/pdfjs/build/pdf', 'plugins/pdfjs/web/viewer']
+		],
+		'underscore-string' => [
+			'name' => 'underscore-string',
+			'js' => ['plugins/underscore/underscore.string.min']
 		]
-
-
 	);
 
 	// MOVE TO module config.yml!!!
