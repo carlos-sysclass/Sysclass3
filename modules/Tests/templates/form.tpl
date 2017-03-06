@@ -222,10 +222,10 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show questions in a randomized order.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Display questions order randomly.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Randomize questions"}
+			                            {translateToken value="Shuffle questions"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -234,10 +234,10 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shuffle the order in which the choices are shown.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Shuffle questions"}
+			                            {translateToken value="Shuffle choices"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
