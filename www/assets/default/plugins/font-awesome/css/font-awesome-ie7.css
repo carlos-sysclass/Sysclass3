@@ -133,7 +133,7 @@ a [class*=" icon-"] {
 .icon-trash {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf014;');
 }
-.icon-home {
+.fa fa-home {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf015;');
 }
 .icon-file-alt {
@@ -316,7 +316,7 @@ a [class*=" icon-"] {
 .icon-chevron-right {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf054;');
 }
-.icon-plus-sign {
+.fa fa-plus-square-sign {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf055;');
 }
 .icon-minus-sign {
@@ -370,7 +370,7 @@ a [class*=" icon-"] {
 .icon-resize-small {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf066;');
 }
-.icon-plus {
+.fa fa-plus-square {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf067;');
 }
 .icon-minus {
@@ -772,7 +772,7 @@ a [class*=" icon-"] {
 .icon-h-sign {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf0fd;');
 }
-.icon-plus-sign-alt {
+.fa fa-plus-square-sign-alt {
   *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf0fe;');
 }
 .icon-double-angle-left {

@@ -1145,12 +1145,12 @@ jasmine.Matchers = function(env, actual, spec, opt_isNot) {
 
 // todo: @deprecated as of Jasmine 0.11, remove soon [xw]
 jasmine.Matchers.pp = function(str) {
-  throw new Error("jasmine.Matchers.pp() is no longer supported, please use jasmine.pp() instead!");
+  throw new Error("jasmine.Matchers.pp() is no longer supported. Please, use jasmine.pp() instead!");
 };
 
 // todo: @deprecated Deprecated as of Jasmine 0.10. Rewrite your custom matchers to return true or false. [xw]
 jasmine.Matchers.prototype.report = function(result, failing_message, details) {
-  throw new Error("As of jasmine 0.11, custom matchers must be implemented differently -- please see jasmine docs");
+  throw new Error("As of jasmine 0.11, custom matchers must be implemented differently -- please, see jasmine docs");
 };
 
 jasmine.Matchers.wrapInto_ = function(prototype, matchersClass) {

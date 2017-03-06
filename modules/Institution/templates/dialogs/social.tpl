@@ -15,10 +15,32 @@
                     <div class="col-md-12">
                         <form id="form-social-info" role="form" class="form-validate" method="post" action="">
 
-                        {include "`$smarty.current_dir`/../blocks/social.tpl" 
-                        T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_DIALOG_CONTEXT
-                        T_MODULE_ID="organization-social"
-                        T_SHOW_LANGUAGE="language_code"}
+
+
+                        {if (isset($T_SECTION_TPL['address']) &&    ($T_SECTION_TPL['address']|@count > 0))}
+                            <div class="form-body">
+                                <h5 class="form-section margin-bottom-10 margin-top-10">
+                                    {translateToken value="Address"}
+                                </h5>
+                            </div>
+                            {foreach $T_SECTION_TPL['address'] as $template}
+                                {include file=$template}
+                                <div class="clearfix"></div>
+                            {/foreach}
+                            
+                        {/if}
+
+                        <div class="form-body">
+                            <h5 class="form-section margin-bottom-10 margin-top-10">
+                                {translateToken value="Social info"}
+                            </h5>
+                            {include "`$smarty.current_dir`/../blocks/social.tpl" 
+                            T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_DIALOG_CONTEXT
+                            T_MODULE_ID="organization-social"
+                            T_SHOW_LANGUAGE="locale_code"}
+                        </div>                        
+
+
                         </form>
                     </div>
                 </div>
@@ -46,7 +68,7 @@
             </div>
             -->
             <div class="modal-footer">
-                <button class="btn btn-success save-action" type="submit">{translateToken value="Save Changes"}</button>
+                <button class="btn btn-success save-action" type="submit">{translateToken value="Save changes"}</button>
                 <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
             </div>
         </div><!-- /.modal-content -->

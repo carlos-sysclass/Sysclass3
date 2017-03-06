@@ -63,7 +63,7 @@ $(function(){
             
             /*
              In IE8 wysihtml5 iframe stays on the same line with buttons toolbar (inside popover).
-             The only solution I found is to add <br>. If you fine better way, please send PR.   
+             The only solution I found is to add <br>. If you fine better way. Please, send PR.   
             */
             msieOld = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
             if(msieOld) {

@@ -15,13 +15,13 @@
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses & Content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses and Content"}</a>
 			</li>
 			{/if}
 			
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 			<li>
-				<a href="#tab_users" data-toggle="tab">{translateToken value="Students"}</a>
+				<a href="#tab_users" data-toggle="tab">{translateToken value="Users"}</a>
 			</li>
 			{/if}
 
@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Primary Language"}</label>
+					<label class="control-label">{translateToken value="Main language"}</label>
 					<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 					{foreach $T_LANGUAGES as $key => $value}
 						<option value="{$value.id}">{$value.name}</option>
@@ -126,7 +126,7 @@
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Department"}</label>
 							<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Department'}">
-								<option value="">{translateToken value="Please Select"}</option>
+								<option value="">{translateToken value="Please select"}</option>
 								{foreach $T_KNOWLEDGE_AREAS as $knowledge}
 									<option value="{$knowledge.id}">{$knowledge.name}</option>
 								{/foreach}
@@ -136,12 +136,12 @@
 			        <div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Active"}</label>
-							<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
+							<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1"  data-value-unchecked="0" data-update-single="true">
 						</div>
 					</div>
 				</div>
 				<div class="form-actions nobg">
-					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+					<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 				</div>
 
 			</div>
@@ -152,7 +152,7 @@
 				    {/foreach}
 
 					<div class="form-actions nobg">
-						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+						<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 					</div>
 				</div>
 			{/if}

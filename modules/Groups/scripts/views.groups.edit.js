@@ -81,7 +81,6 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
                         'user_id' : data['id']
                     });
 
-                    console.warn(_.result(model, 'urlRoot'));
                     model.save();
 
                     this.staticTableView.refresh();
@@ -102,7 +101,7 @@ $SC.module("block.groups.definition", function(mod, app, Backbone, Marionette, $
 				  }, 
 				  {
 				    id: 'is_supplier',
-				    label: 'Is Supplier',
+				    label: 'Supplier',
 				    type: 'integer',
 				    input: 'radio',
 				    values: {

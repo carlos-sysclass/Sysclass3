@@ -56,33 +56,33 @@ var UITree = function () {
 
             var treeDataSource4 = new DataSourceTree({
                 data: [
-                    { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
-                    { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
-                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
-                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
-                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+                    { name: 'Projects<div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Reports<div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
                 ],
                 delay: 400
             });
 
             var treeDataSource5 = new DataSourceTree({
                 data: [
-                    { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
-                    { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
-                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
-                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
-                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+                    { name: 'Projects<div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Reports<div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
                 ],
                 delay: 400
             });  
 
             var treeDataSource6 = new DataSourceTree({
                 data: [
-                    { name: 'Projects<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
-                    { name: 'Reports<div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
-                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
-                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
-                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+                    { name: 'Projects<div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Reports<div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="icon-user"></i> Member <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div><div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="icon-calendar"></i> Events <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                    { name: '<i class="icon-suitcase"></i> Portfolio <div class="tree-actions"><i class="fa fa-plus-square"></i><i class="icon-remove"></i><i class="icon-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
                 ],
                 delay: 400
             });    

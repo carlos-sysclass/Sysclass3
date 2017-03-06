@@ -14,7 +14,7 @@
 			{/if}
 			{if ((isset($T_SECTION_TPL['tests']) &&  ($T_SECTION_TPL['tests']|@count > 0)) || (isset($T_SECTION_TPL['grades']) &&  ($T_SECTION_TPL['grades']|@count > 0)))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Tests and grades"}</a>
 			</li>
 			{/if}
 
@@ -48,8 +48,8 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Department"}</label>
-							<select class="select2-me form-control" name="area_id" data-rule-required="true" data-rule-min="1">
-								<option value="">{translateToken value="Please Select"}</option>
+							<select class="select2-me form-control" data-placeholder="{translateToken value='Please, select'}" name="area_id" data-rule-required="true" data-rule-min="1">
+								<option value=""></option>
 								{foreach $T_KNOWLEDGE_AREAS as $id => $area}
 									<option value="{$area.id}">{$area.name}</option>
 								{/foreach}
@@ -60,9 +60,9 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Question Type"}</label>
-							<select class="select2-me form-control" name="type_id" data-rule-required="true">
-								<option value="">{translateToken value="Please Select"}</option>
+							<label class="control-label">{translateToken value="Question type"}</label>
+							<select class="select2-me form-control" data-placeholder="{translateToken value='Please, select'}" name="type_id" data-rule-required="true">
+								<option value=""></option>
 								{foreach $T_QUESTIONS_TYPES as $id => $type}
 									<option value="{$type.id}">{$type.name}</option>
 								{/foreach}
@@ -71,9 +71,9 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Difficulty"}</label>
-							<select class="select2-me form-control" name="difficulty_id" data-rule-required="true" data-rule-min="1">
-								<option value="">{translateToken value="Please Select"}</option>
+							<label class="control-label">{translateToken value="Level"}</label>
+							<select class="select2-me form-control" name="difficulty_id" data-rule-required="true" data-placeholder="{translateToken value='Please, select'}" data-rule-min="1">
+								<option value=""></option>
 								{foreach $T_QUESTIONS_DIFFICULTIES as $id => $difficulty}
 									<option value="{$difficulty.id}">{$difficulty.name}</option>
 								{/foreach}
@@ -110,8 +110,8 @@
 						<h5 class="form-section no-margin">
 							Choices
 							<a class="btn btn-link btn-sm add-choice-action" data-toggle="modal">
-								<i class="icon-plus"></i>
-								{translateToken value="New Choice"}
+								<i class="fa fa-plus-square"></i>
+								{translateToken value="New choice"}
 							</a>
 						</h5>
 						<div class="row">
@@ -126,8 +126,8 @@
 						<h5 class="form-section no-margin">
 							Choices
 							<a class="btn btn-link btn-sm add-choice-action" data-toggle="modal">
-								<i class="icon-plus"></i>
-								{translateToken value="New Choice"}
+								<i class="fa fa-plus-square"></i>
+								{translateToken value="New choice"}
 							</a>
 						</h5>
 						<div class="row">
@@ -188,7 +188,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 <script type="text/template" id="question-simple_choice-item">
@@ -198,13 +198,20 @@
                 <i class="fa fa-arrows"></i>
             </span>
 		</div>
-    	<input value="<%= model.choice %>" type="text" placeholder="{translateToken value="Choice"}" class="form-control " />
         <div class="input-group-btn">
         	<% if (!model.answer) { %>
-            <a class="btn btn-success select-choice-action" type="button">
-                {translateToken value="Mark as correct!"}
+            <a class="btn btn-danger select-choice-correct-action" type="button">
+                {translateToken value="Incorrect"}
             </a>
-            <% } %>
+            <% } else { %>
+            <a class="btn btn-success select-choice-incorrect-action" type="button">
+                {translateToken value="Correct"}
+            </a>
+			<% } %>            
+        </div>
+
+    	<input value="<%= model.choice %>" type="text" placeholder="{translateToken value="Choice"}" class="form-control " />
+        <div class="input-group-btn">
 	        <a class="btn btn-danger remove-choice-action">
 	            <i class="fa fa-trash"></i>
 	        </a>

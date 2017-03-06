@@ -98,8 +98,6 @@ class Model extends \Phalcon\Mvc\Model
     }
     public function toFullArray($manyAliases = null, $itemData = null, $extended = false) {
 
-//        var_dump($manyAliases);
-
         if (is_null($itemData)) {
             $itemData = $this->toArray();    
         }

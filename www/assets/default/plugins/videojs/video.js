@@ -8736,7 +8736,7 @@ var extendFn = function extendFn(superClass) {
 
   if (typeof subClassMethods === 'object') {
     if (typeof subClassMethods.init === 'function') {
-      _utilsLog2['default'].warn('Constructor logic via init() is deprecated; please use constructor() instead.');
+      _utilsLog2['default'].warn('Constructor logic via init() is deprecated; please, use constructor() instead.');
       subClassMethods.constructor = subClassMethods.init;
     }
     if (subClassMethods.constructor !== Object.prototype.constructor) {
@@ -10842,7 +10842,7 @@ var Player = (function (_Component) {
     if (safety && safety.IWillNotUseThisInPlugins) {
       return this.tech_;
     }
-    var errorText = '\n      Please make sure that you are not using this inside of a plugin.\n      To disable this alert and error, please pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ';
+    var errorText = '\n      Please, make sure that you are not using this inside of a plugin.\n      To disable this alert and error. Please, pass in an object with\n      `IWillNotUseThisInPlugins` to the `tech` method. See\n      https://github.com/videojs/video.js/issues/2617 for more info.\n    ';
     _globalWindow2['default'].alert(errorText);
     throw new Error(errorText);
   };

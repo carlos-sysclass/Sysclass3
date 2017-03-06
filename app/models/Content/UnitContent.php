@@ -113,7 +113,14 @@ class UnitContent extends Model
             'bind' => array($user_id)
         ));
 
+
         if ($progress) {
+            $result['rating'] = $progress->average([
+                "conditions" => "rating >= 0 and content_id = ?0",
+                "bind" => [$this->id],
+                'column' => "rating"
+            ]);
+
             $result['progress'] = $progress->toArray();   
             $result['progress']['factor'] = floatval($result['progress']['factor']);
         } else {

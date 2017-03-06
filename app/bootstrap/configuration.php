@@ -96,7 +96,7 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/bootstrap-daterangepicker/daterangepicker-bs3',
 		'plugins/jqvmap/jqvmap/jqvmap',
 		//'plugins/jquery-easy-pie-chart/jquery.easy-pie-chart',
-		'plugins/bootstrap-fileupload/bootstrap-fileupload',
+		//'plugins/bootstrap-fileupload/bootstrap-fileupload',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
 		'css/pageguide/pageguide',
  		//<!-- BEGIN THEME STYLES -->
@@ -255,6 +255,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/icheck/skins/square/_all'),
 			'js'	=> array('plugins/icheck/icheck.min')
 		),
+		"fileupload" => [
+			'name'	=> 'fileupload',
+			'css' => ['plugins/fileupload/css/jquery.fileupload'],
+			'js' => ['plugins/fileupload/js/jquery.iframe-transport', 'plugins/fileupload/js/jquery.fileupload']
+		],
 		"jquery-file-upload-image" => array(
 			'name'	=> 'jquery-file-upload-image',
 			'css'	=> array(
@@ -335,6 +340,11 @@ $di->setShared('environment', function() use ($di) {
 			'css'	=> array('plugins/jquery-builder/query-builder.default.min'),
 			'js'	=> array('plugins/jquery-builder/query-builder.standalone.min', 'plugins/jquery-builder/sql-parser')
 		),
+		'pdfjs' => [
+			'name' => 'pdfjs',
+			//'css'	=> ['plugins/pdfjs/web/viewer'],
+			//'js'	=> ['plugins/pdfjs/web/compatibility', 'plugins/pdfjs/build/pdf', 'plugins/pdfjs/web/viewer']
+		]
 
 
 	);
@@ -344,7 +354,7 @@ $di->setShared('environment', function() use ($di) {
 	/*
 	$config['models/map'] = array(
 		'areas'	=> array(
-			'class' => "Sysclass\Models\Courses\Departament",
+			'class' => "Sysclass\Models\Content\Department",
             'exportMethod'  => array(
                 'toFullArray',
                 array('')

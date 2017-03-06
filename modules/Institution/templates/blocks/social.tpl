@@ -12,11 +12,12 @@
 {if ($T_SHOW_LANGUAGE)}
 	<div class="form-group">
 		<label class="control-label">{translateToken value="Language"}</label>
-		<select name="{$T_SHOW_LANGUAGE}" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
-		{foreach $T_LANGUAGES as $key => $value}
-			<option value="{$value.code}">{$value.name}</option>
-		{/foreach}
-		</select>
+	    <select class="select2-me form-control" name="{$T_SHOW_LANGUAGE}" data-placeholder="{translateToken value="Language"}" data-format-as="country">
+	        <option></option>
+	        {foreach $T_LANGUAGES as $lang}
+	            <option value="{$lang.locale_code}" data-country="{$lang.country_code}">{$lang.local_name}</option>
+	        {/foreach}
+	    </select>		
 	</div>
 {/if}
 
@@ -36,10 +37,10 @@
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Linked In"}</label>
+			<label class="control-label">{translateToken value="Twitter"}</label>
 			<div class="input-group">
-				<span class="input-group-text btn-info">  https://www.linkedin.com/  </span>
-				<input name="linkedin" value="" type="text" placeholder="Linked in" class="form-control" />
+				<span class="input-group-text btn-info">  https://www.twitter.com/  </span>
+				<input name="twitter" value="" type="text" placeholder="Twitter Account" class="form-control" />
 			</div>
 		</div>
 	</div>
@@ -57,6 +58,18 @@
 			<div class="input-group">
 				<span class="input-group-text btn-info">  https://plus.google.com/</span>
 				<input name="googleplus" value="" type="text" placeholder="Google Plus" class="form-control" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="LinkedIn"}</label>
+			<div class="input-group">
+				<span class="input-group-text btn-info">  https://www.linkedin.com/  </span>
+				<input name="linkedin" value="" type="text" placeholder="LinkedIn" class="form-control" />
 			</div>
 		</div>
 	</div>

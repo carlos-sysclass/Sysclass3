@@ -5,9 +5,9 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
-                    {translateToken value="Enable Course Periods"}
+                    {translateToken value="Enable course periods"}
                     <span class="badge badge-info">BETA</span>
                 </label>
 
@@ -18,10 +18,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
-                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control student admittance'}">
-                        <i class="fa fa-question"></i>
+                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user admittance'}">
+                        <i class="fa fa-question-circle"></i>
                     </span>
-                    {translateToken value="Enable Course Groupings"}
+                    {translateToken value="Enable course groupings"}
                     <span class="badge badge-info">BETA</span>
                 </label>
 
@@ -36,13 +36,13 @@
             <!--
             <a class="btn btn-sm btn-primary btn-link add-period-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Period"}
+                {translateToken value="Create period"}
 
             </a>
             -->
             <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Grouping"}
+                {translateToken value="Create grouping"}
 
             </a>
         </div>
@@ -52,8 +52,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label class="control-label">{translateToken value="Course Grouping"}
-                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new Course Grouping"} "><i class="fa fa-plus"></i></a>
+                <label class="control-label">{translateToken value="Course grouping"}
+                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new course grouping"} "><i class="fa fa-plus"></i></a>
                 </label>
                 <select class="select2-me form-control" name="roadmap_grouping_id" data-placeholder="{translateToken value='Course Grouping'}">
                     <option value="-1">All Groupings</option>

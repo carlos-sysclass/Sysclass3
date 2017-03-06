@@ -1,21 +1,21 @@
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="First Name"}</label>
+			<label class="control-label">{translateToken value="First name"}</label>
 			<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Last Name"}</label>
-			<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Surname"}" class="form-control" />
+			<label class="control-label">{translateToken value="Last name"}</label>
+			<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Last name"}" class="form-control" />
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label>{translateToken value="Email Address"}</label>
+			<label>{translateToken value="Email address"}</label>
 			<div class="input-group">
 				<span class="input-group-addon"><i class="icon-envelope"></i></span>
-				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email Address"}" class="form-control">
+				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email address"}" class="form-control">
 			</div>
 		</div>
 	</div>
@@ -51,7 +51,7 @@
 	<!--
 	<div class="col-md-12">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="About You"}</label>
+			<label class="control-label">{translateToken value="About you"}</label>
 			<textarea class="form-control" name="short_description" rows="4" placeholder="{translateToken value="Talk about you.."}">{$T_EDIT_USER.short_description}</textarea>
 		</div>
 	</div>

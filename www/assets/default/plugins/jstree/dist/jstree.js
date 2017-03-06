@@ -22,7 +22,7 @@
  *   http://www.opensource.org/licenses/mit-license.php
  */
 /*!
- * if using jslint please allow for the jQuery global and use following options:
+ * if using jslint please, allow for the jQuery global and use following options:
  * jslint: browser: true, ass: true, bitwise: true, continue: true, nomen: true, plusplus: true, regexp: true, unparam: true, todo: true, white: true
  */
 
@@ -334,7 +334,7 @@
 		 *	$('#tree').jstree({
 		 *		'core' : {
 		 *			'strings' : {
-		 *				'Loading ...' : 'Please wait ...'
+		 *				'Loading ...' : 'Please, wait ...'
 		 *			}
 		 *		}
 		 *	});
@@ -3513,7 +3513,7 @@
 			return (!obj || obj.id === $.jstree.root) ? false : obj.text;
 		},
 		/**
-		 * set the text value of a node. Used internally, please use `rename_node(obj, val)`.
+		 * set the text value of a node. Used internally. Please, use `rename_node(obj, val)`.
 		 * @private
 		 * @name set_text(obj, val)
 		 * @param  {mixed} obj the node, you can pass an array to set the text on multiple nodes
@@ -6540,7 +6540,7 @@
 						"position"		: "absolute",
 						"top"			: "-2000px",
 						"lineHeight"	: "16px",
-						"zIndex"		: "10000"
+						"zIndex"		: "10100"
 					});
 				}
 				$(document).on("mousemove.vakata.jstree touchmove.vakata.jstree", $.vakata.dnd.drag);

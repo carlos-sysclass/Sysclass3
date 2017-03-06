@@ -78,8 +78,6 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 //this.$el.data("lessonId", this.model.get("id"));
                 this.$el.attr("data-roadmap-grouping-id", this.model.get("id"));
 
-                console.warn(this.el, this.model.get("id"));
-
                 if (this.$el.length) {
                     app.module("ui").refresh(this.$el);
                 }
@@ -239,7 +237,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 mod.groupingAddDialog.open();
             },
             addOne : function(model) {
-                console.info('blocks.roadmap/classLessonsView::addOne');
+                console.info('blocks.roadmap/classUnitsView::addOne');
 
                 var self = this;
 
@@ -350,7 +348,7 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 }
             },
             render: function() {
-                console.info('blocks.roadmap.grouping/classLessonsView::render');
+                console.info('blocks.roadmap.grouping/classUnitsView::render');
 
                 var self = this;
 

@@ -61,8 +61,11 @@ crud:
 blocks:
   organization.social.list:
     context:
-      sAjaxSource: /module/insitution/items/details/datatable/
+      sAjaxSource: /module/institution/items/details/datatable
       datatable_fields:
+
+        - mData: locale_code
+          label: Language
 
         - mData: website
           label: Web Site
@@ -94,5 +97,8 @@ models:
         resource: Institution
         action: edit
       edit:
+        resource: Institution
+        action: edit
+      delete:
         resource: Institution
         action: edit

@@ -5,9 +5,9 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow the user to select the the classes order'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
-                {translateToken value="Enable Student Selection?"}
+                {translateToken value="Enable user selection"}
 
                 </label>
                 <input type="checkbox" name="has_student_selection" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable Course Periods"}
                     <span class="badge badge-info">BETA</span>
@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label class="control-label">
                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
-                        <i class="fa fa-question"></i>
+                        <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable Course Groupings"}
                     <span class="badge badge-info">BETA</span>
@@ -44,7 +44,7 @@
     -->
     <h5 class="form-section margin-bottom-10 margin-top-10">
         <i class="fa fa-calendar"></i>
-        {translateToken value="Courses Disponible"}
+        {translateToken value="Courses avaliable"}
     </h5>
 
     <div class="row">
@@ -69,7 +69,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label class="control-label">{translateToken value="Course Grouping"}
-                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new Course Grouping"} "><i class="fa fa-plus"></i></a>
+                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new course grouping"} "><i class="fa fa-plus"></i></a>
                 </label>
                 <select class="select2-me form-control" name="roadmap_grouping_id" data-placeholder="{translateToken value='Course Grouping'}">
                     <option value="-1">All Groupings</option>
@@ -82,7 +82,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            {translateToken value="Roadmap for Course Grouping: "}<strong data-update="roadmap_grouping">All</strong>
+            {translateToken value="Roadmap for course grouping: "}<strong data-update="roadmap_grouping">All</strong>
             <div class="panel-buttons panel-buttons-sm">
                 <a class="btn btn-success btn-sm roadmap-add-season" href="#">Add a Season</a>
                 <a class="btn btn-warning btn-sm roadmap-add-class" href="#">Add a Class</a>
@@ -249,7 +249,7 @@
             </div>
             <% if (_.isObject(data.professor)) { %>
             <div class="col-md-6 col-sm-6">
-                <span>{translateToken value="Professor"}</span>
+                <span>{translateToken value="Instructor"}</span>
                 <strong class="text-primary pull-right"><%= sprintf('%(name)s %(surname)s', data.professor) %></strong>
             </div>
             <% } else { %>

@@ -32,6 +32,7 @@ if (APP_TYPE === "CONSOLE") {
 } else {
     $logger = new FileLogger(REAL_PATH . "/logs/database.log");
 }
+
 // Listen all the database events
 $eventsManager->attach('db', function ($event, $connection) use ($logger) {
     if ($event->getType() == 'beforeQuery') {
@@ -59,13 +60,24 @@ $di->set('modelsCache', function () {
     $frontCache = new \Phalcon\Cache\Frontend\Data(array(
         'lifetime' => 3600
     ));
-
+    /*
     $cache = new BackendCache($frontCache, array(
         'prefix' => 'SYSCLASS-MODELS'
     ));
+    */
+
+    //Create a MongoDB cache
+    $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
+        'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+        'db' => $environment->mongo->database . "-" . $environment_name,
+        'collection' => 'cache'
+    ]);
+
+    return $cache;
 
     return $cache;
 });
+
 $di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
     'metaDataDir' => __DIR__ . '/../../cache/metadata/'
 )));
@@ -80,13 +92,12 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
             'lifetime' => 3600
         ));
 
-
         //Create a MongoDB cache
-        $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, array(
-            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : $environment->mongo->server,
+        $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
+            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
             'db' => $environment->mongo->database . "-" . $environment_name,
             'collection' => 'cache'
-        ));
+        ]);
 
         return $cache;
     });
@@ -98,9 +109,12 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
             'lifetime' => 3600
         ));
 
-        $cache = new BackendCache($frontCache, array(
-            'prefix' => 'SYSCLASS'
-        ));
+        //Create a MongoDB cache
+        $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
+            'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+            'db' => $environment->mongo->database . "-" . $environment_name,
+            'collection' => 'cache'
+        ]);
 
         return $cache;
     });

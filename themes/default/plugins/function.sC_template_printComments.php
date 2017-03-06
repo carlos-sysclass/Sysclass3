@@ -28,10 +28,10 @@ function smarty_function_sC_template_printComments($params, &$smarty)
                     <span class = "counter">'.($i + 1).'.</span>';
 
         if ($_SESSION['s_type'] != "administrator") {
-   // Students and professors are redirected to the same page - one type just views the other may also edit content
+   // Users and professors are redirected to the same page - one type just views the other may also edit content
          $str .= '<a title = "'.htmlspecialchars($params['data'][$i]['data']).'" href = "'.$_SESSION['s_type'].'.php?ctg=content&view_unit='.$params['data'][$i]['content_ID'];
 
-         // Students and professors may have to change lesson session - using the new_lessons_ID parameter for this purpose
+         // Users and professors may have to change unit session - using the new_lessons_ID parameter for this purpose
    if (isset($params['data'][$i]['show_lessons_id']) && $params['data'][$i]['show_lessons_id'] != 0 && isset($params['data'][$i]['show_lessons_name'])) {
     $str .= '&new_lessons_ID='.$params['data'][$i]['show_lessons_id'].'&sbctg=content"><b>'. $params['data'][$i]['show_lessons_name'] . '</b>: ' . $params['data'][$i]['content_name'].'</a></td>';
    } else {

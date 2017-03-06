@@ -1080,7 +1080,7 @@ Buttons.buttonSelector = function ( insts, selector )
 
 
 /**
- * Buttons defaults. For full documentation, please refer to the docs/option
+ * Buttons defaults. For full documentation. Please, refer to the docs/option
  * directory or the DataTables site.
  * @type {Object}
  * @static
@@ -1302,7 +1302,7 @@ $.extend( _dtButtons, {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * DataTables API
  *
- * For complete documentation, please refer to the docs/api directory or the
+ * For complete documentation. Please, refer to the docs/api directory or the
  * DataTables site
  */
 

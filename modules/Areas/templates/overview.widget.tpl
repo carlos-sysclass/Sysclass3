@@ -18,7 +18,7 @@
 				<li class="the-class-tab">
 					<a data-toggle="tab" href="#class-tab">
 						<div class="nav-title">
-							<span class="tab-title">{translateToken value="Classes"}</span>
+							<span class="tab-title">{translateToken value="Units"}</span>
 						</div>
 					</a>
 				</li>
@@ -48,12 +48,12 @@
 
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Course"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous course"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Course"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next course"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -70,7 +70,7 @@
 								<a data-toggle="tab" href="#tab_course_classes"><i class="icon-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Classes"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road Map"}</span></a>
+								<a data-toggle="tab" href="#tab_course_roadmap"><i class="icon-comments"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Road map"}</span></a>
 							</li>
 						</ul>
 						<div class="tab-content">
@@ -78,7 +78,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this course"}
+										{translateToken value="No content posted in this course"}
 									</div>
 								</div>
 							</div>
@@ -198,7 +198,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>During this course you will...</h5>
 									<p class="">... be exposed to research methods and state of the art medical devices and technologies in diferent medical fields</p>
-									<p class="">... meet international researchers and interact with European students in an intercultural and interdisciplinary context</p>
+									<p class="">... meet international researchers and interact with European users in an intercultural and interdisciplinary context</p>
 									<p class="">... and much more.</p>
 									<hr />
 									<table class="table table-striped table-bordered table-advance table-hover">
@@ -208,11 +208,11 @@
 												<td><strong class="text-default pull-right"><span class="label label-success">{translateToken value="None"}</span></strong></td>
 											</tr>
 											<tr>
-												<td>{translateToken value="Credit Hours:"}</td>
+												<td>{translateToken value="Credit hours:"}</td>
 												<td><strong class="text-default pull-right">80h</strong></td>
 											</tr>
 											<tr>
-												<td>{translateToken value="Number of Classes:"}</td>
+												<td>{translateToken value="Number of units:"}</td>
 												<td><strong class="text-default pull-right">3 of 24</strong></td>
 											</tr>
 											<tr>
@@ -242,7 +242,7 @@
 							</div>
 							<div id="tab_class_instructor" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
-							   		<h5 class="text-danger block"><strong>Professor Dr. Joe Walters</strong></h5>
+							   		<h5 class="text-danger block"><strong>Instructor Dr. Joe Walters</strong></h5>
 
 							   		<ul class="media-list">
 										<li class="media">
@@ -252,7 +252,7 @@
 											<div class="media-body">
 												<p class="">
 													<span>{translateToken value="Position:"}</span>
-													<strong class="text-default pull-right">Emeritus Professor</strong>
+													<strong class="text-default pull-right">Emeritus Instructor</strong>
 												</p>
 												<hr />
 												<p class="">
@@ -291,7 +291,7 @@
 												</p>
 												<hr />
 												<p class="">
-													<span>{translateToken value="URL for Business Card:"}</span>
+													<span>{translateToken value="Site URL:"}</span>
 													<a href="javascript:void(0);" class="pull-right">http://myname@myname.com</a>
 												</p>
 												<hr />
@@ -304,7 +304,7 @@
 							<div id="tab_class_dropbox" class="tab-pane ">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> {translateToken value="Professor Files"} </a> -
+										<a href="javascript: void(0)"> {translateToken value="Instructor files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 
@@ -389,7 +389,7 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Sorry! Any data has been registered for this class yet."}
+										{translateToken value="No data has been registered for this class."}
 									</div>
 								</div>
 							</div>
@@ -420,7 +420,7 @@
 											<tr>
 												<td>Test #3</td>
 												<td class="text-center">13rd July, 2014</td>
-												<td class="text-center"><span class="label label-warning">{translateToken value="Stand By"}</span></td>
+												<td class="text-center"><span class="label label-warning">{translateToken value="Stand by"}</span></td>
 												<td class="text-center"></td>
 											</tr>
 										</tbody>
@@ -450,12 +450,12 @@
 						<div class="collapse navbar-collapse navbar-ex1-collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous Lesson"}" data-placement="top">
+									<a href="#" class="nav-prev-action tooltips" data-original-title="{translateToken value="Previous unit"}" data-placement="top">
 										<i class="icon-arrow-left"></i>
 									</a>
 								</li>
 								<li>
-									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next Lesson"}" data-placement="top">
+									<a href="#" class="nav-next-action tooltips" data-original-title="{translateToken value="Next unit"}" data-placement="top">
 										<i class="icon-arrow-right"></i>
 									</a>
 								</li>
@@ -493,14 +493,14 @@
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any content for this lesson"}
+										{translateToken value="There is no content in this lesson"}
 									</div>
 								</div>
 							</div>
 							<div id="tab_lesson_materials" class="tab-pane">
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<h5>
-										<a href="javascript: void(0)"> {translateToken value="Lesson Files"} </a> -
+										<a href="javascript: void(0)"> {translateToken value="Lesson files"} </a> -
 										<small>
 											<span class="size-counter">2</span> {translateToken value="files"}
 										</small>
@@ -512,7 +512,7 @@
 						    	<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 								   	<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										 {translateToken value="Ops! There's any exercises posted for this lesson"}
+										 {translateToken value="There are no exercises posted in this lesson"}
 								   	</div>
 							   	</div>
 						   	</div>
@@ -576,7 +576,7 @@
 	<td colspan="5"  class="alert alert-info">
 		<span class="text-info">
 			<i class="icon-warning-sign"></i>
-			{translateToken value="Ops! There's any classes registered for this course"}
+			{translateToken value="There are no units posted in this course"}
 		</span>
 	</td>
 </script>
@@ -585,7 +585,7 @@
 	<td class="text-center"><span class="label label-danger">{translateToken value="No"}</span></td>
 	<td class="text-center"></td>
 	<td class="text-center"></td>
-	<td class="text-center"><span class="label label-info">{translateToken value="In Progress"}</span></td>
+	<td class="text-center"><span class="label label-info">{translateToken value="In progress"}</span></td>
 </script>
 
 <script type="text/template" id="tab_roadmap-season-template">

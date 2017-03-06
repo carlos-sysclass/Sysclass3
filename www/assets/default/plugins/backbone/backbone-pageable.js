@@ -142,7 +142,7 @@
 
        @property {number} [state.lastPage=null] The last page index. This value
        is __read only__ and it's calculated based on whether `firstPage` is 0 or
-       1, during bootstrapping, fetching and resetting. Please don't change this
+       1, during bootstrapping, fetching and resetting. Please, don't change this
        value under any circumstances.
 
        @property {number} [state.currentPage=null] The current page index. You

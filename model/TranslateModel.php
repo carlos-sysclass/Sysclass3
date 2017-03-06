@@ -14,7 +14,7 @@ class TranslateModel extends ModelManager
             "login"					=> 'users_LOGIN'
         );
         */
-        $this->selectSql = "SELECT `id`, `code`, `country_code`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
+        $this->selectSql = "SELECT `id`, `code`, `locale_code`, `country_code`, `name`, `local_name`, `active`, `rtl` FROM `mod_translate`";
         //`lessons_ID`, `classe_id`,
 
         parent::init();
@@ -43,6 +43,32 @@ class TranslateModel extends ModelManager
             return true;
         }
         return false;
+    }
+
+    
+    public function getDisponibleLocalesCodes()
+    {
+        // TODO Include code to get default user language
+        $cacheHash = __METHOD__;
+
+        /*
+
+        if ($this->cacheable() && $this->hasCache($cacheHash)) {
+            // TODO CHECK IF IS THERE A CACHE, AND RETURN IT.
+            return $this->getCache($cacheHash);
+        } else {
+            $this->clearCache($cacheHash);
+        }
+        */
+        $languages = $this->getItems();
+        $langcodes = \array_column($languages, "locale_code");
+        /*
+        if ($this->cacheable()) {
+            // TODO CACHE RESULTS HERE
+            $this->setCache($cacheHash, $langcodes);
+        }
+        */
+        return $langcodes;
     }
 
     public function getDisponibleLanguagesCodes()
@@ -123,7 +149,7 @@ class TranslateModel extends ModelManager
             $force = true;
         }
 
-        $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
+        $langCodes = $this->model("translate")->getDisponibleLocalesCodes();
 
         if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
             // VALIDATE TOKEN
@@ -133,6 +159,10 @@ class TranslateModel extends ModelManager
             } else {
             	$translateTokens = array_values($tokens);
             }
+
+            $source = Locale::getPrimaryLanguage($source);
+            $dest = Locale::getPrimaryLanguage($dest);
+            
             $translatedTerms = $bingTranslateModel->translateArray($translateTokens, $source, $dest);
 
             if (is_string($source_column)) {

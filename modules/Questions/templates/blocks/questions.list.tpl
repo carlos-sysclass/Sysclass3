@@ -2,9 +2,9 @@
 
     <div class="row">
         <div class="col-md-12 text-right">
-            Test Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
+            Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
-                <i class="fa fa-question-circle"></i>{translateToken value="How is it calculated!?"}</a>
+                <i class="fa fa-question-circle-circle"></i>{translateToken value="How is it calculated"}</a>
         </div>
         <div class="cleafix"></div>
     </div>
@@ -30,24 +30,24 @@
         <strong>LEGEND</strong>
         <div class="row">
             <div class="col-md-3">
-                `p1` = Question Point #1<br />
-                `p2` = Question Point #2<br />
-                `pX` = Question Point #X<br />
+                `p1` = Question ooint #1<br />
+                `p2` = Question point #2<br />
+                `pX` = Question point #X<br />
             </div>
             <div class="col-md-3">
-                `c1` = Question Correctness Score #1 (0.0 to 1.0)<br />
-                `c2` = Question Correctness Score #2 (0.0 to 1.0)<br />
-                `cX` = Question Correctness Score #X (0.0 to 1.0)<br />
+                `c1` = Correctness score #1 (0.0 to 1.0)<br />
+                `c2` = Correctness score #2 (0.0 to 1.0)<br />
+                `cX` = Correctness score #X (0.0 to 1.0)<br />
             </div>
             <div class="col-md-3">
-                `w1` = Question Weight #1<br />
-                `w2` = Question Weight #2<br />
-                `wX` = Question Weight #X
+                `w1` = Question weight #1<br />
+                `w2` = Question weight #2<br />
+                `wX` = Question weight #X
             </div>
             <div class="col-md-3">
-                `M` = Test Maximum Score<br />
-                `U` = User Score<br />
-                `S` = User Relative Score (0 to 100)<br />
+                `M` = Maximum score<br />
+                `U` = Score<br />
+                `S` = Relative score (0 to 100)<br />
             </div>
         </div>
     </div>
@@ -59,11 +59,11 @@
 
             <a class="btn btn-sm btn-link create-question" data-target="#questions-select-modal" data-toogle="modal">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Question"}
+                {translateToken value="Create question"}
             </a>
             <a class="btn btn-sm btn-link select-question" data-target="#questions-select-modal" data-toogle="modal" >
                 <i class="fa fa-database"></i>
-                {translateToken value="Questions Database"}
+                {translateToken value="Questions database"}
             </a>
         </div>
     </div>
@@ -74,7 +74,7 @@
     </div>
 </div>
 <script type="text/template" id="question-item">
-    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag to reposition item"} ">
+    <a class="btn btn-sm btn-default tooltips drag-handler" data-original-title="{translateToken value="Drag item to reposition"} ">
         <i class="fa fa-arrows"></i>
     </a>
 
@@ -84,7 +84,7 @@
     </span>
 
     <span class="btn btn-sm btn-circle btn-default disabled">
-        <!-- <i class="fa fa-question"></i> -->
+        <!-- <i class="fa fa-question-circle"></i> -->
         <%= model.question.type.name %>
     </span>
     <% if (model.question.difficulty.name == "Easy") { %>
@@ -117,7 +117,7 @@
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
-            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle Active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
+            <input type="checkbox" name="question_active_<%= model.id %>" data-update="active" id="question_active_<%= model.id %>" class="form-control bootstrap-switch-me tooltips" data-original-title="{translateToken value="Toogle active"}" data-wrapper-class="item-option" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
         <% } else { %>
         <span class="label label-sm label-info">
           <i class="fa fa-exclamation"></i>Not saved yet!
@@ -145,7 +145,7 @@
                 <label class="control-label">
                     {translateToken value="Question Points"} :
                 </label>
-                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
+                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please, provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
             </div>
         </div>
         <div class="col-md-6">

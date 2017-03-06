@@ -3,7 +3,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
     this.startWithParent = false;
     mod.addInitializer(function() {
         this.config = $SC.module("crud.config").getConfig();
-//        console.warn(this.config);
 //        mod.entity_id = mod.config.entity_id;
 
         var entityModel = app.module("crud.views.edit").itemModel;
@@ -13,7 +12,7 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
          * @todo  MOVE TO A MORE GENERIC MODULE
          */
         /*
-        var baseLessonChildContentTimelineViewClass = Backbone.View.extend({
+        var baseUnitChildContentTimelineViewClass = Backbone.View.extend({
             events : function() {
                 return {
                     "confirmed.bs.confirmation .delete-content"    : "delete"
@@ -144,18 +143,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                     _.each(this.uploadClass, function(item) {
                         self.$el.removeClass(item);
                     });
-                    /*-
-                    console.warn(this.downloadTemplate({
-                        model: this.model.toJSON(),
-                        //file : this.fuploadFile,
-                        opt  : { formatFileSize : this.formatFileSize }
-                    }));
-                    */
-                    console.warn({
-                        model: this.model.toJSON(),
-                        //file : this.fuploadFile,
-                        opt  : { formatFileSize : this.formatFileSize }
-                    });
                     
                     this.$el.html(this.downloadTemplate({
                         model: this.model.toJSON(),
@@ -248,7 +235,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         return rows;
                     })
                     .bind('fileuploaddone', function (e, data) {
-                        console.warn("fileuploaddone");
                         var files = data.getFilesFromResponse(data);
                         var rows = $();
                         var viewObject = data.context.data("viewObject");
@@ -275,10 +261,10 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                         return rows;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        console.warn("fileuploadfail");
+
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        console.warn("fileuploadalways");
+
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -325,7 +311,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 this.listenTo(fileContentTimelineView, "timeline-file-content:save", function(model) {
                     var self = this;
 
-                    console.warn('saving')
                     model.save(null, {
                         success : function() {
                             var childs = self.model.get("childs");
@@ -581,7 +566,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                         $.each(files, function (index, file) {
                             viewObject.model.mergeWithinFileObject(file);
-                            console.warn("OBJECT", file, viewObject.model.toJSON());
                             viewObject.setOptions({
                                 upload : false,
                                 file: file,
@@ -598,7 +582,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                                 );
                             }
 
-                            //console.warn(self.model, data);
                             self.imageCropDialog.setModel(
                                 new Backbone.Model(viewObject.model.get("file"))
                             );
@@ -623,10 +606,8 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        //console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -701,7 +682,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
                 }
 
                 /*
-                console.warn(_.extend(options, {
                     model : model
                 }));
                 */
@@ -716,13 +696,11 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                 this.listenTo(bannerAdvertisingContentView, "timeline-file-content:save", function(model) {
                     self.collection.add(model);
-                    console.warn('saved!');
                     model.save();
                 });
 
                 /*
                 this.listenTo(bannerAdvertisingContentView, "timeline-file-content:translate", function(model) {
-                    //console.warn(e, model);
                     self.collection.add(model);
                     model.save();
                 });
@@ -768,7 +746,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
 
                 this.listenTo(textAdvertisingContentView, "timeline-text-content:save", function(model) {
-                    //console.warn(e, model);
                     //self.collection.add(model);
                     //model.save();
                 });
@@ -860,7 +837,6 @@ $SC.module("blocks.advertising.banners", function(mod, app, Backbone, Marionette
 
                 var subfiles = collection.where({parent_id : model.get("id")});
 
-                console.warn(model, collection, opt, this, subfiles);
 
                 _.each(subfiles, function(item) {
                     self.remove(item.id);

@@ -2,7 +2,7 @@
 /**
  * @deprecated 3.0.0.18
  */
-class LessonsFilesModel extends AbstractSysclassModel implements ISyncronizableModel {
+class UnitsFilesModel extends AbstractSysclassModel implements ISyncronizableModel {
 
     public function init()
     {

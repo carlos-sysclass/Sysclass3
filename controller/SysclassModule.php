@@ -239,7 +239,7 @@ abstract class SysclassModule extends BaseSysclassModule
             return true;   
         } else {
             $this->response->setJsonContent(
-                $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to get your data. Please try again."), "warning")
+                $this->createAdviseResponse($this->translate->translate("A problem ocurred when retrirving your data. Please, try again."), "warning")
             );
             return true;
         }
@@ -272,7 +272,7 @@ abstract class SysclassModule extends BaseSysclassModule
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $data)
                 );
@@ -283,6 +283,7 @@ abstract class SysclassModule extends BaseSysclassModule
             $model_class = $model_info['class'];
             $itemModel = new $model_class();
             $itemModel->assign($data);
+
 
             $itemModel->id = null;
 
@@ -334,7 +335,16 @@ abstract class SysclassModule extends BaseSysclassModule
                     if (!is_null($this->responseInfo)) {
                         $response = array_merge($response, $this->responseInfo);
                     }
-                    $this->response->setJsonContent($response);
+
+                    $itemData = call_user_func(
+                        array($itemModel, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
+                    );
+
+                    $this->response->setJsonContent(array_merge(
+                        $response,
+                        $itemData
+                    ));
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
@@ -365,7 +375,7 @@ abstract class SysclassModule extends BaseSysclassModule
                         break;
                     }
                 } else {
-                    $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                    $message = $this->translate->translate("A problem ocurred when tried to save you data. Please, try again.");
                     $type = "warning";
                 }
 
@@ -407,9 +417,6 @@ abstract class SysclassModule extends BaseSysclassModule
 
         $itemModel = $this->getModelData($model, $id, $data);
 
-        //var_dump($itemModel);
-        //exit;
-
         $this->setArgs(array(
             'model' => $model,
             'id' => $id,
@@ -425,7 +432,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                    $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                    $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                     $this->response->setJsonContent(
                         array_merge($response, $data)
                     );
@@ -440,7 +447,10 @@ abstract class SysclassModule extends BaseSysclassModule
                 */
 
                 $itemModel->assign($data);
-                $itemModel->id = $id;
+                $ids = explode("/", $id);
+                if (count($ids) == 1) {
+                    $itemModel->id = $id;
+                }
 
                 $this->eventsManager->collectResponses(true);
                 
@@ -490,7 +500,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             break;
                         }
                     } else {
-                        $message = $this->translate->translate("Sucess");
+                        $message = $this->translate->translate("Success.");
                         $type = "success";
                     }
 
@@ -523,7 +533,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             break;
                         }
                     } else {
-                        $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                        $message = $this->translate->translate("A problem ocurred when tried to save you data. Please, try again.");
                         $type = "warning";
                     }
 
@@ -535,7 +545,7 @@ abstract class SysclassModule extends BaseSysclassModule
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
             }
         } else {
             $response = $this->notAuthenticatedError();
@@ -728,7 +738,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 //$items = array_values($items);
                 $baseLink = $this->getBasePath();
 
-                $globalOptions = $this->getDatatableItemOptions($item, $model);
+                $globalOptions = $this->getDatatableItemOptions($model);
 
                 //$editAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Edit");
                 //$deleteAllowed = $this->acl->isUserAllowed(null, $this->module_id, "Delete");
@@ -754,7 +764,7 @@ abstract class SysclassModule extends BaseSysclassModule
 
                     if (is_array($globalOptions)) {
                         foreach($globalOptions as $index => $option) {
-                            $option['link'] = Plico\Text::vksprintf($option['link'], $item->toArray());
+                            $option['link'] = Plico\Text::vksprintf($option['link'], $items[$key]);
 
                             $items[$key]['options'][$index] = $option;
                         }
@@ -797,7 +807,7 @@ abstract class SysclassModule extends BaseSysclassModule
      * MUST return a options array, to bve applied to all finded records.
      * @return [array|null] [description]
      */
-    protected function getDatatableItemOptions($item, $model = 'me') {
+    protected function getDatatableItemOptions($model = 'me') {
 
         $model_info = $this->model_info[$model];
 

@@ -15,13 +15,11 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
             console.log('Strophe is disconnecting.');
         } else if (status == Strophe.Status.DISCONNECTED) {
             // TRY TO RECONNECT
-            mod.connection.connect('student@enterprise.sysclass.com', '123456', mod.connectionHandler);
+            mod.connection.connect('user@enterprise.sysclass.com', '123456', mod.connectionHandler);
 
 
         } else if (status == Strophe.Status.CONNECTED) {
             console.log('Strophe is connected.');
-
-            console.warn($pres().tree());
 
             this.send($pres().tree());
 
@@ -62,7 +60,7 @@ $SC.module("utils.strophe", function(mod, app, Backbone, Marionette, $, _){
 
         var self = this;
         self.trigger("xmpp:connect:before", status);
-        this.connection.connect('student@enterprise.sysclass.com', '123456', this.connectionHandler);
+        this.connection.connect('user@enterprise.sysclass.com', '123456', this.connectionHandler);
 
         this.started = true;
   	});

@@ -22,7 +22,7 @@ class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, 
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             ),
@@ -36,7 +36,7 @@ class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "add" : {
-                $breadcrumbs[] = array('icon' => 'fa fa-plus-circle', 'text'   => $this->translate->translate("New calendar source"));
+                $breadcrumbs[] = array('icon' => 'fa fa-plus-square', 'text'   => $this->translate->translate("New calendar source"));
                 break;
             }
             case "edit/{id}" : {
@@ -59,10 +59,26 @@ class CalendarSourceModule extends \SysclassModule implements \IBreadcrumbable, 
                 array(
                     'text'      => $this->translate->translate('New calendar source'),
                     'link'      => $this->getBasePath() . "add",
-                    'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
+                ),
+                array(
+                    'separator' => true
+                ),
+                array(
+                    'text'      => $this->translate->translate('View calendar'),
+                    'link'      => $this->loader->module('Calendar')->getBasePath() . "manage",
+                    'icon'      => 'fa fa-list'
                 )
-            )
+            ),
+            'edit/{id}' => array
+            (
+                array(
+                    'text'      => $this->translate->translate('View calendar'),
+                    'link'      => $this->loader->module('Calendar')->getBasePath() . "manage",
+                    'class'     => "btn-primary",
+                    'icon'      => 'fa fa-list'
+                )
+            ),
         );
 
         return $actions[$request];

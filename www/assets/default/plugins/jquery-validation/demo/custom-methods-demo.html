@@ -15,7 +15,7 @@
 	// this one requires the text "buga", we define a default message, too
 	$.validator.addMethod("buga", function(value) {
 		return value == "buga";
-	}, 'Please enter "buga"!');
+	}, 'Please, enter "buga"!');
 	
 	// this one requires the value to be the same as the first parameter
 	$.validator.methods.equal = function(value, element, param) {
@@ -86,7 +86,7 @@ em.error { color: black; }
 			<tr>
 				<td><label for="number">textarea</label></td>
 				<td><input id="number" name="number"
-					title="Please enter a number with at least 3 and max 15 characters!" />
+					title="Please, enter a number with at least 3 and max 15 characters!" />
 				</td>
 				<td></td>
 			</tr>
@@ -97,7 +97,7 @@ em.error { color: black; }
 			</tr>
 			<tr>
 				<td><label for="math">7 + 4 = </label></td>
-				<td><input id="math" name="math" title="Please enter the correct result!" /></td>
+				<td><input id="math" name="math" title="Please, enter the correct result!" /></td>
 				<td></td>
 			</tr>
 		</table>
@@ -105,7 +105,7 @@ em.error { color: black; }
 	</fieldset>
 </form>
 
-<h3 id="warning">Your form contains tons of errors! Please try again.</h3>
+<h3 id="warning">Your form contains tons of errors! Please, try again.</h3>
 
 <p><a href="index.html">Back to main page</a></p>
 

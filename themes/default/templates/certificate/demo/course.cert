@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <meta name="viewport" content="width=device-width"/>
+      
+      {{ assets.outputCss('header') }}
+
+      <title>{% block title %}{{ configuration.get("site_title") }} - {{ configuration.get("site_subtitle") }}{% endblock %}</title>
+
+</head>
+<body class="course-certificate">
+      <div class="container">
+            <p class="big-text">{{ translate.translate("SysClass Online Training") }}</p>
+            <p>{{ translate.translate("This certificate is presented to") }}</p>
+            <p class="big-text">{{ username|upper }}</p>
+            <p>{{ translate.translate("For the completion of the requirements of the course") }}</p>
+            <p class="big-text">{{ modulename|upper }}</p>
+            <p>{{ translate.translate("Dallas, texas, United States of America") }}<p>
+            
+            <p>{{ strftime("%b,", datetime.format("U") ) }} {{ date("jS. Y", datetime.format("U") ) }}</p>
+      </div>
+      <htmlpagefooter name="footer" style="display:none">
+            <div class="container">
+                  <span class="identifier">
+                        &nbsp; DCN {{ sprintf("%08d", id) }} &nbsp;
+                  </span>
+            </div>
+      </htmlpagefooter>
+</body>
+</html>

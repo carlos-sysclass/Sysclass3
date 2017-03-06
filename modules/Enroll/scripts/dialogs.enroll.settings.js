@@ -18,7 +18,6 @@ $SC.module("dialogs.enroll.settings", function(mod, app, Backbone, Marionette, $
             	dialogViewClass.prototype.open.apply(this, arguments);
 
 				//var values = this.model.toJSON();
-                //console.warn(values);
 				//this.renderItens(values);
 
                 this.render();

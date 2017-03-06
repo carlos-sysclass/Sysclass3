@@ -12,6 +12,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
         mod.tableViewClass = Backbone.View.extend({
         	_vars : {},
+        	_filter : {},
 			events : {
 				"click .datatable-option-remove" : "removeItem",
 				"confirmed.bs.confirmation .datatable-option-remove" : "removeItem",
@@ -24,6 +25,11 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 			options : null,
         	initialize : function(opt) {
 		        //this.oOptions = $.extend($.fn.dataTable.defaults, datatabledefaults, opt.datatable);
+
+		        if ($.fn.dataTable.isDataTable(this.$el)) {
+		        	this.$el.DataTable().destroy();
+		        }
+
 		        this.options = opt;
 		        var view = this;
 		        var datatableOpt = {
@@ -84,7 +90,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					colReorder : true,
 					language: {
 			            buttons: {
-			                colvis: 'Colunas'
+			                colvis: 'Column'
 			            }
 			        },
 				    buttons: [
@@ -92,10 +98,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				    ],
 				    fixedHeader: true
 		        };
-
-		        if ($.fn.dataTable.isDataTable(this.$el)) {
-		        	this.$el.DataTable().destroy();
-		        }
 
 
 		        if (opt.datatable != undefined) {
@@ -109,13 +111,21 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 		        	 //= opt.datatable_fields;
 		        }
 
+		        if (_.isObject(opt.datatable.aoColumns)) {
+		        	opt.datatable.aoColumns = _.toArray(opt.datatable.aoColumns);
+		        }
+
 		        if (_.has(opt, 'url')) {
 		        	opt.datatable.sAjaxSource = opt.url;
 		        	 //= opt.datatable_fields;
 		        }
 
+		        console.warn(opt.datatable);
+
 		        this.oTable = this.$el.dataTable(opt.datatable);
 		        this.getApi().on("init", this.startScrollUI.bind(this));
+
+		        this._baseUrl = this.oTable.api().ajax.url();
 
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_filter input').addClass("form-control input-medium"); // modify table search input
 		        this.$el.closest(".dataTables_wrapper").find('.dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
@@ -148,13 +158,16 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	getApi : function() {
         		return this.oTable.api();
         	},
-        	recreate : function() {
+        	recreate : function(options) {
+        		if (_.isUndefined(options)) {
+        			options = this.options;
+        		}
         		/*
 				var settings = this.oTable.api().init();
 				
 				$(this.oTable).dataTable(settings);
 				*/
-				this.initialize(this.options);
+				this.initialize(options);
         	},
         	switchItem: function(e, state) {
 				e.preventDefault();
@@ -192,15 +205,15 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			removeItem : function(e) {
-				
 				e.preventDefault();
-				var data = this.oTable._($(e.currentTarget).closest("tr"));
+				//var data = this.oTable._($(e.currentTarget).closest("tr"));
 
-				var model = this.getTableItemModel(data[0]);
+				var tr = $(e.currentTarget).closest("tr");
+				var row = this.getApi().row(tr);
+        		var data = row.data();				
+				var model = this.getTableItemModel(data);
 
-				this.oTable
-					.api()
-					.row( $(e.currentTarget).closest("tr") )
+				row
 					.remove()
 					.draw();
 
@@ -210,7 +223,6 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					this.trigger("action.datatables", $(e.currentTarget).closest("tr").get(0), _.first(data), "remove");
 				}
 			},
-
         	checkItem: function(e) {
 				e.preventDefault();
 				var data = this.oTable._($(e.currentTarget).closest("tr"));
@@ -223,7 +235,19 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 					$(e.currentTarget).removeClass("btn-success").addClass("btn-danger");
 				}
         	},
+        	setFilter : function(filter) {
+        		var url = this._baseUrl + "/" + JSON.stringify(filter);
+				return this.setUrl(url).redraw();
+        	},
+        	clearFilter : function(filter) {
+        		if (this.oTable.api().ajax.url() != this._baseUrl) {
+        			var url = this._baseUrl;
+					return this.setUrl(url).redraw();
+				}
+				return this;
+        	},
         	setUrl : function(url) {
+        		
         		this.oTable.api().ajax.url(url).load();
         		return this;
         	},
@@ -261,7 +285,7 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
         	/**
         	 * RETURN THE MODEL BASED ON ROW DATA, CAN BE OVERRIDEN
         	 * @param  {array} data the raw JSON data from selected / clicked row.
-        	 * @return {object}     THe Backbone.Model with data assigned
+        	 * @return {object}     The Backbone.Model with data assigned
         	 */
         	getTableItemModel : function(data) {
         		var itemModelClass = app.module("crud.models").itemModelClass;
@@ -273,11 +297,13 @@ $SC.module("utils.datatables", function(mod, app, Backbone, Marionette, $, _) {
 
         	// EVENT HANDLERS HELPERS
         	_cellClickHandler : function(e) {
-        		var el = $(e.currentTarget);
-				var tr = el.closest('tr');
-    			var row = this.getApi().row(tr);
-        		var data = row.data();
-        		var model = this.getTableItemModel(data);
+        		var el = $(e.currentTarget)
+				var tr = el.closest("tr");
+				var row = this.getApi().row(tr);
+        		var data = row.data();				
+				var model = this.getTableItemModel(data);
+       		
+        		//var model = this.getTableItemModel(data);
 
         		this.trigger("cellclick.datatable", model, data, el);
         	},

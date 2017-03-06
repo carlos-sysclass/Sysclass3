@@ -1,7 +1,12 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
-		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 12px; margin-top: 10px;" />
+	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 organization-logo">
+		<img class="" alt="" 
+    	src="{$context.logo.url}" 
+    	style="
+
+
+        "/>
     </div>
 </div>
 
@@ -28,6 +33,20 @@
 
 	{/if}	
 
+	{if $social.twitter}
+		{$text=translateToken value="Twitter"}
+
+		{$variables[$index].twitter=['link' => "https://twitter.com/{$social.twitter}",'icon'=>'fa-twitter','text'=>$text]}
+
+	{/if}	
+
+	{if $social.skype}
+		{$text=translateToken value="Skype"}
+
+		{$variables[$index].skype=['link' => "skype://{$social.skype}",'icon'=>'fa-skype','text'=>$text]}
+
+	{/if}	
+
 	{if $social.street && $social.street_number}
 		{$text=translateToken value="View Map"}
 
@@ -42,7 +61,7 @@
 	{/if}
 
 	{if $social.linkedin}
-		{$text=translateToken value="Linked In"}
+		{$text=translateToken value="LinkedIn"}
 
 		{$variables[$index].linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
 	{/if}
@@ -64,10 +83,12 @@
 	{/if}
 -->
 {if $socials|count > 1}
-	<div class="institution-button-container row">
+<div class="" id="organization-details-carroussel">
+    <ul class="carroussel">
 		{foreach $variables as $index => $info}
-			<div class="col-lg-6 col-md-6 col-xs-6">
-				<h5>
+			<li>
+			<!-- <div class="col-lg-6 col-md-6 col-xs-6"> -->
+				<h5 class="organization-country-title">
 					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="height: 15px;">
 					{$socials[$index].country_name}
 				</h5>
@@ -77,9 +98,11 @@
 			            <span class="text"><i class="fa {$variable.icon}"></i> {$variable.text}</span>
 			        </a>
 				{/foreach}
-			</div>
+			<!-- </div> -->
+			</li>
 		{/foreach}
-	</div>
+    </ul>
+</div>
 {else}
 	{$info=$variables[0]}
 	{$total=$info|count}
@@ -108,7 +131,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a Ticket"}</span>
+			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a ticket"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
@@ -122,7 +145,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs Pending"}</span>
+			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs eending"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">

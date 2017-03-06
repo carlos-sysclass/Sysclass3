@@ -52,7 +52,7 @@ REVIEW
 				- Cadastro de Matriz Curricular (diagramar assim que possível)
 					- Todas as permissões de acesso devem ser personalizadas em cascata.
 						- Um usuário tem acesso a uma uma matriz na turma, em várias turmas, ou a matriz curricular completa, ou ainda ao curso todo.
-						- Acessos ao professor, webtutor, coordenador e aluno.
+						- Acessos ao instructor, webtutor, coordenador e aluno.
 					 
 					- Cadastro de Matriz Curricular Base, com inserção de campos personalizáveis.
 						- Período
@@ -224,15 +224,15 @@ REVIEW
 [ ok ] 	- Inclusão de questionário (enquete) para registro de grupos.
 [ ok ] - Acertar enquente no pós-graduação
 [ ok ] - Acertar listagem de envio de boletos
-- Envio de e-mails pro fórum
-- Extensão - Alunos que não estão com matrículas ativas, estão recebendo e-mail com link da aula.
+- Envio de emails pro fórum
+- Extensão - Alunos que não estão com matrículas ativas, estão recebendo email com link da aula.
 - Trocar o link da mensagem recebida pelo aluno de pós nas informações após o “envio” da matrícula.
-- Configurar a mensagem de e-mail para pós igual a mensagem recebida no “envio” da matrícula.
+- Configurar a mensagem de email para pós igual a mensagem recebida no “envio” da matrícula.
 [ ok ] - Verificar o cadastro de matrícula pois está saindo duplicado.
 [ ok ] - Alunos novos no 1º acesso está aparecendo com erro.
 - Colocar no Fórum uma informação que existe mais tópicos.
-[ ok ] - Fórum Pesquisa – Professor deve visualizar alunos que se inscreveram.
-[ ok ] - Criar na página inicial da pós - "ORIENTAÇÕES AOS ALUNOS" e inserir os anexos desse e-mail
+[ ok ] - Fórum Pesquisa – Instructor deve visualizar alunos que se inscreveram.
+[ ok ] - Criar na página inicial da pós - "ORIENTAÇÕES AOS ALUNOS" e inserir os anexos desse email
 - Inserir novamente o calendário das aulas, pois não está mais aparecendo.
 - Acertar o acompanhamento de acesso dos alunos, pois no relatório não está registrando os acessos dos mesmos.
 

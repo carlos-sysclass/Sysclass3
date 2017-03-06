@@ -469,7 +469,6 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			},
 			enableView : function() {
-				console.warn("sidebar->enableView");
 				if (this.chatModule.isConnected()) {
 					this.$el.unblock();
 					//this.chatModule.getQueues(this.renderChatQueues.bind(this));
@@ -484,7 +483,6 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				this.$el.block(_.extend({message: html, ignoreIfBlocked : true}, this.blockingOptions));
 			},
 			renderChatQueues : function(result) {
-				console.warn("sidebar->renderChatQueues");
 
 				// UPDATE SIDEBAR ICON
 				if ($("#chat-topbar-menu > a .badge").size() > 0) {
@@ -499,8 +497,6 @@ $SC.module("sidebar.chat", function(mod, app, Backbone, Marionette, $, _) {
 				//app.module("ui").refresh(this.$(".default-queue-list"));
 			},
 			addOneChatQueue : function(model) {
-				console.warn("sidebar->addOneChatQueue");
-				console.warn(model);
 				var itemView = new mod.sidebarChatQueueViewClass({
 					model: model
 				});

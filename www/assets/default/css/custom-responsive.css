@@ -12,9 +12,12 @@
   float: left;
 }
 
-  .header .navbar-nav> li.dropdown .dropdown-toggle {
-    padding-right: 0;
+  .header .navbar-nav > li.dropdown .dropdown-toggle {
+   /* padding-right: 0; */
   }
+ .header .navbar-nav> li.dropdown .dropdown-toggle {
+   padding-right: 5px;
+   }
 
 @media (max-width: 979px) {
   .header .navbar-nav .open .dropdown-menu.mega-menu-container > li {

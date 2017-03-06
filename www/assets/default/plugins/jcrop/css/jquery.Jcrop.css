@@ -135,11 +135,11 @@
   opacity: .70!important;
 }
 .jcrop-light .jcrop-handle {
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
   background-color: #000000;
   border-color: #ffffff;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 /* The "jcrop-dark" class/extension */
 .jcrop-dark .jcrop-vline,
@@ -149,11 +149,11 @@
   opacity: 0.7 !important;
 }
 .jcrop-dark .jcrop-handle {
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
   background-color: #ffffff;
   border-color: #000000;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 /* Simple macro to turn off the antlines */
 .solid-line .jcrop-vline,

@@ -53,22 +53,8 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             }
 
             $tree = Program::getUserContentTree($this->user, true);
-            //echo "<pre>";
-            //print_r($tree);
-            //exit;
 
-            //print_r(\ResourceBundle::getLocales(''));
-            /*
-            var_dump(setlocale(LC_ALL, 0));
-            var_dump(strftime('%B'));
-            var_dump(setlocale(LC_ALL, 'en_US.utf8'));
-            //var_dump(\Locale::setDefault('en_US'));
-            //var_dump(\Locale::getDefault());
-            */
-            //var_dump(strftime('%B'));
-            //exit;
-
-            if ($userPointers) {
+            if ($userPointers && count($tree) > 0) {
 
                 // TODO MOVE TO YOUR OWN COMPONENT
                 //$this->putScript("plugins/jquery-easy-pie-chart/jquery.easy-pie-chart");
@@ -90,6 +76,10 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
 
                 $this->putModuleScript("portlet.content");
                 $this->putBlock("tests.info.dialog");
+
+                $this->putBlock("storage.pdfviewer.dialog");
+
+                
                 //$this->putBlock("lessons.dialogs.exercises");
                 
                 //$this->putBlock("content.unit.dialog");
@@ -105,7 +95,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                     'tree' => array_values($tree),
                     'progress' => $this->getUserProgressRequest()
                 );
-                
+
     			return array(
     				'content.overview' => array(
     					'type'      => 'content', // USED BY JS SUBMODULE REFERENCE, REQUIRED IF THE WIDGET HAS A JS MODULE
@@ -166,14 +156,14 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
             $this->putScript("scripts/ui.menu.content");
 
             $courses = $this->user->getPrograms([
-                'conditions' => "approved = 1"
+                'conditions' => "approved = 1 AND active = 1"
             ]);
 
             $items = array();
             foreach($courses as $course) {
                 $items[] = array(
                     'link' => "javascript:void(0);",
-                    'text' => sprintf("#%s %s", $course->id, $course->name),
+                    'text' => sprintf("%s", $course->name),
                     'attrs' => array(
                         'data-entity-id' => $course->id
                     )
@@ -184,7 +174,7 @@ class ContentModule extends \SysclassModule implements \IWidgetContainer, \IBloc
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-graduation-cap',
-                    'text'      => $this->translate->translate('My Programs'),
+                    'text'      => $this->translate->translate('Programs'),
                     /*
                     'external'  => array(
                         'link'  => $this->getBasePath(),

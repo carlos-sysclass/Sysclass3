@@ -10,7 +10,7 @@
   box-sizing: border-box;
   color: #000;
   font-size: 12px;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 #tlyPageGuideWrapper #tlyPageGuideToggles {
   top: 84px;
@@ -24,10 +24,10 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background: rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 3px 0 0 3px;
-  -moz-border-radius: 3px 0 0 3px;
-  -o-border-radius: 3px 0 0 3px;
-  border-radius: 3px 0 0 3px;
+  -webkit-border-radius: 0px 0 0 3px;
+  -moz-border-radius: 0px 0 0 3px;
+  -o-border-radius: 0px 0 0 3px;
+  border-radius: 0px 0 0 3px;
   clear: both;
   color: #000000;
   cursor: pointer;
@@ -102,10 +102,10 @@
   margin: 0;
 }
 #tlyPageGuideWrapper #tlyPageGuideMessages {
-  -webkit-border-radius: 3px 3px 0 0;
-  -moz-border-radius: 3px 3px 0 0;
-  -o-border-radius: 3px 3px 0 0;
-  border-radius: 3px 3px 0 0;
+  -webkit-border-radius: 0px 3px 0 0;
+  -moz-border-radius: 0px 3px 0 0;
+  -o-border-radius: 0px 3px 0 0;
+  border-radius: 0px 3px 0 0;
   background: rgba(0, 0, 0, 0.85);
   -webkit-box-shadow: 0 0 9px 4px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 9px 4px rgba(0, 0, 0, 0.4);
@@ -124,10 +124,10 @@
 }
 #tlyPageGuideWrapper #tlyPageGuideMessages span {
   background: rgba(0, 89, 153, 0.95);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   color: #fff;
   display: block;
   font-size: 32px;
@@ -241,10 +241,10 @@
   -moz-box-shadow: 0 0 9px 4px rgba(0, 0, 0, 0.4);
   -o-box-shadow: 0 0 9px 4px rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 9px 4px rgba(0, 0, 0, 0.4);
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
   -o-transition: all 0.2s linear;
@@ -261,7 +261,7 @@
             text-align: center;
             padding: 5px 10px;
             cursor: pointer;
-            font-family: Helvetica, Arial, sans-serif;
+            font-family: 'Open Sans', sans-serif;
         }
         */
 }

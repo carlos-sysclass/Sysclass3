@@ -27,7 +27,7 @@
           </li>
           <li role="presentation">
           	<a href="#tab_messages_faq" aria-controls="tab_course_units" role="tab" data-toggle="tab">
-              <i class="fa fa-question-circle"></i>
+              <i class="fa fa-question-circle-circle"></i>
               <span class="progress-indicator faq-indicator">
                 <span class="counter"></span>
                 <span class="singular">{translateToken value="FAQ"}</span>
@@ -46,7 +46,7 @@
               <li>
                 <a href="javascript: void(0);" class="dialogs-messages-send-action" data-mode="user">
                   <i class="fa fa-envelope" aria-hidden="true"></i>
-                  {translateToken value="Compose"}
+                  {translateToken value="Send e-mail"}
                 </a>              
               </li>
               <li class="divider"></li>

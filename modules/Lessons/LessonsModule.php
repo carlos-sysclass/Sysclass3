@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Lessons;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Courses\Contents\Exercise,
+use Sysclass\Services\Storage\Adapter as StorageAdapter,
+    Sysclass\Models\Courses\Contents\Exercise,
     Sysclass\Models\I18n\Language,
     Sysclass\Models\Dropbox\File,
     Sysclass\Models\Content\Course as Classe,
@@ -65,10 +66,10 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $breadcrumbs[] = array('text'   => $this->translate->translate("View"));
                 break;
             case "add":
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Unit"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New unit"));
                 break;
             case "edit/:id":
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Unit"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit unit"));
                 break;
         }
         return $breadcrumbs;
@@ -82,7 +83,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Unit'),
+                    'text'      => $this->translate->translate('New unit'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus'
@@ -94,7 +95,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -106,9 +107,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         return array(
             'lessons.content' => function ($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $self->putComponent("jquery-file-upload-image");
-                $self->putComponent("jquery-file-upload-video");
-                $self->putComponent("jquery-file-upload-audio");
+
                 $self->putComponent("bootstrap-confirmation");
 
                 $self->putModuleScript("translate", "models.translate");
@@ -119,10 +118,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     'conditions' => 'active = 1'
                 ])->toArray();
 
-
                 $userLanguageCode = $this->translate->getSource();
-
-
 
                 foreach ($languages as &$value) {
                     if ($value['code'] == $userLanguageCode) {
@@ -140,7 +136,29 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
                 $self->putBlock("storage.library");
 
+                $self->putBlock("lessons.dialogs.auto_translate");
+
                 return true;
+            },
+            'lessons.dialogs.auto_translate' => function($data, $self) {
+                $languages = Language::find([
+                    'conditions' => 'active = 1'
+                ])->toArray();
+
+                $userLanguageCode = $this->translate->getSource();
+
+                foreach ($languages as &$value) {
+                    if ($value['code'] == $userLanguageCode) {
+                        $value['selected'] = true;
+                        break;
+                    }
+                }
+
+                //$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+                $self->putItem("languages", $languages);
+
+                $self->putModuleScript("dialogs.auto_translate");
+                $self->putSectionTemplate("dialogs", "dialogs/auto_translate");
             },
             'lessons.dialogs.exercises' => function($data, $self) {
                 $self->putModuleScript("dialogs.exercises");
@@ -292,13 +310,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $data['language_code'] = $this->translate->getSource();
@@ -308,7 +326,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons/content/question");
                 $messages = array(
                     'success' => "Question included.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $_GET['redirect'] = "0";
@@ -352,6 +370,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     public function getItemsRequest($model = "me", $type = "default", $filter = null)
     {
         if ($model == "me") {
+
+            return call_user_func_array([parent, 'getItemsRequest'], func_get_args());
+            /*
             $modelRoute = "lessons";
             $optionsRoute = "edit";
 
@@ -364,9 +385,10 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 }
             }
             $itemsData = $itemsCollection->getItems();
+            */
 
         } elseif ($model == "lesson-and-test") {
-            $modelRoute = "base/lessons";
+            $modelRoute = "base/units";
             $optionsRoute = "edit";
 
             $itemsCollection = $this->model($modelRoute);
@@ -468,7 +490,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $messages = array(
             'success' => "Lesson content order updated.",
-            'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+            'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
         );
 
         $data = $this->getHttpData(func_get_args());
@@ -497,8 +519,8 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
 
         $helper = $this->helper("file/upload");
         $filewrapper = $this->helper("file/wrapper");
-        $upload_dir = $filewrapper->getLessonPath($id, $type);
-        $upload_url = $filewrapper->getLessonUrl($id, $type);
+        $upload_dir = $filewrapper->getUnitPath($id, $type);
+        $upload_url = $filewrapper->getUnitUrl($id, $type);
 
         $helper->setOption('upload_dir', $upload_dir . "/");
         $helper->setOption('upload_url', $upload_url . "/");
@@ -556,7 +578,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -610,7 +632,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         if ($user = $this->getCurrentUser(true)) {
             $messages = array(
                 'success' => "Answers saved.",
-                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
             );
 
             $data = $this->getHttpData(func_get_args());
@@ -651,13 +673,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             }
 
@@ -698,13 +720,13 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 $itemModel = $this->model("lessons");
                 $messages = array(
                     'success' => "Lesson removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             } elseif ($model == "lesson_content") {
                 $itemModel = $this->model("lessons/content");
                 $messages = array(
                     'success' => "Lesson content removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             }
 
@@ -725,7 +747,7 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
     /**
      * [ add a description ]
      *
-     * @Put("/item/lesson_content/{id}/translate")
+     * @Put("/translate/{id}")
      */
     public function translateContent($id)
     {
@@ -736,9 +758,16 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         $http_data = $this->request->getPut();
 
 
+        $fileModel = File::findFirstById($id);
 
+        $storage = StorageAdapter::getInstance($fileModel->storage);
+
+
+        /*
         $translateModel = $this->model("translate");
         $lang_codes = $translateModel->getDisponibleLanguagesCodes();
+
+
 
         if (!is_array($http_data) && !in_array($http_data['to'], $lang_codes)) {
             return $this->invalidRequestError($this->translate->translate(""));
@@ -746,50 +775,92 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         if (!in_array($http_data['from'], $lang_codes)) {
             $http_data['from'] = $translateModel->getUserLanguageCode();
         }
+        */
         
         // 1. GET FILE DATA
+        /*
         $contentData = $itemModel->getItem($id);
         if (in_array($contentData['content_type'], self::$suitable_translate_contents)) {
             //var_dump($contentData);
             if (array_key_exists("file", $contentData) && is_array($contentData['file']) && is_numeric($contentData['file']['id'])) {
                 $fileInfo = $this->model("dropbox")->getItem($contentData['file']['id']);
-                //$fileInfo = $this->model("dropbox")->getItem(1453485);
-                if (count($fileInfo) > 0) {
-                    $filestream = $this->model("dropbox")->getFileContents($fileInfo);
 
-                    $parsed = $this->parseWebVTTFile($filestream);
+
+                */
+                //$fileInfo = $this->model("dropbox")->getItem(1453485);
+                //if (count($fileInfo) > 0) {
+
+                    $filestream = $storage->getFilestream($fileModel);
+
+                    if ($filestream) {
+                        $parsed = $this->parseWebVTTFile($filestream);
+
+
+                        $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
+
+                        $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
+
+                        $info = \pathinfo($fileModel->filename);
+
+                        $new_filename = $info['filename'] . "." . $http_data['to'] . "." . $info['extension'];
+                        $remote_path = $info['dirname'] . "/" . $new_filename;
+
+                        $full_path = $fileModel->storage . "/" . $info['dirname'];
+
+                        $filewrapper = $this->helper("file/wrapper");
+
+                        $upload_dir = $filewrapper->getPublicPath($full_path);
+
+                        file_put_contents($upload_dir . "/" . $new_filename , $translatedFilestream);
+
+
+
+                        $status = $storage->addFile($remote_path, $upload_dir . "/" . $new_filename);
+
+                        if ($status) {
+                            $size = filesize($upload_dir . "/" . $new_filename);
+                            @unlink($upload_dir . "/" . $new_filename);
+
+                            $newFile = new File();
+
+                            $newFile->owner_id = $this->user->id;
+                            $newFile->upload_type = $fileModel->upload_type;
+                            $newFile->name = $new_filename;
+                            $newFile->filename = $remote_path;
+                            $newFile->type = $fileModel->type;
+                            $newFile->storage = $fileModel->storage;
+                            $newFile->language_code =  \Locale::getPrimaryLanguage($http_data['to']);
+                            $newFile->locale_code =  $http_data['to'];
+
+                            $newFile->size = $size;
+
+                            $saved = $newFile->save();
+
+                            if ($saved) {
+                                $response = $this->createAdviseResponse($this->translate->translate("File translated."), "success");
+
+                                $contentData = $newFile->toArray();
+
+                            }
+
+                        }
+                    }
 
                     //$tokens = array_column($parsed, "text");
                     // TRANSLATE TOKENS
-
-                    $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
-
-
-                    $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
-
-                    // CREATE FILE
-                    $fileinfo = $this->model("dropbox")->createFile($translatedFilestream, $fileInfo);
-
-                    unset($contentData['id']);
-                    $contentData['info'] = json_encode($fileinfo);
-                    $contentData['file'] = $fileinfo;
-                    $contentData['language_code'] = $http_data['to'];
-                    $contentData['content_type'] = "subtitle-translation";
-                    $contentData['parent_id'] = $id;
-
-                    $contentData['id'] = $itemModel->addItem($contentData);
-
-                    $response = $this->createAdviseResponse($this->translate->translate("File translated."), "success");
+                    
                     return array_merge($response, $contentData);
+
+                    /*
 
                 }
                 exit;
             }
-            return $this->invalidRequestError($this->translate->translate("The system can't translate this content. Please try again"), "info");
+            return $this->invalidRequestError($this->translate->translate("The system can't translate this content. Please, try again"), "info");
         } else {
-            return $this->invalidRequestError($this->translate->translate("This content isn't suitable to translation. Please try again with another file"), "warning");
+            return $this->invalidRequestError($this->translate->translate("This content isn't suitable to translation. Please, try again with another file"), "warning");
         }
-
+        */
 
 
 
@@ -798,15 +869,6 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
         // 3. SEND TO TRANSLATE SERVICE, PASS A CALLBACK TO RECEIVE THE RESULTS (THE CALLBACK WILL CREATE A NEW FILE IN THE SAME FORMAT)
         // 4. RETURN THE SERVICE INFO TO UI PROCESSING
         exit;
-        // APPLY FILTER
-        if (is_null($filter) || !is_numeric($filter)) {
-            return $this->invalidRequestError();
-        }
-        $itemsData = $itemsCollection->addFilter(array(
-            'active'    => 1,
-            'lesson_id' => $filter/*,
-            "parent_id" => null*/
-        ))->getItems();
     }
 
     public function normatizeSubtitleFile($fileInfo) {

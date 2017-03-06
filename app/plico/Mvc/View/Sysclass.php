@@ -47,4 +47,21 @@ class Sysclass extends View
         return parent::render($path, $params);
 	}
 
+    public function exists($path) {
+        if (strpos($path, "/") === 0) {
+            $pathinfo = pathinfo($path);
+
+            $this->setViewsDir($pathinfo['dirname'] . "/");
+            $path = $pathinfo['basename'];
+        } else {
+
+            //var_dump($this->getViewsDir() . $path);
+            //exit;
+        }
+
+        $full_path = $this->getViewsDir() . $path;
+
+        return file_exists($full_path);
+    }
+
 }

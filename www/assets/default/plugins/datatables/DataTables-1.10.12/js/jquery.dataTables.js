@@ -18,7 +18,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 /*jslint evil: true, undef: true, browser: true */
@@ -63,7 +63,7 @@
 	 * DataTables is a plug-in for the jQuery Javascript library. It is a highly
 	 * flexible tool, based upon the foundations of progressive enhancement,
 	 * which will add advanced interaction controls to any HTML table. For a
-	 * full list of features please refer to
+	 * full list of features please, refer to
 	 * [DataTables.net](href="http://datatables.net).
 	 *
 	 * Note that the `DataTable` object is not a global variable but is aliased
@@ -209,7 +209,7 @@
 		
 		
 		/**
-		 * Add a single new row or multiple rows of data to the table. Please note
+		 * Add a single new row or multiple rows of data to the table. Please, note
 		 * that this is suitable for client-side processing only - if you are using
 		 * server-side processing (i.e. "bServerSide": true), then to add data, you
 		 * must add it to the data source, i.e. the server-side, through an Ajax call.
@@ -6408,7 +6408,7 @@
 			(settings ? 'table id='+settings.sTableId+' - ' : '')+msg;
 	
 		if ( tn ) {
-			msg += '. For more information about this error, please see '+
+			msg += '. For more information about this error. Please, see '+
 			'http://datatables.net/tn/'+tn;
 		}
 	
@@ -9938,7 +9938,7 @@
 		 * As an object, the parameters in the object are passed to
 		 * [jQuery.ajax](http://api.jquery.com/jQuery.ajax/) allowing fine control
 		 * of the Ajax request. DataTables has a number of default parameters which
-		 * you can override using this option. Please refer to the jQuery
+		 * you can override using this option. Please, refer to the jQuery
 		 * documentation for a full description of the options available, although
 		 * the following parameters provide additional options in DataTables or
 		 * require special consideration:
@@ -10101,7 +10101,7 @@
 		/**
 		 * The `columns` option in the initialisation parameter allows you to define
 		 * details about the way individual columns behave. For a full list of
-		 * column options that can be set, please see
+		 * column options that can be set. Please, see
 		 * {@link DataTable.defaults.column}. Note that if you use `columns` to
 		 * define your columns, you must have an entry in the array for every single
 		 * column that you have in your table (these can be null if you don't which
@@ -10259,7 +10259,7 @@
 		 * will match a row containing those words, even if not in the order that was
 		 * specified (this allow matching across multiple columns). Note that if you
 		 * wish to use filtering in DataTables this must remain 'true' - to remove the
-		 * default filtering input box and retain filtering abilities, please use
+		 * default filtering input box and retain filtering abilities. Please, use
 		 * {@link DataTable.defaults.dom}.
 		 *  @type boolean
 		 *  @default true
@@ -10837,7 +10837,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverData
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"fnServerData": null,
 	
@@ -10864,7 +10864,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverParams
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"fnServerParams": null,
 	
@@ -11576,7 +11576,7 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "loadingRecords": "Please wait - loading..."
+			 *          "loadingRecords": "Please, wait - loading..."
 			 *        }
 			 *      } );
 			 *    } );
@@ -11637,7 +11637,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Search: ",
 	
 	
 			/**
@@ -11656,7 +11656,7 @@
 			 * server-side, which DataTables will look up if this parameter is passed.
 			 * It must store the URL of the language file, which is in a JSON format,
 			 * and the object has the same properties as the oLanguage object in the
-			 * initialiser object (i.e. the above parameters). Please refer to one of
+			 * initialiser object (i.e. the above parameters). Please, refer to one of
 			 * the example language files to see how this works in action.
 			 *  @type string
 			 *  @default <i>Empty string - i.e. disabled</i>
@@ -11739,7 +11739,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.ajaxDataProp
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sAjaxDataProp": "data",
 	
@@ -11758,7 +11758,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.ajaxSource
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sAjaxSource": null,
 	
@@ -11950,7 +11950,7 @@
 		 *  @dtopt Server-side
 		 *  @name DataTable.defaults.serverMethod
 		 *
-		 *  @deprecated 1.10. Please use `ajax` for this functionality now.
+		 *  @deprecated 1.10. Please, use `ajax` for this functionality now.
 		 */
 		"sServerMethod": "GET",
 	
@@ -13972,7 +13972,7 @@
 		/**
 		 * Internal functions, exposed for used in plug-ins.
 		 * 
-		 * Please note that you should not need to use the internal methods for
+		 * Please, note that you should not need to use the internal methods for
 		 * anything other than a plug-in (and even then, try to avoid if possible).
 		 * The internal function may change between releases.
 		 *

@@ -3,7 +3,7 @@
  *   https://datatables.net/download
  *
  * To rebuild or modify this file with the latest versions of the included
- * software please visit:
+ * software please, visit:
  *   https://datatables.net/download/#bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.1/b-colvis-1.2.1/b-flash-1.2.1/b-html5-1.2.1/b-print-1.2.1/cr-1.3.2/fc-3.2.2/fh-3.1.2/kt-2.1.2/r-2.1.0/sc-1.4.2/se-1.2.0
  *
  * Included libraries:
@@ -82,7 +82,7 @@ table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sor
 table.dataTable thead > tr > td.sorting_asc,
 table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
-  padding-right: 30px;
+  padding-right: 18px;
 }
 table.dataTable thead > tr > th:active,
 table.dataTable thead > tr > td:active {
@@ -207,7 +207,7 @@ div.dt-button-info {
   background-color: white;
   border: 2px solid #111;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
+  border-radius: 0px;
   text-align: center;
   z-index: 21;
 }
@@ -415,11 +415,11 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   position: absolute;
   color: white;
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 0 3px #444;
   box-sizing: content-box;
   text-align: center;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Open Sans', sans-serif;
   line-height: 14px;
   content: '+';
   background-color: #337ab7;
@@ -442,7 +442,7 @@ table.dataTable.dtr-inline.collapsed.compact > tbody > tr > th:first-child:befor
   left: 4px;
   height: 14px;
   width: 14px;
-  border-radius: 14px;
+  border-radius: 0px;
   line-height: 14px;
   text-indent: 3px;
 }
@@ -463,11 +463,11 @@ table.dataTable.dtr-column > tbody > tr > th.control:before {
   position: absolute;
   color: white;
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 0 3px #444;
   box-sizing: content-box;
   text-align: center;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Open Sans', sans-serif;
   line-height: 14px;
   content: '+';
   background-color: #337ab7;
@@ -545,7 +545,7 @@ div.dtr-modal div.dtr-modal-close {
   border: 1px solid #eaeaea;
   background-color: #f9f9f9;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 0px;
   cursor: pointer;
   z-index: 12;
 }
@@ -676,7 +676,7 @@ table.dataTable td.select-checkbox:before {
   margin-top: -6px;
   margin-left: -6px;
   border: 1px solid black;
-  border-radius: 3px;
+  border-radius: 0px;
 }
 table.dataTable tr.selected td.select-checkbox:after {
   content: '\2714';

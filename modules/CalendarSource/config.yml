@@ -27,19 +27,25 @@ crud:
           sType: table-color
           label: Color
 
+        - mData: active
+          sType: table-boolean
+          sClass: text-center
+          label: Active
+
+
         - mData: options
           sType: table-options
           sClass: text-center
           label: Actions
     add:
-      components: ["validation", "wysihtml5", "select2"]
+      components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       #blocks: ["messages.eventtypes.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
         page_subtitle: Create a new calendar source
     'edit/{id}':
-      components: ["validation", "wysihtml5", "select2"]
+      components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       #blocks: ["messages.eventtypes.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]

@@ -5,6 +5,53 @@ _before_init_functions.push(function() {
 });
 </script>
 
+<style>
+/****** Style Star Rating Widget *****/
+
+.rating { 
+  text-align: center;
+  white-space: nowrap;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 3.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating-stars-loader {
+  margin-top: 15px;
+}
+.rating-stars-loader .fa.fa-spin { 
+  font-size: 2.25em !important;
+}
+
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+
+</style>
+
 <div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -18,7 +65,6 @@ _before_init_functions.push(function() {
                     <span class="singular hidden-xs">{translateToken value="Program"}</span>
                     <span class="plural hidden-xs">{translateToken value="Programs"}</span>
                   </span>
-                  
                 </a>
               </li>
               <li role="presentation">
@@ -158,7 +204,7 @@ _before_init_functions.push(function() {
                           <a href="javascript: void(0);" data-toggle="dropdown" class="btn btn-link hidden-xs dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-video-camera"></i>
                             <span class="view-type"></span>
-                            <span class="caret"></span>
+                            <i class="fa fa-caret-down"></i>
                           </a>
                           <ul class="pull-right dropdown-menu">
                             <li>
@@ -266,6 +312,7 @@ _before_init_functions.push(function() {
                           <th class="text-center">{translateToken value="Status"}</th>
                           <th class="text-center">{translateToken value="Units"}</th>
                           <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
+                          <th class="text-center">{translateToken value="Rating"}</th>
                           <th class="text-center">{translateToken value="Videos"}</th>
                           <th class="text-center">{translateToken value="Materials"}</th>
                           <th class="text-center">{translateToken value="Tests"}</th>
@@ -423,7 +470,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -436,7 +483,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -449,7 +496,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -476,7 +523,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -489,7 +536,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -502,7 +549,7 @@ _before_init_functions.push(function() {
                     <td>X/X</td>
                     <td>
                       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-                      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
                       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
                       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
                       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -572,7 +619,7 @@ _before_init_functions.push(function() {
     <% if (!_.isUndefined(model.progress)) { %>
       <% if (model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
         </span>
       <% } else if (model.progress.factor > 0) { %>
         <span class="andamento">
@@ -580,7 +627,7 @@ _before_init_functions.push(function() {
         </span>
       <% } else { %>
         <span class="avalialbe">
-          <i class="fa fa-circle" aria-hidden="true"></i>
+          <i class="fa fa-square-o" aria-hidden="true"></i>
         </span>
       <% } %>
     <% } %>
@@ -593,7 +640,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -602,7 +649,7 @@ _before_init_functions.push(function() {
 	<%= model.description %>
 	<% if (!_.isEmpty(model.objectives)) { %>
 		<hr />
-		<h5>{translateToken value="Objetives"}</h5>
+		<h5>{translateToken value="Objectives"}</h5>
 		
 		<%= model.objectives %>
 	<% } %>
@@ -622,7 +669,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no courses registered for this course"}
+				{translateToken value="There are no courses registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -633,7 +680,7 @@ _before_init_functions.push(function() {
     <td class="text-center">
     <% if ((completed && _.size(model.units) > 0) || (_.has(model, 'progress') && model.progress.factor == 1)) { %>
       <span class="concluido tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="andamento tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -646,7 +693,7 @@ _before_init_functions.push(function() {
     <% } else { %>
 
       <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle" aria-hidden="true"></i>
+        <i class="fa fa-square-o" aria-hidden="true"></i>
       </span>
     <% } %>
     </td>
@@ -712,7 +759,7 @@ _before_init_functions.push(function() {
     <!--
     1/5 Avaliação do Ciclo de Vida
       <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-      <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+      <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
       <span class="andamento"><i class="fa fa-info" aria-hidden="true"></i></span>
       <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
       <span class="fechado"><i class="fa fa-ban" aria-hidden="true"></i></span>
@@ -720,7 +767,7 @@ _before_init_functions.push(function() {
     <!-- Next Unit -->
     <td class="text-center"> 
       <span class="avalialbe">
-        {translateToken value="No date set"}
+        {translateToken value="Date not set"}
       </span>
       <!--
       <%
@@ -746,7 +793,7 @@ _before_init_functions.push(function() {
           </span>
         <% } else { %>
           <span class="concluido">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            <i class="glyphicon glyphicon-edit-circle" aria-hidden="true"></i>
             {translateToken value="Completed"}
           </span>
         <% } %>
@@ -764,17 +811,17 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered for this course"}
 			</span>
 		</td>
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-   <!-- Status -->
-  <td class="text-center">
+  <!-- Status -->
+  <td class="text-center" width="10%">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -782,16 +829,16 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
   </td>
 
   <!-- Unidade -->
-  <td>
+  <td width="40%">
       <%= model.name %>
       <%
-        var hasDropdown = !_.isNull(model.instructor_id) && _.size(model.professor) > 0;
+        var hasDropdown = !_.isNull(model.professor_id) && _.size(model.professor) > 0;
         /* hasDropdown = hasDropdown && <another-condition> */
       %>
       <% if (hasDropdown) { %>
@@ -801,14 +848,14 @@ _before_init_functions.push(function() {
           </a>
 
           <ul class="dropdown-menu">
-            <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+            <% if (!_.isNull(model.professor_id) && _.size(model.professor) > 0) { %>
             <li>
               <a href="javascript:void(0);">
                 {translateToken value="Instructor"}: <strong><%= model.professor.name %> <%= model.professor.surname %></strong>
               </a>
             </li>
             <li class="subchild">
-              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.instructor_id %>" data-mode="user">
+              <a href="javascript:void(0);" class="dialogs-messages-send-action" data-user-id="<%=  model.professor_id %>" data-mode="user">
                 <i class="fa fa-paper-plane"></i> {translateToken value="Send Message"}
               </a>
             </li>
@@ -818,15 +865,42 @@ _before_init_functions.push(function() {
       <% } %>
 
   </td>
+  <!-- Rating -->
+  <td class="text-center" width="10%">
+    <% if (_.has(model, 'rating')) { %>
+      <%
+      count = 0; 
+      for (var i=1; i <= model.rating; i++) {
+        print ('<i class="fa fa-star rating-star"></i>');
+        count++;
+      } 
+      if (count < model.rating) {
+        var diff = model.rating - count;
+        if (diff > 0) {
+          print ('<i class="fa fa-star-half-o rating-star"></i>');
+          count++;
+        }
+      }
+      if (count < 5) {
+        diff = 5 - count;
+        for (var i=1; i <= diff; i++) {
+          print ('<i class="fa fa-star-o rating-star"></i>');
+          count++;
+        } 
+      }
+      %>
+    <% } else { %>
+    <% } %>
+  </td>
   <!--
   <td width="20%">
-    <% if (!_.isNull(model.instructor_id) && _.size(model.professor) > 0) { %>
+    <% if (!_.isNull(model.professor_id) && _.size(model.professor) > 0) { %>
       <%= model.professor.name %> <%= model.professor.surname %>
     <% } %>
   </td>
   -->
   <!-- Video -->
-  <td class="text-center">
+  <td class="text-center" width="10%">
     <% if (!model.video) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -848,7 +922,7 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
   <!-- Material -->
-  <td class="text-center">
+  <td class="text-center" width="10%">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
       <% if (model.materialProgress >= 1) { %>
@@ -905,7 +979,7 @@ _before_init_functions.push(function() {
       <% _.each(model.exercises, function (item, index) { %>
         <% if (item.progress.factor >= 1) { %>
           <span class="concluido">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            <i class="glyphicon glyphicon-edit-circle" aria-hidden="true"></i>
             Viewed
           </span>
         <% } else if (item.progress.factor > 0) { %>
@@ -921,13 +995,13 @@ _before_init_functions.push(function() {
   -->
   <!-- Teste -->
   
-  <td class="text-center">
+  <td class="text-center" width="10%">
   </td>
   
   <!-- Exame -->
   <!-- <td>
     <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-    <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    -->
@@ -962,7 +1036,16 @@ _before_init_functions.push(function() {
           file_type = "pdf";
       }
   %>
-  <a target="_blank" class="select-item" href="<%= model['file'].url %>" class="select-item">
+  <a 
+    <% if (file_type == "pdf") { %>
+      class="select-item open-pdf-viewer" 
+      href="<%= model['file'].url %>" 
+    <% } else { %>
+      target="_blank" 
+      class="select-item" 
+      href="<%= model['file'].url %>" 
+    <% } %>
+  >
     <% if (file_type == "video") { %>
         <i class="fa fa-file-video-o"></i>
     <% } else if (file_type == "image") { %>
@@ -991,11 +1074,11 @@ _before_init_functions.push(function() {
 
 
 <script type="text/template" id="tab_courses_tests-item-template">
-   <!-- Status -->
+  <!-- Status -->
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-circle concluido" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
       </span>
     <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
@@ -1003,7 +1086,7 @@ _before_init_functions.push(function() {
       </span>
     <% } else { %>
       <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
-        <i class="fa fa-circle avalialbe" aria-hidden="true"></i>
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
   </td>
@@ -1011,6 +1094,32 @@ _before_init_functions.push(function() {
   <!-- Unidade -->
   <td >
     <%= model.name %>
+  </td>
+  <td class="text-center" width="10%">
+    <% if (_.has(model, 'rating')) { %>
+      <%
+      count = 0; 
+      for (var i=1; i <= model.rating; i++) {
+        print ('<i class="fa fa-star rating-star"></i>');
+        count++;
+      } 
+      if (count < model.rating) {
+        var diff = model.rating - count;
+        if (diff > 0) {
+          print ('<i class="fa fa-star-half-o rating-star"></i>');
+          count++;
+        }
+      }
+      if (count < 5) {
+        diff = 5 - count;
+        for (var i=1; i <= diff; i++) {
+          print ('<i class="fa fa-star-o rating-star"></i>');
+          count++;
+        } 
+      }
+      %>
+    <% } else { %>
+    <% } %>
   </td>
   <!-- Instructor -->
   <!-- <td width="15%" class="text-center"></td> -->
@@ -1039,11 +1148,11 @@ _before_init_functions.push(function() {
     <% if (_.has(model, 'testExecution') && !_.isNull(model.testExecution.user_grade)) { %>
       <% if (model.testExecution.pass == "1") { %>  
         <span class="concluido">
-          <strong class="small-box"><%= sprintf("%d%%", model.testExecution.user_grade) %></strong>
+          <strong class="small-box"><%= model.testExecution.user_grade %></strong>
         </span>
       <% } else { %>
         <span class="pendente">
-          <strong class="small-box"><%= sprintf("%d%%", model.testExecution.user_grade) %></strong>
+          <strong class="small-box"><%= model.testExecution.user_grade %></strong>
         </span>
         <% if (model.test.test_repetition <= 0 || _.size(model.executions) < model.test.test_repetition) { %>
         <a href="javascript: void(0);" class="view-test-action">
@@ -1054,7 +1163,7 @@ _before_init_functions.push(function() {
     <% } else { %>
       <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
         <span class="concluido">
-          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>
           {translateToken value="Completed"}
         </span>
       <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
@@ -1064,7 +1173,7 @@ _before_init_functions.push(function() {
         </a>
       <% } else { %>
         <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
-            <i class="fa fa-check" aria-hidden="true"></i>
+            <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
             {translateToken value="Avaliable"}
         </a>
       <% } %>
@@ -1073,7 +1182,7 @@ _before_init_functions.push(function() {
   <!-- Exame -->
   <!-- <td>
     <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-    <span class="concluido"><i class="fa fa-check" aria-hidden="true"></i></span>
+    <span class="concluido"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></span>
     <span class="avalialbe"><i class="fa fa-coffee" aria-hidden="true"></i></span>
   </td>
    -->
@@ -1137,18 +1246,16 @@ _before_init_functions.push(function() {
 </script>
 
 
-
-
 <!-- USED HERE AND IN CONTENT DIALOG -->
 <script type="text/template" id="tab_unit_video-nofound-template">
   <div class="alert alert-info">
     <span class="text-info"><i class="icon-warning-sign"></i></span>
-    {translateToken value="Ops! There's no content for this lesson"}
+    {translateToken value="There's no content for this lesson"}
   </div>
 </script>
 <script type="text/template" id="tab_unit_video-item-template">
   <% console.warn("_ MODEL", model) %>
-    <video id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
+    <video crossorigin="anonymous" id="unit-video-<%= model.id %>" class="video-js vjs-default-skin vjs-big-play-centered vjs-auto-height <% if (model.is_main) { %> main-video <% } else { %> sec-video <% } %> video-index-<%= model.video_index %>"
       width="auto"  height="auto"
       <% if (_.isNull(model.poster)) { %>
         poster="{Plico_GetResource file='images/default-poster.jpg'}"
@@ -1176,7 +1283,6 @@ _before_init_functions.push(function() {
       <% } %>
     </video>
 </script>
-
 <script type="text/template" id="tab_unit_video-multi-video-dropdown-item-template">
   <li class="dynamic-view-item">
     <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="only" data-view-index="<%= model.index %>">
@@ -1185,15 +1291,52 @@ _before_init_functions.push(function() {
   </li>
 </script>
 
+<script type="text/template" id="tab_unit_video-rating-view">
+  <div class="rating-view">
+    <div class="row">
+      <div class="col-md-12" align="center">
+        <h3>{translateToken value="Rate this unit"}</h3>
+      </div>
+    </div>
+    <div class="row rating-stars-container">
+      <div class="col-md-12 rating" align="center">
+        <input type="radio" id="star5" name="content-rating" value="5" />
+        <label class="full" for="star5" title=""></label>
 
+        <input type="radio" id="star4" name="content-rating" value="4" />
+        <label class="full" for="star4" title=""></label>
 
+        <input type="radio" id="star3" name="content-rating" value="3" />
+        <label class="full" for="star3" title=""></label>
 
+        <input type="radio" id="star2" name="content-rating" value="2" />
+        <label class="full" for="star2" title=""></label>
+
+        <input type="radio" id="star1" name="content-rating" value="1" />
+        <label class="full" for="star1" title=""></label>
+      </div>
+    </div>
+    <div class="row rating-stars-loader hidden">
+      <div class="col-md-12" align="center">
+        <i class="fa fa-spin fa-circle-o-notch"></i>
+      </div>
+    </div>
+    <div class="row rating-stars-message hidden">
+      <div class="col-md-12" align="center">
+        <h4>Thank You!</h4>
+        
+      </div>
+    </div>
+  </div>
+</script>
+
+<!--
 <script type="text/template" id="tab_unit_materials-nofound-template">
   <tr>
     <td colspan="5">
       <span class="text-info">
         <i class="icon-warning-sign"></i>
-        {translateToken value="Ops! There's no materials registered for this course"}
+        {translateToken value="There are no materials posted in this course"}
       </span>
     </td>
   </tr>
@@ -1233,17 +1376,21 @@ _before_init_functions.push(function() {
   <td class="text-center">
     <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
       <span class="concluido">
-        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-check-square-o" aria-hidden="true"></i>
         {translateToken value="Viewed"}
       </span>
     <% } else { %>
       <span class="avalialbe">
-        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+        <i class="fa fa-square-o" aria-hidden="true"></i>
         {translateToken value="Avaliable"}
       </span>
     <% } %>
   </td>
 </script>
+-->
+
+
+
 
 <!-- 
 <script type="text/template" id="tab_unit_exercises-nofound-template">
@@ -1251,7 +1398,7 @@ _before_init_functions.push(function() {
 		<td colspan="4"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no exercises registered for this course"}
+				{translateToken value="There are no exercises registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -1272,7 +1419,7 @@ _before_init_functions.push(function() {
 			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
 				{translateToken value="Do it again!"}
 			<% } else { %>
-				{translateToken value="Do now"}
+				{translateToken value="Do it now"}
 			<% } %>
 		</a>
 	</td>

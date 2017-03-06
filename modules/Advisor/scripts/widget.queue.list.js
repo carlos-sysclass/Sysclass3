@@ -60,7 +60,6 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 				/*
 				this.listenTo(this.chatModule, "afterConnection.chat", function(status) {
 					this.chatModule.getUnassignedQueues(function(list) {
-						//console.warn(list);
 						this.collection.reset(list);
 					}.bind(this));
 				}.bind(this));
@@ -93,7 +92,6 @@ $SC.module("portlet.advisor.queue.list", function(mod, app, Backbone, Marionette
 		this.bindTableEvents = function(table) {
 			
 			this.listenTo(table, "action.datatables", function(el, data, action) {
-				console.warn(el, data, action);
 				if (action == "view") {
 					var queueModel = new this.models.queue(data);
 

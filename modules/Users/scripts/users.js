@@ -32,7 +32,10 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 	    	
 	    },
 	    render: function(collection) {
-	    	this.$(".course_name").html(this.collection.getCurrentProgram().get("name"));
+	    	var program = this.collection.getCurrentProgram();
+	    	if (program) {
+	    		this.$(".course_name").html(program.get("name"));
+	    	}
 	    },
 		/*
 	    loadCourseDetails : function(model) {
@@ -146,8 +149,6 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				this.model.get('lessons.completed'), this.model.get('lessons.total')
 			);
 			*/
-			//console.warn(this.collection.toJSON());
-
 			this.renderUnit(
 				this.collection.getTotalCompleteUnits(), this.collection.getTotalUnits()
 			);
@@ -202,7 +203,7 @@ $SC.module("panel.users", function(mod, app, Backbone, Marionette, $, _) {
 				}
 			}
 		},
-		renderLesson : function(completed, total) {
+		renderUnit : function(completed, total) {
 			// INJECT HERE PARTIAL PROGRESS FROM LESSONS
 			var factor = 0;
 			if (total > 0) {

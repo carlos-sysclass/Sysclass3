@@ -36,10 +36,10 @@ class Program extends Model
 
         $this->belongsTo(
             "area_id",
-            "Sysclass\Models\Content\Departament",
+            "Sysclass\Models\Content\Department",
             "id",
             array(
-                'alias' => 'Departament',
+                'alias' => 'Department',
             )
         );
 
@@ -76,6 +76,14 @@ class Program extends Model
                 'alias' => 'Image',
             )
         );
+    }
+
+    protected function beforeValidation() {
+        if (is_null($this->active) || $this->active) {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
     }
 
     public function calculateDuration(\DateTime $start) {
@@ -247,10 +255,13 @@ class Program extends Model
         } else {
             $programs = $user->getPrograms();
         }
-        
 
         $tree = array();
         foreach($programs as $program) {
+
+
+
+
             $tree[] = $program->getFullTree($user, $only_active);
         }
 
@@ -264,10 +275,10 @@ class Program extends Model
         } else {
             $result['coordinator'] = array();
         }
-        if ($departament =  $this->getDepartament()) {
-            $result['departament'] = $departament->toArray();
+        if ($department =  $this->getDepartment()) {
+            $result['department'] = $department->toArray();
         } else {
-            $result['departament'] = array();
+            $result['department'] = array();
         }
 
         $result['courses'] = array();

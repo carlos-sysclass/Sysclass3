@@ -131,7 +131,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 	public function getBreadcrumb() {
 		$breadcrumbs = array(
 			array(
-				'icon'	=> 'icon-home',
+				'icon'	=> 'fa fa-home',
 				'link'	=> $this->getSystemUrl('home'),
 				'text'	=> $this->translate->translate("Home")
 			),
@@ -171,7 +171,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 					'text'      => $this->translate->translate('New Annoucement'),
 					'link'      => $this->getBasePath() . "add",
 					'class'		=> "btn-primary",
-					'icon'      => 'icon-plus'
+					'icon'      => 'fa fa-plus-square'
 				),
 				array(
 					'separator'	=> true,
@@ -180,7 +180,7 @@ class NewsModule extends \SysclassModule implements /* IWidgetContainer, ISummar
 					'text'      => 'Add New 2',
 					'link'      => $this->getBasePath() . "add",
 					//'class'		=> "btn-primary",
-					//'icon'      => 'icon-plus'
+					//'icon'      => 'fa fa-plus-square'
 				)
 			)
 		);

@@ -31,10 +31,13 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             },
             'organization.social.dialog' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $languages = Language::find("active = 1");
-                $this->putitem("languages", $languages->toArray());
+                $languages = Language::find([
+                    'conditions' => 'active = 1'
+                ])->toArray();
 
-                $self->putComponent("data-tables");
+                $self->putItem("languages", $languages);
+
+                //$self->putComponent("datatables");
                 $self->putComponent("select2");
                 //$self->putComponent("bootstrap-editable");
 
@@ -52,9 +55,8 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
                 $this->putBlock("organization.social.dialog");
 
 
-                $self->putComponent("data-tables");
+                $self->putComponent("datatables");
                 $self->putComponent("select2");
-                //$self->putComponent("bootstrap-editable");
 
                 $block_context = $self->getConfig("blocks\\organization.social.list\\context");
                 $self->putItem("organization_social_list_context", $block_context);
@@ -71,12 +73,11 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
 
     public function getWidgets($widgetsIndexes = array(), $caller = null)
     {
-
-
         $organization = Organization::findFirstById(1);
 
         if (in_array('institution.overview', $widgetsIndexes)) {
-            //$this->putModuleScript("widget.institution");
+            $this->putComponent("bxslider");
+            $this->putModuleScript("widget.institution");
 
             $data = $organization->toArray(["details", "logo"]);
 
@@ -134,7 +135,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             ),

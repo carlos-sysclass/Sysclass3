@@ -1669,7 +1669,7 @@ var rbrace = /^(?:\{.*\}|\[.*\])$/,
 jQuery.extend({
 	cache: {},
 
-	// Please use with caution
+	// Please, use with caution
 	uuid: 0,
 
 	// Unique for each copy of jQuery on the page

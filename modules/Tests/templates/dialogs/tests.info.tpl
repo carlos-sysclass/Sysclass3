@@ -61,7 +61,7 @@
     </div>
     <div class="modal-footer">
         <a href="/module/tests/open/<%= model.id %>" data-dismiss="modal" class="btn btn-primary">
-            {translateToken value="Do now!"}
+            {translateToken value="Do now"}
         </a>
         <button type="button" class="btn btn-default" data-dismiss="modal">
             {translateToken value="Close"}

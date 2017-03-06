@@ -26,7 +26,7 @@
 				<div class="form-body">
 					<h5 class="form-section margin-bottom-10 margin-top-10">
 						<i class="fa fa-edit"></i>
-						{translateToken value="Personal Info"}
+						{translateToken value="Your info"}
 					</h5>
 					{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 				</div>
@@ -49,21 +49,22 @@
 					</h5>
 					{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 				</div>
-				{if $isTeacher}
+                
+				<!--  {if $isTeacher}
 					<div class="form-body">
 						<h5 class="form-section margin-bottom-10 margin-top-10">
 							<i class="fa fa-camera"></i>
-							{translateToken value="Teacher Info"}
+							{translateToken value="Instructor info"}
 						</h5>
 						{include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
 					</div>
-				{/if}
+				{/if} -->
 
 				{if $canChangePassword}
 					<div class="form-body">
 						<h5 class="form-section margin-bottom-10 margin-top-10">
-							<i class="fa fa-hash"></i>
-							{translateToken value="Change your Password"}
+							<i class="fa fa-lock"></i>
+							{translateToken value="Change password"}
 						</h5>
 						{include file="`$T_MODULE_TPLPATH`/profile/password.tpl"  T_CHECK_OLD=true}
 					</div>
@@ -156,7 +157,7 @@
 			</div>
 			<div class="col-md-12">
 				<div class="form-body margin-top-10">
-					<button class="btn green" type="submit">{translateToken value="Save Changes"}</button>
+					<button class="btn green" type="submit">{translateToken value="Save changes"}</button>
 				</div>
 			</div>
 			<!--END TABS-->

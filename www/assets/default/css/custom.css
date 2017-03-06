@@ -236,6 +236,7 @@ body {
 
 .page-content {
     padding: 20px 20px 20px;
+    box-shadow: 0px 0px 45px 5px rgba(0, 0, 0, 0.33);
 }
 .page-boxed {
     background-color: #E8E8E8 !important;
@@ -565,7 +566,7 @@ h4.border-bottom {
 
 .ajax-loader {
     padding: 4px;
-    position: absolute;
+    position: fixed;
     text-decoration: none;
     top: 0;
     width: 100%;
@@ -1522,11 +1523,11 @@ UI Loading
 .loading-message.loading-message-boxed {
   border: 1px solid #ddd;
   background-color: #eee;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
@@ -1537,11 +1538,11 @@ UI Loading
 }
 
 .page-loading {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1753,7 +1754,7 @@ button.calendar-news-item {
     font-size: 14px !important;
     padding: 0;
     width: inherit;
-    margin: 3px 5px 3px 1px;
+    margin: 3px 0px 0px 0px;
 }
 .header .navbar-nav > li > a > i {
 	font-size: 14px !important;
@@ -1769,7 +1770,8 @@ button.calendar-news-item {
 .header .navbar-nav > li > a > span {
 	float: left;
     padding: 0 3px;
-    font-weight: 100;
+    font-size: 11px;
+	letter-spacing: 0.5px;
     color: #fff;
 }
 
@@ -2155,7 +2157,7 @@ button.calendar-news-item {
     padding: 12px 10px 9px !important;
 }
 .btn-circle {
-    border-radius: 15px !important;
+    border-radius: 0px !important;
 }
 
 .form-group-inline div.inline-item {
@@ -2229,7 +2231,7 @@ button.calendar-news-item {
 }
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
-    padding: 11px 12px 11px;
+    padding: 11px 5px 0;
     height: 42px;
     font-size: 11px;
     text-transform: uppercase;
@@ -2386,7 +2388,7 @@ a.list-group-item,
 	color: #444;
 }
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
-	background: #1565c0 !important;
+	background: #146a9d !important;
     color: #fff;
     text-decoration: none;
 }
@@ -2619,7 +2621,8 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   margin-bottom: 0px;
 }
 #institution-widget .panel-body {
-  min-height: 260px;  
+  max-height: 270px;  
+  min-height: 260px;
 }
 .btn-compressed {
   padding-left: 3px;
@@ -2694,8 +2697,14 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
   border-radius: 0 !important;
 }
 
+.organization-country-title {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .organization-country-image {
   height: 15px;
+  display: inline !important;
 }
 
 .institution-button-container h5 {
@@ -2710,13 +2719,13 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
     padding: 5px;
 }
 .concluido .small-box {
-    border: 1px solid #05ae0e;
+/*    border: 1px solid #05ae0e; */
     font-weight: 600;
     padding: 5px;
 }
 
 .pendente .small-box {
-    border: 1px solid #ff3b30;
+/*    border: 1px solid #ff3b30; */
     font-weight: 600;
     padding: 5px;
   }
@@ -2729,4 +2738,65 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 
 .jstree-node, .jstree-children, .jstree-container-ul {
   text-align: left;
+}
+
+.vakata-dnd {
+  background: #fff;
+  border:1px solid #ccc;
+}
+
+.editable-click, 
+a.editable-click, 
+a.editable-click:hover {
+    border-bottom: none !important;
+}
+
+
+.file-loader {
+  border: 1px solid #ccc;
+  display: none;
+}
+
+.file-loader .file-loader-text {
+  color: #666;
+  font-size: 13px;
+  padding: 5px 8px 2px;
+}
+
+.file-loader .progress-mini {
+  height: 5px;
+}
+
+#organization-details-carroussel {
+  padding: 0 10px;
+}
+
+.fa.rating-star {
+  color: #ffc20e;
+  font-size: 16px !important;
+  letter-spacing: 1px;
+}
+
+a.disabled i.fa {
+  color: #ccc;
+}
+
+.organization-logo {
+  height: 110px;
+  vertical-align: middle;
+  position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.organization-logo img {
+  max-width: 85%;
+  display: block;
+  max-height: 100px;
+  height: auto;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

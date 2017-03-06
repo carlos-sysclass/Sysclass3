@@ -59,12 +59,12 @@ $(document).ready(function(){
 		messages: {
 			password2: {
 				required: " ",
-				equalTo: "Please enter the same password as above"
+				equalTo: "Please, enter the same password as above"
 			},
 			email: {
 				required: " ",
-				email: "Please enter a valid email address, example: you@yourdomain.com",
-				remote: jQuery.validator.format("{0} is already taken, please enter a different address.")
+				email: "Please, enter a valid email address, example: you@yourdomain.com",
+				remote: jQuery.validator.format("{0} is already taken. Please, enter a different address.")
 			}
 		},
 		debug:true

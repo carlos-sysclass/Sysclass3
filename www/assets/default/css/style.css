@@ -522,7 +522,7 @@ Header and header elements.
 .header .navbar-nav > li.dropdown .dropdown-toggle > i {
   font-size: 14px !important;
   padding: 0;
-  margin: 3px 5px 3px 1px;
+  margin: 3px 0px 0px 0px;
 }
 
 .header .navbar-nav > li.dropdown .dropdown-menu > li > a > i {
@@ -1099,7 +1099,7 @@ Page breadcrumb
      -moz-border-radius: 0px;
           border-radius: 0px;
   box-shadow: none;
-  padding-right: 30px;
+  padding-right: 18px;
   padding-left: 8px;
   margin-top: 15px;
   margin-bottom: 25px;
@@ -1319,7 +1319,7 @@ Input icons
   color: #000;
   display: block;
   position: absolute;
-  margin: 9px 2px 4px 1px;
+  margin: 9px 2px 4px 4px;
   width: 16px;
   height: 16px;
   font-size: 16px;
@@ -1900,9 +1900,9 @@ Custom icon buttons
   text-shadow: none;
   border-width: 0;
   border-style: solid;
-  -webkit-border-radius: 12px !important;
-  -moz-border-radius: 12px !important;
-  border-radius: 12px !important;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -3994,6 +3994,7 @@ textarea.placeholder {
 
 .form-actions.nobg {
   background-color: transparent;
+  text-align: center !important;
 }
 
 .form-actions.top {

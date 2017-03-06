@@ -31,7 +31,7 @@ fieldset fieldset label { display: block; }
 
 <form class="cmxform" id="commentForm" method="get" action="">
 	<fieldset class="ui-widget ui-widget-content ui-corner-all">
-		<legend class="ui-widget ui-widget-header ui-corner-all">Please provide your name, email address (won't be published) and a comment</legend>
+		<legend class="ui-widget ui-widget-header ui-corner-all">Please, provide your name, email address (won't be published) and a comment</legend>
 		<p>
 			<label for="cname">Name (required, at least 2 characters)</label>
 			<input id="cname" name="name" class="ui-widget-content" minlength="2" required type="text" />
@@ -81,7 +81,7 @@ fieldset fieldset label { display: block; }
 			<input id="email" name="email" type="email" />
 		</p>
 		<p>
-			<label for="agree">Please agree to our policy</label>
+			<label for="agree">Please, agree to our policy</label>
 			<input type="checkbox" class="checkbox" id="agree" name="agree" />
 		</p>
 		<p>
@@ -102,7 +102,7 @@ fieldset fieldset label { display: block; }
 				<input type="checkbox" id="topic_digester" value="digester" name="topic" />
 				Mailing list digester
 			</label>
-			<label for="topic" class="error">Please select at least two topics you'd like to receive.</label>
+			<label for="topic" class="error">Please, select at least two topics you'd like to receive.</label>
 		</fieldset>
 		<p>
 			<button class="submit" type="submit">Submit</button>
@@ -171,23 +171,23 @@ $.validator.setDefaults({
 			agree: "required"
 		},
 		messages: {
-			firstname: "Please enter your firstname",
-			lastname: "Please enter your lastname",
+			firstname: "Please, enter your firstname",
+			lastname: "Please, enter your lastname",
 			username: {
-				required: "Please enter a username",
+				required: "Please, enter a username",
 				minlength: "Your username must consist of at least 2 characters"
 			},
 			password: {
-				required: "Please provide a password",
+				required: "Please, provide a password",
 				minlength: "Your password must be at least 5 characters long"
 			},
 			confirm_password: {
-				required: "Please provide a password",
+				required: "Please, provide a password",
 				minlength: "Your password must be at least 5 characters long",
-				equalTo: "Please enter the same password as above"
+				equalTo: "Please, enter the same password as above"
 			},
-			email: "Please enter a valid email address",
-			agree: "Please accept our policy"
+			email: "Please, enter a valid email address",
+			agree: "Please, accept our policy"
 		}
 	});
 

@@ -81,7 +81,7 @@ class Course extends Model
     }
 
     protected function beforeValidation() {
-        if ($this->active) {
+        if (is_null($this->active) || $this->active) {
             $this->active = 1;
         } else {
             $this->active = 0;
@@ -102,7 +102,7 @@ class Course extends Model
 		);
     }
 
-    public function setLessonOrder(array $order_ids) {
+    public function setUnitOrder(array $order_ids) {
         $status = self::resetOrder();
         $manager = \Phalcon\DI::GetDefault()->get("modelsManager");
 

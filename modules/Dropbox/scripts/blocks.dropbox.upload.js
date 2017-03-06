@@ -14,7 +14,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
         aspectRatio : 1,
         cropSizes : null,
         initialize : function(opt) {
-            console.warn(opt);
 
             if (_.has(opt, 'sizes')) {
                 this.cropSizes = opt.sizes;
@@ -51,7 +50,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             }
         },
         changeAspectRatio : function(e) {
-            //console.warn(e, this.jCropApi);
             var id = e.added.id;
             this.setAspectRatio(this.cropSizes[id][0], this.cropSizes[id][1]);
         },
@@ -66,7 +64,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
         },
         startJCrop : function(e) {
             this.$(".crop-container").attr("src", this.model.get("url"));
-            //console.warn(this.jCropApi);
             //
             if (!_.isNull(this.jCropApi)) {
                 this.jCropApi.destroy();
@@ -206,8 +203,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             initialize: function(opt) {
                 console.info('blocks.dropbox.upload/fileUploadItemViewClass::initialize');
 
-                //console.warn(this.$el);
-
                 this.initializeFileUpload();
 
                 if (this.$el.data("image-crop")) {
@@ -275,16 +270,12 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                             }).render();
                             
                             if (self.$el.data("image-crop")) {
-                                //console.warn(self.model, data);
                                 self.imageCropDialog.setModel(
                                     viewObject.model
                                 );
                                 self.imageCropDialog.open();
 
                                 self.listenTo(self.imageCropDialog, "file-crop:save", function(model) {
-                                    //console.warn(viewObject.model.toJSON());
-                                    //console.warn(model.toJSON());
-                                    //model.save();
                                     viewObject.completeEvents();
                                 });
 
@@ -302,10 +293,8 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                         self.jqXHR = null;
                     })
                     .bind('fileuploadfail', function (e, data) {
-                        //console.warn("fileuploadfail");
                     })
                     .bind('fileuploadalways', function (e, data) {
-                        //console.warn("fileuploadalways");
                     })
                     .bind('fileuploadprogress', function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -313,7 +302,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
                     });
             },
             render : function(model, data, options) {
-                //collection.each(function(model, i) {
                 var view_type = this.model.get("content_type");
 
                 return this.renderFileContent(this.model, {upload : false});
@@ -380,7 +368,6 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             });
 
             fileUploadItemView.on("file-upload:change", function(model) {
-                //console.warn(data, updateField);
                 var data = model.toJSON();
                 if (updateField) {
                     $(self).find(":input[type='hidden']").val(data.id);

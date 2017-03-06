@@ -46,7 +46,23 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 	                    	error.insertAfter(element); // for other inputs, just perform default behavior
 	                    }
 	                },
+                    invalidHandler : function(event, validator) {
+                        errorOnActive = false;
+                        for (var i in validator.errorList) {
+                            var error = validator.errorList[i];
+                            var elementTab = $(error.element).parents(".tab-pane");
 
+                            if (elementTab.hasClass("active")) {
+                                errorOnActive = true;
+                            }
+                        }
+                        if (!errorOnActive) {
+                            error = _.first(validator.errorList);
+                            elementTab = $(error.element).parents(".tab-pane");
+                            var tabId = elementTab.attr("id");
+                            $("a[href='#" + tabId +"']").tab("show");
+                        }
+                    },
 	                highlight: function (element) { // hightlight error inputs
 	                   $(element)
 	                        .closest('.form-group').addClass('has-error'); // set error class to the control group
@@ -91,7 +107,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                             $(this).removeAttr("checked");
                         }
                         $(this).trigger("change");
-                        console.warn(event, state, this);
                     }
 
                 }*/);
@@ -143,8 +158,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         };
 						opt.formatResult = function (item, container, query, escapeMarkup) {
 							///console.log(item, container, query, escapeMarkup);
-                            //console.warn(this, item);
-
 
                             var formatAsCallback = jQuery(this.element).data('format-as');
 
@@ -175,7 +188,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
                         }
                         opt.formatSelection = mod.select2FormatFunctions[formatAsCallback];
                         //opt.minimumResultsForSearch = 3;
-                        //console.warn(opt);
 						$el.select2(opt);
 					} else {
 						opt.minimumResultsForSearch = 10;
@@ -244,7 +256,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 
 		// datepicker
 		if($('.date-picker', context).length > 0){
-            //console.warn(moment.localeData().longDateFormat('L').toLowerCase());
             
 			$('.date-picker', context).datepicker({
                 format: moment.localeData().longDateFormat('L').toLowerCase(),
@@ -441,7 +452,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
     this.handleBootstrapConfirmation = function(context) {
         if ($("[data-toggle=confirmation]", context).size() > 0) {
             $("[data-toggle='confirmation']", context).each(function() {
-//                console.warn($(this).data('confirmationTitle'));
                 $(this).confirmation();
             });
         }
@@ -490,7 +500,6 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         if ($.fn.mask) {
             if ($("[data-mask-type]", context).size() > 0) {
                 $("[data-mask-type]", context).each(function() {
-                    //console.warn($(this).data("mask-type"), $(this).data("maskType"));
                     if ($(this).data("maskType") == "date") {
                         $(this).mask('00/00/0000', {selectOnFocus: true});
                     }
@@ -639,6 +648,28 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         for (i in this.submodules) {
             this.submodules[i].start();
         }
+
+
+
+
+        $(document).on("click", ".open-pdf-viewer", function(e) {
+            //if (PDFJS) {
+                e.preventDefault();
+
+                var url = $(e.currentTarget).attr("href");
+
+                $("#dialogs-storage-pdfviewer iframe").attr(
+                    "src", 
+                    "/assets/default/plugins/pdfjs/web/viewer.html?file=" + encodeURIComponent(url)
+                );
+
+                $("#dialogs-storage-pdfviewer").modal();
+            //}
+
+
+            
+
+        })
 
 		this.refresh(document);
 	});

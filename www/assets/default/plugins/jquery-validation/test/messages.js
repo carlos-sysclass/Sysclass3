@@ -15,7 +15,7 @@ test("group error messages", function() {
 	});
 	$.validator.addMethod("dateRange", function() {
 		return new Date($("#fromDate").val()) < new Date($("#toDate").val());
-	}, "Please specify a correct date range.");
+	}, "Please, specify a correct date range.");
 	var form = $("#dateRangeForm");
 	form.validate({
 		groups: {
@@ -27,12 +27,12 @@ test("group error messages", function() {
 	});
 	ok( !form.valid() );
 	equal( 1, form.find(".errorContainer *").length );
-	equal( "Please enter a valid date.", form.find(".errorContainer label.error").text() );
+	equal( "Please, enter a valid date.", form.find(".errorContainer label.error").text() );
 
 	$("#fromDate").val("12/03/2006");
 	$("#toDate").val("12/01/2006");
 	ok( !form.valid() );
-	equal( "Please specify a correct date range.", form.find(".errorContainer label.error").text() );
+	equal( "Please, specify a correct date range.", form.find(".errorContainer label.error").text() );
 
 	$("#toDate").val("12/04/2006");
 	ok( form.valid() );

@@ -18,7 +18,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please, refer to: http://www.datatables.net
  */
 
 (function( factory ){
@@ -293,7 +293,7 @@ $.extend( Scroller.prototype, {
 	 * Calculate the row number that will be found at the given pixel position
 	 * (y-scroll).
 	 *
-	 * Please note that when the height of the full table exceeds 1 million
+	 * Please, note that when the height of the full table exceeds 1 million
 	 * pixels, Scroller switches into a non-linear mode for the scrollbar to fit
 	 * all of the records into a finite area, but this function returns a linear
 	 * value (relative to the last non-linear positioning).

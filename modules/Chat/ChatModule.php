@@ -116,7 +116,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
 
         return count($widgets) > 0 ? $widgets : false;
     }
-    protected function getDatatableItemOptions() {
+    protected function getDatatableItemOptions($model = "me") {
         if ($this->request->hasQuery('block')) {
             return array(
                 'view'  => array(
@@ -131,7 +131,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 ),
                 'assign'  => array(
                     'icon'  => 'fa fa-user',
-                    'link' => "javascript: alert('not disponible yet');",
+                    'link' => "javascript: alert('not available yet');",
                     'class' => 'btn-sm btn-success view-chat-action tooltips',
                     'attrs'         => array(
                         'data-on-color' => "success",
@@ -141,7 +141,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 ),
                 'resolution'  => array(
                     'icon'  => 'fa fa-clock-o',
-                    'link' => "javascript: alert('not disponible yet');",
+                    'link' => "javascript: alert('not available yet');",
                     'class' => 'btn-sm btn-warning view-chat-action tooltips',
                     'attrs' => array(
                         'data-on-color' => "success",
@@ -160,7 +160,7 @@ class ChatModule extends \SysclassModule implements \ISectionMenu, \IBlockProvid
                 )
             );
         } else {
-            return parent::getDatatableItemOptions();
+            return parent::getDatatableItemOptions($model);
         }
     }
 

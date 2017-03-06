@@ -20,6 +20,13 @@ class Unit extends Model
 			array('alias' => 'Course')
 		);
 
+        $this->hasOne(
+            "id",
+            "Sysclass\\Models\\Reports\\Report\\Unit",
+            "lesson_id",
+            array('alias' => 'Progress')
+        );
+
 		$this->hasOne(
             "id",
             "Sysclass\\Models\\Content\\Progress\\Unit",
@@ -53,12 +60,17 @@ class Unit extends Model
             "id",
             array('alias' => 'Professor')
         );
-
-
-
     }
 
-    public function toFullLessonArray() {
+    protected function beforeValidation() {
+        if (is_null($this->active) || $this->active) {
+            $this->active = 1;
+        } else {
+            $this->active = 0;
+        }
+    }
+
+    public function toFullUnitArray() {
         $result = $this->toArray();
 
         $classe = $this->getClasse();
@@ -78,6 +90,38 @@ class Unit extends Model
             $result['progress'] = $progress->toArray();
         } else {
             $result['progress'] = array();
+        }
+
+        return $result;
+    }
+
+    public static function findUnitsWithRating($params) {
+        $items = self::find($params);
+
+        $result = [];
+ 
+        foreach($items as $itemObj) {
+            if ($itemObj->type == 'lesson') {
+                $item = $itemObj->toArray(); 
+                $course = $itemObj->getCourse();
+                if ($course) {
+                    $item['course'] = $course->toArray();
+                } else {
+                    $item['course'] = [];
+                }
+                $contents = $itemObj->getContents();
+
+                foreach($contents as $content) {
+                    $content_tree = $content->getFullTree($user, $only_active);
+
+                    if ($content->content_type == "video") {
+                        $item['rating'] = $content_tree['rating'];
+                        //$result['rating'] = '0.7548';
+                    }
+                   
+                }
+                $result[] = $item;
+            }
         }
 
         return $result;
@@ -114,7 +158,16 @@ class Unit extends Model
                     }
                     $unit = $content->getUnit();
                     $course = $unit->getCourse();
-                    $program = $course->getProgram();
+
+                    if ($course) {
+                        $program = $course->getProgram();
+                        if (!in_array($program->id, $program_ids)) {
+                            return self::getContentPointers($user, 'unit');
+                        }
+                    } else {
+                        return self::getContentPointers($user, 'unit');
+                    }
+
                     if (!in_array($program->id, $program_ids)) {
                         return self::getContentPointers($user, 'unit');
                     }
@@ -238,7 +291,14 @@ class Unit extends Model
         }
 
         foreach($contents as $content) {
-            $result['contents'][] = $content->getFullTree($user, $only_active);
+            $content_tree = $content->getFullTree($user, $only_active);
+
+            if ($content->content_type == "video") {
+                $result['rating'] = $content_tree['rating'];
+                //$result['rating'] = '0.7548';
+            }
+
+            $result['contents'][] = $content_tree;
         }
 
         if ($this->type == "test" && ($test = $this->getTest())) {

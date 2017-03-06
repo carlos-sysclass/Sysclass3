@@ -36,7 +36,6 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 				});
 
             	this.listenTo(table, "draw.datatables", function(row, data) {
-            		//console.warn('DRAW', row, data);
 					var exists = this.collection.findWhere({resource_id: data['id']});
 
 					var innerInput = $(row).find(".datatable-option-switch");
@@ -60,7 +59,6 @@ $SC.module("dialogs.roles.resources", function(mod, app, Backbone, Marionette, $
 					} else {
 						this.collection.add({resource_id: data['id']});
 					}
-					//console.warn('SWITCH', data, exists, this.collection.toJSON());
 
 					var resourceSwitchModel = new resourceSwitchModelClass();
 					resourceSwitchModel.set("role_id", this.model.get("id"));

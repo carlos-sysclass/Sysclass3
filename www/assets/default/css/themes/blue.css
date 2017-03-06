@@ -5,7 +5,7 @@ Blue theme
 Reset and overrides  
 ***/
 body {
-  background-color: #1570a6 !important;
+/*  background-color: #1570a6 !important; */
 }
 /***
 Page header
@@ -20,7 +20,7 @@ Page header
 }
 .header .navbar-nav .dropdown-toggle:hover,
 .header .navbar-nav .dropdown.open .dropdown-toggle {
-  background-color: #1565c0 !important;
+  background-color: #146a9d !important;
 }
 .header .navbar-nav li.dropdown .dropdown-toggle i {
   color: #68bbec !important;

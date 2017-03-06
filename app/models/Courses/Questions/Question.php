@@ -9,7 +9,7 @@ class Question extends Model
     {
         $this->setSource("mod_questions");
 
-        $this->belongsTo("area_id", "Sysclass\\Models\\Courses\\Departament", "id",  array('alias' => 'Departament'));
+        $this->belongsTo("area_id", "Sysclass\\Models\\Content\\Department", "id",  array('alias' => 'Department'));
 
         $this->belongsTo("type_id", "Sysclass\\Models\\Courses\\Questions\\Type", "id",  array('alias' => 'Type'));
         
@@ -29,9 +29,9 @@ class Question extends Model
     public function toArray() {
     	$this->options = json_decode($this->options, true);
         return $this->toFullArray(array(
-            'Departament',
+            'Department',
             'Type',
-            'Difficulty'
+            'Difficulty',
         ), parent::toArray());
     }
 

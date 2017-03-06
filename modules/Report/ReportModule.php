@@ -4,7 +4,8 @@ namespace Sysclass\Modules\Report;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Reports\Report;
+use Sysclass\Models\Reports\Report,
+Sysclass\Models\Reports\ReportDatasource;
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -12,9 +13,8 @@ use Sysclass\Models\Reports\Report;
 /**
  * @RoutePrefix("/module/report")
  */
-class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable
+class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbable, \IActionable, \IBlockProvider
 {
-
     /* ILinkable */
     public function getLinks() {
         //$data = $this->getItemsRequest();
@@ -24,14 +24,14 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             $total = Report::count("active = 1");
             $report = Report::FindFirst();
 
-            if ($total == 1) {
-                $report = Report::FindFirst("active = 1");
-                $link = 'view/' . $report->id;
-            } elseif ($total > 1) {
-                $link = 'manage';
-            } else {
-                return false;
-            }
+            //if ($total == 1) {
+            //    $report = Report::FindFirst("active = 1");
+            //    $link = 'show/' . $report->id;
+            //} elseif ($total > 1) {
+                $link = 'view';
+            //} else {
+            //    return false;
+            //}
 
             return array(
                 'administration' => array(
@@ -50,7 +50,7 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )
@@ -60,21 +60,21 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-list',
+                    'icon'  => 'fa fa-table',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment")
+                    'text'  => $this->translate->translate("Reports")
                 );
                 return $breadcrumbs;
                 break;
             }
             case "add" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-list',
+                    'icon'  => 'fa fa-table',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment")
+                    'text'  => $this->translate->translate("Reports")
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("New Enrollment Guideline"),
+                    'text'   => $this->translate->translate("New Report"),
                     'icon'  => 'fa fa-add-circle',
                     );
                 return $breadcrumbs;
@@ -82,12 +82,12 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-list',
+                    'icon'  => 'fa fa-table',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment")
+                    'text'  => $this->translate->translate("Reports")
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("Edit Enrollment Guideline"),
+                    'text'   => $this->translate->translate("Edit Report"),
                     'icon' => 'fa fa-pencil'
                 );
                 return $breadcrumbs;
@@ -103,27 +103,94 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Enrollment Guideline'),
+                    'text'      => $this->translate->translate('New Report'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
-                )/*,
-                array(
-                    'separator' => true,
-                ),
-                array(
-                    'text'      => 'Add New 2',
-                    'link'      => $this->getBasePath() . "add",
-                    //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
-                )*/
+                    'icon'      => 'fa fa-plus-square'
+                )
             )
         );
 
         return $actions[$request];
     }
 
-    public function getDatatableItemOptions() {
+    // IBlockProvider
+    public function registerBlocks() {
+        return array(
+            'report.definition' => function($data, $self) {
+                $self->putComponent("sprintf");
+                $self->putComponent("select2");
+                $self->putComponent("datatables");
+                $self->putComponent("jquery-builder");
+
+
+                // CREATE BLOCK CONTEXT
+                $block_context = $self->getConfig("blocks\\group.definition\\context");
+
+                $self->putItem("group_definition_static_context", $block_context['static']);
+                $self->putItem("group_definition_dynamic_context", $block_context['dynamic']);
+
+                $self->putSectionTemplate("foot", "dialogs/field.add");
+
+                return true;
+            }
+        );
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/add")
+     */
+    public function addPage()
+    {
+        $datasources = ReportDatasource::find();
+        $this->putItem("datasources", $datasources->toArray());
+
+        parent::addPage($id);
+    }
+
+    /**
+     * [ add a description ]
+     *
+     * @Get("/edit/{id}")
+     */
+    public function editPage($id)
+    {
+        $datasources = ReportDatasource::find();
+        $this->putItem("datasources", $datasources->toArray());
+
+        parent::editPage($id);
+    }
+
+    /**
+     * Loads defaults filters for desired datasource_id
+     *
+     * @Get("/datasource/{name}")
+     */
+    public function filterRequest($name)
+    {   
+        $key = sprintf("reports\\%s", $name);
+        $this->response->setJsonContent($this->getConfig($key));
+        return true;
+
+    }
+
+    public function getDatatableItemOptions($model = "me") {
+        if ($model == 'me') {
+            $options['show']  = array(
+                'icon'  => 'fa fa-eye',
+                'link'  => $baseLink . 'show/%id$s',
+                'class' => 'btn-sm btn-success tooltips',
+                'attrs' => array(
+                    'data-original-title' => 'Show'
+                )
+            );
+
+            $base_options = parent::getDatatableItemOptions($model);
+
+            return array_merge($options, $base_options);
+        }
         if ($this->_args['model'] == 'courses') {
             return array(
                 'enroll' => array(
@@ -137,47 +204,26 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
                 )
             );
         }
-        return parent::getDatatableItemOptions();
+        return parent::getDatatableItemOptions($model);
     }
 
     /**
      * [ add a description ]
      *
-     * @Get("/manage")
-     * @allow(resource=report, action=edit)
-     */
-
-    public function managePage()
-    {
-        print_r($this->getConfig('reports'));
-        exit;
-        // MUST SHOW ALL AVALIABLE CALENDARS TYPES
-        //$this->createClientContext("manage");
-        if (!$this->createClientContext("manage")) {
-            $this->entryPointNotFoundError($this->getSystemUrl('home'));
-        }
-
-        $this->display($this->template);
-    }
-
-    /**
-     * [ add a description ]
-     *
-     * @Get("/view/{identifier}")
+     * @Get("/show/{identifier}")
      * @allow(resource=report, action=view)
      */
 
-    public function viewReportPage($identifier)
+    public function showReportPage($identifier)
     {
-
         $report = Report::findFirstById($identifier);
 
         if (!$report) {
             $this->entryPointNotFoundError($this->getBasePath() . "manage");
         }
 
-        $datasources = $this->getConfig('reports');
-
+        //$datasources = $this->getConfig('reports');
+        /*
         if (array_key_exists($report->datasource, $datasources)) {
             $report_options = $report->mergeOptions($datasources[$report->datasource]);
         } else {
@@ -187,6 +233,7 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         if (!is_array($report_options)) {
             return $this->invalidRequestError();
         }
+
 
         // LOAD CONDITIONS, FILTER, AND FILEDS 
         $context = array(
@@ -201,16 +248,17 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
 
         $this->setCache("report_config/" . $this->report_id , $report_options);
         $context['model-id'] = $this->report_id;
-
+        */
+        $context = [
+            'entity_id' =>$identifier
+        ];
         
 
-        $this->createClientContext("view", $context, 'view/{identifier}');
+        $this->createClientContext("show", $context, 'show/{identifier}');
         
         $this->putItem('module_context', $context);
 
         $this->putItem('page_title', $this->translate->translate($report->name));
-        $this->putItem('page_subtitle', $this->translate->translate($report->description));
-
 
         $this->display($this->template);
     }

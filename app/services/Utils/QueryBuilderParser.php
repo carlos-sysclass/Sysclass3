@@ -10,8 +10,8 @@ class QueryBuilderParser extends Component {
         $this->operators = array(
             'equal' => "=", 
             'not_equal' => "!=",
-            'in' => "IN (?)",
-            'not_in' => "NOT IN (_REP_)", 
+            'in' => "IN ({_REP_:array})",
+            'not_in' => "NOT IN (_REP_:array)", 
             'less' => "<", 
             'less_or_equal' => "<=", 
             'greater' => ">", 
@@ -29,6 +29,11 @@ class QueryBuilderParser extends Component {
         );
     }
     public function parse($rules) {
+        /*
+        echo "<pre>";
+        print_r($rules);
+        */
+        
         $this->conditions = "";
         $this->bind = [];
 
@@ -42,7 +47,7 @@ class QueryBuilderParser extends Component {
         } else {
             $conditions = $rules;
         }
-        
+
         if(!array_key_exists('condition', $conditions)) {
             $getAllResults = true;
         } else {
@@ -74,6 +79,10 @@ class QueryBuilderParser extends Component {
             'conditions' => $this->conditions,
             'bind' => $this->bind
         ];
+    }
+
+    protected function newBindName() {
+        return "b" . $this->random->base58(4);
     }
 
     /**
@@ -112,39 +121,57 @@ class QueryBuilderParser extends Component {
         if($this->isLikeOp($rule['operator'])) {
 
             $parseResult .= $this->parseLikeRule($rule['operator'], $rule['value']);
+
+        } elseif($this->isNoValueOp($rule['operator'])) {
+
+            $parseResult .= $this->operators[$rule['operator']];
+
+        } elseif($this->isMultiValueOp($rule['operator'])) {
+            $values = explode(', ', $rule['value']);
+
+            $bindName = $this->newBindName();
+
+            $this->bind[$bindName] = $values;
+            //$index = count($this->bind)-1;
+
+            $parseResult .= str_replace("_REP_", $bindName, $this->operators[$rule['operator']]);
         } else {
-            $this->bind[] = $rule['value'];
+            $bindName = $this->newBindName();
+
+            $this->bind[$bindName] = $rule['value'];
 
             $index = count($this->bind)-1;
-            $parseResult .= $this->operators[$rule['operator']]." ?" . $index;           
+            $parseResult .= $this->operators[$rule['operator']]." {" . $bindName . "}";
+            //$parseResult .= $this->operators[$rule['operator']]." ?" . $index;
 
         }
         return $parseResult;
     }
 
     protected function parseLikeRule($operator, $value) {
+        $bindName = $this->newBindName();
         switch($operator) {
             case 'begins_with':
             case 'not_begins_with': {
-                $this->bind[] = $value . "%";
+                $this->bind[$bindName] = $value . "%";
                 break;
             }
             case 'contains':
             case 'not_contains': {
-                $this->bind[] = '%' . $value . "%";
+                $this->bind[$bindName] = '%' . $value . "%";
                 break;
             }
             case 'ends_with':
             case 'not_ends_with': {
-                $this->bind[] = "%" . $value;
+                $this->bind[$bindName] = "%" . $value;
                 break;
             }
             default: {
-                $this->bind[] = $value;
+                $this->bind[$bindName] = $value;
             }
         }
-        $index = count($this->bind)-1;
-        return $this->operators[$operator]." ?" . $index;
+        //$index = count($this->bind)-1;
+        return $this->operators[$operator]." {" . $bindName . "}";
     }
 
     protected function isLikeOp($operator) {
@@ -161,6 +188,34 @@ class QueryBuilderParser extends Component {
         }
         return false;
     }
+
+    protected function isNoValueOp($operator) {
+        $noValue_operators = [
+            'is_empty',
+            'is_not_empty',
+            'is_null',
+            'is_not_null'
+        ];
+        if (in_array($operator, $noValue_operators)) {
+            return true;
+        }
+        return false;
+    }
+
+    protected function isMultiValueOp($operator) {
+        $noValue_operators = [
+            'in',
+            'not_in'
+        ];
+        if (in_array($operator, $noValue_operators)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    
 }
 
 

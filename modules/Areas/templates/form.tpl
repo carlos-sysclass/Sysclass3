@@ -8,7 +8,7 @@
 			</li>
 			{if (isset($T_SECTION_TPL['users']) &&  ($T_SECTION_TPL['users']|@count > 0))}
 			<li>
-				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Students"}</a>
+				<a href="#tab_1_2" data-toggle="tab">{translateToken value="Users"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap']) &&  ($T_SECTION_TPL['roadmap']|@count > 0))}
@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Coordinator"}</label>
 					<select class="select2-me form-control input-block-level" name="coordinator_id" data-placeholder="{translateToken value='Coordinator'}" data-minimum-results-for-search="4" />
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_COORDINATORS as $coord}
 							<option value="{$coord.id}">{$coord.name} {$coord.surname}</option>
 						{/foreach}
@@ -75,7 +75,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}
