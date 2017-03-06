@@ -133,13 +133,12 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                             'unqueue' => true
                         );
                     } else {
-                        var_dump($data);
                     }
 
                 }
                 return array(
                     'status' => false,
-                    'unqueue' => false
+                    'unqueue' => true
                 );
             }
         }

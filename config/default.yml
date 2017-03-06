@@ -6,4 +6,4 @@ dashboard:
         layout.linkable.groups.order: ["administration", "content", "users", "communication", "not_classified"]
 global:
     resources:
-        layout.sections.topbar: ["translate", "dashboard", "enroll", "content", "settings", "chat"]
+        layout.sections.topbar: ["dashboard", "translate", "enroll", "content", "settings", "chat"]
