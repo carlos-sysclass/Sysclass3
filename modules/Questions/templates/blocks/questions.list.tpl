@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-md-12 text-right">
-            Test Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
+            Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
                 <i class="fa fa-question-circle-circle"></i>{translateToken value="How is it calculated"}</a>
         </div>
@@ -30,24 +30,24 @@
         <strong>LEGEND</strong>
         <div class="row">
             <div class="col-md-3">
-                `p1` = Question Point #1<br />
-                `p2` = Question Point #2<br />
-                `pX` = Question Point #X<br />
+                `p1` = Question ooint #1<br />
+                `p2` = Question point #2<br />
+                `pX` = Question point #X<br />
             </div>
             <div class="col-md-3">
-                `c1` = Question Correctness Score #1 (0.0 to 1.0)<br />
-                `c2` = Question Correctness Score #2 (0.0 to 1.0)<br />
-                `cX` = Question Correctness Score #X (0.0 to 1.0)<br />
+                `c1` = Correctness score #1 (0.0 to 1.0)<br />
+                `c2` = Correctness score #2 (0.0 to 1.0)<br />
+                `cX` = Correctness score #X (0.0 to 1.0)<br />
             </div>
             <div class="col-md-3">
-                `w1` = Question Weight #1<br />
-                `w2` = Question Weight #2<br />
-                `wX` = Question Weight #X
+                `w1` = Question weight #1<br />
+                `w2` = Question weight #2<br />
+                `wX` = Question weight #X
             </div>
             <div class="col-md-3">
-                `M` = Test Maximum Score<br />
-                `U` = User Score<br />
-                `S` = User Relative Score (0 to 100)<br />
+                `M` = Maximum score<br />
+                `U` = Score<br />
+                `S` = Relative score (0 to 100)<br />
             </div>
         </div>
     </div>
@@ -59,11 +59,11 @@
 
             <a class="btn btn-sm btn-link create-question" data-target="#questions-select-modal" data-toogle="modal">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Question"}
+                {translateToken value="Create question"}
             </a>
             <a class="btn btn-sm btn-link select-question" data-target="#questions-select-modal" data-toogle="modal" >
                 <i class="fa fa-database"></i>
-                {translateToken value="Questions Database"}
+                {translateToken value="Questions database"}
             </a>
         </div>
     </div>

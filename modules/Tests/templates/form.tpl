@@ -88,7 +88,7 @@
 			    <div class="portlet">
 			        <div class="portlet-title">
 			            <div class="caption">
-			                <i class="fa fa-clock-o"></i>{translateToken value="Duration settings"}
+			                <i class="fa fa-clock-o"></i>{translateToken value="Duration"}
 			            </div>
 			        </div>
 			        <div class="portlet-body">
@@ -97,7 +97,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for the test execution. Leave 0 (zero) for unlimited time.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for testing. Put 0 (zero) for unlimited time.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Time limit in minutes"}
@@ -106,24 +106,33 @@
 			                        <input name="test.time_limit" value="" type="text" placeholder="{translateToken value="Time limit"}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-max="500" />
 			                    </div>
 			                </div>
+                            
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            {translateToken value="Allow pause the test"}
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Times the user is allowed to re-take the test. Leave blank not to allow re-takes. Put 0 (zero) for unlimited attempts.'}">
+			                                <i class="fa fa-question-circle"></i>
+			                            </span>
+			                            {translateToken value="Re-takes"}
+			                        </label>
+			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
+			                    </div>
+			                </div>
+			           
+                       			                <div class="col-md-4">
+			                    <div class="form-group">
+			                        <label class="control-label">
+                                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to pause tests.'}">
+			                                <i class="fa fa-question-circle"></i>
+			                            </span>
+			                            {translateToken value="Pause the test"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.allow_pause" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
-			                <div class="col-md-4">
-			                    <div class="form-group">
-			                        <label class="control-label">
-			                            {translateToken value="Times the user is allowed to re-take the test. Put '0' (zero) for unlimited attempts."}
-			                        </label>
-			                        <input name="test.test_repetition" value="" type="text" placeholder="{translateToken value="Times allowed to retake the test."}" class="form-control input-xsmall" data-rule-required="false" data-rule-number="true" data-rule-min="0" data-rule-max="9999" />
-			                    </div>
-			                </div>
-			            </div>
+
+                        </div>
 			        </div>
 			    </div>
 			    <div class="portlet">
@@ -137,7 +146,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the weight of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show weight of the question during testing.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question weight"}
@@ -149,7 +158,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show user the level of difficulty of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show difficulty of the question during testing.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question level"}
@@ -161,7 +170,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the user the type of the question during the test'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show type of the question during testing.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show question type"}
@@ -175,7 +184,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Block user input only in the current question'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Block user\'s input only in the current question'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show questions one by one"}
@@ -187,7 +196,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='It allows the user to navigate through the test\'s questions'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Allow user to navigate through the test\'s questions.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Navigate through the test"}
@@ -199,7 +208,7 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shows the correct answer after user response. This feature will block the question after the user response.'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the correct answer after user response. This will block the user to change his/her response.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
 			                            {translateToken value="Show correct answers"}
@@ -213,10 +222,10 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Show the questions in a randomized order'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Display questions order randomly.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Randomize the order of questions"}
+			                            {translateToken value="Shuffle questions"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
@@ -225,10 +234,10 @@
 			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
-			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Randomize all alternatives from simple and multiple choice questions'}">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shuffle the order in which the choices are shown.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Shuffle questions alternatives"}
+			                            {translateToken value="Shuffle choices"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.randomize_answers" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">

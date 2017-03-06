@@ -20,7 +20,7 @@
 							<th class="text-center">{translateToken value="Code"}</th>
 							<th class="text-center table-image">{translateToken value="Country"}</th>
 							<th>{translateToken value="English name"}</th>
-							<th>{translateToken value=“Native name"}</th>
+							<th>{translateToken value=“Original name"}</th>
 							<th class="text-center table-boolean">{translateToken value="RTL"}</th>
 							<th class="text-center table-boolean">{translateToken value="Active"}</th>
 							<th class="text-center table-options">{translateToken value="Actions"}</th>
