@@ -34,7 +34,9 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                     //"click .edit-item-detail" : "editItem",
                     "switchChange.bootstrapSwitch .bootstrap-switch-me" : "toogleActive",
                     //"click .view-item-detail": "toogleDetail",
-                    "confirmed.bs.confirmation .delete-item-action" : "delete"
+                    "confirmed.bs.confirmation .delete-item-action" : "delete",
+                    "click .show-more" : "showQuestionMore",
+                    "click .show-less" : "showQuestionLess"
                 };
                 return _.extend(baseEvents, events);
             },
@@ -149,6 +151,20 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 this.model.destroy();
                 this.trigger("grouping:removed", this.model);
                 this.remove();
+            },
+            showQuestionMore : function() {
+                this.$(".read-more-title").hide();
+                this.$(".show-more").hide();
+
+                this.$(".read-more-full").show();
+                this.$(".show-less").show();
+            },
+            showQuestionLess : function() {
+                this.$(".read-more-full").hide();
+                this.$(".show-less").hide();
+
+                this.$(".read-more-title").show();
+                this.$(".show-more").show();
             }
         });
 

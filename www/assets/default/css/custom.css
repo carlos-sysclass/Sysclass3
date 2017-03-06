@@ -2800,3 +2800,8 @@ a.disabled i.fa {
   left: 0;
   right: 0;
 }
+
+
+.read-more-full, .show-less {
+  display: none;
+}

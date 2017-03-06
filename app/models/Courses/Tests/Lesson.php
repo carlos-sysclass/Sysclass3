@@ -62,6 +62,7 @@ class Lesson extends BaseUnit
 
             $questionsArray = $questions->toArray();
 
+
             if ($test->randomize_questions || $questions_size < $questions->count()) {
                 // IF LESS QUESTIONS THAN TOTAL, WILL RANDOMIZE
 
@@ -69,6 +70,7 @@ class Lesson extends BaseUnit
                     $questionsArray, 
                     min(intval($questions_size), count($questionsArray))
                 );
+
             } else {
                 $questions_indexes = array_keys($questionsArray);
             }
@@ -81,6 +83,10 @@ class Lesson extends BaseUnit
                 if (in_array($i, $questions_indexes)) {
                     $result[] = $question;
                 }
+            }
+            // SHUFFLE IF IT'S NEEDED
+            if ($test->randomize_questions) {
+                shuffle($result);
             }
 
             foreach($result as $index => $question) {
