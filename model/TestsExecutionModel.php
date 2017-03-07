@@ -76,13 +76,13 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
 
-        $lessonProgress = LessonProgress::findFirst(array(
+        $lessonProgress = UnitProgress::findFirst(array(
             'conditions' => 'user_id = ?0 and lesson_id = ?1',
             'bind' => array($test_try['user_id'], $test_try['test_id'])
         ));
 
         if (!$lessonProgress) {
-            $lessonProgress = new LessonProgress();
+            $lessonProgress = new UnitProgress();
             $lessonProgress->factor = 0;
             $lessonProgress->user_id = $test_try['user_id'];
             $lessonProgress->lesson_id = $test_try['test_id'];
