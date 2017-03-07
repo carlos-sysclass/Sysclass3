@@ -27,7 +27,7 @@
 			{if (isset($T_SECTION_TPL['tests_execution']) &&  ($T_SECTION_TPL['tests_execution']|@count > 0))}
 			<li>
 				<a href="#tab_1_4" data-toggle="tab">
-					<i class="fa fa-question-circle"></i>
+					<i class="fa fa-percent"></i>
 					{translateToken value="Results"}
 				</a>
 			</li>
