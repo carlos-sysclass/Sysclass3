@@ -27,8 +27,8 @@
 			{if (isset($T_SECTION_TPL['tests_execution']) &&  ($T_SECTION_TPL['tests_execution']|@count > 0))}
 			<li>
 				<a href="#tab_1_4" data-toggle="tab">
-					<i class="fa fa-question-circle"></i>
-					{translateToken value="Executions"}
+					<i class="fa fa-percent"></i>
+					{translateToken value="Results"}
 				</a>
 			</li>
 			{/if}
@@ -51,7 +51,7 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Grade rules"}
-                        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='You can select a customized rule to show yours users grades in your prefered way. If you do not choose, the grades will be showed in the [0-100] standard'}">
+                        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Apply the grade rule for the test.'}">
                             <i class="fa fa-question-circle"></i>
                         </span>
                     </label>
