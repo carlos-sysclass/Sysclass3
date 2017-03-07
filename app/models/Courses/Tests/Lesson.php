@@ -107,7 +107,18 @@ class Lesson extends BaseUnit
                 }
             }
         }
-
+        /*
+        foreach($result as $index => $testQuestion) {
+            if ($test->randomize_answers) {
+                $question = $testQuestion->getQuestion();
+                if ($question->type_id == "simple_choice" || $question->type_id == "multiple_choice") {
+                    //var_dump($question->toArray());
+                    $question->shuffleOptions();
+                    //var_dump($question->toArray());
+                }
+            }
+        }
+        */
         return $result;
     }
 

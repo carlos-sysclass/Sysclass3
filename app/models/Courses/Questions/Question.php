@@ -27,12 +27,25 @@ class Question extends Model
     }
 
     public function toArray() {
-    	$this->options = json_decode($this->options, true);
+        if (!is_array($this->options)) {
+    	   $this->options = json_decode($this->options, true);
+        }
         return $this->toFullArray(array(
             'Department',
             'Type',
             'Difficulty',
         ), parent::toArray());
+    }
+
+    public function shuffleOptions() {
+        if ($this->type_id == "simple_choice" || $this->type_id == "multiple_choice") {
+            if (!is_array($this->options)) {
+                $this->options = json_decode($this->options, true);
+            }
+
+            shuffle($this->options);
+        }
+        return $this;
     }
 
 }

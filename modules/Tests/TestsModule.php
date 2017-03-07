@@ -344,32 +344,35 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'user_id' => $this->user->id
             ));
 
-            $testModel = TestUnit::findFirstById($identifier);
+            $testUnitModel = TestUnit::findFirstById($identifier);
 
-            $testData = $testModel->toArray();
+            $testData = $testUnitModel->toArray();
 
 
-            $testData['course'] = $testModel->getCourse()->toArray();
+            $testData['course'] = $testUnitModel->getCourse()->toArray();
 
-            $testData['test'] = $testModel->getTest()->toArray();
+            $testModel = $testUnitModel->getTest();
+
+            $testData['test'] = $testModel->toArray();
             //$testData['questions'] = $testModel->getQuestions()->toArray();
-            $testQuestions = $testModel->shuffleTestQuestions($executionId);
+            $testQuestions = $testUnitModel->shuffleTestQuestions($executionId);
 
             $testData['questions'] = array();
 
             foreach($testQuestions as $i => $question) {
                 $testData['questions'][$i] = $question->toArray();
-                $testData['questions'][$i]['question'] = $question->getQuestion()->toArray();
+                $questionModel = $question->getQuestion();
+                // RANDOMIZE ANSWERS ??
+                if ($testModel->randomize_answers && (
+                    $questionModel->type_id == "simple_choice" || 
+                    $questionModel->type_id == "multiple_choice"
+                )) {
+                    $questionModel->shuffleOptions();
+                }
+                $testData['questions'][$i]['question'] = $questionModel->toArray();
             }
 
-            //$testData = $this->model("roadmap/tests")->getItem($identifier);
-            
-            // echo "<pre>";
-            // print_r($testData);
-            // echo "</pre>";
-            
-           //exit;
-            $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
+            $testData['score'] = $testData['test']['score'] = $testUnitModel->calculateTestScore($testData);
 
             // LOAD USER PROGRESS ON THIS TEST
             
