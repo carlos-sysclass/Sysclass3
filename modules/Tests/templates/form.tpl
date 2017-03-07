@@ -28,7 +28,7 @@
 			<li>
 				<a href="#tab_1_4" data-toggle="tab">
 					<i class="fa fa-question-circle"></i>
-					{translateToken value="Executions"}
+					{translateToken value="Results"}
 				</a>
 			</li>
 			{/if}
