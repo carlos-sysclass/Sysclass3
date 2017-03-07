@@ -12,7 +12,7 @@
     <div class="alert alert-info display-hide tips-container">
         <button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
         <p>
-            <strong>IMPORTANT!</strong>
+            <strong>IMPORTANT</strong>
             Question points are relative to other questions. Use in conjuction with question weights to create the test relative score. The test maximum score, and user score can be defined as:
         </p>
         <div class="row">
@@ -27,7 +27,7 @@
             </div>
         </div>
         <hr />
-        <strong>LEGEND</strong>
+        <strong>REFERENCE</strong>
         <div class="row">
             <div class="col-md-3">
                 `p1` = Question ooint #1<br />
