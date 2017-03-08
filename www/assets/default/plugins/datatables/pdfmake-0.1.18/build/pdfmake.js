@@ -16520,7 +16520,7 @@
 
 	    PDFDocument.prototype.write = function(filename, fn) {
 	      var err;
-	      err = new Error('PDFDocument#write is deprecated, and will be removed in a future version of PDFKit. Please pipe the document into a Node stream.');
+	      err = new Error('PDFDocument#write is deprecated, and will be removed in a future version of PDFKit. Please, pipe the document into a Node stream.');
 	      console.warn(err.stack);
 	      this.pipe(fs.createWriteStream(filename));
 	      this.end();
@@ -16528,7 +16528,7 @@
 	    };
 
 	    PDFDocument.prototype.output = function(fn) {
-	      throw new Error('PDFDocument#output is deprecated, and has been removed from PDFKit. Please pipe the document into a Node stream.');
+	      throw new Error('PDFDocument#output is deprecated, and has been removed from PDFKit. Please, pipe the document into a Node stream.');
 	    };
 
 	    PDFDocument.prototype.end = function() {

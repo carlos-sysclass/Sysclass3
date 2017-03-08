@@ -27,7 +27,7 @@ New Timeline
 .timeline-badge {
   float: left;
   position: relative;
-  padding-right: 30px;
+  padding-right: 18px;
   height: 80px;
   width: 80px;
 }
@@ -61,11 +61,11 @@ New Timeline
   margin-top: 20px;
   margin-left: 110px;
   background-color: #f5f6fa;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
 }
 
 .timeline-body-arrow {

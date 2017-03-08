@@ -8,7 +8,7 @@
                     </button>
                     <h4 class="modal-title">
                         <i class="fa fa-lock"></i>
-                        {translateToken value='Enrollment Settings'}
+                        {translateToken value='Enrollment settings'}
                         <span data-update="name"></span>
                     </h4>
                 </div>
@@ -53,7 +53,7 @@
 
                         <div class="form-group">
                             <label class="control-label col-md-3" style="text-align:left">
-                                {translateToken value="Restricted Groups"}
+                                {translateToken value="Restricted groups"}
                             </label>
                             <div class="col-md-9">
                                 <select class="select2-me form-control input-block-level" name="enrollgroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="group_id">
@@ -64,13 +64,13 @@
                                 </select>
 
                                 <span class="help-text">
-                                    <small>{translateToken value="Only allow the enroll for users in these groups"}</small>
+                                    <small>{translateToken value="Only allow enrollment for users in these groups"}</small>
                                 </span>
                             </div>
                         </div>
 					</div>
                     <div class="form-actions nobg">
-                        <button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+                        <button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
                     </div>
     			</div>
     		</div>

@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label">{translateToken value="Classes"}</label>
+                                        <label class="control-label">{translateToken value="Units"}</label>
                                         <input type="checkbox" name="in_class" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" value="1" data-value-unchecked="0" data-update-single="true">
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
 					</div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+                    <button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
                     <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
                 </div>
             </form>

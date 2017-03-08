@@ -100,7 +100,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
             tagName : "li",
             className : "list-file-item draggable blue-stripe",
             initialize: function(opt) {
-                console.info('blocks.roadmap.grouping/classLessonsView::initialize');
+                console.info('blocks.roadmap.grouping/classUnitsView::initialize');
 
                 this.opened = opt.opened ? opt.opened : false;
 
@@ -282,7 +282,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
             },
             */
             addOne : function(model) {
-                console.info('blocks.roadmap/classLessonsView::addOne');
+                console.info('blocks.roadmap/classUnitsView::addOne');
 
                 var self = this;
 
@@ -299,7 +299,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                 });
             },
             refreshCounters : function() {
-                console.info('blocks.roadmap.grouping/classLessonsView::refreshCounters');
+                console.info('blocks.roadmap.grouping/classUnitsView::refreshCounters');
                 var total = this.collection.size();
                 this.$("ul.items-container > li.list-file-item .total").html(total);
 
@@ -308,7 +308,7 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
                 });
             },
             render: function() {
-                console.info('blocks.roadmap.grouping/classLessonsView::render');
+                console.info('blocks.roadmap.grouping/classUnitsView::render');
 
                 var self = this;
 
@@ -668,10 +668,10 @@ $SC.module("blocks.roadmap.grouping", function(mod, app, Backbone, Marionette, $
             var self = this;
 
             this.$('#block_roadmap-accordion').on('shown.bs.collapse', function (e) {
-                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("icon-plus").addClass("icon-minus");
+                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("fa fa-plus-square").addClass("icon-minus");
             });
             this.$('#block_roadmap-accordion').on('hidden.bs.collapse', function (e) {
-                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("icon-minus").addClass("icon-plus");
+                self.$("a[href='#" + e.target.id + "']").find("i").removeClass("icon-minus").addClass("fa fa-plus-square");
             });
 
             this.listenTo(this.collections.seasons, 'request', (function() {

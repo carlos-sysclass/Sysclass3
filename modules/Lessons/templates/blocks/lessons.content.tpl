@@ -55,15 +55,15 @@ li.list-item {
                                 <div class="content-video-item content-video-empty-container col-md-6 col-lg-6 col-sm-6 col-xs-12 ">
                                     <div class="content-video-empty-item">
                                         <a href="javascript:void(0)" class="content-addfile" data-library-path="library" data-library-type="video" >
-                                            <i class="fa fa-plus-circle"></i>
-                                            {translateToken value="Add a new video"}
+                                            <i class="fa fa-cloud-upload"></i>
+                                            {translateToken value="Upload video"}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                <i class="fa fa-language"></i>
+                                <i class="fa fa-list"></i>
                                 {translateToken value="Description"}
                                 <a href="javascript: void(0);" class="btn btn-sm btn-success content-save pull-right">
                                     {translateToken value="Save"}
@@ -85,7 +85,7 @@ li.list-item {
                                 </div>
                             </div>
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                <i class="fa fa-language"></i>
+                                <i class="icon-globe"></i>
                                 {translateToken value="Subtitle"}
 
                                 <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="subtitle">
@@ -99,8 +99,8 @@ li.list-item {
 
                             <div class="content-videos-poster">
                                 <h5 class="form-section margin-bottom-10 margin-top-10">
-                                    <i class="fa fa-language"></i>
-                                    {translateToken value="Video Poster"}
+                                    <i class="fa fa-file-image-o"></i>
+                                    {translateToken value="Video poster"}
 
                                     <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="poster">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -214,9 +214,9 @@ li.list-item {
     </a>
 
     <div class="list-file-item-options">
-        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Automatic translate to...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
+        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Translate...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
             >
-                <i class="fa fa-language"></i>
+                <i class="icon-globe"></i>
         </a>
 
         <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">

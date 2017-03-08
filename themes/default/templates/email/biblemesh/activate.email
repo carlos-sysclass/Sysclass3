@@ -31,7 +31,7 @@
                                           <tr>
                                                 <td class="vertical-middle center" align="center" style="padding-top: 0;padding-bottom: 0;text-align:center;">
                                                       
-                                                      <img src="{{ mail.attachInline("img/logo.png") }}" width="185" border="0" alt="" align="center" style="float:none;display:inline-block;">
+                                                      <img src="{{ mail.attachInline("img/logo-blue.png") }}" width="185" border="0" alt="" align="center" style="float:none;display:inline-block;">
                                                       
                                                       <!--
                                                       <img src="http://local.sysclass.com/assets/sysclass.itaipu/img/logo.png" width="185" border="0" alt="" align="center" style="float:none;display:inline-block;">
@@ -55,35 +55,27 @@
                               <table class="row note">
                               <tr>
                                     <td class="wrapper last">
+                                          <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">
+                                          Thank you for participating in this demonstration.
+                                          </h4>
                                           <p>
-                                                 {{translate.translate("Segue abaixo o link para a redefinição de sua senha.") }}
+                                                Please, click on the link below to continue your registration
                                           </p>
                                           <!-- BEGIN: Note Panel -->
                                           <table class="twelve columns" style="margin-bottom: 10px">
                                           <tr>
-                                                <td class="panel" style="background: #ffffff;border: 0;padding: 10px !important;">
-                                                      <a href="{{ reset_link }}">
-                                                            {{ reset_link }}
+                                                <td class="panel" style="background: #fff;border: 0;padding: 10px !important;">
+                                                      <a href="{{ activation_link }}">
+                                                            {{ activation_link }}
                                                       </a>
                                                 </td>
                                                 <td class="expander">
                                                 </td>
                                           </tr>
                                           </table>
-                                          <p>
-                                                {{translate.translate("Se clicar sobre a url acima não funcionar, copie e cole a URL em seu vavegador.") }}
-                                          </p>
-                                          <p>
-                                                {{translate.translate("O código irá expirar dentro de seis horas. Após isso, você precisará reenviar o que pedido de redefinição de senha.") }}
-                                          </p>
-                                          <p>
-                                                {{translate.translate("Se você ainda está tendo dificuldade para recuperar sua senha, favor entrar em contato conosco pelo site: ") }} <a href="https://www.sysclass.com">https://www.sysclass.com</a>
-                                          </p>
-                                          <p>
-                                                {{translate.translate("Lembre-se que a equipe do SysClass jamais solicita sua senha por e-mail. Esteja alerta para e-mails que solicitam informações sobre sua conta.") }}
-                                                 
-                                          </p>
                                           <!-- END: Note Panel -->
+                                          <p>Thank you for joining us</p>
+                                          <p>The SysClass Team</p>
                                     </td>
                               </tr>
                               </table>
@@ -109,7 +101,7 @@
                                                             <tr>
                                                                   <td class="center">
                                                                         <span style="font-size:12px;color: #666;text-align:center;">
-                                                                        {{ translate.translate("This is a system generated email and reply is not required.") }}
+                                                                        It's automatically generated email and reply it is not necessary.
                                                                         </span>
                                                                   </td>
                                                             </tr>
@@ -124,7 +116,7 @@
                                                 <td class="wrapper" style="vertical-align: middle;color: #666;">
                                                       <table class="twelve columns">
                                                       <tr>
-                                                            <td class="vertical-middle center" style="text-align:center;padding-top: 0;padding-bottom: 0;vertical-align: middle;color: #666;">
+                                                            <td class="vertical-middle center" style="padding-top: 0;text-align:center;padding-bottom: 0;vertical-align: middle;color: #666;">
                                                                    &copy; {{ configuration.get("site_title")}} - {{ configuration.get("site_subtitle")}} {{date ("Y")}}.
                                                             </td>
                                                       </tr>
@@ -139,6 +131,7 @@
                         </td>
                   </tr>
             </table>
+
             {% endblock %}
       </td>
 </tr>

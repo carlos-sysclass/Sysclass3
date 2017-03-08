@@ -433,7 +433,7 @@ require.register("dropzone/lib/dropzone.js", function(exports, require, module){
       previewsContainer: null,
       dictDefaultMessage: "Drop files here to upload",
       dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
-      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
+      dictFallbackText: "Please, use the fallback form below to upload your files like in the olden days.",
       dictFileTooBig: "File is too big ({{filesize}}MB). Max filesize: {{maxFilesize}}MB.",
       dictInvalidFileType: "You can't upload files of this type.",
       dictResponseError: "Server responded with {{statusCode}} code.",
@@ -1577,7 +1577,7 @@ require.register("dropzone/lib/dropzone.js", function(exports, require, module){
       element = el;
     }
     if (element == null) {
-      throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector or a plain HTML element.");
+      throw new Error("Invalid `" + name + "` option provided. Please, provide a CSS selector or a plain HTML element.");
     }
     return element;
   };
@@ -1606,7 +1606,7 @@ require.register("dropzone/lib/dropzone.js", function(exports, require, module){
       elements = [els];
     }
     if (!((elements != null) && elements.length)) {
-      throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector, a plain HTML element or a list of those.");
+      throw new Error("Invalid `" + name + "` option provided. Please, provide a CSS selector, a plain HTML element or a list of those.");
     }
     return elements;
   };

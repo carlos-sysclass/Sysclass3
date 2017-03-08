@@ -375,7 +375,7 @@ RewriteRule ^(.*) ${ftp.baseurl}${project.name.safe}/${project.stable.version} [
     </target>
 
     <target name="ftp" depends="init" description="Upload API docs">
-        <echo msg="Doing FTP: Copying ${build.api.dir} to ${ftp.host}${ftp.dir}. Please wait..."/>
+        <echo msg="Doing FTP: Copying ${build.api.dir} to ${ftp.host}${ftp.dir}. Please, wait..."/>
         <ftpdeploy
             host="${ftp.host}"
             username="${ftp.username}"

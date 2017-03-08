@@ -2570,7 +2570,7 @@ var PasswordPrompt = (function PasswordPromptClosure() {
 
         if (this.reason === pdfjsLib.PasswordResponses.INCORRECT_PASSWORD) {
           promptString = mozL10n.get('password_invalid', null,
-            'Invalid password. Please try again.');
+            'Invalid password. Please, try again.');
         }
 
         this.label.textContent = promptString;
@@ -3601,7 +3601,7 @@ var PDFPresentationMode = (function PDFPresentationModeClosure() {
         return;
       }
       if (evt.button === 0) {
-        // Enable clicking of links in presentation mode. Please note:
+        // Enable clicking of links in presentation mode. Please, note:
         // Only links pointing to destinations in the current PDF document work.
         var isInternalLink = (evt.target.href &&
                               evt.target.classList.contains('internalLink'));

@@ -97,6 +97,8 @@ _before_init_functions.push(function() {
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}">{$notif.link.text}</a>
 							-->
 							<a class="btn btn-xs btn-{$notif.type}" href="{$notif.link.link}" {if isset($notif.link.target)}target="{$notif.link.target}"{/if}>{$notif.count nofilter}</a>
+						{else}
+							<span style="cursor: default;" class="btn btn-xs btn-{$notif.type}">{$notif.count nofilter}</span>
 						{/if}
 						</div>
 					</div>
@@ -113,7 +115,7 @@ _before_init_functions.push(function() {
 		<div class="easy-pie-chart">
 			<div class="number unit" data-percent="0"><span>0</span></div>
 			<!-- 
-			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units Completed"}</a> -->
+			<a class="title btn btn-link disabled" href="javascript: void(0);">{translateToken value="Units completed"}</a> -->
 		</div>
 	</div>
 

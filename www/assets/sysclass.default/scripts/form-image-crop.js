@@ -479,7 +479,7 @@ var FormImageCrop = function () {
 
           $('#demo8_form').submit(function(){
             if (parseInt($('#crop_w').val())) return true;
-            alert('Please select a crop region then press submit.');
+            alert('Please, select a crop region then press submit.');
             return false;
             });
 

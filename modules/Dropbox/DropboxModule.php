@@ -107,7 +107,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
                 $itemModel = $this->model("dropbox");
                 $messages = array(
                     'success' => "File updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -139,7 +139,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
                 $itemModel = $this->model("dropbox");
                 $messages = array(
                     'success' => "File removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your file. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your file. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -319,13 +319,13 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
         }
     }
-
+    /*
     protected function isUserAllowed($action, $module_id = null) {
         $allowed = parent::isUserAllowed($action);
         if ($allowed) {
@@ -343,5 +343,6 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
         }
         return $allowed;
     }
+    */
 
 }

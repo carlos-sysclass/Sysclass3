@@ -3,9 +3,9 @@
 <div id="translate-token-view">
 	<div class="row margin-top-20">
 		<form role="form">
-			<div class="col-md-5">
+			<div class="col-md-6">
 				<div class="form-group">
-					<label>Source Language</label>
+					<label>Source language</label>
 					<select class="select2-me form-control" name="src_language" data-placeholder="Select an option.">
 						{foreach $T_LANGUAGES as $lang}
 							<option value="{$lang.code}" {if $lang.code == $T_SYSTEM_LANGUAGE}selected="selected"{/if}>{$lang.local_name} ({$lang.name})</option>
@@ -13,12 +13,14 @@
 					</select>
 				</div>
 			</div>
+			<!--
 			<div class="col-md-2 icon-form-container">
-				<a href="#" class="btn btn-sm btn-warning translate-automatic"><i class="icon-exchange"></i> Auto Translation</a>
+				<a href="#" class="btn btn-sm btn-warning translate-automatic"><i class="icon-exchange"></i>Translate</a>
 			</div>
-			<div class="col-md-5 pull-right">
+			-->		
+			<div class="col-md-6 pull-right">
 				<div class="form-group">
-					<label>Destination Language</label>
+					<label>Target language</label>
 					<select class="select2-me form-control" name="dst_language">
 						{foreach $T_LANGUAGES as $lang}
 							<option value="{$lang.code}" {if $lang.code == $T_USER_LANGUAGE}selected="selected"{/if}>{$lang.local_name} ({$lang.name})</option>
@@ -35,7 +37,7 @@
 					<thead>
 						<tr>
 							<th>{translateToken value="Source"}</th>
-							<th>{translateToken value="Destination"}</th>
+							<th>{translateToken value="Target"}</th>
 							<th class="text-center table-options">{translateToken value="Actions"}</th>
 						</tr>
 					</thead>

@@ -4,12 +4,12 @@
         	<form id="form-question" role="form" class="form-validate" method="post" action="">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title event-title">{translateToken value="Create Question"}</h4>
+                    <h4 class="modal-title event-title">{translateToken value="Create question"}</h4>
                 </div>
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+                    <button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
                     <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
                 </div>
             </form>
@@ -28,7 +28,7 @@
         <div class="input-group-btn">
             <% if (!model.answer) { %>
             <a class="btn btn-success select-choice-action" type="button">
-                {translateToken value="This is correct!"}
+                {translateToken value="This is correct"}
             </a>
             <% } %>
             <a class="btn btn-danger remove-choice-action">

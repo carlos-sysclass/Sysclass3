@@ -137,7 +137,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )
@@ -160,7 +160,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Users")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New User"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New user"));
                 return $breadcrumbs;
                 break;
             }
@@ -170,7 +170,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Users")
                 );
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit User"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit user"));
                 return $breadcrumbs;
                 break;
             }
@@ -184,10 +184,10 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New User'),
+                    'text'      => $this->translate->translate('New user'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -196,7 +196,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -280,14 +280,14 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 );
             }
 
-            var_dump($this->translate->translate('My Programs'));
+            var_dump($this->translate->translate('Programs'));
             exit;
 
             if (count($courses) > 0) {
                 $menuItem = array(
                     'id'        => "users-topbar-menu",
                     'icon'      => ' fa fa-graduation-cap',
-                    'text'      => $this->translate->translate('My Programs'),
+                    'text'      => $this->translate->translate('Programs'),
                     'type'      => '',
                     'items'     => $items,
                     'extended'  => false,
@@ -330,10 +330,18 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     $passwordRequest->valid_until = $date->format('Y-m-d H:i:s');
 
                     if ($passwordRequest->save()) {
+
+                        $template = "email/" . $this->sysconfig->deploy->environment . "/password-reset.email";
+
+                        
+                        if (!$this->view->exists($template)) {
+                            $template = "email/password-reset.email";
+                        }
+
                         $status = $this->mail->send(
                             $user->email, 
                             "Solicitação de troca de senha. Email automático, não é necessário responder.",
-                            "email/" . $this->sysconfig->deploy->environment . "/password-reset.email",
+                            $template,
                             true,
                             array(
                                 'user' => $user->toArray(),
@@ -568,7 +576,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         $model->password = $this->authentication->hashPassword($data['new-password'], $model);
                     } else {
                         $message = new Message(
-                            "Please provide your current password",
+                            "Please, provide your current password",
                             "password",
                             "warning"
                         );
@@ -715,7 +723,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         );
                     }
                 } else {
-                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when trying to save you data. Please try again."), "warning");
+                    $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when trying to save you data. Please, try again."), "warning");
                     return array_merge($response, $userModel->toFullArray());
                 }
             } else {
@@ -828,7 +836,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
         /*
         $items[] = array(
             'link'  => $this->getBasePath() . "view/token",
-            'text'  => $this->translate->translate("Review translation")
+            'text'  => $this->translate->translate("Edit translation")
         );
         */
 

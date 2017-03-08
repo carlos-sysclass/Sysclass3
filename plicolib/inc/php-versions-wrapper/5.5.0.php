@@ -2,7 +2,7 @@
 /**
  * This file is part of the array_column library
  *
- * For the full copyright and license information, please view the LICENSE
+ * For the full copyright and license information. Please, view the LICENSE
  * file that was distributed with this source code.
  *
  * @copyright Copyright (c) 2013 Ben Ramsey <http://benramsey.com>

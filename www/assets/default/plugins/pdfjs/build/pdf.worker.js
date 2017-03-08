@@ -28666,7 +28666,7 @@ var Font = (function FontClosure() {
       return true;
     }
     // ... obviously some fonts violate that part of the specification,
-    // please refer to the comment in |Type1Font| below.
+    // please, refer to the comment in |Type1Font| below.
     if (header[0] === 0x80 && header[1] === 0x01) { // pfb file header.
       return true;
     }
@@ -33628,7 +33628,7 @@ var CalRGBCS = (function CalRGBCSClosure() {
       return;
     }
 
-    // For the blackPoint calculation details, please see
+    // For the blackPoint calculation details. Please, see
     // http://www.adobe.com/content/dam/Adobe/en/devnet/photoshop/sdk/
     // AdobeBPC.pdf.
     // The destination blackPoint is the default blackPoint [0, 0, 0].

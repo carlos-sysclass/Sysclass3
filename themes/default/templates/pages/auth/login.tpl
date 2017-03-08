@@ -28,10 +28,10 @@
 
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login or Email"}</label>
+				<label class="control-label visible-ie8 visible-ie9">{translateToken value="Login or email"}</label>
 				<div class="input-icon">
 					<i class="ti-user"></i>
-					<input type="text" id="login" name="login" placeholder="{translateToken value="Login or Email"}" autocomplete="off" class="form-control" data-rule-required="true">
+					<input type="text" id="login" name="login" placeholder="{translateToken value="Login or email"}" autocomplete="off" class="form-control" data-rule-required="true">
 				</div>
 			</div>
 			<div class="form-group">
@@ -45,7 +45,7 @@
 				<div class="form-group">
 					<!--
 					<input type="checkbox" name="remeber" value="1"/>
-					<label class="checkbox">{translateToken value="Remember Me"}</label>
+					<label class="checkbox">{translateToken value="Remember me"}</label>
 					-->
 					<button name="submit_login" type="submit" class="btn btn-success pull-right" value="Click to access" ><i class="ti-arrow-right"></i>{translateToken value="Click to access"}
 						
@@ -56,7 +56,7 @@
 					</button>
 					{/if}
 					{if $T_CONFIGURATION.enable_forgot_form}
-					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Forgot your password?"}
+					<button type="button" class="btn btn-danger pull-right" value="{translateToken value="Click"} {translateToken value="here"} {translateToken value="to reset your password"}" id="forget-password" ><i class="ti-reload"></i>{translateToken value="Forgot your password"}
 					</button>
 
 					{/if}
@@ -95,15 +95,15 @@
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
-						<a href="https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Create an account"}</a>
+						<a href="https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Click to create yours now."}</a>
 					</p>
 				</div>
 			{/if}
 			{if $T_CONFIGURATION.trouble_login_enable}
 				<div class="create-account">
 					<p>
-						{translateToken value="Trouble logging in?"}
-						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please click here"}</a>
+						{translateToken value="Trouble logging in"}
+						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please, click here"}</a>
 					</p>
 				</div>
 			{/if}
@@ -112,8 +112,8 @@
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
 		<form class="forget-form" action="/password-reset" method="post">
-			<h3 >{translateToken value="Forgot your password?"}</h3>
-			<p>{translateToken value="Enter your e-mail address to reset your password."}</p>
+			<h3 >{translateToken value="Forgot your password"}</h3>
+			<p>{translateToken value="Enter your email to reset your password."}</p>
 
 			{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
 				<div class="alert alert-{$T_MESSAGE.type}">

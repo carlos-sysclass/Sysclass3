@@ -10,7 +10,7 @@
             {if (isset($T_SECTION_TPL['advertising-banners']) &&  ($T_SECTION_TPL['advertising-banners']|@count > 0))}
             <li>
                 <a href="#tab_1_2" data-toggle="tab">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-question-circle"></i>
                     {translateToken value="Banners"}
                 </a>
             </li>
@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="form-actions nobg">
-        <button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+        <button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
     </div>
 </form>
 </div>

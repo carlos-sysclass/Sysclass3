@@ -13,7 +13,7 @@
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Classes"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Units"}</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
@@ -46,7 +46,7 @@
 					<input type="hidden" class="select2-me form-control input-block-level" name="area_id" data-placeholder="{translateToken value='Knowledge Area'}" data-url="/module/areas/items/me/combo" data-minimum-results-for-search="4" />
 					-->
 					<select class="select2-me form-control" name="area_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Department'}">
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_KNOWLEDGE_AREAS as $knowledge}
 							<option value="{$knowledge.id}">{$knowledge.name}</option>
 						{/foreach}
@@ -57,7 +57,7 @@
 					<label class="control-label">{translateToken value="Coordinators"}</label>
 
 					<select class="select2-me form-control" name="coordinator_id" multiple="multiple">
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_COORDINATORS as $id => $coordinator}
 							<option value="{$coordinator.id}">{$coordinator.name} {$coordinator.surname}</option>
 						{/foreach}
@@ -101,7 +101,7 @@
 		</div>
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}

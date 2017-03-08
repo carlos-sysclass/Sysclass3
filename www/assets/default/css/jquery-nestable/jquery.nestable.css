@@ -11,8 +11,8 @@
 
 .dd-handle { display: block; height: 30px; margin: 5px 0; cursor: move; padding: 5px 10px; color: #333; text-decoration: none; font-weight: 400; border: 1px solid #ccc;
     background: #fafafa;
-    -webkit-border-radius: 3px;
-            border-radius: 3px;
+    -webkit-border-radius: 0px;
+            border-radius: 0px;
     box-sizing: border-box; -moz-box-sizing: border-box;
 }
 .dd-handle:hover { color: #2ea8e5; background: #fff; }
@@ -45,8 +45,8 @@
 
 .dd3-content { display: block; height: 30px; margin: 5px 0; padding: 5px 10px 5px 40px; color: #333; text-decoration: none; font-weight: 400; border: 1px solid #ccc;
     background: #fafafa;
-    -webkit-border-radius: 3px;
-            border-radius: 3px;
+    -webkit-border-radius: 0px;
+            border-radius: 0px;
     box-sizing: border-box; -moz-box-sizing: border-box;
 }
 .dd3-content:hover { color: #2ea8e5; background: #fff; }

@@ -214,4 +214,4 @@ In that case, you might want to increase space around box:
 Bug tracker
 -----------
 
-Have a bug? Please create an issue on GitHub at https://github.com/fancyapps/fancyBox/issues
+Have a bug? Please, create an issue on GitHub at https://github.com/fancyapps/fancyBox/issues

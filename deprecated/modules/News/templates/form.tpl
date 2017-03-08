@@ -10,7 +10,7 @@
 			{if (isset($T_SECTION_TPL['permission']) &&  ($T_SECTION_TPL['permission']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					<i class="fa fa-question"></i>
+					<i class="fa fa-question-circle"></i>
 					{translateToken value="Permission"}
 				</a>
 			</li>
@@ -36,7 +36,7 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Expiration Date"}</label>
+							<label class="control-label">{translateToken value="Completion date"}</label>
 							<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 						</div>
 					</div>
@@ -59,7 +59,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Expiration Date"}</label>
+							<label class="control-label">{translateToken value="Completion date"}</label>
 							<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 						</div>
 					</div>
@@ -83,7 +83,7 @@
 
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}

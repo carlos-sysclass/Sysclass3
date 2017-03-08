@@ -4,7 +4,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   border: 1px solid #BBBBBB;
-  border-radius: 4px 4px 4px 4px;
+  border-radius: 0px 4px 4px 4px;
 }
 
 .fuelux .tree .tree-folder {
@@ -17,9 +17,9 @@
 .fuelux .tree .tree-folder .tree-folder-header {
   position: relative;
   height: 20px;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  -webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+          border-radius: 0px;
 }
 
 .fuelux .tree .tree-folder .tree-folder-header:hover {
@@ -50,9 +50,9 @@
   height: 20px;
   margin-top: 1px;
   cursor: pointer;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  -webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+          border-radius: 0px;
 }
 
 .fuelux .tree .tree-item:hover {
@@ -72,9 +72,9 @@
   width: 4px;
   height: 4px;
   background-color: #333333;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  -webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+          border-radius: 0px;
 }
 
 .fuelux .tree .tree-item .icon-ok {

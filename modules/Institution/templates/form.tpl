@@ -83,7 +83,7 @@
 
 				<div class="form-body">
 					<h5 class="form-section margin-bottom-10 margin-top-10">
-						{translateToken value="Social Info"}
+						{translateToken value="Social info"}
 					</h5>
 					{include "`$smarty.current_dir`/blocks/social.tpl"
 					T_SHOW_LANGUAGE="locale_code"}
@@ -111,7 +111,7 @@
 -->
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}

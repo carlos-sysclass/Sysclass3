@@ -5,7 +5,7 @@
 	            <div class="modal-header">
 	                <h4 class="modal-title">
 	                	{translateToken value="Exercises"}
-	                	<small>Please answer the questions below.</small>
+	                	<small>Please, answer the questions below.</small>
 	                </h4>
 	            </div>
 	            <div class="modal-body">

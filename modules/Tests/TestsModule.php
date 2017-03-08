@@ -9,7 +9,7 @@ use Phalcon\Acl\Adapter\Memory as AclList,
     Sysclass\Models\Content\Course as Classe,
     Sysclass\Models\Acl\Role,
     Sysclass\Models\Courses\Grades\Grade,
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\Tests\Lesson as TestUnit,
     Sysclass\Models\Content\Tests\Execution as TestExecution;
     
 /**
@@ -22,22 +22,23 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     /* ISummarizable */
     public function getSummary() {
         // GET THE USER NOT DONE YET TESTS
-        $pendingTests = TestLesson::getUserPendingTests($this->user->id);
+        $pendingTests = TestUnit::getUserPendingTests($this->user->id);
 
         $summary = array(
             'type'  => 'danger',
             'count' => $pendingTests->count(),
-            'text'  => $this->translate->translate('New Tests')
+            'text'  => $this->translate->translate('New tests')
         );
 
         if ($pendingTests->count() > 0) {
             $test_id = $pendingTests[0]->id;
-
+            /*
             $summary['link'] = array(
                 'text'  => $this->translate->translate('View'),
                 'link'  => $this->getBasePath() . "open/" . $test_id,
                 'link'  => 'javascript: void(0)'
             );
+            */
         }
 
         return $summary;
@@ -47,7 +48,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     public function getLinks() {
         if ($this->acl->isUserAllowed(null, "Tests", "View")) {
 
-            $total = TestLesson::count("type='test' AND active = 1");
+            $total = TestUnit::count("type='test' AND active = 1");
 
             return array(
                 'content' => array(
@@ -89,17 +90,17 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     break;
                 }
                 case "add" : {
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("New Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("New test"));
                     break;
                 }
                 case "edit/{identifier}" : {
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit test"));
                     break;
                 }
                 case "execute/{identifier}/{execution_id}" : {
                     // TODO A WAY TO INJECT DATA INTO BREADCRUMB FROM HERE (string substitution FROM variables in the route)
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Test"));
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("View Execution"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("Edit test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("View execution"));
                     break;
                 }
             }
@@ -114,10 +115,10 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Test'),
+                    'text'      => $this->translate->translate('New test'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -126,7 +127,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -190,7 +191,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 );
 
                 $self->putComponent("data-tables");
-                $self->putScript("scripts/utils.datatables");
+                //$self->putScript("scripts/utils.datatables");
 
                 $self->putItem("tests_execution_context", $block_context);
 
@@ -213,7 +214,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         ));
         $this->putItem("classes", $classes->toArray());
 
-        $teacherRole = Role::findFirstByName('Instructor');
+        $teacherRole = Role::findFirstByName('Teacher');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
@@ -257,7 +258,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
     public function openPage($identifier)
     {
         //if ($userData = $this->getCurrentUser()) {
-            $testModel = TestLesson::findFirstById($identifier);
+            $testModel = TestUnit::findFirstById($identifier);
 
             $testData = $testModel->toArray();
 
@@ -343,32 +344,35 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'user_id' => $this->user->id
             ));
 
-            $testModel = TestLesson::findFirstById($identifier);
+            $testUnitModel = TestUnit::findFirstById($identifier);
 
-            $testData = $testModel->toArray();
+            $testData = $testUnitModel->toArray();
 
 
-            $testData['course'] = $testModel->getCourse()->toArray();
+            $testData['course'] = $testUnitModel->getCourse()->toArray();
 
-            $testData['test'] = $testModel->getTest()->toArray();
+            $testModel = $testUnitModel->getTest();
+
+            $testData['test'] = $testModel->toArray();
             //$testData['questions'] = $testModel->getQuestions()->toArray();
-            $testQuestions = $testModel->shuffleTestQuestions($executionId);
+            $testQuestions = $testUnitModel->shuffleTestQuestions($executionId);
 
             $testData['questions'] = array();
 
             foreach($testQuestions as $i => $question) {
                 $testData['questions'][$i] = $question->toArray();
-                $testData['questions'][$i]['question'] = $question->getQuestion()->toArray();
+                $questionModel = $question->getQuestion();
+                // RANDOMIZE ANSWERS ??
+                if ($testModel->randomize_answers && (
+                    $questionModel->type_id == "simple_choice" || 
+                    $questionModel->type_id == "multiple_choice"
+                )) {
+                    $questionModel->shuffleOptions();
+                }
+                $testData['questions'][$i]['question'] = $questionModel->toArray();
             }
 
-            //$testData = $this->model("roadmap/tests")->getItem($identifier);
-            
-            // echo "<pre>";
-            // print_r($testData);
-            // echo "</pre>";
-            
-           //exit;
-            $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
+            $testData['score'] = $testData['test']['score'] = $testUnitModel->calculateTestScore($testData);
 
             // LOAD USER PROGRESS ON THIS TEST
             
@@ -507,7 +511,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $executionId = $execution->id;
                 $executionData = $execution->toArray();
 
-                $testObject = TestLesson::findFirstById($identifier);
+                $testObject = TestUnit::findFirstById($identifier);
 
                 $testData = $testObject->toArray();
 
@@ -585,7 +589,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $itemModel = $this->model("tests/question");
                 $messages = array(
                     'success' => "Question created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $data['language_code'] = $this->translate->getSource();
@@ -599,7 +603,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $messages = array(
                     'success' => "Test created.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again",
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again",
                     'try_limit' => "You can not run this test more often"
                 );
             } else {
@@ -660,7 +664,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "execution") {
                 $messages = array(
                     'success' => "Test updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $execution = TestExecution::findFirstById($identifier);
@@ -735,7 +739,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 $itemModel = $this->model("tests/question");
                 $messages = array(
                     'success' => "Question removed.",
-                    'error' => "There's ocurred a problem when the system tried to remove your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             } else {
                 return $this->invalidRequestError();
@@ -849,7 +853,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             } elseif ($model == "question") {
                 $messages = array(
                     'success' => "Questions order updated.",
-                    'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
 
                 $itemModel = $this->getModelData("me", $lesson_id);
@@ -878,7 +882,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
      *
      * @Put("/items/lessons/set-order/{class_id}")
      */
-    public function setLessonOrderRequest($class_id)
+    public function setUnitOrderRequest($class_id)
     {
         if ($this->isUserAllowed("edit")) {
             
@@ -887,7 +891,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
             $messages = array(
                 'success' => "Lesson order updated.",
-                'error' => "There's ocurred a problem when the system tried to save your data. Please check your data and try again"
+                'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
             );
 
             if ($itemModel->setQuestionOrder($data['position'])) {
@@ -902,6 +906,36 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $this->response->setJsonContent(
             $response
         );
+    }
+
+        /**
+     * This function is called ONE-TIME inside getItemsRequest function. 
+     * MUST return a options array, to bve applied to all finded records.
+     * @return [array|null] [description]
+     */
+    protected function getDatatableItemOptions($model = 'me') {
+
+        if ($model == "execution") {
+            $options = array();
+            /*
+            $model_info = $this->model_info[$model];
+
+            $deleteAllowed = $this->isResourceAllowed("delete", $model_info);
+
+            if ($deleteAllowed) {
+                $options['remove']  = array(
+                    'icon'  => 'fa fa-remove',
+                    'class' => 'btn-sm btn-danger tooltips',
+                    'attrs' => array(
+                        'data-original-title' => 'Remove'
+                    )
+                );
+            }
+            */
+            return $options;
+        } else {
+            return parent::getDatatableItemOptions($model);
+        }
     }
 
 }

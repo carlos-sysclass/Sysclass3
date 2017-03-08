@@ -15,13 +15,13 @@
                 	<form class="form-horizontal" action="#">
     					<div class="form-body">
     						<div class="form-group">
-                                <label class="">{translateToken value="Search for Users"}</label>
+                                <label class="">{translateToken value="Search users"}</label>
                                 {if ($T_LOAD_BY_AJAX)}
                             		<input 
                                         type="hidden" 
                                         class="select2-me form-control col-md-12" 
                                         name="user_id" 
-                                        data-placeholder="{translateToken value='Please Select'}" 
+                                        data-placeholder="{translateToken value='Please select'}" 
                                         data-url="/module/users/items/me/combo" 
                                         data-format-as-template="%(name)s %(surname)s (%(login)s)" 
                                     />
@@ -29,13 +29,13 @@
                                     <select 
                                         class="select2-me form-control col-md-12" 
                                         name="user_id" 
-                                        placeholder="{translateToken value='Please Select'}" 
-                                        data-placeholder="{translateToken value='Please Select'}" 
+                                        placeholder="{translateToken value='Please select'}" 
+                                        data-placeholder="{translateToken value='Please select'}" 
                                         data-format-as-template="%(name)s %(surname)s (%(login)s)" 
                                         data-rule-required="true"
                                     />
                                         <!--
-                                            <option value="" selected="selected">{translateToken value='Please Select'}</option>
+                                            <option value="" selected="selected">{translateToken value='Please select'}</option>
                                         -->
                                         {foreach $T_DIALOG_USER_SELECT_USERS as $user} 
                                         <option value="{$user['id']}">

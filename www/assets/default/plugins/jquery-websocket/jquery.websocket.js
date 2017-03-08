@@ -52,7 +52,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * Please feel free to contact us via e-mail: opensource@clickalicious.de
+ * Please, feel free to contact us via e-mail: opensource@clickalicious.de
  *
  * @category   jquery
  * @package    jquery_plugin

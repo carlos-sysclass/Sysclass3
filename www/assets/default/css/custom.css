@@ -236,6 +236,7 @@ body {
 
 .page-content {
     padding: 20px 20px 20px;
+    box-shadow: 0px 0px 45px 5px rgba(0, 0, 0, 0.33);
 }
 .page-boxed {
     background-color: #E8E8E8 !important;
@@ -1522,11 +1523,11 @@ UI Loading
 .loading-message.loading-message-boxed {
   border: 1px solid #ddd;
   background-color: #eee;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
@@ -1537,11 +1538,11 @@ UI Loading
 }
 
 .page-loading {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1753,7 +1754,7 @@ button.calendar-news-item {
     font-size: 14px !important;
     padding: 0;
     width: inherit;
-    margin: 3px 5px 3px 1px;
+    margin: 3px 0px 0px 0px;
 }
 .header .navbar-nav > li > a > i {
 	font-size: 14px !important;
@@ -1769,7 +1770,8 @@ button.calendar-news-item {
 .header .navbar-nav > li > a > span {
 	float: left;
     padding: 0 3px;
-    font-weight: 100;
+    font-size: 11px;
+	letter-spacing: 0.5px;
     color: #fff;
 }
 
@@ -2155,7 +2157,7 @@ button.calendar-news-item {
     padding: 12px 10px 9px !important;
 }
 .btn-circle {
-    border-radius: 15px !important;
+    border-radius: 0px !important;
 }
 
 .form-group-inline div.inline-item {
@@ -2229,7 +2231,7 @@ button.calendar-news-item {
 }
 .header .navbar-nav > li.menu-item .menu-link {
     color: #fff;
-    padding: 11px 12px 11px;
+    padding: 11px 5px 0;
     height: 42px;
     font-size: 11px;
     text-transform: uppercase;
@@ -2386,7 +2388,7 @@ a.list-group-item,
 	color: #444;
 }
 .ver-inline-menu li.active a, .ver-inline-menu li.active i {
-	background: #1565c0 !important;
+	background: #146a9d !important;
     color: #fff;
     text-decoration: none;
 }
@@ -2620,7 +2622,7 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 #institution-widget .panel-body {
   max-height: 270px;  
-  min-height: 270px;
+  min-height: 260px;
 }
 .btn-compressed {
   padding-left: 3px;
@@ -2771,6 +2773,35 @@ a.editable-click:hover {
 
 .fa.rating-star {
   color: #ffc20e;
-  font-size: 16px !important;
+  font-size: 14px !important;
   letter-spacing: 1px;
+}
+
+a.disabled i.fa {
+  color: #ccc;
+}
+
+.organization-logo {
+  height: 75px;
+  vertical-align: middle;
+  position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.organization-logo img {
+  max-width: 85%;
+  display: block;
+  max-height: 65px;
+  height: auto;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+.read-more-full, .show-less {
+  display: none;
 }

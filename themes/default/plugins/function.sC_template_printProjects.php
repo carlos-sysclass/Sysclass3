@@ -31,7 +31,7 @@ function smarty_function_sC_template_printProjects($params, &$smarty)
             // Users may view a project
             $str .= '<a title="'.$title_message.'" href = "user.php?ctg=projects&view_project='.$params['data'][$i]['id'];
 
-            // Users and professors may have to change lesson session - using the new_lessons_ID parameter for this purpose
+            // Users and professors may have to change unit session - using the new_lessons_ID parameter for this purpose
             if (isset($params['data'][$i]['show_lessons_id']) && $params['data'][$i]['show_lessons_id'] != 0 && isset($params['data'][$i]['show_lessons_name'])) {
                 $str .= '&new_lessons_ID='.$params['data'][$i]['show_lessons_id'].'&sbctg=exercises"><b>'. $params['data'][$i]['show_lessons_name'] . '</b>: ' . $params['data'][$i]['title'].'</a></td>';
             } else {
@@ -48,7 +48,7 @@ function smarty_function_sC_template_printProjects($params, &$smarty)
             }
             $str .= '</td></tr>';
         } else {
-			if (isset($params['data'][$i]['upload_timestamp'])) {//from lesson control panel
+			if (isset($params['data'][$i]['upload_timestamp'])) {//from unit control panel
     			$str .= '<a title="'.$title_message.'" href = "instructor.php?ctg=projects&project_results='.$params['data'][$i]['id'].'">'.$params['data'][$i]['users_LOGIN'].' ('.$params['data'][$i]['title'].')</a></td>
                 	 <td class = "cpanelTime">';
 				$str .= '<span> '.sC_convertIntervalToTime(time() - $params['data'][$i]['upload_timestamp'], true)."&nbsp;"._AGO."</span>";

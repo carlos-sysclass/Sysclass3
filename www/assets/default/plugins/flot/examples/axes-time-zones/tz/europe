@@ -3,7 +3,7 @@
 # 2009-05-17 by Arthur David Olson.
 
 # This data is by no means authoritative; if you think you know better,
-# go ahead and edit the file (and please send any changes to
+# go ahead and edit the file (and please, send any changes to
 # tz@iana.org for general use in the future).
 
 # From Paul Eggert (2006-03-22):
@@ -30,7 +30,7 @@
 #	William Willett, The Waste of Daylight, 19th edition
 #	</a> (1914-03)
 #
-#	Brazil's Departamento Servico da Hora (DSH),
+#	Brazil's Departmento Servico da Hora (DSH),
 #	<a href="http://pcdsh01.on.br/HISTHV.htm">
 #	History of Summer Time
 #	</a> (1998-09-21, in Portuguese)
@@ -820,7 +820,7 @@ Zone	Europe/Sofia	1:33:16 -	LMT	1880
 # see Serbia
 
 # Cyprus
-# Please see the `asia' file for Asia/Nicosia.
+# Please, see the `asia' file for Asia/Nicosia.
 
 # Czech Republic
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
@@ -1240,7 +1240,7 @@ Zone	Europe/Berlin	0:53:28 -	LMT	1893 Apr
 			1:00	EU	CE%sT
 
 # Georgia
-# Please see the "asia" file for Asia/Tbilisi.
+# Please, see the "asia" file for Asia/Tbilisi.
 # Herodotus (Histories, IV.45) says Georgia north of the Phasis (now Rioni)
 # is in Europe.  Our reference location Tbilisi is in the Asian part.
 

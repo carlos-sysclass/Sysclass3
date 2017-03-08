@@ -32,7 +32,7 @@
 
                         <div class="form-body">
                             <h5 class="form-section margin-bottom-10 margin-top-10">
-                                {translateToken value="Social Info"}
+                                {translateToken value="Social info"}
                             </h5>
                             {include "`$smarty.current_dir`/../blocks/social.tpl" 
                             T_MODULE_CONTEXT=$T_ORGANIZATION_SOCIAL_DIALOG_CONTEXT
@@ -68,7 +68,7 @@
             </div>
             -->
             <div class="modal-footer">
-                <button class="btn btn-success save-action" type="submit">{translateToken value="Save Changes"}</button>
+                <button class="btn btn-success save-action" type="submit">{translateToken value="Save changes"}</button>
                 <button type="button" class="btn default" data-dismiss="modal">{translateToken value="Close"}</button>
             </div>
         </div><!-- /.modal-content -->

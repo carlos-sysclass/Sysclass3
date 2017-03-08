@@ -197,7 +197,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     array(
                         'count' => count($items),
                         'text'  => $this->translate->translate('Enrollment'),
-                        'icon'  => 'fa fa-cogs',
+                        'icon'  => 'glyphicon glyphicon-inbox',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -208,7 +208,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             )
@@ -218,7 +218,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         switch($request) {
             case "view" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-list',
+                    'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
@@ -227,12 +227,12 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             }
             case "add" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-list',
+                    'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("New Enrollment Guideline"),
+                    'text'   => $this->translate->translate("New enrollment rule"),
                     'icon'  => 'fa fa-add-circle',
                     );
                 return $breadcrumbs;
@@ -240,12 +240,12 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
             }
             case "edit/{id}" : {
                 $breadcrumbs[] = array(
-                    'icon'  => 'fa fa-list',
+                    'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
                     'text'  => $this->translate->translate("Enrollment")
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("Edit Enrollment Guideline"),
+                    'text'   => $this->translate->translate("Create an enrollment form"),
                     'icon' => 'fa fa-pencil'
                 );
                 return $breadcrumbs;
@@ -261,10 +261,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Enrollment Guideline'),
+                    'text'      => $this->translate->translate('New enrollment rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -273,7 +273,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -382,7 +382,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'link'  => 'javascript:void(0);',
                     'class' => 'btn-sm btn-primary datatable-actionable tooltips',
                     'attrs' => array(
-                        'data-original-title' => $this->translate->translate('Enrolled Users')
+                        'data-original-title' => $this->translate->translate('Users')
                     )
                 ),
                 'settings' => array(
@@ -390,7 +390,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'link'  => 'javascript:void(0);',
                     'class' => 'btn-sm btn-warning datatable-actionable tooltips',
                     'attrs' => array(
-                        'data-original-title' => $this->translate->translate('Program Settings')
+                        'data-original-title' => $this->translate->translate('Settings')
                     )
                 ),
                 'remove'  => array(
@@ -501,7 +501,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     $items[$key]['options'] = array();
                     if ($item['approved'] == 0) {
                         $items[$key]['options']['approve'] = array(
-                            'icon'  => 'fa fa-check',
+                            'icon'  => 'glyphicon glyphicon-edit',
                             //'link'  => $baseLink . "block/" . $item['id'],
                             'class' => 'btn-sm btn-success tooltips',
                             'attrs'         => array(

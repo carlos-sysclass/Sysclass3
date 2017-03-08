@@ -1,7 +1,7 @@
 <?php
-use Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+use Sysclass\Models\Courses\Tests\Lesson as TestUnit,
     Sysclass\Models\Content\Progress\Course as ClasseProgress,
-    Sysclass\Models\Content\Progress\Unit as LessonProgress;
+    Sysclass\Models\Content\Progress\Unit as UnitProgress;
 
 class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizableModel {
 
@@ -76,13 +76,13 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         //$evManager = \Phalcon\DI::getDefault()->get("eventsManager");
 
 
-        $lessonProgress = LessonProgress::findFirst(array(
+        $lessonProgress = UnitProgress::findFirst(array(
             'conditions' => 'user_id = ?0 and lesson_id = ?1',
             'bind' => array($test_try['user_id'], $test_try['test_id'])
         ));
 
         if (!$lessonProgress) {
-            $lessonProgress = new LessonProgress();
+            $lessonProgress = new UnitProgress();
             $lessonProgress->factor = 0;
             $lessonProgress->user_id = $test_try['user_id'];
             $lessonProgress->lesson_id = $test_try['test_id'];
@@ -135,7 +135,7 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
 
         //$testData = $this->model("tests")->getItem($executionData['test_id']);
 
-        $testModel = TestLesson::findFirstById($executionData['test_id']);
+        $testModel = TestUnit::findFirstById($executionData['test_id']);
 
         if ($testModel) {
 
@@ -154,11 +154,14 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
             $totalPoints = 0;
 
             foreach($testQuestions as $question) {
-                $questionData = $question->toArray();
-                $questionData['question'] = $question->getQuestion()->toArray();
+                //$questionData = $question->toArray();
+                //$questionData['question'] = $question->getQuestion()->toArray();
 
                 $testPoints += $question->points * $question->weight;
-                $totalPoints += $questionModel->correct($questionData, $executionData['answers'][$question->id]);
+                //$totalPoints += $questionModel->correct($questionData, $executionData['answers'][$question->id]);
+
+                $totalPoints += $question->correct($execution['answers'][$question->id]);
+
             }
 
             $userScore = $totalPoints / $testPoints;

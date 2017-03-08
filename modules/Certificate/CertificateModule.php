@@ -4,7 +4,7 @@ namespace Sysclass\Modules\Certificate;
 use Sysclass\Models\Users\User,
     Sysclass\Models\Certificates\Certificate,
     Sysclass\Models\Content\Course,
-    Sysclass\Models\Courses\Tests\Lesson as LessonTest,
+    Sysclass\Models\Courses\Tests\Unit as UnitTest,
     Dompdf\Dompdf,
     Dompdf\Canvas,
     Sysclass\Models\Organizations\Organization,
@@ -133,13 +133,12 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                             'unqueue' => true
                         );
                     } else {
-                        var_dump($data);
                     }
 
                 }
                 return array(
                     'status' => false,
-                    'unqueue' => false
+                    'unqueue' => true
                 );
             }
         }
@@ -147,7 +146,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
     public function createTestCertificate($user_id, $test_id) {
         // GET CLASS AND COURSE NAME
-        $lessonTest = LessonTest::findFirstById($test_id);
+        $unitTest = UnitTest::findFirstById($test_id);
         $user = User::findFirstById($user_id);
         if ($lessonTest && $user) {
             $module = $lessonTest->getCourse();
@@ -249,7 +248,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 
                             'info',
                             array(
-                                'text' => "Visualizar",
+                                'text' => "View",
                                 'link' => $this->getBasePath() . "print/" . $certificate->id
                             ),
                             false,

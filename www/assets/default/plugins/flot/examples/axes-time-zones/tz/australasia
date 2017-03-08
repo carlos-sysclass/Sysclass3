@@ -10,7 +10,7 @@
 
 # Australia
 
-# Please see the notes below for the controversy about "EST" versus "AEST" etc.
+# Please, see the notes below for the controversy about "EST" versus "AEST" etc.
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Aus	1917	only	-	Jan	 1	0:01	1:00	-
@@ -535,7 +535,7 @@ Zone Pacific/Pago_Pago	 12:37:12 -	LMT	1879 Jul  5
 # </a>
 
 # From Laupue Raymond Hughes (2010-10-07):
-# Please see
+# Please, see
 # <a href="http://www.mcil.gov.ws">
 # http://www.mcil.gov.ws
 # </a>,
@@ -633,7 +633,7 @@ Zone Pacific/Pago_Pago	 12:37:12 -	LMT	1879 Jul  5
 # Daylight Saving Time commences on Sunday 30th September 2012 and
 # ends on Sunday 7th of April 2013.
 #
-# Please find link below for more information.
+# Please, find link below for more information.
 # http://www.mcil.gov.ws/mcil_publications.html
 #
 # That publication also includes dates for Summer of 2013/4 as well
@@ -779,7 +779,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # NOTES
 
 # This data is by no means authoritative; if you think you know better,
-# go ahead and edit the file (and please send any changes to
+# go ahead and edit the file (and please, send any changes to
 # tz@iana.org for general use in the future).
 
 # From Paul Eggert (2006-03-22):

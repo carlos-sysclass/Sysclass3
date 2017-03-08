@@ -1,7 +1,12 @@
 {assign var="context" value=$T_DATA.data}
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 text-center">
-		<img class="" alt="" src="{$context.logo.url}" style="max-width: 88%; margin-bottom: 12px; margin-top: 10px; max-height: 80px;" />
+	<div class="col-lg-12 col-md-12 col-md-offset-0 col-sm-offset-2 col-sm-8 col-xs-12 organization-logo">
+		<img class="" alt="" 
+    	src="{$context.logo.url}" 
+    	style="
+
+
+        "/>
     </div>
 </div>
 
@@ -56,7 +61,7 @@
 	{/if}
 
 	{if $social.linkedin}
-		{$text=translateToken value="Linked In"}
+		{$text=translateToken value="LinkedIn"}
 
 		{$variables[$index].linkedin=['link' => "https://www.linkedin.com/{$social.linkedin}",'icon'=>'fa-linkedin-square','text'=>$text]}
 	{/if}
@@ -126,7 +131,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a Ticket"}</span>
+			<span class=""><i class="icon-map-marker"></i>{translateToken value="Open a ticket"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
@@ -140,7 +145,7 @@
 <div class="row">
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">
 		<a href="javascript: void(0);" class="btn btn-default btn-sm disabled">
-			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs Pending"}</span>
+			<span><i><strong class="text-danger">3</strong></i>{translateToken value="Docs eending"}</span>
 		</a>
 	</div>
 	<div class="col-md-6 btn-group-vertical btn-group-fixed-size">

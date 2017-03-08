@@ -476,7 +476,7 @@ Dropdown Menu
   -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   font-size: 13px;
-/*  font-family: "Segoe UI",Helvetica, Arial, sans-serif; */
+/*  font-family: 'Open Sans', sans-serif; */
   border: 1px solid #ddd;
 }
 
@@ -592,9 +592,9 @@ Dropdown Menu
   left: auto;
   margin-right: -1px;
   margin-left: 0;
-  -webkit-border-radius: 6px 0 6px 6px;
-     -moz-border-radius: 6px 0 6px 6px;
-          border-radius: 6px 0 6px 6px;
+  -webkit-border-radius: 0px 0 6px 6px;
+     -moz-border-radius: 0px 0 6px 6px;
+          border-radius: 0px 0 6px 6px;
 }
 
 @media (max-width: 767px) {
@@ -657,9 +657,9 @@ Dropdown Menu Badges
     padding: 3px 6px 3px 6px;
     text-align: center;
     vertical-align: middle;
-   -webkit-border-radius: 12px !important;
-      -moz-border-radius: 12px !important;
-           border-radius: 12px !important;
+   -webkit-border-radius: 0px !important;
+      -moz-border-radius: 0px !important;
+           border-radius: 0px !important;
 }
 
 .dropdown-menu > li > a > .badge.badge-roundless {
@@ -838,7 +838,7 @@ textarea[readonly] {
 }
 
 .input-medium {
-  width: 240px !important;
+  width: 216px !important;
 }
 
 .input-large {
@@ -996,8 +996,8 @@ h7 .label {
   font-weight: 300;
   text-align: center;
   background-color: #e02222;
-  height: 18px;
-  padding: 3px 6px 3px 6px;
+  height: 16px;
+  padding: 3px 4px 3px 4px;
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
@@ -1190,9 +1190,9 @@ wells
 
 .tabs-left > .nav-tabs > li > a {
   margin-right: -1px;
-  -webkit-border-radius: 4px 0 0 4px;
-     -moz-border-radius: 4px 0 0 4px;
-          border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 0px 0 0 4px;
+     -moz-border-radius: 0px 0 0 4px;
+          border-radius: 0px 0 0 4px;
 }
 
 .tabs-left > .nav-tabs > li > a:hover,

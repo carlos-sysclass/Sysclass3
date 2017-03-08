@@ -3,7 +3,7 @@ namespace Sysclass\Models\Content\Tests;
 
 use Plico\Mvc\Model,
     Sysclass\Models\Users\User,
-    Sysclass\Models\Courses\Tests\Lesson as TestLesson,
+    Sysclass\Models\Courses\Tests\Lesson as TestUnit,
     Sysclass\Models\Courses\Tests\TestQuestions,
     Sysclass\Models\Courses\Grades\Grade,
     Sysclass\Models\Content\Progress\Unit as UnitProgress,
@@ -118,7 +118,7 @@ class Execution extends Model
 
         //$testData = $this->model("tests")->getItem($executionData['test_id']);
 
-        $testModel = TestLesson::findFirstById($executionData['test_id']);
+        $testModel = TestUnit::findFirstById($executionData['test_id']);
 
         if ($testModel) {
 
@@ -186,7 +186,7 @@ class Execution extends Model
                 array(
                     'user_points' => $totalPoints,
                     'user_score'  => $userScore,
-                    'user_grade'  => !is_null($userGrade) ? $userGrade : $userScore * 100 . "%",
+                    'user_grade'  => !is_null($userGrade) ? $userGrade : sprintf("%.1f", $userScore * 100) . "%",
                     'pass'        => ($pass) ? 1 : 0
                 )
             );

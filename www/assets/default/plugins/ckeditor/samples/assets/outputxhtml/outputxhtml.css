@@ -10,7 +10,7 @@
  */
 body
 {
-	font-family: Arial, Verdana, sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 80%;
 	color: #000000;
 	background-color: #ffffff;
@@ -60,17 +60,17 @@ body
 
 .FontComic
 {
-	font-family: 'Comic Sans MS';
+	font-family: 'Open Sans', sans-serif;
 }
 
 .FontCourier
 {
-	font-family: 'Courier New';
+	font-family: 'Open Sans', sans-serif;
 }
 
 .FontTimes
 {
-	font-family: 'Times New Roman';
+	font-family: 'Open Sans', sans-serif;
 }
 
 /**
@@ -184,7 +184,7 @@ body
 
 code
 {
-	font-family: courier, monospace;
+	font-family: 'Open Sans', sans-serif;
 	background-color: #eeeeee;
 	padding-left: 1px;
 	padding-right: 1px;

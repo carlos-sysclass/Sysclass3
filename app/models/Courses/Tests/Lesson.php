@@ -62,6 +62,7 @@ class Lesson extends BaseUnit
 
             $questionsArray = $questions->toArray();
 
+
             if ($test->randomize_questions || $questions_size < $questions->count()) {
                 // IF LESS QUESTIONS THAN TOTAL, WILL RANDOMIZE
 
@@ -69,6 +70,7 @@ class Lesson extends BaseUnit
                     $questionsArray, 
                     min(intval($questions_size), count($questionsArray))
                 );
+
             } else {
                 $questions_indexes = array_keys($questionsArray);
             }
@@ -81,6 +83,10 @@ class Lesson extends BaseUnit
                 if (in_array($i, $questions_indexes)) {
                     $result[] = $question;
                 }
+            }
+            // SHUFFLE IF IT'S NEEDED
+            if ($test->randomize_questions) {
+                shuffle($result);
             }
 
             foreach($result as $index => $question) {
@@ -101,7 +107,18 @@ class Lesson extends BaseUnit
                 }
             }
         }
-
+        /*
+        foreach($result as $index => $testQuestion) {
+            if ($test->randomize_answers) {
+                $question = $testQuestion->getQuestion();
+                if ($question->type_id == "simple_choice" || $question->type_id == "multiple_choice") {
+                    //var_dump($question->toArray());
+                    $question->shuffleOptions();
+                    //var_dump($question->toArray());
+                }
+            }
+        }
+        */
         return $result;
     }
 
@@ -189,7 +206,7 @@ class Lesson extends BaseUnit
                 LEFT JOIN Sysclass\\Models\\Courses\\Tests\\Lesson tl
                     ON (tl.class_id = cl.id)
                 WHERE ecu.user_id = :user_id: AND tl.type = 'test'
-                    AND tl.id NOT IN (SELECT DISTINCT test_id FROM Sysclass\\Models\\Courses\\Tests\\Execution cte WHERE cte.user_id = :user_id:)
+                    AND tl.id NOT IN (SELECT DISTINCT test_id FROM Sysclass\\Models\\Courses\\Tests\\Execution cte WHERE cte.user_id = :user_id: and pass = 1)
         ";
         //echo $phql;
 

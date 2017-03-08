@@ -10,7 +10,7 @@ use Sysclass\Models\I18n\Language,
 /**
  * @RoutePrefix("/module/translate")
  */
-class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISectionMenu, */\ILinkable, \IBreadcrumbable, \IActionable
+class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISectionMenu, \ILinkable, \IBreadcrumbable, \IActionable
 {
     // IBlockProvider
     public function registerBlocks() {
@@ -32,48 +32,16 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     }
 
     /* ISectionMenu */
-    /*
     public function getSectionMenu($section_id) {
-
-        
         if ($section_id == "topbar") {
-            if ($this->acl->isUserAllowed(null, $this->module_id, "View")) {
-                $this->putModuleScript("models.translate");
-                $this->putModuleScript("menu.translate");
-
-                $currentUser = $this->getCurrentUser();
-
-                $languageRS = Language::find();
-
-
-                $userLanguageCode =  $this->translate->getSource();
-                $items = array();
-
-                foreach($languageRS as $key => $value) {
-                    $items[$key] = $value->toArray();
-                    if ($value->code == $userLanguageCode) {
-                        $items[$key]['selected'] = true;
-                    }
-                }
-
-                $items[] = array(
-                    'link'  => $this->getBasePath() . "view/token",
-                    'text'  => $this->translate->translate("Review translation")
-                );
-
-                $this->putSectionTemplate("translate-menu", "menu/language.switch");
-
+            if ($this->acl->isUserAllowed($this->user, "translate", "edit")) {
                 $menuItem = array(
-                    'icon'      => 'globe',
-                    'notif'     => count($items),
-                    'link'  => array(
-                        'link'  => $this->getBasePath() . "change",
-                        'text'  => $this->translate->translate('Languages')
-                    ),
-                    'type'      => 'language',
-                    'items'     => $items,
-                    'extended'  => false,
-                    'template'  => "translate-menu"
+                    //'id'        => "enroll-topbar-menu",
+                    'icon'      => ' fa fa-globe',
+                    'text'      => $this->translate->translate('Translation'),
+                    'className' => '',
+                    'link' => $this->getBasePath() . "view/token",
+                    'type'      => '',
                 );
 
                 return $menuItem;
@@ -81,7 +49,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         }
         return false;
     }
-    */
 
     /* ILinkable */
     public function getLinks() {
@@ -93,7 +60,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Languages'),
-                        'icon'  => 'fa fa-language',
+                        'icon'  => 'fa fa-globe',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -105,12 +72,12 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     public function getBreadcrumb() {
         $breadcrumbs = array(
             array(
-                'icon'  => 'icon-home',
+                'icon'  => 'fa fa-home',
                 'link'  => $this->getSystemUrl('home'),
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'icon-globe',
+                'icon'  => 'fa fa-globe',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Languages")
             )
@@ -123,15 +90,15 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("New Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("New language"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("Edit Language"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("Edit language"));
                 break;
             }
             case "view/token" : {
-                $breadcrumbs[] = array('text' => $this->translate->translate("View Translations"));
+                $breadcrumbs[] = array('text' => $this->translate->translate("View translations"));
             }
         }
         return $breadcrumbs;
@@ -141,35 +108,45 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     public function getActions() {
         $request = $this->getMatchedUrl();
 
-        $actions = array(
-            'view'  => array(
-                array(
-                    'text'  => $this->translate->translate('Add Language'),
-                    'link'  => $this->getBasePath() . "add",
-                    'icon'  => 'icon-plus'
-                ),
-                array(
-                    'separator' => true
-                ),
-                array(
-                    'text'  => $this->translate->translate("Review translation"),
-                    'link'  => $this->getBasePath() . "view/token",
-                    'icon'  => 'icon-reorder'
-                )
-            ),
-            'view/token'  => array(
-                array(
-                    'text'  => $this->translate->translate('Add Language'),
-                    'link'  => $this->getBasePath() . "add",
-                    'class' => 'btn-primary',
-                    'icon'  => 'icon-plus'
-                )
-            )
+        /**
+          * @todo Create and load the module actions from config.yml (actions put on side bar and datatables)
+         */
+        $actions = [
+            'translate-create' => [
+                'text'  => $this->translate->translate('Add language'),
+                'link'  => $this->getBasePath() . "add",
+                'class' => 'btn-primary',
+                'icon'  => 'fa fa-plus-square'
+            ]/*,
+            'translate-token-edit' => [
+                'text'  => $this->translate->translate("Edit translation"),
+                'link'  => $this->getBasePath() . "view/token",
+                'icon'  => 'icon-reorder'
+            ],
+            'separator' => [
+                'separator' => true
+            ]
+            */
+        ];
+
+        $barActions = array(
+            'view'  => [],
+            'view/token' => []
         );
 
-
-
-        return $actions[$request];
+        if ($this->acl->isUserAllowed($this->user, "translate", "create")) {
+            $barActions['view'][] = $actions['translate-create'];
+            $barActions['view/token'][] = $actions['translate-create'];
+        }
+        /*
+        if ($this->acl->isUserAllowed($this->user, "translate", "edit")) {
+            if (count($barActions['view']) > 0) {
+                $barActions['view'] = $action['separator'];
+            }
+            $barActions['view'][] = $actions['translate-token-edit'];
+        }
+        */
+        return $barActions[$request];
     }
 
 
@@ -243,7 +220,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
     }
     */
     /**
-     * Add a new Language Translation
+     * Add a new language translation
      *
      * @Get("/add")
      */
@@ -371,7 +348,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
         // SHOW ANNOUCEMENTS BASED ON USER TYPE
         //if ($currentUser->getType() == 'administrator') {
             $this->putItem("page_title", $this->translate->translate('Translations'));
-            $this->putItem("page_subtitle", $this->translate->translate('Review translated terms'));
+            $this->putItem("page_subtitle", $this->translate->translate('Review translation'));
 
             //$this->putComponent("bootbox");
 
@@ -533,7 +510,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 $tokensModel->save();
                 // ADD THIS TOKEN
             }
-            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' done!", array($from, $to)), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Translation from '%s' to '%s' completed.", array($from, $to)), "success");
 
             $response['data'] = $translatedTerms;
 
@@ -565,9 +542,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                 'language_code' => $data['dstlang'],
                 'edited'        => 1
             ));
-            $tokensModel->save();
-            
-            return $this->createAdviseResponse($this->translate->translate("Translation saved!"), "success");
+
+            return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
 
         }
         return $this->invalidRequestError();
@@ -660,7 +636,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-primary tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Human Translation"
+                            'data-original-title'   => "Edit"
                         )
                     ),
                     'translate-windows'  => array(
@@ -669,7 +645,7 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, /*\ISe
                         'class' => 'btn-sm btn-info tooltips',
                         'attrs'  => array(
                             "data-placement"        => "top",
-                            'data-original-title'   => "Eletronic Translation"
+                            'data-original-title'   => "Translation"
                         )
                     )
                 );

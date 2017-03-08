@@ -198,7 +198,7 @@
 				{else}
 				
 				<li class="{if $item.items}dropdown{else}menu-item{/if}" id="{$item.id}">
-					<a href="javascript:void(0);" 
+					<a href="{if $item.link}{$item.link}{else}javascript:void(0);{/if}" 
 						{if $item.items}
 						class="dropdown-toggle" data-toggle="dropdown" data-close-others="true"
 						{else}
@@ -265,7 +265,7 @@
 		               <li>
 		                  <a href="#">
 		                  <span class="label label-sm label-icon label-warning"><i class="icon-bolt"></i></span>
-		                  Please schedule your exams!
+		                  Please, schedule your exams!
 		                  </a>
 		               </li>
 		            </ul>
@@ -333,7 +333,7 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li>
-						<a href="/module/users/profile"><i class="icon-user"></i> {translateToken value="My Profile"}</a>
+						<a href="/module/users/profile"><i class="icon-user"></i> {translateToken value="My profile"}</a>
 					</li>
 					{foreach $T_TOPBAR_MENU as $key => $item}
 				        {if isset($item.link)}
@@ -343,12 +343,12 @@
 					<!-- <li class="divider visible-xs"></li> -->
 					<!--
 					<li class="hidden-sm hidden-xs">
-						<a href="javascript:;" id="trigger_fullscreen"><i class="ti-fullscreen"></i> {translateToken value="Full Screen"}</a>
+						<a href="javascript:;" id="trigger_fullscreen"><i class="ti-fullscreen"></i> {translateToken value="Full screen"}</a>
 					</li>
-					<li><a href="/lock"><i class="icon-lock"></i> {translateToken value="Lock Screen"}</a></li>
+					<li><a href="/lock"><i class="icon-lock"></i> {translateToken value="Lock screen"}</a></li>
 					-->
 					<li>
-						<a href="/logout"><i class="icon-key"></i> {translateToken value="Log Out"}</a>
+						<a href="/logout"><i class="icon-key"></i> {translateToken value="Log out"}</a>
 					</li>
 				</ul>
 			</li>

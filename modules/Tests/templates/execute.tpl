@@ -44,7 +44,7 @@
             <div>
                 <span class="pull-left">
                     <i class="fa fa-lg fa-slack text-default "></i>
-                    {translateToken value="Total Questions"}:
+                    {translateToken value="Total questions"}:
                 </span>
                 <strong class="text-primary pull-right">
                     {if ($T_TEST.test.test_max_questions <= 0)}
@@ -61,7 +61,7 @@
             <div>
                 <span class="pull-left">
                     <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                    {translateToken value="Maximum Score"}:
+                    {translateToken value="Maximum score"}:
                 </span>
                 <strong class="text-primary pull-right">
                     {$T_TEST.score} {translateToken value="points"}
@@ -73,13 +73,13 @@
             <div>
                 <span class="pull-left">
                     <i class="fa fa-lg fa-graduation-cap text-default"></i>
-                    {translateToken value="Your Score"}:
+                    {translateToken value="Score"}:
                 </span>
                 <strong class="text-primary pull-right">
                     {if ($T_EXECUTION.pass == 0)}
-                        <span class="label label-danger">{$T_EXECUTION.user_grade|round:0}</span>
+                        <span class="label label-danger">{$T_EXECUTION.user_grade}</span>
                     {else}
-                        <span class="label label-primary">{$T_EXECUTION.user_grade|round:0}</span>
+                        <span class="label label-primary">{$T_EXECUTION.user_grade}</span>
                     {/if}
                     <small>{$T_EXECUTION.user_points} {translateToken value="points"}</small>
                 </strong>
@@ -216,7 +216,7 @@
         </div>
         {if $T_EXECUTION.pending == 1}
             <div class="nobg no-border" align="center">
-                <button class="btn btn-success finish-test-action" type="button">{translateToken value="Finish test"}</button>
+                <button class="btn btn-success finish-test-action" type="button">{translateToken value="Submit answers"}</button>
             </div>
         {else}
             <div class="nobg no-border" align="center">

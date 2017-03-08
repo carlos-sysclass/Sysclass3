@@ -8,7 +8,7 @@ a:hover{color:#000}
 a,.self{-webkit-transition:color .1s;-moz-transition:color .1s;-ms-transition:color .1s;-o-transition:color .1s;transition:color .1s}
 .self{color:#333;border-bottom:1px dotted #aaa;cursor:pointer;}
 .self:hover{color:#000}
-strong{font-family:'MontserratBold',Helvetica,Arial,sans-serif;font-weight:700}
+strong{font-family:'Open Sans', sans-serif;font-weight:700}
 p{margin:0 0 8px}
 label{cursor:pointer}
 h1,h2,h3,h4{margin:0;font:bold 20px/60px 'MontserratBold',Helvetica,Arial,sans-serif}

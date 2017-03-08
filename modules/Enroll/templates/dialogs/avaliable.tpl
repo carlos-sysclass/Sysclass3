@@ -35,7 +35,7 @@
                                             <p> {$program.description|truncate:160:"...":false nofilter}</p>
 
                                             {if $program.area_id}
-                                                <p>{translateToken value="Departament"}: <strong>{$program.departament.name}</strong></p>
+                                                <p>{translateToken value="Department"}: <strong>{$program.department.name}</strong></p>
                                             {/if}
 
                                             {if $program.courses}
@@ -53,9 +53,9 @@
 
                                             <p>{translateToken value="Automatic Approval"}: 
                                             {if $enrollment.signup_auto_approval}
-                                                <strong class="text-success">{translateToken value="YES"}</strong>
+                                                <strong class="text-success">{translateToken value="Yes"}</strong>
                                             {else}
-                                                <strong class="text-danger">{translateToken value="NO"}</strong>
+                                                <strong class="text-danger">{translateToken value="No"}</strong>
                                             {/if}
                                             </p>
 

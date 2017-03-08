@@ -32,20 +32,20 @@
     }
 
 .iradio_square-blue {
-    background-position: -120px 0;
+    background-position: 0px 0;
 }
     .iradio_square-blue.hover {
-        background-position: -144px 0;
+        background-position: -24px 0;
     }
     .iradio_square-blue.checked {
-        background-position: -168px 0;
+        background-position: -48px 0;
     }
     .iradio_square-blue.disabled {
-        background-position: -192px 0;
+        background-position: -24px 0;
         cursor: default;
     }
     .iradio_square-blue.checked.disabled {
-        background-position: -216px 0;
+        background-position: -24px 0;
     }
 
 /* HiDPI support */

@@ -72,9 +72,9 @@
   height: 22px;
   line-height: 22px;
   cursor: default;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
 }
 .clockface .outer.active,
 .clockface .inner.active,

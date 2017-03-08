@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Areas;
  * @filesource
  */
 use 
-    Sysclass\Models\Courses\Departament,
+    Sysclass\Models\Content\Department,
     Sysclass\Models\Users\User;
 /**
  * [NOT PROVIDED YET]
@@ -20,7 +20,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
     public function getLinks() {
         //$depinject = Phalcon\DI::getDefault();
         if ($this->acl->isUserAllowed(null, "Areas", "View")) {
-            $count = Departament::count("active = 1");
+            $count = Department::count("active = 1");
 
             return array(
                 'content' => array(
@@ -57,11 +57,11 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Department"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New department"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Department"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit department"));
                 break;
             }
         }
@@ -75,10 +75,10 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Department'),
+                    'text'      => $this->translate->translate('New department'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -87,7 +87,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -259,7 +259,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 );
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError("A problem ocurred when trying to save your data. Please check your data and try again", "error");
+                return $this->invalidRequestError("A problem ocurred when trying to save your data. Please, check your data and try again", "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -282,7 +282,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to save your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -305,7 +305,7 @@ class AreasModule extends \SysclassModule implements \ILinkable, \IBreadcrumbabl
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("A problem ocurred when trying to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();

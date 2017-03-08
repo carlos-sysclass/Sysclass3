@@ -7,7 +7,7 @@
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
 			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
-				<small class="form-title">{translateToken value="Please type login and password below"}</small>
+				<small class="form-title">{translateToken value="Please, type login and password below"}</small>
 			</h4>
 			
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
@@ -50,7 +50,7 @@
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="New Password"}</label>
 					<div class="input-icon">
 						<i class="fa fa-asterisk"></i>
-						<input type="password" id="password" name="password" value="" placeholder="{translateToken value="New Password"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
+						<input type="password" id="password" name="password" value="" placeholder="{translateToken value="New password"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 					</div>
 				</div>
 				<div class="form-group">
@@ -71,7 +71,7 @@
 						{if ($T_IS_CONFIRMATION)}
 							{translateToken value="Define my password"}
 						{else}
-							{translateToken value="Reset my Pass"}
+							{translateToken value="Reset my password"}
 						{/if}
 
 					</button>

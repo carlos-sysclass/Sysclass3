@@ -24,11 +24,11 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   position: absolute;
   color: white;
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 0 3px #444;
   box-sizing: content-box;
   text-align: center;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Open Sans', sans-serif;
   line-height: 14px;
   content: '+';
   background-color: #31b131;
@@ -51,7 +51,7 @@ table.dataTable.dtr-inline.collapsed.compact > tbody > tr > th:first-child:befor
   left: 4px;
   height: 14px;
   width: 14px;
-  border-radius: 14px;
+  border-radius: 0px;
   line-height: 14px;
   text-indent: 3px;
 }
@@ -72,11 +72,11 @@ table.dataTable.dtr-column > tbody > tr > th.control:before {
   position: absolute;
   color: white;
   border: 2px solid white;
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 0 3px #444;
   box-sizing: content-box;
   text-align: center;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Open Sans', sans-serif;
   line-height: 14px;
   content: '+';
   background-color: #31b131;
@@ -154,7 +154,7 @@ div.dtr-modal div.dtr-modal-close {
   border: 1px solid #eaeaea;
   background-color: #f9f9f9;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 0px;
   cursor: pointer;
   z-index: 12;
 }

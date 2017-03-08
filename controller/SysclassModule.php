@@ -239,7 +239,7 @@ abstract class SysclassModule extends BaseSysclassModule
             return true;   
         } else {
             $this->response->setJsonContent(
-                $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to get your data. Please try again."), "warning")
+                $this->createAdviseResponse($this->translate->translate("A problem ocurred when retrirving your data. Please, try again."), "warning")
             );
             return true;
         }
@@ -272,7 +272,7 @@ abstract class SysclassModule extends BaseSysclassModule
             if (!array_key_exists($model, $this->model_info)) {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                 $this->response->setJsonContent(
                     array_merge($response, $data)
                 );
@@ -335,7 +335,16 @@ abstract class SysclassModule extends BaseSysclassModule
                     if (!is_null($this->responseInfo)) {
                         $response = array_merge($response, $this->responseInfo);
                     }
-                    $this->response->setJsonContent($response);
+
+                    $itemData = call_user_func(
+                        array($itemModel, $model_info['exportMethod'][0]),
+                        $model_info['exportMethod'][1]
+                    );
+
+                    $this->response->setJsonContent(array_merge(
+                        $response,
+                        $itemData
+                    ));
                 } elseif ($this->request->hasQuery('reload')) {
                     $this->response->setJsonContent(
                         $this->createReloadResponse(
@@ -366,7 +375,7 @@ abstract class SysclassModule extends BaseSysclassModule
                         break;
                     }
                 } else {
-                    $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                    $message = $this->translate->translate("A problem ocurred when tried to save you data. Please, try again.");
                     $type = "warning";
                 }
 
@@ -423,7 +432,7 @@ abstract class SysclassModule extends BaseSysclassModule
                 if (!array_key_exists($model, $this->model_info)) {
                     $this->eventsManager->fire("module-{$this->module_id}:errorModelDoesNotExists", $model, $data);
 
-                    $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                    $response = $this->invalidRequestError($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
                     $this->response->setJsonContent(
                         array_merge($response, $data)
                     );
@@ -491,7 +500,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             break;
                         }
                     } else {
-                        $message = $this->translate->translate("Sucess");
+                        $message = $this->translate->translate("Success.");
                         $type = "success";
                     }
 
@@ -524,7 +533,7 @@ abstract class SysclassModule extends BaseSysclassModule
                             break;
                         }
                     } else {
-                        $message = $this->translate->translate("A problem ocurred when tried to save you data. Please try again.");
+                        $message = $this->translate->translate("A problem ocurred when tried to save you data. Please, try again.");
                         $type = "warning";
                     }
 
@@ -536,7 +545,7 @@ abstract class SysclassModule extends BaseSysclassModule
             } else {
                 $this->eventsManager->fire("module-{$this->module_id}:errorModelUpdate", $itemModel, $data);
 
-                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please try again."), "warning");
+                $response = $this->createAdviseResponse($this->translate->translate("A problem ocurred when tried to save you data. Please, try again."), "warning");
             }
         } else {
             $response = $this->notAuthenticatedError();

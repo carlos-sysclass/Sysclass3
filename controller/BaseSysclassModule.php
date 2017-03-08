@@ -83,11 +83,12 @@ abstract class BaseSysclassModule extends AbstractSysclassController
     }
 
     public function getConfig($path = null) {
-        if (is_null($path)) {
-            return $this->context['*config*'];
-        }
         if (!array_key_exists('*config*', $this->context)) {
             $this->loadConfigFile();
+        }
+
+        if (is_null($path)) {
+            return $this->context['*config*'];
         }
 
         $data = $this->context['*config*'];
@@ -98,7 +99,6 @@ abstract class BaseSysclassModule extends AbstractSysclassController
             $data = $data[$key];
         }
         return $data;
-
     }
 
     protected function injectObjects($page = null, $override_route = null, $ext_context = null)

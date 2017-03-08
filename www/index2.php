@@ -34,7 +34,7 @@ $plicoLib = PlicoLib::instance(__DIR__ . "/../");
 $path = "../libraries/";
 //Automatically redirect to installation page if configuration file is missing
 if (!is_file($path."configuration.php")) { //If the configuration file does not exist, this is a fresh installation, so redirect to installation page
-    is_file("install/index.php") ? header("location:install/index.php") : print('Failed locating configuration file <br/> Failed locating installation directory <br/> Please execute installation script manually <br/>');
+    is_file("install/index.php") ? header("location:install/index.php") : print('Failed locating configuration file <br/> Failed locating installation directory <br/> Please, execute installation script manually <br/>');
     exit;
 } else {
     require_once $path."configuration.php";
@@ -65,7 +65,7 @@ if (is_dir("install") && isset($_GET['delete_install'])) {
         $dir = new MagesterDirectory('install');
         $dir->delete();
     } catch (Exception $e) {
-        echo "The installation directory could not be deleted. Please delete it manually or your system security is at risk.";
+        echo "The installation directory could not be deleted. Please, delete it manually or your system security is at risk.";
     }
 }
 */

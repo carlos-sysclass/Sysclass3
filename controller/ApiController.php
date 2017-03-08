@@ -15,8 +15,8 @@ use Phalcon\DI,
  */
 class ApiController extends \AbstractSysclassController
 {
-	const INVALID_DATA = "Your data sent is invalid. Please try again.";
-	const NO_DATA_FOUND = "Sorry, no data found.";
+	const INVALID_DATA = "Your data sent is invalid. Please, try again.";
+	const NO_DATA_FOUND = "No data found.";
 	const EXECUTION_OK = "Method executed.";
 	
 
@@ -45,37 +45,37 @@ class ApiController extends \AbstractSysclassController
 				}
 				case AuthenticationException :: MAINTENANCE_MODE : {
 					$code = 403;
-		            $message = "System is under maintenance mode. Please came back in a while.";
+		            $message = "System under maintenance.";
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
 					$code = 403;
-		            $message = "Username and password are incorrect. Please make sure you typed correctly.";
+		            $message = "Username and password are incorrect. Please, make sure you typed correctly.";
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
 					$code = 403;
-		            $message = "The system was locked down by a administrator. Please came back in a while.";
+		            $message = "Access not available. Please, contact the system administrator.";
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$code = 403;
-		            $message = "Your account is locked. Please provide your password to unlock.";
+		            $message = "Please, check if the info provided is correct, and re-enter the username and password.";
 		            $message_type = 'info';
 		            break;
 				}
                 case AuthenticationException :: API_TOKEN_TIMEOUT : {
                 	$code = 403;
-                    $message = "Your token has expired. Please generate a new one";
+                    $message = "Invalid token. Please, re-enter token.";
                     $message_type = 'info';
                     break;
                 }
                 case AuthenticationException :: API_TOKEN_NOT_FOUND : {
                 	$code = 403;
-                    $message = "This token is invalid. Please generate a new one";
+                    $message = "Token invalid. Please, enter a new token.";
                     $message_type = 'info';
                     break;
                 }
@@ -151,25 +151,25 @@ class ApiController extends \AbstractSysclassController
 
 				case AuthenticationException :: MAINTENANCE_MODE : {
 					$code = 403;
-		            $message = $this->translate->translate("System is under maintenance mode. Please came back in a while.");
+		            $message = $this->translate->translate("System under maintenance.");
 		            $message_type = 'warning';
 		            break;
 				}
 				case AuthenticationException :: INVALID_USERNAME_OR_PASSWORD : {
 					$code = 403;
-		            $message = $this->translate->translate("Username and password are incorrect. Please make sure you typed correctly.");
+		            $message = $this->translate->translate("Username and password are incorrect. Please, make sure you typed correctly.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: LOCKED_DOWN : {
 					$code = 403;
-		            $message = $this->translate->translate("The system was locked down by a administrator. Please came back in a while.");
+		            $message = $this->translate->translate("Access not available. Please, contact the system administrator.");
 		            $message_type = 'warning';
 					break;
 				}
 				case AuthenticationException :: USER_ACCOUNT_IS_LOCKED : {
 					$code = 403;
-		            $message = $this->translate->translate("Your account is locked. Please provide your password to unlock.");
+		            $message = $this->translate->translate("Please, check if the info provided is correct, and re-enter the username and password.");
 		            $message_type = 'info';
 		            break;
 				}
@@ -185,7 +185,7 @@ class ApiController extends \AbstractSysclassController
 			//
 		} catch (\Exception $e) {
 			$code = 200;
-            $message = "Welcome to Sysclass API. Please provide your access details to continue.";
+            $message = "Welcome to Sysclass API. Please, provide your access details to continue.";
             $message_type = 'info';
 		}
 
@@ -286,14 +286,14 @@ class ApiController extends \AbstractSysclassController
 							} else {
 								// CHECK IF THE CONFIGURATION ALLOWS THE USER TO ENTER THE SYSTEM WITHOUT A COURSE
 								if ($this->configuration->get("signup_require_program")) {
-									$messages[] = $this->createResponse(400, "Please select at least one course to enroll.", "error");	
+									$messages[] = $this->createResponse(400, "Please, select at least one course to enroll.", "error");	
 									$error = true;	
 								} else {
 									// USER CAN PROCEED WITHOUT A COURSE
 								}
 							}
 	 					} else {
-							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please check your info and try again!"), "error");
+							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please, check your info and try again!"), "error");
 							$error = true;
 	 					}
 	 				} else {
@@ -405,15 +405,15 @@ class ApiController extends \AbstractSysclassController
 					'already_has_account' => $this->translate->translate("Already has a account? Click Here."),
 					'choose_program' => $this->translate->translate("Choose your program."),
 					'accept_the' => $this->translate->translate("Accept the"),
-					'use_terms' => $this->translate->translate("Use Terms"),
+					'use_terms' => $this->translate->translate("terms of usage"),
 					/**
 					  * @todo Inject this info inside the enrollment page
 					 */
 
 					'form_title' => $enroll->name,
 					'form_subtitle' => $enroll->subtitle,
-					'confirmation_title' => $this->translate->translate("Thank You" ),
-					'confirmation_text' => $this->translate->translate("<p>Your registration has been received. In a few minutes you will receive a confirmation email containing a link to conclude your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you can't find it, please return to this page and try again.</p>")
+					'confirmation_title' => $this->translate->translate("Thank you" ),
+					'confirmation_text' => $this->translate->translate("<p>Your registration has been received. In a few minutes you will receive a confirmation email containing a link to conclude your registration.</p><p>In case you haven't received the confirmation email, check your Junk folder. If you can't find it, return to this page and try again.</p>")
 				];
 
 				//$data = $enroll->toExtendArray(array('fields' => 'EnrollFields'));
@@ -447,7 +447,7 @@ class ApiController extends \AbstractSysclassController
 
 	protected function invalidRequestError($message = "", $type = "warning") {
 		if (empty($message)) {
-			$message = $this->translate->translate("There's a problem with your request. Please try again.");
+			$message = $this->translate->translate("There's a problem with your request. Please, try again.");
 		}
 		return $this->createResponse(400, $message, $type, "advise");
 	}

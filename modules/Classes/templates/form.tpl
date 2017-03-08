@@ -20,19 +20,19 @@
 			{/if}
 			{if ((isset($T_SECTION_TPL['tests']) &&  ($T_SECTION_TPL['tests']|@count > 0)) || (isset($T_SECTION_TPL['grades']) &&  ($T_SECTION_TPL['grades']|@count > 0)))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Tests and grades"}</a>
 			</li>
 			{/if}
 
 			{if (isset($T_SECTION_TPL['communications']) &&  ($T_SECTION_TPL['communications']|@count > 0))}
 			<li>
-				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Tests and Grades"}</a>
+				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Tests and grades"}</a>
 			</li>
 			{/if}
             <!--
 			{if (isset($T_SECTION_TPL['roadmap']) &&  ($T_SECTION_TPL['roadmap']|@count > 0))}
 			<li>
-				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Road Map"}</a>
+				<a href="#tab_1_3" data-toggle="tab">{translateToken value="Road map"}</a>
 			</li>
 			{/if}
             -->
@@ -51,7 +51,7 @@
 				<div class="form-group">
 					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Program"}</label>
-					<select class="select2-me form-control" name="course_id" data-rule-min="1" data-placeholder="{translateToken value="Select Program"}">
+					<select class="select2-me form-control" name="course_id" data-rule-min="1" data-placeholder="{translateToken value="Select program"}">
 						<option value=""></option>
 						{foreach $T_PROGRAMS as $classe}
 							<option value="{$classe.id}">{$classe.name}</option>
@@ -67,7 +67,7 @@
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Instructors"}</label>
 					<select class="select2-me form-control" name="instructor_id" multiple="multiple">
-						<option value="">{translateToken value="Please Select"}</option>
+						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}
 							<option value="{$instructor.id}">{$instructor.name} {$instructor.surname}</option>
 						{/foreach}
@@ -80,7 +80,7 @@
 					<input type="checkbox" name="active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='ON'}" data-off-color="danger" data-off-text="{translateToken value='OFF'}" checked="checked" value="1">
 				</div>
 				<div class="form-actions nobg">
-					<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+					<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 				</div>
 			</div>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
@@ -90,7 +90,7 @@
 				    {/foreach}
 
 					<div class="form-actions nobg">
-						<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+						<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 					</div>
 				</div>
 			{/if}

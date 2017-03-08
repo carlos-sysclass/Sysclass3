@@ -344,9 +344,11 @@ $di->setShared('environment', function() use ($di) {
 			'name' => 'pdfjs',
 			//'css'	=> ['plugins/pdfjs/web/viewer'],
 			//'js'	=> ['plugins/pdfjs/web/compatibility', 'plugins/pdfjs/build/pdf', 'plugins/pdfjs/web/viewer']
+		],
+		'underscore-string' => [
+			'name' => 'underscore-string',
+			'js' => ['plugins/underscore/underscore.string.min']
 		]
-
-
 	);
 
 	// MOVE TO module config.yml!!!
@@ -354,7 +356,7 @@ $di->setShared('environment', function() use ($di) {
 	/*
 	$config['models/map'] = array(
 		'areas'	=> array(
-			'class' => "Sysclass\Models\Courses\Departament",
+			'class' => "Sysclass\Models\Content\Department",
             'exportMethod'  => array(
                 'toFullArray',
                 array('')

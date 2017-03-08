@@ -2,18 +2,18 @@
 {block name="content"}
 <form id="form-translate" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
-		<h3 class="form-section">{translateToken value="General"}</h3>
+		<h3 class="form-section">{translateToken value="Settings"}</h3>
 
 		<div class="form-group">
-			<label class="control-label">{translateToken value="English Name"}</label>
-			<input name="name" value="" type="text" placeholder="English Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+			<label class="control-label">{translateToken value="Name in English"}</label>
+			<input name="name" value="" type="text" placeholder="{translateToken value='Name in English'}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Local Name"}</label>
-			<input name="local_name" value="" type="text" placeholder="Local Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+			<label class="control-label">{translateToken value="Original name"}</label>
+			<input name="local_name" value="" type="text" placeholder="Original name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Country"}</label>
+			<label class="control-label">{translateToken value="Country the language is spoken"}</label>
 			<select class="select2-me form-control" name="country_code" data-format-as="country-list">
 				{foreach $T_COUNTRY_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
@@ -32,7 +32,7 @@
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="RTL (Right-to-Left) ?"}</label>
+					<label class="control-label">{translateToken value="RTL (Right-to-Left) "}</label>
 					<select class="select2-me form-control" name="rtl">
 						<option value="0">{translateToken value="No"}</option>
 						<option value="1">{translateToken value="Yes"}</option>
@@ -42,10 +42,10 @@
 		</div>
 		<h3 class="form-section">
 			<i class="icon-reorder"></i>
-			{translateToken value="Eletronic Translation"}
+			{translateToken value="New language"}
 		</h3>
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Eletronic language to translate"}</label>
+			<label class="control-label">{translateToken value="Activate translation"}</label>
 			<select class="select2-me form-control" name="code">
 				{foreach $T_LANGUAGE_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
@@ -56,13 +56,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Start Date"}</label>
+					<label class="control-label">{translateToken value="Start date"}</label>
 					<input class="form-control input-small date-picker"  size="16" type="text" name="timestamp[date]" data-update="timestamp" data-format="date" data-format-from="unix-timestamp" />
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Start Time"}</label>
+					<label class="control-label">{translateToken value="Start time"}</label>
 					<input type="text" class="form-control timepicker-24 input-medium" name="timestamp[time]" data-update="timestamp" data-format="time" data-format-from="unix-timestamp">
 				</div>
 			</div>
@@ -70,13 +70,13 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Expiration Date"}</label>
+					<label class="control-label">{translateToken value="Completion date"}</label>
 					<input class="form-control input-small date-picker"  size="16" type="text" name="expire[date]" data-update="expire" data-format="date" data-format-from="unix-timestamp" />
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Expiration Time"}</label>
+					<label class="control-label">{translateToken value="Expiration time"}</label>
 					<input type="text" class="form-control timepicker-24 input-medium" name="expires[time]" data-update="expires" data-format="time" data-format-from="unix-timestamp">
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 		{/if}
 	</div>
 	<div class="form-actions nobg">
-		<button class="btn btn-success" type="submit">{translateToken value="Save Changes"}</button>
+		<button class="btn btn-success" type="submit">{translateToken value="Save changes"}</button>
 	</div>
 </form>
 {/block}

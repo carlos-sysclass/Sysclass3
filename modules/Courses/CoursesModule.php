@@ -94,11 +94,11 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Program"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New program"));
                 break;
             }
             case "edit/{id}" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Program"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit program"));
                 break;
             }
         }
@@ -112,10 +112,10 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Program'),
+                    'text'      => $this->translate->translate('New program'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'icon-plus'
+                    'icon'      => 'fa fa-plus-square'
                 )/*,
                 array(
                     'separator' => true,
@@ -124,7 +124,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                     'text'      => 'Add New 2',
                     'link'      => $this->getBasePath() . "add",
                     //'class'       => "btn-primary",
-                    //'icon'      => 'icon-plus'
+                    //'icon'      => 'fa fa-plus-square'
                 )*/
             )
         );
@@ -171,7 +171,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			//$this->putScript("plugins/videojs/vjs.youtube");
 
 			//$this->putModuleScript("models.courses");
-			$this->putModuleScript("widget.courses");
+			//$this->putModuleScript("widget.courses");
 
             $this->putBlock("tests.info.dialog");
 
@@ -266,7 +266,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 
         $this->putitem("knowledge_areas", $knowledgeAreas);
 
-        $teacherRole = Role::findFirstByName('Instructor');
+        $teacherRole = Role::findFirstByName('Teacher');
         $users = $teacherRole->getAllUsers();
 
         $this->putItem("instructors", $users);
@@ -429,7 +429,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                 return array_merge($response, $data);
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problen when the system tried to save your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -452,7 +452,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
                 return $response;
             } else {
                 // MAKE A WAY TO RETURN A ERROR TO BACKBONE MODEL, WITHOUT PUSHING TO BACKBONE MODEL OBJECT
-                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please check your data and try again"), "error");
+                return $this->invalidRequestError($this->translate->translate("There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"), "error");
             }
         } else {
             return $this->notAuthenticatedError();
@@ -567,7 +567,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
             */
 			case 'lessons':
 			default : {
-				$lessons = MagesterLesson::getLessons();
+				$units = MagesterUnit::getUnits();
 				if (!empty($q)) {
 					$lessons = sC_filterData($lessons, $q);
 				}
@@ -713,16 +713,16 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		}
 
 		$login = $currentUser->user['login'];
-		$userLessons    =   $currentUser -> getUserLessons($constraints);
-		$userLessonsIDs = array_keys($userLessons);
+		$userUnits    =   $currentUser -> getUserUnits($constraints);
+		$userUnitsIDs = array_keys($userUnits);
 
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
-			'condition' => sprintf("(l.id IN (%s))", implode(",", $userLessonsIDs))
+			'condition' => sprintf("(l.id IN (%s))", implode(",", $userUnitsIDs))
 		);
 
-		$userEntities = $course->getCourseLessons($constraints);
+		$userEntities = $course->getCourseUnits($constraints);
 		$userEntityIDs = array_keys($userEntities);
 		// TODO CHECK PERMISSION RULES HERE
 
@@ -761,7 +761,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	 * @url GET /item/lessons/:course_id/:class_id/:id
      * @deprecated 3.0.0.19
 	 */
-	public function getLessonAction($course_id, $class_id, $id) {
+	public function getUnitAction($course_id, $class_id, $id) {
 		// TODO USE New Model classes to get this info
 		$currentUser    = $this->getCurrentUser(true);
 		$result = array();
@@ -782,21 +782,21 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			$class_id = $this->module("settings")->get("class_id");
 		}
 		// TODO GET USERS CLASS IDS AND CHECK IF THIS ID MATCH
-		$userClasses    =   $currentUser -> getUserLessons($constraints);
+		$userClasses    =   $currentUser -> getUserUnits($constraints);
 		$userClassesIDs = array_keys($userClasses);
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
 			'condition' => sprintf("(l.id IN (%s))", implode(",", $userClassesIDs))
 		);
-		$userClasses = $course->getCourseLessons($constraints);
+		$userClasses = $course->getCourseUnits($constraints);
 		$userClassesIDs = array_keys($userClasses);
 
 
 		if (!in_array($class_id, $userClassesIDs)) {
 			$class_id = reset($userClassesIDs);
 		}
-		$currentClass = new MagesterLesson($class_id);
+		$currentClass = new MagesterUnit($class_id);
 
 		if (is_null($id)) {
 			$id = $this->module("settings")->get("lesson_id");
@@ -930,12 +930,12 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		//var_dump($currentUser->user['login']);
 		$courseStats = MagesterStats::getUsersCourseStatus($userCourses, $login);
 
-		$userLessons = $currentUser->getLessons();
-		$lessonsIds = array_keys($userLessons);
+		$userUnits = $currentUser->getUnits();
+		$unitsIds = array_keys($userUnits);
 
 		foreach($userCourses as $course) {
-			$course->course['lessons'] = array();
-			$lessons = $course->getCourseLessons(array('return_objects' => false));
+			$course->course['units'] = array();
+			$units = $course->getCourseUnits(array('return_objects' => false));
 
 			foreach($lessons as $lesson) {
 				if (in_array($lesson['id'], $lessonsIds)) {
@@ -971,7 +971,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 	 * @url GET /content/:course/:lesson
      * @deprecated
 	 */
-	public function getContentByCourseAndLessonAction($course, $lesson)
+	public function getContentByCourseAndUnitAction($course, $unit)
 	{
 		// RETURN JUST THE content ID
 		// SAVE COURSE AND LESSON, ON USERS SETTINGS
@@ -1002,8 +1002,8 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
      */
 	protected function getContent($course = null, $lesson = null, $content = null) {
 		$currentUser    = $this->getCurrentUser(true);
-		if (empty($lesson)) {
-			// GET LESSON ID FROM COURSE
+		if (empty($unit)) {
+    		// GET UNIT ID FROM COURSE
 			if (empty($course)) {
 				// GET FIRST COURSE FROM USER
 				$userCourses = $currentUser->getUserCourses(array('return_objects' => true));
@@ -1015,18 +1015,18 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 			} else {
 				$firstCourse = new MagesterCourse($course);
 			}
-			$userLessons = $firstCourse->getCourseLessons(array('return_objects' => false));
-			reset($userLessons);
-			$lesson = key($userLessons);
+			$userUnits = $firstCourse->getCourseUnits(array('return_objects' => false));
+			reset($userUnits);
+			$unit = key($userUnits);
 
 			$this->module("settings")->put("course_id", $course);
 			$this->module("settings")->put("lesson_id", $lesson);
 
 		}
 
-		$currentLesson = new MagesterLesson($lesson);
+		$currentUnit = new MagesterUnit($unit);
 
-		$currentContent = new MagesterContentTree($currentLesson);
+		$currentContent = new MagesterContentTree($currentUnit);
 		$currentContent -> markSeenNodes($currentUser);
 
 		//Legal values are the array of entities that the current user may actually edit or change.

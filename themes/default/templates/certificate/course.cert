@@ -9,32 +9,23 @@
       <title>{% block title %}{{ configuration.get("site_title") }} - {{ configuration.get("site_subtitle") }}{% endblock %}</title>
 
 </head>
-<body>
-      <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/certificate/header.jpeg" width="100%" />
-
-      <div class="container-fluid">
-            <div class="row" align="center">
-                  <div class="col-md-12 inner-text">
-                        {{ translate.translate("The Superintendence of Purchases of Itaipu Binacional") }}<br /> {{ translate.translate("certifies that") }}<br />
-                        <span style="color: #1E345D;"><i>{{ username|upper }}</i></span><br />
-                        {{ translate.translate("Participated in the course") }}<br />
-                        <span style="color: #1E345D;"><i>{{ modulename|upper }}</i></span>,
-                        <br />
-                        {{ translate.translate("In the Distance Learning mode of the ") }}<br />
-                        {{ translate.translate("Supplier Development Program. ") }}
-                        <br />
-                        Curitiba, {{ datetime.format("d") }} {{ translate.translate("of") }} {{ strftime("%B", datetime.format("U") ) }} {{ translate.translate("of") }} {{ datetime.format("Y") }}.
-                        <br />
-                  </div>
-            </div>
+<body class="course-certificate">
+      <div class="container">
+            <p class="big-text">{{ translate.translate("SysClass Online Training") }}</p>
+            <p>{{ translate.translate("This certificate is presented to") }}</p>
+            <p class="big-text">{{ username|upper }}</p>
+            <p>{{ translate.translate("For the completion of the requirements of the course") }}</p>
+            <p class="big-text">{{ modulename|upper }}</p>
+            <p>{{ translate.translate("Dallas, texas, United States of Americas") }}<p>
+            
+            <p>{{ strftime("%b,", datetime.format("U") ) }} {{ date("jS. Y", datetime.format("U") ) }}</p>
       </div>
-
-      <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/certificate/footer.jpeg" width="100%" />
-
-      <!-- <div class="container-fluid">
-            <div class="signatures-container"  align="center">
-                  <img src="{{ request.getScheme() }}://{{ request.getHttpHost() }}/assets/sysclass.itaipu/img/signatures.png" />
+      <htmlpagefooter name="footer" style="display:none">
+            <div class="container">
+                  <span class="identifier">
+                        &nbsp; DCN {{ sprintf("%08d", id) }} &nbsp;
+                  </span>
             </div>
-      </div> -->
+      </htmlpagefooter>
 </body>
 </html>

@@ -18,11 +18,11 @@
             </ul>
             <a class="btn btn-sm btn-primary btn-link add-lesson-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Lesson"}
+                {translateToken value="Create unit"}
             </a>
             <a class="btn btn-sm btn-success btn-link add-test-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Test"}
+                {translateToken value="Create test"}
             </a>
             <!--
             <a class="btn btn-sm btn-warning btn-link import-item-action" href="javascript: void(0);">
@@ -56,7 +56,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit lesson info">
+          <a class="btn btn-sm btn-primary tooltips" href="/module/lessons/edit/<%= model.id %>" data-original-title="Edit">
                 <i class="fa fa-edit"></i>
             </a>
             <!--
@@ -120,7 +120,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-            <a class="btn btn-sm btn-primary tooltips" href="/module/tests/edit/<%= model.id %>" data-original-title="Edit Test info">
+            <a class="btn btn-sm btn-primary tooltips" href="/module/tests/edit/<%= model.id %>" data-original-title="Edit test info">
                 <i class="fa fa-edit"></i>
             </a>
             <!--
@@ -165,10 +165,10 @@
     <div class="input-group">
         <span class="input-group-btn" style="vertical-align: top;">
             <button type="button" class="btn btn-primary">
-                <i class="fa fa-check"></i>
+                <i class="glyphicon glyphicon-edit"></i>
             </button>
         </span>
-        <input name="new-lesson-input" value="" type="text" placeholder="Type the lesson name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+        <input name="new-lesson-input" value="" type="text" placeholder="Type the unit name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
     </div>
 </script>
 

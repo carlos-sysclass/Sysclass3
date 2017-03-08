@@ -5,7 +5,7 @@ namespace Sysclass\Modules\Questions;
  * @filesource
  */
 
-use Sysclass\Models\Courses\Departament,
+use Sysclass\Models\Content\Department,
     Sysclass\Models\Courses\Questions\Question,
     Sysclass\Models\Courses\Questions\Type as QuestionType,
     Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;
@@ -31,7 +31,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                     array(
                         'count' => $count,
                         'text'  => $this->translate->translate('Questions'),
-                        'icon'  => 'fa fa-question',
+                        'icon'  => 'fa fa-question-circle',
                         'link'  => $this->getBasePath() . 'view'
                     )
                 )
@@ -48,7 +48,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'fa fa-question',
+                'icon'  => 'fa fa-question-circle',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Questions")
             )
@@ -61,11 +61,11 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
                 break;
             }
             case "add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Question"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New question"));
                 break;
             }
             case "edit/{identifier}" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit Question"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("Edit question"));
                 break;
             }
         }
@@ -79,10 +79,10 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New Question'),
+                    'text'      => $this->translate->translate('New question'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
-                    'icon'      => 'fa fa-plus-circle'
+                    'icon'      => 'fa fa-plus-square'
                 )
             )
         );
@@ -95,6 +95,10 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
             'questions.list' => function($data, $self) {
                 $self->putComponent("bootstrap-confirmation");
                 $self->putComponent("bootstrap-editable");
+
+                $self->putComponent("underscore-string");
+
+                
 
                 // CREATE BLOCK CONTEXT
                 //$self->putComponent("data-tables");
@@ -171,7 +175,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      */
     public function addPage()
     {
-        $items = Departament::find("active = 1");
+        $items = Department::find("active = 1");
         $this->putitem("knowledge_areas", $items->toArray());
 
         $items = QuestionType::find();
@@ -190,7 +194,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      */
     public function editPage($identifier)
     {
-        $items = Departament::find("active = 1");
+        $items = Department::find("active = 1");
         $this->putitem("knowledge_areas", $items->toArray());
 
         $items = QuestionType::find();
@@ -211,7 +215,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
      */
     public function formCreatePage($identifier)
     {
-        $items = Departament::find("active = 1");
+        $items = Department::find("active = 1");
         $this->putitem("knowledge_areas", $items->toArray());
 
         $items = QuestionType::find();

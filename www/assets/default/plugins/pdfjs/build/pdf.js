@@ -11427,7 +11427,7 @@ exports._UnsupportedManager = _UnsupportedManager;
     },
     set: function (value) {
       if (value) {
-        deprecated('PDFJS.openExternalLinksInNewWindow, please use ' +
+        deprecated('PDFJS.openExternalLinksInNewWindow. Please, use ' +
           '"PDFJS.externalLinkTarget = PDFJS.LinkTarget.BLANK" instead.');
       }
       if (PDFJS.externalLinkTarget !== LinkTarget.NONE) {
@@ -11444,7 +11444,7 @@ exports._UnsupportedManager = _UnsupportedManager;
      * (Deprecated) Opens external links in a new window if enabled.
      * The default behavior opens external links in the PDF.js window.
      *
-     * NOTE: This property has been deprecated, please use
+     * NOTE: This property has been deprecated. Please, use
      *       `PDFJS.externalLinkTarget = PDFJS.LinkTarget.BLANK` instead.
      * @var {boolean}
      */

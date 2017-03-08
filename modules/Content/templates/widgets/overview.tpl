@@ -103,7 +103,7 @@ _before_init_functions.push(function() {
                 <source src="http://itaipu.sysclass.com/files/lesson/3.1-Processo%20de%20Aquisicao%20%20Judite.mp4" type='video/mp4'>
                 <source src="MY_VIDEO.webm" type='video/webm'>
                 <p class="vjs-no-js">
-                  To view this video please enable JavaScript, and consider upgrading to a web browser that
+                  To view this video please, enable JavaScript, and consider upgrading to a web browser that
                   <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                 </p>
               </video>
@@ -251,7 +251,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this program"}
+										{translateToken value="There's no info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -275,7 +275,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this program"}
+										{translateToken value="There's no info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -284,7 +284,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Ops! There's any info registered for this program"}
+										{translateToken value="There's no info registered for this program"}
 									</div>
 								</div>
 							</div>
@@ -372,7 +372,7 @@ _before_init_functions.push(function() {
 							</li>
 							
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_tests"><i class="fa fa-check-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+								<a data-toggle="tab" href="#tab_class_tests"><i class="glyphicon glyphicon-edit-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
 							</li>
 							-->
 							<li class="visible-xxs visible-md">
@@ -545,7 +545,7 @@ _before_init_functions.push(function() {
 								<div class="scroller" data-always-visible="0" data-rail-visible="1" data-height="parent">
 									<div class="alert alert-info">
 										<span class="text-info"><i class="icon-warning-sign"></i></span>
-										{translateToken value="Sorry! Any data has been registered for this class yet."}
+										{translateToken value="No data has been registered for this class."}
 									</div>
 								</div>
 							</div>
@@ -687,7 +687,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered in this course"}
 			</span>
 		</td>
 	</tr>
@@ -697,7 +697,7 @@ _before_init_functions.push(function() {
 	<%= model.description %>
 	<% if (!_.isEmpty(model.objectives)) { %>
 		<hr />
-		<h5>{translateToken value="Objetives"}</h5>
+		<h5>{translateToken value="Objectives"}</h5>
 		
 		<%= model.objectives %>
 	<% } %>
@@ -727,7 +727,7 @@ _before_init_functions.push(function() {
 			</tr>
 
 			<tr>
-				<td>{translateToken value="Number of Classes:"}</td>
+				<td>{translateToken value="Number of units:"}</td>
 				<td><strong class="text-default pull-right"><%= model.position %> of 24</strong></td>
 			</tr>
 			<tr>
@@ -771,7 +771,7 @@ _before_init_functions.push(function() {
 		<td colspan="5"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's any courses registered for this course"}
+				{translateToken value="There are no courses registered for this course"}
 			</span>
 		</td>
 	</tr>
@@ -793,7 +793,7 @@ _before_init_functions.push(function() {
 	<%= model.description %>
 	<% if (!_.isEmpty(model.objectives)) { %>
 		<hr />
-		<h5>{translateToken value="Objetives"}</h5>
+		<h5>{translateToken value="Objectives"}</h5>
 		
 		<%= model.objectives %>
 	<% } %>
@@ -820,7 +820,7 @@ _before_init_functions.push(function() {
 			</tr>
 
 			<tr>
-				<td>{translateToken value="Number of Classes:"}</td>
+				<td>{translateToken value="Number of units:"}</td>
 				<td><strong class="text-default pull-right"><%= model.position %> of 24</strong></td>
 			</tr>
 			<tr>
@@ -870,7 +870,7 @@ _before_init_functions.push(function() {
 		<td colspan="6"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's no data registered for this course"}
+				{translateToken value="There's no data registered in this course"}
 			</span>
 		</td>
 	</tr>
@@ -937,7 +937,7 @@ _before_init_functions.push(function() {
 	<td class="text-center">
 		<% if (total_questions > 0 && (model.test.test_repetition <= 0 || _.size(model.test.executions) < model.test.test_repetition) ) { %>
 			<a href="/module/tests/open/<%= model.id %>" class="btn btn-xs btn-primary open-test-action">
-				{translateToken value="Do now!"}
+				{translateToken value="Do now"}
 			</a>
 		<% } %>
 		<% if (total_questions > 0) { %>
@@ -953,7 +953,7 @@ _before_init_functions.push(function() {
 		<td colspan="4"  class="alert alert-info">
 			<span class="text-info">
 				<i class="icon-warning-sign"></i>
-				{translateToken value="Ops! There's any exercises registered for this course"}
+				{translateToken value="There are no exercises registered in this course"}
 			</span>
 		</td>
 	</tr>
@@ -972,9 +972,9 @@ _before_init_functions.push(function() {
 
 		<a href="javascript:void(0);" class="btn btn-xs btn-primary open-exercise-action">
 			<% if (_.isObject(model.progress) && model.progress.factor >= 1) { %>
-				{translateToken value="Do it again!"}
+				{translateToken value="Do it again"}
 			<% } else { %>
-				{translateToken value="Do now!"}
+				{translateToken value="Do now"}
 			<% } %>
 		</a>
 	</td>
