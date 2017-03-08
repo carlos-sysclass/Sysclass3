@@ -48,13 +48,13 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Skype Account"}</label>
+			<label class="control-label">{translateToken value="Skype"}</label>
 				<input name="skype" value="" type="text" placeholder="Skype" class="form-control" />
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Google+ Account"}</label>
+			<label class="control-label">{translateToken value="Google+"}</label>
 			<div class="input-group">
 				<span class="input-group-text btn-info">  https://plus.google.com/</span>
 				<input name="googleplus" value="" type="text" placeholder="Google Plus" class="form-control" />
