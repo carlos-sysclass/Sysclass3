@@ -2782,7 +2782,7 @@ a.disabled i.fa {
 }
 
 .organization-logo {
-  height: 110px;
+  height: 75px;
   vertical-align: middle;
   position: relative;
   margin-bottom: 10px;
@@ -2791,7 +2791,7 @@ a.disabled i.fa {
 .organization-logo img {
   max-width: 85%;
   display: block;
-  max-height: 100px;
+  max-height: 65px;
   height: auto;
   margin: auto;
   position: absolute;
