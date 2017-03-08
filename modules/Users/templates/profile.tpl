@@ -54,7 +54,7 @@
 					<div class="form-body">
 						<h5 class="form-section margin-bottom-10 margin-top-10">
 							<i class="fa fa-camera"></i>
-							{translateToken value="Instructor info"}
+							{translateToken value="Instructor info2"}
 						</h5>
 						{include file="`$T_MODULE_TPLPATH`/profile/curriculum.tpl"}
 					</div>

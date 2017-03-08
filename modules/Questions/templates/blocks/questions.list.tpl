@@ -27,10 +27,10 @@
             </div>
         </div>
         <hr />
-        <strong>REFERENCE</strong>
+        <strong>{translateToken value="REFERENCE"}</strong>
         <div class="row">
             <div class="col-md-3">
-                `p1` = Question ooint #1<br />
+                `p1` = Question point #1<br />
                 `p2` = Question point #2<br />
                 `pX` = Question point #X<br />
             </div>

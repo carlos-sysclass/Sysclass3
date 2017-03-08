@@ -121,8 +121,8 @@
 
 				{if $isTeacher}
 					<h5 class="form-section margin-bottom-100">
-						<i class="fa fa-camera"></i>
-						{translateToken value="Instructor Info"}
+						<i class="fa fa-user-o"></i>
+						{translateToken value="User info"}
 					</h5>
 					{include file="./profile/curriculum.tpl"}
 					<div class="clearfix"></div>
