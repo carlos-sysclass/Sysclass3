@@ -11,7 +11,7 @@
         -->
         <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
             <i class="fa fa-plus"></i>
-            {translateToken value="Add Field"}
+            {translateToken value="Add field"}
 
         </a>
     </div>
