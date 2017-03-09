@@ -3,11 +3,13 @@
 		&copy; Copyright 2017 • WiseFlex Knowledge Systems LLC. 
 		<span style="color: white">
 			[ Current Version: {$T_SYSCONFIG.deploy.base_version} 
-			Build {$T_SYSCONFIG.deploy.build_number} ]
+			<!-- Build {$T_SYSCONFIG.deploy.build_number} ] -->
 		</span> 
+		<!-- 
 		<span class="badge badge-primary">
 			{$T_SYSCONFIG.deploy.branch}
 		</span> 
+		 -->
 	</div>
   	<div class="footer-tools">
   		<span class="go-top">
