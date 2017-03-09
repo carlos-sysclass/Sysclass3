@@ -2,7 +2,7 @@
 {block name="content"}
 	<div class="content">
 		<div class="inside-logo">
-			<img src="{Plico_GetResource file='img/logo.png'}" alt="" style="max-width: 100%" />
+			<img src="{Plico_GetResource file='img/logo-login.png'}" alt="" style="max-width: 100%" />
 		</div>
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
