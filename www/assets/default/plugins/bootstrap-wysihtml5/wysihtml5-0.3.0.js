@@ -5400,6 +5400,7 @@ wysihtml5.dom.replaceWithChildNodes = function(node) {
      *    on the onreadystatechange event
      */
     _createIframe: function() {
+        alert(1);
       var that   = this,
           iframe = doc.createElement("iframe");
       iframe.className = "wysihtml5-sandbox";

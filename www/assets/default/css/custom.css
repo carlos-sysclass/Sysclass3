@@ -2804,3 +2804,7 @@ a.disabled i.fa {
 .read-more-full, .show-less {
   display: none;
 }
+
+.wysihtml-form-control {
+  min-height: 125px;
+}

@@ -45,7 +45,16 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">{translateToken value="Question"}</label>
-                                <textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="question" rows="6" placeholder="{translateToken value="Put your question here..."}" data-rule-required="true"></textarea>
+
+                                <div class="wysihtml">
+                                    <div class="toolbar">
+                                      <a data-wysihtml5-command="bold">bold</a>
+                                    </div>
+                                    <div class="wysihtml-form-control form-control" name="question" rows="6" placeholder="{translateToken value="Put your question here..."}" data-rule-required="true"></div>
+                                    <input type="hidden" name="question" />
+                                </div>
+                                <!-- 
+                                <textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="question" rows="6" placeholder="{translateToken value="Put your question here..."}" data-rule-required="true"></textarea> -->
                             </div>
                             <div class="question-type-container" id="question-type-container">
                                 <!--
