@@ -32,6 +32,7 @@
  *    ... becomes ...
  *    <div class="wysiwyg-text-align-center">hello</div>
  */
+ alert(1);
 var wysihtml5ParserRules = {
     /**
      * CSS Class white-list
@@ -72,7 +73,10 @@ var wysihtml5ParserRules = {
         "wysiwyg-text-align-center": 1,
         "wysiwyg-text-align-justify": 1,
         "wysiwyg-text-align-left": 1,
-        "wysiwyg-text-align-right": 1
+        "wysiwyg-text-align-right": 1,
+        "wysiwyg-header1" : 1,
+        "wysiwyg-header2" : 1,
+        "wysiwyg-header3" : 1
     },
     
     
@@ -189,6 +193,21 @@ var wysihtml5ParserRules = {
      *                            - any:            allows anything to pass 
      */
     "tags": {
+        "h1": {
+            "rename_tag": "div",
+            "set_class": "wysiwyg-header1",            
+        },
+        "h2": {
+            "rename_tag": "div",
+            "set_class": "wysiwyg-header2",   
+        },
+        "h3": {
+            "rename_tag": "div",
+            "set_class": "wysiwyg-header3",
+        },
+        "normal" : {
+            "unwrap": 1
+        },
         "tr": {
             "add_class": {
                 "align": "align_text"
@@ -215,11 +234,7 @@ var wysihtml5ParserRules = {
         "details": {
             "unwrap": 1
         },
-        "h4": {
-            "add_class": {
-                "align": "align_text"
-            }
-        },
+
         "em": {},
         "title": {
             "remove": 1
@@ -314,11 +329,6 @@ var wysihtml5ParserRules = {
         "nav": {
             "unwrap": 1
         },
-        "h1": {
-            "add_class": {
-                "align": "align_text"
-            }
-        },
         "head": {
             "unwrap": 1
         },
@@ -348,7 +358,6 @@ var wysihtml5ParserRules = {
         "object": {
             "remove": 1
         },
-        
         "div": {
             "one_of_type": {
                 "visible_content_object": 1
@@ -362,7 +371,6 @@ var wysihtml5ParserRules = {
                 "align": "align_text"
             }
         },
-        
         "option": {
             "remove":1
         },
@@ -398,11 +406,6 @@ var wysihtml5ParserRules = {
         "table": {},
         "keygen": {
             "remove": 1
-        },
-        "h5": {
-            "add_class": {
-                "align": "align_text"
-            }
         },
         "meta": {
             "remove": 1
@@ -515,11 +518,6 @@ var wysihtml5ParserRules = {
         "meter": {
             "unwrap": 1
         },
-        "h3": {
-            "add_class": {
-                "align": "align_text"
-            }
-        },
         "textarea": {
             "unwrap": 1
         },
@@ -555,11 +553,7 @@ var wysihtml5ParserRules = {
         "xml": {
             "remove": 1
         },
-        "h6": {
-            "add_class": {
-                "align": "align_text"
-            }
-        },
+
         "param": {
             "remove": 1
         },
@@ -633,11 +627,13 @@ var wysihtml5ParserRules = {
         "ruby": {
             "unwrap": 1
         },
+        /*
         "h2": {
             "add_class": {
                 "align": "align_text"
             }
         },
+        */
         "ins": {
             "unwrap": 1
         },

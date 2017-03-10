@@ -2805,6 +2805,11 @@ a.disabled i.fa {
   display: none;
 }
 
+
+.wysihtml .toolbar {
+  margin: 0 0 10px;
+}
+
 .wysihtml-form-control {
   min-height: 125px;
 }

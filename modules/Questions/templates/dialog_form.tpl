@@ -48,7 +48,83 @@
 
                                 <div class="wysihtml">
                                     <div class="toolbar">
-                                      <a data-wysihtml5-command="bold">bold</a>
+                                        <div class="btn-group">
+                                            <a class="btn btn-default" data-wysihtml5-command="bold">
+                                                <i class="fa fa-bold"></i>
+                                            </a>
+                                            <a class="btn btn-default" data-wysihtml5-command="italic">
+                                                <i class="fa fa-italic"></i>
+                                            </a>
+
+                                            <a class="btn btn-default" data-wysihtml5-command="underline">
+                                                <i class="fa fa-underline"></i>
+                                            </a>
+
+                                            <!--
+
+                                            <div class="btn-group" role="group">
+                                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-font"></i>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a data-wysihtml-command="formatBlock" data-wysihtml-command-value="h1">
+                                                            <span class="">Header 1</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-wysihtml-command="formatBlock" data-wysihtml-command-value="h2">
+                                                            <span class="">Header 2</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-wysihtml-command="formatBlock" data-wysihtml-command-value="h3">
+                                                            <span class="">Header 3</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-wysihtml-command="formatBlock" data-wysihtml-command-value="normal">
+                                                            <span class="">Header 2</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            -->
+                                        </div>
+<!-- 
+        "wysiwyg-font-size-large": 1,
+        "wysiwyg-font-size-larger": 1,
+        "wysiwyg-font-size-medium": 1,
+        "wysiwyg-font-size-small": 1,
+        "wysiwyg-font-size-smaller": 1,
+        "wysiwyg-font-size-x-large": 1,
+        "wysiwyg-font-size-x-small": 1,
+        "wysiwyg-font-size-xx-large": 1,
+        "wysiwyg-font-size-xx-small": 1,          -->                               
+
+                                        <div class="btn-group">
+                                            <a class="btn btn-default" data-wysihtml5-command="justifyLeft">
+                                                <i class="fa fa-align-left"></i>
+                                            </a>
+                                            <a class="btn btn-default" data-wysihtml5-command="justifyCenter">
+                                                <i class="fa fa-align-center"></i>
+                                            </a>
+                                            <a class="btn btn-default" data-wysihtml5-command="justifyRight">
+                                                <i class="fa fa-align-right"></i>
+                                            </a>
+                                            <a class="btn btn-default" data-wysihtml5-command="justifyFull">
+                                                <i class="fa fa-align-justify"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="btn-group">
+                                            <a class="btn btn-default" data-wysihtml5-command="insertOrderedList">
+                                                <i class="fa fa-list-ol"></i>
+                                            </a>
+                                            <a class="btn btn-default" data-wysihtml5-command="insertUnorderedList">
+                                                <i class="fa fa-list-ul"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div class="wysihtml-form-control form-control" name="question" rows="6" placeholder="{translateToken value="Put your question here..."}" data-rule-required="true"></div>
                                     <input type="hidden" name="question" />

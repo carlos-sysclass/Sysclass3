@@ -199,7 +199,6 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 
 				var wysihtml5 = $(wysihtml5DOM).data('wysihtml5');
 				if (wysihtml5) {
-					console.warn(wysihtml5.editor);
 					wysihtml5.editor.stopObserving();
 				}
 	    	});
@@ -219,10 +218,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 				if (wysihtml5) {
 					wysihtml5.editor.on("change", function(e) {
 						var changeEvt = jQuery.Event("change");
-						//console.log(wysihtml5DOM);
-
 						wysihtml5.el.trigger(changeEvt);
-						//self.update()
 					});
 				}
 	    	});

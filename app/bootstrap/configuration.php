@@ -110,8 +110,11 @@ $di->setShared('environment', function() use ($di) {
 		'css/layout',
 		'css/themes/blue',
 
+		'css/wysihtml',
+		
 		'css/custom',
 		'css/custom-responsive'
+
 		//<!-- END THEME STYLES -->
 	);
 
@@ -229,7 +232,7 @@ $di->setShared('environment', function() use ($di) {
 		),
 		'wysihtml' => [
 			'name'	=> 'wysihtml',
-			'js'	=> array('plugins/wysihtml/wysihtml', 'plugins/wysihtml/wysihtml-toolbar', 'plugins/wysihtml/parser_rules/advanced_and_extended'),
+			'js'	=> array('plugins/wysihtml/wysihtml-toolbar', 'plugins/wysihtml/parser_rules/advanced_unwrap'),
 		],
 		"validation" => array(
 			'name'	=> 'validation',
