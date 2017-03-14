@@ -2801,7 +2801,15 @@ a.disabled i.fa {
   right: 0;
 }
 
-
 .read-more-full, .show-less {
   display: none;
+}
+
+
+.wysihtml .toolbar {
+  margin: 0 0 10px;
+}
+
+.wysihtml-form-control {
+  min-height: 125px;
 }

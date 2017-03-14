@@ -120,7 +120,7 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
             },
             'questions.create.dialog' => function($data, $self) {
                 // CREATE BLOCK CONTEXT
-                $self->putComponent("wysihtml5");
+                $self->putComponent("wysihtml");
                 //$self->putComponent("select2");
                 $self->putComponent("bootstrap-switch");
 

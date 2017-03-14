@@ -2,7 +2,7 @@
 {block name="content"}
 	<div class="content">
 		<div class="inside-logo">
-			<img src="{Plico_GetResource file='img/logo.png'}" alt="" style="max-width: 100%" />
+			<img src="{Plico_GetResource file='img/logo-login.png'}" alt="" style="max-width: 100%" />
 		</div>
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
@@ -81,8 +81,8 @@
 		<!-- END LOGIN FORM -->
 		<div class="contentcopyright">
 			<div class="copyright">
-				&copy; 2017 • WiseFlex Knowledge Systems LLC. <br>{$T_SYSCONFIG.deploy.base_version} Build {$T_SYSCONFIG.deploy.build_number}
-				<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
+				&copy; 2017 • WiseFlex Knowledge Systems LLC. <br>{$T_SYSCONFIG.deploy.base_version} <!-- Build {$T_SYSCONFIG.deploy.build_number}
+				<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span>  -->
 			</div>
 		</div>
 	</div>

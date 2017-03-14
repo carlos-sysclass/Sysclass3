@@ -302,6 +302,23 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
 		}
 	};
 
+    this.handleWysihtml = function(context) {
+        if($('.wysihtml', context).length > 0) {
+
+            $('.wysihtml').each(function() {
+                var editor = new wysihtml5.Editor(
+                    $(this).find("div.wysihtml-form-control")[0], {
+                        toolbar: $(this).find(".toolbar")[0],
+                        parserRules:  wysihtml5ParserRules // defined in file parser rules javascript
+                    }
+                );
+
+                $(this).data("editor", editor);
+            });
+        }
+    };
+
+
 	this.handleTabs = function(context) {
 		$('.tabs a[data-toggle="tab"][data-url]', context).on('click', function (e) {
 			var target = $(e.currentTarget).attr("href") // activated tab
@@ -554,6 +571,7 @@ $SC.module("ui", function(mod, app, Backbone, Marionette, $, _){
         this.handleDatepickers(context);
 		this.handleTimepickers(context);
 		this.handleWysihtml5(context);
+        this.handleWysihtml(context);
 		this.handleTabs(context);
         this.handleMultipleSelect(context);
         this.handleBootstrapSwitch(context);

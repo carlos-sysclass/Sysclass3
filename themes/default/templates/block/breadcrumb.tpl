@@ -3,7 +3,7 @@
 	<div class="col-md-12">
 		<ul class="page-breadcrumb breadcrumb">
 
-			{if (isset($T_ACTIONS) && $T_ACTIONS|@count > 0)}
+			{if ($T_ACTIONS && $T_ACTIONS|@count > 0)}
 			<li class="btn-group">
 				{if $T_ACTIONS|@count == 1}
 					{assign var="action" value=$T_ACTIONS|@reset}
