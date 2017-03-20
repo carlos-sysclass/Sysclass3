@@ -945,10 +945,5 @@ class LoginController extends \AbstractSysclassController
 				);
 			}
 		}
-
 	}
-
-
-
-
 }

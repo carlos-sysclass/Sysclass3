@@ -1,18 +1,22 @@
 <?php
-namespace Sysclass\Models\Users;
+namespace Sysclass\Models\Leads;
 
-use Phalcon\Security\Random;
+use Plico\Mvc\Model;
 
-class Lead extends User
+class Lead extends Model
 {
-    public function beforeValidationOnCreate() {
-        parent::beforeValidationOnCreate();
-
-        $this->renewAccess();
-
-        $this->addToDefaultGroup();
+    public function initialize()
+    {
+        $this->setSource("users");
     }
 
+    public function beforeValidationOnCreate() {
+        parent::beforeValidationOnCreate();
+        $this->renewAccess();
+        $this->addToDefaultGroup();
+    }
+    
+    /*
     public function addToDefaultGroup() {
         $exists = UsersGroups::count([
             'conditions' => 'user_id = ?0 AND group_id = 2',
@@ -26,7 +30,7 @@ class Lead extends User
             $user_group->save();
         }
     }
-
+    
     public function renewAccess() {
         $expires = new \DateTime("now");
         $expires->add(new \DateInterval("P1D"));
@@ -35,5 +39,5 @@ class Lead extends User
         // GENERATE NOW AUTOLOGIN HASH
         $this->autologin = $this->createRandomPass(32);
     }
-
+    */
 }
