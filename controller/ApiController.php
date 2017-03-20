@@ -4,7 +4,7 @@ namespace Sysclass\Controllers;
 use Phalcon\DI,
 	Phalcon\Mvc\Dispatcher,
 	Sysclass\Models\Users\User,
-	Sysclass\Models\Users\Lead,
+	Sysclass\Models\Leads\Lead,
 	Sysclass\Models\Content\Program as Course,
 	Sysclass\Models\Enrollments\CourseUsers as Enrollment,
 	Sysclass\Models\Enrollments\Enroll,
@@ -376,34 +376,16 @@ class ApiController extends \AbstractSysclassController
 
 				//}
 
-				if ($lead) {
-					if ($lead->getType() == "lead") {
-						$lead->renewAccess();
-						$lead->save();
-
-						$lead->addToDefaultGroup();
-					} else {
-						$message = $this->createResponse(200, $this->translate->translate("It's not possible to login you right now. Please try again."), "error");
-						$this->response->setJsonContent(array(
-							'message' => $message,
-							'error' => true,
-							//'redirect' => $data['url']
-						));
-						return true;
-					}
-				} else {
+				if (!$lead) {
 					$lead = new Lead();
-					list($postdata['name'], $postdata['surname']) = explode("@", $postdata['email']);
-					//$lead->createDefaultFields();
-					//$postdata['name'] = $postdata['email'];
 					$lead->assign($postdata);
-
 					$lead->save();
 				}
 
 				if ($lead) {
+
 					$data = [
-						'url' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/autologin/" . $lead->autologin
+						'url' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/autologin/" . 'demo-user'
 					];
 
 					$message = $this->createResponse(200, $this->translate->translate(" Thank you. We're redirecting you to the sysclass environment."), "success");
