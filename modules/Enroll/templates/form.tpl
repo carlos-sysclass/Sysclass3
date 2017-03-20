@@ -121,7 +121,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the criteria defined below. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
+					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the enrollment period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
