@@ -74,7 +74,7 @@ class BaseForm extends Form
 					/**
 					 * SMALL HACK FOR SELECTABLE ELEMENTS, BUT THE MULTIPLE ATTR HAVE BE GETTED FROM THE ENROLL API
 					 */
-					//if (in_array($field->name, array('how_did_you_know'))) {
+					//if (in_array($field->name, array('how_did_you_learn'))) {
 					//	$attributes['multiple'] = 'multiple';
 					//} else {
 						$attributes['useEmpty'] = true;

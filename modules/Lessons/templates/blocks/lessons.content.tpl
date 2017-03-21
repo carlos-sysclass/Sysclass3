@@ -179,7 +179,7 @@ li.list-item {
         </video>
     </div>
     <div class="col-md-1 content-video-sidebar">
-        <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+        <div class="tooltips" data-original-title="{translateToken value='Delete'}" data-placement="top" data-container="body" style="display: inline-block;">
             <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                 data-toggle="confirmation"
                 data-original-title="{translateToken value="Are you sure?"}"
@@ -219,7 +219,7 @@ li.list-item {
                 <i class="icon-globe"></i>
         </a>
 
-        <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+        <div class="tooltips" data-original-title="{translateToken value='Delete'}" data-placement="top" data-container="body" style="display: inline-block;">
             <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"
@@ -253,7 +253,7 @@ li.list-item {
     </a>
 
     <div class="list-file-item-options">
-        <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+        <div class="tooltips" data-original-title="{translateToken value='Delete'}" data-placement="top" data-container="body" style="display: inline-block;">
             <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"
@@ -315,7 +315,7 @@ li.list-item {
             <%= model.title %>
         </a>
         <div class="list-file-item-options">
-            <div class="tooltips" data-original-title="{translateToken value='Remove'}" data-placement="top" data-container="body" style="display: inline-block;">
+            <div class="tooltips" data-original-title="{translateToken value='Delete'}" data-placement="top" data-container="body" style="display: inline-block;">
                 <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
                     data-toggle="confirmation"
                     data-original-title="{translateToken value="Are you sure?"}"

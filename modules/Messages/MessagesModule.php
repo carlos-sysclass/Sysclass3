@@ -296,7 +296,7 @@ class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidge
                 'icon'  => 'fa fa-trash',
                 'class' => 'btn-sm btn-danger tooltips',
                 'attrs' => array(
-                    'data-original-title' => $this->translate->translate('Remove')
+                    'data-original-title' => $this->translate->translate('Delete')
                 )
             );
         }
