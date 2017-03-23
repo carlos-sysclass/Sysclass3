@@ -2788,16 +2788,15 @@ a.disabled i.fa {
     margin-bottom: 10%;
 }
 .organization-logo img {
-  max-width: 85%;
-  display: block;
-  max-height: 100px;
-  height: auto;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+    max-width: 80%;
+    max-height: 80%;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    position: absolute;
 }
 
 
