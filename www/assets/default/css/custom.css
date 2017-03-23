@@ -2645,16 +2645,16 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 
 .institution-button-container.total-rows-1 {
-  margin-top: 57px;
+  margin-top: 25%;
 }
 .institution-button-container.total-rows-2 {
-  margin-top: 38px;
+  margin-top: 20%;
 }
 .institution-button-container.total-rows-3 {
-  margin-top: 19px;
+  margin-top: 15%;
 }
 .institution-button-container.total-rows-4 {
-  margin-top: 0px;
+  margin-top: 10%;
 }
 
 #course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {
@@ -2782,11 +2782,10 @@ a.disabled i.fa {
 }
 
 .organization-logo {
-  height: 110px;
-  vertical-align: middle;
-  position: relative;
-  margin-bottom: 10px;
-  overflow: hidden;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10%;
+    margin-bottom: 10%;
 }
 .organization-logo img {
   max-width: 85%;
