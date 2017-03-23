@@ -211,8 +211,8 @@ class User extends Model
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
         parent::assign($data, $dataColumnMap, $whiteList);
 
-        if (array_key_exists('how_did_you_know', $data) && is_array($data['how_did_you_know'])) {
-            $this->how_did_you_know = implode(",", $data['how_did_you_know']);
+        if (array_key_exists('how_did_you_learn', $data) && is_array($data['how_did_you_learn'])) {
+            $this->how_did_you_learn = implode(",", $data['how_did_you_learn']);
         }
         return $this;
     }

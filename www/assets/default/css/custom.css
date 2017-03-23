@@ -2645,16 +2645,16 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 
 .institution-button-container.total-rows-1 {
-  margin-top: 57px;
+  margin-top: 25%;
 }
 .institution-button-container.total-rows-2 {
-  margin-top: 38px;
+  margin-top: 20%;
 }
 .institution-button-container.total-rows-3 {
-  margin-top: 19px;
+  margin-top: 15%;
 }
 .institution-button-container.total-rows-4 {
-  margin-top: 0px;
+  margin-top: 10%;
 }
 
 #course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {
@@ -2782,13 +2782,22 @@ a.disabled i.fa {
 }
 
 .organization-logo {
+  /*
   height: 75px;
   vertical-align: middle;
   position: relative;
   margin-bottom: 10px;
   overflow: hidden;
+  */
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  margin-top: 9%;
+  margin-bottom: 9%;
+
 }
 .organization-logo img {
+  /*
   max-width: 85%;
   display: block;
   max-height: 65px;
@@ -2799,6 +2808,20 @@ a.disabled i.fa {
   bottom: 0;
   left: 0;
   right: 0;
+  */
+  max-width: 90%;
+  max-height: 100%;
+  margin: auto;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.organization-logo img {
+
+>>>>>>> origin/lucent
 }
 
 .read-more-full, .show-less {

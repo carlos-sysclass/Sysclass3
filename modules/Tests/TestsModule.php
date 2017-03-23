@@ -927,7 +927,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     'icon'  => 'fa fa-remove',
                     'class' => 'btn-sm btn-danger tooltips',
                     'attrs' => array(
-                        'data-original-title' => 'Remove'
+                        'data-original-title' => 'Delete'
                     )
                 );
             }
