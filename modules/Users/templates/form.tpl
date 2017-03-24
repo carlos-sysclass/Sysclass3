@@ -49,8 +49,8 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Primary Group"}</label>
-							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="id">
+							<label class="control-label">{translateToken value="Groups"}</label>
+							<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Groups'}" multiple="multiple" data-format-attr="id">
 								<option value="-1">{translateToken value="Select a group"}</option>
 								{foreach $T_GROUPS as $group}
 									<option value="{$group.id}">{$group.name}</option>

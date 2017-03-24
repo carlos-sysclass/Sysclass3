@@ -431,7 +431,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-info datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Manage")
+                    'data-original-title' => $this->translate->translate("Users")
                 ]
             ),
             'permission'  => array(
@@ -439,7 +439,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-warning datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Define")
+                    'data-original-title' => $this->translate->translate("Manage")
                 ]
             )
         );
