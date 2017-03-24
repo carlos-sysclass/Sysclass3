@@ -29,7 +29,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'users' => array(
                     array(
                         'count' => $count,
-                        'text'  => $this->translate->translate('Attributions'),
+                        'text'  => $this->translate->translate('Permissions'),
                         'icon'  => 'fa fa-shield',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -54,7 +54,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-shield',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Attributions")
+                    'text'  => $this->translate->translate("Permissions")
                 );
                 return $breadcrumbs;
                 break;
@@ -63,7 +63,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-shield',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Attributions")
+                    'text'  => $this->translate->translate("Permissions")
                 );
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-lock',
@@ -82,7 +82,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New attribution'),
+                    'text'      => $this->translate->translate('New permission'),
                     'link'      => "javascript:void(0)",
                     'class'     => "btn-primary dialog-create-role-open-action",
                     'icon'      => 'fa fa-plus'

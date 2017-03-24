@@ -4,7 +4,7 @@
         	<form id="form-role" role="form" class="form-validate" method="post" action="">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title event-title">{translateToken value="Create Attribution"}</h4>
+                    <h4 class="modal-title event-title">{translateToken value="Create permission"}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-body">
@@ -25,7 +25,7 @@
 					                </div>
 								</div>
 							</div>
-                            <h5 class="form-section margin-bottom-10">{translateToken value="Entities using these attributions"}</h5>
+                            <h5 class="form-section margin-bottom-10">{translateToken value="Entities using these permissions"}</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
