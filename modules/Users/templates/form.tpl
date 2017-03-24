@@ -62,7 +62,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label class="control-label">{translateToken value="Main language"}</label>
+							<label class="control-label">{translateToken value="Language"}</label>
 							<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Language'}">
 								<option value="">{translateToken value="Please, select"}</option>
 								{foreach $T_LANGUAGES as $lang}
