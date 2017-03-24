@@ -388,7 +388,7 @@ class ApiController extends \AbstractSysclassController
 						'url' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/autologin/" . 'demo-user'
 					];
 
-					$message = $this->createResponse(200, $this->translate->translate(" Thank you. We're redirecting you to the sysclass environment."), "success");
+					$message = $this->createResponse(200, $this->translate->translate(" Thank you for trying SysClass. Would like to know more? Contact us."), "success");
 
 					$this->response->setJsonContent(array(
 						'message' => $message,
