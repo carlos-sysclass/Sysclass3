@@ -4020,7 +4020,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     background-image: none;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 128px) {
   .navbar-nav {
     float: left;
     margin: 0;

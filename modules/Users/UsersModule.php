@@ -88,7 +88,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 //$self->putItem("country_codes", $country_codes);
 
                 $userFields = array(
-                    'how_did_you_know',
+                    'how_did_you_learn',
                     'supplier_name',
                     'cnpj',
                     'is_supplier'

@@ -2,7 +2,7 @@
 	<div class="footer-inner">
 		&copy; Copyright 2017 • WiseFlex Knowledge Systems LLC. 
 		<span style="color: white">
-			[ Current Version: {$T_SYSCONFIG.deploy.base_version} 
+			[ Version: {$T_SYSCONFIG.deploy.base_version} 
 			<!-- Build {$T_SYSCONFIG.deploy.build_number} ] -->
 		</span> 
 		<!-- 

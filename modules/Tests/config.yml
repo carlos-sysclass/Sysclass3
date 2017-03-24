@@ -94,7 +94,7 @@ blocks:
         - mData: user_score
           sClass: text-center
           sType: float-as-percentage
-          label: "Score Achieved"
+          label: "Score"
 
         - mData: user_grade
           sClass: text-center

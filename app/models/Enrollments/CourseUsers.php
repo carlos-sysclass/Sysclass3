@@ -277,6 +277,9 @@ class CourseUsers extends Model
         if (count($where) > 0) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
+
+        $sql .= " GROUP BY u.id";
+
         /*
         } else {
             $sql = "SELECT u.*

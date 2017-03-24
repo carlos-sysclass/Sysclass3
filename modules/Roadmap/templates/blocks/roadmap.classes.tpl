@@ -59,7 +59,7 @@
             <div class="no-period-container"></div>
             <a class="btn btn-sm btn-link btn-link add-block-action" href="javascript: void(0);">
                 <i class="fa fa-plus"></i>
-                {translateToken value="Create Block"}
+                {translateToken value="Create block"}
             </a>
         </div>
     </div>
@@ -176,7 +176,7 @@
         <div class="cleafix"></div>
         <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
             <i class="fa fa-plus"></i>
-            {translateToken value="Create Class"}
+            {translateToken value="Create class"}
         </a>
     </div>
 
@@ -197,11 +197,11 @@
         <% if (typeof data.id !== 'undefined') { %>
             <span class="btn btn-default btn-sm"><span class="counter">X</span> / <span class="total">X</span></span>
 
-            <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.id %>" data-original-title="Edit class info">
+            <a class="btn btn-sm btn-primary tooltips" href="/module/classes/edit/<%= data.id %>" data-original-title="Edit">
                 <i class="fa fa-edit"></i>
             </a>
 
-            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="Details">
                 <i class="fa fa-info-circle"></i>
             </a>
 
@@ -256,7 +256,7 @@
                 <div class="col-md-6 col-sm-6">
                     <p>
                         <span>{translateToken value="Instructors"}</span>
-                        <strong class="text-danger pull-right">{translateToken value="No Instructors"}</strong>
+                        <strong class="text-danger pull-right">{translateToken value="No instructors"}</strong>
                     </p>
                 </div>
             <% } %>

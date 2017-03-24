@@ -113,7 +113,7 @@
                 <i class="fa fa-edit"></i>
             </a>
 
-            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="Details">
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
