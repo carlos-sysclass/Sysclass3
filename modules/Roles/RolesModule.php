@@ -486,13 +486,13 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("Role added to resource."), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Permission set."), "success");
 
         } else {
             $roleResources->getFirst()->delete();
 
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("Role removed from resource."), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("Permission removed."), "error");
         }
         return array_merge($response, $info);
     }
