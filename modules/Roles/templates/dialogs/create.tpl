@@ -4,7 +4,7 @@
         	<form id="form-role" role="form" class="form-validate" method="post" action="">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title event-title">{translateToken value="Create permission"}</h4>
+                    <h4 class="modal-title event-title">{translateToken value="New role"}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-body">
