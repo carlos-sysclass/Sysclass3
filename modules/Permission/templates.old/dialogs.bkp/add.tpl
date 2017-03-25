@@ -1,7 +1,7 @@
 <div id="permission-add-dialog-modal" class="modal fade" tabindex="-1">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-		<h4 class="modal-title">{translateToken value="Add new Permission"}</h4>
+		<h4 class="modal-title">{translateToken value="Add new permission"}</h4>
 	</div>
 	<div class="modal-body">
 		<form role="form" class="form-horizontal" method="post" action="">

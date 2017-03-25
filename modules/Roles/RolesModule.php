@@ -29,7 +29,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'users' => array(
                     array(
                         'count' => $count,
-                        'text'  => $this->translate->translate('Attributions'),
+                        'text'  => $this->translate->translate('Permissions'),
                         'icon'  => 'fa fa-shield',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -54,7 +54,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-shield',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Attributions")
+                    'text'  => $this->translate->translate("Permissions")
                 );
                 return $breadcrumbs;
                 break;
@@ -63,7 +63,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-shield',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Attributions")
+                    'text'  => $this->translate->translate("Permissions")
                 );
                 $breadcrumbs[] = array(
                     'icon'  => 'fa fa-lock',
@@ -82,7 +82,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New attribution'),
+                    'text'      => $this->translate->translate('New role'),
                     'link'      => "javascript:void(0)",
                     'class'     => "btn-primary dialog-create-role-open-action",
                     'icon'      => 'fa fa-plus'
@@ -423,7 +423,7 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-primary datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Edit roles")
+                    'data-original-title' => $this->translate->translate("Edit")
                 ]
             ),
             'users'  => array(
@@ -431,15 +431,15 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-info datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Manage Users")
+                    'data-original-title' => $this->translate->translate("Users")
                 ]
             ),
             'permission'  => array(
-                'icon'  => 'fa fa-lock',
+                'icon'  => 'fa fa-cog',
                 'link'  => 'javascript:void(0);',
                 'class' => 'btn-sm btn-warning datatable-actionable tooltips',
                 'attrs' => [
-                    'data-original-title' => $this->translate->translate("Define permissions")
+                    'data-original-title' => $this->translate->translate("Manage")
                 ]
             )
         );
@@ -486,13 +486,13 @@ class RolesModule extends \SysclassModule implements \IBlockProvider, \ILinkable
 
             // USER ADICIONANDO AO GRUPO
             $info = array('insert' => true, "removed" => false);
-            $response = $this->createAdviseResponse($this->translate->translate("Role added to resource."), "success");
+            $response = $this->createAdviseResponse($this->translate->translate("Permission set."), "success");
 
         } else {
             $roleResources->getFirst()->delete();
 
             $info = array('insert' => false, "removed" => true);
-            $response = $this->createAdviseResponse($this->translate->translate("Role removed from resource."), "error");
+            $response = $this->createAdviseResponse($this->translate->translate("Permission removed."), "error");
         }
         return array_merge($response, $info);
     }

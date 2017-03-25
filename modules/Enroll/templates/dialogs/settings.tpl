@@ -56,7 +56,7 @@
                                 {translateToken value="Restricted groups"}
                             </label>
                             <div class="col-md-9">
-                                <select class="select2-me form-control input-block-level" name="enrollgroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="group_id">
+                                <select class="select2-me form-control input-block-level" name="enrollgroups" data-placeholder="{translateToken value='Groups'}" multiple="multiple" data-format-attr="group_id">
                                     <option value="-1">{translateToken value="Select a group"}</option>
                                     {foreach $T_ENROLL_GROUPS as $group}
                                         <option value="{$group.id}">{$group.name}</option>
