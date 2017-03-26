@@ -266,13 +266,13 @@ reports:
       - name: n_tests_avaliable
         type: integer
         label: "# Avaliable tests"
-        category: Tests
+        category: assignments
         mData: n_tests_avaliable
         sClass: text-center
 
       - name: n_tests_tried
         type: integer
-        label: "# Test taken"
+        label: "# Test done"
         category: Tests
         mData: n_tests_tried
         sClass: text-center
