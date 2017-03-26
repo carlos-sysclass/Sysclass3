@@ -15,7 +15,7 @@ crud:
       template: view.tpl
       #blocks: ["tests.create.dialog"]
       variables:
-        page_subtitle: Manage your tests and exams
+        page_subtitle: Manage your exams, tests, exercises, and assignments
       context:
         datatable_fields:
         - mData: id
