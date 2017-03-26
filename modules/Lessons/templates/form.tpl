@@ -44,7 +44,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">{translateToken value="Instructor"}</label>
-						<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructors'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
+						<!--<input type="hidden" class="select2-me form-control input-block-level" name="instructor_id" data-placeholder="{translateToken value='Instructor'}" data-url="/module/courses/items/instructor/combo" data-minimum-results-for-search="4" data-multiple="false" />-->
 						<select class="select2-me form-control" name="instructor_id">
 							<option value="">{translateToken value="Please select"}</option>
 							{foreach $T_INSTRUCTORS as $id => $instructor}

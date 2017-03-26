@@ -398,7 +398,7 @@
             <% if (_.isObject(data.class.instructors)) { %>
             <div class="col-md-6 col-sm-6">
                 <div>
-                    <span>{translateToken value="Instructors"}</span>
+                    <span>{translateToken value="Instructor"}</span>
                     <ul class="pull-right">
                         <%
                             var instructors = _.map(data.class.instructors, function(data) {
@@ -414,8 +414,8 @@
             <% } else { %>
                 <div class="col-md-6 col-sm-6">
                     <p>
-                        <span>{translateToken value="Instructors"}</span>
-                        <strong class="text-danger pull-right">{translateToken value="No Instructors defined"}</strong>
+                        <span>{translateToken value="Instructor"}</span>
+                        <strong class="text-danger pull-right">{translateToken value="No Instructor defined"}</strong>
                     </p>
                 </div>
             <% } %>
