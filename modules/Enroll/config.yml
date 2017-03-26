@@ -46,7 +46,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
     add:
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
@@ -94,7 +94,7 @@ blocks:
       - mData: options
         sType: table-options
         sClass: text-center
-        label: Actions
+        label: Options
 
   enroll.fields:
     context:
@@ -115,7 +115,7 @@ blocks:
       - mData: options
         sType: table-options
         sClass: text-center
-        label: Actions
+        label: Options
   enroll.user.block:
     context:
       block_id: "enroll_users"
@@ -136,7 +136,7 @@ blocks:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
   enroll.users.dialog:
     context:
       block_id: "enroll_users"
@@ -161,7 +161,7 @@ blocks:
       - mData: options
         sType: table-options
         sClass: text-center
-        label: Actions
+        label: Options
 models:
   me: 
     class: Sysclass\Models\Enrollments\Enroll

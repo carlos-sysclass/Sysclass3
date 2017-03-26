@@ -44,7 +44,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
     add: false
     'edit/{id}': false
@@ -93,7 +93,7 @@ blocks:
       - mData: options
         sType: table-options
         sClass: text-center
-        label: Actions
+        label: Options
 models:
   me: Sysclass\Models\Acl\Role
   resources: 

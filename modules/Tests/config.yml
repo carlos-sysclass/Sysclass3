@@ -36,7 +36,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
     add:
       components: ["select2", "validation", "bootstrap-switch"]
       template: form.tpl
@@ -103,12 +103,12 @@ blocks:
         #- mData: options
         #  sType: table-options
         #  sClass: text-center
-        #  label: Actions
+        #  label: Options
 models:
   me: 
     class: Sysclass\Models\Courses\Tests\Lesson
     listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
-    exportMethod: ["ToFullArray", ["Test"]]
+    exportMethod: ["ToFullArray", ["Assignment"]]
   question: 
     class: Sysclass\Models\Courses\Tests\TestQuestions
     #listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]

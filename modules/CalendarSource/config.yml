@@ -36,7 +36,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
     add:
       components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       #blocks: ["messages.eventtypes.allow"]

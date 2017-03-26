@@ -26,7 +26,7 @@ blocks:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
 crud:
   # BASE VALUES.. USED ON ALL ROUTES
@@ -67,7 +67,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]

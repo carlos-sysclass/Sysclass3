@@ -32,7 +32,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl
