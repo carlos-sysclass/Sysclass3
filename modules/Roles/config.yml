@@ -6,7 +6,7 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Attributions
+      page_title: Permissions
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
@@ -15,7 +15,7 @@ crud:
       blocks: ["roles.create.dialog", "roles.resources.dialog", "roles.users.dialog"]
       scripts: ["views.roles.view"]
       variables:
-        page_subtitle: Manage your Attributions
+        page_subtitle: Manage permissions
       context:
         datatable_fields:
         - mData: id
