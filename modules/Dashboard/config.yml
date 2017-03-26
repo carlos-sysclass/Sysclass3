@@ -43,7 +43,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
     add:
       components: ["select2","validation"]

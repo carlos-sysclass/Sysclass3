@@ -34,7 +34,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
     add: false
 #    add:
 #      components: ["validation", "wysihtml5"]
