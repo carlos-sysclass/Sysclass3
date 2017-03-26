@@ -24,7 +24,7 @@
             {/if}
             {if $T_TEST.test.instructors|@count > 0}
             <p class="">
-                <span>{translateToken value="Instructors"}:</span>
+                <span>{translateToken value="Instructor"}:</span>
                 <strong class="text-primary pull-right">
                     {foreach $T_TEST.test.instructors as $instructor}
                         {$instructor.name} {$instructor.surname}
