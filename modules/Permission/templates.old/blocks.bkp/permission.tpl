@@ -26,7 +26,7 @@
 				<tr>
 					<th class="text-center">#</th>
 					<th>{translateToken value="Permission"}</th>
-					<th class="text-right">{translateToken value="Actions"}</th>
+					<th class="text-right">{translateToken value="Options"}</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
