@@ -27,7 +27,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $summary = array(
             'type'  => 'danger',
             'count' => $pendingTests->count(),
-            'text'  => $this->translate->translate('New tests')
+            'text'  => $this->translate->translate('New assignments')
         );
 
         if ($pendingTests->count() > 0) {
@@ -90,7 +90,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                     break;
                 }
                 case "add" : {
-                    $breadcrumbs[] = array('text'   => $this->translate->translate("New test"));
+                    $breadcrumbs[] = array('text'   => $this->translate->translate("New assignment"));
                     break;
                 }
                 case "edit/{identifier}" : {
@@ -115,7 +115,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New test'),
+                    'text'      => $this->translate->translate('New assignment'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus-square'
