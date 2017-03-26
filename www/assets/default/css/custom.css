@@ -602,7 +602,7 @@ h4.border-bottom {
 	margin-left: 0;
 }
 .page-boxed .header .navbar-brand img {
-	margin-left: 0;
+	margin: 2px 0 0 0;
 }
 
 .navbar-header a {
