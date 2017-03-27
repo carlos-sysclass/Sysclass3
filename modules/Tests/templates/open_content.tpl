@@ -47,7 +47,7 @@
                     <div class="caption">
                         <i class="fa fa-list-ol"></i>
                         <span class="hidden-480">
-                        {translateToken value="Test details"} </span>
+                        {translateToken value="Assignment details"} </span>
                     </div>
                 </div>
                 <div class="portlet-body test-details">

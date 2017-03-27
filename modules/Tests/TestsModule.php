@@ -54,7 +54,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 'content' => array(
                     array(
                         'count' => $total,
-                        'text'  => $this->translate->translate('Tests'),
+                        'text'  => $this->translate->translate('Assignments'),
                         'icon'  => 'fa fa-list-ol ',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -80,7 +80,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 array(
                     'icon'  => 'fa fa-list-ol',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Tests")
+                    'text'  => $this->translate->translate("Assignments")
                 )
             );
 
