@@ -598,11 +598,11 @@ h4.border-bottom {
 	width: auto;
 }
 .header .navbar-brand img {
-	height: 20px;
+	height: 16px;
 	margin-left: 0;
 }
 .page-boxed .header .navbar-brand img {
-	margin-left: 0;
+	margin: 2px 0 0 0;
 }
 
 .navbar-header a {
@@ -2645,16 +2645,16 @@ table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after
 }
 
 .institution-button-container.total-rows-1 {
-  margin-top: 25%;
+  margin-top: 13%;
 }
 .institution-button-container.total-rows-2 {
-  margin-top: 20%;
+  margin-top: 8%;
 }
 .institution-button-container.total-rows-3 {
-  margin-top: 15%;
+  margin-top: 5%;
 }
 .institution-button-container.total-rows-4 {
-  margin-top: 10%;
+  margin-top: 3%;
 }
 
 #course-table_wrapper  table.dataTable, #unit-table_wrapper table.dataTable, #messages-table-messages_wrapper table.dataTable {

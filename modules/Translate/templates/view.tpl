@@ -23,7 +23,7 @@
 							<th>{translateToken value=“Original name"}</th>
 							<th class="text-center table-boolean">{translateToken value="RTL"}</th>
 							<th class="text-center table-boolean">{translateToken value="Active"}</th>
-							<th class="text-center table-options">{translateToken value="Actions"}</th>
+							<th class="text-center table-options">{translateToken value="Options"}</th>
 						</tr>
 					</thead>
 					<tbody></tbody>

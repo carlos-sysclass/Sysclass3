@@ -16,7 +16,7 @@ use Phalcon\DI,
  */
 class ApiController extends \AbstractSysclassController
 {
-	const INVALID_DATA = "Your data sent is invalid. Please, try again.";
+	const INVALID_DATA = "The data sent is invalid. Please, try again.";
 	const NO_DATA_FOUND = "No data found.";
 	const EXECUTION_OK = "Method executed.";
 	
@@ -388,7 +388,7 @@ class ApiController extends \AbstractSysclassController
 						'url' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/autologin/" . 'demo-user'
 					];
 
-					$message = $this->createResponse(200, $this->translate->translate(" Thank you. We're redirecting you to the sysclass environment."), "success");
+					$message = $this->createResponse(200, $this->translate->translate(" Thank you for trying SysClass. Would like to know more? Contact us."), "success");
 
 					$this->response->setJsonContent(array(
 						'message' => $message,
@@ -397,7 +397,7 @@ class ApiController extends \AbstractSysclassController
 					));
 					return true;
 				} else {
-					$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be incomplete. Please, check your info and try again!"), "error");
+					$messages[] = $this->createResponse(400, $this->translate->translate("The information sent appers to be incomplete. Please, check your info and try again!"), "error");
 					$error = true;
 				}
 
@@ -432,7 +432,7 @@ class ApiController extends \AbstractSysclassController
 			$error = true;
 			switch($e->getCode()) {
 				case AuthenticationException :: SIGNUP_EMAIL_ALREADY_EXISTS: {
-					$messages[] = $this->createResponse($e->getCode(), $this->translate->translate("There is already a registration made with this email! Would you like to login?"), "error");
+					$messages[] = $this->createResponse($e->getCode(), $this->translate->translate("There is already a registration with this email. Would you like to login?"), "error");
 		            break;
 				}
 				case AuthenticationException :: USER_DATA_IS_INVALID_OR_INCOMPLETE : {

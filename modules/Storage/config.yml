@@ -24,7 +24,7 @@ blocks:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 models:
   library: 
     class: Sysclass\Services\Storage\Library

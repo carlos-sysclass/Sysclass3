@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Main language"}</label>
+					<label class="control-label">{translateToken value="Language"}</label>
 					<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 					{foreach $T_LANGUAGES as $key => $value}
 						<option value="{$value.id}">{$value.name}</option>

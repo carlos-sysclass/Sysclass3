@@ -30,7 +30,7 @@
                     </p>
                     <hr />
                     <p class="">
-                        <span>{translateToken value="Instructors"}:</span>
+                        <span>{translateToken value="Instructor"}:</span>
                         <strong class="text-default pull-right">
                             <%
                             var total_size = _.size(model.instructors);

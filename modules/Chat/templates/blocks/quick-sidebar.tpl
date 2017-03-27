@@ -42,10 +42,10 @@
             </li>
         </ul>
         -->
-        <h3 class="list-heading">{translateToken value='Your Support Requests'}</h3>
+        <h3 class="list-heading">{translateToken value='Your support requests'}</h3>
         <ul class="media-list list-items stick-queue-list"></ul>
 
-        <h3 class="list-heading">{translateToken value='Support Requests'}</h3>
+        <h3 class="list-heading">{translateToken value='Support requests'}</h3>
         <ul class="media-list list-items default-queue-list">
         </ul>
     </div>

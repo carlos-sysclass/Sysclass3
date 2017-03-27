@@ -7,7 +7,7 @@
                 </button>
                 <h4 class="modal-title">
                     <i class="fa fa-lock"></i>
-                    {translateToken value='Manage Attributions Permissions'}
+                    {translateToken value='Manage permissions'}
                 </h4>
             </div>
             <div class="modal-body">

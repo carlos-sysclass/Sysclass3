@@ -255,7 +255,7 @@
             <% } else { %>
                 <div class="col-md-6 col-sm-6">
                     <p>
-                        <span>{translateToken value="Instructors"}</span>
+                        <span>{translateToken value="Instructor"}</span>
                         <strong class="text-danger pull-right">{translateToken value="No instructors"}</strong>
                     </p>
                 </div>

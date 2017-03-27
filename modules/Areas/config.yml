@@ -31,7 +31,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
     add:
       components: ["datepicker", "timepicker", "select2", "wysihtml5", "validation", "bootstrap-switch"]
       template: form.tpl

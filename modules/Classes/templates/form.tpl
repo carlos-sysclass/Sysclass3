@@ -65,7 +65,7 @@
 				</div>
 				<!--
 				<div class="form-group">
-					<label class="control-label">{translateToken value="Instructors"}</label>
+					<label class="control-label">{translateToken value="Instructor"}</label>
 					<select class="select2-me form-control" name="instructor_id" multiple="multiple">
 						<option value="">{translateToken value="Please select"}</option>
 						{foreach $T_INSTRUCTORS as $id => $instructor}

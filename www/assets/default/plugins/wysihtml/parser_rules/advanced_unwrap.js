@@ -32,7 +32,6 @@
  *    ... becomes ...
  *    <div class="wysiwyg-text-align-center">hello</div>
  */
- alert(1);
 var wysihtml5ParserRules = {
     /**
      * CSS Class white-list
