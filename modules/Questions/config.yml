@@ -21,7 +21,7 @@ blocks:
           label: Type
 
         - mData: difficulty.name
-          label: Difficulty
+          label: Level
 
         - mData: options
           sType: table-options
@@ -57,7 +57,7 @@ crud:
           label: Type
 
         - mData: difficulty.name
-          label: Difficulty
+          label: Level
 
         - mData: active
           sType: table-boolean
@@ -86,7 +86,7 @@ crud:
 models:
   me:
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Level"]]
   'lesson-content':
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Level"]]
