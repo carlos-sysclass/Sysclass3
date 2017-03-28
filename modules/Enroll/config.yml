@@ -6,7 +6,7 @@ crud:
   base_route:
     stylesheets: ["css/components"]
     variables:
-      page_title: Enrollment 
+      page_title: Registration 
       # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
@@ -15,7 +15,7 @@ crud:
       #blocks: ["group.add"]
       scripts: ["view"]
       variables:
-        page_subtitle: Manage the way student get into the system
+        page_subtitle: Manage how users are registered
       context:
         datatable_fields:
         - mData: id
@@ -26,7 +26,7 @@ crud:
           label: Name
 
         - mData: admittance_type
-          label: Admittance Type
+          label: Registration type
 
         - mData: start_date
           sType: datetime-moment
