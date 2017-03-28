@@ -87,7 +87,7 @@
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="glyphicon glyphicon-inbox"></i>
 					{translateToken value="Course format"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criteria for user admittance. This information is used to manage the course grouping and calculate its roadmap.'}">
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Assign the criteria for user registration. This is used to manage course grouping and calculate its roadmap.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
@@ -113,7 +113,7 @@
 					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Individual</strong> admission, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
+					            On <strong>Individual</strong> registration, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
 					        </p>
 					    </div>
 					</div>
@@ -121,7 +121,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the registration period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
+					            On <strong>Group-based</strong> registration, the user is allocated to a group based on his/hers registration date. Each group is dynamically created based on the registration period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
@@ -136,7 +136,7 @@
 			<h5 class="form-section margin-bottom-10 margin-top-10">
 				<i class="glyphicon glyphicon-inbox"></i>
 				{translateToken value="Registration Dates"}
-				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
+				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Select one of two ways to assign group creation. Fixed, when you determine the date for registration. Dynamic, when you set the parameters for the system to automatically create a group.'}" data-placement="bottom">
                     <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
@@ -273,7 +273,7 @@
 						</label>
 						<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
 							<option value="-1">{translateToken value="Select a action"}</option>
-							<option value="">{translateToken value="Block admission"}</option>
+							<option value="">{translateToken value="Block registration"}</option>
 							<option value="">{translateToken value="Enroll in another group"}</option>
 							<option value="">{translateToken value="Send to the waiting list"}</option>
 						</select>
