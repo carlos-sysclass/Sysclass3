@@ -37,7 +37,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Form info"}</label>
-							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Subtitle"}" class="form-control" data-rule-minlength="5" />
+							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Form Info"}" class="form-control" data-rule-minlength="5" />
 						</div>
 					</div>
 				</div>
@@ -46,7 +46,9 @@
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Form URL"}</label>
 							<div class="input-group">
-								<span class="input-group-addon">https://lucent.sysclass.com/</span>
+								<span class="input-group-addon">
+									https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/
+								</span>
 								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
