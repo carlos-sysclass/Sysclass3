@@ -1210,9 +1210,9 @@ video::-webkit-media-text-track-display {
   background-color: rgba(43, 51, 63, 0.75);
   color: #fff;
   margin: 0 auto;
-  padding: 0.5em;
-  height: 16em;
-  font-size: 22px;
+  padding: 1.5em;
+  height: 14em;
+  font-size: 12px;
   width: 40em; }
 
 .vjs-caption-settings .vjs-tracksettings {
