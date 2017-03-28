@@ -56,7 +56,7 @@
     on the file names.
     <p/>
     <table>
-    	<tr style="background-color: #444444; color: #DDDDDD;"><td>ID</td><td>Files</td><td>Lines</td></tr>
+    	<tr style="background-color: #333; color: #DDDDDD;"><td>ID</td><td>Files</td><td>Lines</td></tr>
     <xsl:for-each select="//duplication[@lines>30]">
         <xsl:sort data-type="number" order="descending" select="@lines"/>
         <tr>

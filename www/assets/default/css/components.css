@@ -905,7 +905,7 @@ h3 small,
 h4 small,
 h5 small,
 h6 small {
-  color: #444444; }
+  color: #333; }
 
 /* Block headings */
 h1.block,
@@ -1473,7 +1473,7 @@ Glyphicons Demo
   display: block;
   margin: 5px auto 10px;
   font-size: 24px;
-  color: #444; }
+  color: #333; }
 
 .glyphicons-demo ul li:hover {
   background-color: rgba(86, 61, 124, 0.1); }
@@ -7381,7 +7381,7 @@ Custom icon buttons
   .icon-btn:hover {
     text-decoration: none;
     border-color: #999;
-    color: #444;
+    color: #333;
     text-shadow: 0 1px 0px white;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
