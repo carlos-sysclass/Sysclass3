@@ -4,7 +4,7 @@
 <div class="form-body">
 	<ul class="nav nav-tabs">
 		<li class="active">
-			<a href="#tab_1_1" data-toggle="tab">{translateToken value="Enrollment form"}</a>
+			<a href="#tab_1_1" data-toggle="tab">{translateToken value="Registration form"}</a>
 		</li>
 		<li class="admittance-type-item admittance-type-grouping hidden">
 			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group options"}</a>
@@ -54,7 +54,7 @@
 				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
-					{translateToken value="Enrollment period"}
+					{translateToken value="Registration period"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
@@ -121,7 +121,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the enrollment period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
+					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the registration period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
@@ -135,7 +135,7 @@
 
 			<h5 class="form-section margin-bottom-10 margin-top-10">
 				<i class="glyphicon glyphicon-inbox"></i>
-				{translateToken value="Enrollment Dates"}
+				{translateToken value="Registration Dates"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
                     <i class="fa fa-question-circle"></i>
                 </span>
