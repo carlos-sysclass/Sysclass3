@@ -4,7 +4,7 @@
 <div class="form-body">
 	<ul class="nav nav-tabs">
 		<li class="active">
-			<a href="#tab_1_1" data-toggle="tab">{translateToken value="Enrollment form"}</a>
+			<a href="#tab_1_1" data-toggle="tab">{translateToken value="Registration form"}</a>
 		</li>
 		<li class="admittance-type-item admittance-type-grouping hidden">
 			<a href="#tab_1_2" data-toggle="tab">{translateToken value="Group options"}</a>
@@ -37,7 +37,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Form info"}</label>
-							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Subtitle"}" class="form-control" data-rule-minlength="5" />
+							<input name="subtitle" value="" type="text" placeholder="{translateToken value="Form Info"}" class="form-control" data-rule-minlength="5" />
 						</div>
 					</div>
 				</div>
@@ -46,7 +46,9 @@
 						<div class="form-group">
 							<label class="control-label">{translateToken value="Form URL"}</label>
 							<div class="input-group">
-								<span class="input-group-addon">https://lucent.sysclass.com/</span>
+								<span class="input-group-addon">
+									https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/
+								</span>
 								<input name="identifier" value="" type="text" placeholder="{translateToken value="Url"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
@@ -54,7 +56,7 @@
 				</div>
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
-					{translateToken value="Enrollment period"}
+					{translateToken value="Registration period"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
@@ -87,7 +89,7 @@
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="glyphicon glyphicon-inbox"></i>
 					{translateToken value="Course format"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can define the criteria for user admittance. This information is used to manage the course grouping and calculate its roadmap.'}">
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Assign the criteria for user registration. This is used to manage course grouping and calculate its roadmap.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
@@ -113,7 +115,7 @@
 					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Individual</strong> admission, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
+					            On <strong>Individual</strong> registration, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
 					        </p>
 					    </div>
 					</div>
@@ -121,7 +123,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Group-based</strong> admission, the user is allocated to a group based on his/hers admission date. Each group is dynamically created based on the criteria defined below. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
+					            On <strong>Group-based</strong> registration, the user is allocated to a group based on his/hers registration date. Each group is dynamically created based on the registration period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
@@ -135,8 +137,8 @@
 
 			<h5 class="form-section margin-bottom-10 margin-top-10">
 				<i class="glyphicon glyphicon-inbox"></i>
-				{translateToken value="Enrollment Dates"}
-				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can select one of two ways to define the grouping creation. A fixed way, when you manualy dwefined the dates for admittance, or the dynamic way, when you set the parameters for the system automatically create the grouping.'}" data-placement="bottom">
+				{translateToken value="Registration period"}
+				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Select one of two ways to assign group creation. Fixed, when you determine the date for registration. Dynamic, when you set the parameters for the system to automatically create a group.'}" data-placement="bottom">
                     <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
@@ -273,7 +275,7 @@
 						</label>
 						<select class="select2-me form-control input-block-level" name="usergroups" data-placeholder="{translateToken value='Select a action'}" data-format-attr="id">
 							<option value="-1">{translateToken value="Select a action"}</option>
-							<option value="">{translateToken value="Block admission"}</option>
+							<option value="">{translateToken value="Block registration"}</option>
 							<option value="">{translateToken value="Enroll in another group"}</option>
 							<option value="">{translateToken value="Send to the waiting list"}</option>
 						</select>
@@ -346,7 +348,7 @@
                 <i class="fa fa-edit"></i>
             </a>
             <!--
-            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="Details">
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
@@ -398,7 +400,7 @@
             <% if (_.isObject(data.class.instructors)) { %>
             <div class="col-md-6 col-sm-6">
                 <div>
-                    <span>{translateToken value="Instructors"}</span>
+                    <span>{translateToken value="Instructor"}</span>
                     <ul class="pull-right">
                         <%
                             var instructors = _.map(data.class.instructors, function(data) {
@@ -414,8 +416,8 @@
             <% } else { %>
                 <div class="col-md-6 col-sm-6">
                     <p>
-                        <span>{translateToken value="Instructors"}</span>
-                        <strong class="text-danger pull-right">{translateToken value="No Instructors defined"}</strong>
+                        <span>{translateToken value="Instructor"}</span>
+                        <strong class="text-danger pull-right">{translateToken value="No Instructor defined"}</strong>
                     </p>
                 </div>
             <% } %>

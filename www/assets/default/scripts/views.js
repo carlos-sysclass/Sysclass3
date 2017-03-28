@@ -137,7 +137,7 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
   		renderType : "byModel",
 	    events : function() {
 	    	return {
-		    	"change :input"			: "update",
+		    	"change :input,.wysihtml div.wysihtml-form-control" : "update",
 		    	"click .save-action" 	: "save"
 	    	};
     	},
@@ -191,6 +191,19 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 			*/
 	    	//});
 	    },
+	    unbindViewEvents : function() {
+	    	this.$el.undelegate('.bootstrap-switch-me', 'switchChange.bootstrapSwitch');
+
+			this.$('.wysihtml5').each(function() {
+	    		var wysihtml5DOM = this;
+
+				var wysihtml5 = $(wysihtml5DOM).data('wysihtml5');
+				if (wysihtml5) {
+					wysihtml5.editor.stopObserving();
+				}
+	    	});
+
+	    },
 	    bindViewEvents : function() {
 	    	var self = this;
 	    	
@@ -202,13 +215,29 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
 	    		var wysihtml5DOM = this;
 
 				var wysihtml5 = $(wysihtml5DOM).data('wysihtml5');
-				wysihtml5.editor.on("change", function(e) {
-					var changeEvt = jQuery.Event("change");
-					//console.log(wysihtml5DOM);
-					wysihtml5.el.trigger(changeEvt);
-					//self.update()
-				});
+				if (wysihtml5) {
+					wysihtml5.editor.on("change", function(e) {
+						var changeEvt = jQuery.Event("change");
+						wysihtml5.el.trigger(changeEvt);
+					});
+				}
 	    	});
+
+	    	this.$('.wysihtml').each(function() {
+	    		var wysihtml5DOM = this;
+
+				var editor = $(wysihtml5DOM).data('editor');
+
+				var input = $(this).find(":input[type='hidden']");
+				if (editor) {
+					editor.on("change", function(e) {
+						input.val(editor.getValue());
+						var changeEvt = jQuery.Event("change");
+						input.trigger(changeEvt);
+					});
+				}
+	    	})
+
 	    	// HANDLE SPECIAL icheck CHANGE EVENTS
 	    	//this.$('.icheck-me').each(function() {
 	    	this.$el.delegate("[type='radio'].icheck-me", "ifChecked", function(e) {

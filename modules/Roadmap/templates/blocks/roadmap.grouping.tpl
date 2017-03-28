@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
-                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
+                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course registration dates'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable course periods"}
@@ -18,10 +18,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
-                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user admittance'}">
+                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user registration'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
-                    {translateToken value="Enable course groupings"}
+                    {translateToken value="Enable course grouping"}
                     <span class="badge badge-info">BETA</span>
                 </label>
 
@@ -130,7 +130,7 @@
                 <i class="fa fa-edit"></i>
             </a>
             <!--
-            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="View details">
+            <a class="btn btn-sm btn-info view-item-detail tooltips" href="javascript: void(0);" data-original-title="Details">
                 <i class="fa fa-info-circle"></i>
             </a>
             -->
@@ -182,7 +182,7 @@
             <% if (_.isObject(data.class.instructors)) { %>
             <div class="col-md-6 col-sm-6">
                 <div>
-                    <span>{translateToken value="Instructors"}</span>
+                    <span>{translateToken value="Instructor"}</span>
                     <ul class="pull-right">
                         <%
                             var instructors = _.map(data.class.instructors, function(data) {
@@ -198,8 +198,8 @@
             <% } else { %>
                 <div class="col-md-6 col-sm-6">
                     <p>
-                        <span>{translateToken value="Instructors"}</span>
-                        <strong class="text-danger pull-right">{translateToken value="No Instructors defined"}</strong>
+                        <span>{translateToken value="Instructor"}</span>
+                        <strong class="text-danger pull-right">{translateToken value="No Instructor defined"}</strong>
                     </p>
                 </div>
             <% } %>

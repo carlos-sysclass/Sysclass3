@@ -53,7 +53,10 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
                 this.oForm.get(0).reset();
                 this.oForm.find(".select2-me").select2("val", "");
 
+                this.unbindViewEvents();
+
                 this.$(".modal-body").load("/module/questions/form/create", function() {
+
                     if (!app.module("views.form.questions").started) {
                         app.module("views.form.questions").start({
                             module: mod
@@ -70,8 +73,7 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
                     this.bindViewEvents();
                     this.$el.modal("show");
                 }.bind(this));
-
-                
+               
             },
             close : function() {
                 this.$el.modal("hide");

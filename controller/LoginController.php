@@ -372,10 +372,16 @@ class LoginController extends \AbstractSysclassController
 					$user = $di->get("authentication")->checkAccess();
 					if ($user) {
 						$di->get("authentication")->logout($user);
+
+
+						if (!$this->session->isStarted()) {
+							$this->session->start();
+						}
 					}
 				} catch (AuthenticationException $e) {
-					//AuthenticationException::NO_USER_LOGGED_IN
+					
 				}
+
 
 	            $user = User::findFirst(array(
 	                "autologin = '{$hash}'",
@@ -945,10 +951,5 @@ class LoginController extends \AbstractSysclassController
 				);
 			}
 		}
-
 	}
-
-
-
-
 }

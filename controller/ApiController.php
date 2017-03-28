@@ -4,6 +4,7 @@ namespace Sysclass\Controllers;
 use Phalcon\DI,
 	Phalcon\Mvc\Dispatcher,
 	Sysclass\Models\Users\User,
+	Sysclass\Models\Leads\Lead,
 	Sysclass\Models\Content\Program as Course,
 	Sysclass\Models\Enrollments\CourseUsers as Enrollment,
 	Sysclass\Models\Enrollments\Enroll,
@@ -15,7 +16,7 @@ use Phalcon\DI,
  */
 class ApiController extends \AbstractSysclassController
 {
-	const INVALID_DATA = "Your data sent is invalid. Please, try again.";
+	const INVALID_DATA = "The data sent is invalid. Please, try again.";
 	const NO_DATA_FOUND = "No data found.";
 	const EXECUTION_OK = "Method executed.";
 	
@@ -322,6 +323,116 @@ class ApiController extends \AbstractSysclassController
 			switch($e->getCode()) {
 				case AuthenticationException :: SIGNUP_EMAIL_ALREADY_EXISTS: {
 					$messages[] = $this->createResponse($e->getCode(), $this->translate->translate("There is already a registration made with this email! Would you like to login?"), "error");
+		            break;
+				}
+				case AuthenticationException :: USER_DATA_IS_INVALID_OR_INCOMPLETE : {
+		            $messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+		            break;
+				}
+				default : {
+					$messages[] = $this->invalidRequestError($this->translate->translate($e->getMessage()), "warning");
+		            break;
+				}
+			}
+		}
+
+		$this->response->setJsonContent(array(
+			'messages' => $messages,
+			'error' => $error,
+			'data' => $data
+		));
+
+		return true;
+
+	}
+
+	// ENTRY POINT FOR ENROLLMENT
+    /**
+     * Just Ping!! (Authentication Test)
+     * @Post("/lead/create")
+     * 
+     */
+	public function createLeadRequest() {
+		$postdata = $this->request->getJsonRawBody(true);
+
+		$error = false;
+
+		$messages = $data = array();
+
+		try {
+			if (is_null($postdata)) {
+				$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+			} else {
+
+				// GET LEADS FIELDS
+				$postdata['user_type'] = "lead";
+
+				$lead = Lead::findFirst([
+					'conditions' => 'email = ?0',
+					'bind' => [$postdata['email']]
+				]);
+
+				//if ($lead && $lead->getType() != "lead") {
+
+				//}
+
+				if (!$lead) {
+					$lead = new Lead();
+					$lead->assign($postdata);
+					$lead->save();
+				}
+
+				if ($lead) {
+
+					$data = [
+						'url' => "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/autologin/" . 'demo-user'
+					];
+
+					$message = $this->createResponse(200, $this->translate->translate(" Thank you for trying SysClass. Would like to know more? Contact us."), "success");
+
+					$this->response->setJsonContent(array(
+						'message' => $message,
+						'error' => false,
+						'redirect' => $data['url']
+					));
+					return true;
+				} else {
+					$messages[] = $this->createResponse(400, $this->translate->translate("The information sent appers to be incomplete. Please, check your info and try again!"), "error");
+					$error = true;
+				}
+
+				/*
+				// CREATE TRANSACTION
+				$this->db->begin();
+
+				$user = $this->authentication->signup($postdata);
+
+				if ($user) {
+					$user->refresh();
+					$messages[] = $this->createResponse(200, "User created.", "success");
+
+ 				} else {
+					$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please, check your info and try again!"), "error");
+					$error = true;
+ 				}
+
+				if ($error) {
+					// ROLLBACK TRANSACTION
+					$this->db->rollback();
+				} else {
+					$this->db->commit();
+
+					// PUBLISH SYSTEM EVENT FOR ENROLLMENT
+					$this->eventsManager->fire("user:signup", $this, $user->toArray());
+				}
+				*/
+			}
+
+		} catch (AuthenticationException $e) {
+			$error = true;
+			switch($e->getCode()) {
+				case AuthenticationException :: SIGNUP_EMAIL_ALREADY_EXISTS: {
+					$messages[] = $this->createResponse($e->getCode(), $this->translate->translate("There is already a registration with this email. Would you like to login?"), "error");
 		            break;
 				}
 				case AuthenticationException :: USER_DATA_IS_INVALID_OR_INCOMPLETE : {

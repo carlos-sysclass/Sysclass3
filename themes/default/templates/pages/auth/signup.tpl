@@ -35,7 +35,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label  visible-ie8 visible-ie9">{translateToken value="Main language"}</label>
+					<label class="control-label  visible-ie8 visible-ie9">{translateToken value="Language"}</label>
 						<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Primary Language'}">
 							<option value="">{translateToken value="Main Language"}</option>
 							{foreach $T_LANGUAGES as $lang}
@@ -57,12 +57,13 @@
 		</form>
 		<!-- END LOGIN FORM -->
 		<div class="copyright">
-			&copy; 2017 • WiseFlex Knowledge Systems LLC. <br />
+			&copy; 2017 • WiseFlex Knowledge Systems LLC. <!-- <br />
 			<span style="color: black">
 				{$T_SYSCONFIG.deploy.base_version} 
-				Build {$T_SYSCONFIG.deploy.build_number}
+				Build {$T_SYSCONFIG.deploy.build_number} 
 			</span> 
-			<span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span> 
+			-->
+			<!-- <span class="badge badge-primary">{$T_SYSCONFIG.deploy.branch}</span>  -->
 		</div>
 	</div>
 {/block}

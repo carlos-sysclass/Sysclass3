@@ -26,7 +26,7 @@
                               <tr>
                                     <td align='center' style='height:200px'>_______________<p>{{ translate.translate('Instructor') }}</td>
                                     <td align='center' style='height:200px'>_______________<p>{{ translate.translate('Institution') }}</td>
-                                    <td align='center' style='height:200px'>_______________<p>{{ translate.translate('Student') }}</td>
+                                    <td align='center' style='height:200px'>_______________<p>{{ translate.translate('User') }}</td>
                               </tr>    
                         </table>
                   </td>

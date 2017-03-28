@@ -42,7 +42,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
     
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-switch"]
@@ -153,30 +153,30 @@ reports:
 
       - name: n_courses
         type: integer
-        label: "# Enrolled programs"
-        category: Enrollment
+        label: "# Registered programs"
+        category: Registration
         mData: n_courses
         sClass: text-center
 
       - name: n_approved_courses
         type: integer
-        label: "# Enrolled approved programs"
-        category: Enrollment
+        label: "# Registered in approved programs"
+        category: Registration
         mData: n_approved_courses
         sClass: text-center
 
       - name: first_enrollment
         type: datetime
-        label: "Date of first enroll"
-        category: Enrollment
+        label: "Date first registered"
+        category: Registration
         mData: first_enrollment
         sType: datetime-moment
         sClass: text-center
 
       - name: last_enrollment
         type: datetime
-        label: "Date of last enroll"
-        category: Enrollment
+        label: "Date last registered"
+        category: Registration
         mData: last_enrollment
         sType: datetime-moment
         sClass: text-center
@@ -266,13 +266,13 @@ reports:
       - name: n_tests_avaliable
         type: integer
         label: "# Avaliable tests"
-        category: Tests
+        category: assignments
         mData: n_tests_avaliable
         sClass: text-center
 
       - name: n_tests_tried
         type: integer
-        label: "# Test taken"
+        label: "# Test done"
         category: Tests
         mData: n_tests_tried
         sClass: text-center
@@ -475,7 +475,7 @@ reports:
 
       - name: n_users
         type: integer
-        label: "# of enrolled Users"
+        label: "# of registered Users"
         category: General
         mData: n_users
         sClass: text-center

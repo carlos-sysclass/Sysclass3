@@ -1263,6 +1263,9 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                 if (this.model) {
                     this.$el.html(this.template(this.model.toJSON()));
 
+                    console.warn(this.model.toJSON());
+                    console.warn(this.model.get("locale_code"));
+
                     if (_.isEmpty(this.model.get("locale_code"))) {
 
                         this.$(":input[name='locale_code']").select2("val", "");
@@ -1560,7 +1563,22 @@ $SC.module("blocks.lessons.content", function(mod, app, Backbone, Marionette, $,
                     file.set("locale_code", e.added.id);
                     file.save();
                 }
-            }
+            },
+            render : function() {
+                if (this.model) {
+                    var files = this.model.getFiles();
+                    var file = files.first();
+
+                    this.$el.html(this.template(file.toJSON()));
+
+                    if (_.isEmpty(file.get("locale_code"))) {
+
+                        this.$(":input[name='locale_code']").select2("val", "");
+                    }
+                }
+
+                return this;
+            },
         });
 
         var contentMaterialsContainerViewClass = baseChangeModelViewClass.extend({

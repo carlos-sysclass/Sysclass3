@@ -88,7 +88,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 //$self->putItem("country_codes", $country_codes);
 
                 $userFields = array(
-                    'how_did_you_know',
+                    'how_did_you_learn',
                     'supplier_name',
                     'cnpj',
                     'is_supplier'
@@ -541,6 +541,16 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $userGroup = new UsersGroups();
                 $userGroup->user_id = $model->id;
                 $userGroup->group_id = $group['id'];
+                $userGroup->save();
+            }
+        } else {
+            // GET DEFAULT GROUP BY 
+            $default_group = $this->configuration->get("signup_group_default");
+
+            if ($default_group) {
+                $userGroup = new UsersGroups();
+                $userGroup->user_id = $model->id;
+                $userGroup->group_id = $default_group;
                 $userGroup->save();
             }
         }

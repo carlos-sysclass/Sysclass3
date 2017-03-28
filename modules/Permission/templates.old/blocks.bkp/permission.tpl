@@ -1,10 +1,10 @@
 <div id="permission-block">
-	<h3 class="form-section"><i class="icon-lock"></i> {translateToken value="Permission Rules"}
+	<h3 class="form-section"><i class="icon-lock"></i> {translateToken value="Permission rules"}
 		<small>- {translateToken value="Who can see your data"}</small>
 		<div class="pull-right">
 			<a class="btn btn-link new-permission-action" id="ajax-demo" data-toggle="modal">
 				<i class="fa fa-plus-square"></i>
-				{translateToken value="New Permission"}
+				{translateToken value="New role"}
 			</a>
 		</div>
 	</h3>
@@ -26,7 +26,7 @@
 				<tr>
 					<th class="text-center">#</th>
 					<th>{translateToken value="Permission"}</th>
-					<th class="text-right">{translateToken value="Actions"}</th>
+					<th class="text-right">{translateToken value="Options"}</th>
 				</tr>
 			</thead>
 			<tbody></tbody>

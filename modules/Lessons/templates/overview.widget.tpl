@@ -161,7 +161,7 @@
 								<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Attendence"}</span></a>
 							</li>
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+								<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Assignments"}</span></a>
 							</li>
 							<li class="visible-xxs visible-md">
 								<a data-toggle="dropdown" href="javascript: void(0);"><i class="icon-ellipsis-horizontal"></i> <span class="hidden-xs inline">{translateToken value="More"}</span></a>
@@ -173,7 +173,7 @@
 										<a data-toggle="tab" href="#tab_class_attendence"><i class="icon-calendar"></i> <span class="">{translateToken value="Attendence"}</span></a>
 									</li>
 									<li class="">
-										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="">{translateToken value="Tests"}</span></a>
+										<a data-toggle="tab" href="#tab_class_exams"><i class="icon-pencil"></i> <span class="">{translateToken value="Assignments"}</span></a>
 									</li>
   								</ul>
 							</li>

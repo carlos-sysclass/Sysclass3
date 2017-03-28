@@ -233,7 +233,7 @@ _before_init_functions.push(function() {
 							</li>
 							
 							<li class="hidden-xxs hidden-md">
-								<a data-toggle="tab" href="#tab_class_tests"><i class="glyphicon glyphicon-edit-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+								<a data-toggle="tab" href="#tab_class_tests"><i class="glyphicon glyphicon-edit-square-o"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Assignments"}</span></a>
 							</li>
 							-->
 							<li class="visible-xxs visible-md">
@@ -248,7 +248,7 @@ _before_init_functions.push(function() {
 									</li>
 									
 									<li class="">
-										<a data-toggle="tab" href="#tab_class_tests"><i class="icon-pencil"></i> <span class="">{translateToken value="Tests"}</span></a>
+										<a data-toggle="tab" href="#tab_class_tests"><i class="icon-pencil"></i> <span class="">{translateToken value="Assignments"}</span></a>
 									</li>
 									-->
   								</ul>
@@ -474,7 +474,7 @@ _before_init_functions.push(function() {
 								<a data-toggle="tab" href="#tab_unit_materials"><i class="fa fa-book"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Materials"}</span></a>
 							</li>
 							<li class="">
-								<a data-toggle="tab" href="#tab_unit_tests"><i class="fa fa-list-ol"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Tests"}</span></a>
+								<a data-toggle="tab" href="#tab_unit_tests"><i class="fa fa-list-ol"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Assignments"}</span></a>
 							</li>
 							<!-- <li class="">
 								<a data-toggle="tab" href="#tab_unit_exercises"><i class="icon-pencil"></i> <span class="hidden-xs inline active-show-xs">{translateToken value="Exercises"}</span></a>

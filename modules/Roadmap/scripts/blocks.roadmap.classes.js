@@ -525,7 +525,7 @@ $SC.module("blocks.roadmap.courses", function(mod, app, Backbone, Marionette, $,
             },
             renderNoPeriod : function(collection) {
                 this.fakePeriodModel = new mod.periodModelClass({
-                    name : "Other Courses",
+                    name : "Other courses",
                     course_id : this.model.get("id"),
                     courses : collection.toJSON()
                 });

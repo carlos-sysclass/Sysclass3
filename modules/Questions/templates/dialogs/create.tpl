@@ -24,13 +24,20 @@
                 <i class="fa fa-arrows"></i>
             </span>
         </div>
-        <input value="<%= model.choice %>" type="text" placeholder="{translateToken value="Choice"}" class="form-control " />
         <div class="input-group-btn">
             <% if (!model.answer) { %>
-            <a class="btn btn-success select-choice-action" type="button">
-                {translateToken value="This is correct"}
+            <a class="btn btn-danger select-choice-correct-action" type="button">
+                {translateToken value="Incorrect"}
             </a>
-            <% } %>
+            <% } else { %>
+            <a class="btn btn-success select-choice-incorrect-action" type="button">
+                {translateToken value="Correct"}
+            </a>
+            <% } %>            
+        </div>
+
+        <input value="<%= model.choice %>" type="text" placeholder="{translateToken value="Choice"}" class="form-control " />
+        <div class="input-group-btn">
             <a class="btn btn-danger remove-choice-action">
                 <i class="fa fa-trash"></i>
             </a>

@@ -179,7 +179,7 @@ class Courses extends Model
         ));
         if ($count > 0) {
             $message = new Message(
-                "It's already a enrollment registered. Please, try again.",
+                "Already registered. Please, try again.",
                 null,
                 "warning"
             );

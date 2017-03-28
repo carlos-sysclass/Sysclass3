@@ -160,7 +160,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     //$program['courses'] = $programObject->getProgramsCourses()->toFullArray();
 
                      $item = array(
-                        'enrollment'    => $enrollment,
+                        'registration'    => $enrollment,
                         'program'       => $program
                     );
 
@@ -196,7 +196,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 'administration' => array(
                     array(
                         'count' => count($items),
-                        'text'  => $this->translate->translate('Enrollment'),
+                        'text'  => $this->translate->translate('Registration'),
                         'icon'  => 'glyphicon glyphicon-inbox',
                         'link'  => $this->getBasePath() . 'view'
                     )
@@ -220,7 +220,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment")
+                    'text'  => $this->translate->translate(“Registration”)
                 );
                 return $breadcrumbs;
                 break;
@@ -229,10 +229,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment")
+                    'text'  => $this->translate->translate(“Registration”)
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("New enrollment rule"),
+                    'text'   => $this->translate->translate("New registration rule"),
                     'icon'  => 'fa fa-add-circle',
                     );
                 return $breadcrumbs;
@@ -242,10 +242,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate("Enrollment")
+                    'text'  => $this->translate->translate(“Registration”)
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("Create an enrollment form"),
+                    'text'   => $this->translate->translate("Create a registration form"),
                     'icon' => 'fa fa-pencil'
                 );
                 return $breadcrumbs;
@@ -261,7 +261,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New enrollment rule'),
+                    'text'      => $this->translate->translate('New registration rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus-square'
@@ -397,7 +397,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     'icon'  => 'fa fa-remove',
                     'class' => 'btn-sm btn-danger tooltips',
                     'attrs' => array(
-                        'data-original-title' => 'Remove'
+                        'data-original-title' => 'Delete'
                     )
                 )
             );

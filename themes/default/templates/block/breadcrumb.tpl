@@ -3,7 +3,7 @@
 	<div class="col-md-12">
 		<ul class="page-breadcrumb breadcrumb">
 
-			{if (isset($T_ACTIONS) && $T_ACTIONS|@count > 0)}
+			{if ($T_ACTIONS && $T_ACTIONS|@count > 0)}
 			<li class="btn-group">
 				{if $T_ACTIONS|@count == 1}
 					{assign var="action" value=$T_ACTIONS|@reset}
@@ -17,7 +17,7 @@
 					</a>
 				{else}
 					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-delay="1000" data-close-others="true">
-						<span>{translateToken value="Actions"}</span> <i class="fa fa-angle-down"></i>
+						<span>{translateToken value="Options"}</span> <i class="fa fa-angle-down"></i>
 					</button>
 					<ul class="dropdown-menu pull-right" role="menu">
 					{foreach $T_ACTIONS as $key => $action}

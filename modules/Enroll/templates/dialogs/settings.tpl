@@ -8,7 +8,7 @@
                     </button>
                     <h4 class="modal-title">
                         <i class="fa fa-lock"></i>
-                        {translateToken value='Enrollment settings'}
+                        {translateToken value='Registration settings'}
                         <span data-update="name"></span>
                     </h4>
                 </div>
@@ -28,13 +28,13 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3" style="text-align:left">
-                                {translateToken value="Public enrollment"}
+                                {translateToken value="Public registration"}
                             </label>
                             <div class="col-md-9">
                                 <input type="checkbox" name="signup_enable_new_users" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='YES'}" data-off-color="warning" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update="signup_enable_new_users" data-update-single="true" >
 
                                 <span class="help-text">
-                                    <small>{translateToken value="Show this course as a option in enrollment page."}</small>
+                                    <small>{translateToken value="Show this course as a option in the registration page."}</small>
                                 </span>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                                 <input type="checkbox" name="signup_active" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="primary" data-on-text="{translateToken value='YES'}" data-off-color="warning" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update="signup_active" data-update-single="true" >
 
                                 <span class="help-text">
-                                    <small>{translateToken value="Enrollment on this program is active"}</small>
+                                    <small>{translateToken value="Registration in this program is active"}</small>
                                 </span>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 {translateToken value="Restricted groups"}
                             </label>
                             <div class="col-md-9">
-                                <select class="select2-me form-control input-block-level" name="enrollgroups" data-placeholder="{translateToken value='Primary Group'}" multiple="multiple" data-format-attr="group_id">
+                                <select class="select2-me form-control input-block-level" name="enrollgroups" data-placeholder="{translateToken value='Groups'}" multiple="multiple" data-format-attr="group_id">
                                     <option value="-1">{translateToken value="Select a group"}</option>
                                     {foreach $T_ENROLL_GROUPS as $group}
                                         <option value="{$group.id}">{$group.name}</option>
@@ -64,7 +64,7 @@
                                 </select>
 
                                 <span class="help-text">
-                                    <small>{translateToken value="Only allow enrollment for users in these groups"}</small>
+                                    <small>{translateToken value="Only allow registration for users in these groups"}</small>
                                 </span>
                             </div>
                         </div>

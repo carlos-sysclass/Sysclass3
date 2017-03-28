@@ -21,12 +21,12 @@ blocks:
           label: Type
 
         - mData: difficulty.name
-          label: Difficulty
+          label: Level
 
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
 crud:
   # BASE VALUES.. USED ON ALL ROUTES
@@ -57,7 +57,7 @@ crud:
           label: Type
 
         - mData: difficulty.name
-          label: Difficulty
+          label: Level
 
         - mData: active
           sType: table-boolean
@@ -67,7 +67,7 @@ crud:
         - mData: options
           sType: table-options
           sClass: text-center
-          label: Actions
+          label: Options
 
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
@@ -86,7 +86,7 @@ crud:
 models:
   me:
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Level"]]
   'lesson-content':
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Level"]]
