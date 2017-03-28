@@ -4,15 +4,15 @@
 <tr>
       <td class="wrapper last">
             <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">
-            Olá {{ receiver.name }} {{ receiver.surname }}
+            Hello {{ receiver.name }} {{ receiver.surname }}
             </h4>
             <p>
-            Uma nova matrícula foi efetuada. Dados do novo aluno seguem abaixo.
+            A new enrollment has been done. The new student info can be seen below.
             </p>
-            <p><strong>Nome:</strong>{{ student.name}} {{ student.surname}} </p>
+            <p><strong>Name:</strong>{{ student.name}} {{ student.surname}} </p>
             <p><strong>Email:</strong>{{ student.email}}</p>
             <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;"></span>
-            <p><strong>Programa:</strong>{{ program.name}}</p>
+            <p><strong>Program:</strong>{{ program.name}}</p>
             
             <!-- BEGIN: Note Panel -->
             <p>
@@ -30,11 +30,9 @@
             </tr>
             </table>
             <p>
-            Se clicar sobre a URL acima não funcionar, por favor copie e cole em seu navegador.
+            {{translate.translate("If clicking on the url above does not work, copy and paste the URL into your browser.") }}
             </p>
             <!-- END: Note Panel -->
-            <p>Esperamos trabalhar juntos no futuro produzindo energia limpa e renovável,</p>
-            <p>Equipe da Superintendência de Compras Programa DESFOR</p>
       </td>
 </tr>
 </table>
