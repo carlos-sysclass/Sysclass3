@@ -356,7 +356,7 @@ body.vjs-full-window {
   color: #66A8CC; }
 
 .video-js .vjs-big-play-button {
-  font-size: 5em;
+  font-size: 3em;
   line-height: 1.5em;
   height: 1.5em;
   width: 3em;
@@ -448,7 +448,7 @@ body.vjs-full-window {
   margin: 0;
   padding: 0.2em 0;
   line-height: 1.4em;
-  font-size: 2.2em;
+  font-size: 1.2em;
   text-align: center;
   text-transform: lowercase; }
 
@@ -467,7 +467,7 @@ body.vjs-full-window {
 .vjs-menu li.vjs-menu-title {
   text-align: center;
   text-transform: uppercase;
-  font-size: 2em;
+  font-size: 1em;
   line-height: 2em;
   padding: 0;
   margin: 0 0 0.3em 0;
@@ -619,7 +619,7 @@ body.vjs-full-window {
   -ms-flex: none;
   flex: none; }
   .video-js .vjs-control:before {
-    font-size: 2.8em;
+    font-size: 1.8em;
     line-height: 1.67; }
 
 .video-js .vjs-control:focus:before,
@@ -676,7 +676,7 @@ body.vjs-full-window {
   height: 0.3em; }
 
 .video-js .vjs-progress-control:hover .vjs-progress-holder {
-  font-size: 2em; }
+  font-size: 1.666666666666666666em; }
 
 /* If we let the font size grow as much as everything else, the current time tooltip ends up
  ginormous. If you'd like to enable the current time tooltip all the time, this should be disabled
@@ -686,7 +686,7 @@ body.vjs-full-window {
 .video-js .vjs-progress-control:hover .vjs-play-progress:after {
   font-family: 'Open Sans', sans-serif;
   visibility: visible;
-  font-size: 0.6em; }
+  font-size: 1.6em; }
 
 .video-js .vjs-progress-holder .vjs-play-progress,
 .video-js .vjs-progress-holder .vjs-load-progress,
@@ -710,7 +710,7 @@ body.vjs-full-window {
     position: absolute;
     top: -0.333333333333333em;
     right: -0.5em;
-    font-size: 0.9em; }
+    font-size: 1.9em; }
 
 .video-js .vjs-time-tooltip,
 .video-js .vjs-mouse-display:after,
@@ -720,7 +720,7 @@ body.vjs-full-window {
   position: absolute;
   top: -3.4em;
   right: -1.9em;
-  font-size: 0.9em;
+  font-size: 1.9em;
   color: #000;
   content: attr(data-current-time);
   padding: 6px 8px 8px 8px;
@@ -851,7 +851,7 @@ body.vjs-full-window {
   background-color: #fff; }
   .video-js .vjs-volume-level:before {
     position: absolute;
-    font-size: 0.9em; }
+    font-size: 1.9em; }
 
 .vjs-slider-vertical .vjs-volume-level {
   width: 0.3em; }
@@ -958,7 +958,7 @@ body.vjs-full-window {
   -webkit-flex: auto;
   -ms-flex: auto;
   flex: auto;
-  font-size: 1em;
+  font-size: 2em;
   line-height: 3em; }
 
 .vjs-no-flex .vjs-live-control {
@@ -972,7 +972,7 @@ body.vjs-full-window {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  font-size: 1em;
+  font-size: 2em;
   line-height: 3em;
   min-width: 2em;
   width: auto;
@@ -1017,7 +1017,7 @@ body.vjs-full-window {
   bottom: 1em; }
 
 .video-js .vjs-text-track {
-  font-size: 1.4em;
+  font-size: 2.4em;
   text-align: center;
   margin-bottom: 0.1em;
   background-color: #000;
