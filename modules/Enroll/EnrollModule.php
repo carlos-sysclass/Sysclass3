@@ -160,7 +160,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                     //$program['courses'] = $programObject->getProgramsCourses()->toFullArray();
 
                      $item = array(
-                        'enrollment'    => $enrollment,
+                        'registration'    => $enrollment,
                         'program'       => $program
                     );
 
@@ -261,7 +261,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New enrollment rule'),
+                    'text'      => $this->translate->translate('New registration rule'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus-square'
