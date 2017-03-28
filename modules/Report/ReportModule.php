@@ -173,8 +173,9 @@ class ReportModule extends \SysclassModule implements \ILinkable, \IBreadcrumbab
         $key = sprintf("reports\\%s", $name);
         $this->response->setJsonContent($this->getConfig($key));
         return true;
-
     }
+
+    
 
     public function getDatatableItemOptions($model = "me") {
         if ($model == 'me') {
