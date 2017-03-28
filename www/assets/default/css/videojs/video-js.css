@@ -1017,14 +1017,16 @@ body.vjs-full-window {
   bottom: 1em; }
 
 .video-js .vjs-text-track {
-  font-size: 12.4em;
+  font-size: 2.4em;
   text-align: center;
   margin-bottom: 0.1em;
   background-color: #000;
   background-color: rgba(0, 0, 0, 0.5); }
 
 .vjs-subtitles {
-  color: #fff; }
+  color: #fff; 
+  font-size: 4em !important; 
+}
 
 .vjs-captions {
   color: #fc6; }
