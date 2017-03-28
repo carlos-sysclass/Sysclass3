@@ -1206,8 +1206,8 @@ video::-webkit-media-text-track-display {
 .vjs-caption-settings {
   position: relative;
   top: 1em;
-  background-color: #2B333F;
-  background-color: rgba(43, 51, 63, 0.75);
+  background-color: #FFF;
+  background-color: rgba(0, 0, 0, 1);
   color: #fff;
   margin: 0 auto;
   padding: 1.5em;
