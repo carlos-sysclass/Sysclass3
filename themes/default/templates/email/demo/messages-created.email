@@ -4,14 +4,14 @@
 <tr>
       <td class="wrapper last">
             <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">
-            Olá {{ user.name }} {{ user.surname }}
+            Hello {{ user.name }} {{ user.surname }}
             </h4>
             <p>
-                  Você recebeu uma nova mensagem, copiada abaixo
+                  You received a new message, copied below
             </p>
-            <p><strong>De:</strong>{{ from.name}} {{ from.surname}} &lt;{{ from.email}}&gt;</p>
-            <p><strong>Assunto:</strong>{{ message.subject}}</p>
-            <p><strong>Mensagem:</strong></p>
+            <p><strong>From:</strong>{{ from.name}} {{ from.surname}} &lt;{{ from.email}}&gt;</p>
+            <p><strong>Subject:</strong>{{ message.subject}}</p>
+            <p><strong>Message:</strong></p>
             <div style="width:100%; border: 1px solid #eee;display:block; padding:10px;">
             {{ message.body }}
             </div>

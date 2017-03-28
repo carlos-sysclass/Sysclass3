@@ -543,6 +543,16 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                 $userGroup->group_id = $group['id'];
                 $userGroup->save();
             }
+        } else {
+            // GET DEFAULT GROUP BY 
+            $default_group = $this->configuration->get("signup_group_default");
+
+            if ($default_group) {
+                $userGroup = new UsersGroups();
+                $userGroup->user_id = $model->id;
+                $userGroup->group_id = $default_group;
+                $userGroup->save();
+            }
         }
 
         if (array_key_exists('curriculum', $data) && is_array($data['curriculum']) ) {

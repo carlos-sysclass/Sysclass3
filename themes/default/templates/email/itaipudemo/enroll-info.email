@@ -1,4 +1,4 @@
-{% extends "layout/local/default.email" %}
+{% extends "layout/itaipu/default.email" %}
 {% block content %}
 <table class="row note">
 <tr>
