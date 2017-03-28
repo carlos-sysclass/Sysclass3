@@ -53,14 +53,14 @@ crud:
       template: form.tpl
       scripts: ["form"]
       variables:
-        page_subtitle: Create Enrollment Guidelines
+        page_subtitle: Create registration guidelines
     'edit/{id}':
       components: ["select2","validation","bootstrap-switch","datepicker","jquery-mask", "icheck"]
       template: form.tpl
       scripts: ["form"]
       blocks: ["fixed_grouping.dialog", "enroll.courses", "enroll.fields"]
       variables:
-        page_subtitle: Edit Enrollment Guidelines
+        page_subtitle: Edit registration guidelines
 
 blocks:
   enroll.courses:
@@ -84,7 +84,7 @@ blocks:
       - mData: signup_enable_new_users
         sType: table-boolean
         sClass: text-center
-        label: Public enrollment
+        label: Public registration
 
       - mData: signup_active
         sType: table-boolean

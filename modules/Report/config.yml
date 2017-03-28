@@ -153,30 +153,30 @@ reports:
 
       - name: n_courses
         type: integer
-        label: "# Enrolled programs"
-        category: Enrollment
+        label: "# Registered programs"
+        category: Registration
         mData: n_courses
         sClass: text-center
 
       - name: n_approved_courses
         type: integer
-        label: "# Enrolled approved programs"
-        category: Enrollment
+        label: "# Registered in approved programs"
+        category: Registration
         mData: n_approved_courses
         sClass: text-center
 
       - name: first_enrollment
         type: datetime
-        label: "Date of first enroll"
-        category: Enrollment
+        label: "Date first registered"
+        category: Registration
         mData: first_enrollment
         sType: datetime-moment
         sClass: text-center
 
       - name: last_enrollment
         type: datetime
-        label: "Date of last enroll"
-        category: Enrollment
+        label: "Date last registered"
+        category: Registration
         mData: last_enrollment
         sType: datetime-moment
         sClass: text-center
@@ -475,7 +475,7 @@ reports:
 
       - name: n_users
         type: integer
-        label: "# of enrolled Users"
+        label: "# of registered Users"
         category: General
         mData: n_users
         sClass: text-center
