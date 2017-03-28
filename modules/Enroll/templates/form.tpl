@@ -135,7 +135,7 @@
 
 			<h5 class="form-section margin-bottom-10 margin-top-10">
 				<i class="glyphicon glyphicon-inbox"></i>
-				{translateToken value="Registration Dates"}
+				{translateToken value="Registration period"}
 				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Select one of two ways to assign group creation. Fixed, when you determine the date for registration. Dynamic, when you set the parameters for the system to automatically create a group.'}" data-placement="bottom">
                     <i class="fa fa-question-circle"></i>
                 </span>
