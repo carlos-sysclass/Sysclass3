@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
-                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course enrollment dates'}">
+                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides multiple roadmaps based on course registration dates'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
                     {translateToken value="Enable course periods"}
@@ -18,10 +18,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">
-                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user admittance'}">
+                    <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Provides rules to control user registration'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
-                    {translateToken value="Enable course groupings"}
+                    {translateToken value="Enable course grouping"}
                     <span class="badge badge-info">BETA</span>
                 </label>
 

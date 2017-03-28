@@ -127,7 +127,7 @@ h3 small,
 h4 small,
 h5 small,
 h6 small {
-  color: #444;
+  color: #333;
 }
 
 h1,
@@ -374,7 +374,7 @@ Dashboard resets
     text-align: center;
     width: 100%;
     margin-bottom: 5px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: normal;
 }
 #institution-widget .row div:last-child a {
@@ -1856,7 +1856,7 @@ Custom icon buttons
 .icon-btn:hover {
   text-decoration: none !important;
   border-color: #999 !important;
-  color: #444 !important;
+  color: #333 !important;
   text-shadow: 0 1px 0px rgba(255, 255, 255, 1) !important;
   -webkit-transition: all 0.3s ease !important;
   -moz-transition: all 0.3s ease !important;
