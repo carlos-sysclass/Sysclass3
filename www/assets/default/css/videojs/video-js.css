@@ -1300,3 +1300,4 @@ video::-webkit-media-text-track-display {
 @media print {
   .video-js > *:not(.vjs-tech):not(.vjs-poster) {
     visibility: hidden; } }
+	
