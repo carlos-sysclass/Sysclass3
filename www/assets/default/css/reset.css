@@ -845,7 +845,7 @@ margin:0 4px 0 0;
     padding-bottom: 2px;
     padding-top: 2px;
     padding: 9px 10px;
-	text-transform: uppercase;
+	text-transform: capitalize;
 }
 #tab_course_units .navbar-right, #tab_program_courses .navbar-right, #tab_program_description .navbar-right, .navbar-widget .navbar-right {
     float: right !important;
