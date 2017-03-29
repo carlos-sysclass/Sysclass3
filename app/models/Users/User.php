@@ -29,7 +29,7 @@ class User extends Model
             "user_id", "enroll_id",
             "Sysclass\\Models\\Enrollments\\Enroll",
             "id",
-            array('alias' => 'Registrations')
+            array('alias' => 'Enrollments')
         );
 
         $this->hasMany(
