@@ -24116,7 +24116,11 @@ module.exports = exports['default'];
 
   var FONT_SIZE_PERCENT = 5;
   var FONT_STYLE = "sans-serif";
+<<<<<<< HEAD
   var CUE_BACKGROUND_PADDING = "2%";
+=======
+  var CUE_BACKGROUND_PADDING = "1.5%";
+>>>>>>> parent of 083130a... Font
 
   // Runs the processing model over the cues and regions passed to it.
   // @param overlay A block level element (usually a div) that the computed cues
