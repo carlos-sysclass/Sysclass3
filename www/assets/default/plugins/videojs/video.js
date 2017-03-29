@@ -18244,7 +18244,7 @@ var TextTrackDisplay = (function (_Component) {
         cueDiv.style.top = 'auto';
         cueDiv.style.bottom = '2px';
       }
-      if (overrides.fontFamily && overrides.fontFamily !== 'default') {
+      if (overrides.fontFamily && overrides.fontFamily !== 'Open Sans') {
         if (overrides.fontFamily === 'small-caps') {
           cueDiv.firstChild.style.fontVariant = 'small-caps';
         } else {
@@ -24114,9 +24114,9 @@ module.exports = exports['default'];
     return parseContent(window, cuetext);
   };
 
-  var FONT_SIZE_PERCENT = 0.05;
+  var FONT_SIZE_PERCENT = 5;
   var FONT_STYLE = "sans-serif";
-  var CUE_BACKGROUND_PADDING = "1.5%";
+  var CUE_BACKGROUND_PADDING = "2%";
 
   // Runs the processing model over the cues and regions passed to it.
   // @param overlay A block level element (usually a div) that the computed cues
