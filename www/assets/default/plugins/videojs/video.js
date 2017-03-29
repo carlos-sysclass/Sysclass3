@@ -23204,7 +23204,7 @@ module.exports = exports['default'];
       cue.line = settings.get("line", "auto");
       cue.lineAlign = settings.get("lineAlign", "start");
       cue.snapToLines = settings.get("snapToLines", true);
-      cue.size = settings.get("size", 200);
+      cue.size = settings.get("size", 100);
       cue.align = settings.get("align", "middle");
       cue.position = settings.get("position", {
         start: 0,
@@ -24114,9 +24114,9 @@ module.exports = exports['default'];
     return parseContent(window, cuetext);
   };
 
-  var FONT_SIZE_PERCENT = 0.1;
+  var FONT_SIZE_PERCENT = 0.01;
   var FONT_STYLE = "sans-serif";
-  var CUE_BACKGROUND_PADDING = "3.25%";
+  var CUE_BACKGROUND_PADDING = "2%";
 
   // Runs the processing model over the cues and regions passed to it.
   // @param overlay A block level element (usually a div) that the computed cues
