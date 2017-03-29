@@ -89,7 +89,7 @@
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="glyphicon glyphicon-inbox"></i>
 					{translateToken value="Course format"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Assign the criteria for user registration. This is used to manage course grouping and calculate its roadmap.'}">
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Assign the criteria for user registration. This is used to manage course groups and calculate its roadmap.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
@@ -257,7 +257,7 @@
 			<h5 class="form-section margin-bottom-10">
 				<i class="fa fa-cogs"></i>
 				{translateToken value="User Limit"}
-				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of users allowed to enter in a grouping. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
+				<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='You can set the maximum number of users allowed to enter in a group. If you don\'t want to limit, set this field to \'0\'.'}" data-placement="bottom">
                     <i class="fa fa-question-circle"></i>
                 </span>
 			</h5>
@@ -344,7 +344,7 @@
         <% if (typeof data.id !== 'undefined') { %>
             <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
 
-            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit grouping info">
+            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit group info">
                 <i class="fa fa-edit"></i>
             </a>
             <!--

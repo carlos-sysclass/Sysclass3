@@ -9,7 +9,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     body {
       margin-left: 10;
       margin-right: 10;
-      font:normal 80% arial,helvetica,sanserif;
+      font:normal 80% Open Sans,sans-serif;
       background-color:#FFFFFF;
       color:#000000;
     }

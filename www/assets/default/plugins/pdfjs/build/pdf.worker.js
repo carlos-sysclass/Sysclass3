@@ -39235,8 +39235,8 @@ var PartialEvaluator = (function PartialEvaluatorClosure() {
           info('The FontDescriptor\'s FontName is "' + fontNameStr +
                '" but should be the same as the Font\'s BaseFont "' +
                baseFontStr + '"');
-          // Workaround for cases where e.g. fontNameStr = 'Arial' and
-          // baseFontStr = 'Arial,Bold' (needed when no font file is embedded).
+          // Workaround for cases where e.g. fontNameStr = 'Open Sans,sans-serif' and
+          // baseFontStr = 'Open Sans,sans-serif' (needed when no font file is embedded).
           if (fontNameStr && baseFontStr &&
               baseFontStr.indexOf(fontNameStr) === 0) {
             fontName = baseFont;
