@@ -543,6 +543,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'edited'        => 1
             ));
 
+            $tokensModel->save();
+
             return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
 
         }
