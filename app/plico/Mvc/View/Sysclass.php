@@ -36,6 +36,7 @@ class Sysclass extends View
 
 
         $params['messages'] = array();
+        
         foreach($messages as $type => $items) {
             foreach($items as $msg) {
                 $params['messages'][$type] = $msg;
