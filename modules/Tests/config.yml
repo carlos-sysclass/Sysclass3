@@ -108,7 +108,7 @@ models:
   me: 
     class: Sysclass\Models\Courses\Tests\Lesson
     listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]
-    exportMethod: ["ToFullArray", ["Assignment"]]
+    exportMethod: ["ToFullArray", ["Test"]]
   question: 
     class: Sysclass\Models\Courses\Tests\TestQuestions
     #listMethod: ["find", ["type = 'test'"]] # [METHOD, BASE_CONDITIONS]

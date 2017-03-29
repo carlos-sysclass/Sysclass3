@@ -178,7 +178,7 @@ textarea {
 
 input.button {
 	margin: 0;
-	font: bold 12px Arial, Sans-serif;
+	font: bold 12px Open Sans,sans-serif;
 	border: 1px solid #EAEAEA;
 	padding: 3px 4px;
 	background: #CCC url(buttonbg.gif) repeat-x left bottom;
@@ -216,7 +216,7 @@ input.submitbutton {
 
 #sidebar #search input.searchbutton {
 	margin: 0;
-	font: bold 100% Arial, Sans-serif;
+	font: bold 100% Open Sans,sans-serif;
 	border: 1px solid #CCC;
 	background: #CCC url(buttonbg.gif) repeat-x left bottom;
 	padding: 1px;

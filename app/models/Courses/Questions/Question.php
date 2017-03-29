@@ -33,7 +33,7 @@ class Question extends Model
         return $this->toFullArray(array(
             'Department',
             'Type',
-            'Level',
+            'Difficulty',
         ), parent::toArray());
     }
 

@@ -18008,13 +18008,13 @@ var fontMap = {
   monospace: 'monospace',
   sansSerif: 'sans-serif',
   serif: 'serif',
-  monospaceSansSerif: '"Andale Mono", "Lucida Console", monospace',
-  monospaceSerif: '"Courier New", monospace',
+  monospaceSansSerif: '"Open Sans", monospace',
+  monospaceSerif: '"Open Sans", sans-serif',
   proportionalSansSerif: 'sans-serif',
   proportionalSerif: 'serif',
-  casual: '"Comic Sans MS", Impact, fantasy',
-  script: '"Monotype Corsiva", cursive',
-  smallcaps: '"Andale Mono", "Lucida Console", monospace, sans-serif'
+  casual: '"Open Sans", sans-serif',
+  script: '"Open Sans", sans-serif',
+  smallcaps: '"Open Sans", sans-serif'
 };
 
 /**
@@ -18244,7 +18244,7 @@ var TextTrackDisplay = (function (_Component) {
         cueDiv.style.top = 'auto';
         cueDiv.style.bottom = '2px';
       }
-      if (overrides.fontFamily && overrides.fontFamily !== 'default') {
+      if (overrides.fontFamily && overrides.fontFamily !== 'Open Sans') {
         if (overrides.fontFamily === 'small-caps') {
           cueDiv.firstChild.style.fontVariant = 'small-caps';
         } else {
@@ -24163,6 +24163,8 @@ module.exports = exports['default'];
     var boxPositions = [],
         containerBox = BoxPosition.getSimpleBoxPosition(paddedOverlay),
         fontSize = Math.round(containerBox.height * FONT_SIZE_PERCENT * 100) / 100;
+        fontSize = Math.max(fontSize, 11);
+
     var styleOptions = {
       font: fontSize + "px " + FONT_STYLE
     };
