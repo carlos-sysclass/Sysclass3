@@ -972,8 +972,8 @@ body.vjs-full-window {
   -webkit-flex: none;
   -ms-flex: none;
   flex: none;
-  font-size: 1.5em;
-  line-height: 1.9em;
+  font-size: 1em;
+  line-height: 2.5em;
   min-width: 2em;
   width: auto;
   padding-left: 1em;
@@ -1211,7 +1211,7 @@ video::-webkit-media-text-track-display {
   color: #fff;
   margin: 0 auto;
   padding: 0.5em;
-  height: 16em;
+  height: 1em;
   font-size: 10px;
   width: 40em; }
 
