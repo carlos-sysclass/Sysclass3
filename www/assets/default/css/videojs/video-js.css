@@ -1010,14 +1010,14 @@ body.vjs-full-window {
   bottom: 3em;
   left: 0;
   right: 0;
-  top: 0;
+  top: -12px;
   pointer-events: none; }
 
 .video-js.vjs-user-inactive.vjs-playing .vjs-text-track-display {
-  bottom: 1em; }
+  bottom: 0.5em; }
 
 .video-js .vjs-text-track {
-  font-size: 1.4em;
+  font-size: 2.4em;
   text-align: center;
   margin-bottom: 0.1em;
   background-color: #000;
@@ -1114,7 +1114,7 @@ video::-webkit-media-text-track-display {
   box-sizing: inherit;
   width: inherit;
   height: inherit;
-  border-radius: inherit;
+  border-radius: 0px;
   opacity: 1;
   border: inherit;
   border-color: transparent;
