@@ -923,3 +923,12 @@ margin:0 4px 0 0;
 .content-container .pop-out .popupcontent-fullscreen .video-js .vjs-control-bar {
   bottom: 4em;
 }
+
+.content-container .pop-out .popupcontent-fullscreen .video-js.vjs-user-inactive.vjs-playing .vjs-text-track-display {
+  bottom: 4em; }
+
+.content-container .pop-out .popupcontent-fullscreen .vjs-text-track-display {
+  bottom: 7em;
+}
+
+

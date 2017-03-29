@@ -24114,7 +24114,7 @@ module.exports = exports['default'];
     return parseContent(window, cuetext);
   };
 
-  var FONT_SIZE_PERCENT = 5;
+  var FONT_SIZE_PERCENT = 0.05;
   var FONT_STYLE = "sans-serif";
   var CUE_BACKGROUND_PADDING = "1.5%";
 
@@ -24163,6 +24163,8 @@ module.exports = exports['default'];
     var boxPositions = [],
         containerBox = BoxPosition.getSimpleBoxPosition(paddedOverlay),
         fontSize = Math.round(containerBox.height * FONT_SIZE_PERCENT * 100) / 100;
+        fontSize = Math.max(fontSize, 11);
+
     var styleOptions = {
       font: fontSize + "px " + FONT_STYLE
     };
