@@ -1212,7 +1212,7 @@ video::-webkit-media-text-track-display {
   margin: 0 auto;
   padding: 0.5em;
   height: 16em;
-  font-size: 12px;
+  font-size: 10px;
   width: 40em; }
 
 .vjs-caption-settings .vjs-tracksettings {
