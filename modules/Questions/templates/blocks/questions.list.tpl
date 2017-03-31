@@ -167,7 +167,7 @@
                 <label class="control-label">
                     {translateToken value="Question Points"} :
                 </label>
-                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please, provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
+                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Enter question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
             </div>
         </div>
         <div class="col-md-6">
