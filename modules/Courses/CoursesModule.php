@@ -649,7 +649,7 @@ class CoursesModule extends \SysclassModule implements /* \ISummarizable, */\ILi
 		$constraints    =  array(
 			'archive'   => false,
 			'active'    => true,
-			'condition' => "(uc.user_type = 'student' OR uc.user_type IN (SELECT id FROM user_types WHERE basic_user_type = 'student'))",
+			'condition' => "(uc.user_type = 'user' OR uc.user_type IN (SELECT id FROM user_types WHERE basic_user_type = 'user'))",
 			'sort'      => 'name'
 		);
 
