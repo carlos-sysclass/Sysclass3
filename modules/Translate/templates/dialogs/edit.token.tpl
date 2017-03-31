@@ -5,7 +5,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 					<h4 class="modal-title">
-						{translateToken value="Edit token"} "<span  data-update="token"></span>"
+						{translateToken value="Edit word / phrase:"} "<span  data-update="token"></span>"
 						<small>
 							<span  data-update="srclang"></span> <span class="icon-arrow-right"><i></i></span> <span  data-update="dstlang"></span>
 						</small>
@@ -15,7 +15,7 @@
 					<div class="form-body">
 						<div class="form-group">
 							<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-							<label class="control-label">{translateToken value="Term"}</label>
+							<label class="control-label">{translateToken value="Revise  word / phrase"}</label>
 							<input type="text" name="text" placeholder="Text" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="1">
 						</div>
 					</div>
