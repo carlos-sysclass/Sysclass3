@@ -22,7 +22,6 @@
     width: 100%;
 }
 
-
 .content-video-sidebar {
     display: none;
 }
@@ -34,7 +33,6 @@ li.list-item {
 }
 
 </style>
-
 <div id="content-editor">
     <div id="content-video-widget" data-widget-id="unit-content-video-widget">
         <div class="row">
@@ -214,7 +212,7 @@ li.list-item {
     </a>
 
     <div class="list-file-item-options">
-        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Translate...'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
+        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Translate'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
             >
                 <i class="icon-globe"></i>
         </a>
