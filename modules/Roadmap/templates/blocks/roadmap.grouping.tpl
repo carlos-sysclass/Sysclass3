@@ -66,7 +66,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            {translateToken value="Roadmap for Course groups: "}<strong data-update="roadmap_grouping">All</strong>
+            {translateToken value="Roadmap for course groups: "}<strong data-update="roadmap_grouping">All</strong>
             <div class="panel-buttons panel-buttons-sm">
                 <a class="btn btn-success btn-sm roadmap-add-season" href="#">Add a Season</a>
                 <a class="btn btn-warning btn-sm roadmap-add-class" href="#">Add a Class</a>

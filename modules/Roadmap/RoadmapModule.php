@@ -155,7 +155,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
             } else*/ if ($model ==  "group") {
-                $modelRoute = "roadmap/groups";
+                $modelRoute = "roadmap/grouping";
                 $itemsCollection = $this->model($modelRoute);
 
                 $courses = filter_var($filter, FILTER_DEFAULT);
