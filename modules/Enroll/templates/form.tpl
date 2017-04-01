@@ -88,7 +88,7 @@
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="glyphicon glyphicon-inbox"></i>
-					{translateToken value="Course format"}
+					{translateToken value="Registration format"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Assign the criteria for user registration. This is used to manage course groups and calculate its roadmap.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
