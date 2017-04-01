@@ -105,7 +105,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-based'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="groups"> {translateToken value='Group based'}
                             </label>
                         </div>
                     </div>
@@ -191,7 +191,7 @@
 										<i class="fa fa-question-circle"></i>
 									</span>
 								</label>
-								<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+								<input name="name" value="" type="text" placeholder="{translateToken value="Group name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
 					</div>

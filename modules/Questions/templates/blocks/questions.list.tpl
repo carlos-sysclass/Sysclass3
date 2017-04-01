@@ -109,7 +109,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
             <!--
-            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit grouping info">
+            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit group info">
                 <i class="fa fa-edit"></i>
             </a>
 

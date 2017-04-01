@@ -85436,7 +85436,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 		 * cannot be overridden by user interaction with the table. What this means
 		 * is that you could have a column (visible or hidden) which the sorting
 		 * will always be forced on first - any sorting after that (from the user)
-		 * will then be performed as required. This can be useful for grouping rows
+		 * will then be performed as required. This can be useful for groups rows
 		 * together.
 		 *  @type array
 		 *  @default null
@@ -90443,7 +90443,7 @@ window.pdfMake = window.pdfMake || {}; window.pdfMake.vfs = {"LICENSE.txt":"DQog
 	 * * `number` - Will format numeric data (defined by `columns.data`) for
 	 *   display, retaining the original unformatted data for sorting and filtering.
 	 *   It takes 5 parameters:
-	 *   * `string` - Thousands grouping separator
+	 *   * `string` - Thousands groups separator
 	 *   * `string` - Decimal point indicator
 	 *   * `integer` - Number of decimal points to show
 	 *   * `string` (optional) - Prefix.
@@ -97781,7 +97781,7 @@ $.extend( FixedColumns.prototype , {
 	 * Set up the DOM for the fixed column. The way the layout works is to create a 1x3 grid
 	 * for the left column, the DataTable (for which we just reuse the scrolling element DataTable
 	 * puts into the DOM) and the right column. In each of he two fixed column elements there is a
-	 * grouping wrapper element and then a head, body and footer wrapper. In each of these we then
+	 * groups wrapper element and then a head, body and footer wrapper. In each of these we then
 	 * place the cloned header, body or footer tables. This effectively gives as 3x3 grid structure.
 	 *  @returns {void}
 	 *  @private

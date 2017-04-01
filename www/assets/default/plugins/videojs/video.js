@@ -9349,7 +9349,7 @@ var MenuItem = (function (_ClickableComponent) {
 
     if (this.selectable) {
       // TODO: May need to be either menuitemcheckbox or menuitemradio,
-      //       and may need logical grouping of menu items.
+      //       and may need logical groups of menu items.
       this.el_.setAttribute('role', 'menuitemcheckbox');
     } else {
       this.el_.setAttribute('role', 'menuitem');

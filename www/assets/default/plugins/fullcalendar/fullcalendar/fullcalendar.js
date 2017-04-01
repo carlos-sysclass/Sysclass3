@@ -1533,7 +1533,7 @@ function formatDateWithChunk(date, chunk) {
 		}
 		return oldMomentFormat(date, token);
 	}
-	else if (chunk.maybe) { // a grouping of other chunks that must be non-zero
+	else if (chunk.maybe) { // groups of other chunks must be non-zero
 		maybeStr = formatDateWithChunks(date, chunk.maybe);
 		if (maybeStr.match(/[1-9]/)) {
 			return maybeStr;
@@ -6458,7 +6458,7 @@ TimeGrid.mixin({
 
 		this.computeSegVerticals(segs); // compute and assign top/bottom
 
-		for (col = 0; col < segCols.length; col++) { // iterate each column grouping
+		for (col = 0; col < segCols.length; col++) { // iterate each column groups
 			colSegs = segCols[col];
 			this.placeSlotSegs(colSegs); // compute horizontal coordinates, z-index's, and reorder the array
 
