@@ -19,15 +19,15 @@ class DashboardController extends \AbstractSysclassController
         $smarty->assign("T_OP", isset($_GET['op']) ? $_GET['op'] : false);
 
         //Create shorthands for user type, to avoid long variable names
-        $_student_ = $_professor_ = $_admin_ = 0;
+        $_user_ = $_professor_ = $_admin_ = 0;
         if ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'user') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'user')) {
-            $_student_ = 1;
+            $_user_ = 1;
         } elseif ((isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_lesson_user_type'] == 'instructor') || (!isset($_SESSION['s_lesson_user_type']) && $_SESSION['s_type'] == 'instructor')) {
             $_professor_ = 1;
         } else {
             $_admin_ = 1;
         }
-        $smarty->assign("_student_", $_student_);
+        $smarty->assign("_user_", $_user_);
         $smarty->assign("_professor_", $_professor_);
         $smarty->assign("_admin_", $_admin_);
 
