@@ -160,7 +160,7 @@ reports:
 
       - name: n_approved_courses
         type: integer
-        label: "# Approved programs"
+        label: "# of approved programs"
         category: Registration
         mData: n_approved_courses
         sClass: text-center
@@ -309,14 +309,14 @@ reports:
 
       - name: n_total_pass
         type: integer
-        label: "# Assignments passed"
+        label: "Assignments passed"
         category: Tests
         mData: n_total_pass
         sClass: text-center
 
       - name: n_total_failed
         type: integer
-        label: "# Assignments failed"
+        label: "Assignments failed"
         category: Tests
         mData: n_total_failed
         sClass: text-center
