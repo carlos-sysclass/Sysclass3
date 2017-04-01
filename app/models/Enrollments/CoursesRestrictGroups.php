@@ -24,7 +24,7 @@ class CoursesRestrictGroups extends Model
 
         if (!$this->signup_active) {
             $message = new Message(
-                $translator->translate("This enrollment options ins not avaliable"
+                $translator->translate("This enrollment options ins not available"
                 ),
                 null,
                 "warning"

@@ -296,7 +296,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $menuItem = array(
                     'id'        => "enroll-topbar-menu",
                     'icon'      => ' fa fa-shield',
-                    'text'      => $this->translate->translate('Programs Avaliable'),
+                    'text'      => $this->translate->translate('Programs available'),
                     'className' => 'btn-warning',
                     /*
                     'external'  => array(

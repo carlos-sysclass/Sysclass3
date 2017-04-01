@@ -265,7 +265,7 @@ reports:
 
       - name: n_tests_avaliable
         type: integer
-        label: "# Avaliable assigements"
+        label: "# assigements available "
         category: assignments
         mData: n_tests_avaliable
         sClass: text-center

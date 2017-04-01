@@ -395,9 +395,9 @@ _before_init_functions.push(function() {
               <!--
                <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
+                <span class="pendente-tag">Not Available<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
-                <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
+                <span class="avalialbe-tag">Available<span class="avalialbe"></span></span>
                 <span class="andamento-tag">In Progress<span class="andamento"></span></span>
               </div>
               -->              
@@ -446,7 +446,7 @@ _before_init_functions.push(function() {
             <div role="tabpanel" class="tab-pane" id="profile">
               <div class="alert alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
+                <span class="pendente-tag">Not Available<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
                 <span class="andamento-tag">Attention<span class="andamento"></span></span>
@@ -687,12 +687,12 @@ _before_init_functions.push(function() {
         <i class="fa fa-clock-o" aria-hidden="true"></i>
       </span>
     <% } else if (_.size(model.units) == 0) { %>
-      <span class="pendente tooltips" data-original-title="{translateToken value="Not avaliable"}" data-placement="top" data-container="body">
+      <span class="pendente tooltips" data-original-title="{translateToken value="Not available"}" data-placement="top" data-container="body">
         <i class="fa fa-times-circle" aria-hidden="true"></i>
       </span>
     <% } else { %>
 
-      <span class="avalialbe tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
+      <span class="avalialbe tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
         <i class="fa fa-square-o" aria-hidden="true"></i>
       </span>
     <% } %>
@@ -789,7 +789,7 @@ _before_init_functions.push(function() {
         <% if (_.size(model.units) == 0) { %>
           <span class="andamento">
             <i class="fa fa-warning" aria-hidden="true"></i>
-            {translateToken value="No units avaliable"}
+            {translateToken value="No units available"}
           </span>
         <% } else { %>
           <span class="concluido">
@@ -828,7 +828,7 @@ _before_init_functions.push(function() {
         <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
       </span>
     <% } else { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
         <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
@@ -986,7 +986,7 @@ _before_init_functions.push(function() {
         <% } else { %>
           <span class="avalialbe">
             <i class="fa fa-coffee" aria-hidden="true"></i>
-            Avaliable
+            Available
           </span>
         <% } %>
       <% }); %>
@@ -1085,7 +1085,7 @@ _before_init_functions.push(function() {
         <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
       </span>
     <% } else { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Avaliable"}" data-placement="top" data-container="body">
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
         <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
       </span>
     <% } %>
@@ -1130,7 +1130,7 @@ _before_init_functions.push(function() {
     <!--
     <span class="pendente">
       <i class="fa fa-ban" aria-hidden="true"></i>
-      Not Avaliable
+      Not Available
     </span>
     -->
   </td>
@@ -1139,7 +1139,7 @@ _before_init_functions.push(function() {
   <td>
     <span class="pendente">
       <i class="fa fa-ban" aria-hidden="true"></i>
-      Not Avaliable
+      Not Available
     </span>
   </td>
   -->
@@ -1174,7 +1174,7 @@ _before_init_functions.push(function() {
       <% } else { %>
         <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
             <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
-            {translateToken value="Avaliable"}
+            {translateToken value="Available"}
         </a>
       <% } %>
     <% } %>
@@ -1382,7 +1382,7 @@ _before_init_functions.push(function() {
     <% } else { %>
       <span class="avalialbe">
         <i class="fa fa-square-o" aria-hidden="true"></i>
-        {translateToken value="Avaliable"}
+        {translateToken value="Available"}
       </span>
     <% } %>
   </td>
