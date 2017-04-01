@@ -439,7 +439,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     'success' => "Class removed successfully",
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
-            } elseif ($model ==  "group") {
+            } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/group";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
@@ -567,7 +567,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     return $this->invalidRequestError();
                 }
 
-            } elseif ($model ==  "group") {
+            } elseif ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
