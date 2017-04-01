@@ -113,7 +113,7 @@ reports:
 
       - name: pending
         type: bool
-        label: Aproval pending 
+        label: Approval pending 
         category: General
         mData: pending
         sType: table-boolean
@@ -265,21 +265,21 @@ reports:
 
       - name: n_tests_avaliable
         type: integer
-        label: "# assigements available "
+        label: "Assignments available "
         category: assignments
         mData: n_tests_avaliable
         sClass: text-center
 
       - name: n_tests_tried
         type: integer
-        label: "# Assigements done"
+        label: "Assignments done"
         category: Tests
         mData: n_tests_tried
         sClass: text-center
 
       - name: n_execution_tries
         type: integer
-        label: "# Assigements attempts"
+        label: "Assignment attempts"
         category: Tests
         mData: n_execution_tries
         sClass: text-center
@@ -301,7 +301,7 @@ reports:
 
       - name: avg_user_score
         type: float
-        label: "Average score of assigements"
+        label: "Average score of assignments"
         category: Tests
         mData: avg_user_score
         sType: table-percentage1
@@ -309,14 +309,14 @@ reports:
 
       - name: n_total_pass
         type: integer
-        label: "# Assigements passed"
+        label: "# Assignments passed"
         category: Tests
         mData: n_total_pass
         sClass: text-center
 
       - name: n_total_failed
         type: integer
-        label: "# Assigements failed"
+        label: "# Assignments failed"
         category: Tests
         mData: n_total_failed
         sClass: text-center
