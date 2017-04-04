@@ -58,6 +58,10 @@ class Lesson extends BaseUnit
 
         $questions_size = $test->test_max_questions == 0 ? $questions->count() : $test->test_max_questions;
 
+        
+
+
+
         if ($executionQuestions->count() == 0) {
 
             $questionsArray = $questions->toArray();
@@ -105,6 +109,9 @@ class Lesson extends BaseUnit
                         $result[] = $question;
                     }
                 }
+            }
+            if ($test->randomize_questions) {
+                shuffle($result);
             }
         }
         /*
