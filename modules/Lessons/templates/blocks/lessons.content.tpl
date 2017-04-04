@@ -200,7 +200,7 @@ li.list-item {
 
 <script type="text/template" id="content-subtitle-item">
 
-    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;">
         <option></option>
         {foreach $T_LANGUAGES as $lang}
             <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>
@@ -239,7 +239,7 @@ li.list-item {
 
 <script type="text/template" id="content-poster-item">
 
-    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;">
         <option></option>
         {foreach $T_LANGUAGES as $lang}
             <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>
@@ -276,7 +276,7 @@ li.list-item {
     <% var file = model; %>
     <% if (!_.isUndefined(file)) { %>
 
-        <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;" data-format-as="country">
+        <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;">
             <option></option>
             {foreach $T_LANGUAGES as $lang}
                 <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>

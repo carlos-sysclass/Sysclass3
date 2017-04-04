@@ -357,6 +357,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             //$testData['questions'] = $testModel->getQuestions()->toArray();
             $testQuestions = $testUnitModel->shuffleTestQuestions($executionId);
 
+
             $testData['questions'] = array();
 
             foreach($testQuestions as $i => $question) {
