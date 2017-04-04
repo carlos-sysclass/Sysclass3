@@ -36,10 +36,14 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					if (this.pointer() <= 0) {
 						//this.pointer = 0;
 						this.$(".nav-prev-action").addClass("disabled");
+					} else {
+						this.$(".nav-prev-action").removeClass("disabled");
 					}
 
 					if (this.pointer() + 1 >= this.collection().size()) {
 						this.$(".nav-next-action").addClass("disabled");
+					} else {
+						this.$(".nav-next-action").removeClass("disabled");
 					}
 				}
 

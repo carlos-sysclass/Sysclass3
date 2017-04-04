@@ -49,7 +49,7 @@ class ClassesModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                 'text'  => $this->translate->translate("Home")
             ),
             array(
-                'icon'  => 'icon-bookmark',
+                'icon'  => 'fa fa-sitemap',
                 'link'  => $this->getBasePath() . "view",
                 'text'  => $this->translate->translate("Courses")
             )
