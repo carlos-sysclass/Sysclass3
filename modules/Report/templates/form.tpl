@@ -9,9 +9,11 @@
 			<li>
 				<a href="#tab-report-definition" data-toggle="tab">{translateToken value="Criteria"}</a>
 			</li>
+			<!-- 
 			<li>
 				<a href="#tab-report-presentation" data-toggle="tab">{translateToken value="Presentation"}</a>
 			</li>
+			 -->
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab-report-general">
@@ -109,9 +111,10 @@
 					<div class="builder-users-list"></div>
 				</div>
 			</div>
+			<!-- 
 			<div class="tab-pane fade in" id="tab-report-presentation">
 			</div>
-
+ 			-->
 			
 		</div>
 	</div>
