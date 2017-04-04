@@ -344,7 +344,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                         "email/" . $this->sysconfig->deploy->environment . "/enroll-info.email",
                         true,
                         array(
-                            'user' => $user,
+                            'student' => $user,
                             'program' => $program,
                             'receiver' => $receiver,
                             'enroll_view_link' => "http://" . $this->sysconfig->deploy->environment . '.sysclass.com/module/enroll/edit/' . $data['enroll_id'] . '#tab_1_3'

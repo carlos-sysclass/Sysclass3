@@ -154,7 +154,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
 
                 //$dropOnEmpty = !($currentUser->getType() == 'administrator' && $currentUser->user['user_types_ID'] == 0);
 
-            } else*/ if ($model ==  "group") {
+            } else*/ if ($model ==  "grouping") {
                 $modelRoute = "roadmap/grouping";
                 $itemsCollection = $this->model($modelRoute);
 
@@ -440,7 +440,7 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                     'error' => "There's ocurred a problem when the system tried to remove your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "grouping") {
-                $modelRoute = "roadmap/group";
+                $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
                     'success' => "Course group removed successfully",
