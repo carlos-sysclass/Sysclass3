@@ -34,7 +34,7 @@
                     <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
                     <!-- TAGS STATUS DO SISTEMA -->
                     <span class="pendente-tag">
-                      {translateToken value="Not Avaliable"}
+                      {translateToken value="Not available"}
                       <span class="pendente"></span>
                     </span>
                     <span class="concluido-tag">
@@ -42,7 +42,7 @@
                       <span class="concluido"></span>
                     </span>
                     <span class="avalialbe-tag">
-                      {translateToken value="Avaliable"}
+                      {translateToken value="Available"}
                       <span class="avalialbe"></span>
                     </span>
                   </div>

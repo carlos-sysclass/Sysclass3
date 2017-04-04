@@ -186,7 +186,7 @@ class ApiController extends \AbstractSysclassController
 			//
 		} catch (\Exception $e) {
 			$code = 200;
-            $message = "Welcome to Sysclass API. Please, provide your access details to continue.";
+            $message = "Welcome to SysClass API. Please, provide your access info to continue.";
             $message_type = 'info';
 		}
 

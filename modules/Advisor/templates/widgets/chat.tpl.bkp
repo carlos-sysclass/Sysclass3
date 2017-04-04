@@ -16,7 +16,7 @@
     <li class="active block-error" style="display: none;">
         <a>
             <i class="{$T_DATA.icon}"></i>
-            <span class="advidor-title">{translateToken value="Chat not avaliable"}</span>
+            <span class="advidor-title">{translateToken value="Chat not available"}</span>
         </a>
     </li>
 

@@ -80,7 +80,7 @@ class CourseUsers extends Model
                 }
             } else {
                 $message = new Message(
-                    $translator->translate("This enrollment options is not avaliable right now"
+                    $translator->translate("This enrollment options is not available right now"
                     ),
                     null,
                     "warning"

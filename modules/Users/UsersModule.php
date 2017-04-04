@@ -586,7 +586,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                         $model->password = $this->authentication->hashPassword($data['new-password'], $model);
                     } else {
                         $message = new Message(
-                            "Please, provide your current password",
+                            "Please, provide your password",
                             "password",
                             "warning"
                         );

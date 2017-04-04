@@ -57,6 +57,7 @@
             </div>
         </li>
         {/if}
+        {if $T_TEST.test.show_test_points}
         <li class="col-md-3">
             <div>
                 <span class="pull-left">
@@ -68,6 +69,7 @@
                 </strong>
             </div>
         </li>
+        {/if}
         {if $T_EXECUTION.pending == 0}
         <li class="col-md-3">
             <div>

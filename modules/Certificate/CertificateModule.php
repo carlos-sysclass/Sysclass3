@@ -89,7 +89,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                     $this->notification->createForUser(
                         $user,
                         sprintf(
-                            'You have a certificate avaliable for course %s', 
+                            'You have a certificate available for course %s', 
                             $course->name
                         ),
                         'info',
@@ -242,7 +242,7 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                         $this->notification->createForUser(
                             $user,
 
-                            //$this->translate->translate('You have a certificate avaliable for module %s', array($module->name)),
+                            //$this->translate->translate('You have a certificate available for module %s', array($module->name)),
                             sprintf('You have a new Certificate:  %s',$module->name),
 
 

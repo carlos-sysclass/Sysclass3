@@ -443,14 +443,14 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping removed successfully",
+                    'success' => "Course group removed successfully",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Periods created successfully",
+                    'success' => "Course period created successfully",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {
@@ -571,14 +571,14 @@ class RoadmapModule extends \SysclassModule implements \IBlockProvider, INotifya
                 $modelRoute = "roadmap/grouping";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Grouping order updated.",
+                    'success' => "Course group order updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } elseif ($model ==  "periods") {
                 $modelRoute = "roadmap/periods";
                 $itemModel = $this->model($modelRoute);
                 $messages = array(
-                    'success' => "Course Periods updated.",
+                    'success' => "Course period updated.",
                     'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again"
                 );
             } else {

@@ -96,7 +96,7 @@ abstract class AbstractDatabaseController extends AbstractToolsController
 	 * Retrieve database data.
 	 *
 	 * This function is used to perform a SELECT query. Multiple parameters may be used, to
-	 * specify the ordering, length and grouping of the data set. It returns an array of associative arrays,
+	 * specify the ordering, length and groups of the data set. It returns an array of associative arrays,
 	 * where each of these arrays holds the column name and the corresponding value for the result row
 	 * <br>Example:
 	 * <code>

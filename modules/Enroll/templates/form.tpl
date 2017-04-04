@@ -88,7 +88,7 @@
 
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="glyphicon glyphicon-inbox"></i>
-					{translateToken value="Course format"}
+					{translateToken value="Registration format"}
 					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Assign the criteria for user registration. This is used to manage course groups and calculate its roadmap.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
@@ -105,7 +105,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group-based'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="groups"> {translateToken value='Group'}
                             </label>
                         </div>
                     </div>
@@ -191,7 +191,7 @@
 										<i class="fa fa-question-circle"></i>
 									</span>
 								</label>
-								<input name="name" value="" type="text" placeholder="{translateToken value="Grouping Name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+								<input name="name" value="" type="text" placeholder="{translateToken value="Group name template"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 							</div>
 						</div>
 					</div>

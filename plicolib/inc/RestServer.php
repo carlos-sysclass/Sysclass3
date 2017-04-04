@@ -502,7 +502,7 @@ class RestServer
 		foreach($args as $key => $pos) {
 			$swaggerArgs[] = array(
 				'name'			=> $key,
-				'description'	=> 'No Description Avaliable',
+				'description'	=> 'No description available',
 				'required'		=> false,
 				'type'			=> 'string',
 				'paramType'		=> 'path',

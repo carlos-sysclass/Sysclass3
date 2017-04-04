@@ -8,7 +8,7 @@
                     </button>
                     <h4 class="modal-title">
                         <i class="fa fa-shield"></i>
-                        {translateToken value='Programs Avaliable'}
+                        {translateToken value='Programs available'}
                         <span data-update="name"></span>
                     </h4>
                 </div>

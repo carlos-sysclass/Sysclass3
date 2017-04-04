@@ -75,7 +75,7 @@ class StorageModule extends \SysclassModule implements \IBlockProvider
 
         if ($filesize > 2*1024*1024) { // IF GREATER THAN 2MB, SEND IN BACKGROUND
             $this->response->setJsonContent($this->createAdviseResponse(
-                $this->translate->translate("File received. You will notified when the file is avaliable"),
+                $this->translate->translate("File received. You will notified when the file is available."),
                 "success"
             ));
 
