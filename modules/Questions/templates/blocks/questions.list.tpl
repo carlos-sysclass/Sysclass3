@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-md-12 text-right">
-            Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
+            Maximum Score : <span class="btn btn-default btn-sm total_score"></span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
                 <i class="fa fa-question-circle-circle"></i>{translateToken value="How is it calculated"}</a>
         </div>
