@@ -890,7 +890,7 @@ class LoginController extends \AbstractSysclassController
 		                } else {
 		                    $user = MagesterUserFactory :: factory($result[0]['login']);
 		                }
-		            } elseif ($this->_checkParameter($input, 'login')) { //The user entered his/hers login name
+		            } elseif ($this->_checkParameter($input, 'login')) { //The user entered his/her login name
 		                $user = MagesterUserFactory :: factory($input);
 		            }
 		            if ($user->isLdapUser) {
