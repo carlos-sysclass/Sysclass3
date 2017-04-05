@@ -105,7 +105,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="groups"> {translateToken value='Group'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group'}
                             </label>
                         </div>
                     </div>
