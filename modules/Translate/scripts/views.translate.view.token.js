@@ -25,8 +25,10 @@ $SC.module("views.translate.view.token", function(mod, app, Backbone, Marionette
 						{ "name": "dst", "render": function ( data, type, full, meta ) {
 	      					return full[self.dstlang];
 	    				}},
-						{ "mData": "options", 'sType' : 'table-options' }
+						{ "mData": "options", 'sType' : 'table-options', 'sClass' : 'text-center nowrap'}
 					];
+
+					this.oSettings.sDom = "<'row'<'col-lg-6 col-md-6 col-sm-12'l><'col-lg-6 col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>";
 				}
 
 				this.recreateTable();
