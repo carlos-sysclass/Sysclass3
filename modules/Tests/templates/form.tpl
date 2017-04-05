@@ -94,7 +94,7 @@
 			        <div class="portlet-body">
 			            <div class="row">
 			                <!-- Duração em minutos:      Deixe em branco para não ter prazo limitado -->
-			                <div class="col-md-6">
+			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Total time in minutes available for testing. Put 0 (zero) for unlimited time.'}">
@@ -107,7 +107,7 @@
 			                    </div>
 			                </div>
                             
-			                <div class="col-md-6">
+			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
                                     <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Times the user is allowed to re-take the test. Leave blank not to allow re-takes. Put 0 (zero) for unlimited attempts.'}">
@@ -220,8 +220,21 @@
 			                </div>
 			            </div>
 			            -->
+
 			            <div class="row">
-			                <div class="col-md-6">
+			                <div class="col-md-4">
+			                    <div class="form-group">
+			                        <label class="control-label">
+			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Display questions order randomly.'}">
+			                                <i class="fa fa-question-circle"></i>
+			                            </span>
+			                            {translateToken value="Show Test Maximum Points"}
+			                        </label>
+
+			                        <input type="checkbox" name="test.show_test_points" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Display questions order randomly.'}">
@@ -233,7 +246,7 @@
 			                        <input type="checkbox" name="test.randomize_questions" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
 			                    </div>
 			                </div>
-			                <div class="col-md-6">
+			                <div class="col-md-4">
 			                    <div class="form-group">
 			                        <label class="control-label">
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Shuffle the order in which the choices are shown.'}">

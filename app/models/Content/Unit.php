@@ -131,7 +131,7 @@ class Unit extends Model
      * @param  Sysclass\Models\Users\User $user       The user to be checked, if null, get the current logged user
      * @param  string $by         Select from whick variable will be used to generate the tree. 'content, unit, course, program, default'
      * @param  numeric|bool $entity_id  The value of entity to search for, pass false to get the defaults
-     * @return [type]             Array containaing 'content_id, unit_id, course_id, program_id',or false if no info is avaliable
+     * @return [type]             Array containaing 'content_id, unit_id, course_id, program_id',or false if no info is available
      */
     public static function getContentPointers($user = null, $by = 'default', $entity_id = false) {
         if (is_null($user)) {

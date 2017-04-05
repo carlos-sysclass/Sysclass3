@@ -710,7 +710,7 @@ $.extend( FixedColumns.prototype , {
 	 * Set up the DOM for the fixed column. The way the layout works is to create a 1x3 grid
 	 * for the left column, the DataTable (for which we just reuse the scrolling element DataTable
 	 * puts into the DOM) and the right column. In each of he two fixed column elements there is a
-	 * grouping wrapper element and then a head, body and footer wrapper. In each of these we then
+	 * groups wrapper element and then a head, body and footer wrapper. In each of these we then
 	 * place the cloned header, body or footer tables. This effectively gives as 3x3 grid structure.
 	 *  @returns {void}
 	 *  @private

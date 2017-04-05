@@ -44,7 +44,7 @@
     -->
     <h5 class="form-section margin-bottom-10 margin-top-10">
         <i class="fa fa-calendar"></i>
-        {translateToken value="Courses avaliable"}
+        {translateToken value="Courses available"}
     </h5>
 
     <div class="row">
@@ -68,10 +68,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label class="control-label">{translateToken value="Course Grouping"}
-                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new course grouping"} "><i class="fa fa-plus"></i></a>
+                <label class="control-label">{translateToken value="Course groups"}
+                    <a class="btn btn-default btn-sm tooltips roadmap-add-grouping" data-original-title="{translateToken value="Add a new course groups"} "><i class="fa fa-plus"></i></a>
                 </label>
-                <select class="select2-me form-control" name="roadmap_grouping_id" data-placeholder="{translateToken value='Course Grouping'}">
+                <select class="select2-me form-control" name="roadmap_grouping_id" data-placeholder="{translateToken value='Course groups'}">
                     <option value="-1">All Groupings</option>
                 {foreach $T_ROADMAP_COURSES_GROUPING as $item}
                         <option value="{$item.id}">{$item.name}</option>
@@ -82,7 +82,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            {translateToken value="Roadmap for course grouping: "}<strong data-update="roadmap_grouping">All</strong>
+            {translateToken value="Roadmap for course groups: "}<strong data-update="roadmap_grouping">All</strong>
             <div class="panel-buttons panel-buttons-sm">
                 <a class="btn btn-success btn-sm roadmap-add-season" href="#">Add a Season</a>
                 <a class="btn btn-warning btn-sm roadmap-add-class" href="#">Add a Class</a>

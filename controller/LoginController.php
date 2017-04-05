@@ -546,7 +546,7 @@ class LoginController extends \AbstractSysclassController
 			                'bind' => array($postData['login'], $user->id)
 			            ));
 			            if ($exists > 0) {
-							throw new AuthenticationException("This username is not avaliable. Please, select another one.");
+							throw new AuthenticationException("This username is not available. Please, select another one.");
 			            }
 			            $user->login = $postData['login'];
 					}

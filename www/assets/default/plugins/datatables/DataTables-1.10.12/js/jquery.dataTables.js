@@ -9897,7 +9897,7 @@
 		 * cannot be overridden by user interaction with the table. What this means
 		 * is that you could have a column (visible or hidden) which the sorting
 		 * will always be forced on first - any sorting after that (from the user)
-		 * will then be performed as required. This can be useful for grouping rows
+		 * will then be performed as required. This can be useful for groups rows
 		 * together.
 		 *  @type array
 		 *  @default null
@@ -14904,7 +14904,7 @@
 	 * * `number` - Will format numeric data (defined by `columns.data`) for
 	 *   display, retaining the original unformatted data for sorting and filtering.
 	 *   It takes 5 parameters:
-	 *   * `string` - Thousands grouping separator
+	 *   * `string` - Thousands groups separator
 	 *   * `string` - Decimal point indicator
 	 *   * `integer` - Number of decimal points to show
 	 *   * `string` (optional) - Prefix.

@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-md-12 text-right">
-            Maximum Score : <span class="btn btn-default btn-sm total_score">150</span>
+            Maximum Score : <span class="btn btn-default btn-sm total_score"></span>
             <a href="javascript:void(0);" class="btn btn-info btn-sm show-tips">
                 <i class="fa fa-question-circle-circle"></i>{translateToken value="How is it calculated"}</a>
         </div>
@@ -109,7 +109,7 @@
         <% if (!_.isUndefined(model.id)) { %>
             <span class="btn btn-default btn-sm"><span class="counter">0</span> / <span class="total">0</span></span>
             <!--
-            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit grouping info">
+            <a class="btn btn-sm btn-primary tooltips edit-item-detail" href="javascript: void(0);" data-original-title="Edit group info">
                 <i class="fa fa-edit"></i>
             </a>
 
@@ -167,7 +167,7 @@
                 <label class="control-label">
                     {translateToken value="Question Points"} :
                 </label>
-                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Please, provide the question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
+                <input name="points[<%= model.id %>]" data-update="points" value="" type="text" placeholder="{translateToken value="Points"}" class="form-control input-xsmall tooltips" data-original-title="{translateToken value='Enter question points'}" data-rule-required="true" data-rule-number="true" data-rule-min="1" data-rule-max="100" />
             </div>
         </div>
         <div class="col-md-6">

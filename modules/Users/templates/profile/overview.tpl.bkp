@@ -29,7 +29,7 @@
     ["comments"]=>
     NULL
     ["user_type"]=>
-    string(7) "student"
+    string(7) "user"
     ["timestamp"]=>
     string(10) "1341869333"
     ["avatar"]=>

@@ -27,7 +27,7 @@
 
 			{if (isset($T_SECTION_TPL['roadmap-grouping']) &&  ($T_SECTION_TPL['roadmap-grouping']|@count > 0))}
 			<li>
-				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Grouping"}</a>
+				<a href="#tab_1_5" data-toggle="tab">{translateToken value="Groups"}</a>
 			</li>
 			{/if}
 

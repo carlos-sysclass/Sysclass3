@@ -853,7 +853,7 @@ abstract class SysclassModule extends BaseSysclassModule
     }
 
     /**
-     * Check if the request resource is avaliable to current user. The resource can overriden in config.yml
+     * Check if the request resource is available to current user. The resource can overriden in config.yml
      * @param  [type]  $route   [description]
      * @param  [type]  $default [description]
      * @return boolean          [description]
