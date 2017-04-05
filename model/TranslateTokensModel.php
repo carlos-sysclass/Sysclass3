@@ -117,6 +117,7 @@ class TranslateTokensModel extends ModelManager {
 				$grouped[$token['token']]['token'] = $token['token'];
 
 				if ($token['user_id']) {
+					/*
 					var_dump($token);
 					exit;
 					$grouped[$token['token']]['activity'] = $transltor->translate(
@@ -127,6 +128,7 @@ class TranslateTokensModel extends ModelManager {
 								$token['timestamp']
 							]
 						);
+					*/
 				}
 
 				$grouped[$token['token']]['user_id'] = $token['user_id'];
