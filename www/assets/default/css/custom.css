@@ -2835,3 +2835,8 @@ a.disabled i.fa {
 .wysihtml-form-control {
   min-height: 125px;
 }
+
+table.dataTable th.nowrap,
+table.dataTable td.nowrap {
+  white-space: nowrap;
+}
