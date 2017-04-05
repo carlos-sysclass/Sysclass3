@@ -220,7 +220,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate(“Registration”)
+                    'text'  => $this->translate->translate('Registration')
                 );
                 return $breadcrumbs;
                 break;
@@ -229,10 +229,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate(“Registration”)
+                    'text'  => $this->translate->translate('Registration')
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("New registration rule"),
+                    'text'   => $this->translate->translate('New registration settings'),
                     'icon'  => 'fa fa-add-circle',
                     );
                 return $breadcrumbs;
@@ -242,10 +242,10 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
                 $breadcrumbs[] = array(
                     'icon'  => 'glyphicon glyphicon-inbox',
                     'link'  => $this->getBasePath() . "view",
-                    'text'  => $this->translate->translate(“Registration”)
+                    'text'  => $this->translate->translate('Registration')
                 );
                 $breadcrumbs[] = array(
-                    'text'   => $this->translate->translate("Create a registration form"),
+                    'text'   => $this->translate->translate('New registration form'),
                     'icon' => 'fa fa-pencil'
                 );
                 return $breadcrumbs;
@@ -261,7 +261,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
         $actions = array(
             'view'  => array(
                 array(
-                    'text'      => $this->translate->translate('New registration rule'),
+                    'text'      => $this->translate->translate('New registration settings'),
                     'link'      => $this->getBasePath() . "add",
                     'class'     => "btn-primary",
                     'icon'      => 'fa fa-plus-square'
