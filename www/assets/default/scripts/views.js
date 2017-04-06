@@ -721,6 +721,8 @@ $SC.module("views", function(mod, app, Backbone, Marionette, $, _) {
                         error.insertAfter(element.data('wysihtml5').editor.composer.iframe);
                     //} else if (element.attr("name") == "service") { // for uniform checkboxes, insert the after the given container
                     //    error.insertAfter("#form_2_service_error");
+                    } else  if (element.hasClass("icheck-me")) {
+                    	error.insertAfter(element.parent().parent());
                     } else {
                     	error.insertAfter(element); // for other inputs, just perform default behavior
                     }

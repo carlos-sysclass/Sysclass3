@@ -2,12 +2,18 @@
 
 
 {block name="content"}
+<style>
+	.help-block {
+ 		margin-top: -10px;
+ 		color: #dd252b;
+	}
+</style>
 <form id="form-agreement" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body note">
 		{block name="inner-content"}{/block}
 		<div class="">
 			<h4 class="block">
-			<input type="checkbox" name="viewed_license" class="icheck-me" data-skin="square" data-color="green" value="1"> 
+			<input type="checkbox" name="viewed_license" class="icheck-me" data-skin="square" data-color="green" value="1" data-rule-required="true" data-update-single="true"> 
 			{translateToken value="I confirm that I have read and accept the terms above"}
 			</h4>
 

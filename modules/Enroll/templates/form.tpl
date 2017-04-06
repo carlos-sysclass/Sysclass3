@@ -105,7 +105,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
                             <label>
-                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="groups"> {translateToken value='Group'}
+                                <input type="radio" name="admittance_type" data-update="admittance_type" class="icheck-me" data-skin="square" data-color="blue" value="grouping"> {translateToken value='Group'}
                             </label>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
 					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Individual</strong> registration, the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
+					            Individual registration</strong> the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
 					        </p>
 					    </div>
 					</div>
@@ -123,7 +123,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            On <strong>Group-based</strong> registration, the user is allocated to a group based on his/hers registration date. Each group is dynamically created based on the registration period determined above. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
+					            <strong>Group registration</strong> the user is allocated to a group based on his/her registration date. Each group is dynamically created based on the registration period. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
 					    </div>
 					</div>
 				</div>
