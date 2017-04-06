@@ -309,13 +309,14 @@ _before_init_functions.push(function() {
                   <table class="table table-striped table-bordered table-hover table-full-width data-table unit-table" id="unit-table">
                       <thead>
                         <tr>
-                          <th class="text-center">{translateToken value="Status"}</th>
                           <th class="text-center">{translateToken value="Units"}</th>
                           <!-- <th width="20%">{translateToken value="Instructor"}</th> -->
-                          <th class="text-center">{translateToken value="Rating"}</th>
+                          
                           <th class="text-center">{translateToken value="Videos"}</th>
                           <th class="text-center">{translateToken value="Materials"}</th>
                           <th class="text-center">{translateToken value="Assignments"}</th>
+                          <th class="text-center hidden-xs">{translateToken value="Status"}</th>
+                          <th class="text-center hidden-xs hidden-sm">{translateToken value="Rating"}</th>
                           <!--
                           <th><i class="fa fa-"></i>{translateToken value="Exercise"}</th>
                           -->
@@ -817,22 +818,7 @@ _before_init_functions.push(function() {
 	</tr>
 </script>
 <script type="text/template" id="tab_courses_units-item-template">
-  <!-- Status -->
-  <td class="text-center" width="10%">
-    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
-      </span>
-    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
-        <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
-      </span>
-    <% } else { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
-        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
-      </span>
-    <% } %>
-  </td>
+
 
   <!-- Unidade -->
   <td width="40%">
@@ -864,33 +850,6 @@ _before_init_functions.push(function() {
         </div>
       <% } %>
 
-  </td>
-  <!-- Rating -->
-  <td class="text-center" width="10%">
-    <% if (_.has(model, 'rating')) { %>
-      <%
-      count = 0; 
-      for (var i=1; i <= model.rating; i++) {
-        print ('<i class="fa fa-star rating-star"></i>');
-        count++;
-      } 
-      if (count < model.rating) {
-        var diff = model.rating - count;
-        if (diff > 0) {
-          print ('<i class="fa fa-star-half-o rating-star"></i>');
-          count++;
-        }
-      }
-      if (count < 5) {
-        diff = 5 - count;
-        for (var i=1; i <= diff; i++) {
-          print ('<i class="fa fa-star-o rating-star"></i>');
-          count++;
-        } 
-      }
-      %>
-    <% } else { %>
-    <% } %>
   </td>
   <!--
   <td width="20%">
@@ -997,7 +956,51 @@ _before_init_functions.push(function() {
   
   <td class="text-center" width="10%">
   </td>
+
+  <!-- Status -->
+  <td class="text-center hidden-xs" width="10%">
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
+      </span>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
+        <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
+      </span>
+    <% } else { %>
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
+      </span>
+    <% } %>
+  </td>
   
+  <!-- Rating -->
+  <td class="text-center hidden-xs hidden-sm" width="10%">
+    <% if (_.has(model, 'rating')) { %>
+      <%
+      count = 0; 
+      for (var i=1; i <= model.rating; i++) {
+        print ('<i class="fa fa-star rating-star"></i>');
+        count++;
+      } 
+      if (count < model.rating) {
+        var diff = model.rating - count;
+        if (diff > 0) {
+          print ('<i class="fa fa-star-half-o rating-star"></i>');
+          count++;
+        }
+      }
+      if (count < 5) {
+        diff = 5 - count;
+        for (var i=1; i <= diff; i++) {
+          print ('<i class="fa fa-star-o rating-star"></i>');
+          count++;
+        } 
+      }
+      %>
+    <% } else { %>
+    <% } %>
+  </td>
   <!-- Exame -->
   <!-- <td>
     <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
@@ -1074,52 +1077,11 @@ _before_init_functions.push(function() {
 
 
 <script type="text/template" id="tab_courses_tests-item-template">
-  <!-- Status -->
-  <td class="text-center">
-    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
-        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
-      </span>
-    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
-        <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
-      </span>
-    <% } else { %>
-      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
-        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
-      </span>
-    <% } %>
-  </td>
+
 
   <!-- Unidade -->
   <td >
     <%= model.name %>
-  </td>
-  <td class="text-center" width="10%">
-    <% if (_.has(model, 'rating')) { %>
-      <%
-      count = 0; 
-      for (var i=1; i <= model.rating; i++) {
-        print ('<i class="fa fa-star rating-star"></i>');
-        count++;
-      } 
-      if (count < model.rating) {
-        var diff = model.rating - count;
-        if (diff > 0) {
-          print ('<i class="fa fa-star-half-o rating-star"></i>');
-          count++;
-        }
-      }
-      if (count < 5) {
-        diff = 5 - count;
-        for (var i=1; i <= diff; i++) {
-          print ('<i class="fa fa-star-o rating-star"></i>');
-          count++;
-        } 
-      }
-      %>
-    <% } else { %>
-    <% } %>
   </td>
   <!-- Instructor -->
   <!-- <td width="15%" class="text-center"></td> -->
@@ -1179,6 +1141,52 @@ _before_init_functions.push(function() {
       <% } %>
     <% } %>
   </td>
+
+  <!-- Status -->
+  <td class="text-center hidden-xs">
+    <% if (_.has(model, 'progress') && model.progress.factor == 1) { %>
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Completed"}" data-placement="top" data-container="body">
+        <i class="fa fa-check-square-o concluido" aria-hidden="true"></i>
+      </span>
+    <% } else if (_.has(model, 'progress') && model.progress.factor > 0) { %>
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
+        <i class="fa fa-clock-o andamento" aria-hidden="true"></i>
+      </span>
+    <% } else { %>
+      <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Available"}" data-placement="top" data-container="body">
+        <i class="fa fa-square-o avalialbe" aria-hidden="true"></i>
+      </span>
+    <% } %>
+  </td>
+
+  <!-- Rating -->
+  <td class="text-center hidden-xs hidden-sm" width="10%">
+    <% if (_.has(model, 'rating')) { %>
+      <%
+      count = 0; 
+      for (var i=1; i <= model.rating; i++) {
+        print ('<i class="fa fa-star rating-star"></i>');
+        count++;
+      } 
+      if (count < model.rating) {
+        var diff = model.rating - count;
+        if (diff > 0) {
+          print ('<i class="fa fa-star-half-o rating-star"></i>');
+          count++;
+        }
+      }
+      if (count < 5) {
+        diff = 5 - count;
+        for (var i=1; i <= diff; i++) {
+          print ('<i class="fa fa-star-o rating-star"></i>');
+          count++;
+        } 
+      }
+      %>
+    <% } else { %>
+    <% } %>
+  </td>
+
   <!-- Exame -->
   <!-- <td>
     <span class="pendente"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
