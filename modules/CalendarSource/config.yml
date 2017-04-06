@@ -43,7 +43,7 @@ crud:
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Create a new calendar source
+        page_subtitle: New calendar source
     'edit/{id}':
       components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       #blocks: ["messages.eventtypes.allow"]
