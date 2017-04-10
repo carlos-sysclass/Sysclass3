@@ -6,7 +6,7 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Events
+      page_title: Calendar
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     manage:
@@ -15,14 +15,14 @@ crud:
       scripts: ["views.manage"]
       template: manage.tpl
       variables:
-        page_subtitle: Manage your events
+        page_subtitle: Manage your calendar
     "event-source/add":
       components: ["validation", "wysihtml5"]
       #blocks: ["messages.eventtypes.allow"]
       template: event-source.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Create a new Event Source
+        page_subtitle: New event tource
 models:
   me:
     class: Sysclass\Models\Calendar\Event

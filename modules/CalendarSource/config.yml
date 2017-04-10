@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Calendar Sources
+      page_title: Calendar Tags
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your calendar sources
+        page_subtitle: Create calendar color tags
       context:
         datatable_fields:
         - mData: id
@@ -43,14 +43,14 @@ crud:
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: New calendar source
+        page_subtitle: New calendar tag
     'edit/{id}':
       components: ["validation", "wysihtml5", "select2", "bootstrap-switch"]
       #blocks: ["messages.eventtypes.allow"]
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Edit a calendar source        
+        page_subtitle: Edit calendar tag        
 models:
   me:
     class: Sysclass\Models\Calendar\Sources
