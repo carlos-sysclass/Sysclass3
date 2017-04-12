@@ -41,7 +41,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
                 'communication' => array(
                     array(
                         'count' => $count,
-                        'text'  => $this->translate->translate('Events'),
+                        'text'  => $this->translate->translate('Calendar'),
                         'icon'  => 'fa fa-calendar',
                         'link'  => $this->getBasePath() . 'manage'
                     )
@@ -124,14 +124,14 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             array(
                 'icon'  => 'fa fa-calendar',
                 'link'  => $this->getBasePath() . "manage",
-                'text'  => $this->translate->translate("Calendar Events")
+                'text'  => $this->translate->translate("Calendar events")
             )
         );
 
         $request = $this->getMatchedUrl();
         switch($request) {
             case "event-source/add" : {
-                $breadcrumbs[] = array('text'   => $this->translate->translate("New Event Source"));
+                $breadcrumbs[] = array('text'   => $this->translate->translate("New event tag"));
                 break;
             }
             /*
@@ -154,7 +154,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
             'manage'  => array
             (
                 array(
-                    'text'      => $this->translate->translate('View calendar sources'),
+                    'text'      => $this->translate->translate('View calendar tags'),
                     'link'      => $this->loader->module('CalendarSource')->getBasePath() . "view",
                     'icon'      => 'fa fa-list'
                 ),
@@ -162,7 +162,7 @@ class CalendarModule extends \SysclassModule implements \ISummarizable, \IWidget
                     'separator' => true
                 ),
                 array(
-                    'text'  => $this->translate->translate('Add calendar source'),
+                    'text'  => $this->translate->translate('Add calendar tag'),
                     'link'  => $this->loader->module('CalendarSource')->getBasePath() . "add",
                     'icon'      => 'fa fa-plus-square'
                 ),
