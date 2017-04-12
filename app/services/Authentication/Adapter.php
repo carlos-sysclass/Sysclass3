@@ -239,10 +239,10 @@ class Adapter extends Component implements IAuthentication /* , EventsAwareInter
         return false;
     }
 
-    public function logout(User $user = null) {
+    public function logout($user = null) {
         $this->_eventsManager->fire("authentication:beforeLogout", $this);
 
-        if (is_null($user)) {
+        if (!$user) {
             $user = $this->checkAccess();
         }
 

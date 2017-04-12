@@ -357,7 +357,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
             //$testData['questions'] = $testModel->getQuestions()->toArray();
             $testQuestions = $testUnitModel->shuffleTestQuestions($executionId);
 
-
+            /*
             $testData['questions'] = array();
 
             foreach($testQuestions as $i => $question) {
@@ -372,6 +372,9 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
                 }
                 $testData['questions'][$i]['question'] = $questionModel->toArray();
             }
+            */
+
+            $testData['questions'] = $testUnitModel->shuffleTestQuestionOptions($executionId, $testQuestions);
 
             $testData['score'] = $testData['test']['score'] = $testUnitModel->calculateTestScore($testData);
 
@@ -518,14 +521,21 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
                 $testData['test'] = $testObject->getTest()->toArray();
 
-                $testQuestions = $testObject->shuffleTestQuestions($executionId);
-
+                $testQuestions = $testObject->shuffleTestQuestions($executionId, true);
+                /*
                 $testData['questions'] = array();
 
                 foreach($testQuestions as $i => $question) {
                     $testData['questions'][$i] = $question->toArray();
                     $testData['questions'][$i]['question'] = $question->getQuestion()->toArray();
                 }
+                //var_dump($testData['questions'][0]['question']);
+                */
+                $testData['questions'] = $testObject->shuffleTestQuestionOptions($executionId, $testQuestions, true);
+                //
+                //var_dump($testData['questions'][0]['question']);
+
+                //exit;
 
                 $testData['score'] = $testData['test']['score'] = $testModel->calculateTestScore($testData);
 
