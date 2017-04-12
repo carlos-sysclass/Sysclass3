@@ -13,4 +13,6 @@ class ExecutionQuestions extends Model
         $this->belongsTo("lesson_id", "Sysclass\\Models\\Courses\\Tests\\Test", "id",  array('alias' => 'Test'));
         $this->belongsTo("question_id", "Sysclass\\Models\\Courses\\Questions\\Question", "id",  array('alias' => 'Question'));
     }
+
+    
 }
