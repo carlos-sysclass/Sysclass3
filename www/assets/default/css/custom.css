@@ -598,11 +598,11 @@ h4.border-bottom {
 	width: auto;
 }
 .header .navbar-brand img {
-	height: 16px;
+	height: 24px;
 	margin-left: 0;
 }
 .page-boxed .header .navbar-brand img {
-	margin: 2px 0 0 0;
+	margin: -2px 0 0 0;
 }
 
 .navbar-header a {
