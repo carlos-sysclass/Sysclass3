@@ -46,7 +46,7 @@ class Lesson extends BaseUnit
 
     }
 
-    public function shuffleTestQuestions($executionId) {
+    public function shuffleTestQuestions($executionId, $readonly = false) {
         $test = $this->getTest();
         $questions = $this->getTestQuestions();
         $executionQuestions = $this->getExecutionQuestions(array(
@@ -57,10 +57,6 @@ class Lesson extends BaseUnit
         $result = array();
 
         $questions_size = $test->test_max_questions == 0 ? $questions->count() : $test->test_max_questions;
-
-        
-
-
 
         if ($executionQuestions->count() == 0) {
 
@@ -89,7 +85,7 @@ class Lesson extends BaseUnit
                 }
             }
             // SHUFFLE IF IT'S NEEDED
-            if ($test->randomize_questions) {
+            if (!$readonly && $test->randomize_questions) {
                 shuffle($result);
             }
 
@@ -110,23 +106,53 @@ class Lesson extends BaseUnit
                     }
                 }
             }
-            if ($test->randomize_questions) {
+            if (!$readonly && $test->randomize_questions) {
                 shuffle($result);
+
+                // SAVE THE NEW ORDER
+                
             }
         }
-        /*
-        foreach($result as $index => $testQuestion) {
-            if ($test->randomize_answers) {
-                $question = $testQuestion->getQuestion();
-                if ($question->type_id == "simple_choice" || $question->type_id == "multiple_choice") {
-                    //var_dump($question->toArray());
-                    $question->shuffleOptions();
-                    //var_dump($question->toArray());
-                }
-            }
-        }
-        */
         return $result;
+    }
+
+    public function shuffleTestQuestionOptions($executionId, $testQuestions, $readonly = false) {
+        $testDataQuestions = array();
+
+        $testModel = $this->getTest();
+
+        foreach($testQuestions as $i => $question) {
+            $testDataQuestions[$i] = $question->toArray();
+            $questionModel = $question->getQuestion();
+            // RANDOMIZE ANSWERS ??
+            if ($testModel->randomize_answers && (
+                $questionModel->type_id == "simple_choice" || 
+                $questionModel->type_id == "multiple_choice"
+            )) {
+                $executionQuestion = ExecutionQuestions::findFirst([
+                    'conditions' => 'execution_id = ?0 AND lesson_id = ?1 AND question_id = ?2',
+                    'bind' => [$executionId, $this->id, $question->question_id]
+                ]);
+
+                if ($executionQuestion) {
+                    if ($readonly) {
+                        $questionModel->options = json_decode($executionQuestion->options, true);
+                    } else {
+                        $questionModel->shuffleOptions();
+                        $executionQuestion->options = json_encode($questionModel->options);
+                        $executionQuestion->save();
+                    }
+                }
+
+            } else {
+
+            }
+            $testDataQuestions[$i]['question'] = $questionModel->toArray();
+
+        }
+
+        return $testDataQuestions;
+
     }
 
     public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
