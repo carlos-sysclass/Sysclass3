@@ -229,15 +229,23 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 
 				if (totalUnits > 1) {
+					$(".program-indicator span.singular").addClass("hidden");
+					$(".program-indicator span.plural").removeClass("hidden");
+					/*
 					$(".program-indicator span.singular").attr(
 						"style",
 						"display: none !important"
 					);
+
 					$(".program-indicator span.plural").attr(
 						"style",
 						"display: inline !important"
 					);
+					*/
 				} else {
+					$(".program-indicator span.singular").removeClass("hidden");
+					$(".program-indicator span.plural").addClass("hidden");
+					/*
 					$(".program-indicator span.singular").attr(
 						"style",
 						"display: inline !important"
@@ -247,6 +255,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						"style",
 						"display: none !important"
 					);
+					*/
 				}
 			},
 		});
@@ -405,6 +414,9 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
+					$(".course-indicator span.singular").addClass("hidden");
+					$(".course-indicator span.plural").removeClass("hidden");
+					/*
 					$(".course-indicator span.singular").attr(
 						"style",
 						"display: none !important"
@@ -413,7 +425,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						"style",
 						"display: inline !important"
 					);
+					*/
 				} else {
+					$(".course-indicator span.singular").removeClass("hidden");
+					$(".course-indicator span.plural").addClass("hidden");
+					/*
 					$(".course-indicator span.singular").attr(
 						"style",
 						"display: inline !important"
@@ -423,6 +439,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 						"style",
 						"display: none !important"
 					);
+					*/
 				}
 
 			},
@@ -678,24 +695,38 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 				}
 
 				if (totalUnits > 1) {
+					/*
 					$(".unit-indicator span.singular").attr(
 						"style",
 						"display: none !important"
 					);
+					*/
+					$(".unit-indicator span.singular").addClass("hidden");
+					/*
 					$(".unit-indicator span.plural").attr(
 						"style",
 						"display: inline !important"
 					);
-				} else {
-					$(".unit-indicator span.singular").attr(
-						"style",
-						"display: inline !important"
-					);
+					*/
+					$(".unit-indicator span.plural").removeClass("hidden");
 
+
+
+				} else {
+					/*
+					$(".unit-indicator span.singular").attr(
+						"style",
+						"display: inline !important"
+					);
+					*/
+					$(".unit-indicator span.singular").removeClass("hidden");
+					/*
 					$(".unit-indicator span.plural").attr(
 						"style",
 						"display: none !important"
 					);
+					*/
+					$(".unit-indicator span.plural").addClass("hidden");
 				}
 
 			},
