@@ -91,7 +91,7 @@
   .navbar-nav > li.dropdown > a span {
     white-space: nowrap;
     overflow: hidden;
-    margin-right: 20px;
+    margin-right: 5px;
     display: inline-block;
     width: 90%;
   }
