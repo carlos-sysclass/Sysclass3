@@ -6,14 +6,14 @@ crud:
   base_route:
     #base_scripts: ["scripts/crud.models.js"]
     variables:
-      page_title: Events
+      page_title: Calendar
   # BASE VALUES.. USED ON ALL ROUTES
   routes:
     view:
       components: ["select2","data-tables"]
       template: view.tpl
       variables:
-        page_subtitle: Manage your events
+        page_subtitle: Manage your calendar
       context:
         datatable_fields:
         - mData: id
