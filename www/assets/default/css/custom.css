@@ -2558,7 +2558,7 @@ h2.users-panel-username {
 }
 
 .progress-indicator .plural {
-  display: none;
+/*  display: none; */
 }
 
 .bx-wrapper {

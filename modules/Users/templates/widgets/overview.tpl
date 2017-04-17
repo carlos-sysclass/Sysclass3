@@ -31,7 +31,7 @@ _before_init_functions.push(function() {
 			</small>
 		</h2>
 
-		<span class="course_name visible-xs"></span>
+		<span class="course_name visible-xs text-center"></span>
 		
 		{if isset($notifications)}
 			{foreach $notifications as $key => $notif}
