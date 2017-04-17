@@ -136,6 +136,11 @@
       padding: 0 5px 7px;
   }
 
+  .portlet.calendar .mobile .fc-button.fc-prev-button, .portlet.calendar .mobile .fc-button.fc-next-button {
+    color: #fff;
+    background: transparent;
+
+  }
 
 
 }
