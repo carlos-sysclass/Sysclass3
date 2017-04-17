@@ -56,4 +56,4 @@ crud:
       template: form.tpl
       #scripts: ["models.users", "views.users.add"]
       variables:
-        page_subtitle: Config and edit user info
+        page_subtitle: Edit user info

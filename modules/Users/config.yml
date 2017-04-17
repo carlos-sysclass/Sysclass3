@@ -65,7 +65,7 @@ crud:
       template: form.tpl
       scripts: ["views.form.users"]
       variables:
-        page_subtitle: Config and edit user info
+        page_subtitle: Edit user info
     profile:
       components: ["select2","validation","datepicker","pwstrength", "jquery-mask", "jquery-jcrop"]
       blocks: ["address.book"]
