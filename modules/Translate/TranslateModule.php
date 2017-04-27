@@ -549,13 +549,6 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
                 'edited'        => 1
             ]);
 
-            var_dump([
-                'token'         => $data['token'],
-                'text'          => $data['text'],
-                'language_code' => $data['dstlang'],
-                'edited'        => 1
-            ]);
-
             $status = $tokensModel->save();
 
             if ($status) {
