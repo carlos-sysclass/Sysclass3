@@ -533,20 +533,34 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         $langCodes = $this->model("translate")->getDisponibleLanguagesCodes();
 
         if (in_array($data['language_id'], $langCodes)) {
-            //var_dump($data);
-            $tokensModel = new Tokens();
+            $tokensModel = Tokens::findFirst([
+                'conditions' => 'language_code = ?0 AND token = ?1',
+                'bind' => [$data['dstlang'], $data['token']]
+            ]);
 
-            $tokensModel->assign(array(
+            if (!$tokensModel) {
+                $tokensModel = new Tokens();
+            }
+
+            $tokensModel->assign([
                 'token'         => $data['token'],
                 'text'          => $data['text'],
                 'language_code' => $data['dstlang'],
                 'edited'        => 1
-            ));
+            ]);
 
-            $tokensModel->save();
+            var_dump([
+                'token'         => $data['token'],
+                'text'          => $data['text'],
+                'language_code' => $data['dstlang'],
+                'edited'        => 1
+            ]);
 
-            return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
+            $status = $tokensModel->save();
 
+            if ($status) {
+                return $this->createAdviseResponse($this->translate->translate("Translation saved."), "success");
+            }
         }
         return $this->invalidRequestError();
     }
