@@ -18,6 +18,7 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
     // SINGLETON PATTERN
     private static $default = null;
     private static $user = null;
+    
     public static function getDefault(User $user = null) {
         if (is_null(self::$default)) {
             self::$default = new self();
@@ -44,7 +45,7 @@ class Adapter extends \Phalcon\Acl\Adapter\Memory
         }
         
         $roles = $user->getUserRoles();
-        // TODO: Include all roles from groups!!!!
+
         foreach($roles as $role) {
             $this->addPermission($role);
         }

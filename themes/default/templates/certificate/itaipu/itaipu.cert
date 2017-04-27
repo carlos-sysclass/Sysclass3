@@ -63,7 +63,7 @@
                         <span>{{ user.name }} {{ user.surname }}</span><br />
                         Concluiu Satisfatoriamente o módulo<br />
                         <span>Nome do Módulo</span>, do Curso <span>{{ course.name }}</span>,<br />
-                        na plataforma de Ensino à Distância do Programa de Desenvolvimento<br /> de Fornecedores - DESFOR.
+                        na plataforma de Ensino à Distância do Programa de Relacionamento<br /> de Fornecedores - DESFOR.
                         <br />
                         <br />
                         Curitiba, <span>Data</span>.
