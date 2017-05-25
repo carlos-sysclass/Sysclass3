@@ -48,7 +48,7 @@
 	{/if}	
 
 	{if $social.street && $social.street_number}
-		{$text=translateToken value="View Map"}
+		{translateToken value="View Map" assign="text"}
 
 		{$variables[$index].address=['link' => "https://www.google.com.br/maps/place/{$social.street}, {$social.street_number} - {$social.city}",'icon'=>'fa-map','text'=>$text]}
 
