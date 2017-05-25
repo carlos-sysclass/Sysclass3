@@ -1329,7 +1329,7 @@ _before_init_functions.push(function() {
     </div>
     <div class="row rating-stars-message hidden">
       <div class="col-md-12" align="center">
-        <h4>Thank You!</h4>
+        <h4>{TranslateToken value="Thank You!"}</h4>
         
       </div>
     </div>

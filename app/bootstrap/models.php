@@ -24,7 +24,7 @@ $di->set('db', function () use ($environment, $eventsManager) {
         exit;
     }
 });
-
+/*
 if (APP_TYPE === "CONSOLE") {
     $logger = new FileLogger(REAL_PATH . "/logs/database-tasks.log");
 } elseif (APP_TYPE === "WEBSOCKET") {
@@ -32,14 +32,16 @@ if (APP_TYPE === "CONSOLE") {
 } else {
     $logger = new FileLogger(REAL_PATH . "/logs/database.log");
 }
-
+*/
 // Listen all the database events
+// 
+/*
 $eventsManager->attach('db', function ($event, $connection) use ($logger) {
     if ($event->getType() == 'beforeQuery') {
         $logger->log($connection->getSQLStatement(), Logger::INFO);
     }
 });
-
+*/
 
 
 $di->setShared('transactions', function () {
@@ -74,8 +76,6 @@ $di->set('modelsCache', function () {
     ]);
 
     return $cache;
-
-    return $cache;
 });
 
 $di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
@@ -102,8 +102,8 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
         return $cache;
     });
 } else {
-    $di->set('cache', function() {
-
+    $di->set('cache', function() use ($environment, $di) {
+        $environment_name = $di->get("sysconfig")->deploy->environment;
         //Cache data for 1 hour
         $frontCache = new \Phalcon\Cache\Frontend\Data(array(
             'lifetime' => 3600
@@ -117,7 +117,7 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
         ]);
 
         return $cache;
-    });
+    }, true);
 }
 
 $di->set('mongo', function () use ($environment, $di) {
