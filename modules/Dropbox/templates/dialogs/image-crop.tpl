@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{translateToken value="Close"}">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">
@@ -30,8 +30,8 @@
                 <img src="" class="crop-container" />
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default save-action" data-dismiss="modal">Save</button>
-                <button type="button" class="btn btn-default close-action" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default save-action" data-dismiss="modal">{translateToken value="Save"}</button>
+                <button type="button" class="btn btn-default close-action" data-dismiss="modal">{translateToken value="Close"}</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
