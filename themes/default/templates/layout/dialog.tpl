@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <button type="button" class="close" data-dismiss="modal" aria-label="{translateToken value="Close"}">
     </button>
     {block name="dialog-title"}
     <h4 class="modal-title">

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button aria-label="Close" data-dismiss="modal" class="btn btn-link btn-xs pull-right" type="button">
+                <button aria-label="{translateToken value="Close"}" data-dismiss="modal" class="btn btn-link btn-xs pull-right" type="button">
                     <i class="fa fa-times"></i>
                 </button>
                 <h4 class="modal-title info-header">

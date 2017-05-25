@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form id="form-role" role="form" class="form-validate" method="post" action="">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{translateToken value="Close"}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">

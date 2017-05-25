@@ -3,7 +3,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <div class="container">
-            <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-btn" data-dismiss="modal" aria-label="{translateToken value="Close"}"><span aria-hidden="true">&times;</span></button>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown"> 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a> 
@@ -31,7 +31,7 @@
             <div class="row">
               <div class="col-md-12" id="unit-material-container">
                   <div role="alert" class="alert alert-dismissible">
-                    <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                    <button aria-label="{translateToken value="Close"}" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
                     <!-- TAGS STATUS DO SISTEMA -->
                     <span class="pendente-tag">
                       {translateToken value="Not available"}

@@ -8,7 +8,7 @@
 <!--
 <script type="text/template" id="tests_info_modal-template">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="{translateToken value="Close"}">
         </button>
         <h4 class="modal-title">
             <i class="fa fa-list-ol"></i>
