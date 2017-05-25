@@ -85,13 +85,13 @@
         </div>
         <div id="message-body-container">
           <div class="modal-header">
-              <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="Close" data-original-title="{translateToken value='Forward'}">
+              <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="{translateToken value="Forward"}" data-original-title="{translateToken value='Forward'}">
                   <i class="fa fa-mail-forward"></i>
               </button>
-              <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="Close" data-original-title="{translateToken value='Reply'}">
+              <button type="button" class="btn btn-xs pull-right btn-link reply-action tooltips" aria-label="{translateToken value="Reply"}" data-original-title="{translateToken value='Reply'}">
                   <i class="fa fa-mail-reply"></i>
               </button>
-              <button type="button" class="btn btn-xs pull-right btn-danger close-action tooltips" aria-label="Close" data-original-title="{translateToken value='Back'}">
+              <button type="button" class="btn btn-xs pull-right btn-danger close-action tooltips" aria-label="{translateToken value="Back"}" data-original-title="{translateToken value='Back'}">
                   <i class="fa fa-arrow-left"></i>
               </button>
               <h4 class="modal-title">
