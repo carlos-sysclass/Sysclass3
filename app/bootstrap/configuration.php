@@ -178,7 +178,7 @@ $di->setShared('environment', function() use ($di) {
 	$config['http/fqdn'] = ($config['http/secure'] ? "https://" : "http://") . $config['http_host'];
 
 	$config['bing/client_id'] = 'SysClass';
-	$config['bing/client_secret'] = 'vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=';
+	$config['bing/client_secret'] = 'fae569663a28464fbc82cfc96701a3e6';
 
 	$config['resources/components'] = array(
 		'videojs' => array(

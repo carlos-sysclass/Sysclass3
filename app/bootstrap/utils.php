@@ -75,11 +75,18 @@ $di->set('arrayHelper', function () {
     return $array;
 }, true);
 
-$session = new Session(array('uniqueId' => 'SYSCLASS'));
-if (!$session->isStarted()) {
-    $session->start();
-}
-$di->setShared('session', $session);
+
+//$di->setShared('session', $session);
+
+$di->set('session', function () {
+    $session = new Session(array('uniqueId' => 'SYSCLASS'));
+
+    if (!$session->isStarted()) {
+        $session->start();
+    }
+    
+    return $session;
+}, true);
 
 $di->set('yaml', function () {
     $parser = new Sysclass\Services\Utils\YmlParser();

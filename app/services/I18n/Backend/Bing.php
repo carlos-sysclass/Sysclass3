@@ -1,19 +1,25 @@
 <?php
 namespace Sysclass\Services\I18n\Backend;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Mvc\User\Component,
+    Phalcon\Logger,
+    Phalcon\Logger\Adapter\File as FileLogger;
 
 class Bing extends Component {
 
     protected $langMap      = array();
     protected $clientID     = null;
     protected $clientSecret = null;
+    protected $_responseToken = null;
 
     public function __construct() {
         //$plicolib = PlicoLib::instance();
         //$depinject = \Phalcon\DI::GetDefault();
         //$environment = $depinject->get("environment");
         $this->credentials($this->environment['bing/client_id'], $this->environment['bing/client_secret']);
+
+        $this->logger = new FileLogger(REAL_PATH . "/logs/ms-translator.log");
+
         /*
         $this->langMap = array(
             'us'    => 'en',
@@ -40,56 +46,71 @@ class Bing extends Component {
      *
      * @return string.
      */
-    public function token($clientID = null, $clientSecret = null, $grantType = "client_credentials", $scopeUrl = "http://api.microsofttranslator.com", $authUrl = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/"){
-        try {
-            $clientID = is_null($clientID) ? $this->clientID : $clientID;
-            $clientSecret = is_null($clientSecret) ? $this->clientSecret : $clientSecret;
-            //Initialize the Curl Session.
-            $ch = curl_init();
-            //Create the request Array.
-            $paramArr = array (
-                 'grant_type'    => $grantType,
-                 'scope'         => $scopeUrl,
-                 'client_id'     => $clientID,
-                 'client_secret' => $clientSecret
-            );
-            //Create an Http Query.//
-            $paramArr = http_build_query($paramArr);
-            //Set the Curl URL.
-            curl_setopt($ch, CURLOPT_URL, $authUrl);
-            //Set HTTP POST Request.
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            //Set data to POST in HTTP "POST" Operation.
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $paramArr);
-            //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
-            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            //Execute the  cURL session.
-            $strResponse = curl_exec($ch);
-            //Get the Error Code returned by Curl.
-            $curlErrno = curl_errno($ch);
+    public function token($clientID = null, $clientSecret = null, $grantType = "client_credentials", $scopeUrl = "http://api.microsofttranslator.com", $authUrl = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken"){
 
-            if($curlErrno){
-                $curlError = curl_error($ch);
-                throw new \Exception($curlError);
+
+        try {
+            if (is_null($this->_responseToken)) {
+                $clientID = is_null($clientID) ? $this->clientID : $clientID;
+                $clientSecret = is_null($clientSecret) ? $this->clientSecret : $clientSecret;
+                //Initialize the Curl Session.
+                $ch = curl_init();
+                //Create the request Array.
+                $paramArr = array (
+                     //'grant_type'    => $grantType,
+                     //'scope'         => $scopeUrl,
+                     //'client_id'     => $clientID,
+                     'Subscription-Key' => $clientSecret
+                );
+                //Create an Http Query.//
+                $paramArr = http_build_query($paramArr);
+                //Set the Curl URL.
+                curl_setopt($ch, CURLOPT_URL, $authUrl);
+                //Set HTTP POST Request.
+                curl_setopt($ch, CURLOPT_POST, TRUE);
+                //Set data to POST in HTTP "POST" Operation.
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "");
+                //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
+                curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Ocp-Apim-Subscription-Key: ' . $clientSecret
+                ]);
+                //Execute the  cURL session.
+                $strResponse = curl_exec($ch);
+                //Get the Error Code returned by Curl.
+                $curlErrno = curl_errno($ch);
+
+                if($curlErrno){
+                    $curlError = curl_error($ch);
+                    throw new \Exception($curlError);
+                }
+                //Close the Curl Session.
+                curl_close($ch);
+                //Decode the returned JSON string.
+                //
+                $this->logger->log("POST {$authUrl}", Logger::INFO);
+                /*
+                $objResponse = json_decode($strResponse);
+                if ($objResponse->error){
+                    throw new \Exception($objResponse->error_description);
+                }
+                //$this->_responseToken = $objResponse;
+                */
+                $this->_responseToken = $strResponse;
+                return $this;
+                //return ->access_token;
+            } else {
+                return $this;
             }
-            //Close the Curl Session.
-            curl_close($ch);
-            //Decode the returned JSON string.
-            $objResponse = json_decode($strResponse);
-            if ($objResponse->error){
-                throw new \Exception($objResponse->error_description);
-            }
-            $this->_responseToken = $objResponse;
-            return $this;
-            //return ->access_token;
         } catch (\Exception $e) {
             return $this;
         }
     }
     public function getToken() {
-        return $this->_responseToken->access_token;
+        return $this->_responseToken;
     }
 
     public function translateText($text, $from, $to) {
@@ -98,7 +119,7 @@ class Bing extends Component {
         if ($accessToken) {
 
             $url = sprintf(
-                "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=%s&from=%s&to=%s&appId=&contentType=text/html",
+                "https://api.microsofttranslator.com/V2/Http.svc/Translate?text=%s&from=%s&to=%s&appId=&contentType=text/html",
                 urlencode($text), $from, $to
             );
 
@@ -121,10 +142,14 @@ class Bing extends Component {
             //Execute the  cURL session.
             $curlResponse = curl_exec($ch);
 
+
             $xmlObj = simplexml_load_string($curlResponse);
             foreach((array)$xmlObj[0] as $val){
                 $translatedStr = $val;
             }
+
+            $this->logger->log("GET {$url}", Logger::INFO);
+
             //Get the Error Code returned by Curl.
             $curlErrno = curl_errno($ch);
             if ($curlErrno) {
@@ -141,6 +166,8 @@ class Bing extends Component {
 
     public function translateArray($texts, $from, $to) {
         $accessToken = $this->token()->getToken();
+
+        var_dump($accessToken);
 
         if(count($texts) > 0) {
 
@@ -173,7 +200,6 @@ class Bing extends Component {
                 curl_setopt ($ch, CURLOPT_VERBOSE, TRUE);
                 //curl_setopt ($ch, CURLOPT_HEADER, 1);
 
-                //exit;
                 //Set HTTP POST Request.
                 curl_setopt($ch, CURLOPT_POST, TRUE);
                 //Set data to POST in HTTP "POST" Operation.
