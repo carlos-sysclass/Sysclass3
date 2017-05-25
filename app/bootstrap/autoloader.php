@@ -76,7 +76,7 @@ $loader-> registerClasses(array(
 $loader->register();
 
 // LOAD THE COMPOSER AUTOLOADER
-include __DIR__ . '/../../vendor/autoload.php';
+//include __DIR__ . '/../../vendor/autoload.php';
 
 
 $plico = PlicoLib::instance(__DIR__ . "/../");
