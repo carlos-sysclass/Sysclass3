@@ -4,6 +4,7 @@ namespace Sysclass\Controllers;
 use Phalcon\DI,
 	Phalcon\Mvc\Dispatcher,
 	Sysclass\Models\Users\User,
+	Sysclass\Models\Users\UserAttrs,
 	Sysclass\Models\Leads\Lead,
 	Sysclass\Models\Content\Program as Course,
 	Sysclass\Models\Enrollments\CourseUsers as Enrollment,
@@ -248,6 +249,24 @@ class ApiController extends \AbstractSysclassController
 
 	 					if ($user) {
 	 						$user->refresh();
+
+	 						// REMOVE ALL POST DATA ALREADY ON USER MODEL
+	 						$attrs = [];
+	 						foreach($postdata as $key => $value) {
+	 							if (!$user->hasAttribute($key)) {
+	 								$attrs[$key] = $value;
+								}
+	 						}
+							unset($attrs['_package_id']);
+							foreach($attrs as $key => $value) {
+								$userAttrs = new UserAttrs();
+								$userAttrs->user_id = $user->id;
+								$userAttrs->field_name = $key;
+								$userAttrs->field_value = $value;
+								$userAttrs->save();
+							}
+
+
 	 						$messages[] = $this->createResponse(200, "User created.", "success");
 
 	 						$data['user'] = array(
