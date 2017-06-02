@@ -1,4 +1,4 @@
-{% extends "layout/default.email" %}
+{% extends "layout/local/default.email" %}
 {% block content %}
 <table class="row note">
 <tr>

@@ -395,7 +395,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     }
 
                     $status = $this->mail->send(
-                        "andre@kucaniz.com", 
+                        "carlos@sysclass.com", 
                         "A new enrollment has been made in lucent website.",
                         $template,
                         true,
