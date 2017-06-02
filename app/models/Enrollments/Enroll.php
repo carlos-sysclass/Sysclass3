@@ -109,7 +109,7 @@ class Enroll extends Model
     public function isAllowed() {
         // CHECK IF THE ENROLL HAS BEEN EXPIRED 
         if ($this->end_date != 0) {
-            $endDate = \DateTime::createFromFormat("U", $this->end_date);
+            $endDate = \DateTime::createFromFormat("Y-m-d", $this->end_date);
             $today = new \DateTime("now");
             if ($endDate < $today) {
                 return array(

@@ -236,14 +236,15 @@ class ApiController extends \AbstractSysclassController
 			if (is_null($postdata)) {
 				$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
 			} else {
-
+				$this->db->begin();
+				
 				$enroll = Enroll::findFirstByIdentifier($postdata['_package_id']);
 				
 				if($enroll) {
 	 				$check = $enroll->isAllowed();
 	 				if (!$check['error']) {
 	 					// CREATE TRANSACTION
-	 					$this->db->begin();
+	 					
 
 						$user = $this->authentication->signup($postdata);
 
