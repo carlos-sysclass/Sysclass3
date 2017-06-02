@@ -9,6 +9,10 @@ class Model extends \Phalcon\Mvc\Model
     protected static $_translate = false;
     protected static $_translateFields = [];
 
+    public function hasAttribute($attribute) {
+        return $this->modelsMetadata->hasAttribute($this, $attribute);
+    }
+
     public function translate() {
         static::$_translate = true;
 
