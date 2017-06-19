@@ -7,17 +7,17 @@
             Hello {{ receiver.name }} {{ receiver.surname }}
             </h4>
             <p>
-            A new enrollment has been done. The new user info can be seen below.
+            A new enrollment has been done.
             </p>
-            <p><strong>Name:</strong>{{ student.name}} {{ student.surname}} </p>
-            <p><strong>Email:</strong>{{ student.email}}</p>
-            <p><strong>Birthday:</strong>{{ student.birthday}}</p>
-            <p><strong>Street:</strong>{{ student.street}}</p>
-            <p><strong>City:</strong>{{ student.city}}</p>
-            <p><strong>State:</strong>{{ student.state}}</p>
-            <p><strong>Postal Code:</strong>{{ student.postal_code}}</p>
-            <p><strong>Country:</strong>{{ student.country}}</p>
-            <p><strong>Phone:</strong>{{ student.phone}}</p>
+            <p><strong>Name: </strong>{{ student.name}} {{ student.surname}} </p>
+            <p><strong>Email: </strong>{{ student.email}}</p>
+            <p><strong>Birthday: </strong>{{ student.birthday}}</p>
+            <p><strong>Street: </strong>{{ student.street}}</p>
+            <p><strong>City: </strong>{{ student.city}}</p>
+            <p><strong>State: </strong>{{ student.state}}</p>
+            <p><strong>Postal Code: </strong>{{ student.postal_code}}</p>
+            <p><strong>Country: </strong>{{ student.country}}</p>
+            <p><strong>Phone: </strong>{{ student.phone}}</p>
             
             <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;"></span>
 
