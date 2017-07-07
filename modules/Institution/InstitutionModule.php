@@ -10,7 +10,7 @@ namespace Sysclass\Modules\Institution;
  */
 use Sysclass\Models\Organizations\Organization,
     Sysclass\Services\I18n\Timezones,
-    Sysclass\Models\I18n\CountriesStatic as Countries,
+    Sysclass\Models\I18n\Countries as Countries,
     Sysclass\Models\I18n\Language;
 /**
  * @RoutePrefix("/module/institution")
@@ -93,9 +93,13 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             $countriesRS = Countries::find();
             $countries = $countriesRS->toArray();
 
+            $indexes = array_column($countries, "code");
+            //exit;
+
             foreach($data['details'] as $index => $details) {
-                if (array_key_exists($details['country'], $countries)) {
-                    $data['details'][$index]['country_name'] = $countries[$details['country']];
+                if ($countryIndex = array_search($details['country'], $indexes)) {
+                    $data['details'][$index]['country_name'] = $countries[$countryIndex]['name'];
+                    $data['details'][$index]['local_name'] = $countries[$countryIndex]['local_name'];
                     $data['details'][$index]['country_flag'] = Countries::getFlagUrl($details['country']);
                 }
             }
