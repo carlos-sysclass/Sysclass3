@@ -39,7 +39,7 @@ $loader->registerNamespaces(array(
     "Plico" => __DIR__ . "/../plico/", // TODO: Move code to plicolib itself
     "Sysclass" => __DIR__ . "/../sysclass/",
     "Phalcon" => __DIR__ . '/../../vendor/phalcon/incubator/Library/Phalcon/',
-    'Phalcon\Script' => __DIR__ . '/../../vendor/phalcon/devtools/scripts/Phalcon/Script',
+    "Phalcon\Script" => __DIR__ . '/../../vendor/phalcon/devtools/scripts/Phalcon/Script',
     "Dompdf" => __DIR__ . '/../../vendor/dompdf/dompdf/src/',
     "FontLib" => __DIR__ . '/../../vendor/phenx/php-font-lib/src/FontLib/',
     //'Sabre\DAV' => __DIR__ . '/../../vendor/sabre/dav/lib/DAV/',
