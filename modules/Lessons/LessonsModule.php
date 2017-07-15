@@ -795,8 +795,9 @@ class LessonsModule extends \SysclassModule implements \ILinkable, \IBreadcrumba
                     if ($filestream) {
                         $parsed = $this->parseWebVTTFile($filestream);
 
+                        $translated = $this->translate->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
 
-                        $translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
+                        //$translated = $this->model("translate")->translateTokens($http_data['from'], $http_data['to'], $parsed, "text");
 
                         $translatedFilestream = $this->makeWebVTTFile($translated, array("index", "from", "to", "translated"));
 
