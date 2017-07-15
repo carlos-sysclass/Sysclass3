@@ -3,7 +3,8 @@ namespace Sysclass\Services\I18n\Backend;
 
 use Phalcon\Mvc\User\Component,
     Phalcon\Logger,
-    Phalcon\Logger\Adapter\File as FileLogger;
+    Phalcon\Logger\Adapter\File as FileLogger,
+    Locale;
 
 class Bing extends Component {
 
@@ -116,6 +117,10 @@ class Bing extends Component {
     public function translateText($text, $from, $to) {
         $accessToken = $this->token()->getToken();
 
+        $from = Locale::getPrimaryLanguage($from);
+        $to = Locale::getPrimaryLanguage($to);
+
+
         if ($accessToken) {
 
             $url = sprintf(
@@ -167,7 +172,8 @@ class Bing extends Component {
     public function translateArray($texts, $from, $to) {
         $accessToken = $this->token()->getToken();
 
-        var_dump($accessToken);
+        $from = Locale::getPrimaryLanguage($from);
+        $to = Locale::getPrimaryLanguage($to);
 
         if(count($texts) > 0) {
 
@@ -179,6 +185,7 @@ class Bing extends Component {
                     break;
                 }
             }
+
 
             $url = "http://api.microsofttranslator.com/v2/Http.svc/TranslateArray";
 
