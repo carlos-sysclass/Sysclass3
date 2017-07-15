@@ -239,11 +239,22 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
                 if ($certificate->save()) {
 
                     if ($notify) {
+
+
+                        $language = $user->getLanguage();
+                        if ($language) {
+                            $this->translate->setSource($language->code);
+
+                            $locale = $language->code . "_" . $language->country_code . "." . "utf8";
+
+                            setlocale(LC_TIME, $locale);
+                        }
+
                         $this->notification->createForUser(
                             $user,
 
                             //$this->translate->translate('You have a certificate available for module %s', array($module->name)),
-                            sprintf('You have a new Certificate:  %s',$module->name),
+                            sprintf($this->translate->translate('You have a new Certificate: %s'),$module->name),
 
 
                             'info',

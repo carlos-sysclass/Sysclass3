@@ -90,7 +90,12 @@
 			<!-- <div class="col-lg-6 col-md-6 col-xs-6"> -->
 				<h5 class="organization-country-title">
 					<img class="page-lock-img organization-country-image" src="{$socials[$index].country_flag}" alt="" style="height: 15px;">
-					{$socials[$index].country_name}
+					{if empty($socials[$index].local_name)}
+						{$socials[$index].country_name}
+					{else}
+						{$socials[$index].local_name}
+					{/if}
+
 				</h5>
 
 				{foreach $info as $variable}
