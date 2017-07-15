@@ -263,7 +263,11 @@ class ApiController extends \AbstractSysclassController
 								$userAttrs = new UserAttrs();
 								$userAttrs->user_id = $user->id;
 								$userAttrs->field_name = $key;
-								$userAttrs->field_value = $value;
+								if (is_array($value)) {
+									$userAttrs->field_value = json_encode($value);
+								} else {
+									$userAttrs->field_value = $value;
+								}
 								$userAttrs->save();
 							}
 

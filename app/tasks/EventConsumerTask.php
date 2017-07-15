@@ -41,12 +41,8 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                 }
 
 
-                echo $template;
-                var_dump($user->toArray());
-
                 $status = $this->mail->send(
-                    //$user->email, 
-                    "carlos@sysclass.com",
+                    $user->email, 
                     $this->configuration->get("signup_email_subject"),
                     $template,
                     true,
@@ -56,8 +52,6 @@ class EventConsumerTask extends \Phalcon\CLI\Task
                             "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/confirm/" . $user->reset_hash
                     )
                 );
-
-                exit;
             }
             $this->messagebus->unqueue($event->_id);
 
