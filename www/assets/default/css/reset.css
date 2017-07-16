@@ -889,7 +889,7 @@ margin:0 4px 0 0;
   height: 100vh !important;
 }
 
-.content-container .popupcontent-fullscreen .popupcontent-pip .sec-video {
+.content-container .popupcontent-fullscreen .popupcontent-pip .sec-video, .content-container .popupcontent.popup-minimized.popupcontent-fullscreen .popupcontent-pip .sec-video {
   width: 16vw !important;
   height: 9vw !important;
 }
