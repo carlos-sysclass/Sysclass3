@@ -108,8 +108,8 @@
 					</p>
 				</div>
 			{/if}
--->					
-		</form>
+		</form>-->					
+
 		<!-- END LOGIN FORM -->
 
 		<!-- BEGIN FORGOT PASSWORD FORM -->
