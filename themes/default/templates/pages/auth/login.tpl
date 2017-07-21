@@ -90,8 +90,9 @@
 					{/if}
 				</ul>
 			</div>
--->			{/if}
-			{if $T_CONFIGURATION.signup_enable}
+-->			
+<!--		 	 {/if}
+			 {if $T_CONFIGURATION.signup_enable}
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
@@ -107,6 +108,7 @@
 					</p>
 				</div>
 			{/if}
+-->					
 		</form>
 		<!-- END LOGIN FORM -->
 
