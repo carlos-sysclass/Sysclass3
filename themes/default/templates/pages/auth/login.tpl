@@ -107,8 +107,8 @@
 						<a href="https://{$T_SYSCONFIG.deploy.environment}.sysclass.com/contact" id="register-btn" >{translateToken value="Please, click here"}</a>
 					</p>
 				</div>
-			{/if}
-		</form>-->					
+			{/if}-->
+		</form>					
 
 		<!-- END LOGIN FORM -->
 
