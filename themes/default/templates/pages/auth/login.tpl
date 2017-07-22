@@ -90,8 +90,8 @@
 					{/if}
 				</ul>
 			</div>
--->			
-<!--		 	 {/if}
+<!--      
+		    {/if}
 			 {if $T_CONFIGURATION.signup_enable}
 				<div class="create-account">
 					<p>
