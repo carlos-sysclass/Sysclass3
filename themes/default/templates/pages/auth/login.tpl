@@ -96,7 +96,7 @@
 				<div class="create-account">
 					<p>
 						{translateToken value="Don't have an account?"}
-						<a href="https://signup-{$T_SYSCONFIG.deploy.environment}.sysclass.com/{$T_DEFAULT_ENROLL_LINK}" id="register-btn" >{translateToken value="Click to create yours now."}</a>
+						<a href="https://lucent.institute/enroll.php" >{translateToken value="Click to create yours now."}</a>
 					</p>
 				</div>
 			{/if}
