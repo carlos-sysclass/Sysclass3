@@ -433,8 +433,6 @@ class Bing extends Component {
 
         $langCodes = $this->getTranslations();
 
-        $locale = is_null($locale) ? $this->model("translate")->getUserLanguageCode() : $locale;
-
         if (!in_array($locale, $langCodes)) {
             $locale = $this->model("translate")->getSystemLanguageCode();
         }
