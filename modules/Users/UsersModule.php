@@ -372,6 +372,59 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
                     'status' => false,
                     'unqueue' => true
                 );
+                break;
+            }
+            case "inform-administrator" : {
+                // SEND EMAIL PASSWORD RESET 
+                $data = $event->data;
+
+                $user = User::findFirstById($data['id']);
+               // $program = Program::findFirstById($data['course_id']);
+
+                //$receiver = $program->getCoordinator();
+
+                //if ($receiver) {
+                //
+                //
+                //
+                
+                    $template = "email/" . $this->sysconfig->deploy->environment . "/user-info.email";
+                    
+                    if (!$this->view->exists($template)) {
+                        $template = "email/user-info.email";
+                    }
+
+                    $status = $this->mail->send(
+                        "carlos@sysclass.com", 
+                        "A new enrollment has been made in lucent website.",
+                        $template,
+                        true,
+                        array(
+                            'student' => $user,
+                            'enroll_view_link' => "http://" . $this->sysconfig->deploy->environment . '.sysclass.com/module/enroll/edit/' . $data['enroll_id'] . '#tab_1_3'
+                        )
+                    );
+                    /*
+                    $this->notification->createForUser(
+                        $receiver,
+                        'An user enrolled a program.',
+                        'activity',
+                        array(
+                            'text' => "View",
+                            'link' => $this->getBasePath() . "edit/" . $data['enroll_id'] . '#tab_1_3'
+                        ),
+                        false,
+                        "ENROLL:" . "E" . $data['enroll_id'] . "U" . $user->id . "P" . $program->id
+                    );
+                    */
+                    return array(
+                        'status' => true
+                    );
+                //}
+                return array(
+                    'status' => false,
+                    'unqueue' => true
+                );                
             }
         }
     }

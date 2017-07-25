@@ -27,7 +27,6 @@ class EventConsumerTask extends \Phalcon\CLI\Task
             $user = User::findFirstById($user_id);
 
             // CHECK IF THE USER IS PENDING, GENERATE THE LINK, AND SEND TO USER
-            // 
             if ($user && ($user->pending == "1" || !$this->configuration->get("signup_must_approve"))) {
                 $user->generateConfirmHash();
                 $user->save();
@@ -44,10 +43,11 @@ class EventConsumerTask extends \Phalcon\CLI\Task
 
                 $status = $this->mail->send(
                     $user->email, 
-                    "Confirmação de Matrícula Projeto Itaipu Envolve",
+                    $this->configuration->get("signup_email_subject"),
                     $template,
                     true,
                     array(
+                        'student' => $user,
                         'activation_link' => 
                             "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/confirm/" . $user->reset_hash
                     )
@@ -64,7 +64,7 @@ class EventConsumerTask extends \Phalcon\CLI\Task
         $result = $this->messagebus->processEvents();
 
         foreach($result['messages'] as $message) {
-            fwrite(STDERR, Color::{$message['type']}($message['message']));    
+            fwrite(STDERR, Color::{$message['type']}($message['message']));
         }
     }
 

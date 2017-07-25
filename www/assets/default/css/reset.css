@@ -889,7 +889,7 @@ margin:0 4px 0 0;
   height: 100vh !important;
 }
 
-.content-container .popupcontent-fullscreen .popupcontent-pip .sec-video {
+.content-container .popupcontent-fullscreen .popupcontent-pip .sec-video, .content-container .popupcontent.popup-minimized.popupcontent-fullscreen .popupcontent-pip .sec-video {
   width: 16vw !important;
   height: 9vw !important;
 }
@@ -912,10 +912,10 @@ margin:0 4px 0 0;
 .content-container .pop-out .popupcontent-fullscreen {
   width: 100vw !important;
   height: 100vh !important;
-  top: 0;
-  left:0;
-  bottom: 0;
-  right: 0;
+  top: 0 !important;
+  left:0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
   position: fixed;
 }
 

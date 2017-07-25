@@ -5,7 +5,8 @@ use
     Phalcon\Mvc\User\Component,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Models\I18n\Language,
-    Sysclass\Models\I18n\Tokens;
+    Sysclass\Models\I18n\Tokens,
+    Locale;
 
 class Translator extends Component 
 {
@@ -154,8 +155,6 @@ class Translator extends Component
     }
     /*
     public function __invoke($a, $b, $c) {
-        var_dump($a, $b, $c);
-        var_dump(func_get_args);
         exit;
     }
     */
@@ -289,8 +288,13 @@ class Translator extends Component
         */
 
         $langCodes = $this->getDisponibleLanguagesCodes();
+        $localeCodes = $this->getDisponibleLanguagesCodes("locale_code");
 
-        if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
+
+        if (
+            (in_array($source, $langCodes) && in_array($dest, $langCodes)) ||
+            (in_array($source, $localeCodes) && in_array($dest, $localeCodes))
+        ) {
             if (is_null($tokens)) {
 
                 $sourcesTokens = Tokens::find(array(
