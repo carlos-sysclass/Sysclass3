@@ -270,6 +270,10 @@ class Translator extends Component
         return false;
     }
 
+    public function getTranslationsNames($locale = null) {
+        return $this->getBackend("bing")->getTranslationsNames(is_null($locale) ? $this->getSource() : $locale);
+    }
+
     /**
      * [translateTokens description]
      * @param  string $from   [description]
