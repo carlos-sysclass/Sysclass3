@@ -1,71 +1,65 @@
 <?php
 namespace Sysclass\Tasks;
 
-use Sysclass\Models\Users\User,
-    Phalcon\Script\Color,
-    Kint;
+use Phalcon\Script\Color;
+use Sysclass\Models\Users\User;
 
-class EventConsumerTask extends \Phalcon\CLI\Task
-{
-    public function mainAction(array $params = null)
-    {
-    	$events = $this->messagebus->receive();
+class EventConsumerTask extends \Phalcon\CLI\Task {
+	public function mainAction(array $params = null) {
+		$events = $this->messagebus->receive();
 
-        foreach($events as $event) {
-            var_dump($event->toArray());
-        }
-        exit;
-    }
+		foreach ($events as $event) {
+			var_dump($event->toArray());
+		}
+		exit;
+	}
 
-    public function userSignupAction(array $params = null)
-    {
-        $events = $this->messagebus->receive(false, 'user', 'signup');
+	public function userSignupAction(array $params = null) {
+		$events = $this->messagebus->receive(false, 'user', 'signup');
 
-        foreach($events as $event) {
-            $user_id = $event->data['id'];
+		foreach ($events as $event) {
+			$user_id = $event->data['id'];
 
-            $user = User::findFirstById($user_id);
+			$user = User::findFirstById($user_id);
 
-            // CHECK IF THE USER IS PENDING, GENERATE THE LINK, AND SEND TO USER
-            if ($user && ($user->pending == "1" || !$this->configuration->get("signup_must_approve"))) {
-                $user->generateConfirmHash();
-                $user->save();
-                //$content = $this->view->render("email/activate.email");
-                //
+			// CHECK IF THE USER IS PENDING, GENERATE THE LINK, AND SEND TO USER
+			if ($user && ($user->pending == "1" || !$this->configuration->get("signup_must_approve"))) {
+				$user->generateConfirmHash();
+				$user->save();
+				//$content = $this->view->render("email/activate.email");
+				//
 
-                $template = "email/" . $this->sysconfig->deploy->environment . "/activate.email";
+				$template = "email/" . $this->sysconfig->deploy->environment . "/activate.email";
 
-                
-                if (!$this->view->exists($template)) {
-                    $template = "email/activate.email";
-                }
+				if (!$this->view->exists($template)) {
+					$template = "email/activate.email";
+				}
 
+				$status = $this->mail->send(
+					//$user->email,
+					"andre@kucaniz.com",
+					$this->configuration->get("signup_email_subject"),
+					$template,
+					true,
+					array(
+						'student' => $user,
+						'activation_link' =>
+						"http://" . $this->sysconfig->deploy->environment . ".sysclass.com/confirm/" . $user->reset_hash,
+					)
+				);
+			}
+			$this->messagebus->unqueue($event->_id);
 
-                $status = $this->mail->send(
-                    $user->email, 
-                    $this->configuration->get("signup_email_subject"),
-                    $template,
-                    true,
-                    array(
-                        'student' => $user,
-                        'activation_link' => 
-                            "http://" . $this->sysconfig->deploy->environment . ".sysclass.com/confirm/" . $user->reset_hash
-                    )
-                );
-            }
-            $this->messagebus->unqueue($event->_id);
+			echo sprintf("processed event user:signup #%s with data %s\n", $event->_id, json_encode($event->data));
+		}
+	}
 
-            echo sprintf("processed event user:signup #%s with data %s\n", $event->_id, json_encode($event->data));
-        }
-    }
+	public function processEventsAction(array $params = null) {
+		$result = $this->messagebus->processEvents();
 
-    public function processEventsAction(array $params = null)
-    {
-        $result = $this->messagebus->processEvents();
-
-        foreach($result['messages'] as $message) {
-            fwrite(STDERR, Color::{$message['type']}($message['message']));
-        }
-    }
+		foreach ($result['messages'] as $message) {
+			fwrite(STDERR, Color::{$message['type']}($message['message']));
+		}
+	}
 
 }

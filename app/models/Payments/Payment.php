@@ -1,58 +1,13 @@
 <?php
 namespace Sysclass\Models\Payments;
 
-use Plico\Mvc\Model,
-    Sysclass\Models\Acl\Resource,
-    Sysclass\Models\Acl\RolesUsers;
+use Sysclass\Models\Enrollments\CourseUsers;
 
-class Payment extends Model
-{
-    public function initialize()
-    {
-        $this->setSource("mod_payment");
+class Payment extends CourseUsers {
+	public function initialize() {
+		parent::initialize();
 
-        $this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id",  array('alias' => 'items'));        
-
-        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'user'));
-
-         //$this->skipAttributesOnCreate(array('active'));
-
-        //$this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'group'));
-        /*
-        $this->belongsTo("language_id", "Sysclass\\Models\\I18n\\Language", "id",  array('alias' => 'language'));
-
-        $this->hasOne("id", "Sysclass\\Models\\Users\\UserAvatar", "user_id",  array('alias' => 'avatar'));
-
-        $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
-
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\\Models\\Users\\UserAvatar",
-            "user_id", "file_id",
-            "Sysclass\\Models\\Dropbox\\File",
-            "id",
-            array('alias' => 'Avatars', 'reusable' => true)
-        );
-
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Acl\RolesUsers",
-            "user_id", "role_id",
-            "Sysclass\Models\Acl\Role",
-            "id",
-            array('alias' => 'UserRoles', 'reusable' => true)
-        );
-
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Users\UsersGroups",
-            "user_id", "group_id",
-            "Sysclass\Models\Users\Group",
-            "id",
-            array('alias' => 'UserGroups')
-        );
-        */
-
-    }
+		$this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id", array('alias' => 'paymentItems'));
+	}
 
 }
