@@ -76,6 +76,11 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
         var baseSubviewViewClass = Backbone.View.extend({
             disabled : true,
+            /*
+            initialize : function() {
+                this.parentView = opt.form;
+            },
+            */
             disable : function() {
                 console.info('views.form.questions/baseSubviewViewClass::disable');
                 this.disabled = true;
@@ -96,6 +101,8 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
         subviewsClass.true_or_false = baseSubviewViewClass.extend({
             disabled : true,
             initialize: function(opt) {
+                baseSubviewViewClass.prototype.initialize.apply(this);
+
                 console.info('views.form.questions/subviewsClass[\'true_or_false\']::initialize');
                 this.listenTo(this.model, "change:answer", this.updateModel.bind(this));
             },
@@ -224,10 +231,8 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             updateModel : function() {
                 console.info('views.form.questions/baseSubviewChoicesViewClass::updateModel');
                 if (!this.disabled) {
-                    console.warn(this.sub_type + ".options", this.collection.toJSON());
+                    this.model.unset(this.sub_type + ".options", {silent: true});
                     this.model.set(this.sub_type + ".options", this.collection.toJSON());
-
-
                 }
             },
             addChoice : function(e) {
@@ -282,11 +287,12 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 this.listenTo(this.model, "sync", this.updateChild.bind(this));
                 this.listenTo(this.model, "change:type_id", this.render.bind(this));
 
-
+                /*
                 this.listenTo(this.parentView, "before:save", function(model) {
                     alert(1);
                     return true;
                 });
+                */
 
                 //app.module("ui").refresh(this.$el);
                 //this.listenTo(this.model, "before:save", this.updateChildModel.bind(this));
