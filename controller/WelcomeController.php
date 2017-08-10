@@ -6,71 +6,46 @@ class WelcomeController extends \AbstractSysclassController {
 	//
 	/**
 	 * * Create login and reset password forms
-	 * @Get("/welcome")
+	 * @Get("/welcome/{enroll_id}")
 	 *
 	 */
-	public function index() {
-
+	public function index($enroll_id) {
 		// LOAD RESOURCES (LIKE INVTARGET)
 
 		// DISPLAY USING THE NEW SYSTEM(OR MAYBE ON 3.7)
+		//
 
-		$currentUser = $this->getCurrentUser(true);
+		// SHOW A PAGE CONTIAING THE PRE-REQUISITES FOR ENTERING THE SYSTEM,
+		// STEPS:
+		// 1. ADDITIONAL FIELDS
+		// 2. FILLING PRE REQUISITES
+		// 3. MAKING PAYMENTS
 
-		//$this->putCss("css/components");
-		$this->putScript("plugins/jquery.isonscreen/jquery.isonscreen");
+		//$this->user
 
-		// CHECK IF USER EXISTS, AND IF THIS MATCH CURRENT USER TYPE
-		$dashboardManager = $this->module("dashboard");
+		$this->putComponent("select2");
+		$this->putComponent("bootstrap-wizard");
 
-		$dashboards = $currentUser->getDashboards();
+		$this->putCss("css/custom");
 
-		if (in_array($dashboard_id, $dashboards) && $dashboardManager->layoutExists($dashboard_id)) {
-			$currentUser->dashboard_id = $dashboard_id;
-			$currentUser->save();
-		} elseif (in_array($currentUser->dashboard_id, $dashboards) && $dashboardManager->layoutExists($currentUser->dashboard_id)) {
-			$dashboard_id = $currentUser->dashboard_id;
-		} else {
+		$this->putBlock("tests.info.dialog");
 
-			if ($ignore_key = array_search($currentUser->dashboard_id, $dashboards)) {
-				unset($dashboards[$ignore_key]);
-			}
+		$this->putScript("scripts/pages/welcome");
 
-			reset($dashboards);
-			do {
-				$dashboard_id = current($dashboards);
-			} while (!$dashboardManager->layoutExists($dashboard_id) && next($dashboards));
+		$this->putItem("user", $this->user);
 
-			if (!$dashboardManager->layoutExists($dashboard_id)) {
-				$dashboard_id = 'default';
-			}
-
-			$currentUser->dashboard_id = $dashboard_id;
-			$currentUser->save();
+		$attrs = [];
+		foreach ($this->user->getAttrs() as $record) {
+			//var_dump($record->toArray());
+			$attrs[$record->field_name] = $record->field_value;
 		}
 
-		$pageLayout = $dashboardManager->loadLayout($dashboard_id, ($clear == "clear"));
+		$this->putItem("user_attrs", $attrs);
 
-		//var_dump($pageLayout);
+		// LOAD COURSE INFO (PAYMENT VALUES)
+		//$this->user->loadPaymentAccount($enroll_id);
 
-		$widgets = $dashboardManager->getPageWidgets();
-
-		//var_dump($widgets);
-		//exit;
-
-		foreach ($widgets as $key => $widget) {
-			$this->addWidget($widget[0], $widget[1], $widget[2]);
-		}
-
-		$this->putItem("page_layout", $pageLayout);
-
-//        $this->putBlock("institution.social-gadgets");
-		//        $this->putBlock("chat.quick-sidebar");
-
-		$widgets = array_slice($widgets, 0, 1);
-
-		//$this->putBlock("institution.social-gadgets");
-		parent::display('pages/dashboard/default.tpl');
+		parent::display('pages/welcome/default.tpl');
 	}
 
 }

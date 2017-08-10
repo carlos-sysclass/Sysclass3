@@ -3,6 +3,9 @@ body {
   padding-top: 80px;
   font-family: 'Open Sans', sans-serif;
 }
+.bordered {
+  border: 1px solid #ddd;
+}
 .no-padding {
   padding: 0 !important;
 }

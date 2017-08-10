@@ -27,13 +27,29 @@ class Adapter extends Component implements PaymentInterface {
 
 	public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
 		/* IF HAS AN USER AND HE HAS PENDING PAYMENTS, FLAG THE SYSTEM */
-		$dispatcher->forward([
-			'controller' => 'welcomeController',
-			'action' => 'index',
-		]);
+		if ($this->user) {
+			/*
+				$userCourses = $this->user->getUserCourses()->toArray();
 
-		//echo 'REDIRECIONAR PARA PAGAMENTO';
-		//exit;
+				// CHECK IF ANY COURSE IS PAID
+				foreach($userCourses as $userCourse) {
+					if ($userCourse->approved
+				}
+				exit;
+			*/
+			/*
+				var_dump($this->user);
+				var_dump($dispatcher->getControllerName());
+				exit;
+				$dispatcher->forward([
+					'controller' => 'welcomeController',
+					'action' => 'index',
+				]);
+
+				//echo 'REDIRECIONAR PARA PAGAMENTO';
+				//exit;
+			*/
+		}
 		return TRUE;
 	}
 
@@ -46,6 +62,9 @@ class Adapter extends Component implements PaymentInterface {
 		return true;
 	}
 
+	public function create(array $data) {
+		$response = $this->backend->create($data);
+	}
 	/* PROXY/ADAPTER PATTERN */
 	public function initiatePayment(array $data) {
 

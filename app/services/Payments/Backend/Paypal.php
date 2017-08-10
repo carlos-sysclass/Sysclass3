@@ -1,18 +1,73 @@
 <?php
 namespace Sysclass\Services\Payments\Backend;
 
+use PayPal\Api\Amount;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\Transaction;
 use Phalcon\Mvc\User\Component;
+use Sysclass\Models\Payments\PaymentItem;
 use Sysclass\Services\Payments\PaymentInterface;
 
 class Paypal extends Component implements PaymentInterface {
 
+	protected static $apiContext = null;
 	protected $debug;
 
 	public function initialize($debug = false) {
 		$this->debug = $debug;
 	}
 
-	function initiatePayment(array $data) {
+	public function getApi() {
+		if (is_null(self::$apiContext)) {
+			self::$apiContext = new \PayPal\Rest\ApiContext(
+				new \PayPal\Auth\OAuthTokenCredential(
+					'AVnYcJlI1BZMtTCb3c0_WItiOYT4BDu5GmD07Vs9YgexIZom6_vUgzDroLgUu9JlsSpbLE2zc9PdzEuz', // ClientID
+					'EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL' // ClientSecret
+				)
+			);
+		}
+		return self::$apiContext;
+	}
+
+	public function create(PaymentItem $item) {
+
+		$payer = new Payer();
+		$payer->setPaymentMethod("paypal");
+
+		$item1 = new Item();
+		$item1->setName('Ground Coffee 40 oz')
+			->setCurrency('USD')
+			->setQuantity(1)
+			->setSku("123123") // Similar to `item_number` in Classic API
+			->setPrice(7.5);
+
+		$itemList = new ItemList();
+		$itemList->setItems([$item1]);
+
+		$amount = new Amount();
+		$amount->setCurrency("USD")
+			->setTotal($item->price)
+			->setDetails($details);
+
+		//A transaction defines the contract of a payment - what is the payment for and who is fulfilling it.
+		$transaction = new Transaction();
+		$transaction->setAmount($amount)
+			->setItemList($itemList)
+			->setDescription("Payment description")
+			->setInvoiceNumber(uniqid());
+
+		$payment = new Payment();
+		$payment->setIntent("sale")
+			->setPayer($payer)
+			->setRedirectUrls($redirectUrls)
+			->setTransactions(array($transaction));
+
+	}
+
+	public function initiatePayment(array $data) {
 		//Endpoint da API
 		$apiEndpoint = 'https://api-3t.' . ($this->debug ? 'sandbox.' : "");
 		$apiEndpoint .= 'paypal.com/nvp';

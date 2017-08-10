@@ -15,6 +15,7 @@ class CourseUsers extends Model {
 
 		$this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id", array('alias' => 'User', 'reusable' => true));
 		$this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id", array('alias' => 'Course', 'reusable' => false));
+
 		/*
 			        $this->belongsTo("status_id", "Sysclass\\Models\\Enrollments\\CourseUsersStatus", "id",  array('alias' => 'Status', 'reusable' => false));
 		*/
@@ -25,6 +26,7 @@ class CourseUsers extends Model {
 			array('alias' => 'CourseProgress')
 		);
 
+		$this->belongsTo("course_id", "Sysclass\\Models\\Content\\Program", "id", array('alias' => 'Program', 'reusable' => false));
 	}
 
 	public function beforeValidation() {
