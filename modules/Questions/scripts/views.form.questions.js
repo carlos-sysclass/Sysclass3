@@ -118,8 +118,10 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 "click .select-choice-correct-action"   : "setCorrect",
                 "click .select-choice-incorrect-action"   : "setIncorrect"
             },
-            initialize: function() {
+            parent: null,
+            initialize: function(opt) {
                 this.listenTo(this.model, "change", this.render.bind(this));
+                this.parent = opt.parent;
 
             },
             render : function() {
@@ -148,7 +150,10 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             },
             removeChoice : function(e) {
                 console.info('views.form.questions/questionChoiceViewClass::removeChoice');
+
+                this.parent.collection.remove(this.model);
                 this.model.destroy();
+
                 this.remove();
             }
         });
@@ -174,9 +179,9 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 this.collection = new questionChoicesCollectionClass(data, {multiple : (this.sub_type == "multiple_choice")});
                 this.listenTo(this.collection, "add", this.addOne.bind(this));
                 this.listenTo(this.collection, "reset", this.render.bind(this));
-                //this.listenTo(this.collection, "change", this.updateModel.bind(this));
+                this.listenTo(this.collection, "remove", this.updateModel.bind(this));
 
-                this.listenTo(this.model, "before:save", this.updateModel.bind(this));
+                //this.listenTo(this.model, "before:save", this.updateModel.bind(this));
                 //mod.testol = this.collection;
 
                 //this.collection.reset(data);
@@ -219,7 +224,10 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             updateModel : function() {
                 console.info('views.form.questions/baseSubviewChoicesViewClass::updateModel');
                 if (!this.disabled) {
+                    console.warn(this.sub_type + ".options", this.collection.toJSON());
                     this.model.set(this.sub_type + ".options", this.collection.toJSON());
+
+
                 }
             },
             addChoice : function(e) {
@@ -237,7 +245,8 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 console.info('views.form.questions/baseSubviewChoicesViewClass::addOne');
 
                 var questionChoiceView = new questionChoiceViewClass({
-                    model : model
+                    model : model,
+                    parent: this
                 });
 
                 var html = questionChoiceView.render().el;
@@ -275,6 +284,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
 
                 this.listenTo(this.parentView, "before:save", function(model) {
+                    alert(1);
                     return true;
                 });
 
