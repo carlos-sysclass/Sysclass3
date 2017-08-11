@@ -30,7 +30,7 @@ class Adapter extends Component implements PaymentInterface {
 		if ($this->dispatcher->getControllerName() != 'welcome_controller') {
 			if ($this->user) {
 				$enrollments = $this->user->getUserCourses([
-					'conditions' => 'status_id IN (2, 3) AND has_payment = 1',
+					'conditions' => 'status_id IN (2, 3)',
 					'order' => 'created ASC',
 					'limit' => 1,
 				]);

@@ -48,7 +48,7 @@ class WelcomeController extends \AbstractSysclassController {
 
 		if (is_null($enroll_id)) {
 			$enrollments = $this->user->getUserCourses([
-				'conditions' => 'status_id = 1 AND has_payment = 1',
+				'conditions' => 'status_id IN (2,3)',
 				'order' => 'created ASC',
 				'limit' => 1,
 			]);
