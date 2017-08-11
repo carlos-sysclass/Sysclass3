@@ -25,7 +25,6 @@ class WelcomeController extends \AbstractSysclassController {
 
 		//$this->user
 		//
-		$this->putItem("enroll_id", $enroll_id);
 
 		$this->putComponent("select2");
 		$this->putComponent("bootstrap-wizard");
@@ -57,6 +56,8 @@ class WelcomeController extends \AbstractSysclassController {
 		} else {
 			$enrollment = CourseUsers::findFirstById($enroll_id);
 		}
+
+		$this->putItem("enroll_id", $enroll_id);
 
 		// LOAD COURSE INFO (PAYMENT VALUES)
 		$program = $enrollment->getProgram();

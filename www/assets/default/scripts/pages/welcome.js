@@ -64,8 +64,11 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		            }.bind(this)
 		        });
 
-				var CREATE_PAYMENT_URL  = '/module/payment/create/' + $SC.getResource("T_ENROLL_ID");
-    			var EXECUTE_PAYMENT_URL  = '/module/payment/execute/' + $SC.getResource("T_ENROLL_ID");
+		        console.warn(app.getResource("T_ENROLL_ID"));
+		        console.warn($SC.getResource("T_ENROLL_ID"));
+
+				var CREATE_PAYMENT_URL  = '/module/payment/create/' + app.getResource("T_ENROLL_ID");
+    			var EXECUTE_PAYMENT_URL  = '/module/payment/execute/' + app.getResource("T_ENROLL_ID");
 
 
 				paypal.Button.render({

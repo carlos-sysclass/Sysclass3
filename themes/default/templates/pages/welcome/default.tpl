@@ -125,6 +125,11 @@
                                             <p class="form-control-static">{translateToken value=$T_PAYMENT->price_step_type}</p>
                                         </div>
                                     </div>
+
+                                    <div class="text-center">
+                                        <div id="paypal-button"></div>
+                                    </div>
+
                                     
                                 </div>
                             </form>
@@ -149,8 +154,8 @@
 
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <script>
-_lazy_init_functions.push(function() {
-    $SC.addResource("T_ENROLL_ID", {$T_ENROLL_ID} );
+_before_init_functions.push(function() {
+    this.addResource("T_ENROLL_ID", {$T_ENROLL_ID} );
 });
 </script>
 {/block}
