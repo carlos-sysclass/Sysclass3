@@ -27,7 +27,7 @@ class Adapter extends Component implements PaymentInterface {
 
 	public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
 		/* IF HAS AN USER AND HE HAS PENDING PAYMENTS, FLAG THE SYSTEM */
-		if ($this->dispatcher->getControllerName() != 'welcome_controller') {
+		if (!in_array($this->dispatcher->getControllerName(), ['welcome_controller', 'payment_module'])) {
 			if ($this->user) {
 				$enrollments = $this->user->getUserCourses([
 					'conditions' => 'status_id IN (2, 3)',

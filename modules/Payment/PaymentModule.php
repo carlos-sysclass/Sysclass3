@@ -49,8 +49,6 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 	 */
 	public function createRequest($enroll_course_id) {
 
-		$enroll_course_id = 117;
-
 		if ($this->request->isAjax()) {
 			$data = $this->request->getJsonRawBody(true);
 		} else {
@@ -67,6 +65,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 				'conditions' => 'id = ?0 AND user_id = ?1',
 				'bind' => [$enroll_course_id, $this->user->id],
 			]);
+
 			if ($enroll && $program = $enroll->getProgram()) {
 				$payment = new Payment();
 				$payment->user_id = $this->user->id;
