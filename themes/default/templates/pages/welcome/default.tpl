@@ -4,8 +4,7 @@
     <div class="portlet-title">
         <div class="caption">
             <i class="fa fa-exchange"></i>
-            <span class="caption-subject bold uppercase"> Welcome to sysclass -
-                <span class="step-title"> Step 1 of 2 </span>
+            <span class="caption-subject bold uppercase"> {$T_PROGRAM->name} - Complete Registration
             </span>
         </div>
     </div>
@@ -95,6 +94,15 @@
                                 <div class="form-body">
                                     <h4 class="form-section">Payment Details</h4>
                                     <div class="form-group">
+                                        <label class="control-label col-md-3">{translateToken value="Currency"}:</label>
+                                        <div class="col-md-4">
+                                            <select class="select2-me form-control input-block-level" name="price_currency" style="min-width: 150px;" data-search="false">
+                                                    <option value="USD">USD (United States Dollar)</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label col-md-3">{translateToken value="Total price"}:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold">{$T_PAYMENT->price_total}</p>
@@ -117,15 +125,7 @@
                                             <p class="form-control-static">{translateToken value=$T_PAYMENT->price_step_type}</p>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Currency"}:</label>
-                                        <div class="col-md-4">
-                                            <select class="select2-me form-control input-block-level" name="price_currency" style="min-width: 150px;" data-search="false">
-                                                    <option value="USD">USD (United States Dollar)</option>
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </form>
                         </div>

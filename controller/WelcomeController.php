@@ -7,7 +7,7 @@ class WelcomeController extends \AbstractSysclassController {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
 	//
 	/**
-	 * * Create login and reset password forms
+	 * @Get("/welcome")
 	 * @Get("/welcome/{enroll_id}")
 	 *
 	 */
@@ -46,7 +46,17 @@ class WelcomeController extends \AbstractSysclassController {
 
 		$this->putItem("user_attrs", $attrs);
 
-		$enrollment = CourseUsers::findFirstById($enroll_id);
+		if (is_null($enroll_id)) {
+			$enrollments = $this->user->getUserCourses([
+				'conditions' => 'status_id = 1 AND has_payment = 1',
+				'order' => 'created ASC',
+				'limit' => 1,
+			]);
+			$enrollment = $enrollments->getFirst();
+			$enroll_id = $enrollment->id;
+		} else {
+			$enrollment = CourseUsers::findFirstById($enroll_id);
+		}
 
 		// LOAD COURSE INFO (PAYMENT VALUES)
 		$program = $enrollment->getProgram();

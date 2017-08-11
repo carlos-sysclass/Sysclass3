@@ -27,28 +27,20 @@ class Adapter extends Component implements PaymentInterface {
 
 	public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
 		/* IF HAS AN USER AND HE HAS PENDING PAYMENTS, FLAG THE SYSTEM */
-		if ($this->user) {
-			/*
-				$userCourses = $this->user->getUserCourses()->toArray();
-
-				// CHECK IF ANY COURSE IS PAID
-				foreach($userCourses as $userCourse) {
-					if ($userCourse->approved
-				}
-				exit;
-			*/
-			/*
-				var_dump($this->user);
-				var_dump($dispatcher->getControllerName());
-				exit;
-				$dispatcher->forward([
-					'controller' => 'welcomeController',
-					'action' => 'index',
+		if ($this->dispatcher->getControllerName() != 'welcome_controller') {
+			if ($this->user) {
+				$enrollments = $this->user->getUserCourses([
+					'conditions' => 'status_id IN (2, 3) AND has_payment = 1',
+					'order' => 'created ASC',
+					'limit' => 1,
 				]);
 
-				//echo 'REDIRECIONAR PARA PAGAMENTO';
-				//exit;
-			*/
+				if ($enrollments->count() > 0) {
+
+					$this->response->redirect("/welcome/" . $enrollments->getFirst()->id);
+					return true;
+				}
+			}
 		}
 		return TRUE;
 	}

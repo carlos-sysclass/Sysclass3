@@ -82,6 +82,9 @@ class CourseUsers extends Model {
 				}
 
 				if ($program->price_total > 0) {
+					$this->has_payment = 1;
+					$this->status_id = 2; // INCOMPLETE
+				} else {
 					$this->has_payment = 0;
 				}
 			} else {

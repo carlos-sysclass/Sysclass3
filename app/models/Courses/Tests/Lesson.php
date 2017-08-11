@@ -122,12 +122,6 @@ class Lesson extends BaseUnit {
 			$testDataQuestions[$i] = $question->toArray();
 			$questionModel = $question->getQuestion();
 
-			var_dump($questionModel->toArray());
-
-			if ($i > 4) {
-				exit;
-			}
-
 			// RANDOMIZE ANSWERS ??
 			if ($testModel->randomize_answers && (
 				$questionModel->type_id == "simple_choice" ||
