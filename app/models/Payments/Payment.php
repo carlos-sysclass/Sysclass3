@@ -1,58 +1,57 @@
 <?php
 namespace Sysclass\Models\Payments;
 
-use Plico\Mvc\Model,
-    Sysclass\Models\Acl\Resource,
-    Sysclass\Models\Acl\RolesUsers;
+use DateTime;
+use Plico\Mvc\Model;
 
-class Payment extends Model
-{
-    public function initialize()
-    {
-        $this->setSource("mod_payment");
+class Payment extends Model {
+	public function initialize() {
+		//parent::initialize();
+		$this->setSource("mod_payment");
 
-        $this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id",  array('alias' => 'items'));        
+		$this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id", array('alias' => 'paymentItems'));
+	}
+	/**
+	 * Return the next unpaid invoice, generates if it's not exists
+	 * @return [type] [description]
+	 */
+	public function getNextInvoice() {
+		$item = PaymentItem::findFirst([
+			'conditions' => 'payment_id = ?0 AND status_id IN (1, 4)',
+			'bind' => [$this->id],
+			'order' => 'vencimento ASC',
+		]);
 
-        $this->belongsTo("user_id", "Sysclass\\Models\\Users\\User", "id",  array('alias' => 'user'));
+		if (!$item) {
+			$item = new PaymentItem();
+			$item->payment_id = $this->id;
+			$item->vencimento = $this->calculateNextInvoiceDate();
+			$item->price = $this->calculateNextInvoicePrice();
+			$item->status_id = 1;
 
-         //$this->skipAttributesOnCreate(array('active'));
+			$item->save();
 
-        //$this->belongsTo("group_id", "Sysclass\\Models\\Users\\Group", "id",  array('alias' => 'group'));
-        /*
-        $this->belongsTo("language_id", "Sysclass\\Models\\I18n\\Language", "id",  array('alias' => 'language'));
+		}
 
-        $this->hasOne("id", "Sysclass\\Models\\Users\\UserAvatar", "user_id",  array('alias' => 'avatar'));
+		return $item;
+	}
 
-        $this->hasMany("id", "Sysclass\\Models\\Users\\Settings", "user_id",  array('alias' => 'settings'));
+	protected function calculateNextInvoiceDate() {
+		/**
+		 * @todo  Check for price_step_type (month, year, etc)
+		 */
 
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\\Models\\Users\\UserAvatar",
-            "user_id", "file_id",
-            "Sysclass\\Models\\Dropbox\\File",
-            "id",
-            array('alias' => 'Avatars', 'reusable' => true)
-        );
+		if (intval(date("d")) <= $this->payday) {
+			$dateTime = DateTime::createFromFormat("Y-m-d", date("Y") . "-" . date("m") . "-" . $this->payday);
+		} else {
+			$dateTime = DateTime::createFromFormat("Y-m-d", date("Y") . "-" . (intval(date("m")) + 1) . "-" . $this->payday);
+		}
 
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Acl\RolesUsers",
-            "user_id", "role_id",
-            "Sysclass\Models\Acl\Role",
-            "id",
-            array('alias' => 'UserRoles', 'reusable' => true)
-        );
+		return $dateTime->format("Y-m-d");
+	}
 
-        $this->hasManyToMany(
-            "id",
-            "Sysclass\Models\Users\UsersGroups",
-            "user_id", "group_id",
-            "Sysclass\Models\Users\Group",
-            "id",
-            array('alias' => 'UserGroups')
-        );
-        */
+	protected function calculateNextInvoicePrice() {
+		return floatval($this->price_total) / floatval($this->price_step_units);
 
-    }
-
+	}
 }

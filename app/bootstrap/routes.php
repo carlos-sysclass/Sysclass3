@@ -1,100 +1,98 @@
 <?php
-use Phalcon\Mvc\Router\Annotations as Router,
-	Phalcon\Mvc\Dispatcher as MvcDispatcher,
-    Phalcon\Cli\Dispatcher as CliDispatcher,
-    Phalcon\Mvc\Dispatcher\Exception as MvcDispatcherException;
+use Phalcon\Cli\Dispatcher as CliDispatcher;
+use Phalcon\Mvc\Dispatcher as MvcDispatcher;
+use Phalcon\Mvc\Router\Annotations as Router;
 
 if (APP_TYPE === "WEB") {
-    $di->set('router', function () use ($environment) {
-    	// Create the router without default routes
-    	$router = new Router();
+	$di->set('router', function () use ($environment) {
+		// Create the router without default routes
+		$router = new Router();
 
-    	$router->setControllerSuffix("");
+		$router->setControllerSuffix("");
 
-        $router->addResource("Sysclass\Controllers\ApiController", "/api");
-    	$router->addResource("Sysclass\Controllers\LoginController");
-    	$router->addResource("Sysclass\Controllers\DashboardController");
-    	$router->addResource("Sysclass\Controllers\AgreementController");
-        
-        $moduledir = $environment["path/modules"];
+		$router->addResource("Sysclass\Controllers\ApiController", "/api");
+		$router->addResource("Sysclass\Controllers\LoginController");
+		$router->addResource("Sysclass\Controllers\DashboardController");
+		$router->addResource("Sysclass\Controllers\AgreementController");
+		$router->addResource("Sysclass\Controllers\WelcomeController");
 
-        $modulesList = scandir($moduledir);
+		$moduledir = $environment["path/modules"];
 
-        foreach($modulesList as $mod) {
+		$modulesList = scandir($moduledir);
 
-            if ($mod == '.' || $mod == '..') {
-                continue;
-            }
+		foreach ($modulesList as $mod) {
 
-            $resource = sprintf("Sysclass\\Modules\\%s\\%sModule", $mod, $mod);
-            $prefix = sprintf("/module/%s", strtolower($mod));
-            $router->addResource($resource, $prefix);
-        }
+			if ($mod == '.' || $mod == '..') {
+				continue;
+			}
 
-    	return $router;
+			$resource = sprintf("Sysclass\\Modules\\%s\\%sModule", $mod, $mod);
+			$prefix = sprintf("/module/%s", strtolower($mod));
+			$router->addResource($resource, $prefix);
+		}
 
-    });
+		return $router;
 
-    $di->set('dispatcher', function () use ($eventsManager, $di) {
+	});
 
-        // Attach a listener for type "dispatch"
-        // 
-        $eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("authentication"));
-        $eventsManager->attach('dispatch:beforeExecuteRoute', function ($event, $dispatcher) use ($di) {
-            $di->get("messagebus")->initialize();
-        });
-        //$eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("queue"));
+	$di->set('dispatcher', function () use ($eventsManager, $di) {
 
-        $eventsManager->attach('dispatch:afterExecuteRoute', function ($event, $dispatcher) use ($di) {
-            // Possible controller class name
-            //$di->get("request")
-            
-            $response = $di->get("response");
-            if ($dispatcher->isFinished() && is_null($response->getContent())) {
-                $request = $di->get("request");
-                if ($request->isAjax()) {
-                    $response->setContentType('application/json', 'UTF-8');    
-                    $response->setJsonContent($dispatcher->getReturnedValue());
-                }
-            }
-        });
+		// Attach a listener for type "dispatch"
+		//
+		$eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("authentication"));
+		$eventsManager->attach('dispatch:beforeExecuteRoute', $di->get("payments"));
+		$eventsManager->attach('dispatch:beforeExecuteRoute', function ($event, $dispatcher) use ($di) {
+			$di->get("messagebus")->initialize();
+		});
 
-        $dispatcher = new MvcDispatcher();
+		$eventsManager->attach('dispatch:afterExecuteRoute', function ($event, $dispatcher) use ($di) {
+			// Possible controller class name
+			//$di->get("request")
 
-        // Bind the eventsManager to the view component
-        $dispatcher->setEventsManager($eventsManager);
+			$response = $di->get("response");
+			if ($dispatcher->isFinished() && is_null($response->getContent())) {
+				$request = $di->get("request");
+				if ($request->isAjax()) {
+					$response->setContentType('application/json', 'UTF-8');
+					$response->setJsonContent($dispatcher->getReturnedValue());
+				}
+			}
+		});
 
-        $dispatcher->setControllerSuffix("");
-        $dispatcher->setActionSuffix("");
+		$dispatcher = new MvcDispatcher();
 
-        return $dispatcher;
+		// Bind the eventsManager to the view component
+		$dispatcher->setEventsManager($eventsManager);
 
-    }, true);
+		$dispatcher->setControllerSuffix("");
+		$dispatcher->setActionSuffix("");
+
+		return $dispatcher;
+
+	}, true);
 } else {
-    $di->set('dispatcher', function () use ($eventsManager, $di) {
-        $eventsManager->attach('dispatch:beforeExecuteRoute', function ($event, $dispatcher) use ($di) {
-            $di->get("messagebus")->initialize();
-        });
+	$di->set('dispatcher', function () use ($eventsManager, $di) {
+		$eventsManager->attach('dispatch:beforeExecuteRoute', function ($event, $dispatcher) use ($di) {
+			$di->get("messagebus")->initialize();
+		});
 
-        $dispatcher = new CliDispatcher();
+		$dispatcher = new CliDispatcher();
 
-        // Bind the eventsManager to the view component
-        $dispatcher->setEventsManager($eventsManager);
-        $dispatcher-> setNamespaceName("Sysclass\Tasks");
+		// Bind the eventsManager to the view component
+		$dispatcher->setEventsManager($eventsManager);
+		$dispatcher->setNamespaceName("Sysclass\Tasks");
 
-        return $dispatcher;
+		return $dispatcher;
 
-    }, true);
-    /*
-    $eventsManager->attach('dispatch', function ($event, $dispatcher) {
-        var_dump(func_get_args());
-        var_dump(1);
-        exit;
-        $di->get("messagebus")->initialize();
-    });
-    $dispatcher = $di->get("dispatcher");
-    */
-    
+	}, true);
+	/*
+		    $eventsManager->attach('dispatch', function ($event, $dispatcher) {
+		        var_dump(func_get_args());
+		        var_dump(1);
+		        exit;
+		        $di->get("messagebus")->initialize();
+		    });
+		    $dispatcher = $di->get("dispatcher");
+	*/
 
 }
-

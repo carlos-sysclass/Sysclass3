@@ -35,6 +35,7 @@
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="tab_1_1">
+				
 				<div class="form-group">
 					<label class="control-label">{translateToken value="Name"}</label>
 					<input name="name" value="" type="text" placeholder="Name" class="form-control" data-rule-required="true" data-rule-minlength="3" />

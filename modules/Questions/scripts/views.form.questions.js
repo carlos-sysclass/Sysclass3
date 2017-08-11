@@ -151,9 +151,14 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             },
             setCorrect : function() {
                 this.model.set("answer", true);
+                
+                this.parent.updateModel();
+
             },
             setIncorrect : function() {
                 this.model.set("answer", false);
+
+                this.parent.updateModel();
             },
             removeChoice : function(e) {
                 console.info('views.form.questions/questionChoiceViewClass::removeChoice');
@@ -186,7 +191,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 this.collection = new questionChoicesCollectionClass(data, {multiple : (this.sub_type == "multiple_choice")});
                 this.listenTo(this.collection, "add", this.addOne.bind(this));
                 this.listenTo(this.collection, "reset", this.render.bind(this));
-                this.listenTo(this.collection, "remove", this.updateModel.bind(this));
+                this.listenTo(this.collection, "update", this.updateModel.bind(this));
 
                 //this.listenTo(this.model, "before:save", this.updateModel.bind(this));
                 //mod.testol = this.collection;
