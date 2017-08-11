@@ -2,10 +2,10 @@
 namespace Sysclass\Services\Payments\Backend;
 
 use PayPal\Api\Amount;
-use PayPal\Api\Item;
-use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use Phalcon\Mvc\User\Component;
 use Sysclass\Models\Payments\PaymentItem;
@@ -20,12 +20,12 @@ class Paypal extends Component implements PaymentInterface {
 		$this->debug = $debug;
 	}
 
-	public function getApi() {
+	public function getApiContext() {
 		if (is_null(self::$apiContext)) {
 			self::$apiContext = new \PayPal\Rest\ApiContext(
 				new \PayPal\Auth\OAuthTokenCredential(
 					'AVnYcJlI1BZMtTCb3c0_WItiOYT4BDu5GmD07Vs9YgexIZom6_vUgzDroLgUu9JlsSpbLE2zc9PdzEuz', // ClientID
-					'EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL' // ClientSecret
+					'EMnYy7LldGxzLBaIRFf8Bw5Ko6CU5Qes1Ps54jH4XjYipU-TKnvNURwQh_tFLK6SGe6viGGR-U7_C10h' // ClientSecret
 				)
 			);
 		}
@@ -37,27 +37,36 @@ class Paypal extends Component implements PaymentInterface {
 		$payer = new Payer();
 		$payer->setPaymentMethod("paypal");
 
-		$item1 = new Item();
-		$item1->setName('Ground Coffee 40 oz')
-			->setCurrency('USD')
-			->setQuantity(1)
-			->setSku("123123") // Similar to `item_number` in Classic API
-			->setPrice(7.5);
+		/*
+			$item1 = new Item();
+			$item1->setName('Ground Coffee 40 oz')
+				->setCurrency('USD')
+				->setQuantity(1)
+				->setSku("123123") // Similar to `item_number` in Classic API
+				->setPrice(7.5);
 
-		$itemList = new ItemList();
-		$itemList->setItems([$item1]);
-
+			$itemList = new ItemList();
+			$itemList->setItems([$item1]);
+		*/
 		$amount = new Amount();
-		$amount->setCurrency("USD")
-			->setTotal($item->price)
-			->setDetails($details);
+		$amount->setCurrency("BRL")
+			->setTotal($item->price);
 
 		//A transaction defines the contract of a payment - what is the payment for and who is fulfilling it.
 		$transaction = new Transaction();
-		$transaction->setAmount($amount)
-			->setItemList($itemList)
+		$transaction
+			->setAmount($amount)
+			//->setItemList($itemList)
 			->setDescription("Payment description")
 			->setInvoiceNumber(uniqid());
+
+		$baseUrl =
+		($this->request->isSecure() ? "https://" : "http://") . $this->request->getHttpHost();
+
+		$redirectUrls = new RedirectUrls();
+		$redirectUrls
+			->setReturnUrl($baseUrl . "/module/payment/return")
+			->setCancelUrl($baseUrl . "/module/payment/cancel");
 
 		$payment = new Payment();
 		$payment->setIntent("sale")
@@ -65,6 +74,61 @@ class Paypal extends Component implements PaymentInterface {
 			->setRedirectUrls($redirectUrls)
 			->setTransactions(array($transaction));
 
+		try {
+			$payment->create($this->getApiContext());
+		} catch (Exception $ex) {
+			//var_dump("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", null, $request, $ex);
+			return [
+				'error' => true,
+				'payment' => $payment,
+			];
+		}
+//		$approvalUrl = $payment->getApprovalLink();
+		//NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
+		//var_dump("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", "<a href='$approvalUrl' >$approvalUrl</a>", $request, $payment);
+		$item->backend_payment_id = $payment->getId();
+
+		$item->save();
+
+		return [
+			'error' => false,
+			'payment' => $payment,
+		];
+	}
+
+	public function execute(array $data) {
+		$payment = Payment::get($data['payment_id'], $this->getApiContext());
+
+		$execution = new PaymentExecution();
+		$execution->setPayerId($data['payer_id']);
+
+//		$transaction = new Transaction();
+		//		$transaction->setAmount($amount);
+
+		//$execution->addTransaction($transaction);
+
+		try {
+			$result = $payment->execute($execution, $this->getApiContext());
+
+			try {
+				$payment = Payment::get($data['payment_id'], $this->getApiContext());
+			} catch (Exception $ex) {
+				return [
+					'error' => true,
+					'payment' => $payment,
+				];
+			}
+		} catch (Exception $ex) {
+			//var_dump("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", null, $request, $ex);
+			return [
+				'error' => true,
+				'payment' => $payment,
+			];
+		}
+		return [
+			'error' => false,
+			'payment' => $payment,
+		];
 	}
 
 	public function initiatePayment(array $data) {

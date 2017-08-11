@@ -1,6 +1,8 @@
 <?php
 namespace Sysclass\Controllers;
 
+use Sysclass\Models\Enrollments\CourseUsers;
+
 class WelcomeController extends \AbstractSysclassController {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
 	//
@@ -22,6 +24,8 @@ class WelcomeController extends \AbstractSysclassController {
 		// 3. MAKING PAYMENTS
 
 		//$this->user
+		//
+		$this->putItem("enroll_id", $enroll_id);
 
 		$this->putComponent("select2");
 		$this->putComponent("bootstrap-wizard");
@@ -42,8 +46,16 @@ class WelcomeController extends \AbstractSysclassController {
 
 		$this->putItem("user_attrs", $attrs);
 
+		$enrollment = CourseUsers::findFirstById($enroll_id);
+
 		// LOAD COURSE INFO (PAYMENT VALUES)
-		//$this->user->loadPaymentAccount($enroll_id);
+		$program = $enrollment->getProgram();
+
+		$payment = $this->user->loadPaymentAccount($enroll_id);
+
+		//$this->putItem("current_user", $this->user);
+		$this->putItem("program", $program);
+		$this->putItem("payment", $payment);
 
 		parent::display('pages/welcome/default.tpl');
 	}

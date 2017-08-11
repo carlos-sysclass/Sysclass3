@@ -12,6 +12,12 @@ class PaymentItem extends Model {
 		$this->belongsTo("payment_id", "Sysclass\\Models\\Payments\\Payment", "id", array('alias' => 'payment'));
 	}
 
+	public function beforeValidationOnCreate() {
+		// GENERATE RANDOM
+		$randomService = $this->getDI()->get("random");
+		$this->invoice_number = $randomService->base58(32);
+	}
+
 	public function listByUser($params) {
 		//pega o ID do usuario da sessao
 		$di = \Phalcon\DI::getDefault();

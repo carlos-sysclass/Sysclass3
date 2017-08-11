@@ -47,7 +47,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 	 * @Post("/create")
 	 * @Post("/create/{enroll_course_id}")
 	 */
-	public function createPaymentRequest($enroll_course_id) {
+	public function createRequest($enroll_course_id) {
 
 		$enroll_course_id = 117;
 
@@ -89,10 +89,41 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 		$invoice = $payment->getNextInvoice();
 
 		// SEND REQUEST TO THE
-		// 
-		$this->payment->create()
+		//
+		$response = $this->payments->create($invoice);
 
-		var_dump($data);
+		if ($response['error']) {
+
+		} else {
+			$this->response->setJsonContent([
+				'id' => $response['payment']->getId(),
+			]);
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * [ add a description ]
+	 *
+	 * @Post("/execute")
+	 * @Post("/execute/{enroll_course_id}")
+	 */
+	public function executeRequest($enroll_course_id) {
+
+		$data = $this->request->getPost();
+
+		/**
+		 * @todo  VALIDATE THE INPUTS
+		 */
+
+		$response = $this->payments->execute([
+			'payment_id' => $data['paymentID'],
+			'payer_id' => $data['payerID'],
+		]);
+
+		var_dump($response);
 		exit;
 
 	}

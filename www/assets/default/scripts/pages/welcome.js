@@ -64,8 +64,8 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		            }.bind(this)
 		        });
 
-				var CREATE_PAYMENT_URL  = '/module/payment/create/117';
-    			var EXECUTE_PAYMENT_URL  = '/module/payment/execute';
+				var CREATE_PAYMENT_URL  = '/module/payment/create/' + $SC.getResource("T_ENROLL_ID");
+    			var EXECUTE_PAYMENT_URL  = '/module/payment/execute/' + $SC.getResource("T_ENROLL_ID");
 
 
 				paypal.Button.render({
@@ -89,6 +89,7 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
             			return paypal.request.post(
             				CREATE_PAYMENT_URL
             			).then(function(data) {
+            				console.warn(data);
                 			return data.id;
             			});
             			/*
@@ -103,13 +104,15 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 			            });
 			            */
 			        },
-			        onAuthorize: function(data, actions) {
-			            return actions.payment.execute().then(function(payment) {
-			            	console.warn(payment);
-			                // The payment is complete!
-			                // You can now show a confirmation message to the customer
-			            });
-			        }
+					onAuthorize: function(data) {
+						console.warn(data);
+            			return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                			paymentID: data.paymentID,
+            			    payerID:   data.payerID
+			            }).then(function() {
+
+            			});
+        			}
 			    }, '#paypal-button');
 			},
 			/*

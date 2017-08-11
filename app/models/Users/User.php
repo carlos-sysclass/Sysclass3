@@ -5,6 +5,8 @@ use Phalcon\DI;
 use Phalcon\Mvc\Model\Query;
 use Plico\Mvc\Model;
 use Sysclass\Models\Acl\Resource;
+use Sysclass\Models\Enrollments\CourseUsers;
+use Sysclass\Models\Payments\Payment;
 
 class User extends Model {
 	public function initialize() {
@@ -31,6 +33,9 @@ class User extends Model {
 			array('alias' => 'Enrollments')
 		);
 
+		/**
+		 * @deprecated 3.5 Use UserPrograms alias
+		 */
 		$this->hasMany(
 			"id",
 			"Sysclass\\Models\\Enrollments\\CourseUsers",
@@ -43,6 +48,13 @@ class User extends Model {
 			"Sysclass\\Models\\Enrollments\\CourseUsers",
 			"user_id",
 			array('alias' => 'UserPrograms')
+		);
+
+		$this->hasMany(
+			"id",
+			"Sysclass\\Models\\Payments\\Payment",
+			"user_id",
+			array('alias' => 'UserPayments')
 		);
 
 		$this->hasOne("id", "Sysclass\\Models\\Users\\UserCurriculum", "id", array('alias' => 'curriculum'));
@@ -372,7 +384,33 @@ class User extends Model {
 
 	public function loadPaymentAccount($enroll_id) {
 		// TRY TO GET THE VALUES, AND CREATE IF NOT EXISTS
+		$payment = Payment::findFirst([
+			'conditions' => 'enroll_id = ?0 AND user_id = ?1',
+			'bind' => [$enroll_id, $this->id],
+		]);
 
+		if (!$payment) {
+			$enroll = CourseUsers::findFirst([
+				'conditions' => 'id = ?0 AND user_id = ?1',
+				'bind' => [$enroll_id, $this->id],
+			]);
+			if ($enroll && $program = $enroll->getProgram()) {
+				$payment = new Payment();
+				$payment->user_id = $this->id;
+				$payment->enroll_id = $enroll_id;
+				$payment->price_total = $program->price_total;
+				$payment->price_step_units = $program->price_step_units;
+				$payment->price_step_type = $program->price_step_type;
+
+				$payment->save();
+
+				$payment->refresh();
+			} else {
+				return false;
+			}
+		}
+
+		return $payment;
 	}
 
 }
