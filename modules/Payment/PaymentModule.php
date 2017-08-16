@@ -68,10 +68,21 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 			]);
 
 			if ($enroll && $program = $enroll->getProgram()) {
+				$price = ProgramPrice::findFirst([
+					'conditions' => 'program_id = ?0 AND currency_code = ?1',
+					'bind' => [$program->id, $enroll->currency_code],
+				]);
+
 				$payment = new Payment();
 				$payment->user_id = $this->user->id;
 				$payment->enroll_id = $enroll_course_id;
-				$payment->price_total = $program->price_total;
+				if ($price) {
+					$payment->price_total = $price->price_total;
+				} else {
+					$payment->price_total = $program->price_total;
+				}
+				$payment->currency_code = $enroll->currency_code;
+
 				$payment->price_step_units = $program->price_step_units;
 				$payment->price_step_type = $program->price_step_type;
 
@@ -122,6 +133,11 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 			'payment_id' => $data['paymentID'],
 			'payer_id' => $data['payerID'],
 		]);
+
+		if (!$response['error']) {
+			// CHECK FOR PAYMENT STATUS AND UPDATE OBJECTS
+
+		}
 
 		var_dump($response);
 		exit;
@@ -287,6 +303,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 				$enroll->currency_code = $currency_code;
 				$enroll->save();
 
+				// ON CAHNGE PRICE CURRENT, RECALCULATE INVOICE VALUES
 				$payment->currency_code = $currency_code;
 				$payment->save();
 

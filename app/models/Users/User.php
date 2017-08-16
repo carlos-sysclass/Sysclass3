@@ -5,6 +5,7 @@ use Phalcon\DI;
 use Phalcon\Mvc\Model\Query;
 use Plico\Mvc\Model;
 use Sysclass\Models\Acl\Resource;
+use Sysclass\Models\Content\ProgramPrice;
 use Sysclass\Models\Enrollments\CourseUsers;
 use Sysclass\Models\Payments\Payment;
 
@@ -408,10 +409,21 @@ class User extends Model {
 				'bind' => [$enroll_id, $this->id],
 			]);
 			if ($enroll && $program = $enroll->getProgram()) {
+
+				$price = ProgramPrice::findFirst([
+					'conditions' => 'program_id = ?0 AND currency_code = ?1',
+					'bind' => [$program->id, $enroll->currency_code],
+				]);
+
 				$payment = new Payment();
 				$payment->user_id = $this->id;
 				$payment->enroll_id = $enroll_id;
-				$payment->price_total = $program->price_total;
+				if ($price) {
+					$payment->price_total = $price->price_total;
+				} else {
+					$payment->price_total = $program->price_total;
+				}
+
 				$payment->price_step_units = $program->price_step_units;
 				$payment->price_step_type = $program->price_step_type;
 
