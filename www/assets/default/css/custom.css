@@ -3,6 +3,12 @@ body {
   padding-top: 80px;
   font-family: 'Open Sans', sans-serif;
 }
+.form-control-static {
+  padding-top: 8px;
+}
+.bordered {
+  border: 1px solid #ddd;
+}
 .no-padding {
   padding: 0 !important;
 }

@@ -64,3 +64,6 @@ models:
     class: Sysclass\Models\Payments\PaymentItem
     listMethod: "listByUser"
     exportMethod: ["toFullArray", ["Status"]]
+
+  logger:
+    class: Sysclass\Models\Payments\Logger

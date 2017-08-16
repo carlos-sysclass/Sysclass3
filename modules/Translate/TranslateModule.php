@@ -229,7 +229,8 @@ class TranslateModule extends \SysclassModule implements \IBlockProvider, \ISect
         $country_codes = Countries::find();
         $this->putItem("country_codes", $country_codes->toArray());
 
-        $bingTranslationsCodes = $this->model("bing/translate")->getTranslationsNames();
+        $bingTranslationsCodes = $this->translate->getTranslationsNames();
+        
         $this->putItem("language_codes", $bingTranslationsCodes);
 
         parent::addPage($id);

@@ -166,7 +166,7 @@ _before_init_functions.push(function() {
 
               <!--         
               <div class="alert alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="{translateToken value="Close"}"><span aria-hidden="true">&times;</span></button>
                 <span class="pendente-tag">Not Avaliable<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avaliable<span class="avalialbe"></span></span>
@@ -286,7 +286,7 @@ _before_init_functions.push(function() {
                     </div>
 
                     <!--
-                      <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="Close">
+                      <a href="javascript:void(0);" class="close-content-sidebar btn btn-link btn-xs" aria-label="{translateToken value="Close"}">
                       <span aria-hidden="true">&times;</span>
                     </a>
                     -->
@@ -395,7 +395,7 @@ _before_init_functions.push(function() {
               </div>
               <!--
                <div class="alert alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="{translateToken value="Close"}"><span aria-hidden="true">&times;</span></button>
                 <span class="pendente-tag">Not Available<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Available<span class="avalialbe"></span></span>
@@ -404,7 +404,7 @@ _before_init_functions.push(function() {
               -->              
               <!--
               <div class="alert alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="{translateToken value="Close"}"><span aria-hidden="true">&times;</span></button>
                 <form action="">
                   <input type="text" placeholder="Escreva aqui a sua pesquisa">
                 </form>
@@ -446,7 +446,7 @@ _before_init_functions.push(function() {
             <!--
             <div role="tabpanel" class="tab-pane" id="profile">
               <div class="alert alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="{translateToken value="Close"}"><span aria-hidden="true">&times;</span></button>
                 <span class="pendente-tag">Not Available<span class="pendente"></span></span>
                 <span class="concluido-tag">Viewed / Done / OK<span class="concluido"></span></span>
                 <span class="avalialbe-tag">Avalialbe<span class="avalialbe"></span></span>
@@ -1329,7 +1329,7 @@ _before_init_functions.push(function() {
     </div>
     <div class="row rating-stars-message hidden">
       <div class="col-md-12" align="center">
-        <h4>Thank You!</h4>
+        <h4>{TranslateToken value="Thank You!"}</h4>
         
       </div>
     </div>

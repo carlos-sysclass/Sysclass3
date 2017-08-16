@@ -5,7 +5,8 @@ use
     Phalcon\Mvc\User\Component,
     Phalcon\Mvc\Model\Resultset,
     Sysclass\Models\I18n\Language,
-    Sysclass\Models\I18n\Tokens;
+    Sysclass\Models\I18n\Tokens,
+    Locale;
 
 class Translator extends Component 
 {
@@ -13,9 +14,9 @@ class Translator extends Component
     protected $source_lang;
     protected $js_source_lang;
     protected $languages;
-    protected $base_tokens;
-    protected $source_tokens;
-    protected $source_tokens_index;
+    //protected $base_tokens;
+    //protected $source_tokens;
+    protected $source_tokens_index = [];
 
     protected $session_tokens = array();
 
@@ -24,13 +25,21 @@ class Translator extends Component
     public function __construct($clearCache = false) {
         // GET ALL LANGUAGES CACHE
         $this->languages = Language::find("active = 1");
-        $this->base_tokens = Tokens::find("language_code = '{$this->getSystemLanguageCode()}'");
+        //$this->base_tokens = Tokens::find("language_code = '{$this->getSystemLanguageCode()}'");
 
-        if ($this->inTranslationMode()) {
+        //$this->recreateCache();
+        
+        //if ($this->inTranslationMode()) {
             $this->cache->delete("session_tokens");
-        } elseif ($this->cache->exists("session_tokens")) {
-            $this->session_tokens = $this->cache->get("session_tokens");
-        }
+        //} elseif ($this->cache->exists("session_tokens")) {
+        //    $this->session_tokens = $this->cache->get("session_tokens");
+        //}
+        
+    }
+
+    public function __destruct() {
+        $cacheKey = "translate_tokens-" . $this->source_lang;
+        $this->cache->save($cacheKey, $this->source_tokens_index);
     }
 
     public function getLastSessionToken() {
@@ -81,10 +90,32 @@ class Translator extends Component
         // RECREATE TOKENS CACHE
         $this->recreateCache();
 
-        if ($this->source_tokens->count() > 0) {
+        //if ($this->source_tokens->count() > 0) {
             $this->session->set("session_language", $this->source_lang);
-        }
+        //}
         return false;
+    }
+
+    public function recreateCache() {
+        $cacheKey = "translate_tokens-" . $this->source_lang;
+
+        if (!$this->cache->exists($cacheKey)) {
+            $source_tokens = Tokens::find(array(
+                'conditions' => "language_code = ?0",
+                'bind' => array($this->source_lang),
+                'order' => 'token ASC',
+                'hydration' => Resultset::HYDRATE_ARRAYS
+            ));
+
+            $this->source_tokens_index = array();
+
+            foreach($source_tokens as $item) {
+                $this->source_tokens_index[$item['token']] = $item['text'];
+            }
+            //$this->cache->save($cacheKey, $this->source_tokens_index);
+        } else {
+            $this->source_tokens_index = $this->cache->get($cacheKey);
+        }
     }
 
     public function getJsSource()
@@ -97,23 +128,7 @@ class Translator extends Component
     }
 
 
-    public function recreateCache() {
-        $this->source_tokens = Tokens::find(array(
-            'conditions' => "language_code = ?0",
-            'bind' => array($this->source_lang)/*,
-            'hydration' => Resultset::HYDRATE_ARRAYS*/
-        ));
 
-        //var_dump($this->source_tokens->toArray());
-
-        //$source_tokens = $this->source_tokens->toArray();
-
-        $this->source_tokens_index = array();
-
-        foreach($this->source_tokens as $item) {
-            $this->source_tokens_index[$item->text] = $item->token;
-        }
-    }
 
     public function getDisponibleLanguagesCodes($column = 'code')
     {
@@ -140,8 +155,6 @@ class Translator extends Component
     }
     /*
     public function __invoke($a, $b, $c) {
-        var_dump($a, $b, $c);
-        var_dump(func_get_args);
         exit;
     }
     */
@@ -161,7 +174,7 @@ class Translator extends Component
         //$language_code = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $translateModel->getUserLanguageCode() : $language_code;
         $language_selected = (is_null($language_code) || !in_array($language_code, $langCodes)) ? $this->getSource() : $language_code;
 
-        $exists = array_search($token, $this->source_tokens_index);
+        $exists = array_key_exists($token, $this->source_tokens_index);
 
         /*
         $exists = $this->source_tokens->filter(function($item) use ($token) {
@@ -173,7 +186,7 @@ class Translator extends Component
         */
 
         if ($exists !== FALSE) {
-            $translated = $exists;
+            $translated = $this->source_tokens_index[$token];
         } else {
             //REGISTER TOKEN HERE, TO TRANSLATE LATER
             if ($this->getSystemLanguageCode() == $this->source_lang) {
@@ -198,13 +211,15 @@ class Translator extends Component
                 } else {
                     $translated = $token;
                 }
+
                 
                 if ($translated !== FALSE && !is_object($translated)) {
                     $tokenModel = new Tokens();
                     $tokenModel->assign(array(
                         'language_code' => $this->source_lang,
                         'token' => $token,
-                        'text'  => $translated
+                        'text'  => $translated,
+                        'edited' => 0
                     ));
                     $tokenModel->save();
                 } else {
@@ -221,10 +236,12 @@ class Translator extends Component
             }
             $translated = vsprintf($translated, $vars);
         } else {
-            $this->session_tokens[$token] = $translated;
+            $this->source_tokens_index[$token] = $translated;
+
+            //$this->session_tokens[$token] = $translated;
         }
         try {
-            $this->cache->save("session_tokens", $this->session_tokens);
+            //$this->cache->save("session_tokens", $this->session_tokens);
         } catch(Exception $e) {
             return $translated;
         }
@@ -253,6 +270,10 @@ class Translator extends Component
         return false;
     }
 
+    public function getTranslationsNames($locale = null) {
+        return $this->getBackend("bing")->getTranslationsNames(is_null($locale) ? $this->getSource() : $locale);
+    }
+
     /**
      * [translateTokens description]
      * @param  string $from   [description]
@@ -271,8 +292,13 @@ class Translator extends Component
         */
 
         $langCodes = $this->getDisponibleLanguagesCodes();
+        $localeCodes = $this->getDisponibleLanguagesCodes("locale_code");
 
-        if (in_array($source, $langCodes) && in_array($dest, $langCodes)) {
+
+        if (
+            (in_array($source, $langCodes) && in_array($dest, $langCodes)) ||
+            (in_array($source, $localeCodes) && in_array($dest, $localeCodes))
+        ) {
             if (is_null($tokens)) {
 
                 $sourcesTokens = Tokens::find(array(

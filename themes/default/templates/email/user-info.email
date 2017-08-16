@@ -1,0 +1,30 @@
+{% extends "layout/local/default.email" %}
+{% block content %}
+<table class="row note">
+<tr>
+      <td class="wrapper last">
+            <h4 style="font-size: 22px;display: block;margin: 5px 0 15px 0;">
+            Hello {{ receiver.name }} {{ receiver.surname }}
+            </h4>
+            <p>
+            A new enrollment has been done.
+            </p>
+            <p><strong>Name: </strong>{{ student.name}} {{ student.surname}} </p>
+            <p><strong>Email: </strong>{{ student.email}}</p>
+            <p><strong>Birthday: </strong>{{ student.birthday}}</p>
+            <p><strong>Street: </strong>{{ student.street}}</p>
+            <p><strong>City: </strong>{{ student.city}}</p>
+            <p><strong>State: </strong>{{ student.state}}</p>
+            <p><strong>Postal Code: </strong>{{ student.postal_code}}</p>
+            <p><strong>Country: </strong>{{ student.country}}</p>
+            <p><strong>Phone: </strong>{{ student.phone}}</p>
+            
+            <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;"></span>
+
+            {% for attr in student.getAttrs() %}
+                  <p><strong>{{ attr.field_name }}:</strong>{{ attr.field_value }}</p>      
+            {% endfor %}
+      </td>
+</tr>
+</table>
+{% endblock %}

@@ -1,13 +1,12 @@
 <?php
-use 
-	Phalcon\Config,
-    Phalcon\Config\Adapter\Ini as ConfigIni;
-    
+use Phalcon\Config;
+use Phalcon\Config\Adapter\Ini as ConfigIni;
+
 // GET DATA FROM SYSTEM RELEASE
-$di->setShared('sysconfig', function()  {
-    $config = new ConfigIni(__DIR__ . "/../../RELEASE");
-    //echo $config->project->full_version, "\n";
-    return $config;
+$di->setShared('sysconfig', function () {
+	$config = new ConfigIni(__DIR__ . "/../../RELEASE");
+	//echo $config->project->full_version, "\n";
+	return $config;
 });
 
 /**
@@ -15,64 +14,63 @@ $di->setShared('sysconfig', function()  {
  *  in ONE datasource and possibly ONE datasource
  */
 // GET DATA FROM SYSTEM RELEASE ENVIRONMENT
-$di->setShared('environment', function() use ($di) {
-    $environment = $di->get("sysconfig")->deploy->environment;
-    $configAdapter = new ConfigIni(__DIR__ . "/../config/{$environment}.ini");
+$di->setShared('environment', function () use ($di) {
+	$environment = $di->get("sysconfig")->deploy->environment;
+	$configAdapter = new ConfigIni(__DIR__ . "/../config/{$environment}.ini");
 
 	$plicoLibDir = realpath(PLICOLIB_PATH) . "/";
 
 	$appRootDir = REAL_PATH . "/";
 
 	$config = array(
-		'default/theme'			=> 'default',
-		'default/resource'		=> '/assets/%s/',
-		'path/app'				=> realpath($appRootDir) . "/",
-		'path/themes'			=> $appRootDir . "themes/",
-
+		'default/theme' => 'default',
+		'default/resource' => '/assets/%s/',
+		'path/app' => realpath($appRootDir) . "/",
+		'path/themes' => $appRootDir . "themes/",
 
 		# NOT USED YET
-		'client_name'			=> 'Sysclass',
-		'app_name'				=> 'Sysclass',
-	    'app_email'				=> 'maintainer@localhost',
-	    'app_license'			=> 'Comercial',
-	    //'app_license_url'		=> '',
-		'http/secure'			=> isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on',
-		'http_host'				=> $_SERVER['HTTP_HOST'],
-		'db_dsn'				=> NULL,
-		'path/base'				=> $plicoLibDir,
-		'path/lib'				=> $plicoLibDir . 'lib/',
-		'path/core-modules'		=> $plicoLibDir . 'modules/',
-		'path/modules'			=> $appRootDir . 'modules/',
-		'path/template'			=> '%s/templates/',
-		'path/plugins'			=> '%s/plugins/',
-		'path/cache'			=> $appRootDir . 'cache/',
-		'path/app/www'			=> $appRootDir . 'www',
-		'path/files/public'		=> $appRootDir . 'files',
-		'path/files'			=> $appRootDir . 'files',
-		'path/files/private'	=> $appRootDir . 'files-private',
-		'module/base_path'		=> '/module',
-		"timestamp/format"		=> "d/m/Y \à\s H:i",
+		'client_name' => 'Sysclass',
+		'app_name' => 'Sysclass',
+		'app_email' => 'maintainer@localhost',
+		'app_license' => 'Comercial',
+		//'app_license_url'		=> '',
+		'http/secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on',
+		'http_host' => $_SERVER['HTTP_HOST'],
+		'db_dsn' => NULL,
+		'path/base' => $plicoLibDir,
+		'path/lib' => $plicoLibDir . 'lib/',
+		'path/core-modules' => $plicoLibDir . 'modules/',
+		'path/modules' => $appRootDir . 'modules/',
+		'path/template' => '%s/templates/',
+		'path/plugins' => '%s/plugins/',
+		'path/cache' => $appRootDir . 'cache/',
+		'path/app/www' => $appRootDir . 'www',
+		'path/files/public' => $appRootDir . 'files',
+		'path/files' => $appRootDir . 'files',
+		'path/files/private' => $appRootDir . 'files-private',
+		'module/base_path' => '/module',
+		"timestamp/format" => "d/m/Y \à\s H:i",
 		//'controller'			=> array(),
-		'mail/send/isSMTP'		=> FALSE,
+		'mail/send/isSMTP' => FALSE,
 		// Enables SMTP debug information (for testing).
-		'mail/send/debug'  		=> 0,
+		'mail/send/debug' => 0,
 		// Enable SMTP authentication.
-		'mail/send/do_auth' 	=> FALSE,
+		'mail/send/do_auth' => FALSE,
 		// Sets the SMTP server.
-		'mail/send/host'    	=> "mail.yourhost.com",
+		'mail/send/host' => "mail.yourhost.com",
 		// Set the SMTP port for the GMAIL server.
-		'mail/send/port'		=> 25,
+		'mail/send/port' => 25,
 		// SMTP account username.
-		'mail/send/user'   		=> "user@mail.yourhost.com",
+		'mail/send/user' => "user@mail.yourhost.com",
 		// SMTP account password.
-		'mail/send/pass'   		=> "********",
-		'mail/send/from/email'	=> 'user@mail.yourhost.com',
-		'mail/send/from/name'	=> 'First Last',
-		'resources/css'			=> array(),
-		'resources/js'			=> array(),
-		'resources/components'	=> array(),
-		'default/homepage'		=> 'dashboard',
-		'urls'					=> array()
+		'mail/send/pass' => "********",
+		'mail/send/from/email' => 'user@mail.yourhost.com',
+		'mail/send/from/name' => 'First Last',
+		'resources/css' => array(),
+		'resources/js' => array(),
+		'resources/components' => array(),
+		'default/homepage' => 'dashboard',
+		'urls' => array(),
 	);
 
 	$config['resources/css'] = array(
@@ -99,10 +97,10 @@ $di->setShared('environment', function() use ($di) {
 		//'plugins/bootstrap-fileupload/bootstrap-fileupload',
 		//<!-- END PAGE LEVEL PLUGIN STYLES -->
 		'css/pageguide/pageguide',
- 		//<!-- BEGIN THEME STYLES -->
- 		'css/flags',
+		//<!-- BEGIN THEME STYLES -->
+		'css/flags',
 		'css/style-sysclass',
-		
+
 		'css/style',
 		'css/style-responsive',
 
@@ -111,9 +109,9 @@ $di->setShared('environment', function() use ($di) {
 		'css/themes/blue',
 
 		'css/wysihtml',
-		
+
 		'css/custom',
-		'css/custom-responsive'
+		'css/custom-responsive',
 
 		//<!-- END THEME STYLES -->
 	);
@@ -142,18 +140,18 @@ $di->setShared('environment', function() use ($di) {
 		'plugins/jquery.blockui.min',
 		'plugins/jquery.cookie.min',
 		//'plugins/uniform/jquery.uniform.min',
-		
+
 		'plugins/jquery-validation/dist/jquery.validate',
 		'plugins/backstretch/jquery.backstretch.min',
 
 		'plugins/jquery.blockui.min',
 		/*
-		'plugins/strophe/strophe',
-		'plugins/strophe/strophe.roster',
-		'plugins/strophe/strophe.messaging',
+			'plugins/strophe/strophe',
+			'plugins/strophe/strophe.roster',
+			'plugins/strophe/strophe.messaging',
 
-		'plugins/strophe/strophe.chatstates',
-		'plugins/strophe/strophe.ping',
+			'plugins/strophe/strophe.chatstates',
+			'plugins/strophe/strophe.ping',
 		*/
 		//'plugins/pageguide/pageguide.min',
 
@@ -166,115 +164,115 @@ $di->setShared('environment', function() use ($di) {
 		'scripts/utils',
 		'scripts/utils.toastr',
 		//'scripts/utils.strophe',
-		'scripts/portlets'
+		'scripts/portlets',
 	);
 	$config['urls'] = array(
-		'default'	=> '/dashboard',
-		'home'		=> '/dashboard'
+		'default' => '/dashboard',
+		'home' => '/dashboard',
 	);
 
 	//$config['http/secure'] = $config['https'] == 'https';
 	$config['http/host'] = $config['http_host'];
 	$config['http/fqdn'] = ($config['http/secure'] ? "https://" : "http://") . $config['http_host'];
 
-	$config['bing/client_id'] = 'SysClass';
-	$config['bing/client_secret'] = 'vhhU0DhoV0jPdNmuUItYjFOyHHwfMSKGcu54n5rctJM=';
+	$config['bing/client_id'] = 'Sysclass';
+	$config['bing/client_secret'] = 'fae569663a28464fbc82cfc96701a3e6';
 
 	$config['resources/components'] = array(
 		'videojs' => array(
-			'name'	=> 'videojs',
-			'css'	=> array('css/videojs/video-js'),
-			'js'	=> array("plugins/videojs/video")
+			'name' => 'videojs',
+			'css' => array('css/videojs/video-js'),
+			'js' => array("plugins/videojs/video"),
 		),
 		'bigvideo' => array(
-			'name'	=> 'bigvideo',
-			'css'	=> array('css/videojs/video-js', "css/bigvideo/bigvideo"),
-			'js'	=> array("plugins/videojs/video", "plugins/imagesloaded/imagesloaded", "plugins/bigvideo/bigvideo")
+			'name' => 'bigvideo',
+			'css' => array('css/videojs/video-js', "css/bigvideo/bigvideo"),
+			'js' => array("plugins/videojs/video", "plugins/imagesloaded/imagesloaded", "plugins/bigvideo/bigvideo"),
 		),
 		'select2' => array(
-			'name'	=> 'select2',
-			'css'	=> array('plugins/select2/select2_metro'),
-			'js'	=> array('plugins/sprintf/sprintf.min', 'plugins/select2/select2')
+			'name' => 'select2',
+			'css' => array('plugins/select2/select2_metro'),
+			'js' => array('plugins/sprintf/sprintf.min', 'plugins/select2/select2'),
 		),
 		'data-tables' => array(
-			'name'	=> 'data-tables',
-			'css'	=> array('plugins/data-tables/DT_bootstrap'),
-			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
+			'name' => 'data-tables',
+			'css' => array('plugins/data-tables/DT_bootstrap'),
+			'js' => array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/data-tables/jquery.dataTables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables'),
 		),
 		'datatables' => array(
-			'name'	=> 'datatables',
-			'css'	=> array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
-			'js'	=> array('plugins/bootstrap-confirmation/bootstrap-confirmation','plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables')
+			'name' => 'datatables',
+			'css' => array('plugins/data-tables/DT_bootstrap', 'plugins/datatables/datatables'),
+			'js' => array('plugins/bootstrap-confirmation/bootstrap-confirmation', 'plugins/datatables/datatables', 'plugins/data-tables/DT_bootstrap', 'scripts/utils.datatables'),
 		),
 		'jstree' => array(
-			'name'	=> 'jstree',
-			'css'	=> array('plugins/jstree/dist/themes/default/style'),
-			'js'	=> array('plugins/jstree/dist/jstree')
+			'name' => 'jstree',
+			'css' => array('plugins/jstree/dist/themes/default/style'),
+			'js' => array('plugins/jstree/dist/jstree'),
 		),
 		'bootstrap-switch' => array(
-			'name'	=> 'bootstrap-switch',
-			'css'	=> array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
-			'js'	=> array('plugins/bootstrap-switch/js/bootstrap-switch')
+			'name' => 'bootstrap-switch',
+			'css' => array('plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch'),
+			'js' => array('plugins/bootstrap-switch/js/bootstrap-switch'),
 		),
 		'datepicker' => array(
-			'name'	=> 'datepicker',
-			'css'	=> array('plugins/bootstrap-datepicker/css/datepicker'),
-			'js'	=> array('plugins/bootstrap-datepicker/js/bootstrap-datepicker', 'plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.%locale$s')
+			'name' => 'datepicker',
+			'css' => array('plugins/bootstrap-datepicker/css/datepicker'),
+			'js' => array('plugins/bootstrap-datepicker/js/bootstrap-datepicker', 'plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.%locale$s'),
 		),
 		'pwstrength' => array(
-			'name'	=> 'pwstrength',
-			'js'	=> array('plugins/jquery.pwstrength.bootstrap/src/pwstrength')
+			'name' => 'pwstrength',
+			'js' => array('plugins/jquery.pwstrength.bootstrap/src/pwstrength'),
 		),
 		'wysihtml5' => array(
-			'name'	=> 'wysihtml5',
-			'css'	=> array('plugins/bootstrap-wysihtml5/bootstrap-wysihtml5', 'plugins/bootstrap-wysihtml5/wysiwyg-color'),
-			'js'	=> array('plugins/bootstrap-wysihtml5/wysihtml5-0.3.0', 'plugins/bootstrap-wysihtml5/bootstrap-wysihtml5')
+			'name' => 'wysihtml5',
+			'css' => array('plugins/bootstrap-wysihtml5/bootstrap-wysihtml5', 'plugins/bootstrap-wysihtml5/wysiwyg-color'),
+			'js' => array('plugins/bootstrap-wysihtml5/wysihtml5-0.3.0', 'plugins/bootstrap-wysihtml5/bootstrap-wysihtml5'),
 		),
 		'wysihtml' => [
-			'name'	=> 'wysihtml',
-			'js'	=> array('plugins/wysihtml/wysihtml-toolbar', 'plugins/wysihtml/parser_rules/advanced_unwrap'),
+			'name' => 'wysihtml',
+			'js' => array('plugins/wysihtml/wysihtml-toolbar', 'plugins/wysihtml/parser_rules/advanced_unwrap'),
 		],
 		"validation" => array(
-			'name'	=> 'validation',
-			'js'	=> array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min')
+			'name' => 'validation',
+			'js' => array('plugins/jquery-validation/dist/jquery.validate', 'plugins/jquery-validation/dist/additional-methods.min'),
 		),
 		"jquery-mask" => array(
-			'name'	=> 'jquery-mask',
-			'js'	=> array('plugins/jquery-mask/jquery.mask')
+			'name' => 'jquery-mask',
+			'js' => array('plugins/jquery-mask/jquery.mask'),
 		),
 		"phone-field" => array(
-			'name'	=> 'phone-field',
-			'js'	=> array('scripts/ui.field.phone'),
-			'deps' 	=> array("validation", "jquery-mask") // DOES NOT WORKING YET!
+			'name' => 'phone-field',
+			'js' => array('scripts/ui.field.phone'),
+			'deps' => array("validation", "jquery-mask"), // DOES NOT WORKING YET!
 		),
 		"date-field" => array(
-			'name'	=> 'date-field',
-			'js'	=> array('scripts/ui.field.phone'),
-			'deps' 	=> array("validation", "jquery-mask") // DOES NOT WORKING YET!
+			'name' => 'date-field',
+			'js' => array('scripts/ui.field.phone'),
+			'deps' => array("validation", "jquery-mask"), // DOES NOT WORKING YET!
 		),
 		'easy-pie-chart' => array(
-			'name'	=> 'easy-pie-chart',
-			'css'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
-			'js'	=> array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart')
+			'name' => 'easy-pie-chart',
+			'css' => array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
+			'js' => array('plugins/jquery-easy-pie-chart/jquery.easy-pie-chart'),
 		),
 		'icheck' => array(
-			'name'	=> 'icheck',
-			'css'	=> array('plugins/icheck/skins/square/_all'),
-			'js'	=> array('plugins/icheck/icheck.min')
+			'name' => 'icheck',
+			'css' => array('plugins/icheck/skins/square/_all'),
+			'js' => array('plugins/icheck/icheck.min'),
 		),
 		"fileupload" => [
-			'name'	=> 'fileupload',
+			'name' => 'fileupload',
 			'css' => ['plugins/fileupload/css/jquery.fileupload'],
-			'js' => ['plugins/fileupload/js/jquery.iframe-transport', 'plugins/fileupload/js/jquery.fileupload']
+			'js' => ['plugins/fileupload/js/jquery.iframe-transport', 'plugins/fileupload/js/jquery.fileupload'],
 		],
 		"jquery-file-upload-image" => array(
-			'name'	=> 'jquery-file-upload-image',
-			'css'	=> array(
+			'name' => 'jquery-file-upload-image',
+			'css' => array(
 				'plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min',
 				'plugins/jquery-file-upload/css/jquery.fileupload',
-				'plugins/jquery-file-upload/css/jquery.fileupload-ui'
+				'plugins/jquery-file-upload/css/jquery.fileupload-ui',
 			),
-			'js'	=> array(
+			'js' => array(
 				'plugins/jquery-file-upload/js/vendor/jquery.ui.widget',
 				//'plugins/jquery-file-upload/js/vendor/tmpl.min',
 				'plugins/jquery-file-upload/js/vendor/load-image.min',
@@ -287,65 +285,65 @@ $di->setShared('environment', function() use ($di) {
 				//'plugins/jquery-file-upload/js/jquery.fileupload-audio',
 				//'plugins/jquery-file-upload/js/jquery.fileupload-video',
 				//'plugins/jquery-file-upload/js/jquery.fileupload-validate',
-				'plugins/jquery-file-upload/js/jquery.fileupload-ui'
-			)
+				'plugins/jquery-file-upload/js/jquery.fileupload-ui',
+			),
 		),
 		'jquery-jcrop' => array(
-			'name'	=> 'jquery-jcrop',
-			'css'	=> array('plugins/jcrop/css/jquery.Jcrop'),
-			'js'	=> array('plugins/jcrop/js/jquery.color', 'plugins/jcrop/js/jquery.Jcrop')
+			'name' => 'jquery-jcrop',
+			'css' => array('plugins/jcrop/css/jquery.Jcrop'),
+			'js' => array('plugins/jcrop/js/jquery.color', 'plugins/jcrop/js/jquery.Jcrop'),
 		),
 		'bootstrap-confirmation' => array(
-			'name'	=> 'bootstrap-confirmation',
-			'js'	=> array(
-				'plugins/bootstrap-confirmation/bootstrap-confirmation'
-			)
+			'name' => 'bootstrap-confirmation',
+			'js' => array(
+				'plugins/bootstrap-confirmation/bootstrap-confirmation',
+			),
 		),
 		'fullcalendar' => array(
-			'name'	=> 'fullcalendar',
-			'css'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar'),
-			'js'	=> array('plugins/fullcalendar/fullcalendar/fullcalendar', 'plugins/fullcalendar/fullcalendar/lang-all')
+			'name' => 'fullcalendar',
+			'css' => array('plugins/fullcalendar/fullcalendar/fullcalendar'),
+			'js' => array('plugins/fullcalendar/fullcalendar/fullcalendar', 'plugins/fullcalendar/fullcalendar/lang-all'),
 		),
 		'bootstrap-editable' => array(
-			'name'	=> 'bootstrap-editable',
-			'css'	=> array('plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable'),
-			'js'	=> array('plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable')
+			'name' => 'bootstrap-editable',
+			'css' => array('plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable'),
+			'js' => array('plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable'),
 		),
 		'autobahn' => array(
 			'name' => 'autobahn',
-			'js' => array('plugins/autobahn/autobahn1')
+			'js' => array('plugins/autobahn/autobahn1'),
 		),
 		'websocket' => array(
 			'name' => 'websocket',
-			'js' => array('plugins/jquery-websocket/jquery.websocket')
+			'js' => array('plugins/jquery-websocket/jquery.websocket'),
 		),
 		'noui-slider' => array(
 			'name' => 'noui-slider',
-			'css'	=> array('plugins/nouislider/nouislider'),
-			'js'	=> array('plugins/nouislider/nouislider')
+			'css' => array('plugins/nouislider/nouislider'),
+			'js' => array('plugins/nouislider/nouislider'),
 
 		),
 		'unslider' => array(
 			'name' => 'unslider',
-			'css'	=> array('plugins/unslider/unslider', 'plugins/unslider/unslider-dots'),
-			'js'	=> array('plugins/unslider/unslider-min')
+			'css' => array('plugins/unslider/unslider', 'plugins/unslider/unslider-dots'),
+			'js' => array('plugins/unslider/unslider-min'),
 
 		),
 		'bxslider' => array(
 			'name' => 'bxslider',
-			'css'	=> array('plugins/bxslider/jquery.bxslider.min'),
-			'js'	=> array('plugins/bxslider/jquery.bxslider.min')
+			'css' => array('plugins/bxslider/jquery.bxslider.min'),
+			'js' => array('plugins/bxslider/jquery.bxslider.min'),
 
 		),
 		'jquery-jscrollpane' => array(
 			'name' => 'query-jscrollpane',
-			'css'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane'),
-			'js'	=> array('plugins/jquery-jscrollpane/jquery.jscrollpane.min')
+			'css' => array('plugins/jquery-jscrollpane/jquery.jscrollpane'),
+			'js' => array('plugins/jquery-jscrollpane/jquery.jscrollpane.min'),
 		),
 		'jquery-builder' => array(
 			'name' => 'jquery-builder',
-			'css'	=> array('plugins/jquery-builder/query-builder.default.min'),
-			'js'	=> array('plugins/jquery-builder/query-builder.standalone.min', 'plugins/jquery-builder/sql-parser')
+			'css' => array('plugins/jquery-builder/query-builder.default.min'),
+			'js' => array('plugins/jquery-builder/query-builder.standalone.min', 'plugins/jquery-builder/sql-parser'),
 		),
 		'pdfjs' => [
 			'name' => 'pdfjs',
@@ -354,40 +352,44 @@ $di->setShared('environment', function() use ($di) {
 		],
 		'underscore-string' => [
 			'name' => 'underscore-string',
-			'js' => ['plugins/underscore/underscore.string.min']
-		]
+			'js' => ['plugins/underscore/underscore.string.min'],
+		],
+		'bootstrap-wizard' => [
+			'name' => 'bootstrap-wizard',
+			'js' => ['plugins/bootstrap-wizard/jquery.bootstrap.wizard'],
+		],
 	);
 
 	// MOVE TO module config.yml!!!
-	// 
+	//
 	/*
-	$config['models/map'] = array(
-		'areas'	=> array(
-			'class' => "Sysclass\Models\Content\Department",
-            'exportMethod'  => array(
-                'toFullArray',
-                array('')
-            )
-        ),
-		'calendar'	=> array(
-			'class' => 'Sysclass\Models\Calendar\Event',
-            'exportMethod'  => array(
-                'toFullArray',
-                array()
-            ),
-		)
-	);
-	*/
-    $configAdapter2 = new Config($config);
+		$config['models/map'] = array(
+			'areas'	=> array(
+				'class' => "Sysclass\Models\Content\Department",
+	            'exportMethod'  => array(
+	                'toFullArray',
+	                array('')
+	            )
+	        ),
+			'calendar'	=> array(
+				'class' => 'Sysclass\Models\Calendar\Event',
+	            'exportMethod'  => array(
+	                'toFullArray',
+	                array()
+	            ),
+			)
+		);
+*/
+	$configAdapter2 = new Config($config);
 
-    $configAdapter->merge($configAdapter2);
+	$configAdapter->merge($configAdapter2);
 
-    return $configAdapter;
+	return $configAdapter;
 });
 
 $environment = $di->get("environment");
 
 // GET DATA FROM SYSTEM RELEASE ENVIRONMENT DATABASE
-$di->setShared("configuration", function() {
-    return new Sysclass\Services\Utils\Settings();
+$di->setShared("configuration", function () {
+	return new Sysclass\Services\Utils\Settings();
 });
