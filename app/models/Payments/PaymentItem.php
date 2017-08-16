@@ -4,6 +4,9 @@ namespace Sysclass\Models\Payments;
 use Plico\Mvc\Model;
 
 class PaymentItem extends Model {
+
+	const IS_COMPLETED = 3;
+
 	public function initialize() {
 		$this->setSource("mod_payment_itens");
 

@@ -125,23 +125,46 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 
 		$data = $this->request->getPost();
 
-		/**
-		 * @todo  VALIDATE THE INPUTS
-		 */
-
-		$response = $this->payments->execute([
-			'payment_id' => $data['paymentID'],
-			'payer_id' => $data['payerID'],
+		$payment = Payment::findFirst([
+			'conditions' => 'enroll_id = ?0 AND user_id = ?1',
+			'bind' => [$enroll_course_id, $this->user->id],
 		]);
 
-		if (!$response['error']) {
-			// CHECK FOR PAYMENT STATUS AND UPDATE OBJECTS
+		if ($payment) {
+			$invoice = PaymentItem::findFirst([
+				'conditions' => 'payment_id = ?0 AND backend_payment_id = ?1',
+				'bind' => [$payment->id, $data['paymentID']],
+				'limit' => 1,
+			]);
 
+			if ($invoice) {
+				$response = $this->payments->execute($invoice, [
+					'payment_id' => $data['paymentID'],
+					'payer_id' => $data['payerID'],
+				]);
+
+				if (!$response['error'] && $response['approved']) {
+
+					$enrollment = $payment->getEnrollment();
+
+					$enrollment->status_id = CourseUsers::IS_PAID;
+					$enrollment->save();
+
+					$url = "/dashboard";
+
+					$this->response->setJsonContent(
+						$this->createRedirectResponse($url, $this->translate->translate("Payment received with sucess."), "success")
+					);
+					return $this->response;
+				}
+			}
 		}
 
-		var_dump($response);
-		exit;
+		$this->response->setJsonContent(
+			$this->createAdviseResponse($this->translate->translate("The system cannot process your payment right now. Please, try again."), "error")
+		);
 
+		return $this->response;
 	}
 
 	/**

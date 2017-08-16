@@ -10,6 +10,9 @@ use Sysclass\Models\Enrollments\Courses as EnrollCourses;
 use Sysclass\Models\Users\User;
 
 class CourseUsers extends Model {
+
+	const IS_PAID = 1;
+
 	public function initialize() {
 		$this->setSource("mod_enroll_course_to_users");
 

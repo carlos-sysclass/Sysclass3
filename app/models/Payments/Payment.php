@@ -11,6 +11,7 @@ class Payment extends Model {
 		$this->setSource("mod_payment");
 
 		$this->belongsTo("enroll_id", "Sysclass\\Models\\Enrollments\\CourseUsers", "id", array('alias' => 'enrollment'));
+		$this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id", array('alias' => 'invoices'));
 
 		$this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id", array('alias' => 'paymentItems'));
 
