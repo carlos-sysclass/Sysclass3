@@ -8,13 +8,20 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		});
 		var baseChangeModelViewClass = app.module("views").baseChangeModelViewClass;
 
+		var paymentLoggerModel = Backbone.Model.extend({
+			url: "/module/payment/items/logger"
+		});
+
+
 		var wizardView = Backbone.View.extend({
 			events: {
 				"click .do-test-action" : "doTest",
+				"change [name='price_currency']" : 'updatePrice',
 				"click .do-payment-action" : "doPayment",
 			},
 			testInfoModule :  app.module("dialogs.tests.info"),
 			initialize : function() {
+				var self = this;
 				this.$el.bootstrapWizard({
 		            'nextSelector': '.button-next',
 		            'previousSelector': '.button-previous',
@@ -31,6 +38,7 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		                */
 		            },
 		            onNext: function (tab, navigation, index) {
+		            	console.warn('onNext', tab, navigation, index);
 		            	/*
 		                success.hide();
 		                error.hide();
@@ -43,6 +51,7 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		                */
 		            },
 		            onPrevious: function (tab, navigation, index) {
+		            	console.warn('onTabShow', tab, navigation, index);
 		            	/*
 		                success.hide();
 		                error.hide();
@@ -51,6 +60,14 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		                */
 		            },
 		            onTabShow: function (tab, navigation, index) {
+		            	console.warn('onTabShow', tab, navigation, index);
+		            	self.$("[name='price_currency']").change();
+
+						if (index == 2) {
+							self.$(".form-actions").hide();
+						} else {
+							self.$(".form-actions").show();
+						}
 		            	/*
 		                var total = navigation.find('li').length;
 		                var current = index + 1;
@@ -129,6 +146,20 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
             	});
 			},
 			*/
+			updatePrice : function(e) {
+				var enroll_id = $SC.getResource("T_ENROLL_ID");
+				var currency_code = $(e.currentTarget).select2("val");
+				var url = "/module/payment/price/" + enroll_id + "/" + currency_code;
+
+				$.ajax({
+					url: url,
+					method: "get",
+					dataType: 'json'
+				}).then(function(data) {
+					console.warn(data);
+					this.$(".price_total").html(data.currency_code + " " + data.price_total)
+				}.bind(this));
+			},
 			doTest : function(e) {
 				if (!this.testInfoModule.started) {
                     this.testInfoModule.start();

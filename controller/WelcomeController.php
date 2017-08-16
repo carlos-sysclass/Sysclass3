@@ -2,6 +2,7 @@
 namespace Sysclass\Controllers;
 
 use Sysclass\Models\Enrollments\CourseUsers;
+use Sysclass\Models\Payments\Currency;
 
 class WelcomeController extends \AbstractSysclassController {
 	// ABSTRACT - MUST IMPLEMENT METHODS!
@@ -12,6 +13,10 @@ class WelcomeController extends \AbstractSysclassController {
 	 *
 	 */
 	public function index($enroll_id) {
+
+		$test_id = 92;
+		$test_is_done = false;
+
 		// LOAD RESOURCES (LIKE INVTARGET)
 
 		// DISPLAY USING THE NEW SYSTEM(OR MAYBE ON 3.7)
@@ -65,8 +70,27 @@ class WelcomeController extends \AbstractSysclassController {
 		$payment = $this->user->loadPaymentAccount($enroll_id);
 
 		//$this->putItem("current_user", $this->user);
+		$this->putItem("enrollment", $enrollment);
 		$this->putItem("program", $program);
 		$this->putItem("payment", $payment);
+
+		$currencies = Currency::find();
+
+		$this->putItem("currencies", $currencies);
+
+		// GET THE TEST GRADE AND SET IF THE USER CAN PASS
+		$execution = $this->user->getExecutions([
+			'conditions' => 'pass = 1 AND test_id = ?0',
+			'bind' => [$test_id],
+		]);
+
+		if ($execution) {
+			$test_is_done = true;
+
+			$this->putItem("execution", $execution->getFirst());
+			$this->putItem("execution_is_done", $test_is_done);
+
+		}
 
 		parent::display('pages/welcome/default.tpl');
 	}

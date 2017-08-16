@@ -3,11 +3,12 @@ namespace Sysclass\Services\Payments\Backend;
 
 use PayPal\Api\Amount;
 use PayPal\Api\Payer;
-use PayPal\Api\Payment;
+use PayPal\Api\Payment as PayPayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use Phalcon\Mvc\User\Component;
+use Sysclass\Models\Payments\Payment;
 use Sysclass\Models\Payments\PaymentItem;
 use Sysclass\Services\Payments\PaymentInterface;
 
@@ -32,7 +33,7 @@ class Paypal extends Component implements PaymentInterface {
 		return self::$apiContext;
 	}
 
-	public function create(PaymentItem $item) {
+	public function create(PaymentItem $item, Payment $payment) {
 
 		$payer = new Payer();
 		$payer->setPaymentMethod("paypal");
@@ -49,7 +50,7 @@ class Paypal extends Component implements PaymentInterface {
 			$itemList->setItems([$item1]);
 		*/
 		$amount = new Amount();
-		$amount->setCurrency("BRL")
+		$amount->setCurrency($payment->currency_code)
 			->setTotal($item->price);
 
 		//A transaction defines the contract of a payment - what is the payment for and who is fulfilling it.
@@ -68,7 +69,7 @@ class Paypal extends Component implements PaymentInterface {
 			->setReturnUrl($baseUrl . "/module/payment/return")
 			->setCancelUrl($baseUrl . "/module/payment/cancel");
 
-		$payment = new Payment();
+		$payment = new PayPayment();
 		$payment->setIntent("sale")
 			->setPayer($payer)
 			->setRedirectUrls($redirectUrls)
@@ -97,7 +98,7 @@ class Paypal extends Component implements PaymentInterface {
 	}
 
 	public function execute(array $data) {
-		$payment = Payment::get($data['payment_id'], $this->getApiContext());
+		$payment = PayPayment::get($data['payment_id'], $this->getApiContext());
 
 		$execution = new PaymentExecution();
 		$execution->setPayerId($data['payer_id']);
@@ -111,7 +112,7 @@ class Paypal extends Component implements PaymentInterface {
 			$result = $payment->execute($execution, $this->getApiContext());
 
 			try {
-				$payment = Payment::get($data['payment_id'], $this->getApiContext());
+				$payment = PayPayment::get($data['payment_id'], $this->getApiContext());
 			} catch (Exception $ex) {
 				return [
 					'error' => true,

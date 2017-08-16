@@ -10,12 +10,17 @@ class Payment extends Model {
 		$this->setSource("mod_payment");
 
 		$this->hasMany("id", "Sysclass\\Models\\Payments\\PaymentItem", "payment_id", array('alias' => 'paymentItems'));
+
 	}
 	/**
 	 * Return the next unpaid invoice, generates if it's not exists
 	 * @return [type] [description]
 	 */
 	public function getNextInvoice() {
+		// CALCULATE BASED ON CURRENCY_CODE
+		var_dump('calculate');
+		exit;
+
 		$item = PaymentItem::findFirst([
 			'conditions' => 'payment_id = ?0 AND status_id IN (1, 4)',
 			'bind' => [$this->id],

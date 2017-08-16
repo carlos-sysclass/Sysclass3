@@ -1,6 +1,7 @@
 <?php
 namespace Sysclass\Modules\Payment;
 
+use Sysclass\Models\Content\ProgramPrice;
 use Sysclass\Models\Enrollments\CourseUsers;
 use Sysclass\Models\Payments\Payment;
 use Sysclass\Models\Payments\PaymentItem;
@@ -89,7 +90,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 
 		// SEND REQUEST TO THE
 		//
-		$response = $this->payments->create($invoice);
+		$response = $this->payments->create($invoice, $payment);
 
 		if ($response['error']) {
 
@@ -153,8 +154,6 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 		if ($this->request->isAjax()) {
 
 		} else {
-
-			//if ($result['continue']) {
 			switch ($result['action']) {
 			case "redirect":{
 					$this->response->redirect($result['redirect']);
@@ -165,41 +164,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 					$this->redirect("/module/payment/view", $this->translate->translate($result['message']), "warning");
 				}
 			}
-			//}
 		}
-		/*
-
-			            // EXEMPLO DE RETONO DE MENSAGEM
-			            if (!$result) { /// CASO DÊ ERRO
-			                $this->response->setJsonContent(
-			                    $this->createAdviseResponse(
-			                        $this->translate->translate("A problem ocurred when tried to save you data. Please, try again."),
-			                        "warning"
-			                    )
-			                );
-			            } else {
-			            // EXEMPLO DE RETONO DE MENSAGEM COM REDIRECIONAMENTO
-			                $this->response->setJsonContent(
-			                    $this->createRedirectResponse(
-			                        $result
-			                    )
-			                );
-			            }
-			        } else {
-
-			            if (!$result) { /// CASO DÊ ERRO
-			                $this->redirect("/module/extrato/view", "Erro mágico", "error");
-			            } else {
-			                $this->response->redirect($result);
-			            }
-
-			            //
-			            //header("location:".$result);
-			            //echo "---".$result;
-			            //echo "<meta http-equiv=refresh content='0;URL=$result'>";
-
-			        }
-		*/
 	}
 
 	//função que chama o paypal
@@ -280,75 +245,65 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 	/**
 	 * [ add a description ]
 	 *
-	 * @Get("/confirm/{payment_itens_id}")
+	 * @Get("/price/{enroll_id}/{currency_code}")
 	 */
+	public function getPriceRequest($enroll_id, $currency_code) {
+		$payment = Payment::findFirst([
+			'conditions' => 'enroll_id = ?0 AND user_id = ?1',
+			'bind' => [$enroll_id, $this->user->id],
+		]);
 
-	/*confirm/{backend}/{payment_itens_id}")*/
-	/*public function doExpressCheckoutPaymentPaymentRequest($payment_itens_id) {
+		if (!$payment) {
+			$enroll = CourseUsers::findFirst([
+				'conditions' => 'id = ?0 AND user_id = ?1',
+				'bind' => [$enroll_id, $this->user->id],
+			]);
 
-		            $token   = $this->request->getQuery('token');
-		            $PayerID = $this->request->getQuery('PayerID');
+			if ($enroll && $program = $enroll->getProgram()) {
+				$payment = new Payment();
+				$payment->user_id = $this->user->id;
+				$payment->enroll_id = $enroll_id;
+				$payment->price_total = $program->price_total;
+				$payment->price_step_units = $program->price_step_units;
+				$payment->price_step_type = $program->price_step_type;
+				//$payment->currency_code = $enroll->enroll;
 
-		           $continue = $this->payment->confirmPayment(array(
-		            'backend' => $backend,
-		            'payment_itens_id' => $payment_itens_id,
-		            'args' => $this->request->getQuery()
-		        ));
+				$payment->save();
+			}
+		} else {
+			$enroll = CourseUsers::findFirst([
+				'conditions' => 'id = ?0 AND user_id = ?1',
+				'bind' => [$enroll_id, $this->user->id],
+			]);
+		}
 
-		        $continue = true;
-		        if ($continue) {
-		            $this->payment->confirmPayment(array(
-		                'backend'          => $backend,
-		                'payment_itens_id' => $payment_itens_id,
-		                'args'             => $this->request->getQuery()
-		            ));
-		            echo "<script>alert('Pagamento Confirmado');</script>";
-		            echo "<meta http-equiv=refresh content='0;URL=http://local.sysclass.com/dashboard'>";
-		        } else {
-		            echo "Nao foi possivel confirmar o pagamento";
-		        }
-	*/
+		if ($enroll) {
+			$price = ProgramPrice::findFirst([
+				'conditions' => 'program_id = ?0 AND currency_code = ?1',
+				'bind' => [$enroll->course_id, $currency_code],
+			]);
 
-	/* IWidgetContainer */
-	/**
-	 * [getWidgets description]
-	 * @param  array  $widgetsIndexes [description]
-	 * @return [type]                 [description]
-	 * @implemen
-	 */
-	/*
-		    public function getWidgets($widgetsIndexes = array()) {
-		        if (in_array('payment.overview', $widgetsIndexes)) {
+			if ($price) {
+				$enroll->currency_code = $currency_code;
+				$enroll->save();
 
-		            $conditions = "id = ?1";
-		            $parameters = array(1 => $id);
-		            $items      = PaymentTransacao::find(
-		                        array(
-		                            $conditions,
-		                            "bind" => $parameters
-		                             )
-		                        );
-		            $data = array();
-		            //$items->toArray();
+				$payment->currency_code = $currency_code;
+				$payment->save();
 
-		            foreach ($items as $linha) {
-		                echo    $data = $linha->descricao;
-		            }
+				$this->response->setJsonContent($price->toArray());
+				return $this->response;
+			} else {
+				$this->response->setJsonContent(
+					$this->createAdviseResponse($this->translate->translate("No price for selected currency"), "warning")
+				);
+				return true;
+			}
+		}
+		$this->response->setJsonContent(
+			$this->createAdviseResponse($this->translate->translate("A problem ocurred when retrieving your data. Please, try again."), "error")
+		);
+		return true;
 
-		            //criar uma array para passar os parametros na outra pagina
-		             //
-		            return array(
-		             'payment.overview' => array(
-		                    'id'        => 'payment-panel',
-		                    'type'      => 'payment',
-		                    'title'     => 'Payment User',
-		                    'template'  => $this->template("widgets/overview"),
-		                    'panel'     => true,
-		                    'data'      => $data,
-		                    'box'       => 'blue'
-		                )
-		            );
-		        }
-		    }
-	*/
+	}
+
 }

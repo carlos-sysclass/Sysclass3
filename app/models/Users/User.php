@@ -33,6 +33,19 @@ class User extends Model {
 			array('alias' => 'Enrollments')
 		);
 
+		$this->hasMany(
+			"id",
+			"Sysclass\\Models\\Content\\Tests\\Execution",
+			"user_id",
+			array(
+				'alias' => 'Executions',
+				'params' => array(
+					'order' => '[Sysclass\Models\Content\Tests\Execution].try_index ASC',
+				),
+
+			)
+		);
+
 		/**
 		 * @deprecated 3.5 Use UserPrograms alias
 		 */

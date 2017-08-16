@@ -4,6 +4,7 @@ namespace Sysclass\Services\Payments;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\User\Component;
+use Sysclass\Models\Payments\Payment;
 use Sysclass\Models\Payments\PaymentItem;
 use Sysclass\Models\Payments\PaymentTransacao;
 
@@ -35,7 +36,12 @@ class Adapter extends Component implements PaymentInterface {
 					'limit' => 1,
 				]);
 
+				// CHECK IF THE TEST IS ON ENROLL PRE-REQUISITE AND ALLOWS IF THE
+
 				if ($enrollments->count() > 0) {
+					if (in_array($this->dispatcher->getControllerName(), ['tests_module', 'settings_module'])) {
+						return true;
+					}
 
 					$this->response->redirect("/welcome/" . $enrollments->getFirst()->id);
 					return true;
@@ -54,8 +60,8 @@ class Adapter extends Component implements PaymentInterface {
 		return true;
 	}
 
-	public function create(PaymentItem $item) {
-		$response = $this->backend->create($item);
+	public function create(PaymentItem $item, Payment $payment) {
+		$response = $this->backend->create($item, $payment);
 
 		return $response;
 	}

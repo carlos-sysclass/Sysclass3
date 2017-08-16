@@ -1,11 +1,12 @@
 <?php
 namespace Sysclass\Services\Payments;
 
+use Sysclass\Models\Payments\Payment;
 use Sysclass\Models\Payments\PaymentItem;
 
 //inicia a transacao
 interface PaymentInterface {
-	public function create(PaymentItem $item);
+	public function create(PaymentItem $item, Payment $payment);
 	public function execute(array $data);
 
 	//public function initiatePayment(array $data);
