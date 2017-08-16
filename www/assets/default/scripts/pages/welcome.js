@@ -129,8 +129,8 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
             			return paypal.request.post(EXECUTE_PAYMENT_URL, {
                 			paymentID: data.paymentID,
             			    payerID:   data.payerID
-			            }).then(function() {
-
+			            }).then(function(data) {
+							app.module("ui").handleAction(data._response_);
             			});
         			}
 			    }, '#paypal-button');

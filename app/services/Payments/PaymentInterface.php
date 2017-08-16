@@ -7,7 +7,7 @@ use Sysclass\Models\Payments\PaymentItem;
 //inicia a transacao
 interface PaymentInterface {
 	public function create(PaymentItem $item, Payment $payment);
-	public function execute(array $data);
+	public function execute(PaymentItem $item, array $data);
 
 	//public function initiatePayment(array $data);
 	//public function authorizePayment(array $data);

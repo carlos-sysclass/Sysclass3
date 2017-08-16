@@ -68,10 +68,21 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 			]);
 
 			if ($enroll && $program = $enroll->getProgram()) {
+				$price = ProgramPrice::findFirst([
+					'conditions' => 'program_id = ?0 AND currency_code = ?1',
+					'bind' => [$program->id, $enroll->currency_code],
+				]);
+
 				$payment = new Payment();
 				$payment->user_id = $this->user->id;
 				$payment->enroll_id = $enroll_course_id;
-				$payment->price_total = $program->price_total;
+				if ($price) {
+					$payment->price_total = $price->price_total;
+				} else {
+					$payment->price_total = $program->price_total;
+				}
+				$payment->currency_code = $enroll->currency_code;
+
 				$payment->price_step_units = $program->price_step_units;
 				$payment->price_step_type = $program->price_step_type;
 
@@ -114,18 +125,46 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 
 		$data = $this->request->getPost();
 
-		/**
-		 * @todo  VALIDATE THE INPUTS
-		 */
-
-		$response = $this->payments->execute([
-			'payment_id' => $data['paymentID'],
-			'payer_id' => $data['payerID'],
+		$payment = Payment::findFirst([
+			'conditions' => 'enroll_id = ?0 AND user_id = ?1',
+			'bind' => [$enroll_course_id, $this->user->id],
 		]);
 
-		var_dump($response);
-		exit;
+		if ($payment) {
+			$invoice = PaymentItem::findFirst([
+				'conditions' => 'payment_id = ?0 AND backend_payment_id = ?1',
+				'bind' => [$payment->id, $data['paymentID']],
+				'limit' => 1,
+			]);
 
+			if ($invoice) {
+				$response = $this->payments->execute($invoice, [
+					'payment_id' => $data['paymentID'],
+					'payer_id' => $data['payerID'],
+				]);
+
+				if (!$response['error'] && $response['approved']) {
+
+					$enrollment = $payment->getEnrollment();
+
+					$enrollment->status_id = CourseUsers::IS_PAID;
+					$enrollment->save();
+
+					$url = "/dashboard";
+
+					$this->response->setJsonContent(
+						$this->createRedirectResponse($url, $this->translate->translate("Payment received with sucess."), "success")
+					);
+					return $this->response;
+				}
+			}
+		}
+
+		$this->response->setJsonContent(
+			$this->createAdviseResponse($this->translate->translate("The system cannot process your payment right now. Please, try again."), "error")
+		);
+
+		return $this->response;
 	}
 
 	/**
@@ -287,6 +326,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 				$enroll->currency_code = $currency_code;
 				$enroll->save();
 
+				// ON CAHNGE PRICE CURRENT, RECALCULATE INVOICE VALUES
 				$payment->currency_code = $currency_code;
 				$payment->save();
 

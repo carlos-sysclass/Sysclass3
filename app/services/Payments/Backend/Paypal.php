@@ -97,7 +97,7 @@ class Paypal extends Component implements PaymentInterface {
 		];
 	}
 
-	public function execute(array $data) {
+	public function execute(PaymentItem $item, array $data) {
 		$payment = PayPayment::get($data['payment_id'], $this->getApiContext());
 
 		$execution = new PaymentExecution();
@@ -113,6 +113,8 @@ class Paypal extends Component implements PaymentInterface {
 
 			try {
 				$payment = PayPayment::get($data['payment_id'], $this->getApiContext());
+				// ["created", "approved", "failed", "partially_completed", "in_progress"]
+				$approved = $payment->getState() == "approved";
 			} catch (Exception $ex) {
 				return [
 					'error' => true,
@@ -129,6 +131,7 @@ class Paypal extends Component implements PaymentInterface {
 		return [
 			'error' => false,
 			'payment' => $payment,
+			'approved' => $approved,
 		];
 	}
 

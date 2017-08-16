@@ -66,8 +66,17 @@ class Adapter extends Component implements PaymentInterface {
 		return $response;
 	}
 
-	public function execute(array $data) {
-		return $response = $this->backend->execute($data);
+	public function execute(PaymentItem $item, array $data) {
+		$response = $this->backend->execute($item, $data);
+
+		if (!$response['error'] && $response['approved']) {
+			// UPDATE THE PAYMENTITEM
+			$item->status_id = PaymentItem::IS_COMPLETED;
+			$item->save();
+		} else {
+		}
+
+		return $response;
 	}
 
 	/* PROXY/ADAPTER PATTERN */
