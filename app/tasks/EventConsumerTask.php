@@ -36,8 +36,8 @@ class EventConsumerTask extends \Phalcon\CLI\Task {
 				}
 
 				$status = $this->mail->send(
-					//$user->email,
-					"andre@kucaniz.com",
+					$user->email,
+					//"andre@kucaniz.com",
 					$this->configuration->get("signup_email_subject"),
 					$template,
 					true,
