@@ -2,6 +2,7 @@
 namespace Sysclass\Controllers;
 
 use Sysclass\Models\Enrollments\CourseUsers;
+use Sysclass\Models\Enrollments\ProgramTests;
 use Sysclass\Models\Payments\Currency;
 
 class WelcomeController extends \AbstractSysclassController {
@@ -14,7 +15,7 @@ class WelcomeController extends \AbstractSysclassController {
 	 */
 	public function index($enroll_id) {
 
-		$test_id = 92;
+		$test_id = 94;
 		$test_is_done = false;
 
 		// LOAD RESOURCES (LIKE INVTARGET)
@@ -79,18 +80,52 @@ class WelcomeController extends \AbstractSysclassController {
 		$this->putItem("currencies", $currencies);
 
 		// GET THE TEST GRADE AND SET IF THE USER CAN PASS
-		$execution = $this->user->getExecutions([
-			'conditions' => 'pass = 1 AND test_id = ?0',
-			'bind' => [$test_id],
+		//
+		$preTests = ProgramTests::find([
+			'conditions' => 'program_id = ?0',
+			'bind' => [$enrollment->course_id],
 		]);
 
-		if ($execution) {
-			$test_is_done = true;
+		$testsInfo = [];
 
-			$this->putItem("execution", $execution->getFirst());
-			$this->putItem("execution_is_done", $test_is_done);
+		if ($preTests->count() == 0) {
+			$has_test = false;
+			$has_undone_test = false;
+			//$test_is_done = true;
+		} else {
+			$has_test = true;
+			$has_undone_test = false;
+
+			foreach ($preTests as $preTest) {
+				if ($test = $preTest->getTest()) {
+					$item = [
+						'test' => $test->toArray(),
+						'done' => false,
+					];
+
+					$execution = $this->user->getExecutions([
+						'conditions' => 'pass = 1 AND test_id = ?0',
+						'bind' => [$test->id],
+					]);
+
+					if (count($execution) > 0) {
+						$item['done'] = true;
+						$item['grade'] = $execution->getFirst()->user_grade;
+					} else {
+						$has_undone_test = true;
+					}
+
+					$testsInfo[] = $item;
+				}
+			}
 
 		}
+		//var_dump($testsInfo);
+		//exit;
+
+		$this->putItem("has_test", $has_test);
+		$this->putItem("has_undone_test", $has_undone_test);
+		$this->putItem("tests_info", $testsInfo);
 
 		parent::display('pages/welcome/default.tpl');
 	}

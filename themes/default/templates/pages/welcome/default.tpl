@@ -9,97 +9,105 @@
         </div>
     </div>
     <div class="portlet-body form bordered">
-            <div class="form-wizard">
-                <div class="form-body">
-                    <ul class="nav nav-pills nav-justified steps">
-                        <li>
-                            <a href="#tab1" data-toggle="tab" class="step">
-                                <span class="number"> 1 </span>
-                                <span class="desc">
-                                    <i class="fa fa-check"></i> Pre Requisites </span>
-                            </a>
-                        </li>
-                        {if $T_EXECUTION_IS_DONE}
-                        <li>
-                            <a href="#tab2" data-toggle="tab" class="step">
-                                <span class="number"> 2 </span>
-                                <span class="desc">
-                                    <i class="fa fa-check"></i> Payment </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#tab3" data-toggle="tab" class="step">
-                                <span class="number"> 3 </span>
-                                <span class="desc">
-                                    <i class="fa fa-check"></i> Confirm </span>
-                            </a>
-                        </li>
-                        {/if}
-                    </ul>
-                    <div id="bar" class="progress progress-striped" role="progressbar">
-                        <div class="progress-bar progress-bar-success"> </div>
+        <div class="form-wizard">
+            <div class="form-body">
+                <ul class="nav nav-pills nav-justified steps">
+                    {if $T_HAS_TEST} 
+                    <li>
+                        <a href="#tab1" data-toggle="tab" class="step">
+                            <span class="number"> 1 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> Pre Requisites </span>
+                        </a>
+                    </li>
+                    {/if}
+                    {if !$T_HAS_UNDONE_TEST}
+                    <li>
+                        <a href="#tab2" data-toggle="tab" class="step">
+                            <span class="number"> 2 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> Payment </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab3" data-toggle="tab" class="step">
+                            <span class="number"> 3 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> Confirm </span>
+                        </a>
+                    </li>
+                    {/if}
+                </ul>
+                <div id="bar" class="progress progress-striped" role="progressbar">
+                    <div class="progress-bar progress-bar-success"> </div>
+                </div>
+                <div class="tab-content">
+
+                    <div class="alert alert-danger display-none">
+                        <button class="close" data-dismiss="alert"></button>
+                        You have some form errors. Please check below. 
                     </div>
-                    <div class="tab-content">
-
-                        <div class="alert alert-danger display-none">
-                            <button class="close" data-dismiss="alert"></button>
-                            You have some form errors. Please check below. 
-                        </div>
-                        <div class="alert alert-success display-none">
-                            <button class="close" data-dismiss="alert"></button>
-                            Your form validation is successful! 
-                        </div>
-
-                        <div class="tab-pane" id="tab1">
-                            <form class="form-horizontal" action="#" id="submit_form" method="POST">
-                                <div class="form-body">
-                                    <h4 class="form-section">Your Info:</h4>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Name:"}</label>
-                                        <div class="col-md-4">
-                                            <p class="form-control-static bold">{$T_CURRENT_USER['name']} {$T_CURRENT_USER['surname']}</p>
-                                        </div>
+                    <div class="alert alert-success display-none">
+                        <button class="close" data-dismiss="alert"></button>
+                        Your form validation is successful! 
+                    </div>
+                    {if $T_HAS_TEST}
+                    <div class="tab-pane" id="tab1">
+                        <form class="form-horizontal" action="#" id="submit_form" method="POST">
+                            <div class="form-body">
+                                <h4 class="form-section">Your Info:</h4>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">{translateToken value="Name:"}</label>
+                                    <div class="col-md-4">
+                                        <p class="form-control-static bold">{$T_CURRENT_USER['name']} {$T_CURRENT_USER['surname']}</p>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Communication in English:"}</label>
-                                        <div class="col-md-4">
-                                            <p class="form-control-static bold">
-                                            {$T_USER_ATTRS['english_communication']}</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Course:</label>
-                                        <div class="col-md-4">
-                                            <p class="form-control-static bold" data-display="username">{$T_PROGRAM->name}</p>
-                                        </div>
-                                    </div>
-
-                                    {if $T_EXECUTION_IS_DONE}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">English Test Grade:</label>
-                                            <div class="col-md-4">
-                                                <p class="form-control-static bold">{$T_EXECUTION->user_grade}</p>
-                                            </div>
-                                        </div>
-                                    {else}
-                                        <div class="alert alert-info tips-container">
-                                            <span class="btn btn-sm" style="cursor: default;">
-                                                <i class="fa fa-info-circle fa-lg"></i>
-                                                In order to complete the enrollment, you need to do a English Test and get at least a 70 grade
-                                            </span>
-                                            <div class="pull-right">
-                                                <a href="javascript:;" class="btn btn-default btn-sm do-test-action" data-test-id="92">
-                                                <i class="fa fa-list-ol "></i>
-                                                Take the test Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    {/if}
                                 </div>
-                            </form>
-                        </div>
-                        {if $T_EXECUTION_IS_DONE}
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">{translateToken value="Communication in English:"}</label>
+                                    <div class="col-md-4">
+                                        <p class="form-control-static bold">
+                                        {$T_USER_ATTRS['english_communication']}</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Course:</label>
+                                    <div class="col-md-4">
+                                        <p class="form-control-static bold" data-display="username">{$T_PROGRAM->name}</p>
+                                    </div>
+                                </div>
+
+                                {if $T_HAS_TEST}
+                                    {foreach $T_TESTS_INFO as $testinfo}
+                                        {if $testinfo['done']}
+                                        <div class="form-group">
+                                                <label class="control-label col-md-3">{$testinfo['test']['name']} :</label>
+                                                <div class="col-md-4">
+                                                    <p class="form-control-static bold">{$testinfo['grade']} <i class="fa fa-check font-green"></i></p>
+                                                </div>
+                                            </div>
+                                        {else}
+                                            <div class="alert alert-info tips-container">
+                                                <span class="btn btn-sm" style="cursor: default;">
+                                                    <i class="fa fa-info-circle fa-lg"></i>
+                                                    In order to complete the enrollment, you need to complete the following test: {$testinfo['test']['name']}
+                                                </span>
+                                                <div class="pull-right">
+                                                    <a href="javascript:;" class="btn btn-default btn-sm do-test-action" data-test-id="{$testinfo['test']['id']}">
+                                                    <i class="fa fa-list-ol "></i>
+                                                    Take the test Now
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {/if}
+
+                                    {/foreach}
+                                {/if}
+                            </div>
+                        </form>
+                    </div>
+                    {/if}
+                    {if !$T_HAS_UNDONE_TEST}
                         <div class="tab-pane" id="tab2">
                             <form class="form-horizontal" action="#" id="submit_form" method="POST">
                                 <div class="form-body">
@@ -170,13 +178,18 @@
                                     </div>
 
 
-                                    {if $T_EXECUTION_IS_DONE}
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">English Test Grade:</label>
-                                            <div class="col-md-4">
-                                                <p class="form-control-static bold">{$T_EXECUTION->user_grade}</p>
-                                            </div>
-                                        </div>
+                                    {if $T_HAS_TEST}
+                                        {foreach $T_TESTS_INFO as $testinfo}
+                                            {if $testinfo['done']}
+                                            <div class="form-group">
+                                                    <label class="control-label col-md-3">{$testinfo['test']['name']} :</label>
+                                                    <div class="col-md-4">
+                                                        <p class="form-control-static bold">{$testinfo['grade']} <i class="fa fa-check font-green"></i></p>
+                                                    </div>
+                                                </div>
+                                            {/if}
+
+                                        {/foreach}
                                     {/if}
 
 
@@ -210,30 +223,26 @@
                                 </div>
 
 
-
-                                    <div class="text-center">
-                                        <div id="paypal-button"></div>
-                                    </div>
+                                <div class="text-center">
+                                    <div id="paypal-button"></div>
                                 </div>
                             </form>
-
                         </div>
-                        {/if}
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <div class="text-center">
-                        <a href="javascript:;" class="btn btn-default button-previous">
-                            <i class="fa fa-angle-left"></i> Back 
-                        </a>
-                        <a href="javascript:;" class="btn btn-default button-next">
-                            Continue <i class="fa fa-angle-right"></i>
-                        </a>
-
-                    </div>
+                    {/if}
                 </div>
             </div>
-        
+            <div class="form-actions">
+                <div class="text-center">
+                    <a href="javascript:;" class="btn btn-default button-previous">
+                        <i class="fa fa-angle-left"></i> Back 
+                    </a>
+                    <a href="javascript:;" class="btn btn-default button-next">
+                        Continue <i class="fa fa-angle-right"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
