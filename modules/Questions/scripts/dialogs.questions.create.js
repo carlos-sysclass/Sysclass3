@@ -37,18 +37,24 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
 
                 var self = this;
 
-                //mod.setModel(this.model);
-                
-                this.listenTo(this.model, "sync", function() {
-                    mod.trigger("created.question", this.model);
-                });
-                
                 this.on("complete:save", this.close.bind(this));
             },
             open : function() {
+                if (this.model) {
+                    this.model.unset("id");
+                    this.model.destroy();
+                    this.model = new mod.models.question();
+                
+                    this.listenTo(this.model, "sync", function() {
+                        mod.trigger("created.question", this.model);
+                    });
+                }
+                console.warn('open', this.model.toJSON());
                 this.model.unset("id");
                 this.model.unset("name");
                 this.model.unset("question");
+                this.model.unset("simple_choice");
+                this.model.unset("multiple_choice");
 
                 this.oForm.get(0).reset();
                 this.oForm.find(".select2-me").select2("val", "");
@@ -73,6 +79,8 @@ $SC.module("dialogs.questions.create", function(mod, app, Backbone, Marionette, 
                     this.bindViewEvents();
                     this.$el.modal("show");
                 }.bind(this));
+
+                console.warn('open2', this.model.toJSON());
                
             },
             close : function() {

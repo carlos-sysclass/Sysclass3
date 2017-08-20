@@ -148,6 +148,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             },
             update : function(e) {
                 this.model.set("choice", $(e.currentTarget).val());
+                this.parent.updateModel();
             },
             setCorrect : function() {
                 this.model.set("answer", true);
@@ -192,6 +193,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 this.listenTo(this.collection, "add", this.addOne.bind(this));
                 this.listenTo(this.collection, "reset", this.render.bind(this));
                 this.listenTo(this.collection, "update", this.updateModel.bind(this));
+                this.listenTo(this.collection, "sort", this.updateModel.bind(this));
 
                 //this.listenTo(this.model, "before:save", this.updateModel.bind(this));
                 //mod.testol = this.collection;
@@ -223,6 +225,8 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                     /* helper : 'original',  */
                     update : function( event, ui ) {
                         var order = $(this).sortable("toArray", {attribute : "data-order"});
+
+                        console.warn(order);
 
                         for(var i = 0; i < self.collection.size(); i++) {
                             self.collection.at(order[i]).set("index", i);

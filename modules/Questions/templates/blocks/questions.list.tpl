@@ -56,8 +56,13 @@
         <div class="col-md-12">
             <ul class="list-group ui-sortable margin-bottom-10 items-container">
             </ul>
-
+            <!--
             <a class="btn btn-sm btn-link create-question" data-target="#questions-select-modal" data-toogle="modal">
+                <i class="fa fa-plus"></i>
+                {translateToken value="Create question"}
+            </a>
+            -->
+            <a href="/module/questions/add" class="btn btn-sm btn-link" data-toogle="modal">
                 <i class="fa fa-plus"></i>
                 {translateToken value="Create question"}
             </a>
