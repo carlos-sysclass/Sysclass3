@@ -1,5 +1,12 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
+<style>
+li.list-item {
+    border-bottom: 1px solid #ddd;
+    margin: 2px 0 10px;
+    padding-bottom: 4px;
+}
+</style>
 <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
 	<div class="form-body">
 		<ul class="nav nav-tabs">
@@ -86,18 +93,20 @@
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="question" rows="6" placeholder="{translateToken value="Put your question here..."}" data-rule-required="true"></textarea>
 				</div>
 
-                            <h5 class="form-section margin-bottom-10 margin-top-10">
-                                <i class="icon-globe"></i>
-                                {translateToken value="Files"}
+				<div id="question-files-container">
+	                <h5 class="form-section margin-bottom-10 margin-top-10">
+	                    <i class="icon-globe"></i>
+	                    {translateToken value="Files"}
 
-                                <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="file">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                    {translateToken value="Files"}
-                                </a>
-                            </h5>
-                            <div class="row content-subtitles">
-                                <ul class="list-group margin-top-10 col-md-12 subtitle-container"></ul>
-                            </div>
+	                    <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="file">
+	                        <i class="fa fa-plus" aria-hidden="true"></i>
+	                        {translateToken value="Files"}
+	                    </a>
+	                </h5>
+	                <div class="row content-subtitles">
+	                    <ul class="list-group margin-top-10 col-md-12 files-container"></ul>
+	                </div>
+                </div>
 
 				<div class="question-type-container" id="question-type-container">
 					<!--
@@ -233,4 +242,42 @@
     </div>
 </script>
 
+<script type="text/template" id="content-file-item">
+    <select class="select2-me form-control" name="locale_code" data-placeholder="{translateToken value="Language"}" style="max-width: 150px;">
+        <option></option>
+        {foreach $T_LANGUAGES as $lang}
+            <option value="{$lang.locale_code}" data-country="{$lang.country_code}" <% if (model.locale_code == '{$lang.locale_code}') { %>selected="selected"<% } %>>{$lang.local_name}</option>
+        {/foreach}
+    </select>
+    <a href="<%= model.url %>">
+        <%= model.name %>
+    </a>
+
+    <div class="list-file-item-options">
+    	<!--
+        <a class="btn btn-sm btn-default tooltips auto-translate-subtitle" data-original-title="{translateToken value='Translate'}" data-placement="top" data-container="body" href="javascript: void(0);" style="display: inline-block;" data-
+            >
+                <i class="icon-globe"></i>
+        </a>
+        -->
+
+        <div class="tooltips" data-original-title="{translateToken value='Delete'}" data-placement="top" data-container="body" style="display: inline-block;">
+            <a class="btn btn-sm btn-danger delete-item" href="javascript: void(0);" data-content-id="<%= model.id %>"
+                    data-toggle="confirmation"
+                    data-original-title="{translateToken value="Are you sure?"}"
+                    data-placement="left"
+                    data-singleton="true"
+                    data-popout="true"
+                    data-btn-ok-icon="fa fa-trash"
+                    data-btn-ok-class="btn-sm btn-danger"
+                    data-btn-cancel-icon="fa fa-times"
+                    data-btn-cancel-class="btn-sm btn-warning"
+                    data-btn-ok-label="{translateToken value="Yes"}"
+                    data-btn-cancel-label="{translateToken value="No"}"
+                >
+                    <i class="fa fa-trash"></i>
+            </a>
+        </div>
+    </div>
+</script>
 {/block}

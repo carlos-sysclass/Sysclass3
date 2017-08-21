@@ -87,7 +87,9 @@ crud:
 models:
   me:
     class: Sysclass\Models\Courses\Questions\Question
-    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
+    exportMethod: ["toFullArray", ["Department", "Type", "Difficulty", "Files"]]
+  file:
+    class: Sysclass\Models\Content\Questions\QuestionFile
   'lesson-content':
     class: Sysclass\Models\Courses\Questions\Question
     exportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]

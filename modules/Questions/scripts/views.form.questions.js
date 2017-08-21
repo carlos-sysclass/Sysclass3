@@ -16,6 +16,12 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
             model : formView.model,
             form : formView
         });
+
+        mod.questionFilesView = new mod.questionFilesViewClass({
+            el : "#question-files-container",
+            model : formView.model,
+            form : formView
+        });
     }
 
     this.on("start", function(opt) {
@@ -288,7 +294,6 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
         mod.questionDetailViewClass = Backbone.View.extend({
             subviews : {},
-            libraryModule : app.module("dialogs.storage.library"),
             initialize: function(opt) {
                 console.info('views.form.questions/questionDetailViewClass::initialize');
 
@@ -296,73 +301,12 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
                 this.listenTo(this.model, "sync", this.updateChild.bind(this));
                 this.listenTo(this.model, "change:type_id", this.render.bind(this));
-
-                this.parentView.$(".content-addfile").on("click", this.openStorageLibrary.bind(this));
-
-
-                /*
-                this.listenTo(this.parentView, "before:save", function(model) {
-                    alert(1);
-                    return true;
-                });
-                */
-
-                //app.module("ui").refresh(this.$el);
-                //this.listenTo(this.model, "before:save", this.updateChildModel.bind(this));
-            },
+           },
             /*
             request : function(a,b,c,d,e) {
                 a.set("a", true);
             },
             */
-            openStorageLibrary : function(e) {
-                var self = this;
-                if (!this.libraryModule.started) { 
-                    this.libraryModule.start();
-                }
-                var path = $(e.currentTarget).data("library-path");
-                var type = $(e.currentTarget).data("library-type");
-
-                this.libraryModule.setPath(path);
-
-                this.libraryModule.getValue(function(files) {
-
-                    // SAVE THE FILE REFERENCE IN DATABASE
-                    var modelClass = app.module("models").dropbox().item;
-
-                    for(var i in files) {
-                        var model = files[i];
-                        model.set("upload_type", _.isEmpty(type) ? "lesson" : type);
-                        model.save(null, {
-                            success : function(model, data, options) {
-                                console.warn(model, data, options);
-                                /*
-                                // SAVE THE FILE UNDER THE VIEW MODEL
-                                var contentFileModelClass = app.module("models").content().item.file;
-
-                                var contentFileModel = new contentFileModelClass({
-                                    title : data.name,
-                                    info : JSON.stringify(data),
-                                    files: [data]
-                                });
-
-                                this.collection.add(contentFileModel);
-
-                                contentFileModel.save(null, {
-                                    success : function() {
-                                        //contentFileModel.addFile(data)
-                                    }
-                                });
-                                */
-                               
-
-                                //this.model.addFile(data);
-                            }.bind(self)
-                        });
-                    }
-
-                });
-            },
             updateChild : function(model) {
                 console.info('views.form.questions/questionDetailViewClass::updateChild');
                 this.parentView.render();
@@ -408,6 +352,167 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 this.subviews = {};
             }
         });
+
+        mod.questionFileItemViewClass = Backbone.View.extend({
+            events : {
+                "confirmed.bs.confirmation .delete-item"    : "delete",
+                "change :input[name='locale_code']" : "updateLocale"
+            }, 
+            template: _.template($("#content-file-item").html(), null, {variable: 'model'}),
+            tagName : "li",
+            className : "list-item",
+            render : function() {
+                if (this.model) {
+                    this.$el.html(this.template(this.model.toJSON()));
+                    /*
+
+                    console.warn(this.model.toJSON());
+                    console.warn(this.model.get("locale_code"));
+
+                    if (_.isEmpty(this.model.get("locale_code"))) {
+
+                        this.$(":input[name='locale_code']").select2("val", "");
+                    }
+                    */
+                }
+                return this;
+            },
+            updateLocale : function(e, data) {
+                console.info('views.form.questions/questionFileItemViewClass::updateLocale');
+                console.warn(e, data);
+                if (e.added) {
+                    this.model.set("locale_code", e.added.id);
+                    //this.model.save();
+                }
+            },
+            delete : function() {
+                this.model.collection.remove(this.model);
+                this.remove();
+            }
+        });
+
+        mod.questionFilesViewClass = Backbone.View.extend({
+            subviews : {},
+            childViews : [],
+            libraryModule : app.module("dialogs.storage.library"),
+            events : {
+                "click .content-addfile" : "openStorageLibrary"
+            },
+            initialize: function(opt) {
+                console.info('views.form.questions/questionFilesViewClass::initialize');
+                // CREATE FILE COLLECTION FORM "files"
+                this.parentView = opt.form;
+
+                this.listenTo(this.model, "sync", this.updateCollection.bind(this));
+
+                /*
+                this.listenTo(this.parentView, "before:save", function(model) {
+                    alert(1);
+                    return true;
+                });
+                */
+
+                //app.module("ui").refresh(this.$el);
+                //this.listenTo(this.model, "before:save", this.updateChildModel.bind(this));
+            },
+            /*
+            request : function(a,b,c,d,e) {
+                a.set("a", true);
+            },
+            */
+            openStorageLibrary : function(e) {
+                var self = this;
+                if (!this.libraryModule.started) { 
+                    this.libraryModule.start();
+                }
+                var path = $(e.currentTarget).data("library-path");
+                var type = $(e.currentTarget).data("library-type");
+
+                this.libraryModule.setPath(path);
+
+                this.libraryModule.getValue(function(files) {
+
+                    // SAVE THE FILE REFERENCE IN DATABASE
+                    var modelClass = app.module("models").dropbox().item;
+
+                    for(var i in files) {
+                        var model = files[i];
+                        model.set("upload_type", _.isEmpty(type) ? "lesson" : type);
+                        model.save(null, {
+                            success : function(model, data, options) {
+                                console.warn(model, data, options);
+
+                                this.collection.add(data);
+                                /*
+                                // SAVE THE FILE UNDER THE VIEW MODEL
+                                var questionFileModelClass = app.module("models").question().item.file;
+
+                                var questionFileModel = new questionFileModelClass({
+                                    title : data.name,
+                                    info : JSON.stringify(data),
+                                    files: [data]
+                                });
+
+                                this.collection.add(contentFileModel);
+
+                                contentFileModel.save(null, {
+                                    success : function() {
+                                        //contentFileModel.addFile(data)
+                                    }
+                                });
+                                */
+                                //this.model.addFile(data);
+                            }.bind(self)
+                        });
+                    }
+
+                });
+            },
+            updateCollection : function() {
+                var files = this.model.get("files");
+                if (!this.collection) {
+                    var questionFileCollection = app.module("models").question().collection.file;
+                    this.collection = new questionFileCollection(files);
+
+                    this.listenTo(this.collection, "add change remove", this.updateModel.bind(this))
+                    this.listenTo(this.collection, "add", this.addOne.bind(this));
+                } else {
+                    this.collection.reset(files);
+                }
+
+                this.render();
+            },
+            updateChild : function(model) {
+                console.info('views.form.questions/questionFilesViewClass::updateChild');
+                this.parentView.render();
+            },
+            updateModel : function() {
+                console.info('views.form.questions/questionFilesViewClass::updateModel');
+                console.warn(this.collection.toJSON());
+                console.warn(arguments);
+                this.model.unset("files");
+                this.model.set("files", this.collection.toJSON());
+            },
+            render : function(model) {
+                console.info('views.form.questions/questionFilesViewClass::render');
+
+                for(var i in this.childViews) {
+                    this.childViews[i].remove();
+                }
+
+                this.collection.each(this.addOne.bind(this));
+            },
+            addOne : function(model) {
+                var childView = new mod.questionFileItemViewClass({
+                    model : model
+                });
+
+                this.$(".files-container").append(childView.render().el);
+                app.module("ui").refresh(childView.el);
+                this.childViews.push(childView);
+            }
+        });
+
 
         if (_.has(opt, "module")) {
             this.setInfo(opt);

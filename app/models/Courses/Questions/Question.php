@@ -2,8 +2,11 @@
 namespace Sysclass\Models\Courses\Questions;
 
 use Plico\Mvc\Model;
+use Sysclass\Models\Content\Questions\QuestionFile;
 
 class Question extends Model {
+
+	protected $assignedData = null;
 	public function initialize() {
 		$this->setSource("mod_questions");
 
@@ -13,6 +16,22 @@ class Question extends Model {
 
 		$this->belongsTo("difficulty_id", "Sysclass\\Models\\Courses\\Questions\\Difficulty", "id", array('alias' => 'Difficulty', 'reusable' => true));
 
+		$this->hasMany(
+			"id",
+			"Sysclass\Models\Content\Questions\QuestionFile",
+			"question_id",
+			['alias' => 'QuestionFiles']
+		);
+
+		$this->hasManyToMany(
+			"id",
+			"Sysclass\Models\Content\Questions\QuestionFile",
+			"question_id", "file_id",
+			"Sysclass\Models\Dropbox\File",
+			"id",
+			array('alias' => 'Files')
+		);
+
 	}
 
 	public function assign(array $data, $dataColumnMap = NULL, $whiteList = NULL) {
@@ -21,7 +40,37 @@ class Question extends Model {
 		}
 		// ENCODE 'JSONED' FIELDS
 		$data['options'] = json_encode($data['options']);
+
+		$this->assignedData = $data;
+
 		return parent::assign($data, $dataColumnMap, $whiteList);
+	}
+
+	public function afterSave() {
+		// SAVE THE LINKED TEST
+		if (array_key_exists('files', $this->assignedData) && is_array($this->assignedData['files'])) {
+
+			$ids = [];
+
+			foreach ($this->assignedData['files'] as $file) {
+				$questionFileModel = new QuestionFile();
+
+				$questionFileModel->assign([
+					'question_id' => $this->id,
+					'file_id' => $file['id'],
+					'active' => 1,
+				]);
+
+				$questionFileModel->addOrUpdate($file);
+
+				$ids[] = $file['id'];
+			}
+			foreach ($this->getQuestionFiles() as $questionFile) {
+				if (!in_array($questionFile->file_id, $ids)) {
+					$questionFile->delete();
+				}
+			}
+		}
 	}
 
 	public function toArray() {

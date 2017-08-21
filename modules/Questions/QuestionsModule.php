@@ -9,6 +9,7 @@ use Sysclass\Models\Content\Department;
 use Sysclass\Models\Courses\Questions\Difficulty as QuestionDifficulty;
 use Sysclass\Models\Courses\Questions\Question;
 use Sysclass\Models\Courses\Questions\Type as QuestionType;
+use Sysclass\Models\I18n\Language;
 
 /**
  * [NOT PROVIDED YET]
@@ -195,6 +196,22 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
 
 		$items = QuestionDifficulty::find();
 		$this->putItem("questions_difficulties", $items->toArray());
+
+		$languages = Language::find([
+			'conditions' => 'active = 1',
+		])->toArray();
+
+		$userLanguageCode = $this->translate->getSource();
+
+		foreach ($languages as &$value) {
+			if ($value['code'] == $userLanguageCode) {
+				$value['selected'] = true;
+				break;
+			}
+		}
+
+		//$block_context = $self->getConfig("blocks\\roadmap.courses.edit\context");
+		$this->putItem("languages", $languages);
 
 		parent::editPage($identifier);
 	}

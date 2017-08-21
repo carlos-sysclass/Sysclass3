@@ -367,6 +367,17 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
                 }
             }),
         },
+        question : {
+            item : {
+                file: baseModelClass.extend({
+                    urlRoot: "/module/question/item/file"
+                })
+            },
+            collection : {
+                file: baseNavigableCollection.extend({
+                })
+            }
+        },
         storage : {
             info : baseModelClass.extend({
                 urlRoot : "/module/storage/item/info" // CHANGE ALL TO STORAGE MODULE
@@ -424,6 +435,10 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
         return models.content;
     };
 
+    this.question = function() {
+        return models.question;
+    };
+
     this.organization = function() {
         return models.organization;
     };
@@ -431,6 +446,5 @@ $SC.module("models", function(mod, app, Backbone, Marionette, $, _) {
     this.calendar = function() {
         return models.calendar;
     };
-
 
 });
