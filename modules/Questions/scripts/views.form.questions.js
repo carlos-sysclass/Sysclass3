@@ -288,6 +288,7 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
         mod.questionDetailViewClass = Backbone.View.extend({
             subviews : {},
+            libraryModule : app.module("dialogs.storage.library"),
             initialize: function(opt) {
                 console.info('views.form.questions/questionDetailViewClass::initialize');
 
@@ -295,6 +296,9 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
 
                 this.listenTo(this.model, "sync", this.updateChild.bind(this));
                 this.listenTo(this.model, "change:type_id", this.render.bind(this));
+
+                this.parentView.$(".content-addfile").on("click", this.openStorageLibrary.bind(this));
+
 
                 /*
                 this.listenTo(this.parentView, "before:save", function(model) {
@@ -311,6 +315,54 @@ $SC.module("views.form.questions", function(mod, app, Backbone, Marionette, $, _
                 a.set("a", true);
             },
             */
+            openStorageLibrary : function(e) {
+                var self = this;
+                if (!this.libraryModule.started) { 
+                    this.libraryModule.start();
+                }
+                var path = $(e.currentTarget).data("library-path");
+                var type = $(e.currentTarget).data("library-type");
+
+                this.libraryModule.setPath(path);
+
+                this.libraryModule.getValue(function(files) {
+
+                    // SAVE THE FILE REFERENCE IN DATABASE
+                    var modelClass = app.module("models").dropbox().item;
+
+                    for(var i in files) {
+                        var model = files[i];
+                        model.set("upload_type", _.isEmpty(type) ? "lesson" : type);
+                        model.save(null, {
+                            success : function(model, data, options) {
+                                console.warn(model, data, options);
+                                /*
+                                // SAVE THE FILE UNDER THE VIEW MODEL
+                                var contentFileModelClass = app.module("models").content().item.file;
+
+                                var contentFileModel = new contentFileModelClass({
+                                    title : data.name,
+                                    info : JSON.stringify(data),
+                                    files: [data]
+                                });
+
+                                this.collection.add(contentFileModel);
+
+                                contentFileModel.save(null, {
+                                    success : function() {
+                                        //contentFileModel.addFile(data)
+                                    }
+                                });
+                                */
+                               
+
+                                //this.model.addFile(data);
+                            }.bind(self)
+                        });
+                    }
+
+                });
+            },
             updateChild : function(model) {
                 console.info('views.form.questions/questionDetailViewClass::updateChild');
                 this.parentView.render();

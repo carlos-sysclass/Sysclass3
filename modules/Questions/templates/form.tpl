@@ -85,6 +85,20 @@
 					<label class="control-label">{translateToken value="Question"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="question" rows="6" placeholder="{translateToken value="Put your question here..."}" data-rule-required="true"></textarea>
 				</div>
+
+                            <h5 class="form-section margin-bottom-10 margin-top-10">
+                                <i class="icon-globe"></i>
+                                {translateToken value="Files"}
+
+                                <a href="javascript: void(0);" class="btn btn-sm btn-primary pull-right content-addfile" data-library-path="library" data-library-type="file">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    {translateToken value="Files"}
+                                </a>
+                            </h5>
+                            <div class="row content-subtitles">
+                                <ul class="list-group margin-top-10 col-md-12 subtitle-container"></ul>
+                            </div>
+
 				<div class="question-type-container" id="question-type-container">
 					<!--
 					INSERT INTO `mod_questions_types` (`id`,`name`) VALUES ('combine', 'Combine');
