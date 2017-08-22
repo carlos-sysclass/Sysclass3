@@ -1,5 +1,12 @@
 {extends file="layout/default.tpl"}
 {block name="content"}
+<style>
+li.list-item {
+    border-bottom: 1px solid #ddd;
+    margin: 2px 0 10px;
+    padding-bottom: 4px;
+}
+</style>
 <div id="tests-execute-block">
 
     <ul class="test-sidebar-info">
@@ -155,8 +162,32 @@
                     </h5>
                     <div>
                     {$question.question nofilter}
-                    </div>
 
+                    
+
+                    {if $question.files|@count > 0}
+                        <!--
+                        <div>
+                        
+                            <h5 class="form-section margin-bottom-10 margin-top-10">
+                                <i class="fa fa-file"></i>
+                                Lista de Arquivos
+                            </h5>
+                        -->
+                            <div class="row content-files">
+                                <ul class="list-group margin-top-10 col-md-12 files-container">
+                                    {foreach $question.files as $index => $file}
+                                    <li class="list-item">
+                                        {outputDropboxFile file=$file}
+                                    
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        <!--
+                        </div>
+                        -->
+                    {/if}
                     {if $type == "combine"}
                         <script type="text/template" id="tab_lesson_exercises-question-combine-template">
                             <div class="answer-container">

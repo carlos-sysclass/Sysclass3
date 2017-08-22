@@ -146,6 +146,11 @@ class Lesson extends BaseUnit {
 
 			}
 			$testDataQuestions[$i]['question'] = $questionModel->toArray();
+			$files = $questionModel->getFiles();
+
+			if ($files->count() > 0) {
+				$testDataQuestions[$i]['question']['files'] = $files->toArray();
+			}
 
 		}
 
