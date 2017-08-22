@@ -259,4 +259,33 @@ class QuestionsModule extends \SysclassModule implements \ILinkable, \IBreadcrum
 		}
 	}
 
+	protected function createFilterData($filter, $options) {
+		if ($this->_args['model'] == 'lesson-content') {
+			$index = 0;
+
+			$modelFilters = [];
+			$filterData = [];
+
+			if (array_key_exists('test_id', $filter)) {
+				if (@$options['_exclude'] === TRUE) {
+					$modelFilters[] = "id NOT IN (SELECT question_id FROM Sysclass\Models\Courses\Tests\TestQuestions WHERE lesson_id = ?{$index})";
+				} else {
+					$modelFilters[] = "id IN (SELECT question_id FROM Sysclass\Models\Courses\Tests\TestQuestions WHERE lesson_id = ?{$index})";
+				}
+
+				$filterData[$index] = $filter['test_id'];
+				$index++;
+			}
+
+			return [
+				'modelFilters' => $modelFilters,
+				'filterData' => $filterData,
+			];
+
+		} else {
+			return parent::createFilterData($filter, $options);
+		}
+
+	}
+
 }

@@ -650,30 +650,10 @@ abstract class SysclassModule extends BaseSysclassModule {
 						}
 					}
 
-					$index = 0;
+					$result = $this->createFilterData($filter, $options);
 
-					foreach ($filter as $key => $item) {
-						if (strpos($key, "_") === 0) {
-							$opt[$key] = $item;
-							unset($filter[$key]);
-						}
-						if (is_null($item)) {
-							if (@$options['_exclude'] === TRUE) {
-								$modelFilters[] = "{$key} IS NOT NULL";
-							} else {
-								$modelFilters[] = "{$key} IS NULL";
-							}
-						} else {
-							if (@$options['_exclude'] === TRUE) {
-								$modelFilters[] = "{$key} <> ?{$index}";
-							} else {
-								$modelFilters[] = "{$key} = ?{$index}";
-							}
-
-							$filterData[$index] = $item;
-							$index++;
-						}
-					}
+					$modelFilters = array_merge($modelFilters, $result['modelFilters']);
+					$filterData = array_merge($filterData, $result['filterData']);
 
 					/*
 						                    if (!empty($modelFilters)) {
@@ -778,6 +758,42 @@ abstract class SysclassModule extends BaseSysclassModule {
 				$this->notAuthenticatedError()
 			);
 		}
+	}
+
+	protected function createFilterData($filter, $options) {
+		$index = 0;
+
+		$modelFilters = [];
+		$filterData = [];
+
+		foreach ($filter as $key => $item) {
+			if (strpos($key, "_") === 0) {
+				$opt[$key] = $item;
+				unset($filter[$key]);
+			}
+			if (is_null($item)) {
+				if (@$options['_exclude'] === TRUE) {
+					$modelFilters[] = "{$key} IS NOT NULL";
+				} else {
+					$modelFilters[] = "{$key} IS NULL";
+				}
+			} else {
+				if (@$options['_exclude'] === TRUE) {
+					$modelFilters[] = "{$key} <> ?{$index}";
+				} else {
+					$modelFilters[] = "{$key} = ?{$index}";
+				}
+
+				$filterData[$index] = $item;
+				$index++;
+			}
+		}
+
+		return [
+			'modelFilters' => $modelFilters,
+			'filterData' => $filterData,
+		];
+
 	}
 
 	/**

@@ -302,8 +302,11 @@ $SC.module("blocks.questions.list", function(mod, app, Backbone, Marionette, $, 
                 }
             },
             openSelectDialog : function() {
+                console.warn(this.model.toJSON());
+
                 this.questionSelectDialog.setFilter({
-                    content_id : this.model.get("id")
+                    test_id : this.model.get("id"),
+                    _exclude: true
                 }).getValue(function(questionData) {
 
                     var testQuestionModel = new mod.models.question({

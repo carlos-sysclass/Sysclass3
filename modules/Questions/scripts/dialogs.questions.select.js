@@ -27,8 +27,8 @@ $SC.module("dialogs.questions.select", function(mod, app, Backbone, Marionette, 
     this.setFilter = function(filter) {
         // FILTER DATATABLE
         this.filter = filter;
-        //var url = "/module/questions/items/lesson-content/datatable/" + JSON.stringify(this.filter);
-        var url = "/module/questions/items/lesson-content/datatable";
+        var url = "/module/questions/items/lesson-content/datatable/" + JSON.stringify(this.filter);
+        //var url = "/module/questions/items/lesson-content/datatable";
         this.tableView.setUrl(url);
 
         return this;
