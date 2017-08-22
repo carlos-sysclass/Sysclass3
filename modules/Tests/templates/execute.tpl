@@ -2,7 +2,7 @@
 {block name="content"}
 <style>
 li.list-item {
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     margin: 2px 0 10px;
     padding-bottom: 4px;
 }
