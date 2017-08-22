@@ -71,6 +71,7 @@ crud:
 
     add:
       components: ["select2", "wysihtml5", "validation", "bootstrap-editable", "bootstrap-switch"]
+      blocks: ["storage.library"]
       template: form.tpl
       scripts: ["views.form.questions", "views.form.questions.add"]
       variables:
