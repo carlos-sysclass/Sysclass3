@@ -160,9 +160,9 @@ li.list-item {
                     <h5 class="section-title">
                         <span class="label label-primary">{translateToken value="Question"} #{$index+1}</span>
                     </h5>
-                    {$question.question nofilter}
-
-                    {if $question.files|@count > 0}
+                    {if $question.files|@count == 0}
+                        {$question.question nofilter}
+                    {else}
                         <!--
                         <div>
                         
