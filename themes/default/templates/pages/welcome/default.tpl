@@ -90,7 +90,7 @@
                                             <div class="alert alert-info tips-container">
                                                 <span class="btn btn-sm" style="cursor: default;">
                                                     <i class="fa fa-info-circle fa-lg"></i>
-                                                    In order to complete the enrollment, you need to complete the following test: {$testinfo['test']['name']}
+                                                    In order to complete the enrollment, you need to complete the following: {$testinfo['test']['name']}
                                                 </span>
                                                 <div class="pull-right">
                                                     <a href="javascript:;" class="btn btn-default btn-sm do-test-action" data-test-id="{$testinfo['test']['id']}">
