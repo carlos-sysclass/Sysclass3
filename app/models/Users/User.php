@@ -411,8 +411,8 @@ class User extends Model {
 			if ($enroll && $program = $enroll->getProgram()) {
 
 				$price = ProgramPrice::findFirst([
-					'conditions' => 'program_id = ?0 AND currency_code = ?1',
-					'bind' => [$program->id, $enroll->currency_code],
+					'conditions' => 'program_id = ?0 AND LOWER(country) = ?1',
+					'bind' => [$program->id, strtolower($this->country)],
 				]);
 
 				$payment = new Payment();
