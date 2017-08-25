@@ -29,6 +29,9 @@ class Paypal extends Component implements PaymentInterface {
 					'EPEVptgjig5y0bGrAw1a7RtyjPC0-rJz9WTjPPWgzDtG7kozLlWllz6VenM5EuTeDKDpj5J2pXuX5rQ3' // ClientSecret
 				)
 			);
+			self::$apiContext->setConfig([
+				'mode' => 'live',
+			]);
 		}
 		return self::$apiContext;
 	}
