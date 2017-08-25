@@ -2,6 +2,7 @@
 namespace Sysclass\Controllers;
 
 use Phalcon\Mvc\Dispatcher;
+use Sysclass\Collections\Requests\Entry as RequestEntry;
 use Sysclass\Models\Content\Program as Course;
 use Sysclass\Models\Enrollments\CourseUsers as Enrollment;
 use Sysclass\Models\Enrollments\Enroll;
@@ -219,6 +220,10 @@ class ApiController extends \AbstractSysclassController {
 	public function addEnrollRequest() {
 		$postdata = $this->request->getJsonRawBody(true);
 
+		$request = new RequestEntry();
+		$request->postdata = $postdata;
+		$request->save();
+
 		$error = false;
 
 		$messages = $data = array();
@@ -352,6 +357,14 @@ class ApiController extends \AbstractSysclassController {
 				}
 			}
 		}
+
+		$request->post_result = array(
+			'messages' => $messages,
+			'error' => $error,
+			'data' => $data,
+		);
+
+		$request->save();
 
 		$this->response->setJsonContent(array(
 			'messages' => $messages,

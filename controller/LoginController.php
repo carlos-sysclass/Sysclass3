@@ -456,7 +456,8 @@ class LoginController extends \AbstractSysclassController {
 				$this->putItem('is_confirmation', true);
 
 				$this->putItem('form_action', "/confirm/{$hash}");
-				//$this->putItem('user', $user->toArray());
+
+				$this->putItem('user', $user->toArray());
 
 				return parent::display('pages/auth/reset.tpl');
 			} else {

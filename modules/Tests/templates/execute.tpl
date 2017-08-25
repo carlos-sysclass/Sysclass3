@@ -152,6 +152,15 @@ li.list-item {
     <div class="clearfix"></div>
     <form id="form-{$T_MODULE_ID}" role="form" class="form-validate" method="post" action="{$T_FORM_ACTION}">
         <div class="form-body">
+            
+                {if $T_TEST.description}
+                    <div class="form-group">
+                        <label class="control-label">{translateToken value="Instructions"}</label>
+                        {$T_TEST.description nofilter}
+                    </div>
+                {/if}
+            
+
             {foreach $T_TEST.questions as $index => $item}
                 {assign var="question" value=$item.question}
                 {assign var="type" value=$question.type_id}

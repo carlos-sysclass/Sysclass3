@@ -38,12 +38,12 @@ crud:
           sClass: text-center
           label: Options
     add:
-      components: ["select2", "validation", "bootstrap-switch"]
+      components: ["select2", "validation", "bootstrap-switch", "wysihtml5"]
       template: form.tpl
       variables:
         page_subtitle: Create a new test
     'edit/{identifier}':
-      components: ["select2", "validation", "bootstrap-switch"]
+      components: ["select2", "validation", "bootstrap-switch", "wysihtml5"]
       scripts : ["views.test.edit"]
       blocks:
       #- "questions.create.dialog"
