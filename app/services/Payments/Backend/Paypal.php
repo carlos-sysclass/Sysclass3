@@ -25,8 +25,8 @@ class Paypal extends Component implements PaymentInterface {
 		if (is_null(self::$apiContext)) {
 			self::$apiContext = new \PayPal\Rest\ApiContext(
 				new \PayPal\Auth\OAuthTokenCredential(
-					'AVnYcJlI1BZMtTCb3c0_WItiOYT4BDu5GmD07Vs9YgexIZom6_vUgzDroLgUu9JlsSpbLE2zc9PdzEuz', // ClientID
-					'EMnYy7LldGxzLBaIRFf8Bw5Ko6CU5Qes1Ps54jH4XjYipU-TKnvNURwQh_tFLK6SGe6viGGR-U7_C10h' // ClientSecret
+					'AXcs-eQSy3mjrq-Z7uvyLjJTcZBRIKmt9JQBSIt-KZUCBSc5SNGaeY39fpWN54KYGuD70pmx2Bt7t3hE', // ClientID
+					'EBI2ah-OrKFqRvAhb9os-l8q88hr7rx4fXZWMzPsO2piKhb1bFgy7LzrtCNDDGJ028-gbGbM3zdx4dFr' // ClientSecret
 				)
 			);
 		}
