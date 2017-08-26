@@ -79,6 +79,12 @@ class Adapter extends Component implements PaymentInterface {
 		return $response;
 	}
 
+	public function profile() {
+		$response = $this->backend->profile();
+
+		return $response;
+	}
+
 	/* PROXY/ADAPTER PATTERN */
 	public function initiatePayment(array $data) {
 

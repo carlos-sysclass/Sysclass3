@@ -170,6 +170,15 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 	/**
 	 * [ add a description ]
 	 *
+	 * @Get("/profile")
+	 */
+	public function profileRequest() {
+		//$response = $this->payments->profile();
+	}
+
+	/**
+	 * [ add a description ]
+	 *
 	 * @Get("/initiate/{payment_item_id}")
 	 */
 	public function initiatePaymentRequest($paymentItemId) {
