@@ -89,12 +89,8 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 
 
 				paypal.Button.render({
-			        env: 'sandbox', // Or 'sandbox'
-
-			        client: {
-			            sandbox:    'AVnYcJlI1BZMtTCb3c0_WItiOYT4BDu5GmD07Vs9YgexIZom6_vUgzDroLgUu9JlsSpbLE2zc9PdzEuz',
-			            production: 'xxxxxxxxx'
-			        },
+					env: 'production', // Or 'sandbox'
+			        //env: 'sandbox', // Or 'sandbox'
 
 			        commit: false, // Show a 'Pay Now' button
 

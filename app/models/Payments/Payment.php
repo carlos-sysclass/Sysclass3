@@ -3,7 +3,6 @@ namespace Sysclass\Models\Payments;
 
 use DateTime;
 use Plico\Mvc\Model;
-use Sysclass\Models\Content\ProgramPrice;
 
 class Payment extends Model {
 	public function initialize() {
@@ -27,10 +26,12 @@ class Payment extends Model {
 		$enroll = $this->getEnrollment();
 
 		if ($enroll && $program = $enroll->getProgram()) {
-			$price = ProgramPrice::findFirst([
-				'conditions' => 'program_id = ?0 AND currency_code = ?1',
-				'bind' => [$program->id, $enroll->currency_code],
-			]);
+			/*
+				$price = ProgramPrice::findFirst([
+					'conditions' => 'program_id = ?0 AND currency_code = ?1',
+					'bind' => [$program->id, $enroll->currency_code],
+				]);
+			*/
 
 			$item = PaymentItem::findFirst([
 				'conditions' => 'payment_id = ?0 AND status_id IN (1, 4)',
@@ -41,13 +42,13 @@ class Payment extends Model {
 			if (!$item) {
 				$item = new PaymentItem();
 				$item->payment_id = $this->id;
-				$item->vencimento = $this->calculateNextInvoiceDate($price);
+				$item->vencimento = $this->calculateNextInvoiceDate();
 				$item->price = $this->calculateNextInvoicePrice();
 				$item->status_id = 1;
 
 				$item->save();
 			} else {
-				$item->price = $this->calculateNextInvoicePrice($price);
+				$item->price = $this->calculateNextInvoicePrice();
 				$item->save();
 
 			}
@@ -71,12 +72,8 @@ class Payment extends Model {
 	}
 
 	protected function calculateNextInvoicePrice($price) {
-		if ($price) {
-			$total_price = $price->price_total;
-		} else {
-			$total_price = $this->price_total;
-		}
-		return floatval($total_price) / floatval($this->price_step_units);
+		$total_price = $this->price_total;
+		return floatval($total_price) / intval($this->price_step_units);
 
 	}
 }

@@ -25,13 +25,20 @@ class Paypal extends Component implements PaymentInterface {
 		if (is_null(self::$apiContext)) {
 			self::$apiContext = new \PayPal\Rest\ApiContext(
 				new \PayPal\Auth\OAuthTokenCredential(
+					// PRODUCTION
 					'AToSA-xECTQrBrXirNtfmzhpKPbn5ekO0xkJPw6SIiPhPR0V_mWdcF2T62sxOuflL1znQNT4_y9CbyHE', // ClientID
 					'EPEVptgjig5y0bGrAw1a7RtyjPC0-rJz9WTjPPWgzDtG7kozLlWllz6VenM5EuTeDKDpj5J2pXuX5rQ3' // ClientSecret
+
+					// SANDBOX
+					//'AVnYcJlI1BZMtTCb3c0_WItiOYT4BDu5GmD07Vs9YgexIZom6_vUgzDroLgUu9JlsSpbLE2zc9PdzEuz', // ClientID
+					//'EMnYy7LldGxzLBaIRFf8Bw5Ko6CU5Qes1Ps54jH4XjYipU-TKnvNURwQh_tFLK6SGe6viGGR-U7_C10h' // ClientSecret
 				)
 			);
+
 			self::$apiContext->setConfig([
 				'mode' => 'live',
 			]);
+
 		}
 		return self::$apiContext;
 	}
@@ -40,21 +47,20 @@ class Paypal extends Component implements PaymentInterface {
 
 		$payer = new Payer();
 		$payer->setPaymentMethod("paypal");
+/*
+$item1 = new Item();
+$item1->setName('Ground Coffee 40 oz')
+->setCurrency($payment->currency_code)
+->setQuantity(1)
+//->setSku("123123") // Similar to `item_number` in Classic API
+->setPrice(number_format($item->price, 2, '.', ''));
 
-		/*
-			$item1 = new Item();
-			$item1->setName('Ground Coffee 40 oz')
-				->setCurrency('USD')
-				->setQuantity(1)
-				->setSku("123123") // Similar to `item_number` in Classic API
-				->setPrice(7.5);
-
-			$itemList = new ItemList();
-			$itemList->setItems([$item1]);
-		*/
+$itemList = new ItemList();
+$itemList->setItems([$item1]);
+ */
 		$amount = new Amount();
 		$amount->setCurrency($payment->currency_code)
-			->setTotal($item->price);
+			->setTotal(number_format($item->price, 2, '.', ''));
 
 		//A transaction defines the contract of a payment - what is the payment for and who is fulfilling it.
 		$transaction = new Transaction();
