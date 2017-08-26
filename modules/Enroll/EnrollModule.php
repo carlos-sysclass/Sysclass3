@@ -284,6 +284,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 			if ($this->dispatcher->getControllerName() == 'welcome_controller') {
 				return false;
 			}
+			return false;
 			$programs = $this->user->getAvaliableEnrollments();
 			//$userPrograms = $this->user->getPrograms();
 			if (count($programs) > 0) {

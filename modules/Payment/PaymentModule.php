@@ -148,6 +148,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 					$enrollment = $payment->getEnrollment();
 
 					$enrollment->status_id = CourseUsers::IS_PAID;
+					$enrollment->approved = 1;
 					$enrollment->save();
 
 					$url = "/dashboard";
