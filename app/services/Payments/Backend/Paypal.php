@@ -2,6 +2,8 @@
 namespace Sysclass\Services\Payments\Backend;
 
 use PayPal\Api\Amount;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment as PayPayment;
 use PayPal\Api\PaymentExecution;
@@ -47,17 +49,18 @@ class Paypal extends Component implements PaymentInterface {
 
 		$payer = new Payer();
 		$payer->setPaymentMethod("paypal");
-/*
-$item1 = new Item();
-$item1->setName('Ground Coffee 40 oz')
-->setCurrency($payment->currency_code)
-->setQuantity(1)
-//->setSku("123123") // Similar to `item_number` in Classic API
-->setPrice(number_format($item->price, 2, '.', ''));
 
-$itemList = new ItemList();
-$itemList->setItems([$item1]);
- */
+		$item1 = new Item();
+		$item1
+			->setName('Lucent Education')
+			->setCurrency($payment->currency_code)
+			->setQuantity(1)
+//->setSku("123123") // Similar to `item_number` in Classic API
+			->setPrice(number_format($item->price, 2, '.', ''));
+
+		$itemList = new ItemList();
+		$itemList->setItems([$item1]);
+
 		$amount = new Amount();
 		$amount->setCurrency($payment->currency_code)
 			->setTotal(number_format($item->price, 2, '.', ''));
@@ -67,7 +70,7 @@ $itemList->setItems([$item1]);
 		$transaction
 			->setAmount($amount)
 			//->setItemList($itemList)
-			->setDescription("Payment description")
+			->setDescription("Installment")
 			->setInvoiceNumber(uniqid());
 
 		$baseUrl =
