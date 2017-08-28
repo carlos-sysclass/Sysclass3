@@ -397,7 +397,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 			} else {
 				$this->redirect(
 					'/module/tests/open/' . $identifier,
-					$this->translate->translate("You can not run this test more often"),
+					$this->translate->translate("The retake limit for the test has been reached. Please, contact the administrator on how to proceed."),
 					"warning"
 				);
 				//$this->openPage();
@@ -576,7 +576,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 		                $messages = array(
 		                    'success' => "Test created.",
 		                    'error' => "There's ocurred a problem when the system tried to save your data. Please, check your data and try again",
-		                    'try_limit' => "You can not run this test more often"
+		                    'try_limit' => "The retake limit for the test has been reached. Please, contact the administrator on how to proceed."
 		                );
 		            } else {
 		                return $this->invalidRequestError();
