@@ -3,7 +3,7 @@
     <div class="alert alert-warning alert-dismissable">
         <button data-dismiss="alert" class="close" type="button"></button>
         <i class="fa fa-warning"></i>
-        {translateToken value="No more trials avalible for this test."}
+        {translateToken value="No more retakes avalible for this test."}
     </div>
 {/if}
 
@@ -90,7 +90,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-repeat text-primary "></i>
-                            {translateToken value="Repetition Limit"}:
+                            {translateToken value="Retakes limit"}:
                         </span> 
                         {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
@@ -98,7 +98,7 @@
                         </strong>
                         {else}
                         <strong class="text-primary pull-right">
-                            {translateToken value="No repetition limit"}
+                            {translateToken value="No retake limit"}
                         </strong>
                         {/if}                        
                     </p>
@@ -136,7 +136,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
-                            {translateToken value="Answered"}:
+                            {translateToken value="Questions answered"}:
                         </span>
                         <strong class="{$text_class} pull-right">{$last_try.answers|json_decode:true|array_filter:'strlen'|count}</strong>
                     </p>
@@ -154,7 +154,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-repeat {$text_class}"></i>
-                            {translateToken value="You already tried"}:
+                            {translateToken value="Times the test was taken"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$T_TEST.executions|@count} {translateToken value="times"}
@@ -164,7 +164,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-graduation-cap {$text_class}"></i>
-                            {translateToken value="Last grade / Score"}:
+                            {translateToken value="Your score"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$last_try.user_points} {translateToken value="points"}
