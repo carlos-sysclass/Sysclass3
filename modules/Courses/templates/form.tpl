@@ -57,7 +57,7 @@
 			        <div class="col-md-12">
 			            <div class="form-group form-group-inline">
 			                <div class="inline-item">
-			                    <label class="control-label">{translateToken value="Maximum"} </label>
+			                    <label class="control-label">{translateToken value="Total lenght"} </label>
 			                </div>
 			                <div class="inline-item">
 			                    <input name="duration_units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-helper="integer" />
