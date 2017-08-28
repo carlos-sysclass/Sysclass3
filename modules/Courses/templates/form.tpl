@@ -4,12 +4,12 @@
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Description"}</a>
+				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Program description"}</a>
 			</li>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					{translateToken value="Step 2 - Info"}
+					{translateToken value="Step 2 - Program objectives"}
 				</a>
 			</li>
 			{/if}
@@ -51,7 +51,7 @@
 				
 			    <h5 class="form-section margin-bottom-10 margin-top-20">
 			        <i class="fa fa-calendar"></i>
-			        {translateToken value="Course Duration"}
+			        {translateToken value="Program duration"}
 			    </h5>
 			    <div class="row">
 			        <div class="col-md-12">
