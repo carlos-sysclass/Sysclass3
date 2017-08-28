@@ -15,7 +15,7 @@
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses and Content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses and content"}</a>
 			</li>
 			{/if}
 			
