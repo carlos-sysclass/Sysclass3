@@ -55,7 +55,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack text-primary "></i>
-                            {translateToken value="Total questions"}:
+                            {translateToken value="Number of questions"}:
                         </span>
                         <strong class="text-primary pull-right">
                         {if ($T_TEST.test.test_max_questions <= 0)}
@@ -90,7 +90,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-repeat text-primary "></i>
-                            {translateToken value="Retakes limit"}:
+                            {translateToken value="Retake limit"}:
                         </span> 
                         {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
@@ -129,7 +129,7 @@
                     <div class="caption">
                         <i class="fa fa-user"></i>
                         <span class="hidden-480">
-                         {translateToken value="Your last attempt"} </span>
+                         {translateToken value="Your last take"} </span>
                     </div>
                 </div>
                 <div class="portlet-body test-details">
@@ -144,7 +144,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-clock-o {$text_class}"></i>
-                            {translateToken value="You took"}:
+                            {translateToken value="Number of takes"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$last_try.progress.time_elapsed / 60} {translateToken value="minutes"}
