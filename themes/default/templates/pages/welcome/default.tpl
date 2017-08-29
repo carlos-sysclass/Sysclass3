@@ -15,9 +15,9 @@
                     {if $T_HAS_TEST} 
                     <li>
                         <a href="#tab1" data-toggle="tab" class="step">
-                            <span class="number"> 1 </span>
+                            <span class="number"> Step 2 </span>
                             <span class="desc">
-                                <i class="fa fa-check"></i> Pre Requisites </span>
+                                <i class="fa fa-check"></i> TEC </span>
                         </a>
                     </li>
                     {/if}
@@ -205,9 +205,9 @@
                                     {/if}
 
 
-                                    <h4 class="form-section">Payment Details</h4>
+                                    <h4 class="form-section">Payment details</h4>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Total price"}:</label>
+                                        <label class="control-label col-md-3">{translateToken value="Program cost"}:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold price_total">{$T_PAYMENT->currency_code} {$T_PAYMENT->price_total}</p>
                                         </div>
@@ -227,14 +227,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Period"}:</label>
+                                        <label class="control-label col-md-3">{translateToken value="Payment due every"}:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold">{translateToken value=$T_PAYMENT->price_step_type}</p>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Installment Value"}:</label>
+                                        <label class="control-label col-md-3">{translateToken value="Monthly payment"}:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold">{$T_PAYMENT->currency_code} {$T_PAYMENT->price_total / $T_PAYMENT->price_step_units}</p>
                                         </div>
