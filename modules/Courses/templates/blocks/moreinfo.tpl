@@ -29,7 +29,7 @@
 
 <div class="form-group">
 	<label class="control-label">{translateToken value="Objectives"}
-        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The objective to be achieved by this program'}">
+        <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The objectives to be achieved by the program'}">
             <i class="fa fa-question-circle"></i>
         </span>
 
@@ -48,7 +48,7 @@
 </div>
  -->
 <div class="form-group">
-	<label class="control-label">{translateToken value="Instructor"}</label>
+	<label class="control-label">{translateToken value="Coordinator"}</label>
 	<select class="select2-me form-control" name="coordinator_id">
 		<option value="">{translateToken value="Please select"}</option>
 		{foreach $T_INSTRUCTORS as $id => $instructor}

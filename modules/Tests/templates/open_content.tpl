@@ -3,7 +3,7 @@
     <div class="alert alert-warning alert-dismissable">
         <button data-dismiss="alert" class="close" type="button"></button>
         <i class="fa fa-warning"></i>
-        {translateToken value="No more trials avalible for this test."}
+        {translateToken value="No more retakes avalible for this test."}
     </div>
 {/if}
 
@@ -55,7 +55,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack text-primary "></i>
-                            {translateToken value="Total questions"}:
+                            {translateToken value="Number of questions"}:
                         </span>
                         <strong class="text-primary pull-right">
                         {if ($T_TEST.test.test_max_questions <= 0)}
@@ -90,7 +90,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-repeat text-primary "></i>
-                            {translateToken value="Repetition Limit"}:
+                            {translateToken value="Retake limit"}:
                         </span> 
                         {if $T_TEST.test.test_repetition > 0}
                         <strong class="text-primary pull-right">
@@ -98,7 +98,7 @@
                         </strong>
                         {else}
                         <strong class="text-primary pull-right">
-                            {translateToken value="No repetition limit"}
+                            {translateToken value="No retake limit"}
                         </strong>
                         {/if}                        
                     </p>
@@ -129,14 +129,14 @@
                     <div class="caption">
                         <i class="fa fa-user"></i>
                         <span class="hidden-480">
-                         {translateToken value="Your last attempt"} </span>
+                         {translateToken value="Your last take"} </span>
                     </div>
                 </div>
                 <div class="portlet-body test-details">
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-slack {$text_class}"></i>
-                            {translateToken value="Answered"}:
+                            {translateToken value="Questions answered"}:
                         </span>
                         <strong class="{$text_class} pull-right">{$last_try.answers|json_decode:true|array_filter:'strlen'|count}</strong>
                     </p>
@@ -144,7 +144,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-clock-o {$text_class}"></i>
-                            {translateToken value="You took"}:
+                            {translateToken value="Number of takes"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$last_try.progress.time_elapsed / 60} {translateToken value="minutes"}
@@ -154,7 +154,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-repeat {$text_class}"></i>
-                            {translateToken value="You already tried"}:
+                            {translateToken value="Times the test was taken"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$T_TEST.executions|@count} {translateToken value="times"}
@@ -164,7 +164,7 @@
                     <p class="">
                         <span>
                             <i class="fa fa-lg fa-graduation-cap {$text_class}"></i>
-                            {translateToken value="Last grade / Score"}:
+                            {translateToken value="Your score"}:
                         </span>
                         <strong class="{$text_class} pull-right">
                             {$last_try.user_points} {translateToken value="points"}

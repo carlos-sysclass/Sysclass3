@@ -44,7 +44,7 @@
     -->
     <h5 class="form-section margin-bottom-10 margin-top-10">
         <i class="fa fa-calendar"></i>
-        {translateToken value="Courses available"}
+        {translateToken value="Blocks and courses"}
     </h5>
 
     <div class="row">
@@ -176,7 +176,7 @@
         <div class="cleafix"></div>
         <a class="btn btn-sm btn-link add-item-action" href="javascript: void(0);">
             <i class="fa fa-plus"></i>
-            {translateToken value="Create class"}
+            {translateToken value="Create course"}
         </a>
     </div>
 

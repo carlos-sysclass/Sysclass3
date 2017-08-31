@@ -4,18 +4,18 @@
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Description"}</a>
+				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Program description"}</a>
 			</li>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					{translateToken value="Step 2 - Info"}
+					{translateToken value="Step 2 - Program objectives"}
 				</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses and Content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses and content"}</a>
 			</li>
 			{/if}
 			
@@ -51,13 +51,13 @@
 				
 			    <h5 class="form-section margin-bottom-10 margin-top-20">
 			        <i class="fa fa-calendar"></i>
-			        {translateToken value="Course Duration"}
+			        {translateToken value="Program duration"}
 			    </h5>
 			    <div class="row">
 			        <div class="col-md-12">
 			            <div class="form-group form-group-inline">
 			                <div class="inline-item">
-			                    <label class="control-label">{translateToken value="Maximum"} </label>
+			                    <label class="control-label">{translateToken value="Total lenght"} </label>
 			                </div>
 			                <div class="inline-item">
 			                    <input name="duration_units" value="" type="text" placeholder="{translateToken value="Units"}" class="form-control" data-rule-required="true" data-helper="integer" />
