@@ -27,6 +27,13 @@
     </span>
 </div>
 
+								<!--Order changed by Acir -->
+				<div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Description"}</label>
+					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
+				</div>
+
 <div class="form-group">
 	<label class="control-label">{translateToken value="Objectives"}
         <span class="badge badge-warning tooltips" data-original-title="{translateToken value='The objectives to be achieved by the program'}">
