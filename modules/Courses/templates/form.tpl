@@ -109,10 +109,11 @@
 			        </div>
 			    </div>
 
-			    <h5 class="form-section margin-bottom-10 margin-top-20">
+			    <!--PUT PROGRESS HERE
+		        <h5 class="form-section margin-bottom-10 margin-top-20">
 			        <i class="fa fa-cogs"></i>
-			        {translateToken value="Details"}
-			    </h5>
+			        {translateToken value="Progress"}
+			    </h5> -->
 
 				<!-- Put in moreinfo.tpl by Acir
 				<div class="form-group">
