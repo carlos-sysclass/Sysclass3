@@ -122,6 +122,10 @@
 				</div> -->
 
 				<!-- Inserted by Acir -->
+		        <h5 class="form-section margin-bottom-10 margin-top-20">
+			        <i class="fa fa-cogs"></i>
+			        {translateToken value="Program poster"}
+			    </h5> 
 
 	    <div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
 	<label class="control-label">{translateToken value=""}
