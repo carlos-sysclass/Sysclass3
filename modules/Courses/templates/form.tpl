@@ -120,6 +120,20 @@
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
 				</div> -->
 
+				<!-- Inserted by Acir -->
+
+	    <div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
+	<label class="control-label">{translateToken value=""}
+	<input type="hidden" name="image_id" />
+    <ul class="list-group content-timeline-items">
+    </ul>
+
+	<span class="btn btn-primary fileinput-button">
+        <i class="fa fa-plus"></i>
+        <span>{translateToken value="Program poster"}</span>
+        <input type="file" name="files[]">
+    </span>
+</div>
 
 			    <div class="row">
 			        <div class="col-md-6">
