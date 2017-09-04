@@ -4,7 +4,7 @@
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Program description"}</a>
+				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Program settings and description"}</a>
 			</li>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
