@@ -4,18 +4,18 @@
 	<div class="form-body">
 		<ul class="nav nav-tabs">
 			<li class="active">
-				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Program description"}</a>
+				<a href="#tab_1_1" data-toggle="tab">{translateToken value="Step 1 - Settings"}</a>
 			</li>
 			{if (isset($T_SECTION_TPL['moreinfo']) &&  ($T_SECTION_TPL['moreinfo']|@count > 0))}
 			<li>
 				<a href="#tab_1_2" data-toggle="tab">
-					{translateToken value="Step 2 - Program objectives"}
+					{translateToken value="Step 2 - Description and objectives"}
 				</a>
 			</li>
 			{/if}
 			{if (isset($T_SECTION_TPL['roadmap-classes']) &&  ($T_SECTION_TPL['roadmap-classes']|@count > 0))}
 			<li>
-				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Courses and content"}</a>
+				<a href="#tab_1_4" data-toggle="tab">{translateToken value="Step 3 - Terms and courses"}</a>
 			</li>
 			{/if}
 			
@@ -109,17 +109,36 @@
 			        </div>
 			    </div>
 
-			    <h5 class="form-section margin-bottom-10 margin-top-20">
+			    <!--PUT PROGRESS HERE
+		        <h5 class="form-section margin-bottom-10 margin-top-20">
 			        <i class="fa fa-cogs"></i>
-			        {translateToken value="Details"}
-			    </h5>
+			        {translateToken value="Progress"}
+			    </h5> -->
 
+				<!-- Put in moreinfo.tpl by Acir
 				<div class="form-group">
-					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 					<label class="control-label">{translateToken value="Description"}</label>
 					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
-				</div>
+				</div> -->
 
+				<!-- Inserted by Acir -->
+		        <h5 class="form-section margin-bottom-10 margin-top-20">
+			        <i class="fa fa-cogs"></i>
+			        {translateToken value="Program poster"}
+			    </h5> 
+
+	    <div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
+	<label class="control-label">{translateToken value=""}
+	<input type="hidden" name="image_id" />
+    <ul class="list-group content-timeline-items">
+    </ul>
+
+	<span class="btn btn-primary fileinput-button">
+        <i class="fa fa-plus"></i>
+        <span>{translateToken value="Program poster"}</span>
+        <input type="file" name="files[]">
+    </span>
+</div>
 
 			    <div class="row">
 			        <div class="col-md-6">

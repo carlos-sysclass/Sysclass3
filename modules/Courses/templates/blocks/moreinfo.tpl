@@ -12,8 +12,7 @@
 	Coordinator:	Contact:
 -->
 
-
-
+<!-- Moved to form.tpl
 <div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/image" data-model-file="logo_id">
 	<label class="control-label">{translateToken value=""}
 	<input type="hidden" name="image_id" />
@@ -26,6 +25,14 @@
         <input type="file" name="files[]">
     </span>
 </div>
+-->
+
+								<!--Order changed by Acir -->
+				<div class="form-group">
+					<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+					<label class="control-label">{translateToken value="Description"}</label>
+					<textarea class="wysihtml5 form-control placeholder-no-fix" id="description" name="description" rows="6" placeholder="{translateToken value="Put your description here..."}" data-rule-required="true"></textarea>
+				</div>
 
 <div class="form-group">
 	<label class="control-label">{translateToken value="Objectives"}
