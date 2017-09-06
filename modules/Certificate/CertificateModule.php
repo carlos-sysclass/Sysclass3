@@ -397,14 +397,14 @@ class CertificateModule extends \SysclassModule implements \ISummarizable, INoti
 			$html = $this->view->render($cert_template);
 
 			$this->response->setContent($html);
-			//return true;
+			return true;
+			/*
+				global $_dompdf_show_warnings;
+				$_dompdf_show_warnings = true;
 
-			global $_dompdf_show_warnings;
-			$_dompdf_show_warnings = true;
-
-			global $_dompdf_debug;
-			$_dompdf_debug = true;
-
+				global $_dompdf_debug;
+				$_dompdf_debug = true;
+			*/
 			$pdf = new \mPdf("", "A4-L");
 
 			$pdf->WriteHTML($html, 0);
