@@ -456,7 +456,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					$stream = $this->storage->getFilestream($file);
 
 					$coords = array(
-						'w' => $imageinfo['width'],
+						'w' => $imageinfo['250px.'],
 						'h' => $imageinfo['height'],
 						'x' => 0,
 						'y' => 0,
