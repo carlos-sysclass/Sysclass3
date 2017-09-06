@@ -334,7 +334,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 						$status = $this->mail->send(
 							$user->email,
-							"Solicitação de troca de senha. Email automático, não é necessário responder.",
+							"Change Password Request",
 							$template,
 							true,
 							array(
