@@ -339,10 +339,17 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 				$receiver = $program->getCoordinator();
 
 				if ($receiver) {
+
+					$template = "email/" . $this->sysconfig->deploy->environment . "/enroll-info.email";
+
+					if (!$this->view->exists($template)) {
+						$template = "email/enroll-info.email";
+					}
+
 					$status = $this->mail->send(
 						$receiver->email,
 						"Aviso de Matrícula. Email automático, não é necessário responder.",
-						"email/" . $this->sysconfig->deploy->environment . "/enroll-info.email",
+						$template,
 						true,
 						array(
 							'student' => $user,
