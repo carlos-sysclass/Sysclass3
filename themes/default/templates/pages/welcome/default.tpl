@@ -15,7 +15,7 @@
                     {if $T_HAS_TEST} 
                     <li>
                         <a href="#tab1" data-toggle="tab" class="step">
-                            <span class="number"> Step 2 </span>
+                            <span class="number"> 1 </span>
                             <span class="desc">
                                 <i class="fa fa-check"></i> TEC </span>
                         </a>
@@ -64,6 +64,7 @@
                                         <p class="form-control-static bold">{$T_CURRENT_USER['name']} {$T_CURRENT_USER['surname']}</p>
                                     </div>
                                 </div>
+                                <!--
                                 <div class="form-group">
                                     <label class="control-label col-md-3">{translateToken value="Communication in English:"}</label>
                                     <div class="col-md-4">
@@ -71,6 +72,7 @@
                                         {$T_USER_ATTRS['english_communication']}</p>
                                     </div>
                                 </div>
+                                -->
 
                                 <div class="form-group">
                                     <label class="control-label col-md-3">Course:</label>
@@ -174,6 +176,7 @@
                                             <p class="form-control-static bold">{$T_CURRENT_USER['name']} {$T_CURRENT_USER['surname']}</p>
                                         </div>
                                     </div>
+                                    <!--
                                     <div class="form-group">
                                         <label class="control-label col-md-3">{translateToken value="Communication in English:"}</label>
                                         <div class="col-md-4">
@@ -181,6 +184,7 @@
                                             {$T_USER_ATTRS['english_communication']}</p>
                                         </div>
                                     </div>
+                                    -->
 
                                     <div class="form-group">
                                         <label class="control-label col-md-3">Course:</label>
@@ -206,12 +210,14 @@
 
 
                                     <h4 class="form-section">Payment details</h4>
+                                    <!--
                                     <div class="form-group">
                                         <label class="control-label col-md-3">{translateToken value="Program cost"}:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold price_total">{$T_PAYMENT->currency_code} {$T_PAYMENT->price_total}</p>
                                         </div>
                                     </div>
+                                    -->
 
                                     <div class="form-group">
                                         <label class="control-label col-md-3">{translateToken value="Installments"}:</label>
