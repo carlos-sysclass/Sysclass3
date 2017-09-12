@@ -33,7 +33,7 @@
                     -->
                     <li>
                         <a href="#tab3" data-toggle="tab" class="step">
-                            <span class="number"> {if $T_HAS_TEST} 2 {else} 3 {/if} </span>
+                            <span class="number"> {if $T_HAS_TEST} 3 {else} 3 {/if} </span>
                             <span class="desc">
                                 <i class="fa fa-check"></i> PAYMENT - CLICK ON THE BLUE PAYPAL BUTTON </span>
                         </a>
