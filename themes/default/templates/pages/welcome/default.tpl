@@ -33,9 +33,9 @@
                     -->
                     <li>
                         <a href="#tab3" data-toggle="tab" class="step">
-                            <span class="number"> {if $T_HAS_TEST} 2 {else} 1 {/if} </span>
+                            <span class="number"> {if $T_HAS_TEST} 2 {else} 3 {/if} </span>
                             <span class="desc">
-                                <i class="fa fa-check"></i> Payment </span>
+                                <i class="fa fa-check"></i> PAYMENT </span>
                         </a>
                     </li>
                     {/if}
@@ -220,7 +220,7 @@
                                     -->
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">{translateToken value="Installments"}:</label>
+                                        <label class="control-label col-md-3">{translateToken value="Number of installments"}:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold">{$T_PROGRAM->price_step_units}</p>
                                             <!--
