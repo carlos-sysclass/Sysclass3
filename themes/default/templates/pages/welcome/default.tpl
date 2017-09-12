@@ -256,6 +256,7 @@
                     {/if}
                 </div>
             </div>
+            <!--
             <div class="form-actions">
                 <div class="text-center">
                     <a href="javascript:;" class="btn btn-default button-previous">
@@ -267,6 +268,7 @@
 
                 </div>
             </div>
+            -->
         </div>
     </div>
 </div>
