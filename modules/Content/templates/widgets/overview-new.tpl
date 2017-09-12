@@ -201,19 +201,19 @@ _before_init_functions.push(function() {
 
                       <div class="popup-header-buttons">
                         <div class="btn-group inline-block change-view-type-dropdown" style="">
-                          <a href="javascript: void(0);" data-toggle="dropdown" class="btn btn-link hidden-xs dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                          <a href="javascript: void(0);" data-toggle="dropdown" class="btn btn-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-video-camera"></i>
                             <span class="view-type"></span>
                             <i class="fa fa-caret-down"></i>
                           </a>
                           <ul class="pull-right dropdown-menu">
                             <li>
-                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="pip">
+                              <a href="javascript: void(0);" class="btn btn-link change-view-type" data-view-type="pip">
                                 PIP
                               </a>
                             </li>
                             <li>
-                              <a href="javascript: void(0);" class="btn btn-link hidden-xs change-view-type" data-view-type="sbs">
+                              <a href="javascript: void(0);" class="btn btn-link change-view-type" data-view-type="sbs">
                                 SBS
                               </a>
                             </li>
