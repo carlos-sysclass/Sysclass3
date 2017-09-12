@@ -95,12 +95,13 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 			        commit: false, // Show a 'Pay Now' button
 
 			        style: {
-			            size: 'responsive',
-			            color: 'blue',
-			            shape: 'rect',
-			            label: 'checkout',
-						fundingicons: 'true', 
-			        },
+            label: 'generic',
+            size:  'responsive',    // small | medium | large | responsive
+            shape: 'rect',     // pill | rect
+            color: 'blue',     // gold | blue | silver | black
+            fundingicons: true, // optional
+            tagline: false  			        
+					},
 
 			        payment: function(data, actions) {
             			return paypal.request.post(
