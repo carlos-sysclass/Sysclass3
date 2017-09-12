@@ -30,7 +30,7 @@ class Adapter extends Component implements PaymentInterface {
 		/* IF HAS AN USER AND HE HAS PENDING PAYMENTS, FLAG THE SYSTEM */
 		if (!in_array($this->dispatcher->getControllerName(), ['welcome_controller', 'payment_module'])) {
 
-			if ($this->configuration->block_user_payment_screen) {
+			if ($this->configuration->get("block_user_payment_screen")) {
 				if ($this->user) {
 					$enrollments = $this->user->getUserCourses([
 						'conditions' => 'status_id IN (2, 3)',
