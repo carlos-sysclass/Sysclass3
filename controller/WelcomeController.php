@@ -104,8 +104,8 @@ class WelcomeController extends \AbstractSysclassController {
 					];
 
 					$execution = $this->user->getExecutions([
-						'conditions' => 'pass = 1 AND test_id = ?0',
-						'bind' => [$test->id],
+						'conditions' => 'test_id = ?0 AND user_points >= ?1',
+						'bind' => [$test->id, $preTest->minimum_score],
 					]);
 
 					if (count($execution) > 0) {
