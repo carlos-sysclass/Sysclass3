@@ -15,9 +15,9 @@
                     {if $T_HAS_TEST} 
                     <li>
                         <a href="#tab1" data-toggle="tab" class="step">
-                            <span class="number"> 1 </span>
+                            <span class="number"> 2 </span>
                             <span class="desc">
-                                <i class="fa fa-check"></i> TEC </span>
+                                <i class="fa fa-check"></i> TEC - TEST OF ENGLISH COMPREHENSION </span>
                         </a>
                     </li>
                     {/if}
@@ -75,7 +75,7 @@
                                 -->
 
                                 <div class="form-group">
-                                    <label class="control-label col-md-3">Course:</label>
+                                    <label class="control-label col-md-3">Program:</label>
                                     <div class="col-md-4">
                                         <p class="form-control-static bold" data-display="username">{$T_PROGRAM->name}</p>
                                     </div>
@@ -94,7 +94,7 @@
                                             <div class="alert alert-info tips-container">
                                                 <span class="btn btn-sm" style="cursor: default;">
                                                     <i class="fa fa-info-circle fa-lg"></i>
-                                                    In order to complete your enrollment, you need to complete the following: {$testinfo['test']['name']}
+                                                    In order to finish your enrollment you need to complete the following: {$testinfo['test']['name']}
                                                 </span>
                                                 <div class="pull-right">
                                                     <a href="javascript:;" class="btn btn-default btn-sm do-test-action" data-test-id="{$testinfo['test']['id']}">
@@ -187,7 +187,7 @@
                                     -->
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Course:</label>
+                                        <label class="control-label col-md-3">Program:</label>
                                         <div class="col-md-4">
                                             <p class="form-control-static bold" data-display="username">{$T_PROGRAM->name}</p>
                                         </div>
