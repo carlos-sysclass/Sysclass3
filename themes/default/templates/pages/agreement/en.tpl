@@ -29,7 +29,7 @@
 
 	<p><strong>Termination</strong></p>
 
-	<p>We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+	<p>We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach any of the Terms of this Agreement.</p>
 
 	<p>All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>
 
@@ -41,7 +41,7 @@
 
 	<p><strong>Governing Law</strong></p>
 
-	<p>These Terms shall be governed and construed in accordance with the laws of Brazil, without regard to its conflict of law provisions.</p>
+	<p>These Terms shall be governed and construed in accordance with the laws of the State of Texas, without regard to its conflict of law provisions.</p>
 
 	<p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service, and supersede and replace any prior agreements we might have between us regarding the Service.</p>
 
