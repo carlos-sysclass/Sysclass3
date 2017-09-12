@@ -63,7 +63,7 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 		            	console.warn('onTabShow', tab, navigation, index);
 		            	self.$("[name='price_currency']").change();
 
-						if (index == 2) {
+						if (index == 1) {
 							self.$(".form-actions").hide();
 						} else {
 							self.$(".form-actions").show();
