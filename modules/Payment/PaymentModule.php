@@ -154,7 +154,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 					$url = "/dashboard";
 
 					$this->response->setJsonContent(
-						$this->createRedirectResponse($url, $this->translate->translate("Payment received with sucess."), "success")
+						$this->createRedirectResponse($url, $this->translate->translate("Payment received successfully."), "success")
 					);
 					return $this->response;
 				}

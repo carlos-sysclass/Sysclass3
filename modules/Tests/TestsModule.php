@@ -792,7 +792,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 				$executionModel->calculateUserScore($execution_id);
 
 				$response = $this->createAdviseResponse(
-					$this->translate->translate("Score recalculated with sucess"),
+					$this->translate->translate("Score recalculated successfully"),
 					"success"
 				);
 
