@@ -95,7 +95,7 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 			        commit: false, // Show a 'Pay Now' button
 
 			        style: {
-			            size: 'small',
+			            size: 'responsive',
 			            color: 'blue',
 			            shape: 'rect',
 			            label: 'checkout'
