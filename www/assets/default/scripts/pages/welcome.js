@@ -98,7 +98,8 @@ $SC.module("view.welcome", function(mod, app, Backbone, Marionette, $, _){
 			            size: 'responsive',
 			            color: 'blue',
 			            shape: 'rect',
-			            label: 'checkout'
+			            label: 'checkout',
+						fundingicons: 'true', 
 			        },
 
 			        payment: function(data, actions) {
