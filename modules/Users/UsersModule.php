@@ -334,7 +334,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 						$status = $this->mail->send(
 							$user->email,
-							"Solicitação de troca de senha. Email automático, não é necessário responder.",
+							"Change Password Request",
 							$template,
 							true,
 							array(
@@ -389,7 +389,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 				$status = $this->mail->send(
 					"enrollment@lucent.institute",
-					"A new enrollment has been made at the Lucent website.",
+					"New enrollment - Lucent Institute",
 					$template,
 					true,
 					array(
@@ -456,7 +456,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 					$stream = $this->storage->getFilestream($file);
 
 					$coords = array(
-						'w' => $imageinfo['width'],
+						'w' => $imageinfo['250px.'],
 						'h' => $imageinfo['height'],
 						'x' => 0,
 						'y' => 0,
