@@ -57,7 +57,7 @@
                     <div class="tab-pane" id="tab1">
                         <form class="form-horizontal" action="#" id="submit_form" method="POST">
                             <div class="form-body">
-                                <h4 class="form-section">Your Info:</h4>
+                                <h4 class="form-section">Your info</h4>
                                 <div class="form-group">
                                     <label class="control-label col-md-3">{translateToken value="Name:"}</label>
                                     <div class="col-md-4">
@@ -169,7 +169,7 @@
                         <div class="tab-pane" id="tab3">
                             <form class="form-horizontal" action="#" id="submit_form" method="POST">
                                 <div class="form-body">
-                                    <h4 class="form-section">Your Info:</h4>
+                                    <h4 class="form-section">Your info</h4>
                                     <div class="form-group">
                                         <label class="control-label col-md-3">{translateToken value="Name:"}</label>
                                         <div class="col-md-4">
