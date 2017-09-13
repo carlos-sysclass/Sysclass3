@@ -15,7 +15,7 @@
                     {if $T_HAS_TEST} 
                     <li>
                         <a href="#tab1" data-toggle="tab" class="step">
-                            <span class="number"> 2 </span>
+                            <span class="number"> 1 </span>
                             <span class="desc">
                                 <i class="fa fa-check"></i> TEC - TEST OF ENGLISH COMPREHENSION </span>
                         </a>
@@ -33,7 +33,7 @@
                     -->
                     <li>
                         <a href="#tab3" data-toggle="tab" class="step">
-                            <span class="number"> {if $T_HAS_TEST} 3 {else} 3 {/if} </span>
+                            <span class="number"> {if $T_HAS_TEST} 2 {else} 1 {/if} </span>
                             <span class="desc">
                                 <i class="fa fa-check"></i> PAYMENT - CLICK ON THE BLUE PAYPAL BUTTON </span>
                         </a>
@@ -257,7 +257,7 @@
                 </div>
             </div>
             {if $T_HAS_TEST}
-            <!--<div class="form-actions">
+            <div class="form-actions">
                 <div class="text-center">
                     <a href="javascript:;" class="btn btn-default button-previous">
                         <i class="fa fa-angle-left"></i> Back 
@@ -267,7 +267,7 @@
                     </a>
 
                 </div>
-            </div>-->
+            </div>
             {/if}
         </div>
     </div>
