@@ -274,7 +274,7 @@ class Translator extends Component {
 	 * @param  array $tokens [description]
 	 * @return array         [description]
 	 */
-	public function translateTokens($source, $dest, $tokens = null, $source_column = null, $dest_column = "translated") {
+	public function translateTokens($source, $dest, $tokens = null, $source_column = null, $dest_column = "translated", $contentType = "text/html") {
 		/*
 			        if ($force === 'false' || $force === "0") {
 			            $force = false;
@@ -313,7 +313,7 @@ class Translator extends Component {
 				$translateTokens = array_values($tokens);
 			}
 
-			$translatedTerms = $this->getBackend("bing")->translateArray($translateTokens, $source, $dest);
+			$translatedTerms = $this->getBackend("bing")->translateArray($translateTokens, $source, $dest, $contentType);
 
 			if (is_string($source_column)) {
 				foreach ($tokens as $key => $value) {

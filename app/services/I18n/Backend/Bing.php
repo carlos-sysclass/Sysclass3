@@ -165,7 +165,7 @@ class Bing extends Component {
 		}
 	}
 
-	public function translateArray($texts, $from, $to) {
+	public function translateArray($texts, $from, $to, $contentType = "text/html") {
 		$accessToken = $this->token()->getToken();
 
 		$from = Locale::getPrimaryLanguage($from);
@@ -175,7 +175,7 @@ class Bing extends Component {
 
 			$stopIndex = 0;
 			while ($stopIndex >= 0) {
-				list($postData, $stopIndex) = $this->createTranslateArrayXML($from, $to, $texts, $stopIndex);
+				list($postData, $stopIndex) = $this->createTranslateArrayXML($from, $to, $texts, $stopIndex, $contentType);
 				$postDatas[] = $postData;
 				if ($stopIndex == -1) {
 					break;
@@ -186,7 +186,7 @@ class Bing extends Component {
 
 			$counter = 0;
 			$result = array();
-
+			$string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
 			foreach ($postDatas as $postData) {
 
 				//Initialize the Curl Session.
@@ -283,9 +283,11 @@ class Bing extends Component {
 
 	function wrapXmlString($string, $contentType = 'text/html') {
 		//return preg_replace("/([:cntrl:])/", "", $string);
+		/*
 		if ($contentType == "text/html") {
-			$contentType = nl2br($contentType);
+			$string = nl2br($string);
 		}
+        */
 		return strtr(
 			$this->sanitize_for_xml($string),
 			array(
