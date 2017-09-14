@@ -266,8 +266,8 @@ a:hover, a:focus {
 }
 .inter-navsuper-tabs .tab-content {
   border: 1px solid #ddd;
-  height: 394px;
-  max-height: 394px;
+  height: 380px;
+  max-height: 380px;
 }
 .inter-navsuper-tabs .table-tab {
   border-top: 1px solid #ddd;
