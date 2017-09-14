@@ -9,6 +9,8 @@ use Sysclass\Models\Content\Course as Classe;
 use Sysclass\Models\Content\Tests\Execution as TestExecution;
 use Sysclass\Models\Courses\Grades\Grade;
 use Sysclass\Models\Courses\Tests\Lesson as TestUnit;
+use Sysclass\Models\Enrollments\CourseUsers;
+use Sysclass\Models\Enrollments\ProgramTests;
 
 /**
  * @RoutePrefix("/module/tests")
@@ -296,7 +298,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 	                    'pass' => true
 	                )
 	            );
-*/
+		*/
 
 		//exit;
 		//
@@ -339,7 +341,25 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
 			$testData = $testUnitModel->toArray();
 
-			$testData['course'] = $testUnitModel->getCourse()->toArray();
+			$programTest = ProgramTests::findFirstByTestId($testUnitModel->id);
+
+			if ($programTest) {
+				$enrollment = CourseUsers::findFirst([
+					'conditions' => 'status_id IN (2) AND user_id =?0 AND course_id = ?1',
+					'bind' => [$this->user->id, $programTest->program_id],
+					'order' => 'created ASC',
+					'limit' => 1,
+				]);
+
+				if ($enrollment) {
+					$testData['course'] = $enrollment->getProgram()->toArray();
+
+				}
+			}
+
+			if (!$testData['course']) {
+				$testData['course'] = $testUnitModel->getCourse()->toArray();
+			}
 
 			$testModel = $testUnitModel->getTest();
 
@@ -496,6 +516,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 					                }
 					                //var_dump($testData['questions'][0]['question']);
 				*/
+
 				$testData['questions'] = $testObject->shuffleTestQuestionOptions($executionId, $testQuestions, true);
 				//
 				//var_dump($testData['questions'][0]['question']);
@@ -511,13 +532,46 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 
 				$this->module("settings")->put("test_execution_id", $execution_id);
 
+				//var_dump($testData);
+				//exit;
+				//
 				$testData = $this->model("roadmap/tests")->calculateTestScore($testData);
+
+				$programTest = ProgramTests::findFirstByTestId($testObject->id);
+
+				if ($programTest) {
+					$enrollment = CourseUsers::findFirst([
+						'conditions' => 'status_id IN (2) AND user_id =?0 AND course_id = ?1',
+						'bind' => [$this->user->id, $programTest->program_id],
+						'order' => 'created ASC',
+						'limit' => 1,
+					]);
+
+					if ($enrollment) {
+						$testData['course'] = $enrollment->getProgram()->toArray();
+
+						$executionData['pass'] = $executionData['user_points'] >= $programTest->minimum_score;
+
+						$can_execute_again = !$executionData['pass'];
+
+					}
+				}
+
+				if (!$testData['course']) {
+					$testData['course'] = $testObject->getCourse()->toArray();
+
+					$can_execute_again = $execution->canExecuteAgain($this->user);
+				}
+
+				//var_dump($executionData);
 
 				$this->putItem("test", $testData);
 				$this->putItem("execution", $executionData);
-				$this->putItem("can_execute_again", $execution->canExecuteAgain($this->user));
+				$this->putItem("can_execute_again", $can_execute_again);
 
 				$this->createClientContext("execute", null, "execute");
+
+				//var_dump($testData['course']);
 
 				$this->display($this->template);
 			} else {
