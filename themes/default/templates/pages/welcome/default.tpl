@@ -256,7 +256,8 @@
                     {/if}
                 </div>
             </div>
-            {if $T_HAS_TEST && $T_HAS_UNDONE_TEST}}
+            {if $T_HAS_TEST && !$T_HAS_UNDONE_TEST}
+            <!--
             <div class="form-actions">
                 <div class="text-center">
                     <a href="javascript:;" class="btn btn-default button-previous">
@@ -268,6 +269,7 @@
 
                 </div>
             </div>
+            -->
             {/if}
         </div>
     </div>
