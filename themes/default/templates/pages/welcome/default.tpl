@@ -12,10 +12,10 @@
         <div class="form-wizard">
             <div class="form-body">
                 <ul class="nav nav-pills nav-justified steps">
-                    {if $T_HAS_TEST} 
+                    {if $T_HAS_TEST && $T_HAS_UNDONE_TEST} 
                     <li>
                         <a href="#tab1" data-toggle="tab" class="step">
-                            <span class="number"> 1 </span>
+                            <span class="number"> 2 </span>
                             <span class="desc">
                                 <i class="fa fa-check"></i> TEC - TEST OF ENGLISH COMPREHENSION </span>
                         </a>
@@ -33,7 +33,7 @@
                     -->
                     <li>
                         <a href="#tab3" data-toggle="tab" class="step">
-                            <span class="number"> {if $T_HAS_TEST} 2 {else} 1 {/if} </span>
+                            <span class="number"> {if $T_HAS_TEST} 3 {else} 2 {/if} </span>
                             <span class="desc">
                                 <i class="fa fa-check"></i> PAYMENT - CLICK ON THE BLUE PAYPAL BUTTON </span>
                         </a>
