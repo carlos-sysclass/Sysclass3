@@ -4,15 +4,15 @@ namespace Sysclass\Modules\Messages;
  * Module Class File
  * @filesource
  */
-use Sysclass\Models\Users\Group as UserGroup,
-    Sysclass\Models\Messages\Group as MessageGroup,
-    Sysclass\Models\Messages\Message,
-    Sysclass\Models\Messages\GroupReceiver,
-    Sysclass\Models\Messages\UserReceiver,
-    Sysclass\Models\Acl\Role,
-    Sysclass\Services\MessageBus\INotifyable,
-    Sysclass\Collections\MessageBus\Event;
-    
+use Sysclass\Collections\MessageBus\Event;
+use Sysclass\Models\Acl\Role;
+use Sysclass\Models\Messages\Group as MessageGroup;
+use Sysclass\Models\Messages\GroupReceiver;
+use Sysclass\Models\Messages\Message;
+use Sysclass\Models\Messages\UserReceiver;
+use Sysclass\Models\Users\Group as UserGroup;
+use Sysclass\Services\MessageBus\INotifyable;
+
 /**
  * [NOT PROVIDED YET]
  * @package Sysclass\Modules
@@ -20,286 +20,303 @@ use Sysclass\Models\Users\Group as UserGroup,
 /**
  * @RoutePrefix("/module/messages")
  */
-class MessagesModule extends \SysclassModule implements \IBlockProvider, \IWidgetContainer, INotifyable
-{
-    // IBlockProvider
-    public function registerBlocks() {
-        return array(
-            'messages.group.allow' => function($data, $self) {
-                $self->putComponent("select2");
-                //$self->putModuleScript("dialog.permission");
-                //$this->putSectionTemplate(null, "blocks/permission");
-                //$self->putSectionTemplate("foot", "dialogs/add");
-                $messagesGroupsCollection = $self->model("messages/groups/collection");
+class MessagesModule extends \SysclassModule implements \ISummarizable, \IBlockProvider, \IWidgetContainer, INotifyable {
 
-                $messageGroupItems = $messagesGroupsCollection->getItems();
+	/* ISummarizable */
+	public function getSummary() {
 
-                $self->putItem("block_messages_groups", $messageGroupItems);
+		$total = Message::count([
+			'conditions' => 'deleted = 0 AND reply_to IS NULL AND (user_id = :user_id: OR id IN (SELECT ur.message_id FROM Sysclass\Models\Messages\UserReceiver ur WHERE ur.user_id = :user_id:))',
+			'bind' => ['user_id' => $this->user->id],
+		]);
 
-                $self->putSectionTemplate("behaviours", "blocks/messages.group.allow");
+		return array(
+			'type' => 'warning',
+			'count' => $total,
+			'text' => $this->translate->translate('Messages'),
+			'link' => array(
+				'text' => $this->translate->translate('View'),
+				'link' => "javascript:App.scrollTo($('#messages-widget'))",
+			),
+		);
+	}
 
-                return true;
+	// IBlockProvider
+	public function registerBlocks() {
+		return array(
+			'messages.group.allow' => function ($data, $self) {
+				$self->putComponent("select2");
+				//$self->putModuleScript("dialog.permission");
+				//$this->putSectionTemplate(null, "blocks/permission");
+				//$self->putSectionTemplate("foot", "dialogs/add");
+				$messagesGroupsCollection = $self->model("messages/groups/collection");
 
-            },
-            'messages.send.dialog' => function($data, $self) {
-                // CREATE BLOCK CONTEXT
-                //$self->putComponent("data-tables");
-                $self->putComponent("wysihtml5");
-                $self->putComponent("select2");
+				$messageGroupItems = $messagesGroupsCollection->getItems();
 
-                $receiverGroups = UserGroup::findConnectBy(array(
-                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
-                    'connect_by' => 'behaviour_allow_messages'
-                ));
-                $self->putItem("receivers", $receiverGroups);
+				$self->putItem("block_messages_groups", $messageGroupItems);
 
-                $messageGroupsRS = MessageGroup::find();
-                $messageGroups = array();
-                foreach($messageGroupsRS as $messageGroup) {
-                    $messageGroups[$messageGroup->id] = $messageGroup->name;
-                }
-                $self->putItem("message_groups", $messageGroups);
+				$self->putSectionTemplate("behaviours", "blocks/messages.group.allow");
 
-                $teacherRole = Role::findFirstByName('Teacher');
-                $users = $teacherRole->getAllUsers();
+				return true;
 
-                $this->putItem("USER_RECEIVERS", $users);
+			},
+			'messages.send.dialog' => function ($data, $self) {
+				// CREATE BLOCK CONTEXT
+				//$self->putComponent("data-tables");
+				$self->putComponent("wysihtml5");
+				$self->putComponent("select2");
 
-                $self->putModuleScript("dialogs.messages.send");
-                $self->putSectionTemplate("dialogs", "dialogs/send");
+				$receiverGroups = UserGroup::findConnectBy(array(
+					'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
+					'connect_by' => 'behaviour_allow_messages',
+				));
+				$self->putItem("receivers", $receiverGroups);
 
-                return true;
-            }
-        );
-    }
+				$messageGroupsRS = MessageGroup::find();
+				$messageGroups = array();
+				foreach ($messageGroupsRS as $messageGroup) {
+					$messageGroups[$messageGroup->id] = $messageGroup->name;
+				}
+				$self->putItem("message_groups", $messageGroups);
 
-    // IWidgetContainer
-    public function getWidgets($widgetsIndexes = array(), $caller = null) {
-        /*
-        $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
+				$teacherRole = Role::findFirstByName('Teacher');
+				$users = $teacherRole->getAllUsers();
 
-        if (
-            in_array($widgetsNames[1], $widgetsIndexes) ||
-            in_array($widgetsNames[2], $widgetsIndexes) ||
-            in_array($widgetsNames[3], $widgetsIndexes)
-        ) {
-            //$this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
-            //$this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
-            //$this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
-            //$this->putScript("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
+				$this->putItem("USER_RECEIVERS", $users);
 
-            //$this->putCss("plugins/bootstrap-fileupload/bootstrap-fileupload");
-            //$this->putScript("plugins/bootstrap-fileupload/bootstrap-fileupload");
+				$self->putModuleScript("dialogs.messages.send");
+				$self->putSectionTemplate("dialogs", "dialogs/send");
 
-            //$this->putScript("plugins/jquery-validation/dist/jquery.validate.min");
-            //$this->putScript("plugins/jquery-validation/dist/additional-methods.min");
+				return true;
+			},
+		);
+	}
 
-            //$this->putCss("plugins/bootstrap-toastr/toastr.min");
-            //$this->putScript("plugins/bootstrap-toastr/toastr.min");
+	// IWidgetContainer
+	public function getWidgets($widgetsIndexes = array(), $caller = null) {
+		/*
+			        $widgetsNames = array(1 => 'messages.contactus', 2 => 'messages.help', 3 => 'messages.improvements');
 
-            //$this->putModuleScript("messages");
+			        if (
+			            in_array($widgetsNames[1], $widgetsIndexes) ||
+			            in_array($widgetsNames[2], $widgetsIndexes) ||
+			            in_array($widgetsNames[3], $widgetsIndexes)
+			        ) {
+			            //$this->putCss("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
+			            //$this->putCss("plugins/bootstrap-wysihtml5/wysiwyg-color");
+			            //$this->putScript("plugins/bootstrap-wysihtml5/wysihtml5-0.3.0");
+			            //$this->putScript("plugins/bootstrap-wysihtml5/bootstrap-wysihtml5");
 
-            $this->putBlock("messages.send.dialog");
+			            //$this->putCss("plugins/bootstrap-fileupload/bootstrap-fileupload");
+			            //$this->putScript("plugins/bootstrap-fileupload/bootstrap-fileupload");
 
-            //$groups = $this->getMessageGroups();
+			            //$this->putScript("plugins/jquery-validation/dist/jquery.validate.min");
+			            //$this->putScript("plugins/jquery-validation/dist/additional-methods.min");
 
-            $recipients = $this->getMessageReceivers();
+			            //$this->putCss("plugins/bootstrap-toastr/toastr.min");
+			            //$this->putScript("plugins/bootstrap-toastr/toastr.min");
 
-            $groupsRS = MessageGroup::find();
+			            //$this->putModuleScript("messages");
 
-            foreach($groupsRS as $group) {
-                $widgets[$widgetsNames[$group->id]] = array(
-                    //'title'     => $this->translate->translate($group['name']),
-                    'id'        => 'advisor-chat-widget-' . $group->id,
-                    'title'    => $this->translate->translate($group->name),
-                    'template'  => $this->template("contact-list.widget"),
-                    'icon'      => " " . $group->icon,
-                    'box'       => 'dark-blue messages-panel tabbable',    
-                    'body'      => false,
-                    'data'      => $recipients[$group->id]
-                );
-            }
+			            $this->putBlock("messages.send.dialog");
 
-            return $widgets;
-        }
-        */
-        if (in_array("messages.inbox", $widgetsIndexes)) {
-            $this->putCss("css/reset");
+			            //$groups = $this->getMessageGroups();
 
-            $this->putComponent("select2");
-            //$this->putComponent("bootstrap-confirmation");
-            $this->putComponent("datatables");
-            $this->putComponent("jquery-jscrollpane");
+			            $recipients = $this->getMessageReceivers();
 
-            $this->putModuleScript("portlet.messages");
-            
-            $this->putBlock("messages.send.dialog");
+			            $groupsRS = MessageGroup::find();
 
-            $block_context = $this->getConfig("widgets\\messages.inbox\context");
-            $this->putItem("messages_block_context", $block_context);
-                /*
-                $receiverGroups = UserGroup::findConnectBy(array(
-                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
-                    'connect_by' => 'behaviour_allow_messages'
-                ));
-                */
-                $receiverGroups = UserGroup::find([
-                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1'
-                ]);
+			            foreach($groupsRS as $group) {
+			                $widgets[$widgetsNames[$group->id]] = array(
+			                    //'title'     => $this->translate->translate($group['name']),
+			                    'id'        => 'advisor-chat-widget-' . $group->id,
+			                    'title'    => $this->translate->translate($group->name),
+			                    'template'  => $this->template("contact-list.widget"),
+			                    'icon'      => " " . $group->icon,
+			                    'box'       => 'dark-blue messages-panel tabbable',
+			                    'body'      => false,
+			                    'data'      => $recipients[$group->id]
+			                );
+			            }
 
-                $receivers = [];
+			            return $widgets;
+			        }
+		*/
+		if (in_array("messages.inbox", $widgetsIndexes)) {
+			$this->putCss("css/reset");
 
-                foreach($receiverGroups as $receiverModel) {
-                    $receiverModel->translate();
+			$this->putComponent("select2");
+			//$this->putComponent("bootstrap-confirmation");
+			$this->putComponent("datatables");
+			$this->putComponent("jquery-jscrollpane");
 
-                    $receivers[] = $receiverModel->toArray();
-                }
+			$this->putModuleScript("portlet.messages");
 
-                $this->putItem("messages_group_receivers", $receivers);
-                /*
-                $messageGroupsRS = MessageGroup::find();
-                $messageGroups = array();
-                foreach($messageGroupsRS as $messageGroup) {
-                    $messageGroups[$messageGroup->id] = $messageGroup->name;
-                }
-                $this->putItem("message_groups", $messageGroups);
-                */
+			$this->putBlock("messages.send.dialog");
 
-            return array(
-                "messages.inbox" => array(
-                    //'title'     => $this->translate->translate($group['name']),
-                    'type'      => 'messages', // USED BY JS SUBMODULE 
-                    'id'        => 'messages-widget',
-                    'template'  => $this->template("widgets/inbox"),
-                    'box'       => 'dark-blue tabbable tabbable-left',
-                    'panel'     => true,
-                    'body'      => 'no-padding'
-                )
-            );
-        }
-        return false;
+			$block_context = $this->getConfig("widgets\\messages.inbox\context");
+			$this->putItem("messages_block_context", $block_context);
+			/*
+				                $receiverGroups = UserGroup::findConnectBy(array(
+				                    'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
+				                    'connect_by' => 'behaviour_allow_messages'
+				                ));
+			*/
+			$receiverGroups = UserGroup::find([
+				'conditions' => 'behaviour_allow_messages > 0 AND active = 1',
+			]);
 
-    }
+			$receivers = [];
 
-    /* INotifyable */
-    public function getAllActions() {
+			foreach ($receiverGroups as $receiverModel) {
+				$receiverModel->translate();
 
-    }
+				$receivers[] = $receiverModel->toArray();
+			}
 
-    public function processNotification($action, Event $event) {
-        switch($action) {
-            case "inform-receiver" : {
-                // SEND EMAIL PASSWORD RESET 
-                $data = $event->data;
+			$this->putItem("messages_group_receivers", $receivers);
+			/*
+				                $messageGroupsRS = MessageGroup::find();
+				                $messageGroups = array();
+				                foreach($messageGroupsRS as $messageGroup) {
+				                    $messageGroups[$messageGroup->id] = $messageGroup->name;
+				                }
+				                $this->putItem("message_groups", $messageGroups);
+			*/
 
+			return array(
+				"messages.inbox" => array(
+					//'title'     => $this->translate->translate($group['name']),
+					'type' => 'messages', // USED BY JS SUBMODULE
+					'id' => 'messages-widget',
+					'template' => $this->template("widgets/inbox"),
+					'box' => 'dark-blue tabbable tabbable-left',
+					'panel' => true,
+					'body' => 'no-padding',
+				),
+			);
+		}
+		return false;
 
-                $message = Message::findFirstById($data['id']);
+	}
 
-                if ($message) {
+	/* INotifyable */
+	public function getAllActions() {
 
-                    $users = $message->getUsers();
+	}
 
-                    $from = $message->getFrom();
+	public function processNotification($action, Event $event) {
+		switch ($action) {
+		case "inform-receiver":{
+				// SEND EMAIL PASSWORD RESET
+				$data = $event->data;
 
-                    foreach($users as $user) {
-                        $status = $this->mail->send(
-                            $user->email, 
-                            "Um nova mensagem recebida. Email automático, não é necessário responder.",
-                            "email/" . $this->sysconfig->deploy->environment . "/messages-created.email",
-                            true,
-                            [
-                                'user' => $user,
-                                'message' => $message,
-                                'from' => $from
-                            ],
-                            [
-                                $from->email => $from->name . " " . $from->surname
-                            ]
-                        );
-                        /*
-                        $this->notification->createForUser(
-                            $receiver,
-                            'An user enrolled a program.',
-                            'activity',
-                            array(
-                                'text' => "View",
-                                'link' => $this->getBasePath() . "edit/" . $data['enroll_id'] . '#tab_1_3'
-                            ),
-                            false,
-                            "ENROLL:" . "E" . $data['enroll_id'] . "U" . $user->id . "P" . $program->id
-                        );
-                        */
-                    }
+				$message = Message::findFirstById($data['id']);
 
-                    return array(
-                        'status' => true
-                    );
-                }
-                return array(
-                    'status' => false,
-                    'unqueue' => true
-                );
-            }
-        }
-    }
+				if ($message) {
 
-    public function afterModelCreate($evt, $model, $data, $model_id) {
-        if (array_key_exists('group_id', $data) && is_array($data['group_id']) ) {
-            //UsersGroups::find("user_id = {$userModel->id}")->delete();
-            foreach($data['group_id'] as $group) {
-                $receiverModel = new GroupReceiver();
-                $receiverModel->message_id = $model->id;
-                $receiverModel->group_id = $group['id'];
-                $receiverModel->save();
-            }
-        }
-        if (array_key_exists('user_id', $data) && is_array($data['user_id']) ) {
-            foreach($data['user_id'] as $user) {
-                $receiverModel = new UserReceiver();
-                $receiverModel->message_id = $model->id;
-                $receiverModel->user_id = $user['id'];
-                $receiverModel->save();
-            }
-        }
+					$users = $message->getUsers();
 
+					$from = $message->getFrom();
 
-        /**
-          * @todo TRIGGER EVENT TO SENT THE EMAILL OR TO CREATE THE QUEUE FOR THE EMAIL OVERVIEW
-         */
+					foreach ($users as $user) {
+						$status = $this->mail->send(
+							$user->email,
+							"Um nova mensagem recebida. Email automático, não é necessário responder.",
+							"email/" . $this->sysconfig->deploy->environment . "/messages-created.email",
+							true,
+							[
+								'user' => $user,
+								'message' => $message,
+								'from' => $from,
+							],
+							[
+								$from->email => $from->name . " " . $from->surname,
+							]
+						);
+						/*
+							                        $this->notification->createForUser(
+							                            $receiver,
+							                            'An user enrolled a program.',
+							                            'activity',
+							                            array(
+							                                'text' => "View",
+							                                'link' => $this->getBasePath() . "edit/" . $data['enroll_id'] . '#tab_1_3'
+							                            ),
+							                            false,
+							                            "ENROLL:" . "E" . $data['enroll_id'] . "U" . $user->id . "P" . $program->id
+							                        );
+						*/
+					}
 
-        if ($data['model_id'] == "me") {
-            $this->eventsManager->fire("messages:created", $this, $model->toArray());
-        }
-        
-        return true;
-    }
+					return array(
+						'status' => true,
+					);
+				}
+				return array(
+					'status' => false,
+					'unqueue' => true,
+				);
+			}
+		}
+	}
 
-    protected function getDatatableItemOptions($model = "me") {
-        $options = parent::getDatatableItemOptions($model);
-        $model_info = $this->model_info[$model];
+	public function afterModelCreate($evt, $model, $data, $model_id) {
+		if (array_key_exists('group_id', $data) && is_array($data['group_id'])) {
+			//UsersGroups::find("user_id = {$userModel->id}")->delete();
+			foreach ($data['group_id'] as $group) {
+				$receiverModel = new GroupReceiver();
+				$receiverModel->message_id = $model->id;
+				$receiverModel->group_id = $group['id'];
+				$receiverModel->save();
+			}
+		}
+		if (array_key_exists('user_id', $data) && is_array($data['user_id'])) {
+			foreach ($data['user_id'] as $user) {
+				$receiverModel = new UserReceiver();
+				$receiverModel->message_id = $model->id;
+				$receiverModel->user_id = $user['id'];
+				$receiverModel->save();
+			}
+		}
 
-        $trashAllowed = $this->isResourceAllowed("trash", $model_info);
+		/**
+		 * @todo TRIGGER EVENT TO SENT THE EMAILL OR TO CREATE THE QUEUE FOR THE EMAIL OVERVIEW
+		 */
 
-        $options = array();
+		if ($data['model_id'] == "me") {
+			$this->eventsManager->fire("messages:created", $this, $model->toArray());
+		}
 
-        $options['view']  = array(
-            'link'  => 'javascript:void(0)',
-            'icon'  => 'fa fa-envelope',
-            'class' => 'btn-sm btn-primary tooltips',
-            'attrs' => array(
-               'data-original-title' => $this->translate->translate('View')
-            )
-        );
+		return true;
+	}
 
-        if ($trashAllowed) {
-            $options['remove']  = array(
-                'icon'  => 'fa fa-trash',
-                'class' => 'btn-sm btn-danger tooltips',
-                'attrs' => array(
-                    'data-original-title' => $this->translate->translate('Delete')
-                )
-            );
-        }
-        return $options;
-    }
+	protected function getDatatableItemOptions($model = "me") {
+		$options = parent::getDatatableItemOptions($model);
+		$model_info = $this->model_info[$model];
+
+		$trashAllowed = $this->isResourceAllowed("trash", $model_info);
+
+		$options = array();
+
+		$options['view'] = array(
+			'link' => 'javascript:void(0)',
+			'icon' => 'fa fa-envelope',
+			'class' => 'btn-sm btn-primary tooltips',
+			'attrs' => array(
+				'data-original-title' => $this->translate->translate('View'),
+			),
+		);
+
+		if ($trashAllowed) {
+			$options['remove'] = array(
+				'icon' => 'fa fa-trash',
+				'class' => 'btn-sm btn-danger tooltips',
+				'attrs' => array(
+					'data-original-title' => $this->translate->translate('Delete'),
+				),
+			);
+		}
+		return $options;
+	}
 }

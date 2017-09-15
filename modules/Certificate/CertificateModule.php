@@ -17,7 +17,7 @@ use Sysclass\Services\MessageBus\INotifyable;
  * @RoutePrefix("/module/certificate")
  */
 
-class CertificateModule extends \SysclassModule implements \ISummarizable, INotifyable {
+class CertificateModule extends \SysclassModule implements /* \ISummarizable, */INotifyable {
 
 	/* ISummarizable */
 	public function getSummary() {
