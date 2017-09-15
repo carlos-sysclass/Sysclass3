@@ -876,7 +876,7 @@ _before_init_functions.push(function() {
   -->
   <!-- Video -->
   <td class="text-center" width="10%">
-    <% if (!model.video) { %> 
+    <% if (!model.video || _.size(model.video.file) == 0) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
         <a href="javascript: void(0);" class="btn btn-sm btn-done watch-video-action">
