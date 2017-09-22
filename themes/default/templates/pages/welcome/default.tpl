@@ -4,7 +4,7 @@
     <div class="portlet-title">
         <div class="caption">
             <i class="fa fa-exchange"></i>
-            <span class="caption-subject bold uppercase"> {$T_PROGRAM->name} - Complete Registration
+            <span class="caption-subject bold uppercase"> {$T_PROGRAM->name} - Complete registration
             </span>
         </div>
     </div>
