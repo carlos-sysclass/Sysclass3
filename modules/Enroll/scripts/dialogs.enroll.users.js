@@ -63,7 +63,21 @@ $SC.module("dialogs.enroll.users", function(mod, app, Backbone, Marionette, $, _
 	    		});
 
                 this.listenTo(this.tableView, "action.datatable", function(data, item, model) {
-                    if ($(item).hasClass("datatable-option-approve")) {
+                	if ($(item).hasClass("datatable-option-bypass")) {
+						item
+							.tooltip('disable')
+							.find("i.fa")
+							.addClass("fa-refresh fa-spin");
+
+                    	var model = new mod.models.enroll.user(data);
+                    	model.set('status_id', 1);
+                    	model.save();
+
+                    	window.setTimeout(function() {
+                    		item.hide(500);
+                    	}, 1500);
+                    	
+                	} else if ($(item).hasClass("datatable-option-approve")) {
 
 
 						item

@@ -475,6 +475,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 			$items = array();
 			if ($usersRS->count() > 0) {
 				foreach ($usersRS as $item) {
+					//print_r($item->toArray());
 					$items[] = array_merge(
 						$item->toArray(),
 						array(
@@ -505,6 +506,20 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 				// TODO THINK ABOUT MOVE THIS TO config.yml FILE
 				if (array_key_exists('block', $_GET)) {
 					$items[$key]['options'] = array();
+
+					if ($item['status_id'] == 2) {
+						$items[$key]['options']['bypass'] = array(
+							'icon' => 'fa fa-share',
+							//'link'  => $baseLink . "block/" . $item['id'],
+							'class' => 'btn-sm btn-primary tooltips',
+							'attrs' => array(
+								'data-on-color' => "success",
+								'data-original-title' => $this->translate->translate('Liberate User'),
+								'data-placement' => 'top',
+							),
+						);
+					}
+
 					if ($item['approved'] == 0) {
 						$items[$key]['options']['approve'] = array(
 							'icon' => 'glyphicon glyphicon-edit',

@@ -325,7 +325,7 @@ class CourseUsers extends Model {
 
 		//if (is_null($search)) {
 		$sql = "SELECT cu.id as id, u.id as user_id, u.name, u.surname, cu.status_id as active,
-                cu.approved
+                cu.approved, cu.status_id
             FROM Sysclass\\Models\\Users\\User u
             LEFT OUTER JOIN Sysclass\\Models\\Enrollments\\CourseUsers cu ON (u.id = cu.user_id)";
 		if (count($where) > 0) {
