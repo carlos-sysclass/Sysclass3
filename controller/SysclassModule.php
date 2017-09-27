@@ -484,7 +484,7 @@ abstract class SysclassModule extends BaseSysclassModule {
 							break;
 						}
 					} else {
-						$message = $this->translate->translate("Success.");
+						$message = $this->translate->translate("Success");
 						$type = "success";
 					}
 
@@ -571,7 +571,7 @@ abstract class SysclassModule extends BaseSysclassModule {
 				if ($itemModel->delete()) {
 					$this->eventsManager->fire("module-{$this->module_id}:afterModelDelete", $itemModel);
 
-					$response = $this->createAdviseResponse($this->translate->translate("Removed."), "success");
+					$response = $this->createAdviseResponse($this->translate->translate("Removed"), "success");
 				} else {
 					$this->eventsManager->fire("module-{$this->module_id}:errorModelDelete", $itemModel);
 					$response = $this->invalidRequestError("", "warning");
