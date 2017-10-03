@@ -187,7 +187,7 @@ class LoginController extends \AbstractSysclassController {
 					switch($e->getCode()) {
 						case AuthenticationException :: NO_USER_LOGGED_IN : {
 							// IN THIS CONTEXT, IT'S SEEN TO BE THE EXPECT BEHAVIOR
-				            //$message = $this->translate->translate("Your session has expired. Please, re-enter your username and password.");
+				            //$message = $this->translate->translate("Your session has expired. Please re-enter your username and password.");
 				            //$message_type = 'info';
 							break;
 						}
@@ -801,7 +801,7 @@ class LoginController extends \AbstractSysclassController {
 					break;
 				}
 			case AuthenticationException::NO_USER_LOGGED_IN:{
-					$message = $this->translate->translate("Your session has expired. Please, re-enter your username and password.");
+					$message = $this->translate->translate("Your session has expired. Please re-enter your username and password.");
 					$message_type = 'info';
 					break;
 				}

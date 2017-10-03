@@ -46,7 +46,7 @@ class Adapter extends Component implements IAuthentication/* , EventsAwareInterf
 					break;
 				}
 			case AuthenticationException::NO_USER_LOGGED_IN:{
-					$message = $this->translate->translate("Your session has expired. Please, re-enter your username and password.");
+					$message = $this->translate->translate("Your session has expired. Please re-enter your username and password.");
 					$message_type = 'warning';
 					break;
 				}
