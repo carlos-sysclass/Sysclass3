@@ -21,14 +21,14 @@
 			<label class="control-label">{translateToken value="Original name"}</label>
 			<input name="local_name" value="" type="text" placeholder="Original name" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 		</div>
-		<!--<div class="form-group">
+		<div class="form-group">
 			<label class="control-label">{translateToken value="Country the language is spoken"}</label>
 			<select class="select2-me form-control" name="country_code" data-format-as="country-list">
 				{foreach $T_COUNTRY_CODES as $key => $code}
 					<option value="{$key}">{$code}</option>
 				{/foreach}
 			</select>
-		</div>-->
+		</div>
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Language code"}</label>
 			<input name="locale_code" value="" type="text" placeholder="Locale Code" class="form-control" data-rule-required="true" data-rule-minlength="5" />
