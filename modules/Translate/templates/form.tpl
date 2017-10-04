@@ -30,7 +30,7 @@
 			</select>
 		</div>-->
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Locale Code"}</label>
+			<label class="control-label">{translateToken value="Language code"}</label>
 			<input name="locale_code" value="" type="text" placeholder="Locale Code" class="form-control" data-rule-required="true" data-rule-minlength="5" />
 			</select>
 		</div>
