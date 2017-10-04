@@ -4,14 +4,14 @@
 	<div class="form-body">
 		<h3 class="form-section">{translateToken value="Settings"}</h3>
 
-				<div class="col-md-6">
-				<div class="form-group">
-					<label class="control-label">{translateToken value="Active"}</label>
-					<select class="select2-me form-control" name="active">
-						<option value="1">{translateToken value="Yes"}</option>
-						<option value="0">{translateToken value="No"}</option>
-					</select>
-				</div>
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Language"}</label>
+			<select class="select2-me form-control" name="code">
+				{foreach $T_LANGUAGE_CODES as $key => $code}
+					<option value="{$key}">{$code}</option>
+				{/foreach}
+			</select>
+		</div>
 
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Name in English"}</label>
@@ -58,15 +58,9 @@
 			<i class="icon-reorder"></i>
 			{translateToken value="New language"}
 		</h3>-->
-		<div class="form-group">
-			<label class="control-label">{translateToken value="Activate translation"}</label>
-			<select class="select2-me form-control" name="code">
-				{foreach $T_LANGUAGE_CODES as $key => $code}
-					<option value="{$key}">{$code}</option>
-				{/foreach}
-			</select>
-		</div>
-		<!--
+
+		
+						<!--
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
