@@ -45,10 +45,10 @@
 				</div>
 			</div>
 		</div>
-		<h3 class="form-section">
+		<!--<h3 class="form-section">
 			<i class="icon-reorder"></i>
 			{translateToken value="New language"}
-		</h3>
+		</h3>-->
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Activate translation"}</label>
 			<select class="select2-me form-control" name="code">
