@@ -22,8 +22,6 @@ function smarty_function_translateToken($params, &$smarty)
 
     $di = DI::getDefault();
 
-
-
     $result = $di->get("translate")->translate($token, $vars, $language_id);
 
     if (array_key_exists('assign', $params)) {
