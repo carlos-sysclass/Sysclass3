@@ -236,7 +236,7 @@
 			                            <span class="badge badge-warning tooltips" data-original-title="{translateToken value='Display questions order randomly.'}">
 			                                <i class="fa fa-question-circle"></i>
 			                            </span>
-			                            {translateToken value="Show Test Maximum Points"}
+			                            {translateToken value="Show highest possible score"}
 			                        </label>
 
 			                        <input type="checkbox" name="test.show_test_points" class="form-control bootstrap-switch-me" data-wrapper-class="block" data-size="small" data-on-color="success" data-on-text="{translateToken value='YES'}" data-off-color="danger" data-off-text="{translateToken value='NO'}" value="1" data-value-unchecked="0" data-update-single="true">
