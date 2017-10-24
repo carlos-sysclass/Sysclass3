@@ -836,8 +836,8 @@ _before_init_functions.push(function() {
     <% } %>
   </td>
   
-  <!-- Unidade -->
-  <td width="40%">
+  <!-- Unit -->
+  <td width="50%">
       <%= model.name %>
       <%
         var hasDropdown = !_.isNull(model.professor_id) && _.size(model.professor) > 0;
@@ -1094,7 +1094,7 @@ _before_init_functions.push(function() {
       </span>
     <% } %>
   </td>
-  <!-- Unidade -->
+  <!-- Units -->
   <td >
     <%= model.name %>
   </td>
@@ -1111,7 +1111,7 @@ _before_init_functions.push(function() {
     </span>
     -->
   </td>
-  <!-- Exercicio -->
+  <!-- Assigements -->
   <!--
   <td>
     <span class="pendente">
@@ -1120,7 +1120,7 @@ _before_init_functions.push(function() {
     </span>
   </td>
   -->
-  <!-- Teste -->
+  <!-- Tests -->
   <td class="text-center">
     <% if (_.has(model, 'testExecution') && !_.isNull(model.testExecution.user_grade)) { %>
       <% if (model.testExecution.pass == "1") { %>  
