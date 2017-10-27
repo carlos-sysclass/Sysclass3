@@ -30,6 +30,7 @@
 	</div>
 	<div class="col-md-6">
 		<div class="row">
+		
 		{foreach $T_EDIT_USER.attrs as $key => $value}
 		<div class="col-md-6">
 			<div class="form-group">
