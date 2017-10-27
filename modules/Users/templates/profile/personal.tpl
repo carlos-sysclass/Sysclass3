@@ -28,9 +28,9 @@
 			</div>
 		</div>
 	</div>
+	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 	<div class="col-md-6">
 		<div class="row">
-		
 		{foreach $T_EDIT_USER.attrs as $key => $value}
 		<div class="col-md-6">
 			<div class="form-group">
@@ -41,6 +41,7 @@
 		{/foreach}
 		</div>
 	</div>
+	{/if}
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Language"}</label>
