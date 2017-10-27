@@ -29,15 +29,15 @@
 		</div>
 	</div>
 	<div class="col-md-6">
-		<div class="form-group">
-			<label class="control-label">{translateToken value="Skype"}</label>
-			<input name="skype" value="{$T_EDIT_USER.skype}" type="text" placeholder="{translateToken value="Skype"}" class="form-control" />
+		<div class="row">
+		{foreach $T_EDIT_USER.attrs as $key => $value}
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{translateToken value=$value.field_name}</label>
+				<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name"}" class="form-control" />
+			</div>
 		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="control-label">{translateToken value="Whatsapp"}</label>
-			<input name="whatsapp" value="{$T_EDIT_USER.whatsapp}" type="text" placeholder="{translateToken value="Whatsapp"}" class="form-control" />
+		{/foreach}
 		</div>
 	</div>
 	<div class="col-md-6">

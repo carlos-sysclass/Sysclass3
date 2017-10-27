@@ -915,10 +915,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$timezones = Timezones::findAll();
 		$this->putitem("timezones", $timezones);
 
-		$this->putItem("edit_user", $currentUser->toFullArray(array('Avatars')));
-
-		//var_dump($currentUser->toFullArray(array('Avatars')));
-		//exit;
+		$this->putItem("edit_user", $currentUser->toFullArray(array('attrs','Avatars')));
+		
 		//$this->putCss("css/pages/profile");
 		$this->display("profile.tpl");
 	}
