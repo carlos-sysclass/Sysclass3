@@ -29,18 +29,16 @@
 		</div>
 	</div>
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
-	<div class="col-md-6">
-		<div class="row">
 		{foreach $T_EDIT_USER.attrs as $key => $value}
-		<div class="col-md-6">
-			<div class="form-group">
-				<label class="control-label">{translateToken value=$value.field_name}</label>
-				<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name"}" class="form-control" />
+			{if $value.field_name != 'enroll_agreement' }
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="control-label">{translateToken value=$value.field_name}</label>
+					<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name"}" class="form-control" />
+				</div>
 			</div>
-		</div>
+			{/if}
 		{/foreach}
-		</div>
-	</div>
 	{/if}
 	<div class="col-md-6">
 		<div class="form-group">
