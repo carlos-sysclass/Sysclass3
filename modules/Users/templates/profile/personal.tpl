@@ -33,8 +33,8 @@
 			{if $value.field_name != 'enroll_agreement' }
 			<div class="col-md-6">
 				<div class="form-group">
-					<label class="control-label">{translateToken value=$value.field_name}</label>
-					<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name"}" class="form-control" />
+					<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
+					<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
 				</div>
 			</div>
 			{/if}
