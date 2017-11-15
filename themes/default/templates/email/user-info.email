@@ -1,5 +1,24 @@
 {% extends "layout/local/default.email" %}
 {% block content %}
+
+
+{% set mtz  = {
+	address: 'Address',
+	area_of_study: 'Area of Study',
+	courses: 'Courses',
+	english_communication: 'English',
+	gender_id: 'Gender',
+	higher_school: 'Higher Scholl',
+	how_did_you_learn_about: 'How did you Learn About',
+	i_am_currently: 'I am Currently',
+	language_name: 'Language',
+	my_calling: 'My Calling',
+	particiate_translation: 'Particiate Translation',
+	secondary_school: 'Secondary School',
+	whatsapp: 'Whatsapp',
+	zip_code: 'Zip Code'
+} %}
+
 <table class="row note">
 <tr>
       <td class="wrapper last">
@@ -22,7 +41,7 @@
             <span class="devider" style="border-bottom: 1px solid #eee;margin: 15px -15px;display: block;"></span>
 
             {% for attr in student.getAttrs() %}
-                  <p><strong>{{ attr.field_name }}:</strong>{{ attr.field_value }}</p>      
+                  <p><strong>{{ mtz[attr.field_name] }}:</strong>{{ attr.field_value }}</p>      
             {% endfor %}
       </td>
 </tr>
