@@ -399,7 +399,7 @@ class ApiController extends \AbstractSysclassController {
 
 				$lead = Lead::findFirst([
 					'conditions' => 'email = ?0',
-					'bind' => [$postdata['email']],
+					'bind' => [$postdata['Email']],
 				]);
 
 				//if ($lead && $lead->getType() != "lead") {
