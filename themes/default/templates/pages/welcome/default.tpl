@@ -99,7 +99,7 @@
                                                 <div class="pull-right">
                                                     <a href="javascript:;" class="btn btn-default btn-sm do-test-action" data-test-id="{$testinfo['test']['id']}">
                                                     <i class="fa fa-list-ol "></i>
-                                                    Take the test Now
+                                                    Click here to take your test.
                                                     </a>
                                                 </div>
                                             </div>
