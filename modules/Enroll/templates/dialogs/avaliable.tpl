@@ -68,7 +68,7 @@
                                             {else}
                                                 <p>
                                                     <a href="javascript:;" class="btn btn-warning enroll-action" data-enroll-id="{$enrollment.enroll_id}" data-program-id="{$program.id}"> 
-                                                    {translateToken value="Request Enroll"}
+                                                    {translateToken value="Request enrollment"}
                                                     </a>
                                                 </p>
                                             {/if}
