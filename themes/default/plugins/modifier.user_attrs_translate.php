@@ -39,6 +39,5 @@ function smarty_modifier_user_attrs_translate($string) {
 	}else{
 		return $string;
 	}
-} 
-
+}
 ?>
