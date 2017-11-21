@@ -13,7 +13,7 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<label>{translateToken value="Email address"}</label>
-			<div class="input-group">
+			<div>
 				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email address"}" class="form-control">
 			</div>
 		</div>
@@ -21,7 +21,7 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Birthday"}</label>
-			<div class="input-group">
+			<div>
 				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 			</div>
 		</div>
