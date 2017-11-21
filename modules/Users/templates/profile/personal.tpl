@@ -28,7 +28,18 @@
 			</div>
 		</div>
 	</div>
-	
+	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
+		{foreach $T_EDIT_USER.attrs as $key => $value}
+			{if $value.field_name != 'how_did_you_learn_about' || $value.field_name != 'i_am_currently' ||  $value.field_name != 'my_calling' || $value.field_name != 'enroll_agreement' }
+			<div class="col-md-6">
+				<div class="form-group">
+						<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
+						<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
+				</div>
+			</div>
+			{/if}
+		{/foreach}
+	{/if}
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Language"}</label>
@@ -49,7 +60,6 @@
 			</select>
 		</div>
 	</div>
-	<div class="row"></div>
 	<!--
 	<div class="col-md-12">
 		<div class="form-group">
