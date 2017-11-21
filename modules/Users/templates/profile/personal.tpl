@@ -14,7 +14,7 @@
 		<div class="form-group">
 			<label>{translateToken value="Email address"}</label>
 			<div class="input-group">
-				<span class="input-group-addon"><i class="icon-envelope"></i></span>
+				<span class="input-group-addon"></span>
 				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email address"}" class="form-control">
 			</div>
 		</div>
@@ -23,14 +23,14 @@
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Birthday"}</label>
 			<div class="input-group">
-				<span class="input-group-addon"><i class="icon-calendar"></i></span>
+				<span class="input-group-addon"></span>
 				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 			</div>
 		</div>
 	</div>
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 		{foreach $T_EDIT_USER.attrs as $key => $value}
-			{if $value.field_name != 'enroll_agreement' }
+			{if $value.field_name != 'how_did_you_learn_about' && $value.field_name != 'i_am_currently' &&  $value.field_name != 'my_calling' && $value.field_name != 'enroll_agreement' }
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
@@ -60,7 +60,6 @@
 			</select>
 		</div>
 	</div>
-	<div class="row"></div>
 	<!--
 	<div class="col-md-12">
 		<div class="form-group">
