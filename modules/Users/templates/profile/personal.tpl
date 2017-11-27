@@ -18,11 +18,19 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Birthday"}</label>
 			<div>
 				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="Age"}</label>
+			<div>
+				{$T_EDIT_USER.birthday|calculate_age}
 			</div>
 		</div>
 	</div>
