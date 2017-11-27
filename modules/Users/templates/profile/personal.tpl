@@ -28,7 +28,7 @@
 	</div>
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 		{foreach $T_EDIT_USER.attrs as $key => $value}
-			{if $value.field_name != 'how_did_you_learn_about' && $value.field_name != 'i_am_currently' &&  $value.field_name != 'my_calling' && $value.field_name != 'enroll_agreement' }
+			{if $value.field_name != 'address' && $value.field_name != 'area_of_study' && $value.field_name != 'english_communication' && $value.field_name != 'courses' && $value.field_name != 'higher_school' && $value.field_name != 'secondary_school' && $value.field_name != 'how_did_you_learn_about' && $value.field_name != 'i_am_currently' &&  $value.field_name != 'my_calling' && $value.field_name != 'enroll_agreement' }
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
@@ -38,6 +38,7 @@
 			{/if}
 		{/foreach}
 	{/if}
+	
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Language"}</label>
@@ -58,6 +59,7 @@
 			</select>
 		</div>
 	</div>
+	
 	<!--
 	<div class="col-md-12">
 		<div class="form-group">
