@@ -18,8 +18,8 @@
  */
 function smarty_modifier_calculate_age($date) {
     $year_diff = 0;
-	$date = str_replace('/', '-', substr(trim($date), 0, 10));
-    if ($date != '' && $date != '0000-00-00'){
+    
+	if ($date != '' && $date != '0000-00-00'){
          list($year, $month, $day) = explode("-", $date);
          $year_diff = intval(date("Y")) - intval($year);
          $month_diff = intval(date("m")) - intval($month);
