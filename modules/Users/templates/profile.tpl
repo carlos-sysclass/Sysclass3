@@ -112,7 +112,6 @@
 								<i class="fa fa-camera"></i>
 								{translateToken value="Upload Documents"}
 							</h5>
-							{include file="`$T_MODULE_TPLPATH`/profile/documents.tpl"}
 						</div>
 					</div>	
 				</div>
