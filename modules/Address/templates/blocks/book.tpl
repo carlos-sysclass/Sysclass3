@@ -9,20 +9,12 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-md-4">
-		<div class="form-group">
-			<label class="control-label">{translateToken value="Phone Number"}</label>
-			<input name="phone" value="" type="text" placeholder="{translateToken value="Phone number"}" class="form-control" 
-			data-type-field="phone" data-country-selector=":input[name='country_code']" 
-			/>
-		</div>
-	</div>
-	<div class="col-md-4">
+	<!-- div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Postal code"}</label>
 			<input name="postal_code" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-Postal Code="true" />
 		</div>
-	</div>
+	</div-->
 	<div class="col-md-8">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Street"}</label>

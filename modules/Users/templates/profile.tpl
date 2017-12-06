@@ -68,7 +68,7 @@
 								{/if}
 							
 							    {foreach $T_SECTION_TPL['address'] as $template}
-						        	{include file=$template}
+							    	{include file=$template}
 							    {/foreach}
 						</div>
 						{/if}
