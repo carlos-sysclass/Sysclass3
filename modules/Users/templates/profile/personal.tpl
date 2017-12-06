@@ -1,20 +1,20 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="First name"}</label>
-			<input name="name" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
+			<input name="name" readonly="readonly" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Last name"}</label>
-			<input name="surname" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Last name"}" class="form-control" />
+			<input name="surname" readonly="readonly" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Last name"}" class="form-control" />
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
 			<label>{translateToken value="Email address"}</label>
 			<div>
-				<input name="email" value="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email address"}" class="form-control">
+				<input name="email" reavalue="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email address"}" class="form-control">
 			</div>
 		</div>
 	</div>
@@ -22,7 +22,7 @@
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Birthday"}</label>
 			<div>
-				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+				<input type="text" readonly="readonly" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 			</div>
 		</div>
 	</div>
@@ -30,13 +30,13 @@
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Age"}</label>
 			<div>
-				{$T_EDIT_USER.birthday|calculate_age}
+				<input type="text" readonly="readonly" name="age" value="{$T_EDIT_USER.birthday|calculate_age}" class="form-control">
 			</div>
 		</div>
 	</div>
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 		{foreach $T_EDIT_USER.attrs as $key => $value}
-			{if $value.field_name != 'address' && $value.field_name != 'area_of_study' && $value.field_name != 'english_communication' && $value.field_name != 'courses' && $value.field_name != 'higher_school' && $value.field_name != 'secondary_school' && $value.field_name != 'how_did_you_learn_about' && $value.field_name != 'i_am_currently' &&  $value.field_name != 'my_calling' && $value.field_name != 'enroll_agreement' }
+			{if $value.field_name != 'zip_code' && $value.field_name != 'address' && $value.field_name != 'area_of_study' && $value.field_name != 'english_communication' && $value.field_name != 'courses' && $value.field_name != 'higher_school' && $value.field_name != 'secondary_school' && $value.field_name != 'how_did_you_learn_about' && $value.field_name != 'i_am_currently' &&  $value.field_name != 'my_calling' && $value.field_name != 'enroll_agreement' }
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>

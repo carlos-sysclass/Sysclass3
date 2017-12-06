@@ -56,7 +56,7 @@
 							</h5>
 								{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 									{foreach $T_EDIT_USER.attrs as $key => $value}
-										{if $value.field_name == 'address' }
+										{if $value.field_name == 'zip_code' || $value.field_name == 'address' }
 										<div class="col-md-6">
 											<div class="form-group">
 													<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
@@ -106,7 +106,15 @@
 						{/foreach}
 					{/if}
 					</div>
-					<div class="tab-pane" id="documents"></div>	
+					<div class="tab-pane" id="documents">
+						<div class="form-body">
+							<h5 class="form-section margin-bottom-10 margin-top-10">
+								<i class="fa fa-camera"></i>
+								{translateToken value="Upload Documents"}
+							</h5>
+							{include file="`$T_MODULE_TPLPATH`/profile/documents.tpl"}
+						</div>
+					</div>	
 				</div>
 				<!--
 				<div id="tab_1-4" class="tab-pane">
