@@ -146,7 +146,7 @@ class InstitutionModule extends \SysclassModule implements \IWidgetContainer, \I
             array(
                 'icon'  => 'fa fa-university',
                 'link'  => $this->getBasePath() . "edit/1",
-                'text'  => $this->translate->translate("Organizations")
+                'text'  => $this->translate->translate("Organization")
             )
         );
 
