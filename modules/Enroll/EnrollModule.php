@@ -280,45 +280,35 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
 	/* ISectionMenu */
 	public function getSectionMenu($section_id) {
-		if ($section_id == "topbar") {
-			if ($this->dispatcher->getControllerName() == 'welcome_controller') {
-				return false;
+		/*
+			if ($section_id == "topbar") {
+				if ($this->dispatcher->getControllerName() == 'welcome_controller') {
+					return false;
+				}
+
+				$programs = $this->user->getAvaliableEnrollments();
+				//$userPrograms = $this->user->getPrograms();
+				if (count($programs) > 0) {
+					// GET NOT ENROLLED COURSES
+					$this->putScript("scripts/ui.menu.enroll");
+					$this->putBlock('enroll.avaliable.dialog');
+
+					//$this->putItem("enroll_programs_count", $userPrograms->count());
+
+					$menuItem = array(
+						'id' => "enroll-topbar-menu",
+						'icon' => ' fa fa-shield',
+						'text' => $this->translate->translate('Programs available'),
+						'className' => 'btn-warning',
+						'type' => '',
+						//'items'     => $items,
+						'extended' => false,
+					);
+
+					return $menuItem;
+				}
 			}
-
-			$programs = $this->user->getAvaliableEnrollments();
-			//$userPrograms = $this->user->getPrograms();
-			if (count($programs) > 0) {
-				// GET NOT ENROLLED COURSES
-				$this->putScript("scripts/ui.menu.enroll");
-				$this->putBlock('enroll.avaliable.dialog');
-
-				//$this->putItem("enroll_programs_count", $userPrograms->count());
-
-				$menuItem = array(
-					'id' => "enroll-topbar-menu",
-					'icon' => ' fa fa-shield',
-					'text' => $this->translate->translate('Programs available'),
-					'className' => 'btn-warning',
-					/*
-						                    'external'  => array(
-						                        'link'  => $this->getBasePath(),
-						                        'text'  => $this->translate->translate('See my statement')
-						                    ),
-					*/
-					/*
-						                    'link'  => array(
-						                        'link'  => $this->getBasePath(),
-						                        'text'  => $this->translate->translate('Courses')
-						                    ),
-					*/
-					'type' => '',
-					//'items'     => $items,
-					'extended' => false,
-				);
-
-				return $menuItem;
-			}
-		}
+		*/
 		return false;
 	}
 
