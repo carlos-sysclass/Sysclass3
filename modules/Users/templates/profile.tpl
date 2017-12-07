@@ -43,7 +43,7 @@
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
 								<i class="fa fa-address-book"></i>
-								{translateToken value="Name and Contact"}
+								{translateToken value="Name and contact"}
 							</h5>
 							{include file="`$T_MODULE_TPLPATH`/profile/personal.tpl"}
 						</div>
