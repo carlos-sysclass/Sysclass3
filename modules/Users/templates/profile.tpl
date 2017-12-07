@@ -36,7 +36,7 @@
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
 								<i class="fa fa-camera"></i>
-								{translateToken value="Upload picture"}
+								{translateToken value="Your profile picture"}
 							</h5>
 							{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
 						</div>
