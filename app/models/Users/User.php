@@ -113,7 +113,7 @@ class User extends Model {
 			"id",
 			array('alias' => 'avatars', 'reusable' => true)
 		);
-
+		
 		$this->hasManyToMany(
 			"id",
 			"Sysclass\Models\Acl\RolesUsers",
@@ -132,6 +132,13 @@ class User extends Model {
 			array('alias' => 'UserGroups')
 		);
 
+		$this->hasMany(
+			"id",
+			"Sysclass\\Models\\Dropbox\\File",
+			"owner_id",
+			array('alias' => 'Dropbox')
+		);
+		
 	}
 
 	public function beforeValidationOnCreate() {

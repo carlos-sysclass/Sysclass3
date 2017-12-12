@@ -21,7 +21,7 @@
 				<ul class="nav nav-tabs" id="profile">
 					<li class="active"><a href="#yourinfo" data-toggle="tab">Your info</a></li>
 					<li><a href="#academic" data-toggle="tab">Academic</a></li>
-					<!-- li><a href="#documents" data-toggle="tab">Documents</a></li-->
+					<li><a href="#documents" data-toggle="tab">Documents</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="yourinfo">
@@ -108,10 +108,7 @@
 					</div>
 					<div class="tab-pane" id="documents">
 						<div class="form-body">
-							<h5 class="form-section margin-bottom-10 margin-top-10">
-								<i class="fa fa-camera"></i>
-								{translateToken value="Upload Documents"}
-							</h5>
+							{include file="`$T_MODULE_TPLPATH`/profile/documents.tpl"}
 						</div>
 					</div>	
 				</div>

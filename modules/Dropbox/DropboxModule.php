@@ -250,7 +250,11 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
                 $filedata['upload_type'] = $type;
                 $filedata['filename'] = $filedata['name'];
                 $filedata['owner_id'] = $this->user->id;
-
+                
+                if($param_name == 'file_picture_1' || $param_name == 'file_picture_2' || $param_name == 'file_transcript_1' || $param_name == 'file_transcript_2'){
+                	$filedata['etag'] = $param_name;
+                }
+                
                 // CHECK FOR FILE EXISTENCE
                 if (!is_null($content_range)) {
                     $exists = $this->model("dropbox")->addFilter(array(

@@ -219,11 +219,11 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
             initializeFileUpload : function() {
                 // CREATE FILEUPLOAD WIDGET
                 var url = this.$el.data("fileuploadUrl");
-
+                
                 var self = this;
 
                 var opt = {
-                    url: "/module/dropbox/upload/image",
+                    url: url,
                     //paramName : fileInput.attr("name"),
                     dataType: 'json',
                     singleFileUploads: true,
@@ -353,36 +353,45 @@ $SC.module("blocks.dropbox.upload", function(mod, app, Backbone, Marionette, $, 
         $(".fileupload-me").each(function() {
             var self = this;
 
+            
             var dropboxItemModel = new dropboxItemModelClass();
-            var fileId = $(this).find(":input[type='hidden']").val();
-            var updateField = $(this).find(":input[type='hidden']").size() > 0;
-            if (_.isEmpty(fileId)) {
-                fileId = $(this).data("fileId");
-                //updateField = false;
-            }
-            dropboxItemModel.set("id", fileId);
+            
+            $(this).find(":input[type='hidden']").each(function(i) { // ##codigo novo
+            	
+            	var fileId = $(this).val(); // ##codigo novo
+           	 	var updateField = $(this).size() > 0; // ##codigo novo
+           	 	 //var fileId = $(this).find(":input[type='hidden']").val();
+                 //var updateField = $(this).find(":input[type='hidden']").size() > 0;
+                 if (_.isEmpty(fileId)) {
+                     fileId = $(this).data("fileId");
+                     //updateField = false;
+                 }
+                 dropboxItemModel.set("id", fileId);
 
-            var fileUploadItemView = new fileUploadItemViewClass({
-                model : dropboxItemModel,
-                el : $(this)
+                 var fileUploadItemView = new fileUploadItemViewClass({
+                     model : dropboxItemModel,
+                     el : $(self)
+                 });
+
+                 fileUploadItemView.on("file-upload:change", function(model) {
+                     var data = model.toJSON();
+                     if (updateField) {
+                         $(self).find(":input[type='hidden']").val(data.id);
+                         $(self).find(":input[type='hidden']").change();
+                         $(self).data("fileId", data.id);
+
+                         mod.trigger("uploadComplete.dropbox", model);
+                     } else {
+                         //$(self).data("fileId", data.id);
+                     }
+                 });
+
+                 if (!_.isUndefined(dropboxItemModel.get("id"))) {
+                     dropboxItemModel.fetch();
+                 }
+            	 
             });
-
-            fileUploadItemView.on("file-upload:change", function(model) {
-                var data = model.toJSON();
-                if (updateField) {
-                    $(self).find(":input[type='hidden']").val(data.id);
-                    $(self).find(":input[type='hidden']").change();
-                    $(self).data("fileId", data.id);
-
-                    mod.trigger("uploadComplete.dropbox", model);
-                } else {
-                    //$(self).data("fileId", data.id);
-                }
-            });
-
-            if (!_.isUndefined(dropboxItemModel.get("id"))) {
-                dropboxItemModel.fetch();
-            }
+            
         });
 
 
