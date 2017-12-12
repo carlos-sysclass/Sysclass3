@@ -922,7 +922,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2');
 		foreach($ar_dropbox as $key => $vl){
 			if( in_array($vl['etag'],$arFields)  ){
-				var_dump($vl['etag']);
 				$this->putItem($vl['etag'], $vl );
 			}
 		}
