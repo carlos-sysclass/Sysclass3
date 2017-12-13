@@ -919,7 +919,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$ar_user = $currentUser->toFullArray(array('attrs','Avatars','Dropbox'));
 		
 		$ar_dropbox = $ar_user['dropbox'];
-		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2');
+		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2','file_proof_residency');
 		foreach($ar_dropbox as $key => $vl){
 			if( in_array($vl['etag'],$arFields)  ){
 				$this->putItem($vl['etag'], $vl );

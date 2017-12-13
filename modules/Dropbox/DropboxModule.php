@@ -251,7 +251,7 @@ class DropboxModule extends \SysclassModule implements /* \ISummarizable, */ \IB
                 $filedata['filename'] = $filedata['name'];
                 $filedata['owner_id'] = $this->user->id;
                 
-                if($param_name == 'file_picture_1' || $param_name == 'file_picture_2' || $param_name == 'file_transcript_1' || $param_name == 'file_transcript_2'){
+                if($param_name == 'file_picture_1' || $param_name == 'file_picture_2' || $param_name == 'file_transcript_1' || $param_name == 'file_transcript_2' || $param_name == 'file_proof_residency'){
                 	$filedata['etag'] = $param_name;
                 }
                 
