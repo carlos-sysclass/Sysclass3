@@ -50,7 +50,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
-						<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
+						<input{if $value.field_name != 'gender'} readonly="readonly"{/if} name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
 				</div>
 			</div>
 			{/if}
