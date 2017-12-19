@@ -456,6 +456,7 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 
 		var courseUnitsTabViewItemClass = baseChildTabViewItemClass.extend({
 			events : {
+				"click .download-video-action" : "downloadVideo",
 				"click .watch-video-action" : "watchVideo",
 				"click .list-materials-action" : "listMaterials",
 				"click .view-test-action" : "openDialog",
@@ -477,7 +478,11 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					}
 				}.bind(this));
             },
-			watchVideo : function(e) {
+            downloadVideo : function(e) {
+				mod.programsCollection.moveToUnit(this.model.get("id"));
+				this.parentView.trigger("download:video", this.model);
+			},
+            watchVideo : function(e) {
 				mod.programsCollection.moveToUnit(this.model.get("id"));
 
 				this.parentView.trigger("watch:video", this.model);
@@ -820,6 +825,19 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        	if (this.$(".sec-video").data('draggable')) {
 	        		this.$(".sec-video").draggable('destroy');
 	        	}
+	        },
+	        download : function(e){
+	        	console.info('portlet.content/unitVideosTabViewClass::download');
+	        	var videosCollection = this.model.get("videos");
+	        	 if (videosCollection.size() > 0) {
+	        		videosCollection.each(function(videoModel) {
+						videoModel.getFiles().each(function(fileModel) {
+							if (fileModel.isVideo() ) {
+								window.open(fileModel.get("url"),'_blank');
+							}
+						});
+					});
+	        	 }
 	        },
 	        render : function(e) {
 	            console.info('portlet.content/unitVideosTabViewClass::render');
@@ -1603,7 +1621,12 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 					this.programCoursesTabView.render();
 					this.courseUnitsTabView.render();
 
+					this.listenTo(this.courseUnitsTabView, "download:video", function(unitModel) {
+						this.unitVideoTabView.setModel(unitModel);
+						this.unitVideoTabView.download();
 
+					}.bind(this));
+					
 					this.listenTo(this.courseUnitsTabView, "watch:video", function(unitModel) {
 						this.unitVideoTabView.setModel(unitModel);
 						this.unitVideoTabView.render();

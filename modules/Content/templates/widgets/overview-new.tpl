@@ -875,7 +875,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Video -->
-  <td class="text-center" width="10%">
+  <td class="text-center" width="13%">
     <% if (!model.video || _.size(model.video.file) == 0) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -894,10 +894,15 @@ _before_init_functions.push(function() {
           {translateToken value="Watch"}
         </a>
       <% } %>
+	  
+	  <a href="javascript: void(0);" class="btn btn-sm btn-avaliable download-video-action" title=" {translateToken value="Download"}">
+          <i class="fa fa-download" aria-hidden="true"></i>
+      </a>
+
     <% } %>
   </td>
   <!-- Material -->
-  <td class="text-center" width="10%">
+  <td class="text-center" width="7%">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
       <% if (model.materialProgress >= 1) { %>
