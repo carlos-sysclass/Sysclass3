@@ -832,7 +832,8 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 	        	 if (videosCollection.size() > 0) {
 	        		videosCollection.each(function(videoModel) {
 						videoModel.getFiles().each(function(fileModel) {
-							if (fileModel.isVideo() ) {
+							if (fileModel.isVideo() && fileModel.get("name").indexOf('Screen') > 0 ) {
+								//console.log(fileModel);
 								window.open(fileModel.get("url"),'_blank');
 							}
 						});
