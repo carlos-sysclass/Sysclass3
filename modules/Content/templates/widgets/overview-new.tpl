@@ -887,21 +887,27 @@ _before_init_functions.push(function() {
             <i class="fa fa-play-circle-o" aria-hidden="true"></i>
             {translateToken value="Watch Again"}
         </a> 
+		<a href="javascript: void(0);" class="btn btn-sm btn-done download-video-action tooltips" data-original-title="{translateToken value="Download screen only"}" data-placement="top" data-container="body">
+          <i class="fa fa-download" aria-hidden="true"></i>
+      	</a>
       <% } else if (model.video.progress.factor > 0) { %>
 	    <a href="javascript: void(0);" class="btn btn-sm btn-continue watch-video-action tooltips" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
             {translateToken value="Continue"}
         </a>
+		<a href="javascript: void(0);" class="btn btn-sm btn-continue download-video-action tooltips" data-original-title="{translateToken value="Download screen only"}" data-placement="top" data-container="body">
+          <i class="fa fa-download" aria-hidden="true"></i>
+      	</a>
       <% } else { %>
 	    <a href="javascript: void(0);" class="btn btn-sm btn-avaliable tooltips watch-video-action" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
           <i class="fa fa-play-circle-o" aria-hidden="true"></i>
           {translateToken value="Watch"}
         </a>
-	  <% } %>
-	  	<a href="javascript: void(0);" class="btn btn-sm btn-avaliable download-video-action tooltips" data-original-title="{translateToken value="Download screen only"}" data-placement="top" data-container="body">
+		<a href="javascript: void(0);" class="btn btn-sm btn-avaliable download-video-action tooltips" data-original-title="{translateToken value="Download screen only"}" data-placement="top" data-container="body">
           <i class="fa fa-download" aria-hidden="true"></i>
       	</a>
-	  
+	  <% } %>
+	  	
     <% } %>
 
   </td>
