@@ -21,13 +21,14 @@ function smarty_modifier_user_attrs_translate($string) {
 	$mtz = array();
 	$mtz['address'] = 'Address';
 	$mtz['area_of_study'] = 'Area of Study';
-	$mtz['courses'] = 'courses';
+	$mtz['courses'] = 'Courses';
+	$mtz['course_interest'] = 'Course of Interest';
 	$mtz['english_communication'] = 'English Communication';
 	$mtz['gender_id'] = 'Gender';
 	$mtz['higher_school'] = 'Higher School';
 	$mtz['how_did_you_learn_about'] = 'How did you learn about';
 	$mtz['i_am_currently'] = 'I\'am currently';
-	$mtz['language_name'] = 'Language';
+	$mtz['language_name'] = 'Primary Language';
 	$mtz['my_calling'] = 'My Calling';
 	$mtz['secondary_school'] = 'Secondary School';
 	$mtz['skype'] = 'Skype';
