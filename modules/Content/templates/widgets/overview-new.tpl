@@ -878,7 +878,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Video -->
-  <td class="text-center" width="13%">
+  <td class="text-center" width="14%">
 	
     <% if (!model.video || _.size(model.video.file) == 0) { %> 
     <% } else { %>
@@ -906,7 +906,7 @@ _before_init_functions.push(function() {
 
   </td>
   <!-- Material -->
-  <td class="text-center" width="7%">
+  <td class="text-center" width="6%">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
 	  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Academic content"}" data-placement="top" data-container="body">
