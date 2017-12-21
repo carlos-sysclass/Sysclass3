@@ -837,7 +837,7 @@ _before_init_functions.push(function() {
   </td>
   
   <!-- Unit -->
-  <td width="50%">
+  <td width="49%">
       <%= model.name %>
       <%
         var hasDropdown = !_.isNull(model.professor_id) && _.size(model.professor) > 0;
@@ -878,7 +878,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Video -->
-  <td class="text-center" width="14%">
+  <td class="text-center" width="15%">
 	
     <% if (!model.video || _.size(model.video.file) == 0) { %> 
     <% } else { %>
