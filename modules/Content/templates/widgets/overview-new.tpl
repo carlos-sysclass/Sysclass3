@@ -883,34 +883,25 @@ _before_init_functions.push(function() {
     <% if (!model.video || _.size(model.video.file) == 0) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
-	  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
-        <a href="javascript: void(0);" class="btn btn-sm btn-done watch-video-action">
+	    <a href="javascript: void(0);" class="btn btn-sm btn-done tooltips watch-video-action tooltips" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
             <i class="fa fa-play-circle-o" aria-hidden="true"></i>
             {translateToken value="Watch Again"}
         </a> 
-      </span>
       <% } else if (model.video.progress.factor > 0) { %>
-	  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
-        <a href="javascript: void(0);" class="btn btn-sm btn-continue watch-video-action">
+	    <a href="javascript: void(0);" class="btn btn-sm btn-continue watch-video-action tooltips" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
             {translateToken value="Continue"}
         </a>
-      </span>
       <% } else { %>
-	  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
-        <a href="javascript: void(0);" class="btn btn-sm btn-avaliable watch-video-action">
+	    <a href="javascript: void(0);" class="btn btn-sm btn-avaliable tooltips watch-video-action" data-original-title="{translateToken value="Play complete unit"}" data-placement="top" data-container="body">
           <i class="fa fa-play-circle-o" aria-hidden="true"></i>
           {translateToken value="Watch"}
         </a>
-	  </span>
-      <% } %>
-	  
-	  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Download screen only"}" data-placement="top" data-container="body">
-      	<a href="javascript: void(0);" class="btn btn-sm btn-avaliable download-video-action">
+	  <% } %>
+	  	<a href="javascript: void(0);" class="btn btn-sm btn-avaliable download-video-action tooltips" data-original-title="{translateToken value="Download screen only"}" data-placement="top" data-container="body">
           <i class="fa fa-download" aria-hidden="true"></i>
       	</a>
-	  </span>
-
+	  
     <% } %>
 
   </td>
