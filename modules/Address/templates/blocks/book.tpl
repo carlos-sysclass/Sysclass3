@@ -1,6 +1,6 @@
 <div id="address-block">
 	
-	<!--<div class="col-md-8">
+	<div class="col-md-8">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Street"}</label>
 			<input name="street" value="" type="text" placeholder="{translateToken value="Street"}" class="form-control" data-rule-minlength="5" />
@@ -10,7 +10,7 @@
 	<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Number"}</label>
-			<input name="street_number" value="" type="text" placeholder="{translateToken value="Street number"}" class="form-control" data-rule-minlength="1" />-->
+			<input name="street_number" value="" type="text" placeholder="{translateToken value="Street number"}" class="form-control" data-rule-minlength="1" />
 		</div>
 	</div>
 	
