@@ -76,7 +76,7 @@ crud:
       template: profile.tpl
       variables:
         page_title: Your Profile
-        page_subtitle: See your profile info, change your password and more.
+        page_subtitle:
 
 blocks:
   users.list.table:
