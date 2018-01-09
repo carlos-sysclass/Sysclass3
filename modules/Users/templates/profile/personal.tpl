@@ -1,17 +1,5 @@
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Student ID"}</label>
-			<input name="id" readonly="readonly" value="{$T_EDIT_USER.id}" type="text" placeholder="{translateToken value="Student ID"}" class="form-control" />
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="control-label">{translateToken value="Enrollment date"}</label>
-			<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].start_date}" type="text" placeholder="{translateToken value="Enrollment date"}" class="form-control" />
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="form-group">
 			<label class="control-label">{translateToken value="First name"}</label>
 			<input name="name" readonly="readonly" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
 		</div>
@@ -24,9 +12,9 @@
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
-			<label>{translateToken value="Email address"}</label>
+			<label>{translateToken value="Email"}</label>
 			<div>
-				<input name="email" reavalue="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email address"}" class="form-control">
+				<input name="email" reavalue="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email"}" class="form-control">
 			</div>
 		</div>
 	</div>

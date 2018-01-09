@@ -33,7 +33,7 @@ function smarty_modifier_user_attrs_translate($string) {
 	$mtz['secondary_school'] = 'Secondary School';
 	$mtz['skype'] = 'Skype';
 	$mtz['whatsapp'] = 'Whatsapp';
-	$mtz['zip_code'] = 'Zip Code';
+	$mtz['zip_code'] = 'Postal Code';
 	
 	if( isset($mtz[$string]) ){
 		return $mtz[$string];

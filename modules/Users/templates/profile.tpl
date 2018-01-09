@@ -66,7 +66,7 @@
 										{/if}
 									{/foreach}
 								{/if}
-							
+								
 							    {foreach $T_SECTION_TPL['address'] as $template}
 							    	{include file=$template}
 							    {/foreach}
@@ -93,18 +93,30 @@
 						{/if}
 					</div>
 					<div class="tab-pane" id="academic">
-					{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
-						{foreach $T_EDIT_USER.attrs as $key => $value}
-							{if $value.field_name == 'english_communication' || $value.field_name == 'higher_school' || $value.field_name == 'secondary_school' || $value.field_name == 'area_of_study' }
-							<div class="col-md-6">
-								<div class="form-group">
-										<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
-										<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
-								</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">{translateToken value="Student ID"}</label>
+								<input name="id" readonly="readonly" value="{$T_EDIT_USER.id}" type="text" placeholder="{translateToken value="Student ID"}" class="form-control" />
 							</div>
-							{/if}
-						{/foreach}
-					{/if}
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">{translateToken value="Enrollment date"}</label>
+								<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].start_date}" type="text" placeholder="{translateToken value="Enrollment date"}" class="form-control" />
+							</div>
+						</div>
+						{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
+							{foreach $T_EDIT_USER.attrs as $key => $value}
+								{if $value.field_name == 'english_communication' || $value.field_name == 'higher_school' || $value.field_name == 'secondary_school' || $value.field_name == 'area_of_study' }
+								<div class="col-md-6">
+									<div class="form-group">
+											<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
+											<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
+									</div>
+								</div>
+								{/if}
+							{/foreach}
+						{/if}
 					</div>
 					<div class="tab-pane" id="documents">
 						<div class="form-body">

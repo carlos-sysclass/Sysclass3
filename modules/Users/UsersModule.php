@@ -917,8 +917,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->putitem("timezones", $timezones);
 		
 		$ar_user = $currentUser->toFullArray(array('attrs','Avatars','Dropbox','Enrollments'));
-
-		
 		
 		$ar_dropbox = $ar_user['dropbox'];
 		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2','file_proof_residency');
