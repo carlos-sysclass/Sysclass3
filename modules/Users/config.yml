@@ -108,5 +108,5 @@ blocks:
 models:
   me:
     class: Sysclass\Models\Users\User
-    exportMethod: ["toFullArray", ["Avatars", "UserGroups"]]
+    exportMethod: ["toFullArray", ["Avatars", "UserGroups", "Enrollments"]]
     findMethod: findFirstById

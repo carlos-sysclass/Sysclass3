@@ -29,6 +29,21 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
+							<label class="control-label">{translateToken value="Student ID"}</label>
+							<input name="id" value="" readonly="readonly" type="text" placeholder="{translateToken value="Student ID"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">{translateToken value="Enrollment date"}</label>
+							<input name="enrollments" readonly="readonly" value="" type="text" placeholder="{translateToken value="Enrollment date"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
+						</div>
+					</div-->
+					
+					<div class="col-md-6">
+						<div class="form-group">
 							<label class="control-label">{translateToken value="Name"}</label>
 							<input name="name" value="" type="text" placeholder="{translateToken value="Name"}" class="form-control" data-rule-required="true" data-rule-minlength="3" />
 						</div>
