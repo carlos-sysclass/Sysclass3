@@ -35,12 +35,12 @@
 		</div>
 	</div>
 
-	<div class="col-md-4">
+	<!--<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Postal Code"}</label>
 			<input name="postal_code" value="" type="text" placeholder="{translateToken value="Zipcode"}" class="form-control" data-rule-Postal Code="true" />
 		</div>
-	</div>
+	</div>-->
 	
 	<div class="col-md-4">
 		<div class="form-group">
