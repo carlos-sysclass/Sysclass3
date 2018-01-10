@@ -837,20 +837,17 @@ _before_init_functions.push(function() {
   </td>
   
   <!-- Unit -->
-  <td width="49%">
+  <td width="40%">
       <%= model.name %>
       <%
         var hasDropdown = !_.isNull(model.professor_id) && _.size(model.professor) > 0;
         /* hasDropdown = hasDropdown && <another-condition> */
       %>
       <% if (hasDropdown) { %>
-        <div class="btn-group">
-
-		  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="In Progress"}" data-placement="top" data-container="body">
+        <!--div class="btn-group">
           <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-link dropdown-toggle" href="javascript:void(0);">
             <i class="fa fa-info-circle"></i>
           </a>
-		  </span>
 
           <ul class="dropdown-menu">
             <% if (!_.isNull(model.professor_id) && _.size(model.professor) > 0) { %>
@@ -866,7 +863,7 @@ _before_init_functions.push(function() {
             </li>
             <% } %>
           </ul>
-        </div>
+        </div-->
       <% } %>
 
   </td>
@@ -878,8 +875,7 @@ _before_init_functions.push(function() {
   </td>
   -->
   <!-- Video -->
-  <td class="text-center" width="15%">
-	
+  <td class="text-center" width="20%">
     <% if (!model.video || _.size(model.video.file) == 0) { %> 
     <% } else { %>
       <% if (model.video.progress.factor >= 1) { %>
@@ -915,7 +911,6 @@ _before_init_functions.push(function() {
   <td class="text-center" width="6%">
     <% if (_.size(model.materials) > 0) { %>
     <div class="dropdown">
-	  <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Academic content"}" data-placement="top" data-container="body">
       <% if (model.materialProgress >= 1) { %>
         <a data-close-others="true" data-toggle="dropdown" class="btn btn-sm btn-done dropdown-toggle" href="javascript:void(0);">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
@@ -935,7 +930,6 @@ _before_init_functions.push(function() {
             <i class="fa fa-caret-down"></i>
         </a>
       <% } %>
-	  </span>
       <ul class="dropdown-menu unit-material-dropdown">
       </ul>
     </div>
@@ -976,8 +970,10 @@ _before_init_functions.push(function() {
           </span>
         <% } else if (item.progress.factor > 0) { %>
         <% } else { %>
+          <span class="avalialbe">
             <i class="fa fa-coffee" aria-hidden="true"></i>
             Available
+          </span>
         <% } %>
       <% }); %>
     <% } %>
@@ -990,9 +986,6 @@ _before_init_functions.push(function() {
 
   <!-- Rating -->
   <td class="text-center hidden-xs hidden-sm" width="10%">
-
-	<span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Slide to rate unit"}" data-placement="top" data-container="body">
-
     <% if (_.has(model, 'rating')) { %>
       <%
       count = 0; 
@@ -1017,8 +1010,6 @@ _before_init_functions.push(function() {
       %>
     <% } else { %>
     <% } %>
-
-	</span>
   </td>
   <!-- Exame -->
   <!-- <td>
@@ -1169,14 +1160,10 @@ _before_init_functions.push(function() {
             {translateToken value="In Progress"}
         </a>
       <% } else { %>
-
- 	   <span class="btn btn-sm btn-link tooltips" data-original-title="{translateToken value="Tests and exams"}" data-placement="top" data-container="body">
         <a href="javascript: void(0);" class="btn btn-sm btn-avaliable view-test-action">
             <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
             {translateToken value="Available"}
         </a>
-		</span>
-
       <% } %>
     <% } %>
   </td>

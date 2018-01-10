@@ -213,11 +213,19 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 			$modules = $this->getModules("ISummarizable");
 
-			$userDetails = $currentUser->toFullArray(array('Avatars', 'Courses'));
+			$userDetails = $currentUser->toFullArray(array('Avatars', 'Courses','Enrollments'));
+			
+			$date1 = $userDetails['enrollments'][0]['start_date'];
+			$date2 = $userDetails['userreport']['first_access'];
+			
+			$diff = abs(strtotime($date2) - strtotime($date1));
 
+			$days_end_term = floor($diff / (60 * 60 * 24));
+
+			
 			$data = array();
 			$data['user_details'] = $userDetails;
-
+			$data['days_end_term'] = (( 182-$days_end_term > 0 )? 182-$days_end_term : 0 );
 			$data['notification'] = array();
 
 			foreach ($modules as $key => $mod) {
@@ -917,6 +925,13 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$this->putitem("timezones", $timezones);
 		
 		$ar_user = $currentUser->toFullArray(array('attrs','Avatars','Dropbox','Enrollments'));
+		
+		
+		$date1 = $ar_user['enrollments'][0]['start_date'];
+		$date2 = $ar_user['userreport']['first_access'];
+		$diff = abs(strtotime($date2) - strtotime($date1));
+		$days_end_term = floor($diff / (60 * 60 * 24));
+		$ar_user['days_end_term'] = (( 182-$days_end_term > 0 )? 182-$days_end_term : 0 );
 		
 		$ar_dropbox = $ar_user['dropbox'];
 		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2','file_proof_residency');

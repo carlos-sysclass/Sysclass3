@@ -5,6 +5,8 @@
 
 {assign var="pointer" value=$T_DATA.data.pointer}
 
+{assign var="days_end_term" value=$T_DATA.data.days_end_term}
+
 <script>
 _before_init_functions.push(function() {
     $SC.addResource("user_pointer", {$pointer|@json_encode nofilter});
@@ -38,8 +40,7 @@ _before_init_functions.push(function() {
 				{if ($notif@iteration % 3 == 1 || $notif@first)}
 				<div class="summary-list">
 				{/if}
-
-
+				
 		       	<!-- <div class="col-md-4 col-sm-4 col-xs-12"> -->
 		       		<div class="summary-item">
 		       			<!--
@@ -103,12 +104,19 @@ _before_init_functions.push(function() {
 						</div>
 					</div>
 		       	<!-- </div> -->
+			
+				{if $notif@last }
+				<div class="summary-item">
+					{translateToken value="Days to end term"}
+					<div class="pull-right">{$days_end_term}</div>
+				</div>
+				{/if}
 
 				{if ($notif@iteration % 3 == 0 || $notif@last)}
 				</div>
 				{/if}
 	       	{/foreach}
-
+	       	
 		{/if}
 	</div>
 	<div class="col-md-3 col-sm-4 col-xs-3 vcenter" id="progress-user" style="margin-top:20px;">
