@@ -65,6 +65,7 @@
 			                <div class="inline-item"> 
 			                    <select class="select2-me form-control input-block-level" name="duration_type" style="min-width: 150px;" data-rule-required="true">
 			                        <option value="">{translateToken value="Select a Period"}</option>
+			                        <option value="days">{translateToken value="Day(s)"}</option>
 			                        <option value="week">{translateToken value="Week(s)"}</option>
 			                        <option value="month">{translateToken value="Month(s)"}</option>
 			                        <option value="year">{translateToken value="Year(s)"}</option>
