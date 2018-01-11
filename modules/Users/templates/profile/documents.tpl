@@ -49,7 +49,7 @@
 <div class="form-body">
 	<h5 class="form-section margin-bottom-10 margin-top-10">
 		<i class="fa fa-camera"></i>
-		{translateToken value="High-School/Secondary School Diploma or Transcript”"}
+		{translateToken value="High-School, Secondary School Diploma or Transcript"}
 	</h5>
 	<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/documents" data-image-crop="true" data-model-file="documents.file_id">
 		<input type="hidden" name="documents.file_id" value="{$T_FILE_TRANSCRIPT_1.id}" />
@@ -65,7 +65,7 @@
 <div class="form-body">
 	<h5 class="form-section margin-bottom-10 margin-top-10">
 		<i class="fa fa-camera"></i>
-		{translateToken value="High-School/Secondary School Diploma or Transcript”"}
+		{translateToken value="College, University or Postsecondary Diploma or Transcript"}
 	</h5>
 	<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/documents" data-image-crop="true" data-model-file="documents.file_id">
 		<input type="hidden" name="documents.file_id" value="{$T_FILE_TRANSCRIPT_2.id}" />
