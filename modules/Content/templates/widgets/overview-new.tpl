@@ -417,8 +417,8 @@ _before_init_functions.push(function() {
                         <tr>
                           <th class="text-center">{translateToken value="Status"}</th>
                           <th class="text-center">{translateToken value="Courses"}</th>
-                          <th class="text-center">{translateToken value="Units"}</th>
-                          <th class="text-center">{translateToken value="Completion"}</th>
+                          <th class="text-center">{translateToken value="Completed content"}</th>
+                          <th class="text-center">{translateToken value="Completion date"}</th>
                         </tr>
                       </thead>
                       <tbody></tbody>
