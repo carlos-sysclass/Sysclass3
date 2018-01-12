@@ -26,7 +26,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 		$summary = array(
 			'type' => 'danger',
 			'count' => $pendingTests->count(),
-			'text' => $this->translate->translate('New assignments'),
+			'text' => $this->translate->translate('Assignments'),
 		);
 
 		if ($pendingTests->count() > 0) {

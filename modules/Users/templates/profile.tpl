@@ -107,13 +107,13 @@
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="control-label">{translateToken value="Date of first login"}</label>
+								<label class="control-label">{translateToken value="Start date"}</label>
 								<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.userreport.first_access}" type="text" placeholder="{translateToken value="Date of first login"}" class="form-control" />
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label class="control-label">{translateToken value="Days remaining to complete your term"}</label>
+								<label class="control-label">{translateToken value="Days remaning"}</label>
 								<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Date of first login"}" class="form-control" />
 							</div>
 						</div>
