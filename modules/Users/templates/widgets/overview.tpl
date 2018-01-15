@@ -107,7 +107,7 @@ _before_init_functions.push(function() {
 			
 				{if $notif@last }
 				<div class="summary-item">
-					{translateToken value="Days to end term"}
+					{translateToken value="Days remaning"}
 					<div class="pull-right">
 						<a class="btn btn-xs btn-done" href="javascript: void(0)">{$days_end_term}</a>
 					</div>

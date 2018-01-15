@@ -2182,11 +2182,11 @@ button.calendar-news-item {
 
 }
 .summary-list > div {
-    margin-bottom: 11px;
+    margin-bottom: 4px;
 }
 .summary-list > div.summary-item {
     border-bottom: 1px solid #ccc;
-    padding: 0;
+    padding: 0px 0px 6px 0;
 }
 
 .summary-list > div.summary-item:LAST-CHILD {
