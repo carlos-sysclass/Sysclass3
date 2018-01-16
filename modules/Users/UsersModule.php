@@ -221,7 +221,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 			$date2 = strtotime($userDetails['userreport']['first_access']. '+182 days');
 			$date1 = strtotime('now');
 			
-			$diff = abs(strtotime($date2) - strtotime($date1));
+			$diff = strtotime($date2) - strtotime($date1);
 			
 			$days_end_term = floor($diff / (60 * 60 * 24));
 
@@ -933,10 +933,10 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		//$date1 = $ar_user['enrollments'][0]['start_date'];
 		//$date2 = $ar_user['userreport']['first_access'];
 		
-		$date2 = strtotime($userDetails['userreport']['first_access']. ' +182 day');
+		$date2 = strtotime($userDetails['userreport']['first_access']. '+182 days');
 		$date1 = strtotime('now');
 			
-		$diff = abs(strtotime($date2) - strtotime($date1));
+		$diff = (strtotime($date2) - strtotime($date1));
 			
 		$days_end_term = floor($diff / (60 * 60 * 24));
 		
