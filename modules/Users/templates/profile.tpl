@@ -20,7 +20,7 @@
 				</script>
 				<ul class="nav nav-tabs" id="profile">
 					<li class="active"><a href="#yourinfo" data-toggle="tab">Your info</a></li>
-					<li><a href="#academic" data-toggle="tab">Academic</a></li>
+					<!-- li><a href="#academic" data-toggle="tab">Academic</a></li-->
 					<li><a href="#documents" data-toggle="tab">Documents</a></li>
 				</ul>
 				<div class="tab-content">
@@ -33,6 +33,39 @@
 						<div class="widget-container">
 						{* include file="pages/widget-container.tpl" *}
 						</div>
+						
+						<div class="form-body">
+							<h5 class="form-section margin-bottom-10 margin-top-10">
+								<i class="fa fa-graduation-cap"></i>
+								{translateToken value="Academic info"}
+							</h5>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Student ID"}</label>
+									<input name="id" readonly="readonly" value="{$T_EDIT_USER.id}" type="text" placeholder="{translateToken value="Student ID"}" class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Enrollment date"}</label>
+									<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].start_date}" type="text" placeholder="{translateToken value="Enrollment date"}" class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Start date"}</label>
+									<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.userreport.first_access}" type="text" placeholder="{translateToken value="Date of first login"}" class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Days remaning"}</label>
+									<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Date of first login"}" class="form-control" />
+								</div>
+							</div>
+						</div>
+						
+						
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
 								<i class="fa fa-camera"></i>

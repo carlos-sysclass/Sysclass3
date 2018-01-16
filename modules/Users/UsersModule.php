@@ -933,18 +933,14 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		//$date1 = $ar_user['enrollments'][0]['start_date'];
 		//$date2 = $ar_user['userreport']['first_access'];
 		
-		$date2 = strtotime($userDetails['userreport']['first_access']. '+182 days');
+		$date2 = strtotime($ar_user['userreport']['first_access']. '+182 days');
 		$date1 = strtotime('now');
 			
 		$diff = $date2-$date1;
 			
 		$days_end_term = floor($diff / (60 * 60 * 24));
 		
-			
-		$data = array();
-		$data['user_details'] = $userDetails;
-		$data['days_end_term'] = (( $days_end_term > 0 )? $days_end_term : 0 );
-		
+		$ar_user["days_end_term"] = (( $days_end_term > 0 )? $days_end_term : 0 );
 		
 		$ar_dropbox = $ar_user['dropbox'];
 		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2','file_proof_residency');
