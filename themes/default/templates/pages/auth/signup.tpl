@@ -57,7 +57,7 @@
 		</form>
 		<!-- END LOGIN FORM -->
 		<div class="copyright">
-			&copy; 2017 • WiseFlex Knowledge Systems LLC. <!-- <br />
+			&copy; 2018 • WiseFlex Knowledge Systems LLC. <!-- <br />
 			<span style="color: black">
 				{$T_SYSCONFIG.deploy.base_version} 
 				Build {$T_SYSCONFIG.deploy.build_number} 
