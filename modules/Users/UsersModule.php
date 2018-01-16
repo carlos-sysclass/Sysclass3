@@ -221,7 +221,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 			$date2 = strtotime($userDetails['userreport']['first_access']. '+182 days');
 			$date1 = strtotime('now');
 			
-			$diff = strtotime($date2) - strtotime($date1);
+			$diff = $date2-$date1;
 			
 			$days_end_term = floor($diff / (60 * 60 * 24));
 
@@ -936,7 +936,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$date2 = strtotime($userDetails['userreport']['first_access']. '+182 days');
 		$date1 = strtotime('now');
 			
-		$diff = (strtotime($date2) - strtotime($date1));
+		$diff = $date2-$date1;
 			
 		$days_end_term = floor($diff / (60 * 60 * 24));
 		
