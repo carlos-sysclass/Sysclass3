@@ -1,6 +1,6 @@
 <div class="footer">
 	<div class="footer-inner">
-		&copy; Copyright 2017 • WiseFlex Knowledge Systems LLC. 
+		&copy; Copyright 2018 • WiseFlex Knowledge Systems LLC. 
 		<!--
 		<span style="color: white">
 			| Version: {$T_SYSCONFIG.deploy.base_version}

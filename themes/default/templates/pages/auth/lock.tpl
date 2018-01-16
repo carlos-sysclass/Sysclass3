@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="page-footer">
-      &copy; Copyright 2017 • WiseFlex Knowledge Systems LLC.
+      &copy; Copyright 2018 • WiseFlex Knowledge Systems LLC.
     </div>
   </div>
 {/block}
