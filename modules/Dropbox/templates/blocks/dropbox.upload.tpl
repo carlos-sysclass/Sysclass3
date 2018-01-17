@@ -1,6 +1,6 @@
 
 <script type="text/template" id="block-dropbox-upload-empty">
-    <strong>{translateToken value="No file(s) found. Drag a file over this window or click below to add"}</strong>
+    <strong>{translateToken value="Drag your file here or click in button the to upload it. Use jpg., pdf. or png. files only."}</strong>
 </script>
 <script type="text/template" id="block-dropbox-upload-upload">
     <span class="preview">
