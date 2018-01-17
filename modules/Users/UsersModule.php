@@ -929,6 +929,12 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		
 		$ar_user = $currentUser->toFullArray(array('attrs','Avatars','Dropbox','Enrollments'));
 		
+		$ar_order = array();
+		foreach ($ar_user['attrs'] as $key => $val ){
+			$ar_order[$val['field_name']] = $val['field_value'];
+		}
+
+		$ar_user['attrs'] = $ar_order;
 		
 		//$date1 = $ar_user['enrollments'][0]['start_date'];
 		//$date2 = $ar_user['userreport']['first_access'];

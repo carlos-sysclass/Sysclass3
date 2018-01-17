@@ -36,6 +36,13 @@
 						
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
+								<i class="fa fa-camera"></i>
+								{translateToken value="Upload your picture"}
+							</h5>
+							{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
+						</div>
+						<div class="form-body">
+							<h5 class="form-section margin-bottom-10 margin-top-10">
 								<i class="fa fa-graduation-cap"></i>
 								{translateToken value="Academic info"}
 							</h5>
@@ -64,15 +71,6 @@
 								</div>
 							</div>
 						</div>
-						
-						
-						<div class="form-body">
-							<h5 class="form-section margin-bottom-10 margin-top-10">
-								<i class="fa fa-camera"></i>
-								{translateToken value="Upload your picture"}
-							</h5>
-							{include file="`$T_MODULE_TPLPATH`/profile/avatar.tpl"}
-						</div>
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
 								<i class="fa fa-user"></i>
@@ -89,11 +87,11 @@
 							</h5>
 								{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 									{foreach $T_EDIT_USER.attrs as $key => $value}
-										{if $value.field_name == 'zip_code' || $value.field_name == 'address' }
+										{if $key == 'zip_code' || $key == 'address' }
 										<div class="col-md-6">
 											<div class="form-group">
-													<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
-													<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
+													<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
+													<input name="{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
 											</div>
 										</div>
 										{/if}
@@ -152,11 +150,11 @@
 						</div>
 						{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 							{foreach $T_EDIT_USER.attrs as $key => $value}
-								{if $value.field_name == 'english_communication' || $value.field_name == 'higher_school' || $value.field_name == 'secondary_school' || $value.field_name == 'area_of_study' }
+								{if $key == 'english_communication' || $key == 'higher_school' || $key == 'secondary_school' || $key == 'area_of_study' }
 								<div class="col-md-6">
 									<div class="form-group">
-											<label class="control-label">{translateToken value=$value.field_name|user_attrs_translate}</label>
-											<input name="{$value.field_name}" value="{$value.field_value}" type="text" placeholder="{translateToken value="$value.field_name|user_attrs_translate"}" class="form-control" />
+											<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
+											<input name="{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
 									</div>
 								</div>
 								{/if}
