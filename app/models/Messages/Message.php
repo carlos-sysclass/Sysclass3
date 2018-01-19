@@ -55,7 +55,7 @@ class Message extends Model
     	if( $this->reply_to ){
 	    	$message = Message::findFirstById($this->reply_to);
 	    	$dt = $message->toFullArray(array('Groups', 'Users'));
-	    	
+	    	/**
 	    	$status = $this->mail->send(
     		$dt['from']['email'],
     		"Um nova mensagem recebida. Email automático, não é necessário responder.",
@@ -69,7 +69,7 @@ class Message extends Model
     			[
     				$dt['from']['email'] => $dt['from']['name'] . " " . $dt['from']['surname'] ,
     			]
-    		);
+    		);**/
     	}
     }
 
