@@ -3,7 +3,6 @@ namespace Sysclass\Models\Messages;
 
 use Plico\Mvc\Model,
     Phalcon\Mvc\Model\Behavior\SoftDelete;
-use Sysclass\Services\Mail\Adapter as MailAdapter;
     
 class Message extends Model
 {
@@ -48,35 +47,6 @@ class Message extends Model
 
     }
     
-    public function afterCreate(){
-    	
-    	require_once REAL_PATH . "/vendor/swiftmailer/swiftmailer/lib/swift_required.php";
-    	
-    	$mail = new MailAdapter();
-    	
-    	$depinj = \Phalcon\DI::getDefault();
-    	$user = $depinj->get("user");
-    	
-    	if( $this->reply_to ){
-	    	$message = Message::findFirstById($this->reply_to);
-	    	$dt = $message->toFullArray(array('Groups', 'Users'));
-	    	$status = $mail->send(
-    		$message->getFrom()->email,
-    		"Um nova mensagem recebida. Email automático, não é necessário responder.",
-    			"email/" . $this->sysconfig->deploy->environment . "/messages-created.email",
-    			true,
-    			[
-    				'user' => $user,
-    				'message' => $this,
-    				'from' => $message->getFrom(),
-    			],
-    			[
-    				$message->getFrom()->email => $message->getFrom()->name . " " . $message->getFrom()->surname ,
-    			]
-    		);
-    	}
-    }
-
     public function beforeValidationOnCreate() {
         $this->timestamp = time();
 
