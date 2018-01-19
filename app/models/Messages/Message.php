@@ -35,7 +35,7 @@ class Message extends Model
             "id",
             array('alias' => 'Groups')
         );
-
+        
         $this->hasManyToMany(
             "id",
             "Sysclass\Models\Messages\UserReceiver",
@@ -45,6 +45,32 @@ class Message extends Model
             array('alias' => 'Users')
         );
 
+    }
+    
+    public function afterCreate(){
+    	
+    	$messsage_txt = 'Subject: '.$this->subject."/r/n";
+    	$messsage_txt .= 'Message: '.$this->body;
+    	
+    	if( $this->reply_to ){
+	    	$message = Message::findFirstById($this->reply_to);
+	    	$dt = $message->toFullArray(array('Groups', 'Users'));
+	    	
+	    	$status = $this->mail->send(
+    		$dt['from']['email'],
+    		"Um nova mensagem recebida. Email automático, não é necessário responder.",
+    			"email/" . $this->sysconfig->deploy->environment . "/messages-created.email",
+    			true,
+    			[
+    				'user' => $this,
+    				'message' => $messsage_txt,
+    				'from' => $dt['from']['email'],
+    			],
+    			[
+    				$dt['from']['email'] => $dt['from']['name'] . " " . $dt['from']['surname'] ,
+    			]
+    		);
+    	}
     }
 
     public function beforeValidationOnCreate() {
