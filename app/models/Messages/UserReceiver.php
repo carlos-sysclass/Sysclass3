@@ -34,7 +34,7 @@ class UserReceiver extends Model
     			"Um nova mensagem recebida. Email automático, não é necessário responder.",
     			"email/" . $this->sysconfig->deploy->environment . "/messages-created.email",
     			true,
-    			['user' => $user,'message' => $this,'from' => $message->getFrom() ],
+    			['user' => $user,'message' => $message,'from' => $message->getFrom() ],
     			[$message->getFrom()->email => $message->getFrom()->name . " " . $message->getFrom()->surname ]
     		);
     	}
