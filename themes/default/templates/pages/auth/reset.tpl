@@ -69,7 +69,7 @@
 					<button class="btn btn-primary pull-right" type="submit">
 						<i class="ti-arrow-up"></i>
 						{if ($T_IS_CONFIRMATION)}
-							{translateToken value="Click to confirm new passord"}
+							{translateToken value="Click to confirm new password"}
 						{else}
 							{translateToken value="Reset my password"}
 						{/if}
