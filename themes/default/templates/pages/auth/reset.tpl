@@ -7,7 +7,7 @@
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
 			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
-				<small class="form-title">{translateToken value="Set the password of your choice in the fields below."}</small>
+				<small class="form-title">{translateToken value="Set your password in the fields below."}</small>
 			</h4>
 			
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
@@ -69,7 +69,7 @@
 					<button class="btn btn-primary pull-right" type="submit">
 						<i class="fa fa-hand-o-right "></i>
 						{if ($T_IS_CONFIRMATION)}
-							{translateToken value="Click to set your new password"}
+							{translateToken value="Click to set your password"}
 						{else}
 							{translateToken value="Reset my password"}
 						{/if}
