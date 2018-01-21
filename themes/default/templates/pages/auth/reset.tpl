@@ -7,7 +7,7 @@
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
 			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
-				<small class="form-title">{translateToken value="Set the password of your choice in the fields below. <br><br>You need to enter your password twice."}</small>
+				<small class="form-title">{translateToken value="Below set the password of your choice."}</small>
 			</h4>
 			
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Confirm"}</label>
+					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Re-enter your new password"}</label>
 					<div class="input-icon">
 						<i class="fa fa-repeat"></i>
 						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Confirm'}" autocomplete="off" class="form-control" 
@@ -67,7 +67,7 @@
 			<div class="form-actions">
 				<div class="form-group">
 					<button class="btn btn-primary pull-right" type="submit">
-						<i class="ti-arrow-up"></i>
+						<i class="ti-arrow-right"></i>
 						{if ($T_IS_CONFIRMATION)}
 							{translateToken value="Click to set your new password"}
 						{else}
