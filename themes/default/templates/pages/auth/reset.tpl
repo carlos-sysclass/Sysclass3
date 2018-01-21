@@ -7,7 +7,7 @@
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
 			<h4 class="form-title">name=$T_USER.name surname=$T_USER.surname<br />
-				<small class="form-title">{translateToken value="Set the password of your choice in the fields below. <br><br>You need to enter your password twice."}</small>
+				<small class="form-title">{translateToken value="Set the password of your choice in the fields below."}</small>
 			</h4>
 			
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
@@ -54,10 +54,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Confirm"}</label>
+					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Re-enter your new password"}</label>
 					<div class="input-icon">
 						<i class="fa fa-arrow-circle-o-right"></i>
-						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Confirm'}" autocomplete="off" class="form-control" 
+						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Re-enter your new password'}" autocomplete="off" class="form-control" 
 							data-rule-required="true" data-rule-minlength="4" data-rule-equalTo="#password" 
 							data-msg-equalTo="{translateToken value='The passwords doesn\'t match!'}"
 						/>
