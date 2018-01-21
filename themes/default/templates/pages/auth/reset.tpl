@@ -49,14 +49,14 @@
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="New Password"}</label>
 					<div class="input-icon">
-						<i class="fa fa-asterisk"></i>
+						<i class="fa-arrow-circle-o-right"></i>
 						<input type="password" id="password" name="password" value="" placeholder="{translateToken value="New password"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Confirm"}</label>
 					<div class="input-icon">
-						<i class="fa fa-repeat"></i>
+						<i class="fa-arrow-circle-o-right"></i>
 						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Confirm'}" autocomplete="off" class="form-control" 
 							data-rule-required="true" data-rule-minlength="4" data-rule-equalTo="#password" 
 							data-msg-equalTo="{translateToken value='The passwords doesn\'t match!'}"
@@ -67,7 +67,7 @@
 			<div class="form-actions">
 				<div class="form-group">
 					<button class="btn btn-primary pull-right" type="submit">
-						<i class="ti-arrow-up"></i>
+						<i class="fa-arrow-circle-o-right"></i>
 						{if ($T_IS_CONFIRMATION)}
 							{translateToken value="Click to set your new password"}
 						{else}
