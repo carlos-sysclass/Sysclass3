@@ -6,7 +6,7 @@
 		</div>
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
-			<h4 class="form-title">{translateToken value="" name=$T_USER.name surname=$T_USER.surname}<br />
+			<h4 class="form-title">{translateToken value="%s %s" name=$T_USER.name surname=$T_USER.surname}<br />
 				<small class="form-title">{translateToken value="Set your password in the fields below."}</small>
 			</h4>
 			
