@@ -67,7 +67,7 @@
 			<div class="form-actions">
 				<div class="form-group">
 					<button class="btn btn-primary pull-right" type="submit">
-						<i class="fa-arrow-circle-o-right"></i>
+						<i class="fa-hand-o-right"></i>
 						{if ($T_IS_CONFIRMATION)}
 							{translateToken value="Click to set your new password"}
 						{else}
