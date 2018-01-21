@@ -6,7 +6,7 @@
 		</div>
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
-			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
+			<h4 class="form-title">{translateToken value="" name=$T_USER.name surname=$T_USER.surname}<br />
 				<small class="form-title">{translateToken value="Set your password in the fields below."}</small>
 			</h4>
 			
@@ -57,7 +57,7 @@
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Confirm"}</label>
 					<div class="input-icon">
 						<i class="fa fa-arrow-circle-o-right"></i>
-						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Confirm'}" autocomplete="off" class="form-control" 
+						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Re-enter password'}" autocomplete="off" class="form-control" 
 							data-rule-required="true" data-rule-minlength="4" data-rule-equalTo="#password" 
 							data-msg-equalTo="{translateToken value='The passwords doesn\'t match!'}"
 						/>
