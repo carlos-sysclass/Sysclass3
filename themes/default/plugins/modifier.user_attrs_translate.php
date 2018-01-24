@@ -34,6 +34,7 @@ function smarty_modifier_user_attrs_translate($string) {
 	$mtz['skype'] = 'Skype';
 	$mtz['whatsapp'] = 'Whatsapp';
 	$mtz['zip_code'] = 'Postal Code';
+	$mtz['particiate_translation'] = 'Participate in Translation';
 	
 	if( isset($mtz[$string]) ){
 		return $mtz[$string];

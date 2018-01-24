@@ -91,7 +91,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 													<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
-													<input name="{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+													<input name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
 											</div>
 										</div>
 										{/if}
@@ -154,7 +154,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 											<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
-											<input name="{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+											<input name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
 									</div>
 								</div>
 								{/if}

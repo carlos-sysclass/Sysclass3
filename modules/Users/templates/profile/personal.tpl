@@ -22,7 +22,7 @@
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Birthday"}</label>
 			<div>
-				<input type="text" readonly="readonly" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+				<input type="text" readonly="readonly" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control">
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
-						<input{if $key != 'gender'} readonly="readonly"{/if} name="{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+						<input{if $key != 'gender'} readonly="readonly"{/if} name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
 				</div>
 			</div>
 			{/if}
