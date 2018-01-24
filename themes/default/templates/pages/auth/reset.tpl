@@ -6,8 +6,8 @@
 		</div>
 		<!-- BEGIN LOGIN FORM -->
 		<form id="signup-form" role="form" class="signup-form form-validate" method="post" action="{$T_FORM_ACTION}">
-			<h4 class="form-title">{translateToken value="Hello, %s %s" name=$T_USER.name surname=$T_USER.surname}<br />
-				<small class="form-title">{translateToken value="Please, type login and password below"}</small>
+			<h4 class="form-title">{translateToken value="%s %s" name=$T_USER.name surname=$T_USER.surname}<br />
+				<small class="form-title">{translateToken value="Set your password in the fields below."}</small>
 			</h4>
 			
 				{if isset($T_MESSAGE) && $T_MESSAGE|@count > 0}
@@ -49,15 +49,15 @@
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="New Password"}</label>
 					<div class="input-icon">
-						<i class="fa fa-asterisk"></i>
+						<i class="fa fa-arrow-circle-o-right"></i>
 						<input type="password" id="password" name="password" value="" placeholder="{translateToken value="New password"}" autocomplete="off" class="form-control placeholder-no-fix" data-rule-required="true" data-rule-minlength="4">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">{translateToken value="Confirm"}</label>
 					<div class="input-icon">
-						<i class="fa fa-repeat"></i>
-						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Confirm'}" autocomplete="off" class="form-control" 
+						<i class="fa fa-arrow-circle-o-right"></i>
+						<input type="password" id="password-confirm" name="password-confirm" value=""  placeholder="{translateToken value='Re-enter password'}" autocomplete="off" class="form-control" 
 							data-rule-required="true" data-rule-minlength="4" data-rule-equalTo="#password" 
 							data-msg-equalTo="{translateToken value='The passwords doesn\'t match!'}"
 						/>
@@ -67,9 +67,9 @@
 			<div class="form-actions">
 				<div class="form-group">
 					<button class="btn btn-primary pull-right" type="submit">
-						<i class="ti-arrow-up"></i>
+						<i class="fa fa-hand-o-right "></i>
 						{if ($T_IS_CONFIRMATION)}
-							{translateToken value="Define my password"}
+							{translateToken value="Click to set your password"}
 						{else}
 							{translateToken value="Reset my password"}
 						{/if}
