@@ -109,4 +109,5 @@ models:
   me:
     class: Sysclass\Models\Users\User
     exportMethod: ["toFullArray", ["Avatars", "UserGroups", "Enrollments", "attrs"]]
+    listExportMethod: ["toArray"]
     findMethod: findFirstById
