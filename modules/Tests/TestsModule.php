@@ -417,7 +417,7 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 			} else {
 				$this->redirect(
 					'/module/tests/open/' . $identifier,
-					$this->translate->translate("The retake limit for the test has been reached. Please, contact the administrator on how to proceed."),
+					$this->translate->translate("The retake limit for the test has been reached. Please, email the administrator on how to proceed by clicking <a href=\"mailto:contact@lucent.institute?Subject=Retake%20test\" target=\"_top\">here</a>."),
 					"warning"
 				);
 				//$this->openPage();
