@@ -709,10 +709,18 @@ abstract class SysclassModule extends BaseSysclassModule {
 						$items[$key] = $item;
 					} else {
 						// TODO THINK ABOUT MOVE THIS TO config.yml FILE
-						$items[$key] = call_user_func(
-							array($item, $model_info['exportMethod'][0]),
-							$model_info['exportMethod'][1]
-						);
+						if (array_key_exists('listExportMethod', $model_info)) {
+							$items[$key] = call_user_func(
+								array($item, $model_info['listExportMethod'][0]),
+								$model_info['listExportMethod'][1]
+							);
+						} else {
+							$items[$key] = call_user_func(
+								array($item, $model_info['exportMethod'][0]),
+								$model_info['exportMethod'][1]
+							);
+
+						}
 					}
 					$items[$key]['options'] = array();
 
