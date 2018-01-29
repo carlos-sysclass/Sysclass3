@@ -20,21 +20,21 @@ function smarty_modifier_user_attrs_translate($string) {
     
 	$mtz = array();
 	$mtz['address'] = 'Address';
-	$mtz['area_of_study'] = 'Area of Study';
+	$mtz['area_of_study'] = 'Area of study';
 	$mtz['courses'] = 'Courses';
-	$mtz['course_interest'] = 'Course of Interest';
-	$mtz['english_communication'] = 'English Communication';
+	$mtz['course_interest'] = 'Course of interest';
+	$mtz['english_communication'] = 'English communication';
 	$mtz['gender_id'] = 'Gender';
-	$mtz['higher_school'] = 'Higher School';
+	$mtz['higher_school'] = 'Higher school';
 	$mtz['how_did_you_learn_about'] = 'How did you learn about';
 	$mtz['i_am_currently'] = 'I\'am currently';
-	$mtz['language_name'] = 'Primary Language';
-	$mtz['my_calling'] = 'My Calling';
-	$mtz['secondary_school'] = 'Secondary School';
+	$mtz['language_name'] = 'Primary language';
+	$mtz['my_calling'] = 'My calling';
+	$mtz['secondary_school'] = 'Secondary school';
 	$mtz['skype'] = 'Skype';
 	$mtz['whatsapp'] = 'Whatsapp';
-	$mtz['zip_code'] = 'Postal Code';
-	$mtz['particiate_translation'] = 'Participate in Translation';
+	$mtz['zip_code'] = 'Postal code';
+	$mtz['particiate_translation'] = 'Participate in translation';
 	
 	if( isset($mtz[$string]) ){
 		return $mtz[$string];

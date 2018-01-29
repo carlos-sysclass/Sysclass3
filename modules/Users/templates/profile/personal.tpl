@@ -20,9 +20,13 @@
 	</div>
 	<div class="col-md-4">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Birthday"}</label>
+			<label class="control-label">{translateToken value="Birthday"} (Month/Day/Year)</label>
 			<div>
-				<input type="text" readonly="readonly" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control">
+				{if $T_EDIT_USER.birthday != ''}
+				<input type="text" readonly="readonly" name="birthday" value="{$T_EDIT_USER.birthday}" data-format="date" data-format-from="isodate" class="form-control">
+				{else}
+				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -50,7 +54,7 @@
 	
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Phone Number"}</label>
+			<label class="control-label">{translateToken value="Phone number"}</label>
 			<input name="phone" value="" type="text" placeholder="{translateToken value="Phone number"}" class="form-control" 
 			data-type-field="phone" data-country-selector=":input[name='country_code']" 
 			/>
@@ -59,7 +63,7 @@
 	
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="System Language"}</label>
+			<label class="control-label">{translateToken value="System language"}</label>
 			<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
 			{foreach $T_LANGUAGES as $key => $value}
 				<option value="{$value.id}">{$value.name}</option>

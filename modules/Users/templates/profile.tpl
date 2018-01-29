@@ -71,6 +71,7 @@
 								</div>
 							</div>
 						</div>
+						<div class="clearfix"></div>
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
 								<i class="fa fa-user"></i>
