@@ -309,6 +309,7 @@ class Adapter extends Component implements IAuthentication/* , EventsAwareInterf
 				if (!array_key_exists('disableBackends', $options) || $options['disableBackends'] == FALSE) {
 					if (($user = $backend->signup($info, $options)) === FALSE) {
 					}
+
 				}
 			} catch (AuthenticationException $e) {
 				// JUST BY-PASS THE EXCEPTION

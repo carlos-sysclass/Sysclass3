@@ -86,8 +86,17 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 			'lifetime' => 3600,
 		));
 
+		if (empty($environment->mongo->server)) {
+			$dsn = 'mongodb://localhost';
+		} else {
+			$dsn = 'mongodb://' . $environment->mongo->server;
+		}
+
+		$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+
 		//Create a MongoDB cache
-		$cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
+		$cache = new \Plico\Cache\Backend\Mongo($frontCache, [
+			'mongo' => $mongo,
 			'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
 			'db' => $environment->mongo->database . "-" . $environment_name,
 			'collection' => 'cache',
@@ -95,6 +104,7 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 
 		return $cache;
 	});
+
 } else {
 	$di->set('cache', function () use ($environment, $di) {
 		$environment_name = $di->get("sysconfig")->deploy->environment;
@@ -103,8 +113,18 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 			'lifetime' => 3600,
 		));
 
+		//if (PHP_MAJOR_VERSION >= 7) {
+		if (empty($environment->mongo->server)) {
+			$dsn = 'mongodb://localhost';
+		} else {
+			$dsn = 'mongodb://' . $environment->mongo->server;
+		}
+
+		$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+
 		//Create a MongoDB cache
-		$cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
+		$cache = new \Plico\Cache\Backend\Mongo($frontCache, [
+			'mongo' => $mongo,
 			'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
 			'db' => $environment->mongo->database . "-" . $environment_name,
 			'collection' => 'cache',
@@ -117,16 +137,37 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 $di->set('mongo', function () use ($environment, $di) {
 	$environment_name = $di->get("sysconfig")->deploy->environment;
 
-	if (class_exists("MongoClient")) {
-		$mongo = new MongoClient();
+	$database = $environment->mongo->database . "-" . $environment_name;
+
+	//if (PHP_MAJOR_VERSION >= 7) {
+	if (empty($environment->mongo->server)) {
+		$dsn = 'mongodb://localhost';
 	} else {
-		$mongo = new Mongo();
+		$dsn = 'mongodb://' . $environment->mongo->server;
 	}
 
-	return $mongo->selectDB($environment->mongo->database . "-" . $environment_name);
+	$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+	//} else {
+	//$mongo = new MongoClient();
+	//}
+
+	return $mongo->selectDb($database);
 
 }, true);
+/*
+$di->set('mongo', function () use ($environment, $di) {
+$environment_name = $di->get("sysconfig")->deploy->environment;
 
+if (class_exists("MongoClient")) {
+$mongo = new MongoClient();
+} else {
+$mongo = new Mongo();
+}
+
+return $mongo->selectDB($environment->mongo->database . "-" . $environment_name);
+
+}, true);
+ */
 $di->set('collectionManager', function () {
 	return new Phalcon\Mvc\Collection\Manager();
 }, true);

@@ -1,10 +1,9 @@
 <?php
 namespace Sysclass\Collections\MessageBus;
 
-use Phalcon\Mvc\Collection;
+use Plico\Mvc\Collection;
 
-class Event extends Collection
-{
+class Event extends Collection {
 	public $type;
 	public $name;
 	public $data;
@@ -12,15 +11,14 @@ class Event extends Collection
 	public $priority;
 	public $timestamp;
 	/*
-	public $surname;
-	public $email;
-	public $cnpj;
-	public $courses;
+		public $surname;
+		public $email;
+		public $cnpj;
+		public $courses;
 	*/
-    public function getSource()
-    {
-        return "events";
-    }
+	public function getSource() {
+		return "events";
+	}
 
 	public function beforeCreate() {
 		$this->processed = false;
@@ -28,20 +26,4 @@ class Event extends Collection
 		//$this->_environment = $this->getDi()->get('environment')->name;
 	}
 
-	public function assign($data) {
-		foreach($data as $key => $value) {
-			$this->{$key} = $value;
-		}
-	}
-
-	/*
-    public function toArray() {
-    	$array = parent::toArray();
-    	if (is_object($this->_id)) {
-    		$array['_id'] = $this->_id->{'$id'};
-    	}
-
-    	return $array;
-    }
-    */
 }

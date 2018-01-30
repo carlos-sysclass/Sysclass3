@@ -1,7 +1,7 @@
 <?php
 namespace Sysclass\Collections\Requests;
 
-use Phalcon\Mvc\Collection;
+use Plico\Mvc\Collection;
 
 class Entry extends Collection {
 	public function getSource() {
