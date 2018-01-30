@@ -13,7 +13,7 @@ class ApiTask extends \Phalcon\CLI\Task {
 	}
 
 	public function reprocessAction() {
-		$conditions = ["post_result.messages.message" => 'FAIL_EXPIRED_PACKAGE'];
+		$conditions = ["post_result" => null];
 
 		$not_processed = Entry::find([$conditions]);
 
@@ -153,15 +153,15 @@ class ApiTask extends \Phalcon\CLI\Task {
 			$error = true;
 			switch ($e->getCode()) {
 			case AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS:{
-					$messages[] = $this->createResponse($e->getCode(), $this->translate->translate("There is already a registration made with this email! Would you like to login?"), "error");
+					$messages[] = $this->createResponse($e->getCode(), "USER_ALREADY_EXISTS", "error");
 					break;
 				}
 			case AuthenticationException::USER_DATA_IS_INVALID_OR_INCOMPLETE:{
-					$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+					$messages[] = $this->invalidRequestError("USER_DATA_IS_INVALID_OR_INCOMPLETE", "warning");
 					break;
 				}
 			default:{
-					$messages[] = $this->invalidRequestError($this->translate->translate($e->getMessage()), "warning");
+					$messages[] = $this->invalidRequestError($e->getMessage(), "warning");
 					break;
 				}
 			}
@@ -188,5 +188,12 @@ class ApiTask extends \Phalcon\CLI\Task {
 			$error['data'] = $callback;
 		}
 		return $error;
+	}
+
+	protected function invalidRequestError($message = "", $type = "warning") {
+		if (empty($message)) {
+			$message = $this->translate->translate("There's a problem with your request. Please, try again.");
+		}
+		return $this->createResponse(400, $message, $type, "advise");
 	}
 }
