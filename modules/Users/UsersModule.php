@@ -10,6 +10,7 @@ use Sysclass\Models\Content\Unit;
 use Sysclass\Models\I18n\Language;
 use Sysclass\Models\Users\Group;
 use Sysclass\Models\Users\User;
+use Sysclass\Models\Users\UserAttrs;
 use Sysclass\Models\Users\UserCurriculum;
 use Sysclass\Models\Users\UserPasswordRequest;
 use Sysclass\Models\Users\UsersGroups;
@@ -609,6 +610,21 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				$userGroup->save();
 			}
 		}
+		
+		if (array_key_exists('attrs', $data) && is_array($data['attrs'])) {
+			UserAttrs::find("user_id = {$model->id}")->delete();
+			foreach ($data['attrs'] as $fieldname => $value) {
+				$userAttrs = new UserAttrs();
+				$userAttrs->user_id = $model->id;
+				$userAttrs->field_name = $fieldname;
+				if (is_array($value)) {
+					$userAttrs->field_value = json_encode($value);
+				} else {
+					$userAttrs->field_value = $value;
+				}
+				$userAttrs->save();
+			}
+		}
 
 		if (array_key_exists('curriculum', $data) && is_array($data['curriculum'])) {
 			$curriculum = new UserCurriculum();
@@ -683,7 +699,39 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				$userGroup->save();
 			}
 		}
-
+		
+		$attrs_ar = array();
+		$attrs_key = array();
+		foreach ($data as $key => $value){
+			if( strstr($key,'attrs_') ){
+				array_push($attrs_ar, array(str_replace('attrs_', '', $key) => $value));
+			}
+		}
+		if ( count($attrs_ar) > 0 ) {
+			UserAttrs::find("user_id = {$model->id}")->delete();
+			foreach ($attrs_ar as $attrs) {
+				foreach ($attrs as $fieldname => $value){
+					array_push($attrs_key,$fieldname);
+					$userAttrs = new UserAttrs();
+					$userAttrs->user_id = $model->id;
+					$userAttrs->field_name = $fieldname;
+					$userAttrs->field_value = $value;
+					$userAttrs->save();
+				}
+			}
+			if (array_key_exists('attrs', $data) && is_array($data['attrs'])) {
+				foreach ($data['attrs'] as $attrs) {
+					if( !in_array($attrs['field_name'], $attrs_key) ){
+						$userAttrs = new UserAttrs();
+						$userAttrs->user_id = $model->id;
+						$userAttrs->field_name = $attrs['field_name'];
+						$userAttrs->field_value = $attrs['field_value'];
+						$userAttrs->save();
+					}
+				}
+			}
+		}
+		
 		if (array_key_exists('curriculum', $data) && is_array($data['curriculum'])) {
 			$curriculum = new UserCurriculum();
 			$data['curriculum']['id'] = $model->id;
@@ -929,6 +977,16 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		
 		$ar_user = $currentUser->toFullArray(array('attrs','Avatars','Dropbox','Enrollments'));
 		
+		if( !$this->in_array_r('address', $ar_user['attrs']) ){
+			array_push($ar_user['attrs'],  array("user_id" =>  $currentUser->id ,"field_name" => "address","field_value" => ""));
+		}
+		if( !$this->in_array_r('zip_code', $ar_user['attrs']) ){
+			array_push($ar_user['attrs'],  array("user_id" =>  $currentUser->id ,"field_name" => "zip_code","field_value" => ""));
+		}
+		if( !$this->in_array_r('whatsapp', $ar_user['attrs']) ){
+			array_push($ar_user['attrs'],  array("user_id" =>  $currentUser->id ,"field_name" => "whatsapp","field_value" => ""));
+		}
+		
 		$ar_order = array();
 		foreach ($ar_user['attrs'] as $key => $val ){
 			$ar_order[$val['field_name']] = $val['field_value'];
@@ -989,5 +1047,19 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		} else {
 			return $this->invalidRequestError();
 		}
+	}
+	/**
+	 * 
+	 * @param unknown $needle
+	 * @param unknown $haystack
+	 * @param string $strict
+	 */
+	private function in_array_r($needle, $haystack, $strict = false) {
+		foreach ($haystack as $item) {
+			if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
