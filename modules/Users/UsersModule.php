@@ -214,22 +214,21 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 			$modules = $this->getModules("ISummarizable");
 
-			$userDetails = $currentUser->toFullArray(array('Avatars', 'Courses','Enrollments'));
-			
+			$userDetails = $currentUser->toFullArray(array('Avatars', 'Courses', 'Enrollments'));
+
 			//$date1 = $userDetails['enrollments'][0]['start_date'];
 			//$date2 = $userDetails['userreport']['first_access'];
-			
-			$date2 = strtotime($userDetails['userreport']['first_access']. '+182 days');
+
+			$date2 = strtotime($userDetails['userreport']['first_access'] . '+182 days');
 			$date1 = strtotime('now');
-			
-			$diff = $date2-$date1;
-			
+
+			$diff = $date2 - $date1;
+
 			$days_end_term = floor($diff / (60 * 60 * 24));
 
-			
 			$data = array();
 			$data['user_details'] = $userDetails;
-			$data['days_end_term'] = (( $days_end_term > 0 )? $days_end_term : 0 );
+			$data['days_end_term'] = (($days_end_term > 0) ? $days_end_term : 0);
 			$data['notification'] = array();
 
 			foreach ($modules as $key => $mod) {
@@ -402,7 +401,6 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				$status = $this->mail->send(
 					"enrollment@lucent.institute",
 					"A new enrollment has been made at the Lucent website.",
-					"New enrollment - Lucent Institute",
 					$template,
 					true,
 					array(
@@ -610,7 +608,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				$userGroup->save();
 			}
 		}
-		
+
 		if (array_key_exists('attrs', $data) && is_array($data['attrs'])) {
 			UserAttrs::find("user_id = {$model->id}")->delete();
 			foreach ($data['attrs'] as $fieldname => $value) {
@@ -699,19 +697,19 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				$userGroup->save();
 			}
 		}
-		
+
 		$attrs_ar = array();
 		$attrs_key = array();
-		foreach ($data as $key => $value){
-			if( strstr($key,'attrs_') ){
+		foreach ($data as $key => $value) {
+			if (strstr($key, 'attrs_')) {
 				array_push($attrs_ar, array(str_replace('attrs_', '', $key) => $value));
 			}
 		}
-		if ( count($attrs_ar) > 0 ) {
+		if (count($attrs_ar) > 0) {
 			UserAttrs::find("user_id = {$model->id}")->delete();
 			foreach ($attrs_ar as $attrs) {
-				foreach ($attrs as $fieldname => $value){
-					array_push($attrs_key,$fieldname);
+				foreach ($attrs as $fieldname => $value) {
+					array_push($attrs_key, $fieldname);
 					$userAttrs = new UserAttrs();
 					$userAttrs->user_id = $model->id;
 					$userAttrs->field_name = $fieldname;
@@ -721,7 +719,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 			}
 			if (array_key_exists('attrs', $data) && is_array($data['attrs'])) {
 				foreach ($data['attrs'] as $attrs) {
-					if( !in_array($attrs['field_name'], $attrs_key) ){
+					if (!in_array($attrs['field_name'], $attrs_key)) {
 						$userAttrs = new UserAttrs();
 						$userAttrs->user_id = $model->id;
 						$userAttrs->field_name = $attrs['field_name'];
@@ -731,7 +729,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 				}
 			}
 		}
-		
+
 		if (array_key_exists('curriculum', $data) && is_array($data['curriculum'])) {
 			$curriculum = new UserCurriculum();
 			$data['curriculum']['id'] = $model->id;
@@ -974,48 +972,47 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 		$timezones = Timezones::findAll();
 		$this->putitem("timezones", $timezones);
-		
-		$ar_user = $currentUser->toFullArray(array('attrs','Avatars','Dropbox','Enrollments'));
-		
-		if( !$this->in_array_r('address', $ar_user['attrs']) ){
-			array_push($ar_user['attrs'],  array("user_id" =>  $currentUser->id ,"field_name" => "address","field_value" => ""));
+
+		$ar_user = $currentUser->toFullArray(array('attrs', 'Avatars', 'Dropbox', 'Enrollments'));
+
+		if (!$this->in_array_r('address', $ar_user['attrs'])) {
+			array_push($ar_user['attrs'], array("user_id" => $currentUser->id, "field_name" => "address", "field_value" => ""));
 		}
-		if( !$this->in_array_r('zip_code', $ar_user['attrs']) ){
-			array_push($ar_user['attrs'],  array("user_id" =>  $currentUser->id ,"field_name" => "zip_code","field_value" => ""));
+		if (!$this->in_array_r('zip_code', $ar_user['attrs'])) {
+			array_push($ar_user['attrs'], array("user_id" => $currentUser->id, "field_name" => "zip_code", "field_value" => ""));
 		}
-		if( !$this->in_array_r('whatsapp', $ar_user['attrs']) ){
-			array_push($ar_user['attrs'],  array("user_id" =>  $currentUser->id ,"field_name" => "whatsapp","field_value" => ""));
+		if (!$this->in_array_r('whatsapp', $ar_user['attrs'])) {
+			array_push($ar_user['attrs'], array("user_id" => $currentUser->id, "field_name" => "whatsapp", "field_value" => ""));
 		}
-		
+
 		$ar_order = array();
-		foreach ($ar_user['attrs'] as $key => $val ){
+		foreach ($ar_user['attrs'] as $key => $val) {
 			$ar_order[$val['field_name']] = $val['field_value'];
 		}
 
 		$ar_user['attrs'] = $ar_order;
-		
+
 		//$date1 = $ar_user['enrollments'][0]['start_date'];
 		//$date2 = $ar_user['userreport']['first_access'];
-		
-		$date2 = strtotime($ar_user['userreport']['first_access']. '+182 days');
+
+		$date2 = strtotime($ar_user['userreport']['first_access'] . '+182 days');
 		$date1 = strtotime('now');
-			
-		$diff = $date2-$date1;
-			
+
+		$diff = $date2 - $date1;
+
 		$days_end_term = floor($diff / (60 * 60 * 24));
-		
-		$ar_user["days_end_term"] = (( $days_end_term > 0 )? $days_end_term : 0 );
-		
+
+		$ar_user["days_end_term"] = (($days_end_term > 0) ? $days_end_term : 0);
+
 		$ar_dropbox = $ar_user['dropbox'];
-		$arFields = array('file_picture_1','file_picture_2','file_transcript_1','file_transcript_2','file_proof_residency');
-		foreach($ar_dropbox as $key => $vl){
-			if( in_array($vl['etag'],$arFields)  ){
-				$this->putItem($vl['etag'], $vl );
+		$arFields = array('file_picture_1', 'file_picture_2', 'file_transcript_1', 'file_transcript_2', 'file_proof_residency');
+		foreach ($ar_dropbox as $key => $vl) {
+			if (in_array($vl['etag'], $arFields)) {
+				$this->putItem($vl['etag'], $vl);
 			}
 		}
-		$this->putItem("edit_user", $ar_user );
+		$this->putItem("edit_user", $ar_user);
 
-		
 		//$this->putCss("css/pages/profile");
 		$this->display("profile.tpl");
 	}
@@ -1049,7 +1046,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		}
 	}
 	/**
-	 * 
+	 *
 	 * @param unknown $needle
 	 * @param unknown $haystack
 	 * @param string $strict
