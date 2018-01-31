@@ -10,14 +10,19 @@
 			<input name="surname" readonly="readonly" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Last name"}" class="form-control" />
 		</div>
 	</div>
-	<div class="col-md-6">
-		<div class="form-group">
-			<label>{translateToken value="Email"}</label>
-			<div>
-				<input name="email" reavalue="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email"}" class="form-control">
+	
+	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
+		{foreach $T_EDIT_USER.attrs as $key => $value}
+			{if $key == 'gender_id'  }
+			<div class="col-md-6">
+				<div class="form-group">
+						<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
+						<input readonly="readonly" name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+				</div>
 			</div>
-		</div>
-	</div>
+			{/if}
+		{/foreach}
+	{/if}
 	<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Birthday"} (Month/Day/Year)</label>
@@ -39,13 +44,23 @@
 		</div>
 	</div>
 	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label>{translateToken value="Email"}</label>
+			<div>
+				<input name="email" reavalue="{$T_EDIT_USER.email}" type="text" placeholder="{translateToken value="Email"}" class="form-control">
+			</div>
+		</div>
+	</div>
+	
+	
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 		{foreach $T_EDIT_USER.attrs as $key => $value}
-			{if $key != 'particiate_translation' && $key != 'zip_code' && $key != 'address' && $key != 'area_of_study' && $key != 'english_communication' && $key != 'courses' && $key != 'higher_school' && $key != 'secondary_school' && $key != 'how_did_you_learn_about' && $key != 'i_am_currently' &&  $key != 'my_calling' && $key != 'enroll_agreement' }
+			{if $key != 'gender_id' && $key != 'particiate_translation' && $key != 'zip_code' && $key != 'address' && $key != 'area_of_study' && $key != 'english_communication' && $key != 'courses' && $key != 'higher_school' && $key != 'secondary_school' && $key != 'how_did_you_learn_about' && $key != 'i_am_currently' &&  $key != 'my_calling' && $key != 'enroll_agreement' }
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
-						<input{if $key != 'gender' && $key != 'whatsapp' && $key != 'skype'} readonly="readonly"{/if} name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+						<input{if $key != 'gender_id' && $key != 'whatsapp' && $key != 'skype'} readonly="readonly"{/if} name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
 				</div>
 			</div>
 			{/if}

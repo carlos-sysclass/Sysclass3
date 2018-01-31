@@ -225,12 +225,15 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 			$diff = $date2 - $date1;
 
 			$days_end_term = floor($diff / (60 * 60 * 24));
+			
+			$settings = $this->module("settings")->getSettings(true);
 
 			$data = array();
 			$data['user_details'] = $userDetails;
 			$data['days_end_term'] = (($days_end_term > 0) ? $days_end_term : 0);
+			$data['term_date'] = date($settings['php_date_fmt'] ,$date2);
 			$data['notification'] = array();
-
+			
 			foreach ($modules as $key => $mod) {
 				$notif = $mod->getSummary();
 				if (is_array($notif)) {
@@ -1004,6 +1007,10 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 		$ar_user["days_end_term"] = (($days_end_term > 0) ? $days_end_term : 0);
 
+		$settings = $this->module("settings")->getSettings(true);
+		
+		$ar_user['term_date'] = date($settings['php_date_fmt'] ,$date2);
+		
 		$ar_dropbox = $ar_user['dropbox'];
 		$arFields = array('file_picture_1', 'file_picture_2', 'file_transcript_1', 'file_transcript_2', 'file_proof_residency');
 		foreach ($ar_dropbox as $key => $vl) {

@@ -54,6 +54,12 @@
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
+									<label class="control-label">{translateToken value="Program"}</label>
+									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].name}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
 									<label class="control-label">{translateToken value="Enrollment date"}</label>
 									<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].start_date}" type="text" placeholder="{translateToken value="Enrollment date"}" class="form-control" />
 								</div>
@@ -61,13 +67,19 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Start date"}</label>
-									<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.userreport.first_access}" type="text" placeholder="{translateToken value="Date of first login"}" class="form-control" />
+									<input name="enrollment_start_date" readonly="readonly" value="{$T_EDIT_USER.userreport.first_access}" type="text" placeholder="{translateToken value="Start date"}" class="form-control" />
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Days remaning"}</label>
-									<input name="enrollment_date" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Date of first login"}" class="form-control" />
+									<label class="control-label">{translateToken value="Term lenght"}</label>
+									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Term lengh"}" class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Days remaining"}</label>
+									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
 								</div>
 							</div>
 						</div>
