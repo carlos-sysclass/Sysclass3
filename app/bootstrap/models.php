@@ -155,7 +155,7 @@ $di->set('cacheReusable', function () use ($environment) {
 	*/
 
 	$backendOptions = [
-		"cacheDir" => REAL_PATH . '/cache/general/',
+		"cacheDir" => REAL_PATH . '/cache/models/',
 	];
 
 	$cache = new \Phalcon\Cache\Backend\File($frontCache, $backendOptions);
