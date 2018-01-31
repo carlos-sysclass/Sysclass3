@@ -89,6 +89,7 @@ models:
   me:
     class: Sysclass\Models\Courses\Questions\Question
     exportMethod: ["toFullArray", ["Department", "Type", "Difficulty", "Files"]]
+    listExportMethod: ["toFullArray", ["Department", "Type", "Difficulty"]]
   file:
     class: Sysclass\Models\Content\Questions\QuestionFile
   'lesson-content':
