@@ -417,6 +417,7 @@ _before_init_functions.push(function() {
                         <tr>
                           <th class="text-center">{translateToken value="Status"}</th>
                           <th class="text-center">{translateToken value="Courses"}</th>
+                          <th class="text-center">{translateToken value="Progress"}</th>
                           <th class="text-center">{translateToken value="Content completed"}</th>
                           <th class="text-center">{translateToken value="Completion date"}</th>
                         </tr>
@@ -753,6 +754,21 @@ _before_init_functions.push(function() {
       <% } %>
     </td>
     -->
+	
+	<!-- Progress -->
+    <td class="text-center"> 
+	 <%
+        var percent = 0;
+		var total_percent = 0;
+        for (var index in model.units) {
+		  var unit = model.units[index];
+          percent += parseFloat(unit.progress.factor);
+		  total_percent++;
+        }
+      %>
+      <%=parseInt(percent) %>%
+	</td>
+
     <!-- Units -->
     <td class="text-center">
       <%= model.units_completed %> {translateToken value="of"} <%= _.size(model.units) %>
