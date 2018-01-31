@@ -690,9 +690,6 @@ abstract class SysclassModule extends BaseSysclassModule {
 				array($model_info['class'], $model_info['listMethod']), $args
 			);
 
-			//var_dump($resultRS->count());
-			//exit;
-
 			if ($type === 'datatable') {
 				//$items = array_values($items);
 				$baseLink = $this->getBasePath();
@@ -736,6 +733,7 @@ abstract class SysclassModule extends BaseSysclassModule {
 							$items[$key]['options'][$index] = $option;
 						}
 					}
+
 				}
 				$this->response->setJsonContent(array(
 					'sEcho' => 1,
@@ -743,6 +741,7 @@ abstract class SysclassModule extends BaseSysclassModule {
 					'iTotalDisplayRecords' => count($items),
 					'aaData' => array_values($items),
 				));
+
 				return true;
 			} else {
 				$items = array();

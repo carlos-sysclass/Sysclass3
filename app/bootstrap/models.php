@@ -134,6 +134,35 @@ if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 	}, true);
 }
 
+$di->set('cacheReusable', function () use ($environment) {
+
+	//Cache data for 1 hour
+	$frontCache = new \Phalcon\Cache\Frontend\Igbinary(array(
+		'lifetime' => 3600,
+	));
+	/*
+		    $params = [
+		        'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+		        'db' => $environment->mongo->database,
+		        'collection' => 'cache'
+		    ];
+
+		    //if (PHP_MAJOR_VERSION >= 7) {
+		        $params['mongo'] = new \Library\Db\Adapter\MongoDB\Client();
+		    //}
+
+		    $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, $params);
+	*/
+
+	$backendOptions = [
+		"cacheDir" => REAL_PATH . '/cache/general/',
+	];
+
+	$cache = new \Phalcon\Cache\Backend\File($frontCache, $backendOptions);
+
+	return $cache;
+});
+
 $di->set('mongo', function () use ($environment, $di) {
 	$environment_name = $di->get("sysconfig")->deploy->environment;
 
