@@ -252,12 +252,12 @@ class Adapter extends Component implements IAuthentication/* , EventsAwareInterf
 			// REGISTER USER LOGOUT EVENT
 			$this->unregisterSession($user);
 
-			//var_dump($this->modelsCache-> exists("UserTimes"));
+			//var_dump($this->cache-> exists("UserTimes"));
 			//
-			$this->modelsCache->delete("User");
-			$this->modelsCache->delete("UserTimes");
-			//var_dump($this->modelsCache->get("UserTimes"));
-			//$this->modelsCache->flush();
+			$this->cache->delete("User");
+			$this->cache->delete("UserTimes");
+			//var_dump($this->cache->get("UserTimes"));
+			//$this->cache->flush();
 			//exit;
 
 			//$this->_eventsManager->collectResponses(true);
@@ -382,7 +382,7 @@ class Adapter extends Component implements IAuthentication/* , EventsAwareInterf
 
 					$this->checkForMaintenance($user);
 					if (time() - $userTimes->ping > 90) {
-						$this->modelsCache->delete("UserTimes");
+						$this->cache->delete("UserTimes");
 
 						$userTimes->ping = time();
 						$userTimes->save();

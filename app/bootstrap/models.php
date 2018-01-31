@@ -51,86 +51,136 @@ $di->set('modelsManager', function () use ($eventsManager) {
 
 	return $modelsManager;
 });
+/*
 $di->set('modelsCache', function () {
 
-	//Cache data for 1 hour
-	$frontCache = new \Phalcon\Cache\Frontend\Data(array(
-		'lifetime' => 3600,
-	));
-	/*
-		    $cache = new BackendCache($frontCache, array(
-		        'prefix' => 'SYSCLASS-MODELS'
-		    ));
-	*/
+//Cache data for 1 hour
+$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+'lifetime' => 3600,
+));
 
-	//Create a MongoDB cache
-	$cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
-		'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
-		'db' => $environment->mongo->database . "-" . $environment_name,
-		'collection' => 'cache',
-	]);
+//Create a MongoDB cache
+$cache = new \Phalcon\Cache\Backend\Mongo($frontCache, [
+'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+'db' => $environment->mongo->database . "-" . $environment_name,
+'collection' => 'cache',
+]);
 
-	return $cache;
+return $cache;
 });
-
+ */
 $di->set('modelsMetadata', new \Phalcon\Mvc\Model\Metadata\Files(array(
 	'metaDataDir' => __DIR__ . '/../../cache/metadata/',
 )));
 
 if (APP_TYPE === "CONSOLE" || APP_TYPE === "WEBSOCKET") {
 	$di->set('cache', function () use ($environment, $di) {
-		$environment_name = $di->get("sysconfig")->deploy->environment;
+		/*
+			$environment_name = $di->get("sysconfig")->deploy->environment;
 
-		//Cache data for 1 hour
-		$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+			//Cache data for 1 hour
+			$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+				'lifetime' => 3600,
+			));
+
+			if (empty($environment->mongo->server)) {
+				$dsn = 'mongodb://localhost';
+			} else {
+				$dsn = 'mongodb://' . $environment->mongo->server;
+			}
+
+			$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+
+			//Create a MongoDB cache
+			$cache = new \Plico\Cache\Backend\Mongo($frontCache, [
+				'mongo' => $mongo,
+				'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+				'db' => $environment->mongo->database . "-" . $environment_name,
+				'collection' => 'cache',
+			]);
+
+			return $cache;
+		*/
+		$frontCache = new \Phalcon\Cache\Frontend\Igbinary(array(
 			'lifetime' => 3600,
 		));
+		/*
+			    $params = [
+			        'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+			        'db' => $environment->mongo->database,
+			        'collection' => 'cache'
+			    ];
 
-		if (empty($environment->mongo->server)) {
-			$dsn = 'mongodb://localhost';
-		} else {
-			$dsn = 'mongodb://' . $environment->mongo->server;
-		}
+			    //if (PHP_MAJOR_VERSION >= 7) {
+			        $params['mongo'] = new \Library\Db\Adapter\MongoDB\Client();
+			    //}
 
-		$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+			    $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, $params);
+		*/
 
-		//Create a MongoDB cache
-		$cache = new \Plico\Cache\Backend\Mongo($frontCache, [
-			'mongo' => $mongo,
-			'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
-			'db' => $environment->mongo->database . "-" . $environment_name,
-			'collection' => 'cache',
-		]);
+		$backendOptions = [
+			"cacheDir" => REAL_PATH . '/cache/general/',
+		];
+
+		$cache = new \Phalcon\Cache\Backend\File($frontCache, $backendOptions);
 
 		return $cache;
 	});
 
 } else {
 	$di->set('cache', function () use ($environment, $di) {
-		$environment_name = $di->get("sysconfig")->deploy->environment;
+		/*
+			$environment_name = $di->get("sysconfig")->deploy->environment;
+			//Cache data for 1 hour
+			$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+				'lifetime' => 3600,
+			));
+
+			//if (PHP_MAJOR_VERSION >= 7) {
+			if (empty($environment->mongo->server)) {
+				$dsn = 'mongodb://localhost';
+			} else {
+				$dsn = 'mongodb://' . $environment->mongo->server;
+			}
+
+			$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+
+			//Create a MongoDB cache
+			$cache = new \Plico\Cache\Backend\Mongo($frontCache, [
+				'mongo' => $mongo,
+				'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+				'db' => $environment->mongo->database . "-" . $environment_name,
+				'collection' => 'cache',
+			]);
+
+			return $cache;
+		*/
 		//Cache data for 1 hour
-		$frontCache = new \Phalcon\Cache\Frontend\Data(array(
+		$frontCache = new \Phalcon\Cache\Frontend\Igbinary(array(
 			'lifetime' => 3600,
 		));
+		/*
+			    $params = [
+			        'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
+			        'db' => $environment->mongo->database,
+			        'collection' => 'cache'
+			    ];
 
-		//if (PHP_MAJOR_VERSION >= 7) {
-		if (empty($environment->mongo->server)) {
-			$dsn = 'mongodb://localhost';
-		} else {
-			$dsn = 'mongodb://' . $environment->mongo->server;
-		}
+			    //if (PHP_MAJOR_VERSION >= 7) {
+			        $params['mongo'] = new \Library\Db\Adapter\MongoDB\Client();
+			    //}
 
-		$mongo = new \Plico\Db\Adapter\MongoDB\Client($dsn);
+			    $cache = new \Phalcon\Cache\Backend\Mongo($frontCache, $params);
+		*/
 
-		//Create a MongoDB cache
-		$cache = new \Plico\Cache\Backend\Mongo($frontCache, [
-			'mongo' => $mongo,
-			'server' => is_null($environment->mongo->server) ? 'mongodb://localhost' : 'mongodb://' . $environment->mongo->server,
-			'db' => $environment->mongo->database . "-" . $environment_name,
-			'collection' => 'cache',
-		]);
+		$backendOptions = [
+			"cacheDir" => REAL_PATH . '/cache/general/',
+		];
+
+		$cache = new \Phalcon\Cache\Backend\File($frontCache, $backendOptions);
 
 		return $cache;
+
 	}, true);
 }
 
