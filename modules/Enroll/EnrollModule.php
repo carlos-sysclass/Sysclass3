@@ -504,7 +504,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 							'class' => 'btn-sm btn-primary tooltips',
 							'attrs' => array(
 								'data-on-color' => "success",
-								'data-original-title' => $this->translate->translate('Liberate User'),
+								'data-original-title' => $this->translate->translate('Allow user'),
 								'data-placement' => 'top',
 							),
 						);
