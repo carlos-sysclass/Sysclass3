@@ -25,8 +25,8 @@
 	</div-->
 	<div class="col-md-4">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="City, Borough or District"}</label>
-			<input name="city" value="" type="text" placeholder="{translateToken value="City, Borough or District"}" class="form-control" data-rule-minlength="3" />
+			<label class="control-label">{translateToken value="City/Borough/District"}</label>
+			<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
 		</div>
 	</div>
 	<div class="col-md-4">
