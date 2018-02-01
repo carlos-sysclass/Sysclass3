@@ -115,7 +115,7 @@
 					    <div class="alert alert-success">
 				        	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            Individual registration</strong> the user will be enrolled in his/her own individual program and the roadmap of the program will be calculated individually.
+					            The user will be enrolled in an individual program. 
 					        </p>
 					    </div>
 					</div>
@@ -123,7 +123,7 @@
 					    <div class="alert alert-info">
 					    	<button aria-hidden="true" data-dismiss="alert" class="close" type="button"></button>
 					        <p>
-					            <strong>Group registration</strong> the user is allocated to a group based on his/her registration date. Each group is dynamically created based on the registration period. You can create groups based on days, months, years, or the number of users enrolled in the program.</p>
+					            The user is allocated to a group. Each group is dynamically created based on the registration period. You can create groups based on days, months, or years.</p>
 					    </div>
 					</div>
 				</div>
