@@ -499,7 +499,7 @@ class EnrollModule extends \SysclassModule implements \IBlockProvider, \ILinkabl
 
 					if ($item['status_id'] == 2) {
 						$items[$key]['options']['bypass'] = array(
-							'icon' => 'fab fa-paypal',
+							'icon' => 'fa fa-paypal',
 							//'link'  => $baseLink . "block/" . $item['id'],
 							'class' => 'btn-sm btn-primary tooltips',
 							'attrs' => array(
