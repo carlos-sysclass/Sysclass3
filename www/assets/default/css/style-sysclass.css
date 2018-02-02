@@ -992,18 +992,18 @@ h7 .label {
 }
 
 .badge {
-  font-size: 11px !important;
-  font-weight: 300;
-  text-align: center;
-  background-color: #e02222;
-  height: 16px;
-  padding: 3px 4px 3px 4px;
-  -webkit-border-radius: 0 !important;
-     -moz-border-radius: 0 !important;
-          border-radius: 0 !important;
-  text-shadow:none !important;
-  text-align: center;
-  vertical-align: middle;
+    font-size: 11px !important;
+    font-weight: 600;
+    text-align: center;
+	letter-spacing: -.75px;
+    background-color: #e02222;
+    height: 16px;
+    padding: 3px 4px 3px 4px;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+    text-shadow: none !important;
+    vertical-align: middle;
 }
 
 .badge.badge-roundless {
