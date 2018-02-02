@@ -1030,11 +1030,11 @@ h7 .label {
 
 .label-warning,
 .badge-warning {
-  background-color: #fcb322;
-  background-image: none !important;
-  height: 14px;
-  margin: 4px 0 5px 5px;
-  padding-top: 1px !important;
+   background-color: #fcb322;
+   background-image: none !important;
+   height: 18px;
+   margin: 1px 0px 4px 2px; 
+   padding-top: 3px !important;
 }
 
 .label-danger,
