@@ -53,7 +53,7 @@
 		</div>
 	</div>
 	
-	
+	<div class="clearfix"></div>
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 		{foreach $T_EDIT_USER.attrs as $key => $value}
 			{if $key != 'gender_id' && $key != 'particiate_translation' && $key != 'zip_code' && $key != 'address' && $key != 'area_of_study' && $key != 'english_communication' && $key != 'courses' && $key != 'higher_school' && $key != 'secondary_school' && $key != 'how_did_you_learn_about' && $key != 'i_am_currently' &&  $key != 'my_calling' && $key != 'enroll_agreement' }
