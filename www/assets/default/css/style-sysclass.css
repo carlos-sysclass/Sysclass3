@@ -992,10 +992,10 @@ h7 .label {
 }
 
 .badge {
-    font-size: 11px !important;
+    font-size: 14px !important;
     font-weight: 700;
     text-align: center;
-	letter-spacing: -.75px;
+	letter-spacing: -1px;
     background-color: #e02222;
     height: 16px;
     padding: 3px 4px 3px 4px;
@@ -1034,7 +1034,7 @@ h7 .label {
    background-image: none !important;
    height: 18px;
    margin: 1px 0px 4px 2px; 
-   padding-top: 3px !important;
+   padding-top: 2px !important;
 }
 
 .label-danger,
