@@ -72,14 +72,26 @@
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Term lenght"}</label>
-									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Term lengh"}" class="form-control" />
+									<label class="control-label">{translateToken value="Completion date"}</label>
+									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Completion date"}" class="form-control" />
+								</div>
+							</div>
+							<!-- div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Days remaining"}</label>
+									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
+								</div>
+							</div-->
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">{translateToken value="Last login"}</label>
+									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.userreport.last_enrollment}" type="text" placeholder="{translateToken value="Last login"}" class="form-control" />
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Days remaining"}</label>
-									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
+									<label class="control-label">{translateToken value="Quantity logins"}</label>
+									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.userreport.n_access}" type="text" placeholder="{translateToken value="Quantity logins"}" class="form-control" />
 								</div>
 							</div>
 						</div>
@@ -100,7 +112,7 @@
 							</h5>
 								{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 									{foreach $T_EDIT_USER.attrs as $key => $value}
-										{if $key == 'zip_code' || $key == 'address' }
+										{if $key == 'address' }
 										<div class="col-md-6">
 											<div class="form-group">
 													<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
@@ -111,9 +123,46 @@
 									{/foreach}
 								{/if}
 								
-							    {foreach $T_SECTION_TPL['address'] as $template}
-							    	{include file=$template}
-							    {/foreach}
+								<div class="col-md-3">
+									<div class="form-group">
+										<label class="control-label">{translateToken value="City/Borough/District"}</label>
+										<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label class="control-label">{translateToken value="State/Province"}</label>
+										<input name="state" value="" type="text" placeholder="{translateToken value="State/Province"}" class="form-control" />
+									</div>
+								</div>
+								{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
+									{foreach $T_EDIT_USER.attrs as $key => $value}
+										{if $key == 'zip_code'}
+										<div class="col-md-6">
+											<div class="form-group">
+													<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
+													<input name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+											</div>
+										</div>
+										{/if}
+									{/foreach}
+								{/if}
+								<div class="col-md-4">
+									<div class="form-group">
+										<label class="control-label">{translateToken value="Country"}</label>
+										<select class="select2-me form-control" name="country" data-format-as="country-list">
+											{foreach $T_COUNTRY_CODES as $key => $code}
+												<option value="{$key}">{$code}</option>
+											{/foreach}
+										</select>
+									</div>
+								</div>
+								
+							    {*foreach $T_SECTION_TPL['address'] as $template*}
+							    	{*include file=$template*}
+							    {*/foreach*}
+							    
+							    
 						</div>
 						{/if}
 						<div class="clearfix"></div>

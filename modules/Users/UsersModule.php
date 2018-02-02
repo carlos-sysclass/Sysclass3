@@ -997,7 +997,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 		//$date1 = $ar_user['enrollments'][0]['start_date'];
 		//$date2 = $ar_user['userreport']['first_access'];
-
+		
 		$date2 = strtotime($ar_user['userreport']['first_access'] . '+182 days');
 		$date1 = strtotime('now');
 
