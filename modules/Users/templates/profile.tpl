@@ -90,8 +90,8 @@
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Quantity logins"}</label>
-									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.userreport.n_access}" type="text" placeholder="{translateToken value="Quantity logins"}" class="form-control" />
+									<label class="control-label">{translateToken value="Number of logins"}</label>
+									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.userreport.n_access}" type="text" placeholder="{translateToken value="Number of logins"}" class="form-control" />
 								</div>
 							</div>
 						</div>
