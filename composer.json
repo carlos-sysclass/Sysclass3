@@ -1,6 +1,6 @@
 {
     "require": {
-        "phalcon/incubator": "dev-master",
+        "phalcon/incubator": "3.2.6",
         "phalcon/devtools": "^2.0",
         "smarty/smarty": "3.1.13",
         "raveren/kint": "^1.0",
