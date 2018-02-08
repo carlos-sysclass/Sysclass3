@@ -995,7 +995,7 @@ h7 .label {
     font-size: 14px !important;
     font-weight: 700;
     text-align: center;
-	letter-spacing: -1px;
+	letter-spacing: -1px !important;
     background-color: #e02222;
     height: 16px;
     padding: 3px 4px 3px 4px;
