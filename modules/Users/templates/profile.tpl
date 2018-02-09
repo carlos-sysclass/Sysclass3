@@ -76,12 +76,12 @@
 									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Completion date"}" class="form-control" />
 								</div>
 							</div>
-							<!-- div class="col-md-3">
+							div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Days remaining"}</label>
-									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
+									<label class="control-label">{translateToken value="Term lenght"}</label>
+									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Term lengh"}" class="form-control" />
 								</div>
-							</div-->
+							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Last login"}</label>
