@@ -44,6 +44,30 @@
 		</div>
 	</div>
 	
+	<div class="clearfix"></div>
+	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
+		{foreach $T_EDIT_USER.attrs as $key => $value}
+			{if $key == 'language_id' || $key == 'language_name' }
+			<div class="col-md-6">
+				<div class="form-group">
+						<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
+						<input{if $key != 'gender_id' && $key != 'whatsapp' && $key != 'skype'} readonly="readonly"{/if} name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
+				</div>
+			</div>
+			{/if}
+		{/foreach}
+	{/if}
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">{translateToken value="System language"}</label>
+			<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
+			{foreach $T_LANGUAGES as $key => $value}
+				<option value="{$value.id}">{$value.name}</option>
+			{/foreach}
+			</select>
+		</div>
+	</div>
+	<div class="clearfix"></div>
 	<div class="col-md-6">
 		<div class="form-group">
 			<label>{translateToken value="Email"}</label>
@@ -53,10 +77,9 @@
 		</div>
 	</div>
 	
-	<div class="clearfix"></div>
 	{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 		{foreach $T_EDIT_USER.attrs as $key => $value}
-			{if $key != 'gender_id' && $key != 'particiate_translation' && $key != 'zip_code' && $key != 'address' && $key != 'area_of_study' && $key != 'english_communication' && $key != 'courses' && $key != 'higher_school' && $key != 'secondary_school' && $key != 'how_did_you_learn_about' && $key != 'i_am_currently' &&  $key != 'my_calling' && $key != 'enroll_agreement' }
+			{if $key != 'language_id' && $key != 'language_name' && $key != 'gender_id' && $key != 'particiate_translation' && $key != 'zip_code' && $key != 'address' && $key != 'area_of_study' && $key != 'english_communication' && $key != 'courses' && $key != 'higher_school' && $key != 'secondary_school' && $key != 'how_did_you_learn_about' && $key != 'i_am_currently' &&  $key != 'my_calling' && $key != 'enroll_agreement' }
 			<div class="col-md-6">
 				<div class="form-group">
 						<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
@@ -76,16 +99,7 @@
 		</div>
 	</div>
 	
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="control-label">{translateToken value="System language"}</label>
-			<select name="language_id" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
-			{foreach $T_LANGUAGES as $key => $value}
-				<option value="{$value.id}">{$value.name}</option>
-			{/foreach}
-			</select>
-		</div>
-	</div>
+	
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Timezone"}</label>
