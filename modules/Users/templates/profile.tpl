@@ -54,7 +54,7 @@
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Program"}</label>
+									<label class="control-label">{translateToken value="Program1"}</label>
 									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.attrs_course_interest}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
 								</div>
 							</div>
