@@ -36,7 +36,7 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label  visible-ie8 visible-ie9">{translateToken value="Language"}</label>
-						<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Primary Language'}">
+						<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Native language'}">
 							<option value="">{translateToken value="Main Language"}</option>
 							{foreach $T_LANGUAGES as $lang}
 								<option value="{$lang.id}">{$lang.name}</option>
