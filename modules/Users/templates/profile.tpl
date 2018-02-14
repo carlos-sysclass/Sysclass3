@@ -55,7 +55,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Program"}</label>
-									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.area_of_study}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
+									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.attrs.area_of_study}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -78,7 +78,7 @@
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Days remaining"}</label>
+									<label class="control-label">{translateToken value="Days remaining in this term"}</label>
 									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
 								</div>
 							</div>
