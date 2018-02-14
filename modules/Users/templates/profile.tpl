@@ -55,7 +55,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Program"}</label>
-									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].name}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
+									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.area_of_study}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -95,6 +95,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
@@ -129,9 +130,7 @@
 										<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
 									</div>
 								</div>
-							
-						<div class="clearfix"></div>
-
+							<div class="clearfix"></div>
 							<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="State/Province"}</label>
