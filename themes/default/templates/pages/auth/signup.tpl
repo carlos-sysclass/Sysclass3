@@ -34,15 +34,17 @@
 						<input name="email" value="" type="text" placeholder="{translateToken value='Email'}" class="form-control" data-rule-required="true" data-rule-email="true" />
 					</div>
 				</div>
+				
 				<div class="form-group">
 					<label class="control-label  visible-ie8 visible-ie9">{translateToken value="Language"}</label>
-						<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Primary Language'}">
-							<option value="">{translateToken value="Main Language"}</option>
+						<select class="select2-me form-control input-block-level" name="language_id" data-rule-required="1" data-rule-min="1"  data-placeholder="{translateToken value='Native language'}">
+							<option value="">{translateToken value="Native language"}</option>
 							{foreach $T_LANGUAGES as $lang}
 								<option value="{$lang.id}">{$lang.name}</option>
 							{/foreach}
 						</select>
 				</div>
+			
 			</div>
 			<div class="form-actions nobg">
 				<a href="/" class="btn btn-default">
