@@ -55,7 +55,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Program"}</label>
-									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.attrs.courses}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
+									<input name="enrollment_program" readonly="readonly" value="{$T_EDIT_USER.enrollments[0].name}" type="text" placeholder="{translateToken value="Program"}" class="form-control" />
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -76,12 +76,12 @@
 									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Completion date"}" class="form-control" />
 								</div>
 							</div>
-							<div class="col-md-3">
+							<!-- div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">{translateToken value="Days remaining in this term"}</label>
+									<label class="control-label">{translateToken value="Days remaining"}</label>
 									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
 								</div>
-							</div>
+							</div-->
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Last login"}</label>
@@ -95,7 +95,6 @@
 								</div>
 							</div>
 						</div>
-						
 						<div class="clearfix"></div>
 						<div class="form-body">
 							<h5 class="form-section margin-bottom-10 margin-top-10">
@@ -124,14 +123,13 @@
 									{/foreach}
 								{/if}
 								
-								<div class="col-md-6">
+								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="City/Borough/District"}</label>
 										<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
 									</div>
 								</div>
-							<div class="clearfix"></div>
-							<div class="col-md-4">
+								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="State/Province"}</label>
 										<input name="state" value="" type="text" placeholder="{translateToken value="State/Province"}" class="form-control" />
@@ -140,7 +138,7 @@
 								{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 									{foreach $T_EDIT_USER.attrs as $key => $value}
 										{if $key == 'zip_code'}
-										<div class="col-md-4">
+										<div class="col-md-6">
 											<div class="form-group">
 													<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
 													<input name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
