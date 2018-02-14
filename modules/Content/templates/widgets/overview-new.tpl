@@ -784,7 +784,7 @@ _before_init_functions.push(function() {
     <!-- Next Unit -->
     <td class="text-center"> 
       <span class="avalialbe">
-        {translateToken value="Date not set"}
+		{translateToken value="Date not set"}
       </span>
       <!--
       <%

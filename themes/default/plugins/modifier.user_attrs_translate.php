@@ -28,7 +28,7 @@ function smarty_modifier_user_attrs_translate($string) {
 	$mtz['higher_school'] = 'Higher school';
 	$mtz['how_did_you_learn_about'] = 'How did you learn about';
 	$mtz['i_am_currently'] = 'I\'am currently';
-	$mtz['language_name'] = 'Primary language';
+	$mtz['language_name'] = 'Native language';
 	$mtz['my_calling'] = 'My calling';
 	$mtz['secondary_school'] = 'Secondary school';
 	$mtz['skype'] = 'Skype';
