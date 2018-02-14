@@ -1,13 +1,13 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="First name"}</label>
-			<input name="name" readonly="readonly" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value="Name"}" class="form-control" />
+			<input name="name" readonly="readonly" value="{$T_EDIT_USER.name}" type="text" placeholder="{translateToken value=""}" class="form-control" />
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Last name"}</label>
-			<input name="surname" readonly="readonly" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Last name"}" class="form-control" />
+			<input name="surname" readonly="readonly" value="{$T_EDIT_USER.surname}" type="text" placeholder="{translateToken value="Last"}" class="form-control" />
 		</div>
 	</div>
 	
@@ -86,7 +86,8 @@
 			</select>
 		</div>
 	</div>
-	<div class="col-md-6">
+	
+<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label">{translateToken value="Timezone"}</label>
 			<select name="timezone" class="form-control select2-me" data-placeholder="{translateToken value="Select..."}">
