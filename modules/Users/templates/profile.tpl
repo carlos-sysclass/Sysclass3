@@ -76,7 +76,7 @@
 									<input name="enrollment_term" readonly="readonly" value="{$T_EDIT_USER.term_date}" type="text" placeholder="{translateToken value="Completion date"}" class="form-control" />
 								</div>
 							</div>
-							div class="col-md-3">
+							<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">{translateToken value="Days remaining"}</label>
 									<input name="enrollment_days_term" readonly="readonly" value="{$T_EDIT_USER.days_end_term}" type="text" placeholder="{translateToken value="Days remaining"}" class="form-control" />
@@ -129,7 +129,9 @@
 										<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
 									</div>
 								</div>
-								
+							
+						<div class="clearfix"></div>
+
 							<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="State/Province"}</label>
