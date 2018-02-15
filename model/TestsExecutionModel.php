@@ -366,4 +366,10 @@ class TestsExecutionModel extends AbstractSysclassModel implements ISyncronizabl
         //$this->saveAnswers($data['answer'], $data['id']);
     }
 
+
+    public function live()
+    {
+    	//session active
+    	return TRUE;
+    }
 }

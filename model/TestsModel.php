@@ -82,9 +82,4 @@ class TestsModel extends BaseUnitsModel implements ISyncronizableModel {
         return $result;
     }
     
-    public function live()
-    {
-    	//session active
-    	return TRUE;	
-    }
 }
