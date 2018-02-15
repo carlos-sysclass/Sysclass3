@@ -1,6 +1,6 @@
 
 <script type="text/template" id="block-dropbox-upload-empty">
-    <strong>{translateToken value="Drag your file here or click in button the to upload it. Use jpg., pdf. or png. files only."}</strong>
+    <strong>{translateToken value="Drag file here or click in button the to upload the document. JPG, PDF or PNG files only."}</strong>
 </script>
 <script type="text/template" id="block-dropbox-upload-upload">
     <span class="preview">
