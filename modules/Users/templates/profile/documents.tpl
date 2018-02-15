@@ -1,7 +1,7 @@
 <div class="form-body">
 	<h5 class="form-section margin-bottom-10 margin-top-10">
 		<i class="fa fa-camera"></i>
-		{translateToken value="Picture ID 1"} (<span>{translateToken value="identification card, driver’s license, or passport"}</span>)
+		{translateToken value="Identification with photo 1"} (<span>{translateToken value="identification card, driver’s license, or passport"}</span>)
 	</h5>
 	<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/documents" data-image-crop="true" data-model-file="documents.file_id">
 		<input type="hidden" name="documents.file_id" value="{$T_FILE_PICTURE_1.id}" />
@@ -17,7 +17,7 @@
 <div class="form-body">
 	<h5 class="form-section margin-bottom-10 margin-top-10">
 		<i class="fa fa-camera"></i>
-		{translateToken value="Picture ID 2"} (<span>{translateToken value="identification card, driver’s license, or passport"}</span>)
+		{translateToken value="Identification with photo 2"} (<span>{translateToken value="identification card, driver’s license, or passport"}</span>)
 	</h5>
 	<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/documents" data-image-crop="true" data-model-file="documents.file_id">
 		<input type="hidden" name="documents.file_id" value="{$T_FILE_PICTURE_2.id}" />
@@ -33,7 +33,7 @@
 <div class="form-body">
 	<h5 class="form-section margin-bottom-10 margin-top-10">
 		<i class="fa fa-camera"></i>
-		{translateToken value="Proof of Residency (Electric, water, credit card, or cell phone bill)"}
+		{translateToken value="Proof of Residency (Electric or water bill, phone or cellular bill, or credit card or bank statement)"}
 	</h5>
 	<div class="form-group fileupload-me" data-fileupload-url="/module/dropbox/upload/documents" data-image-crop="true" data-model-file="documents.file_id">
 		<input type="hidden" name="documents.file_id" value="{$T_FILE_PROOF_RESIDENCY.id}" />
