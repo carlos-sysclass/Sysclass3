@@ -123,7 +123,7 @@
 									{/foreach}
 								{/if}
 								
-								<div class="col-md-3">
+								<div class="col-md-6">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="City/Borough/District"}</label>
 										<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
@@ -147,7 +147,7 @@
 										{/if}
 									{/foreach}
 								{/if}
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="Country"}</label>
 										<select class="select2-me form-control" name="country" data-format-as="country-list">
