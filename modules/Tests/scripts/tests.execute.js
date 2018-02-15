@@ -65,9 +65,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             },
             renderProgress : function() {
             	
-            	this.model.live();
-            	
-                console.info('tests.execute/testExecutionStatsViewClass::renderProgress');
+            	console.info('tests.execute/testExecutionStatsViewClass::renderProgress');
 
                 var progress = this.model.get("progress");
                 var time_elapsed = progress.time_elapsed;
