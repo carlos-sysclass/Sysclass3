@@ -57,7 +57,7 @@
 				<h5 class="form-section margin-bottom-10 margin-top-10">
 					<i class="fa fa-calendar"></i>
 					{translateToken value="Registration period"}
-					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='Specify the start and completion date of the program in order to apply this rule. If you don\'t specify the dates, the duration of the program will be indeterminate.'}">
+					<span class="badge badge-warning tooltips pull-right" data-original-title="{translateToken value='To apply this rule specify the start and end dates of the program. If no dates are assigned the duration of the program will be indeterminate.'}">
                         <i class="fa fa-question-circle"></i>
                     </span>
 				</h5>
