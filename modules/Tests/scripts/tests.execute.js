@@ -64,6 +64,9 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                 this.$(".text-try-index-text").html(this.model.get("try_index"));
             },
             renderProgress : function() {
+            	
+            	 this.model.save();
+            	
                 console.info('tests.execute/testExecutionStatsViewClass::renderProgress');
 
                 var progress = this.model.get("progress");
