@@ -65,7 +65,7 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
             },
             renderProgress : function() {
             	
-            	 this.model.save();
+            	this.model.live();
             	
                 console.info('tests.execute/testExecutionStatsViewClass::renderProgress');
 
