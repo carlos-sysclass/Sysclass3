@@ -925,6 +925,11 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 		);
 	}
 	
+	/**
+	 * [ add a description ]
+	 *
+	 * @Post("/ping")
+	 */
 	public function ping(){
 		return true;
 	}
