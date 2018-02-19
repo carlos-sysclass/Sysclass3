@@ -153,7 +153,14 @@ $SC.module("tests.execute", function(mod, app, Backbone, Marionette, $, _) {
                 "click .retake-test-action" : "retakeTest"
             },
             initialize : function() {
-                var testExecutionView = new testExecutionViewClass({
+                
+            	var pingServer = function() {
+            	    $.ajax({ type : 'POST', url : '/module/tests/ping', success : function(data){ }, });
+            	};
+            	
+            	var testExecutionPing = window.setInterval(pingServer, 30000);
+            	
+            	var testExecutionView = new testExecutionViewClass({
                     el :this.$("form"),
                     model : this.model
                 });

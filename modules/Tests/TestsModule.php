@@ -924,6 +924,10 @@ class TestsModule extends \SysclassModule implements \ISummarizable, \ILinkable,
 			$response
 		);
 	}
+	
+	public function ping(){
+		return true;
+	}
 
 	/**
 	 * This function is called ONE-TIME inside getItemsRequest function.
