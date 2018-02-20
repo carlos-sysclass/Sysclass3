@@ -837,10 +837,10 @@ $SC.module("portlet.content", function(mod, app, Backbone, Marionette, $, _) {
 								window.open(fileModel.get("url"),'_blank');
 							}
 
-                			var progressModel = new mod.models.content_progress(model.get("progress"));
-                			progressModel.setAsViewed(videoModel, 1);	        	 
-
 						});
+                		var progressModel = new mod.models.content_progress(videoModel.get("progress"));
+                		progressModel.setAsViewed(videoModel, 1);	        	 
+
 					});
 	        	 }
 
