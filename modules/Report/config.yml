@@ -111,6 +111,12 @@ reports:
         category: General
         mData: login
 
+      - name: country
+        type: string
+        label: Country
+        category: General
+        mData: country
+
       - name: pending
         type: bool
         label: Approval pending 
