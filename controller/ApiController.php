@@ -17,6 +17,10 @@ class ApiController extends \AbstractSysclassController {
 	const INVALID_DATA = "The data sent is invalid. Please, try again.";
 	const NO_DATA_FOUND = "No data found.";
 	const EXECUTION_OK = "Method executed.";
+	const INVALID_AGE = "To enroll in any of our programs you must be 14 years old, or older.";
+	const INVALID_ENROLL_MASTER = "To enroll in the Master program you must have completed College, University, or have a Higher Education degree.";
+	const INVALID_ENROLL_ASSOCIATE = "To enroll in the Associate program you must have completed High School or Secondary School.";
+	
 
 	public function beforeExecuteRoute(Dispatcher $dispatcher) {
 		$this->response->setContentType('application/json', 'UTF-8');
@@ -210,7 +214,7 @@ class ApiController extends \AbstractSysclassController {
 		));
 
 	}
-
+	
 	// ENTRY POINT FOR ENROLLMENT
 	/**
 	 * Just Ping!! (Authentication Test)
@@ -229,8 +233,19 @@ class ApiController extends \AbstractSysclassController {
 		$messages = $data = array();
 
 		try {
+			
+			//Se o aluno marcar o campo Communication in English como Native Speaker ou o campo I want to enroll in the program como Certificate, 
+			//		não será necessário fazer o TEC. O aluno deverá ser direcionado para a tela de pagamento.
+			
+			
 			if (is_null($postdata)) {
 				$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
+			}else if( $postdata['secondary_school'] == 'Not Completed' && ($postdata['courses'] == 9 || $postdata['courses'] == 10) ){	
+				$messages[] = $this->invalidRequestError(self::INVALID_ENROLL_ASSOCIATE, "warning");
+			}else if( $postdata['higher_school'] == 'Not Completed' && $postdata['courses'] == 10 ){
+				$messages[] = $this->invalidRequestError(self::INVALID_ENROLL_MASTER, "warning");
+			}else if( validAge($postdata['birthday']) ){
+				$messages[] = $this->invalidRequestError(self::INVALID_AGE, "warning");
 			} else {
 				$this->db->begin();
 
@@ -570,6 +585,21 @@ class ApiController extends \AbstractSysclassController {
 
 	}
 
+	//valid age
+	private function validAge($birthday , $age=14){
+		$return = TRUE;
+		$ar_birthday = explode('/', $birthday);
+		if( count($ar_birthday) == 3 ){
+			$birthday = strtotime($ar_birthday[2].'-'.$ar_birthday[1].'-'.$ar_birthday[0]);
+			if(time() - $birthday < $age * 31536000)  {
+				$return =FALSE;
+			}
+		}else{
+			$return = FALSE;
+		}
+		return $return;
+	}
+	
 	// RequestManager
 	protected function createResponse($code, $message, $type, $intent = null, $callback = null) {
 		http_response_code($code);
