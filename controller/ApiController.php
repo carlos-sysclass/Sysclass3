@@ -18,7 +18,7 @@ class ApiController extends \AbstractSysclassController {
 	const NO_DATA_FOUND = "No data found.";
 	const EXECUTION_OK = "Method executed.";
 	const INVALID_AGE = "To enroll in any of our programs you must be 14 years old, or older.";
-	const INVALID_ENROLL_MASTER = "To enroll in the Master program you must have completed College, University, or have a Higher Education degree.";
+	const INVALID_ENROLL_MASTER = "To enroll in the Master program you must have completed High School or Secondary School and have complete College or a Higher Education program.";
 	const INVALID_ENROLL_ASSOCIATE = "To enroll in the Associate program you must have completed High School or Secondary School.";
 	
 
@@ -235,7 +235,7 @@ class ApiController extends \AbstractSysclassController {
 		try {
 			
 			//Se o aluno marcar o campo Communication in English como Native Speaker ou o campo I want to enroll in the program como Certificate, 
-			//		não será necessário fazer o TEC. O aluno deverá ser direcionado para a tela de pagamento.
+			//não será necessário fazer o TEC. O aluno deverá ser direcionado para a tela de pagamento.
 			
 			
 			if (is_null($postdata)) {
@@ -244,10 +244,10 @@ class ApiController extends \AbstractSysclassController {
 			}else if( !$this->validAge($postdata['birthday']) ){
 				$messages[] = $this->invalidRequestError(self::INVALID_AGE, "warning");
 				$error = true;
-			}else if( $postdata['secondary_school'] == 'Not Completed' && ($postdata['courses'] == 9 || $postdata['courses'] == 10) ){
+			}else if( $postdata['secondary_school'] == 'Not Completed' && $postdata['courses'] == 9 ){
 				$messages[] = $this->invalidRequestError(self::INVALID_ENROLL_ASSOCIATE, "warning");
 				$error = true;
-			}else if( $postdata['higher_school'] == 'Not Completed' && $postdata['courses'] == 10 ){
+			}else if( ($postdata['secondary_school'] == 'Not Completed' || $postdata['higher_school'] == 'Not Completed') && $postdata['courses'] == 10 ){
 				$messages[] = $this->invalidRequestError(self::INVALID_ENROLL_MASTER, "warning");
 				$error = true;
 			}else {
