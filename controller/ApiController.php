@@ -241,7 +241,7 @@ class ApiController extends \AbstractSysclassController {
 			if (is_null($postdata)) {
 				$messages[] = $this->invalidRequestError(self::INVALID_DATA, "warning");
 				$error = true;
-			}else if( $this->validAge($postdata['birthday']) ){
+			}else if( !$this->validAge($postdata['birthday']) ){
 				$messages[] = $this->invalidRequestError(self::INVALID_AGE, "warning");
 				$error = true;
 			}else if( $postdata['secondary_school'] == 'Not Completed' && ($postdata['courses'] == 9 || $postdata['courses'] == 10) ){
@@ -591,7 +591,17 @@ class ApiController extends \AbstractSysclassController {
 
 	//valid age
 	protected function validAge($birthday , $age=14){
-		return TRUE;
+	 	$ar_birthday = explode('/', $birthday);
+        if( count($ar_birthday) == 3 ){
+            $birthday = strtotime($ar_birthday[2].'-'.$ar_birthday[1].'-'.$ar_birthday[0]);
+            if(time() - $birthday < $age * 31536000)  {
+                return FALSE;
+            }else{
+                return TRUE;
+            }
+        }else{
+            return FALSE;
+        }
 	}
 	
 	// RequestManager
