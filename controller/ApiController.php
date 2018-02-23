@@ -244,10 +244,10 @@ class ApiController extends \AbstractSysclassController {
 			}else if( !$this->validAge($postdata['birthday']) ){
 				$messages[] = $this->invalidRequestError(self::INVALID_AGE, "warning");
 				$error = true;
-			}else if( $postdata['secondary_school'] == 'Not Completed' && $postdata['courses'] == 9 ){
+			}else if( $postdata['secondary_school'] != 'Completed' && $postdata['courses'] == 9 ){
 				$messages[] = $this->invalidRequestError(self::INVALID_ENROLL_ASSOCIATE, "warning");
 				$error = true;
-			}else if( ($postdata['secondary_school'] == 'Not Completed' || $postdata['higher_school'] == 'Not Completed') && $postdata['courses'] == 10 ){
+			}else if( ($postdata['secondary_school'] != 'Completed' || $postdata['higher_school'] != 'Completed') && $postdata['courses'] == 10 ){
 				$messages[] = $this->invalidRequestError(self::INVALID_ENROLL_MASTER, "warning");
 				$error = true;
 			}else {
