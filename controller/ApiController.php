@@ -590,7 +590,7 @@ class ApiController extends \AbstractSysclassController {
 	}
 
 	//valid age
-	private function validAge($birthday , $age=14){
+	protected function validAge($birthday , $age=14){
 		$return = TRUE;
 		$ar_birthday = explode('/', $birthday);
 		if( count($ar_birthday) == 3 ){
