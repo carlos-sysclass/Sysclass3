@@ -329,7 +329,7 @@ class PaymentModule extends \SysclassModule/*implements \ISummarizable,  \ILinka
 		if ($enroll) {
 
 			$price = ProgramPrice::findFirst([
-				'conditions' => 'program_id = ?0 AND LOWER(country) = ?1',
+				'conditions' => 'program_id = ?0 AND LOWER(country_code) = ?1',
 				'bind' => [$enroll->course_id, strtolower($this->user->country)],
 			]);
 
