@@ -591,17 +591,17 @@ class ApiController extends \AbstractSysclassController {
 
 	//valid age
 	protected function validAge($birthday , $age=14){
-		$return = TRUE;
 		$ar_birthday = explode('/', $birthday);
 		if( count($ar_birthday) == 3 ){
 			$birthday = strtotime($ar_birthday[2].'-'.$ar_birthday[1].'-'.$ar_birthday[0]);
 			if(time() - $birthday < $age * 31536000)  {
-				$return =FALSE;
+				return FALSE;
+			}else{
+				return TRUE;
 			}
 		}else{
-			$return = FALSE;
+			return FALSE;
 		}
-		return $return;
 	}
 	
 	// RequestManager
