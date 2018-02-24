@@ -622,7 +622,7 @@ class ApiController extends \AbstractSysclassController {
 		if (empty($message)) {
 			$message = $this->translate->translate("There's a problem with your request. Please, try again.");
 		}
-		return $this->createResponse(400, $message, $type, "advise");
+		return $this->createResponse(200, $message, $type, "advise");
 	}
 
 }
