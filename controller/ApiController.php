@@ -363,7 +363,7 @@ class ApiController extends \AbstractSysclassController {
 			$error = true;
 			switch ($e->getCode()) {
 			case AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS:{
-					$messages[] = $this->createResponse(200, $this->translate->translate("There is already a registration made with this email! Would you like to login?"), "error");
+					$messages[] = $this->invalidRequestError($this->translate->translate("There is already a registration with this email. Would you like to login?"), "warning");
 					break;
 				}
 			case AuthenticationException::USER_DATA_IS_INVALID_OR_INCOMPLETE:{
@@ -481,7 +481,7 @@ class ApiController extends \AbstractSysclassController {
 			$error = true;
 			switch ($e->getCode()) {
 			case AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS:{
-					$messages[] = $this->invalidRequestError("There is already a registration with this email. Would you like to login?", "warning");
+					$messages[] = $this->invalidRequestError($this->translate->translate("There is already a registration with this email. Would you like to login?"), "warning");
 					break;
 				}
 			case AuthenticationException::USER_DATA_IS_INVALID_OR_INCOMPLETE:{
