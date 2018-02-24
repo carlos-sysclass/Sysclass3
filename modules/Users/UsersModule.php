@@ -994,7 +994,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		}
 
 		$ar_user['attrs'] = $ar_order;
-
+		
 		//$date1 = $ar_user['enrollments'][0]['start_date'];
 		//$date2 = $ar_user['userreport']['first_access'];
 		
@@ -1010,6 +1010,8 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 		$settings = $this->module("settings")->getSettings(true);
 		
 		$ar_user['term_date'] = date($settings['php_date_fmt'] ,$date2);
+		
+		$ar_user['birthday'] = date('d/m/Y' ,$ar_user['birthday']);
 		
 		$ar_dropbox = $ar_user['dropbox'];
 		$arFields = array('file_picture_1', 'file_picture_2', 'file_transcript_1', 'file_transcript_2', 'file_proof_residency');
