@@ -129,7 +129,7 @@
 										<input name="city" value="" type="text" placeholder="{translateToken value="City/Borough/District"}" class="form-control" data-rule-minlength="3" />
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="State/Province"}</label>
 										<input name="state" value="" type="text" placeholder="{translateToken value="State/Province"}" class="form-control" />
@@ -138,7 +138,7 @@
 								{if (isset($T_EDIT_USER.attrs) &&  ($T_EDIT_USER.attrs|@count > 0))}
 									{foreach $T_EDIT_USER.attrs as $key => $value}
 										{if $key == 'zip_code'}
-										<div class="col-md-6">
+										<div class="col-md-4">
 											<div class="form-group">
 													<label class="control-label">{translateToken value=$key|user_attrs_translate}</label>
 													<input name="attrs_{$key}" value="{$value}" type="text" placeholder="{translateToken value="$key|user_attrs_translate"}" class="form-control" />
@@ -147,7 +147,7 @@
 										{/if}
 									{/foreach}
 								{/if}
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">{translateToken value="Country"}</label>
 										<select class="select2-me form-control" name="country" data-format-as="country-list">

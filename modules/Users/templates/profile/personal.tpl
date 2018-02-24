@@ -25,7 +25,7 @@
 	{/if}
 	<div class="col-md-4">
 		<div class="form-group">
-			<label class="control-label">{translateToken value="Birthday"} (Month/Day/Year)</label>
+			<label class="control-label">{translateToken value="Birthday"} (Day/Month/Year)</label>
 			<div>
 				{if $T_EDIT_USER.birthday != ''}
 				<input type="text" readonly="readonly" name="birthday" value="{$T_EDIT_USER.birthday}" data-format="date" data-format-from="isodate" class="form-control">
