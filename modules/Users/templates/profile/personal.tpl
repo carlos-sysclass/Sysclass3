@@ -28,8 +28,7 @@
 			<label class="control-label">{translateToken value="Birthday"} (Day/Month/Year)</label>
 			<div>
 				{if $T_EDIT_USER.birthday != ''}
-				<input type="text" readonly="readonly" name="birthday-view" value="{$T_EDIT_USER.birthday_view}" class="form-control">
-				<input type="hidden" name="birthday" value="{$T_EDIT_USER.birthday_user}" >
+				<input type="text" readonly="readonly" name="birthday" value="{$T_EDIT_USER.birthday}" data-format="date" data-format-from="isodate" class="form-control">
 				{else}
 				<input type="text" name="birthday" value="" data-format="date" data-format-from="isodate" class="form-control date-picker">
 				{/if}
