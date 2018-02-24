@@ -315,27 +315,27 @@ class ApiController extends \AbstractSysclassController {
 											);
 										} else {
 											// REMOVE THE USER
-											$messages[] = $this->createResponse(200, "The system can't enroll in the course at the moment. PLease try again", "error");
+											$messages[] = $this->createResponse(400, "The system can't enroll in the course at the moment. PLease try again", "error");
 											$error = true;
 											break;
 										}
 									} else {
 										// REMOVE THE USER
-										$messages[] = $this->createResponse(200, "Course does not exists!", "error");
+										$messages[] = $this->createResponse(400, "Course does not exists!", "error");
 										$error = true;
 									}
 								}
 							} else {
 								// CHECK IF THE CONFIGURATION ALLOWS THE USER TO ENTER THE SYSTEM WITHOUT A COURSE
 								if ($this->configuration->get("signup_require_program")) {
-									$messages[] = $this->createResponse(200, "Please, select at least one course to enroll.", "error");
+									$messages[] = $this->createResponse(400, "Please, select at least one course to enroll.", "error");
 									$error = true;
 								} else {
 									// USER CAN PROCEED WITHOUT A COURSE
 								}
 							}
 						} else {
-							$messages[] = $this->createResponse(200, $this->translate->translate("Your data sent appers to be imcomplete. Please, check your info and try again!"), "error");
+							$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please, check your info and try again!"), "error");
 							$error = true;
 						}
 					} else {
@@ -363,7 +363,7 @@ class ApiController extends \AbstractSysclassController {
 			$error = true;
 			switch ($e->getCode()) {
 			case AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS:{
-					$messages[] = $this->invalidRequestError($this->translate->translate("There is already a registration with this email. Would you like to login?"), "warning");
+					$messages[] = $this->invalidRequestError("There is already a registration with this email. Would you like to login?", "warning");
 					break;
 				}
 			case AuthenticationException::USER_DATA_IS_INVALID_OR_INCOMPLETE:{
@@ -446,7 +446,7 @@ class ApiController extends \AbstractSysclassController {
 					));
 					return true;
 				} else {
-					$messages[] = $this->createResponse(200, $this->translate->translate("The information sent appers to be incomplete. Please, check your info and try again!"), "error");
+					$messages[] = $this->createResponse(400, $this->translate->translate("The information sent appers to be incomplete. Please, check your info and try again!"), "error");
 					$error = true;
 				}
 
@@ -461,7 +461,7 @@ class ApiController extends \AbstractSysclassController {
 										$messages[] = $this->createResponse(200, "User created.", "success");
 
 					 				} else {
-										$messages[] = $this->createResponse(200, $this->translate->translate("Your data sent appers to be imcomplete. Please, check your info and try again!"), "error");
+										$messages[] = $this->createResponse(400, $this->translate->translate("Your data sent appers to be imcomplete. Please, check your info and try again!"), "error");
 										$error = true;
 					 				}
 
@@ -481,7 +481,7 @@ class ApiController extends \AbstractSysclassController {
 			$error = true;
 			switch ($e->getCode()) {
 			case AuthenticationException::SIGNUP_EMAIL_ALREADY_EXISTS:{
-					$messages[] = $this->invalidRequestError($this->translate->translate("There is already a registration with this email. Would you like to login?"), "warning");
+					$messages[] = $this->invalidRequestError("There is already a registration with this email. Would you like to login?", "warning");
 					break;
 				}
 			case AuthenticationException::USER_DATA_IS_INVALID_OR_INCOMPLETE:{
@@ -622,7 +622,7 @@ class ApiController extends \AbstractSysclassController {
 		if (empty($message)) {
 			$message = $this->translate->translate("There's a problem with your request. Please, try again.");
 		}
-		return $this->createResponse(200, $message, $type, "advise");
+		return $this->createResponse(400, $message, $type, "advise");
 	}
 
 }
