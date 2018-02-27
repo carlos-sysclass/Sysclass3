@@ -33,75 +33,53 @@
 			border: none!important;
 		}
 	</style>
-	<style type="text/css">
-		@media only screen and (max-width: 800px) {
-			body[yahoo] .quote_full_width {
-				width: 100% !important;
-			}
-			body[yahoo] .quote_content_width {
-				width: 90% !important;
-			}
-		}
-
-		@media only screen and (max-width: 640px) {
-			body[yahoo] .full_width {
-				width: 100% !important;
-			}
-			body[yahoo] .content_width {
-				width: 80% !important;
-			}
-			body[yahoo] .center_txt {
-				text-align: center!important;
-			}
-			body[yahoo] .post_sep {
-				width: 100% !important;
-				height: 60px !important;
-			}
-			body[yahoo] .gal_sep {
-				width: 100% !important;
-				height: 40px !important;
-			}
-			body[yahoo] .gal_img {
-				width: 100% !important;
-			}
-			body[yahoo] .bb_space {
-				height: 90px !important;
-			}
-		}
-	</style>
-</head>
-<body style="margin: 0; padding: 0;" yahoo="fix">
-	<table border="0" cellpadding="0" cellspacing="0" width="100%" background="" bgcolor="#2a3647" style="background-size: cover; -webkit-background-size: cover; -moz-background-size: cover -o-background-size: cover; background-position: center; background-repeat: no-repeat; background-color:#2a3647;">
-			<tr>
-				<td>
-					<table width="600" cellpadding="0" cellspacing="0" align="center" border="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; border:0; text-align:center;" class="content_width">
+	<scellpadding="0" cellspacing="0" bgcolor="#fbfbfb" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+		<tr>
+			<td width="100%" height="100">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<table width="600" align="center" border="0" cellpaddiding="0" cellspacing="0" align="center" class="content_width" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+				<tr>
+					<td><table width="600" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="content_width" align="center">
 						<tr>
-							<td width="100%" height="40">&nbsp;</td>
-						</tr>
-						<tr>
-						
-							<td><img src='{{ mail.attachInline("img/lucent-horizontal.png") }}'; width="300" height="" alt="" title="" border="0" style="border:0; display:inline_block;"/></td>
-						</tr>
-						<tr>
-							<td width="100%" height="40">&nbsp;</td>
-						</tr>
-						<tr>
-							<td><table width="600" height="1" align="center" bgcolor="#fff" border="0"  cellpadding="0" cellspacing="0"style="height:1px!important; width:600px; background-color:#fff; padding:0; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-								<tr>
-									<td>
-									</td>
-								</tr>
-							</table>
-						</td>
+							<td style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 36px; text-align:center; font-weight: 700; line-height:80px; letter-spacing:-1px;">WELCOME TO LUCENT UNIVERSITY</td>
+						</tr></table></td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td height="50">&nbsp;</td>
+			<td height="70" width="100%"></td>
+		</tr>
+	</table>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#fbfbfb" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+		<tr>
+			<td width="100%" height="100">&nbsp;</td>
 		</tr>
 		<tr>
-			<td><table width="600" cellpadding="0" cellspacing="0" align="center" class="content_width" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+			<td>
+				<table width="600" align="center" border="0" cellpaddiding="0" cellspacing="0" align="center" class="content_width" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+				<tr>
+					<td><table width="600" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="content_width" align="center">
+						<tr>
+							<td style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 36px; text-align:center; font-weight: 700; line-height:80px; letter-spacing:-1px;">WELCOME TO LUCENT UNIVERSITY</td>
+						</tr></table></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="70" width="100%"></td>
+		</tr>
+	</table>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#fbfbfb" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+		<tr>
+			<td width="100%" height="100">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<table width="600" align="center" border="0" cellpaddiding="0" cellspacing="0" align="center" class="content_width" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
 				<tr>
 					<td><table width="600" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="content_width" align="center">
 						<tr>
@@ -156,19 +134,13 @@
 									<td>
 										<table width="600" cellpadding="0" align="left" cellspacing="0" style="text-align:left; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="full_width">
 											<tr>
-												<td>&nbsp;</td>     
-											</tr>
-											<tr>
-												<td style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase;">Welcome to Lucent,</td>
-											</tr>
-											<tr>
 												<td width="100%" height="30"></td>
 											</tr>
 											<tr>
-												<td><p style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; line-height:24px; letter-spacing: .-5px; font-weight: 400;">We want to thank you for starting your enrollment at Lucent University. We are praying for you as you prepare to better serve in the Kingdom. The next steps are:
-													<br />
-													Please click on the link below to complete access the sysclass environment and create your password.
-													<br />
+												<td><p style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; line-height:24px; letter-spacing: .-5px; font-weight: 400;">Thank you for starting your enrollment at Lucent University. 
+													<br/>
+Please click on the link below to setup your password. You will need to enter the same password twice. 
+													<br/>
                                          <table class="twelve columns" style="margin-bottom: 10px">
                                           <tr>
                                                 <td class="panel" style="background: #fff;border: 0;padding: 10px !important;">
@@ -180,22 +152,35 @@
                                                 </td>
                                           </tr>
                                           </table>
+												<td><p style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; line-height:24px; letter-spacing: .-5px; font-weight: 400;">
+Click on SET YOUR PASSWORD AND CONTINUE. You will be taken to the STEP 2: the Test of English Comprehension (TEC).
+													<br/>
+													<br/>
+After you achieve a passing grade on the TEC, you will be taken to STEP 3: the PayPal payment page. After your payment is completed, you will be taken to the student page. 
+													<br/>
+													<br/>
+If English is your native language or if you are enrolling in the Certificate Program, you do not need to take the Test of English Comprehension (TEC) and you will be taken directly to STEP 3: the PayPal payment page. After your payment is completed, you will be taken to the student page.
+													<br/>
+													<br/>
+Before you start taking classes it is important that you go to your profile page that is in the top right menu and click on MY PROFILE. On the tab YOUR INFO upload your photo and check if the information listed is correct, if not edit it. Do this carefully, some fields can only be edited once. On the tab DOCUMENTS upload your documentation and certificates or diplomas. After uploading your photo and documents your enrollment is complete.
+													<br/>
+													<br/>
+Please, note that your login or user name is the email you submitted in your enrollment form.
+													<br/>
+													<br/>
+Still have a question? Take a look at the Frequently Asked Questions page or email us: contact@lucent.university. 
+													<br/>
+													<br/>
+We look forward to see what the Lord will be doing in your life and ministry in the years to come.
+													<br/>
+													<br/>
+In His Love, 
+													<br/>
+													<br/>
 
-													<br />
-													If you are If you are planing to enroll in the <a style="color: #000; font-weight: 600; text-decoration:none;">Certificate Program</a>, you don't need to worry about taking the free online Test of English Comprehension (TEC).
-													<br />
-													<br />
-													If you are planing to enroll in the <a style="color: #000; font-weight: 600; text-decoration:none;">Certificate or Master Program</a> student, you will need to complete the free online Test of English Comprehension (TEC). After we get the result of your test, we will check your information about your approval in the your program and how to pay and complete your enrollment process.
-													<br />
-													<br />
-													Still have a question? Please, take a look at the <a href="https://lucent.university/faq.html" target="_blank" style="color: #000; font-weight: 600; text-decoration:none;">Frequently Asked Questions</a> page or email us by <a href="mailto:contact@lucent.university?Subject=Contact%20Lucent%20Confirmation%20Email" target="_blank" style="color: #000; font-weight: 600; text-decoration:none;">clicking here</a>.
-													<br />
-													<br />
-													Gob Bless,
-													<br />
-													<br />
-													The Lucent Team
-												</p></td>
+The Lucent Team
+												</p>
+												</td>
 											</tr>
 										</table>
 									</td>
@@ -207,224 +192,7 @@
 						<td width="100%" height="100"></td>
 					</tr>
 				</table>
-				<!--
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" bgcolor="#f5f5f5">
-					<tr>
-						<td><table width="50%" border="0" cellpadding="0" cellspacing="0" align="left" class="quote_full_width">
-							<tr>
-								<td width="100%" height="350" background="images/bg/bg4.jpg" style="background:url('images/quote_img.jpg'); background-size: cover; -webkit-background-size: cover; -moz-background-size: cover -o-background-size: cover; background-position: top center; background-repeat: no-repeat;"></td>
-							</tr>
-						</table>
-						<table width="60" height="10" border="0" cellpadding="0" cellspacing="0" align="left" class="full_width">
-							<tr>
-								<td>&nbsp;</td>
-							</tr>
-						</table>
-						<table border="0" cellpadding="0" cellspacing="0" align="left" class="full_width">
-							<tr>
-								<td><table width="300" border="0" cellpadding="0" cellspacing="0" align="center" class="quote_content_width">
-									<tr>
-										<td width="100%" height="60"></td>
-									</tr>
-									<tr>
-										<td style="color: #657385; font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 600;  line-height:34px; text-transform:uppercase; letter-spacing:1px;">Dis eget euismod et lorem placerat tortor Proin consequat quam eget convallis eleifend, libero justo.</td>
-									</tr>
-									<tr>
-										<td width="100%" height="20"></td>
-									</tr>
-									<tr>
-										<td><table width="40" height="1" bgcolor="#d3d1d1" align="left" border="0" cellpadding="0" cellspacing="0">
-											<tr>
-												<td></td>
-											</tr>
-										</table></td>
-									</tr>
-									<tr>
-										<td width="100%" height="20"></td>
-									</tr>
-									<tr>
-										<td width="100%" style="text-align:left; color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 400;">John Doe</td>
-									</tr>
-									<tr>
-										<td width="100%" height="60"></td>
-									</tr>
-								</table></td>
-							</tr>
-						</table></td>
-					</tr>
-				</table>
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#fbfbfb" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-					<tr>
-						<td width="100%" height="100">&nbsp;</td>
-					</tr>
-					<tr>
-						<td><table width="600" align="center" border="0" cellpadding="0" cellspacing="0" style="text-align:center;" class="content_width">
-							<tr>
-								<td style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700;  letter-spacing:.5px; text-transform:uppercase;">The Blog</td>
-							</tr>
-							<tr>
-								<td width="100%" height="20">&nbsp;</td>
-							</tr>
-							<tr>
-								<td><table width="1" height="20" align="center" bgcolor="#e9e9e9" border="0"  cellpadding="0" cellspacing="0"style="height:20px!important; padding:0; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-									<tr>
-										<td></td>
-									</tr>
-								</table></td>
-							</tr>
-							<tr>
-								<td><table width="100%" height="1" align="center" bgcolor="#e9e9e9" border="0"  cellpadding="0" cellspacing="0"style="padding:0;border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-									<tr>
-										<td></td>
-									</tr>
-								</table></td>
-							</tr>
-							<tr>
-								<td width="100%" height="40">&nbsp;</td>
-							</tr>
-							<tr>
-								<td><table width="394" cellpadding="0" align="left" cellspacing="0"style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="full_width">
-									<tr>
-										<td><table width="187" cellpadding="0" align="left" cellspacing="0"style="text-align:left; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="full_width center_txt">
-											<tr>
-												<td align="center"><a href="#"style="border:0;"><img src="images/img_post1.jpg" width="173" height="200" border="0" alt="" title="" align="center" style="display: inline-block;"/></a></td>
-											</tr>
-											<tr>
-												<td width="100%" height="40"></td>
-											</tr>
-											<tr>
-												<td><a href="#" style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700;  text-transform: uppercase; text-decoration:none;">Fustce faucibusy ante libero.</a></td>
-											</tr>
-											<tr>
-												<td width="100%" height="30"></td>
-											</tr>
-											<tr>
-												<td><p style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height:24px; letter-spacing:.5px; font-weight: 400;">Cras interdum vestum a dolor amet tursisi ligula  rhoncus sodales...</p></td>
-											</tr>
-										</table>
-										<table height="40" align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="post_sep">
-											<tr>
-												<td>&nbsp;</td>
-											</tr>
-										</table>
-										<table width="187" cellpadding="0" align="right" cellspacing="0"style="text-align:left; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="full_width center_txt">
-											<tr>
-												<td align="center"><a href="#"style="border:0;"><img src="images/img_post2.jpg" width="173" height="200" border="0" alt="" title="" align="center" style="display: inline-block;"/></a></td>
-											</tr>
-											<tr>
-												<td width="100%" height="40"></td>
-											</tr>
-											<tr>
-												<td><a href="#" style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700;  text-transform: uppercase; text-decoration:none;">Fustce faucibusy ante libero.</a></td>
-											</tr>
-											<tr>
-												<td width="100%" height="30"></td>
-											</tr>
-											<tr>
-												<td><p style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height:24px; letter-spacing:.5px; font-weight: 400;">Cras interdum vestum a dolor amet tursisi ligula  rhoncus sodales...</p></td>
-											</tr>
-										</table></td>
-									</tr>
-								</table>
-								<table height="40" align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="post_sep">
-									<tr>
-										<td>&nbsp;</td>
-									</tr>
-								</table>
-								<table width="187" align="right" cellpadding="0" cellspacing="0"style="text-align:left; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="full_width center_txt">
-									<tr>
-										<td align="center"><a href="#"style="border:0;"><img src="images/img_post3.jpg" width="173" height="200" border="0" alt="" title="" align="center" style="display: inline-block;"/></a></td>
-									</tr>
-									<tr>
-										<td width="100%" height="40"></td>
-									</tr>
-									<tr>
-										<td><a href="#" style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700;  text-transform: uppercase; text-decoration:none;">Fustce faucibusy ante libero.</a></td>
-									</tr>
-									<tr>
-										<td width="100%" height="30"></td>
-									</tr>
-									<tr>
-										<td><p style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height:24px; letter-spacing:.5px; font-weight: 400;">Cras interdum vestum a dolor amet tursisi ligula  rhoncus sodales...</p></td>
-									</tr>
-								</table></td>
-							</tr>
-						</table></td>
-					</tr>
-					<tr>
-						<td width="100%" height="100">&nbsp;</td>
-					</tr>
-				</table>
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#fbfbfb" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-					<tr>
-						<td><table width="600" align="center" border="0" cellpadding="0" cellspacing="0" style="text-align:center;" class="content_width">
-							<tr>
-								<td style="color: #000; font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700;  letter-spacing:.5px; text-transform:uppercase;">The Gallery</td>
-							</tr>
-							<tr>
-								<td width="100%" height="20">&nbsp;</td>
-							</tr>
-							<tr>
-								<td><table width="1" height="20" align="center" bgcolor="#e9e9e9" border="0"  cellpadding="0" cellspacing="0"style="height:20px!important; padding:0; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-									<tr>
-										<td></td>
-									</tr>
-								</table></td>
-							</tr>
-							<tr>
-								<td><table width="100%" height="1" align="center" bgcolor="#e9e9e9" border="0" cellpadding="0" cellspacing="0"style="padding:0;border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-									<tr>
-										<td></td>
-									</tr>
-								</table></td>
-							</tr>
-							<tr>
-								<td width="100%" height="40">&nbsp;</td>
-							</tr>
-							<tr>
-								<td><table width="174" border="0" cellpadding="0" cellspacing="0" align="left"  class="gal_img">
-									<tr>
-										<td><a href="#"> <img src="images/gallery_img1.jpg" width="173" height="230" alt="" title="" border="0" style="width:100%; height:auto; border:0; display:inline_block;" /></a></td>
-									</tr>
-								</table>
-								<table height="40" align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="gal_sep">
-									<tr>
-										<td></td>
-									</tr>
-								</table>
-								<table width="386" border="0" cellpadding="0" cellspacing="0" align="right" class="gal_img">
-									<tr>
-										<td><a href="#"> <img src="images/gallery_img2.jpg" width="386" height="230" alt="" title="" border="0" style="width:100%; height:auto; border:0; display:inline_block;" /></a></td>
-									</tr>
-								</table></td>
-							</tr>
-							<tr>
-								<td width="100%" height="40">&nbsp;</td>
-							</tr>
-							<tr>
-								<td><table width="386" border="0" cellpadding="0" cellspacing="0" align="left" class="gal_img">
-									<tr>
-										<td><a href="#"> <img src="images/gallery_img3.jpg" width="386" height="230" alt="" title="" border="0" style="width:100%; height:auto; border:0; display:inline_block;" /></a></td>
-									</tr>
-								</table>
-								<table height="40" align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="gal_sep">
-									<tr>
-										<td></td>
-									</tr>
-								</table>
-								<table width="174" border="0" cellpadding="0" cellspacing="0" align="right" class="gal_img">
-									<tr>
-										<td><a href="#"> <img src="images/gallery_img4.jpg" width="173" height="230" alt="" title="" border="0" style="width:100%; height:auto; border:0; display:inline_block;" /></a></td>
-									</tr>
-								</table></td>
-							</tr>
-						</table></td>
-					</tr>
-					<tr>
-						<td width="100%" height="100"></td>
-					</tr>
-				</table>
-				-->
+
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#fbfbfb" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; background: #526178; background: -webkit-gradient(linear, left top, color-stop(0%,#55647b), color-stop(100%,#414d60)); background: -webkit-linear-gradient(bottom, #55647b 0%, #414d60 100%); background: -moz-linear-gradient(bottom, #55647b 0%, #414d60 100%); background: -ms-linear-gradient(bottom, #55647b 0%, #414d60 100%); background: -o-linear-gradient(bottom, #55647b 0%, #414d60 100%); background: linear-gradient(bottom, #55647b 0%, #414d60 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#55647b', endColorstr='#414d60',GradientType=1 ); text-align:center;">
 					<tr>
 						<td width="100%" height="100">&nbsp;</td>
@@ -433,7 +201,7 @@
 						<td>
 							<table width="500" align="center" border="0" cellpadding="0" cellspacing="0" class="content_width">
 								<tr>
-									<td style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 24px; text-transform:none; line-height:38px; letter-spacing:-1px; text-align:center; font-weight: 400;">Therefore go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, and teaching them to obey everything I have commanded you. And surely I am with you always, to the very end of the age.
+									<td style="color: #fff; font-family: 'Montserrat', sans-serif; font-size: 24px; text-transform:none; line-height:38px; letter-spacing:-1px; text-align:center; font-weight: 400;">Therefore, go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, and teaching them to obey everything I have commanded you. And surely, I am with you always, to the very end of the age.
 										<br />
 										<br />
 										<span style="font-weight: 700;">MATTHEW 28:19-20</span></td>
