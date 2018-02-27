@@ -403,7 +403,7 @@ class UsersModule extends \SysclassModule implements \ILinkable, \IBlockProvider
 
 				$status = $this->mail->send(
 					"enrollment@lucent.university",
-					"New enrollment",
+					"NEW ENROLLMENT",
 					$template,
 					true,
 					array(
